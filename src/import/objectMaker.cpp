@@ -81,6 +81,12 @@ void ObjectMakerErrorTracker::registerError(const QString &msg)
     error_status = true;
 }
 
+void ObjectMakerErrorTracker::registerWarning(const QString &msg)
+{
+    if ( ! warnings.contains(msg)) warnings.append(msg);
+    warning_status = true;
+}
+
 
 ObjectSignature::ObjectSignature(ObjectMakerErrorTracker *et)
 {
@@ -317,6 +323,7 @@ ObjectSignature::ObjectSignature(ObjectMakerErrorTracker *et)
 }
 
 ObjectSignature::ObjectSignature(const ObjectSignature &other)
+  : libfwbuilder::Dispatch(other)
 {
     error_tracker = other.error_tracker;
 

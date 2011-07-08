@@ -61,7 +61,10 @@ class PFImporter : public Importer
         const std::list< PortSpec > &src_port_spec_list,
         const std::list< PortSpec > &dst_port_spec_list,
         bool for_nat_rhs);
-    
+
+    void substituteMacros(const QMap<QString,QString> &macros,
+                          QString &buffer);
+
 public:
 
     typedef enum {

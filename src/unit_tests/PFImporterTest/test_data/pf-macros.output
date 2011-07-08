@@ -1,15 +1,33 @@
-16: filtering rule: action pass; interfaces: 
-18: filtering rule: action pass; interfaces: 
-19: filtering rule: action pass; interfaces: 
-20: filtering rule: action pass; interfaces: 
-21: filtering rule: action pass; interfaces: 
-22: filtering rule: action pass; interfaces: 
-23: filtering rule: action pass; interfaces: 
-24: filtering rule: action pass; interfaces: 
-25: filtering rule: action pass; interfaces: 
-27: filtering rule: action pass; interfaces: 
-28: filtering rule: action pass; interfaces: 
-29: filtering rule: action pass; interfaces: 
-31: filtering rule: action block; interfaces: 
-33: New interface: em1
-33: filtering rule: action pass; interfaces: em1
+Warning: Macro undefined_macro is undefined3: Address Table: <addr_list_1>:  10.123.12.32/27, 10.123.14.8/27, 10.123.10.16/28, 10.123.0.0/24
+5: Address Table: <addr_list_2>:  10.1.1.1, 10.123.12.32/27, 10.123.14.8/27, 10.123.10.16/28, 10.123.0.0/24
+7: Address Table: <addr_list_3>:  10.1.1.1, 10.123.12.33/27, 10.123.14.9/27
+9: Address Table: <addr_list_4>:  10.1.1.1, 10.123.12.34/27, 10.123.14.10/27
+12: Address Table: <addr_list_5>:  10.1.1.1, 10.123.12.35/27, 10.123.14.11/27
+15: Address Table: <addr_list_1_foo>:  10.1.2.3, 10.4.5.6, 10.7.8.9
+19: Address Table: <recursive_macro>:  192.168.1.1, 192.168.1.2
+23: Address Table: <mixed_macro_1>:  192.168.1.1, 192.168.2.1, www.fwbuilder.org
+24: Address Table: <mixed_macro_2>:  192.168.1.1, 192.168.2.1, em1
+24: New interface: em1
+25: Address Table: <mixed_macro_3>:  192.168.1.1, 192.168.2.1, em1
+31: filtering rule: action pass; interfaces: 
+33: filtering rule: action pass; interfaces: 
+34: filtering rule: action pass; interfaces: 
+35: filtering rule: action pass; interfaces: 
+36: filtering rule: action pass; interfaces: 
+37: filtering rule: action pass; interfaces: 
+38: filtering rule: action pass; interfaces: 
+39: filtering rule: action pass; interfaces: 
+40: filtering rule: action pass; interfaces: 
+42: filtering rule: action pass; interfaces: 
+43: filtering rule: action pass; interfaces: 
+44: filtering rule: action pass; interfaces: 
+45: filtering rule: action pass; interfaces: 
+46: filtering rule: action pass; interfaces: 
+47: filtering rule: action pass; interfaces: 
+50: filtering rule: action pass; interfaces: 
+50: Warning: Macro '$undefined_macro' was undefined, rule may be broken
+52: filtering rule: action pass; interfaces: em1
+54: filtering rule: action pass; interfaces: em1
+55: filtering rule: action pass; interfaces: em1
+56: filtering rule: action pass; interfaces: em1
+57: filtering rule: action pass; interfaces: em1

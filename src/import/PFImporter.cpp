@@ -507,11 +507,25 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
             return intf;
         } else
         {
-            // TODO: create and return DNSName object
+            QString name = QString::fromUtf8(as.address.c_str());
+            if (name.startsWith('$'))
+            {
+                /*
+                 * We perform macro substitutions in
+                 * PFImporter::substituteMacros(), however if we get a
+                 * host name that starts with a '$' here, then this is
+                 * an undefined macro that could not be substituted.
+                 * Mark rule as bad but still create run-time DNSName
+                 * object.
+                 */
+                error_tracker->registerWarning(
+                    QObject::tr("Macro '%1' was undefined, rule may be broken")
+                    .arg(name));
+            }
             ObjectSignature sig(error_tracker);
             sig.type_name = DNSName::TYPENAME;
-            sig.object_name = QString::fromUtf8(as.address.c_str());
-            sig.dns_name = QString::fromUtf8(as.address.c_str());
+            sig.object_name = name;
+            sig.dns_name = name;
             return address_maker->createObject(sig);
         }
     }
@@ -573,7 +587,12 @@ FWObject* PFImporter::makeAddressObj(AddressSpec &as)
 
     if (as.at == AddressSpec::TABLE)
     {
-        return address_table_registry[as.address.c_str()];
+        FWObject *at = address_table_registry[as.address.c_str()];
+        if (isObjectBroken(at))
+        {
+            error_tracker->registerError(getBrokenObjectError(at));
+        }
+        return at;
     }
 
     return NULL;
@@ -650,6 +669,13 @@ void PFImporter::pushRule()
         pushNATRule();
 
     assert(current_rule!=NULL);
+
+    if (error_tracker->hasWarnings())
+    {
+        QStringList warn = error_tracker->getWarnings();
+        addMessageToLog("Warning: " + warn.join("\n"));
+        markCurrentRuleBad();
+    }
 
     if (error_tracker->hasErrors())
     {
@@ -827,6 +853,52 @@ void PFImporter::pushPolicyRule()
      * Set queueing rule option using variable queue
      */
     if (! queue.empty()) ropt->setStr("pf_classify_str", queue);
+
+    /*
+     * route-to options
+     *
+     */
+    if (route_type != UNKNOWN && route_group.size() != 0)
+    {
+        switch (route_type)
+        {
+        case ROUTE_TO:
+            ropt->setStr("pf_route_option", "route_through"); break;
+
+        case REPLY_TO:
+            ropt->setStr("pf_route_option", "route_reply_through"); break;
+
+        case DUP_TO:
+            ropt->setStr("pf_route_option", "route_copy_through"); break;
+
+        default: ;
+        }
+
+        QStringList route_opt_addr;
+        list<RouteSpec>::iterator it;
+        for (it=route_group.begin(); it!=route_group.end(); ++it)
+        {
+            RouteSpec &rs = *it;
+
+            Interface *intf = getInterfaceByName(rs.iface);
+            if (intf == NULL)
+            {
+                // this interface was never used in "on <intf>" clause before
+                newInterface(rs.iface);
+            }
+
+            ropt->setStr("pf_route_opt_if", rs.iface);
+
+            if (rs.netmask.empty())
+                route_opt_addr << rs.address.c_str();
+            else
+                route_opt_addr << QString("%1/%2")
+                    .arg(rs.address.c_str()).arg(rs.netmask.c_str());
+        }
+        ropt->setStr("pf_route_opt_addr", route_opt_addr.join(",").toStdString());
+
+        rule->setRouting( ! ropt->getStr("pf_route_option").empty());
+    }
 
     /*
      * Protocols are in proto_list
@@ -1308,20 +1380,27 @@ void PFImporter::newAddressTableObject(const string &name,
                     .arg(QString::fromUtf8(name.c_str()))
                     .arg(addr_list.join(", ")));
 
-    if (has_negations)
-    {
-        // can not use error_tracker->registerError() here because
-        // tables are created before importer encounters any rules and
-        // so this error can not be associated with a rule.
-        addMessageToLog(
-            QObject::tr("Error: import of table definition with negated addresses is not supported."));
-    }
-
     ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *og =
         commitObject(maker.createObject(ObjectGroup::TYPENAME, name.c_str()));
     assert(og!=NULL);
     address_table_registry[name.c_str()] = og;
+
+    if (has_negations)
+    {
+        // can not use error_tracker->registerError() here because
+        // tables are created before importer encounters any rules and
+        // so this error can not be associated with a rule.
+        QString err =
+            QObject::tr("Error: import of table definition with negated "
+                        "addresses is not supported.");
+        addMessageToLog(err);
+
+        err =
+            QObject::tr("Address table '%1' has a mix of negated and non-negated "
+                        "addresses in the original file.");
+        registerBrokenObject(og, err.arg(QString::fromUtf8(name.c_str())));
+    }
 
     for (it=addresses.begin(); it!=addresses.end(); ++it)
     {

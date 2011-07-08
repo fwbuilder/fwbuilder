@@ -32,6 +32,7 @@
 
 #include "RoutingCompiler.h"
 
+#include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Network.h"
@@ -53,6 +54,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Group.h"
+#include "fwbuilder/MultiAddress.h"
 
 #include <iostream>
 #include <iomanip>
@@ -828,6 +830,37 @@ bool RoutingCompiler::createSortedDstIdsLabel::processNext()
     
     rule->setSortedDstIds( label);
     
+    return true;
+}
+
+/*
+ * This is identical to 
+ * PolicyCompiler_ipf::processMultiAddressObjectsInRE::processNext()
+ * TODO: move the code to the class Compiler so it can be reused.
+ */
+bool RoutingCompiler::processMultiAddressObjectsInRE::processNext()
+{
+    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
+
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+    {
+        FWObject *o= *i;
+        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
+        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+            compiler->abort(
+                rule, 
+                "Run-time AddressTable objects are not supported.");
+
+        AddressTable *at = AddressTable::cast(o);
+        if (at && at->isRunTime())
+            compiler->abort(
+                rule, 
+                "Run-time AddressTable objects are not supported.");
+    }
+
+    tmp_queue.push_back(rule);
     return true;
 }
 

@@ -76,15 +76,21 @@ class ObjectMakerErrorTracker
 {
     QStringList errors;
     bool error_status;
+    QStringList warnings;
+    bool warning_status;
     
 public:
-    ObjectMakerErrorTracker() { error_status = false; }
+    ObjectMakerErrorTracker() { error_status = false; warning_status = false; }
 
-    void clear() { error_status = false; errors.clear(); }
+    void clear() { error_status = false; warning_status = false; errors.clear(); warnings.clear(); }
     
     void registerError(const QString &msg);
     bool hasErrors() { return error_status; }
     QStringList getErrors() { return errors; }
+
+    void registerWarning(const QString &msg);
+    bool hasWarnings() { return warning_status; }
+    QStringList getWarnings() { return warnings; }
 };
 
 

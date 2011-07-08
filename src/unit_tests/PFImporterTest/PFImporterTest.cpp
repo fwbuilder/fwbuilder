@@ -212,6 +212,7 @@ void PFImporterTest::macrosTest()
         openTestFile("test_data/pf-macros.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -230,6 +231,7 @@ void PFImporterTest::hostsMatchTest()
         openTestFile("test_data/pf-hosts-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -251,6 +253,7 @@ void PFImporterTest::blockReturnTest()
         openTestFile("test_data/pf-block-return-actions.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -272,6 +275,7 @@ void PFImporterTest::icmpMatchTest()
         openTestFile("test_data/pf-icmp-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -293,6 +297,7 @@ void PFImporterTest::interfaceMatchTest()
         openTestFile("test_data/pf-interface-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -314,6 +319,7 @@ void PFImporterTest::portMatchTest()
         openTestFile("test_data/pf-port-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -335,6 +341,7 @@ void PFImporterTest::setCommandsTest()
         openTestFile("test_data/pf-set-commands.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -356,6 +363,7 @@ void PFImporterTest::stateMatchTest()
         openTestFile("test_data/pf-state-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -377,6 +385,7 @@ void PFImporterTest::tcpFlagsMatchTest()
         openTestFile("test_data/pf-tcp-flags-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -398,6 +407,7 @@ void PFImporterTest::natCommands()
         openTestFile("test_data/pf-nat-rules.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -419,6 +429,7 @@ void PFImporterTest::rdrCommands()
         openTestFile("test_data/pf-rdr-rules.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -440,6 +451,7 @@ void PFImporterTest::setTimeoutCommands()
         openTestFile("test_data/pf-timeouts.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -459,6 +471,7 @@ void PFImporterTest::scrubCommandsOld()
         openTestFile("test_data/pf-scrub-commands-old.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -475,6 +488,7 @@ void PFImporterTest::scrubCommandsNew()
         openTestFile("test_data/pf-scrub-commands-new.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -491,6 +505,7 @@ void PFImporterTest::tableDefinitions()
         openTestFile("test_data/pf-tables.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -510,6 +525,7 @@ void PFImporterTest::userGroupMatches()
         openTestFile("test_data/pf-user-group-matches.conf"));
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
     CPPUNIT_ASSERT_NO_THROW( imp->run() );
     imp->finalize();
 
@@ -521,6 +537,25 @@ void PFImporterTest::userGroupMatches()
                    "pf-user-group-matches.output");
     compareFwbFiles("test_data/pf-user-group-matches.fwb",
                     "pf-user-group-matches.fwb");
+}
+
+void PFImporterTest::routeToTest()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-route-to.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-route-to.fwb");
+
+    compareResults(logger, "test_data/pf-route-to.output", "pf-route-to.output");
+    compareFwbFiles("test_data/pf-route-to.fwb", "pf-route-to.fwb");
 }
 
 

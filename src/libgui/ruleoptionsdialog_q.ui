@@ -1719,7 +1719,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>6</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab12">
           <attribute name="title">
@@ -2429,7 +2429,14 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="pf_route_opt_addr"/>
+              <widget class="QLineEdit" name="pf_route_opt_addr">
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -2564,7 +2571,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Triangular</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">

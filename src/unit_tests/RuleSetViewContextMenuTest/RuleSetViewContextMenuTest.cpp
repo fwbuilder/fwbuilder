@@ -52,6 +52,7 @@ using namespace libfwbuilder;
 
 void RuleSetViewContextMenuTest::initTestCase()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->move(0,0);
@@ -60,7 +61,6 @@ void RuleSetViewContextMenuTest::initTestCase()
     else
         mw->resize(1024, 768);
     mw->startupLoad();
-    new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());

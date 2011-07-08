@@ -66,6 +66,7 @@ ImporterThread::ImporterThread(QWidget *ui,
     this->deduplicate = deduplicate;
     importer = NULL;
     stopFlag = false;
+    addStandardComments = false;
 }
 
 ImporterThread::~ImporterThread()
@@ -81,6 +82,11 @@ void ImporterThread::setUserChoiceHostOS(const QString &s)
 void ImporterThread::setUserChoiceVersion(const QString &s)
 {
     userChoiceVersion = s;
+}
+
+void ImporterThread::setAddStandardCommentsFlag(bool f)
+{
+    addStandardComments = f;
 }
 
 void ImporterThread::run()
@@ -113,6 +119,8 @@ void ImporterThread::run()
         
         if ( ! userChoiceVersion.isEmpty())
             importer->setUserChoiceVersion(userChoiceVersion.toStdString());
+
+        importer->setAddStandardCommentsFlag(addStandardComments);
 
         importer->setFileName(fileName.toUtf8().constData());
         if (deduplicate) importer->prepareForDeduplication();

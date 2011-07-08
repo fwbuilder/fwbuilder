@@ -207,6 +207,9 @@ void RoutingCompiler_openbsd::compile()
 
     add(new addressRangesInDst("process address ranges"));
 
+    add( new processMultiAddressObjectsInRDst(
+             "process MultiAddress objects in RDst") );
+
     //add(new eliminateDuplicatesInDST("Eliminate duplicates in DST"));
 
     add(new FindDefaultRoute("Find rules that install default route"));

@@ -7,10 +7,13 @@
 6: Address Table: <spamd-white> file 
 7: Warning: attribute "const" will be dropped from table configuration since this attribute is not supported at this time
 7: Address Table: <private>:  10/8, 172.16/12, 192.168/16
-9: Address Table: <dst_addresses_1>:  192.168.1.1/, 192.168.1.2/, 192.168.2.0/24
+9: Address Table: <dst_addresses_1>:  192.168.1.1, 192.168.1.2, 192.168.2.0/24
+10: Address Table: <dst_addresses_2>:  pcn0, pcn0
 10: New interface: pcn0
-10: Address Table: <dst_addresses_2>:  pcn0/, pcn0/
-11: Address Table: <dst_addresses_3>:  pcn0/, pcn0/
-12: Address Table: <dst_addresses_4>:  www.fwbuilder.org/, www.netcitadel.com/
-Could not find enough information in the data file to create any firewall rules.
-
+11: Address Table: <dst_addresses_3>:  pcn0, pcn0
+12: Address Table: <dst_addresses_4>:  www.fwbuilder.org, www.netcitadel.com
+15: Address Table: <dst_addresses_5>:  192.168.10.1, !192.168.10.2, 192.168.20.0/24
+15: Error: import of table definition with negated addresses is not supported.
+18: New interface: em1
+18: filtering rule: action pass; interfaces: em1
+18: Error: Address table 'dst_addresses_5' has a mix of negated and non-negated addresses in the original file.

@@ -25,6 +25,7 @@
 #include "FWBSettings.h"
 #include "FWBApplication.h"
 #include "UserWorkflow.h"
+#include "FWObjectClipboard.h"
 
 #include "common/commoninit.h"
 

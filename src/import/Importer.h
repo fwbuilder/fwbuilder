@@ -142,6 +142,13 @@ protected:
     // use this to quickly find objects to avoid creating duplicates
     std::map<const std::string,libfwbuilder::FWObject*>   all_objects;
 
+    // registry of broken objects. Sometimes we create an AddressTable
+    // or a group object during import that may have some kind of a problem
+    // that we leave for the user to fix manually. In order to be able to mark
+    // all rules that use this object as "broken", we should register these
+    // broken objects somewhere.
+    std::map<libfwbuilder::FWObject*, QString> broken_objects;
+    
     UnidirectionalRuleSet* current_ruleset;
     
     libfwbuilder::Rule* current_rule;
@@ -203,6 +210,10 @@ protected:
     virtual void addOSrv();
 
     virtual void addLogging();
+
+    void registerBrokenObject(libfwbuilder::FWObject *o, const QString &err);
+    bool isObjectBroken(libfwbuilder::FWObject*);
+    QString getBrokenObjectError(libfwbuilder::FWObject*);
     
 public:
 
@@ -210,6 +221,9 @@ public:
     
     // making logger public so I can access it from the code in the grammar
     libfwbuilder::Logger *logger;
+    
+    QStringList last_comment;
+    bool add_standard_comments;
     
     // temporary variables used by parser to store values
     // Importer converts these into a proper rule using method
@@ -298,6 +312,7 @@ public:
 
     void setUserChoiceHostOS(const std::string &s) { user_choice_host_os = s; }
     void setUserChoiceVersion(const std::string &s) { user_choice_version = s; }
+    void setAddStandardCommentsFlag(bool f) { add_standard_comments = f; }
     
     virtual void setHostName(const std::string &hn);
     virtual void newInterface(const std::string &interface_name);

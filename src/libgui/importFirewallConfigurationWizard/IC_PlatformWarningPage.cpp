@@ -52,8 +52,9 @@ IC_PlatformWarningPage::IC_PlatformWarningPage(QWidget *parent) : QWizardPage(pa
     // user-chosen host os and version, so far we only show these for PF
     registerField("hostOS*", m_dialog->hostOS);
     registerField("version*", m_dialog->version);
+    registerField("addStandardComments", m_dialog->addStandardComments);
 
-    m_dialog->hostOSAndVersionFrame->hide();
+    m_dialog->importOptionsFrame->hide();
 
     platformOk = false;
 }
@@ -242,7 +243,7 @@ void IC_PlatformWarningPage::initializePage()
                 wz->version_list.append(i1->first);
             }
 
-            m_dialog->hostOSAndVersionFrame->show();
+            m_dialog->importOptionsFrame->show();
             break;
         }
 

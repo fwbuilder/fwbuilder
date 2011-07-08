@@ -151,7 +151,18 @@ cfgfile :
     ;
 
 //****************************************************************
-comment : LINE_COMMENT ;
+comment :
+        COMMENT_START
+        {
+            QStringList str;
+            while (LA(1) != ANTLR_USE_NAMESPACE(antlr)Token::EOF_TYPE && LA(1) != NEWLINE)
+            {
+                str << QString::fromUtf8(LT(1)->getText().c_str());
+                consume();
+            }
+            importer->last_comment << str.join(" ");
+        }
+    ;
 
 //****************************************************************
 include_command : INCLUDE_COMMAND
@@ -1182,7 +1193,7 @@ common_hosts_part :
 host { AddressSpec as; } :
         ( EXLAMATION { as.neg = true; } )?
         (
-            WORD
+            ( WORD | MACRO )
             {
                 // interface name or domain/host name
                 as.at = AddressSpec::INTERFACE_OR_HOST_NAME;
@@ -1274,7 +1285,7 @@ host_list :
 
 // ************************************************************************
 route :
-        route_to | reply_to
+        route_to | reply_to | dup_to
     ;
 
 route_to :
@@ -1288,6 +1299,13 @@ reply_to :
         REPLY_TO ( routehost | routehost_list )
         {
             importer->route_type = PFImporter::REPLY_TO;
+        }
+    ;
+
+dup_to :
+        DUP_TO ( routehost | routehost_list )
+        {
+            importer->route_type = PFImporter::DUP_TO;
         }
     ;
 
@@ -1942,6 +1960,7 @@ tokens
 
     ROUTE_TO = "route-to";
     REPLY_TO = "reply-to";
+    DUP_TO = "dup-to";
 
     DROP = "drop";
     RETURN = "return";
@@ -1971,13 +1990,13 @@ tokens
     STATIC_PORT = "static-port";
 }
 
-LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
+// LINE_COMMENT : "#" (~('\r' | '\n'))* NEWLINE ;
 
 Whitespace :  ( '\003'..'\010' | '\t' | '\013' | '\f' | '\016'.. '\037' | '\177'..'\377' | ' ' )
         { $setType(ANTLR_USE_NAMESPACE(antlr)Token::SKIP);  } ;
 
 
-//COMMENT_START : '!' ;
+COMMENT_START : '#' ;
 
 NEWLINE : ( "\r\n" | '\r' | '\n' ) { newline();  } ;
 
@@ -2042,21 +2061,21 @@ options {
     | ( DIGIT )+ { $setType(INT_CONST); }
 
 
-// making sure ',' '(' ')' '=' '<' '>' '+' are not part of WORD do
-// not start WORD with '$' since we expand macros in PFImporterRun
-// using regex.
-// double quote " should be included, without it STRING does not match
+// Making sure ',' '(' ')' '=' '<' '>' '+' are not part of WORD.
+// Double quote " should be included, without it STRING does not match
 
     | ( 'a'..'z' | 'A'..'Z' )
       ( '"' | '$' | '%' | '&' | '-' | '.' | '0'..'9' | ';' |
         '?' | '@' | 'A'..'Z' | '\\' | '^' | '_' | '`' | 'a'..'z' )*
       { $setType(WORD); }
+
+    | '$' ( 'a'..'z' | 'A'..'Z' ) ( 'a'..'z' | 'A'..'Z' | '0'..'9' | '_' )*
+      { $setType(MACRO); }
     ;
 
 STRING : '"' (~'"')* '"';
 
 PIPE_CHAR : '|';
-NUMBER_SIGN : '#' ;
 // DOLLAR : '$' ;
 PERCENT : '%' ;
 AMPERSAND : '&' ;

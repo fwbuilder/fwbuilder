@@ -231,6 +231,26 @@ namespace fwcompiler
         friend class RoutingCompiler::classifyRoutingRules;
 
         /**
+         * Placeholders for MultiAddressRunTime objects
+         */
+        class processMultiAddressObjectsInRE : public RoutingRuleProcessor
+        {
+            std::string re_type;
+            public:
+            processMultiAddressObjectsInRE(const std::string &name,
+                      const std::string &t) : RoutingRuleProcessor(name) { re_type=t; }
+            virtual bool processNext();
+        };
+
+        class processMultiAddressObjectsInRDst : public processMultiAddressObjectsInRE
+        {
+            public:
+            processMultiAddressObjectsInRDst(const std::string &n) :
+                processMultiAddressObjectsInRE(
+                    n, libfwbuilder::RuleElementRDst::TYPENAME) {}
+        };
+        
+        /**
          * detects if rules r1 and r2 are identical (that is, have the
          * same effect, rather than use the same objects)
          *

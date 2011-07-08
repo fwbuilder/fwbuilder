@@ -23,6 +23,8 @@
 
 #include "../../config.h"
 
+#include "fwbuilder/InetAddr.h"
+
 #include "PFImporter.h"
 
 #include <QString>
@@ -42,6 +44,7 @@
 extern int fwbdebug;
 
 using namespace std;
+using namespace libfwbuilder;
 
 
 /*
@@ -81,7 +84,10 @@ void PFImporter::run()
 
     QRegExp inline_comment("#.*$");
     QRegExp macro_definition("^\\s*(\\S+)\\s*=\\s*(.*)$");
+    QRegExp list_of_items("^\\{\\s*((\\S+,?\\s*)+)\\s*\\}$");
+
     QMap<QString, QString> macros;
+    QMap<QString, QString> macros_source_lines;
 
     foreach(QString str, whole_input.split("\n"))
     {
@@ -91,32 +97,110 @@ void PFImporter::run()
 
         if (macro_definition.indexIn(work_str) != -1)
         {
+            QString macro_name = macro_definition.cap(1);
             QString value = macro_definition.cap(2);
-            macros[macro_definition.cap(1)] = value.replace("\"", "").trimmed();
+            value.replace('\"', "");
+            value = value.simplified();
+
+            macros[macro_name] = value;
+            macros_source_lines[macro_name] = macro_definition.cap(0);
+        }
+    }
+
+    QMapIterator<QString, QString> it(macros);
+    while (it.hasNext())
+    {
+        it.next();
+        QString macro_name = it.key();
+        QString value = it.value();
+        substituteMacros(macros, value);
+        macros[macro_name] = value;
+    }
+
+    it = macros;
+    while (it.hasNext())
+    {
+        it.next();
+        QString macro_name = it.key();
+        QString value = it.value();
+
+        qDebug() << "Macro: name=" << macro_name << "value=" << value;
+
+        /*
+         * Special case: if this macro defines list of addresses
+         * in '{' '}', we convert it to a table with the same name
+         * so that importer later on can create object group for
+         * it.
+         *
+         * RegExp list_of_items assumes the string has been
+         * stripped of any quotes and trimmed.
+         */
+        if (list_of_items.indexIn(value) != -1)
+        {
+            qDebug() << "This macro defines a list";
+
+            /*
+             * we only convert to table if the list contains at
+             * least one ip address. We assume that if there is an
+             * address there, then all items in the list must
+             * represent addresses, host names or interface names
+             * because pf does not allow mixed address/service
+             * lists anywhere.
+             */
+            QString list_str = list_of_items.cap(1);
+            list_str.replace(",", "");
+            QStringList items = list_str.split(QRegExp("\\s"),
+                                               QString::SkipEmptyParts);
+            qDebug() << items;
+
+            bool has_address = false;
+            foreach(QString item, items)
+            {
+                qDebug() << "Item:" << item;
+                if (!item.isEmpty() && (item.contains(':') || item.contains('.')))
+                {
+                    try
+                    {
+                        InetAddr(item.toStdString());
+                        // stop the loop if string successfully
+                        // converts to an ip address
+                        has_address = true;
+                        break;
+                    } catch(FWException &ex)
+                    {
+                        ;
+                    }
+                }
+            }
+
+            if (has_address)
+            {
+                /*
+                 * Convert as follows:
+                 * Macro:
+                 * name = "{ 1.1.1.1  2.2.2.2 }"
+                 * to a table:
+                 * table <name> "{ 1.1.1.1  2.2.2.2 }"
+                 */
+                QString table_def("table <%1> %2");
+                whole_input.replace(macros_source_lines[macro_name],
+                                    table_def.arg(macro_name).arg(value));
+                /*
+                 * And add a macro to the dictionary to map macro_name to
+                 * the table
+                 */
+                macros[macro_name] = "<" + macro_name + ">";
+
+                qDebug() << "Replacing macro definition with table:";
+                qDebug() << table_def.arg(macro_name).arg(value);
+            }
         }
     }
 
     if (fwbdebug)
         qDebug() << "Macros defined in this file: " << macros;
 
-    // make several passes: sometimes macros can use other macros
-    int pass = 0;
-    while (1)
-    {
-        QMapIterator<QString, QString> it(macros);
-        while (it.hasNext())
-        {
-            it.next();
-            QString macro_name = it.key();
-            QString macro_value = it.value();
-            QRegExp macro_instance(QString("\\$%1(?=\\W)").arg(macro_name));
-
-            whole_input.replace(macro_instance, macro_value);
-        }
-        QRegExp any_macro_instance("\\$\\w+\\W");
-        if (! whole_input.contains(any_macro_instance)) break;
-        pass++;
-    }
+    substituteMacros(macros, whole_input);
 
     if (fwbdebug)
     {
@@ -169,5 +253,40 @@ void PFImporter::run()
 
     if (!err.isEmpty())
         *logger << err.join("\n").toUtf8().constData();
+}
+
+void PFImporter::substituteMacros(const QMap<QString,QString> &macros,
+                                  QString &buffer)
+{
+    // make several passes: sometimes macros can use other macros
+    QRegExp any_macro_instance("\\$(\\w+)\\W");
+
+    for (;;)
+    {
+        QMapIterator<QString, QString> it(macros);
+        while (it.hasNext())
+        {
+            it.next();
+            QString macro_name = it.key();
+            QString macro_value = it.value();
+            QRegExp macro_instance(QString("\\$%1(?=\\W)").arg(macro_name));
+
+            buffer.replace(macro_instance, macro_value);
+        }
+
+        bool has_known_macros = false;
+        if (any_macro_instance.indexIn(buffer) != -1)
+        {
+            QString macro_name = any_macro_instance.cap(1);
+            if (macros.contains(macro_name)) has_known_macros = true;
+            else
+            {
+                QString err;
+                err = QObject::tr("Warning: Macro %1 is undefined").arg(macro_name);
+                *logger << err.toUtf8().constData();
+            }
+        }
+        if (!has_known_macros) break;
+    }
 }
 

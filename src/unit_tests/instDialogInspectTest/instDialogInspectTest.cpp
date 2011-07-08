@@ -57,10 +57,10 @@ bool checkProgress(QTreeWidget *list)
 
 void instDialogInspectTest::initTestCase()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    new FWObjectClipboard();
     dialogClosed = false;
     om = mw->findChild<ObjectManipulator*>("om");
     tree = mw->activeProject()->getCurrentObjectTree();

@@ -110,6 +110,11 @@ QString CompilerDriver_iosacl::assembleFwScript(Cluster *cluster,
     options->setStr("prolog_script", options->getStr("iosacl_prolog_script"));
     options->setStr("epilog_script", options->getStr("iosacl_epilog_script"));
 
+    // we do not offer user a choice of the place where to put prolog
+    // lines, therefore we can reset this attribute to make sure it
+    // does not interfere
+    options->setStr("prolog_place", "");
+
     assembleFwScriptInternal(cluster, fw, cluster_member,
                              oscnf, &script_skeleton, &top_comment, "!", true);
     return script_skeleton.expand();

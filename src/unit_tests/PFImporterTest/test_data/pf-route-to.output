@@ -1,0 +1,5 @@
+2: New interface: em0
+2: filtering rule: action pass; interfaces: 
+4: New interface: bce0
+4: filtering rule: action pass; interfaces: bce0
+6: filtering rule: action pass; interfaces: bce0

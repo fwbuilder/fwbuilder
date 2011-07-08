@@ -49,11 +49,11 @@ using namespace libfwbuilder;
 
 void RuleSetViewTest::initTestCase()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->resize(QSize(800,600));
     mw->startupLoad();
-    new FWObjectClipboard();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
     if (d) if (d!=NULL) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());

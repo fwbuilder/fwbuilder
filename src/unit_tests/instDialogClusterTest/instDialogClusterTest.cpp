@@ -77,11 +77,11 @@ using namespace libfwbuilder;
 
 void instDialogClusterTest::initTestCase()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     wfl = new UserWorkflow();
     mw->show();
     mw->loadFile("test_work.fwb", false);
-    new FWObjectClipboard();
 }
 
 void instDialogClusterTest::openPolicy(QString fwname)
