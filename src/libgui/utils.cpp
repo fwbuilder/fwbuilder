@@ -503,7 +503,8 @@ void doSetObjectIcon(FWObject *obj, QPixmap *pm, int icon_size)
     default: icn_sfx = "icon"; break;
     }
 
-    if (obj->getRO())
+    // note that we do not have "locked" version of large icons
+    if (obj->getRO() && icon_size != 2)
         icn_alias = ":/Icons/lock";
     else
     {
