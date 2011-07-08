@@ -8,6 +8,7 @@ TEMPLATE = lib
 SOURCES = QStringListOperators.cpp \
 	      PreImport.cpp \
           objectMaker.cpp \
+		  objectSignature.cpp \
           addressObjectMaker.cpp \
           serviceObjectMaker.cpp \
           getProtoByName.cpp \
@@ -26,6 +27,7 @@ SOURCES = QStringListOperators.cpp \
 HEADERS = QStringListOperators.h \
 	      PreImport.h \
           objectMaker.h \
+		  objectSignature.h \
           addressObjectMaker.h \
           serviceObjectMaker.h \
           getProtoByName.h \
