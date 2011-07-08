@@ -1,5 +1,10 @@
 2011-07-08  vadim  <vadim@netcitadel.com>
 
+	* PFImporterRun.cpp (substituteMacros): see #2556 "PF import:
+	impor of rules referring to undefined macros". Importer displays
+	warnings for all undefined macros found in the file, even if there
+	are several.
+
 	* objectSignature.cpp: fixes #2559 "Crash on import when at least
 	one DynamicGroup object already exists in the object tree."
 

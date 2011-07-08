@@ -260,7 +260,7 @@ void PFImporter::substituteMacros(const QMap<QString,QString> &macros,
 {
     // make several passes: sometimes macros can use other macros
     QRegExp any_macro_instance("\\$(\\w+)\\W");
-
+    QSet<QString> undefined_macros;
     for (;;)
     {
         QMapIterator<QString, QString> it(macros);
@@ -275,18 +275,22 @@ void PFImporter::substituteMacros(const QMap<QString,QString> &macros,
         }
 
         bool has_known_macros = false;
-        if (any_macro_instance.indexIn(buffer) != -1)
+        int idx = 0;
+        while ((idx = buffer.indexOf(any_macro_instance, idx)) != -1)
         {
             QString macro_name = any_macro_instance.cap(1);
             if (macros.contains(macro_name)) has_known_macros = true;
-            else
-            {
-                QString err;
-                err = QObject::tr("Warning: Macro %1 is undefined").arg(macro_name);
-                *logger << err.toUtf8().constData();
-            }
+            else undefined_macros.insert(macro_name);
+            idx++;
         }
         if (!has_known_macros) break;
+    }
+
+    foreach(QString macro_name, undefined_macros)
+    {
+        QString err;
+        err = QObject::tr("Warning: Macro %1 is undefined").arg(macro_name);
+        *logger << err.toUtf8().constData();
     }
 }
 
