@@ -127,7 +127,10 @@ void FWCmdMoveObject::redo()
         new_parent->add(obj);
         current_parent = new_parent;
     }
-    if (fwbdebug) qDebug() << "FWCmdMoveObject::redo() obj->ref_counter=" 
+    if (fwbdebug) qDebug() << "FWCmdMoveObject::redo()"
+                           << "obj: " << obj->getName().c_str()
+                           << "(" << obj->getTypeName().c_str() << ")"
+                           << "obj->ref_counter=" 
                            << obj->getRefCounter();
     if (reference_holders.size())
     {

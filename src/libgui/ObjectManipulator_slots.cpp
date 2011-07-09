@@ -510,18 +510,27 @@ void ObjectManipulator::makeSubinterface(QAction *act)
     {
         obj = *i;
 
+        if (obj->getParent() == new_parent_interface) continue;
+
         if (fwbdebug)
             qDebug() << "ObjectManipulator::makeSubinterface"
                      << "obj=" << obj
                      << obj->getName().c_str()
                      << "new parent:" << new_parent_interface->getName().c_str();
 
-        new_parent_interface->reparent(obj);
-    }
+        // new_parent_interface->reparent(obj);
 
-    FWObject *h = Host::getParentHost(new_parent_interface);
-    QCoreApplication::postEvent(
-        mw, new reloadObjectTreeEvent(m_project->getFileName()));
+        map<int, set<FWObject*> > reference_holders;
+        FWCmdMoveObject *cmd = new FWCmdMoveObject(
+            m_project,
+            obj->getParent(),
+            new_parent_interface,
+            obj,
+            reference_holders,
+            QString("Make an interface a subinterface"),
+            0);
+        m_project->undoStack->push(cmd);
+    }
 
     ot->freezeSelection(false);
 }

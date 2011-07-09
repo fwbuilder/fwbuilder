@@ -1,5 +1,10 @@
 2011-07-09  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator_slots.cpp (makeSubinterface): see #2561
+	operation of making an interface a subinterface should be
+	performed using undo/redo command. Also, this should take care of
+	inconvenient scrolling of the object tree after this operation.
+
 	* ObjectManipulator.cpp (addSubinterfaceSubmenu): see #2562 "Crash
 	when making an interface that has subinterfaces a subinterface of
 	another interfrace". If an interface has subinterfaces, it should
