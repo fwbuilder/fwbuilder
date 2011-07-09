@@ -67,9 +67,12 @@
 #include <QMenuBar>
 #include <QApplication>
 #include <QCoreApplication>
+
 #include "FWBApplication.h"
 #include "UserWorkflow.h"
 #include "FWObjectClipboard.h"
+#include "StartTipDialog.h"
+
 
 using namespace std;
 using namespace QTest;
@@ -81,7 +84,28 @@ void instDialogClusterTest::initTestCase()
     mw = new FWWindow();
     wfl = new UserWorkflow();
     mw->show();
+    mw->startupLoad();
+
+    QTest::qWait(5000);
+
+    StartTipDialog *d = mw->findChild<StartTipDialog*>();
+    if (d!=NULL) d->close();
+
     mw->loadFile("test_work.fwb", false);
+
+    QTest::qWait(1000);
+
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
+
+    FWObject *user_lib = mw->db()->findObjectByName(Library::TYPENAME, "User");
+    QVERIFY(user_lib != NULL);
+
+    om->openLibForObject(user_lib);
+
+    FWObject *cl = om->getCurrentLib();
+
+    QVERIFY(cl != NULL);
+    QVERIFY(cl == user_lib);
 }
 
 void instDialogClusterTest::openPolicy(QString fwname)
@@ -144,10 +168,15 @@ void instDialogClusterTest::closeContextMenu()
     menu->hide();
 }
 
-void instDialogClusterTest::openContextMenu(ObjectManipulator *om, ObjectTreeViewItem *item, ObjectTreeView *tree, const QString &actionText)
+void instDialogClusterTest::openContextMenu(ObjectManipulator *om,
+                                            ObjectTreeViewItem *item,
+                                            ObjectTreeView *tree,
+                                            const QString &actionText)
 {
     QTimer::singleShot(100, this, SLOT(closeContextMenu()));
-    om->contextMenuRequested(findItemPos(item, tree));
+    QPoint item_pos = findItemPos(item, tree);
+    om->contextMenuRequested(item_pos);
+
     QMenu *menu;
     foreach(QWidget *w, QApplication::allWidgets())
     {
@@ -157,6 +186,7 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om, ObjectTreeVie
             break;
         }
     }
+
     foreach (QObject *act, menu->children())
     {
         QAction *action = dynamic_cast<QAction*>(act);
@@ -172,11 +202,22 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om, ObjectTreeVie
 void instDialogClusterTest::page1_8()
 {
     ObjectTreeView *tree = mw->getCurrentObjectTree();
-    ObjectTreeViewItem *test3 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test3", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
-    tree->selectionModel()->select(tree->indexAt(findItemPos(test3, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
+    QVERIFY(tree != NULL);
+
+    ObjectTreeViewItem *test3 = dynamic_cast<ObjectTreeViewItem*>(
+        tree->findItems(
+            "test3", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
+    QVERIFY(test3 != NULL);
+
+    tree->selectionModel()->select(
+        tree->indexAt(findItemPos(test3, tree)),
+        QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     tree->setCurrentItem(test3);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
+
     openContextMenu(om, test3, tree, "Compile");
+
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
         if (dynamic_cast<instDialog*>(w) != NULL)
@@ -207,7 +248,7 @@ void instDialogClusterTest::page1_9()
     ObjectTreeViewItem *cluster1 = dynamic_cast<ObjectTreeViewItem*>(tree->findItems("cluster1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
     tree->selectionModel()->select(tree->indexAt(findItemPos(cluster1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     tree->setCurrentItem(cluster1);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, cluster1, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())

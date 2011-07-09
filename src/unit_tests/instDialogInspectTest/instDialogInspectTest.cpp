@@ -62,7 +62,7 @@ void instDialogInspectTest::initTestCase()
     mw->show();
     mw->loadFile("test_work.fwb", false);
     dialogClosed = false;
-    om = mw->findChild<ObjectManipulator*>("om");
+    om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     tree = mw->activeProject()->getCurrentObjectTree();
     tree->expandAll();
 }

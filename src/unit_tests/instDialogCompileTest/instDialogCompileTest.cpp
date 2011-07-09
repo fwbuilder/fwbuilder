@@ -134,7 +134,7 @@ void instDialogCompileTest::openContextMenu(ObjectManipulator *om,
 
 void instDialogCompileTest::testSelectButtonsVisibility()
 {
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     ObjectTreeView *tree = om->getCurrentObjectTree();
 
     tree->expandAll();

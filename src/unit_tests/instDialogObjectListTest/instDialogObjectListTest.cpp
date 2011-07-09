@@ -390,7 +390,7 @@ void instDialogObjectListTest::test_compile_3()
 {
     openPolicy("test1");
     QTest::qWait(10);
-    QToolButton* compileThis = mw->findChild<QToolButton*>("compile_this_fw");
+    QToolButton* compileThis = mw->activeProject()->findChild<QToolButton*>("compile_this_fw");
     QVERIFY(compileThis != NULL);
     QTest::mouseClick (compileThis, Qt::LeftButton);
     QTest::qWait(100);
@@ -403,6 +403,7 @@ void instDialogObjectListTest::test_compile_3()
     QVERIFY(table != NULL);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
+    QVERIFY(table->topLevelItemCount() == 1);
     verifyCompileCheckboxes(table, 1);
 
     QTest::qWait(100);
@@ -419,7 +420,7 @@ void instDialogObjectListTest::test_compile_4()
 {
     openPolicy("test2");
     QTest::qWait(100);
-    QToolButton* compileThis = mw->findChild<QToolButton*>("compile_this_fw");
+    QToolButton* compileThis = mw->activeProject()->findChild<QToolButton*>("compile_this_fw");
     QVERIFY(compileThis != NULL);
     QTest::mouseClick (compileThis, Qt::LeftButton);
     QTest::qWait(100);
@@ -446,7 +447,7 @@ void instDialogObjectListTest::test_compile_4()
 
 void instDialogObjectListTest::test_compile_5()
 {
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    ObjectTreeView *tree = mw->activeProject()->getCurrentObjectTree();
     tree->expandAll();
     ObjectTreeViewItem *test1 =
         dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
@@ -455,7 +456,7 @@ void instDialogObjectListTest::test_compile_5()
     tree->scrollToItem(test1);  // <<<<<<<<<<<<<<
     tree->selectionModel()->select(tree->indexAt(findItemPos(test1, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     tree->setCurrentItem(test1);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test1, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
@@ -479,7 +480,7 @@ void instDialogObjectListTest::test_compile_5()
  */
 void instDialogObjectListTest::test_compile_6()
 {
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    ObjectTreeView *tree = mw->activeProject()->getCurrentObjectTree();
     tree->expandAll();
     ObjectTreeViewItem *test1 =
         dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
@@ -488,7 +489,7 @@ void instDialogObjectListTest::test_compile_6()
     tree->scrollToItem(test2);  // <<<<<<<<<<<<<<
     tree->selectionModel()->select(tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Clear | QItemSelectionModel::SelectCurrent);
     tree->setCurrentItem(test2);
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test2, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
@@ -513,7 +514,7 @@ void instDialogObjectListTest::test_compile_6()
  */
 void instDialogObjectListTest::test_compile_7()
 {
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    ObjectTreeView *tree = mw->activeProject()->getCurrentObjectTree();
     tree->expandAll();
     ObjectTreeViewItem *test1 =
         dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
@@ -527,7 +528,7 @@ void instDialogObjectListTest::test_compile_7()
     tree->selectionModel()->select(
         tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
 
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test2, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
@@ -591,7 +592,7 @@ void instDialogObjectListTest::test_actually_compile_1()
     if (QFileInfo("test1.fw").exists())
         QVERIFY(QFile("test1.fw").remove());
 
-    ObjectTreeView *tree = mw->getCurrentObjectTree();
+    ObjectTreeView *tree = mw->activeProject()->getCurrentObjectTree();
     tree->expandAll();
     ObjectTreeViewItem *test1 =
         dynamic_cast<ObjectTreeViewItem*>(tree->findItems("test1", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
@@ -605,7 +606,7 @@ void instDialogObjectListTest::test_actually_compile_1()
     tree->selectionModel()->select(
         tree->indexAt(findItemPos(test2, tree)), QItemSelectionModel::Select);
 
-    ObjectManipulator *om = mw->findChild<ObjectManipulator*>("om");
+    ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test2, tree, "Compile");
     instDialog *dlg = NULL;
     foreach (QWidget *w, app->allWidgets())
