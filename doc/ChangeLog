@@ -1,5 +1,11 @@
 2011-07-08  vadim  <vadim@netcitadel.com>
 
+	* ObjectManipulator_slots.cpp (makeSubinterface): see #2561 "Add
+	context menu to move an interface to be a child of another
+	interface". New context menu (submenu) allows user to move an
+	interface in the tree to make it a subinterface of another
+	interface.
+
 	* parsers/pf.g: see #2556 "PF import: impor of rules referring to
 	undefined macros". Importer now records all parser errors in the
 	comments of rules where they occurred and marks these rules

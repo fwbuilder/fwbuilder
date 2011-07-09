@@ -825,6 +825,15 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         popup_menu->addAction( tr("Inspect"), this, SLOT( inspect()));
     }
 
+    if (Interface::cast(currentObj)!=NULL)
+    {
+        popup_menu->addSeparator();
+        FWObject *h = Host::getParentHost(currentObj);
+        list<FWObject*> top_level_interfaces = h->getByType(Interface::TYPENAME);
+        top_level_interfaces.sort(FWObjectNameCmpPredicate());
+        addSubinterfaceSubmenu(popup_menu, top_level_interfaces);
+    }
+
     popup_menu->addSeparator();
     QAction* lckID = popup_menu->addAction(tr("Lock"), this, SLOT(lockObject()));
     QAction* unlckID = popup_menu->addAction(tr("Unlock"), this, SLOT(unlockObject()));
@@ -876,6 +885,53 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
 
     popup_menu->exec(QCursor::pos());
+}
+
+/*
+ * Add menu item "Make subinterface of ..." and submenu with list of
+ * top level interfaces.
+ */
+void ObjectManipulator::addSubinterfaceSubmenu(
+    QMenu *menu,
+    const list<FWObject*> &top_level_interfaces)
+{
+    QMenu *submenu = menu->addMenu( tr("Make subinterface of..."));
+    list<FWObject*>::const_iterator it;
+    for (it=top_level_interfaces.begin(); it!=top_level_interfaces.end(); ++it)
+    {
+        Interface *intf = Interface::cast(*it);
+
+        bool skip_selected_interface = false;
+        foreach(FWObject *obj, getCurrentObjectTree()->getSelectedObjects())
+        {
+            if (obj == intf)
+            {
+                skip_selected_interface = true;
+                break;
+            }
+        }
+        if (skip_selected_interface) continue;
+        if (intf->isLoopback()) continue;
+
+        // can not add interfaces to a read-only parent interface
+        if (intf->isReadOnly()) continue; 
+
+        QString itf_name = QString::fromUtf8(intf->getName().c_str());
+        FWObject *parent_fw = Host::getParentHost(intf);
+
+        std::auto_ptr<interfaceProperties> int_prop(
+            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                parent_fw));
+        if (int_prop->looksLikeVlanInterface(itf_name)) continue;
+
+        QAction *a = submenu->addAction(
+            QIcon(":/Icons/Interface/icon-tree"), itf_name);
+
+        a->setData(intf->getId());
+
+        connect( submenu, SIGNAL(triggered(QAction*)),
+                 this, SLOT(makeSubinterface(QAction*)));
+    }
 }
 
 bool ObjectManipulator::getDeleteMenuState(FWObject *obj)

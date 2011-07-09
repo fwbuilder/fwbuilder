@@ -278,6 +278,8 @@ public slots:
      void addNewKeywordSlot();
      void processKeywordSlot();
 
+     void makeSubinterface(QAction*);
+     
 public:
 
      Ui::ObjectManipulator_q *m_objectManipulator;
@@ -466,6 +468,10 @@ public:
                                    const QString &text=QString(),
                                    int add_to_group_id=-1);
 
+     void addSubinterfaceSubmenu(
+         QMenu *menu,
+         const std::list<libfwbuilder::FWObject*> &top_level_interfaces);
+     
      bool isObjectAllowed(const QString &type_name);
      bool isObjectAllowed(libfwbuilder::FWObject *target,
                           libfwbuilder::FWObject *obj);

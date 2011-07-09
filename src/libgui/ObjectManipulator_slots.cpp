@@ -493,3 +493,36 @@ void ObjectManipulator::findWhereUsedSlot()
 
 }
 
+void ObjectManipulator::makeSubinterface(QAction *act)
+{
+    int intf_id = act->data().toInt();
+    FWObject *new_parent_interface = m_project->db()->findInIndex(intf_id);
+    assert(new_parent_interface!=NULL);
+
+    if (getCurrentObjectTree()->getNumSelected()==0) return;
+
+    ObjectTreeView* ot = getCurrentObjectTree();
+    ot->freezeSelection(true);
+    FWObject *obj;
+
+    vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
+    for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
+    {
+        obj = *i;
+
+        if (fwbdebug)
+            qDebug() << "ObjectManipulator::makeSubinterface"
+                     << "obj=" << obj
+                     << obj->getName().c_str()
+                     << "new parent:" << new_parent_interface->getName().c_str();
+
+        new_parent_interface->reparent(obj);
+    }
+
+    FWObject *h = Host::getParentHost(new_parent_interface);
+    QCoreApplication::postEvent(
+        mw, new reloadObjectTreeEvent(m_project->getFileName()));
+
+    ot->freezeSelection(false);
+}
+
