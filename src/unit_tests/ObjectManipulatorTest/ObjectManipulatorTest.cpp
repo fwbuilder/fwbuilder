@@ -43,6 +43,7 @@
 #include "ObjectTreeView.h"
 #include "ObjectTreeViewItem.h"
 #include "ObjectEditor.h"
+#include "FWObjectClipboard.h"
 
 #include "fwbuilder/RuleSet.h"
 
@@ -65,6 +66,7 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 
 void ObjectManipulatorTest::editSelectedObject()
 {
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->loadFile("test.fwb", false);
