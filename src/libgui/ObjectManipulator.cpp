@@ -896,21 +896,29 @@ void ObjectManipulator::addSubinterfaceSubmenu(
     const list<FWObject*> &top_level_interfaces)
 {
     QMenu *submenu = menu->addMenu( tr("Make subinterface of..."));
+    
+    int submenu_items_counter = 0;
     list<FWObject*>::const_iterator it;
     for (it=top_level_interfaces.begin(); it!=top_level_interfaces.end(); ++it)
     {
         Interface *intf = Interface::cast(*it);
 
-        bool skip_selected_interface = false;
+        bool skip_interface = false;
         foreach(FWObject *obj, getCurrentObjectTree()->getSelectedObjects())
         {
             if (obj == intf)
             {
-                skip_selected_interface = true;
+                skip_interface = true;
+                break;
+            }
+
+            if (!intf->validateChild(obj))
+            {
+                skip_interface = true;
                 break;
             }
         }
-        if (skip_selected_interface) continue;
+        if (skip_interface) continue;
         if (intf->isLoopback()) continue;
 
         // can not add interfaces to a read-only parent interface
@@ -931,7 +939,11 @@ void ObjectManipulator::addSubinterfaceSubmenu(
 
         connect( submenu, SIGNAL(triggered(QAction*)),
                  this, SLOT(makeSubinterface(QAction*)));
+
+        submenu_items_counter++;
     }
+
+    submenu->setEnabled(submenu_items_counter != 0);
 }
 
 bool ObjectManipulator::getDeleteMenuState(FWObject *obj)

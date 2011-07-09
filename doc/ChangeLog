@@ -1,3 +1,10 @@
+2011-07-09  vadim  <vadim@netcitadel.com>
+
+	* ObjectManipulator.cpp (addSubinterfaceSubmenu): see #2562 "Crash
+	when making an interface that has subinterfaces a subinterface of
+	another interfrace". If an interface has subinterfaces, it should
+	not be allowed to become subinterface of another interface.
+
 2011-07-08  vadim  <vadim@netcitadel.com>
 
 	* ObjectManipulator_slots.cpp (makeSubinterface): see #2561 "Add
