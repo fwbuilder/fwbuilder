@@ -6,9 +6,9 @@
 8: nat rule: action nat; interfaces: em0
 9: nat rule: action nat; interfaces: em0
 10: nat rule: action nat; interfaces: em0
-10: Error: import of 'nat' commands with 'source-hash hex-key' option is not supported
+10: Error: import of commands with pool type 'source-hash hex-key' option is not supported
 11: nat rule: action nat; interfaces: em0
-11: Error: import of 'nat' commands with 'source-hash string-key' option is not supported
+11: Error: import of commands with pool type 'source-hash string-key' option is not supported
 12: nat rule: action nat; interfaces: em0
 13: nat rule: action nat; interfaces: em0
 14: nat rule: action nat; interfaces: em0

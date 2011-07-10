@@ -252,9 +252,9 @@ void Importer::setDiscoveredPlatform(const std::string &v)
     addMessageToLog("Platform: " + v);
 }
 
-void Importer::newInterface(const std::string &name)
+Interface* Importer::newInterface(const std::string &name)
 {
-    if (all_interfaces.count(name)>0) return;
+    if (all_interfaces.count(name)>0) return all_interfaces[name];
     ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *nobj = commitObject(
         maker.createObject(getFirewallObject(), Interface::TYPENAME, name));
@@ -262,6 +262,7 @@ void Importer::newInterface(const std::string &name)
     current_interface->setUnnumbered(true);
     all_interfaces[name] = current_interface;
     addMessageToLog(QObject::tr("New interface: %1").arg(name.c_str()));
+    return current_interface;
 }
 
 /*

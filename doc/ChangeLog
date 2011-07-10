@@ -1,5 +1,14 @@
 2011-07-09  vadim  <vadim@netcitadel.com>
 
+	* PFImporter.cpp (pushPolicyRule): see #2551 Importer should
+	correctly import "pool type" parameter that follows source routing
+	rule options "route-to", "reply-to" and "dup-to". Also, since
+	currently fwbuilder does not support source routing rules with
+	multiple different interface-gateway pairs (only one interface in
+	combination with one or multiple gateway addresses are supported),
+	importer displays warning and marks rules as "broken" when it
+	encounters this configuration.
+
 	* ObjectManipulator_slots.cpp (makeSubinterface): see #2561
 	operation of making an interface a subinterface should be
 	performed using undo/redo command. Also, this should take care of

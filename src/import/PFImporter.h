@@ -116,7 +116,7 @@ public:
     bool tagged_neg;
     std::string tagged;
 
-    std::string nat_rule_opt_1;
+    std::string pooltype_opt;
     std::string nat_rule_opt_2;
     
     libfwbuilder::NATRule::NATRuleTypes rule_type;

@@ -333,6 +333,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_59;
 	static const unsigned long _tokenSet_60_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_60;
+	static const unsigned long _tokenSet_61_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_61;
 };
 
 #endif /*INC_PFCfgParser_hpp_*/

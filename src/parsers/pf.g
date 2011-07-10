@@ -894,28 +894,28 @@ portspec { PortSpec ps; } :
 //
 pooltype :
         (
-            BITMASK       { importer->nat_rule_opt_1 = "bitmask"; }
+            BITMASK       { importer->pooltype_opt = "bitmask"; }
         |
-            RANDOM        { importer->nat_rule_opt_1 = "random"; }
+            RANDOM        { importer->pooltype_opt = "random"; }
         |
-            SOURCE_HASH   { importer->nat_rule_opt_1 = "source-hash"; }
+            SOURCE_HASH   { importer->pooltype_opt = "source-hash"; }
             (
                 HEX_KEY
                 {
                     importer->error_tracker->registerError(
-                        QString("import of 'nat' commands with 'source-hash hex-key' "
+                        QString("import of commands with pool type 'source-hash hex-key' "
                                 "option is not supported"));
                 }
             |
                 STRING_KEY
                 {
                     importer->error_tracker->registerError(
-                        QString("import of 'nat' commands with 'source-hash string-key' "
+                        QString("import of commands with pool type 'source-hash string-key' "
                                 "option is not supported"));
                 }
             )?
         |
-            ROUND_ROBIN   { importer->nat_rule_opt_1 = "round-robin"; }
+            ROUND_ROBIN   { importer->pooltype_opt = "round-robin"; }
         )
         ( STICKY_ADDRESS )?
     ;
@@ -1293,21 +1293,21 @@ route :
     ;
 
 route_to :
-        ROUTE_TO ( routehost | routehost_list )
+        ROUTE_TO ( routehost | routehost_list ) ( pooltype )?
         {
             importer->route_type = PFImporter::ROUTE_TO;
         }
     ;
 
 reply_to :
-        REPLY_TO ( routehost | routehost_list )
+        REPLY_TO ( routehost | routehost_list ) ( pooltype )?
         {
             importer->route_type = PFImporter::REPLY_TO;
         }
     ;
 
 dup_to :
-        DUP_TO ( routehost | routehost_list )
+        DUP_TO ( routehost | routehost_list ) ( pooltype )?
         {
             importer->route_type = PFImporter::DUP_TO;
         }

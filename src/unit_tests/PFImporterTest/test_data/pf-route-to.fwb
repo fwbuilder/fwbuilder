@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1310062508" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1310272219" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -438,28 +438,29 @@
       <ObjectGroup id="id6" name="Hosts" comment="" ro="False"/>
       <ObjectGroup id="id7" name="Networks" comment="" ro="False">
         <Network id="id8" name="net-192.168.1.0/255.255.255.0" comment="Created during import of  line 2" ro="False" address="192.168.1.0" netmask="255.255.255.0"/>
+        <Network id="id9" name="net-172.16.20.0/255.255.255.0" comment="Created during import of  line 14" ro="False" address="172.16.20.0" netmask="255.255.255.0"/>
       </ObjectGroup>
-      <ObjectGroup id="id9" name="Address Ranges" comment="" ro="False"/>
+      <ObjectGroup id="id10" name="Address Ranges" comment="" ro="False"/>
     </ObjectGroup>
-    <ServiceGroup id="id10" name="Services" comment="" ro="False">
-      <ServiceGroup id="id11" name="Groups" comment="" ro="False"/>
-      <ServiceGroup id="id12" name="ICMP" comment="" ro="False"/>
-      <ServiceGroup id="id13" name="IP" comment="" ro="False"/>
-      <ServiceGroup id="id14" name="TCP" comment="" ro="False">
-        <TCPService id="id15" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 80:80 / 0:0" comment="Created during import of  line 6" ro="False" src_range_start="80" src_range_end="80" dst_range_start="0" dst_range_end="0"/>
+    <ServiceGroup id="id11" name="Services" comment="" ro="False">
+      <ServiceGroup id="id12" name="Groups" comment="" ro="False"/>
+      <ServiceGroup id="id13" name="ICMP" comment="" ro="False"/>
+      <ServiceGroup id="id14" name="IP" comment="" ro="False"/>
+      <ServiceGroup id="id15" name="TCP" comment="" ro="False">
+        <TCPService id="id16" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="tcp 80:80 / 0:0" comment="Created during import of  line 6" ro="False" src_range_start="80" src_range_end="80" dst_range_start="0" dst_range_end="0"/>
       </ServiceGroup>
-      <ServiceGroup id="id16" name="UDP" comment="" ro="False"/>
-      <ServiceGroup id="id17" name="Users" comment="" ro="False"/>
-      <ServiceGroup id="id18" name="Custom" comment="" ro="False"/>
-      <ServiceGroup id="id19" name="TagServices" comment="" ro="False"/>
+      <ServiceGroup id="id17" name="UDP" comment="" ro="False"/>
+      <ServiceGroup id="id18" name="Users" comment="" ro="False"/>
+      <ServiceGroup id="id19" name="Custom" comment="" ro="False"/>
+      <ServiceGroup id="id20" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
-    <ObjectGroup id="id20" name="Firewalls" comment="" ro="False">
-      <Firewall id="id21" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pf" name="test_fw" comment="Created during import of  line 2" ro="False">
-        <NAT id="id61" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+    <ObjectGroup id="id21" name="Firewalls" comment="" ro="False">
+      <Firewall id="id22" host_OS="freebsd" lastCompiled="0" lastInstalled="0" lastModified="0" platform="pf" name="test_fw" comment="Created during import of  line 2" ro="False">
+        <NAT id="id110" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
-        <Policy id="id23" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
-          <PolicyRule id="id25" disabled="False" group="" log="True" position="0" action="Accept" direction="Inbound" comment="Created during import of  line 2">
+        <Policy id="id24" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id26" disabled="False" group="" log="True" position="0" action="Accept" direction="Inbound" comment="Created during import of  line 2">
             <Src neg="False">
               <ObjectRef ref="id8"/>
             </Src>
@@ -483,7 +484,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id37" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Created during import of  line 4">
+          <PolicyRule id="id38" disabled="False" group="" log="False" position="1" action="Accept" direction="Inbound" comment="Created during import of  line 4">
             <Src neg="False">
               <ObjectRef ref="id8"/>
             </Src>
@@ -494,7 +495,7 @@
               <ServiceRef ref="sysid1"/>
             </Srv>
             <Itf neg="False">
-              <ObjectRef ref="id67"/>
+              <ObjectRef ref="id116"/>
             </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
@@ -507,7 +508,7 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id49" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="Created during import of  line 6">
+          <PolicyRule id="id50" disabled="False" group="" log="False" position="2" action="Accept" direction="Outbound" comment="Created during import of  line 6">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -515,10 +516,10 @@
               <ObjectRef ref="sysid0"/>
             </Dst>
             <Srv neg="False">
-              <ServiceRef ref="id15"/>
+              <ServiceRef ref="id16"/>
             </Srv>
             <Itf neg="False">
-              <ObjectRef ref="id67"/>
+              <ObjectRef ref="id116"/>
             </Itf>
             <When neg="False">
               <IntervalRef ref="sysid2"/>
@@ -531,15 +532,125 @@
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
+          <PolicyRule id="id62" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="Created during import of  line 14&#10;'route-to' parameters with multiple interface-gateway pairs are not supported: &quot;(em2 172.16.2.20), (em1 172.16.3.20)&quot;">
+            <Src neg="False">
+              <ObjectRef ref="id9"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id116"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="pf_route_load_option">round_robin</Option>
+              <Option name="pf_route_opt_addr">172.16.2.20,172.16.3.20</Option>
+              <Option name="pf_route_opt_if">em1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id74" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="Created during import of  line 15&#10;'route-to' parameters with multiple interface-gateway pairs are not supported: &quot;(em2 172.16.2.20), (em1 172.16.3.20)&quot;">
+            <Src neg="False">
+              <ObjectRef ref="id9"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id116"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="pf_route_load_option">bitmask</Option>
+              <Option name="pf_route_opt_addr">172.16.2.20,172.16.3.20</Option>
+              <Option name="pf_route_opt_if">em1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id86" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="Created during import of  line 16&#10;'route-to' parameters with multiple interface-gateway pairs are not supported: &quot;(em2 172.16.2.20), (em1 172.16.3.20)&quot;">
+            <Src neg="False">
+              <ObjectRef ref="id9"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id116"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="pf_route_load_option">random</Option>
+              <Option name="pf_route_opt_addr">172.16.2.20,172.16.3.20</Option>
+              <Option name="pf_route_opt_if">em1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id98" disabled="False" group="" log="False" position="6" action="Accept" direction="Inbound" comment="Created during import of  line 17&#10;'route-to' parameters with multiple interface-gateway pairs are not supported: &quot;(em2 172.16.2.20), (em1 172.16.3.20)&quot;">
+            <Src neg="False">
+              <ObjectRef ref="id9"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="id116"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="pf_route_load_option">source_hash</Option>
+              <Option name="pf_route_opt_addr">172.16.2.20,172.16.3.20</Option>
+              <Option name="pf_route_opt_if">em1</Option>
+              <Option name="pf_route_option">route_through</Option>
+              <Option name="routing">True</Option>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
           <RuleSetOptions/>
         </Policy>
-        <Routing id="id63" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <Routing id="id112" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </Routing>
-        <Interface id="id65" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="em0" comment="Created during import of  line 2" ro="False">
+        <Interface id="id114" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="em0" comment="Created during import of  line 2" ro="False">
           <InterfaceOptions/>
         </Interface>
-        <Interface id="id67" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="bce0" comment="Created during import of  line 4" ro="False">
+        <Interface id="id116" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="bce0" comment="Created during import of  line 4" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id118" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="em2" comment="Created during import of  line 14" ro="False">
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id120" dedicated_failover="False" dyn="True" security_level="0" unnum="False" unprotected="False" name="em1" comment="Created during import of  line 14" ro="False">
           <InterfaceOptions/>
         </Interface>
         <FirewallOptions>
@@ -560,7 +671,7 @@
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>
-    <ObjectGroup id="id69" name="Clusters" comment="" ro="False"/>
-    <IntervalGroup id="id70" name="Time" comment="" ro="False"/>
+    <ObjectGroup id="id122" name="Clusters" comment="" ro="False"/>
+    <IntervalGroup id="id123" name="Time" comment="" ro="False"/>
   </Library>
 </FWObjectDatabase>

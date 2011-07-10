@@ -143,7 +143,7 @@ void PFImporter::clear()
     route_type = UNKNOWN;
     route_group.clear();
 
-    nat_rule_opt_1 = "";
+    pooltype_opt = "";
     nat_rule_opt_2 = "";
 
     // Do not clear name-value pairs lists of timeout and limits since
@@ -883,7 +883,29 @@ void PFImporter::pushPolicyRule()
         default: ;
         }
 
+        /*
+         * see initialization of routeLoadOptions_pf in function
+         * init_platforms() in platforms.cpp for the list of strings
+         * recognized by compilers as values of "pf_route_load_option"
+         * rule option
+         */
+        if (pooltype_opt == "bitmask")
+            ropt->setStr("pf_route_load_option", "bitmask");
+
+        if (pooltype_opt == "random")
+            ropt->setStr("pf_route_load_option", "random");
+
+        if (pooltype_opt == "source-hash")
+            ropt->setStr("pf_route_load_option", "source_hash");
+
+        if (pooltype_opt == "round-robin")
+            ropt->setStr("pf_route_load_option", "round_robin");
+
+
         QStringList route_opt_addr;
+        bool has_different_interfaces = false;
+        string interface_name;
+        QStringList reconstructed_parameter_string;
         list<RouteSpec>::iterator it;
         for (it=route_group.begin(); it!=route_group.end(); ++it)
         {
@@ -893,17 +915,42 @@ void PFImporter::pushPolicyRule()
             if (intf == NULL)
             {
                 // this interface was never used in "on <intf>" clause before
-                newInterface(rs.iface);
+                intf = newInterface(rs.iface);
+            }
+
+            if (interface_name.empty()) interface_name = intf->getName();
+            if (interface_name != intf->getName())
+            {
+                has_different_interfaces = true;
             }
 
             ropt->setStr("pf_route_opt_if", rs.iface);
 
+            QString gw;
             if (rs.netmask.empty())
-                route_opt_addr << rs.address.c_str();
+                gw = rs.address.c_str();
             else
-                route_opt_addr << QString("%1/%2")
+                gw = QString("%1/%2")
                     .arg(rs.address.c_str()).arg(rs.netmask.c_str());
+
+            route_opt_addr << gw;
+
+            reconstructed_parameter_string << QString("(%1 %2)")
+                .arg(intf->getName().c_str()).arg(gw);
         }
+
+        if (has_different_interfaces)
+        {
+            // currently we do not support route-to configuration
+            // with multiple interface-gateway pairs. multiple
+            // gateway addresses and only one interface
+            // are allowed. These rules will be imported partially.
+            error_tracker->registerWarning(
+                QObject::tr("'route-to' parameters with multiple "
+                            "interface-gateway pairs are not supported: \"%1\"")
+                .arg(reconstructed_parameter_string.join(", ")));
+        }
+
         ropt->setStr("pf_route_opt_addr", route_opt_addr.join(",").toStdString());
 
         rule->setRouting( ! ropt->getStr("pf_route_option").empty());
@@ -1007,11 +1054,10 @@ void PFImporter::pushNATRule()
                         "are not supported yet.").arg(action.c_str()));
     }
 
-
-    if (nat_rule_opt_1 == "bitmask") ropt->setBool("pf_bitmask", true);
-    if (nat_rule_opt_1 == "random") ropt->setBool("pf_random", true);
-    if (nat_rule_opt_1 == "source-hash") ropt->setBool("pf_source_hash", true);
-    if (nat_rule_opt_1 == "round-robin") ropt->setBool("pf_round_robin", true);
+    if (pooltype_opt == "bitmask") ropt->setBool("pf_bitmask", true);
+    if (pooltype_opt == "random") ropt->setBool("pf_random", true);
+    if (pooltype_opt == "source-hash") ropt->setBool("pf_source_hash", true);
+    if (pooltype_opt == "round-robin") ropt->setBool("pf_round_robin", true);
 
     if (nat_rule_opt_2 == "static-port") ropt->setBool("pf_static_port", true);
 

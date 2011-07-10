@@ -315,7 +315,7 @@ public:
     void setAddStandardCommentsFlag(bool f) { add_standard_comments = f; }
     
     virtual void setHostName(const std::string &hn);
-    virtual void newInterface(const std::string &interface_name);
+    virtual libfwbuilder::Interface* newInterface(const std::string &interface_name);
     virtual void clearCurrentInterface() { current_interface = NULL; }
     virtual void ignoreCurrentInterface();
     virtual void addInterfaceAddress(const std::string &a,
