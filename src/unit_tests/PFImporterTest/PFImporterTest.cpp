@@ -558,6 +558,25 @@ void PFImporterTest::routeToTest()
     compareFwbFiles("test_data/pf-route-to.fwb", "pf-route-to.fwb");
 }
 
+void PFImporterTest::routeTo47Test()
+{
+    platform = "pf";
+
+    std::istringstream instream(
+        openTestFile("test_data/pf-route-to-4.7.conf"));
+
+    Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
+    imp->setAddStandardCommentsFlag(true);
+    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+    imp->finalize();
+
+    db->setPredictableIds();
+    db->saveFile("pf-route-to-4.7.fwb");
+
+    compareResults(logger, "test_data/pf-route-to-4.7.output", "pf-route-to-4.7.output");
+    compareFwbFiles("test_data/pf-route-to-4.7.fwb", "pf-route-to-4.7.fwb");
+}
+
 
 
 

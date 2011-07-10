@@ -1,0 +1,15 @@
+2: New interface: em0
+2: filtering rule: action pass; interfaces: 
+4: New interface: bce0
+4: filtering rule: action pass; interfaces: bce0
+6: filtering rule: action pass; interfaces: bce0
+14: New interface: em2
+14: New interface: em1
+14: filtering rule: action pass; interfaces: bce0
+14: Warning: 'route-to' parameters with multiple interface-gateway pairs are not supported: "(em2 172.16.2.20), (em1 172.16.3.20)"
+15: filtering rule: action pass; interfaces: bce0
+15: Warning: 'route-to' parameters with multiple interface-gateway pairs are not supported: "(em2 172.16.2.20), (em1 172.16.3.20)"
+16: filtering rule: action pass; interfaces: bce0
+16: Warning: 'route-to' parameters with multiple interface-gateway pairs are not supported: "(em2 172.16.2.20), (em1 172.16.3.20)"
+17: filtering rule: action pass; interfaces: bce0
+17: Warning: 'route-to' parameters with multiple interface-gateway pairs are not supported: "(em2 172.16.2.20), (em1 172.16.3.20)"

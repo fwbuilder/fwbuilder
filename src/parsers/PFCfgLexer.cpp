@@ -616,7 +616,7 @@ void PFCfgLexer::mWhitespace(bool _createToken) {
 	}
 	}
 	if ( inputState->guessing==0 ) {
-#line 2000 "pf.g"
+#line 2001 "pf.g"
 		_ttype = ANTLR_USE_NAMESPACE(antlr)Token::SKIP;
 #line 622 "PFCfgLexer.cpp"
 	}
@@ -663,7 +663,7 @@ void PFCfgLexer::mNEWLINE(bool _createToken) {
 	
 	}
 	if ( inputState->guessing==0 ) {
-#line 2005 "pf.g"
+#line 2006 "pf.g"
 		newline();
 #line 669 "PFCfgLexer.cpp"
 	}
@@ -894,84 +894,84 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	case 0x3a /* ':' */ :
 	{
 		{
-		bool synPredMatched321 = false;
+		bool synPredMatched322 = false;
 		if (((LA(1) == 0x3a /* ':' */ ) && (LA(2) == 0x3a /* ':' */ ) && (_tokenSet_1.member(LA(3))))) {
-			int _m321 = mark();
-			synPredMatched321 = true;
+			int _m322 = mark();
+			synPredMatched322 = true;
 			inputState->guessing++;
 			try {
 				{
 				match(':' /* charlit */ );
 				match(':' /* charlit */ );
 				{ // ( ... )+
-				int _cnt320=0;
+				int _cnt321=0;
 				for (;;) {
 					if ((_tokenSet_1.member(LA(1)))) {
 						mHEX_DIGIT(false);
 					}
 					else {
-						if ( _cnt320>=1 ) { goto _loop320; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+						if ( _cnt321>=1 ) { goto _loop321; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 					}
 					
-					_cnt320++;
+					_cnt321++;
 				}
-				_loop320:;
+				_loop321:;
 				}  // ( ... )+
 				}
 			}
 			catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-				synPredMatched321 = false;
+				synPredMatched322 = false;
 			}
-			rewind(_m321);
+			rewind(_m322);
 			inputState->guessing--;
 		}
-		if ( synPredMatched321 ) {
+		if ( synPredMatched322 ) {
 			{
 			match(':' /* charlit */ );
 			match(':' /* charlit */ );
 			{ // ( ... )+
-			int _cnt324=0;
+			int _cnt325=0;
 			for (;;) {
 				if ((_tokenSet_1.member(LA(1)))) {
 					mHEX_DIGIT(false);
 				}
 				else {
-					if ( _cnt324>=1 ) { goto _loop324; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt325>=1 ) { goto _loop325; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt324++;
+				_cnt325++;
 			}
-			_loop324:;
+			_loop325:;
 			}  // ( ... )+
 			{ // ( ... )*
 			for (;;) {
 				if ((LA(1) == 0x3a /* ':' */ )) {
 					match(':' /* charlit */ );
 					{ // ( ... )+
-					int _cnt327=0;
+					int _cnt328=0;
 					for (;;) {
 						if ((_tokenSet_1.member(LA(1)))) {
 							mHEX_DIGIT(false);
 						}
 						else {
-							if ( _cnt327>=1 ) { goto _loop327; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt328>=1 ) { goto _loop328; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt327++;
+						_cnt328++;
 					}
-					_loop327:;
+					_loop328:;
 					}  // ( ... )+
 				}
 				else {
-					goto _loop328;
+					goto _loop329;
 				}
 				
 			}
-			_loop328:;
+			_loop329:;
 			} // ( ... )*
 			}
 			if ( inputState->guessing==0 ) {
-#line 2051 "pf.g"
+#line 2052 "pf.g"
 				_ttype = IPV6;
 #line 977 "PFCfgLexer.cpp"
 			}
@@ -982,7 +982,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			match(':' /* charlit */ );
 			}
 			if ( inputState->guessing==0 ) {
-#line 2053 "pf.g"
+#line 2054 "pf.g"
 				_ttype = IPV6;
 #line 988 "PFCfgLexer.cpp"
 			}
@@ -990,7 +990,7 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		else if ((LA(1) == 0x3a /* ':' */ ) && (true)) {
 			match(':' /* charlit */ );
 			if ( inputState->guessing==0 ) {
-#line 2055 "pf.g"
+#line 2056 "pf.g"
 				_ttype = COLON;
 #line 996 "PFCfgLexer.cpp"
 			}
@@ -1159,14 +1159,14 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				}
 				default:
 				{
-					goto _loop354;
+					goto _loop355;
 				}
 				}
 			}
-			_loop354:;
+			_loop355:;
 			} // ( ... )*
 			if ( inputState->guessing==0 ) {
-#line 2079 "pf.g"
+#line 2080 "pf.g"
 				_ttype = MACRO;
 #line 1172 "PFCfgLexer.cpp"
 			}
@@ -1182,10 +1182,10 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 		break;
 	}
 	default:
-		bool synPredMatched331 = false;
+		bool synPredMatched332 = false;
 		if ((((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (_tokenSet_3.member(LA(2))) && (_tokenSet_3.member(LA(3))))) {
-			int _m331 = mark();
-			synPredMatched331 = true;
+			int _m332 = mark();
+			synPredMatched332 = true;
 			inputState->guessing++;
 			try {
 				{
@@ -1196,12 +1196,12 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				}
 			}
 			catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-				synPredMatched331 = false;
+				synPredMatched332 = false;
 			}
-			rewind(_m331);
+			rewind(_m332);
 			inputState->guessing--;
 		}
-		if ( synPredMatched331 ) {
+		if ( synPredMatched332 ) {
 			{
 			mNUM_3DIGIT(false);
 			match('.' /* charlit */ );
@@ -1212,144 +1212,144 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 			mNUM_3DIGIT(false);
 			}
 			if ( inputState->guessing==0 ) {
-#line 2060 "pf.g"
+#line 2061 "pf.g"
 				_ttype = IPV4;
 #line 1218 "PFCfgLexer.cpp"
 			}
 		}
 		else {
-			bool synPredMatched338 = false;
+			bool synPredMatched339 = false;
 			if ((((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (_tokenSet_3.member(LA(2))) && (_tokenSet_3.member(LA(3))))) {
-				int _m338 = mark();
-				synPredMatched338 = true;
+				int _m339 = mark();
+				synPredMatched339 = true;
 				inputState->guessing++;
 				try {
 					{
 					{ // ( ... )+
-					int _cnt335=0;
+					int _cnt336=0;
 					for (;;) {
 						if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 							mDIGIT(false);
 						}
 						else {
-							if ( _cnt335>=1 ) { goto _loop335; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt336>=1 ) { goto _loop336; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt335++;
+						_cnt336++;
 					}
-					_loop335:;
+					_loop336:;
 					}  // ( ... )+
 					match('.' /* charlit */ );
 					{ // ( ... )+
-					int _cnt337=0;
+					int _cnt338=0;
 					for (;;) {
 						if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 							mDIGIT(false);
 						}
 						else {
-							if ( _cnt337>=1 ) { goto _loop337; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt338>=1 ) { goto _loop338; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt337++;
+						_cnt338++;
 					}
-					_loop337:;
+					_loop338:;
 					}  // ( ... )+
 					}
 				}
 				catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-					synPredMatched338 = false;
+					synPredMatched339 = false;
 				}
-				rewind(_m338);
+				rewind(_m339);
 				inputState->guessing--;
 			}
-			if ( synPredMatched338 ) {
+			if ( synPredMatched339 ) {
 				{
 				{ // ( ... )+
-				int _cnt341=0;
+				int _cnt342=0;
 				for (;;) {
 					if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 						mDIGIT(false);
 					}
 					else {
-						if ( _cnt341>=1 ) { goto _loop341; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+						if ( _cnt342>=1 ) { goto _loop342; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 					}
 					
-					_cnt341++;
+					_cnt342++;
 				}
-				_loop341:;
+				_loop342:;
 				}  // ( ... )+
 				match('.' /* charlit */ );
 				{ // ( ... )+
-				int _cnt343=0;
+				int _cnt344=0;
 				for (;;) {
 					if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 						mDIGIT(false);
 					}
 					else {
-						if ( _cnt343>=1 ) { goto _loop343; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+						if ( _cnt344>=1 ) { goto _loop344; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 					}
 					
-					_cnt343++;
+					_cnt344++;
 				}
-				_loop343:;
+				_loop344:;
 				}  // ( ... )+
 				}
 				if ( inputState->guessing==0 ) {
-#line 2063 "pf.g"
+#line 2064 "pf.g"
 					_ttype = NUMBER;
 #line 1301 "PFCfgLexer.cpp"
 				}
 			}
 			else {
-				bool synPredMatched306 = false;
+				bool synPredMatched307 = false;
 				if (((_tokenSet_1.member(LA(1))) && (_tokenSet_4.member(LA(2))) && (true))) {
-					int _m306 = mark();
-					synPredMatched306 = true;
+					int _m307 = mark();
+					synPredMatched307 = true;
 					inputState->guessing++;
 					try {
 						{
 						{ // ( ... )+
-						int _cnt305=0;
+						int _cnt306=0;
 						for (;;) {
 							if ((_tokenSet_1.member(LA(1)))) {
 								mHEX_DIGIT(false);
 							}
 							else {
-								if ( _cnt305>=1 ) { goto _loop305; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+								if ( _cnt306>=1 ) { goto _loop306; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 							}
 							
-							_cnt305++;
+							_cnt306++;
 						}
-						_loop305:;
+						_loop306:;
 						}  // ( ... )+
 						match(':' /* charlit */ );
 						}
 					}
 					catch (ANTLR_USE_NAMESPACE(antlr)RecognitionException& pe) {
-						synPredMatched306 = false;
+						synPredMatched307 = false;
 					}
-					rewind(_m306);
+					rewind(_m307);
 					inputState->guessing--;
 				}
-				if ( synPredMatched306 ) {
+				if ( synPredMatched307 ) {
 					{
 					{
 					{ // ( ... )+
-					int _cnt310=0;
+					int _cnt311=0;
 					for (;;) {
 						if ((_tokenSet_1.member(LA(1)))) {
 							mHEX_DIGIT(false);
 						}
 						else {
-							if ( _cnt310>=1 ) { goto _loop310; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt311>=1 ) { goto _loop311; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt310++;
+						_cnt311++;
 					}
-					_loop310:;
+					_loop311:;
 					}  // ( ... )+
 					{ // ( ... )+
-					int _cnt314=0;
+					int _cnt315=0;
 					for (;;) {
 						if ((LA(1) == 0x3a /* ':' */ )) {
 							match(':' /* charlit */ );
@@ -1359,24 +1359,24 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 									mHEX_DIGIT(false);
 								}
 								else {
-									goto _loop313;
+									goto _loop314;
 								}
 								
 							}
-							_loop313:;
+							_loop314:;
 							} // ( ... )*
 						}
 						else {
-							if ( _cnt314>=1 ) { goto _loop314; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt315>=1 ) { goto _loop315; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt314++;
+						_cnt315++;
 					}
-					_loop314:;
+					_loop315:;
 					}  // ( ... )+
 					}
 					if ( inputState->guessing==0 ) {
-#line 2045 "pf.g"
+#line 2046 "pf.g"
 						_ttype = IPV6;
 #line 1382 "PFCfgLexer.cpp"
 					}
@@ -1384,21 +1384,21 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 				}
 				else if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ )) && (true) && (true)) {
 					{ // ( ... )+
-					int _cnt345=0;
+					int _cnt346=0;
 					for (;;) {
 						if (((LA(1) >= 0x30 /* '0' */  && LA(1) <= 0x39 /* '9' */ ))) {
 							mDIGIT(false);
 						}
 						else {
-							if ( _cnt345>=1 ) { goto _loop345; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
+							if ( _cnt346>=1 ) { goto _loop346; } else {throw ANTLR_USE_NAMESPACE(antlr)NoViableAltForCharException(LA(1), getFilename(), getLine(), getColumn());}
 						}
 						
-						_cnt345++;
+						_cnt346++;
 					}
-					_loop345:;
+					_loop346:;
 					}  // ( ... )+
 					if ( inputState->guessing==0 ) {
-#line 2065 "pf.g"
+#line 2066 "pf.g"
 						_ttype = INT_CONST;
 #line 1404 "PFCfgLexer.cpp"
 					}
@@ -1616,14 +1616,14 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 						}
 						default:
 						{
-							goto _loop348;
+							goto _loop349;
 						}
 						}
 					}
-					_loop348:;
+					_loop349:;
 					} // ( ... )*
 					if ( inputState->guessing==0 ) {
-#line 2074 "pf.g"
+#line 2075 "pf.g"
 						_ttype = WORD;
 #line 1629 "PFCfgLexer.cpp"
 					}
@@ -1653,11 +1653,11 @@ void PFCfgLexer::mSTRING(bool _createToken) {
 			matchNot('\"' /* charlit */ );
 		}
 		else {
-			goto _loop357;
+			goto _loop358;
 		}
 		
 	}
-	_loop357:;
+	_loop358:;
 	} // ( ... )*
 	match('\"' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {

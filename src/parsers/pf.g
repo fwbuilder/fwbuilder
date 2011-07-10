@@ -1024,6 +1024,7 @@ rule_extended :
         ( protospec )?
         ( hosts )?
         ( filteropts )?
+        ( route )?
     ;
 
 direction : ( IN_WORD | OUT_WORD )
