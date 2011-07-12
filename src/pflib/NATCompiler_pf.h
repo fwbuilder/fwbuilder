@@ -320,7 +320,6 @@ namespace fwcompiler
                                  libfwbuilder::RuleElementTDst::TYPENAME) {}
         };
 
-
         /**
          * this processor is only called if we are using tables. It
          * creates two tables for each rule element Processor

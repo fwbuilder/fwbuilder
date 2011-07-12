@@ -67,6 +67,7 @@
 #include "fwbuilder/XMLTools.h"
 
 #include "fwcompiler/Preprocessor.h"
+#include "fwcompiler/GroupRegistry.h"
 #include "fwcompiler/exceptions.h"
 
 #include <QStringList>
@@ -398,6 +399,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         qDebug() << "rulesets_to_remote_file_names=" << rulesets_to_remote_file_names;
 #endif
 
+        GroupRegistry group_registry;
+
         int routing_rules_count = 0;
 
         vector<int> ipv4_6_runs;
@@ -472,7 +475,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 if (table_factories.count(ruleset_name) == 0)
                 {
                     table_factories[ruleset_name] =
-                        new fwcompiler::TableFactory(this, persistent_objects);
+                        new fwcompiler::TableFactory(
+                            this, persistent_objects, &group_registry);
                 }
 
                 NATCompiler_pf n( objdb, fw, ipv6_policy, oscnf.get(),
@@ -482,6 +486,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 n.setSourceRuleSet( nat );
                 n.setRuleSetName(nat->getName());
                 n.setPersistentObjects(persistent_objects);
+                n.setGroupRegistry(&group_registry);
 
                 n.setSingleRuleCompileMode(single_rule_id);
                 n.setDebugLevel( dl );
@@ -547,7 +552,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 if (table_factories.count(ruleset_name) == 0)
                 {
                     table_factories[ruleset_name] =
-                        new fwcompiler::TableFactory(this, persistent_objects);
+                        new fwcompiler::TableFactory(
+                            this, persistent_objects, &group_registry);
                 }
 
                 PolicyCompiler_pf c( objdb, fw, ipv6_policy, oscnf.get(),
@@ -558,6 +564,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 c.setSourceRuleSet( policy );
                 c.setRuleSetName(policy->getName());
                 c.setPersistentObjects(persistent_objects);
+                c.setGroupRegistry(&group_registry);
 
                 c.setSingleRuleCompileMode(single_rule_id);
                 c.setDebugLevel( dl );

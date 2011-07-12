@@ -47,10 +47,13 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-TableFactory::TableFactory(BaseCompiler *comp, Library *persistent_objects)
+TableFactory::TableFactory(BaseCompiler *comp,
+                           Library *persistent_objects,
+                           GroupRegistry *_group_registry)
 {
     compiler = comp;
     ruleSetName = "";
+    group_registry = _group_registry;
     dbroot = NULL;
     persistent_tables = new ObjectGroup();
     persistent_tables->setName("PF Tables");
@@ -106,7 +109,26 @@ void TableFactory::registerTable(const string& tblname, const string& tblid,
     tables[tblid] = tbl;
 }
 
-void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
+FWObject* TableFactory::createTableObject(const string &tblname,
+                                          const string &tblid)
+{
+    FWObject *tblgrp = dbroot->createObjectGroup();
+
+    tblgrp->setName( tblname );
+    tblgrp->setId(FWObjectDatabase::generateUniqueId()); //  "id_" + tblname );
+
+    persistent_tables->add(tblgrp, false);
+    dbroot->addToIndex(tblgrp);
+
+    tblgrp->setBool("pf_table", true);
+    tblgrp->setStr("pf_table_id", tblid);
+
+    registerTable(tblname, tblid, tblgrp);
+
+    return tblgrp;
+}
+
+void TableFactory::createTablesForRE(RuleElement *re, Rule *rule)
 {
     // sanity checks
     assert(rule->getRoot()==re->getRoot());
@@ -116,48 +138,78 @@ void TableFactory::createTablesForRE(RuleElement *re,Rule *rule)
      * Before we create a new table, we scan tables and try to find
      * the one that already exists and contains the same objects.
      */
+
     string tblID = generateTblID(re);
+
     FWObject *tblgrp = NULL;
 
-    if (tables.count(tblID)!=0)
+    list<FWObject*> objects_in_groups;
+    list<FWObject*> objects;
+    for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
-        tblgrp = tables[tblID];
-    } else
+        FWObject *o = FWReference::getObject(*i);
+        if ( ! group_registry->getGroupRegistryKey(o).empty())
+            objects_in_groups.push_back(o);
+        else
+            objects.push_back(o);
+    }
+
+    re->clearChildren();
+
+    set<FWObject*> table_objects;
+
+    for (FWObject::iterator i=objects_in_groups.begin(); i!=objects_in_groups.end(); i++)
     {
-        tblgrp = dbroot->createObjectGroup();
-// TODO: can two rules yeild the same name for the group using this method?
-        std::ostringstream tblname;
-        if (!ruleSetName.empty()) tblname << ruleSetName << ":";
-        int rp = rule->getPosition();
-        tblname << "tbl.r";
-        tblname << ((rp>0)?rp:0);
-
-        //if (rule_iface) tblname << rule_iface->getName()+".";
-        // tblname=tblname+rule->getId();
-        if (RuleElementSrc::isA(re)) tblname << ".s";
-        if (RuleElementDst::isA(re)) tblname << ".d";
-
-        while (tblnames.count(tblname.str())>0)  tblname << "x";
-
-        tblgrp->setName( tblname.str() );
-        tblgrp->setId(FWObjectDatabase::generateUniqueId()); //  "id_" + tblname.str() );
-
-        persistent_tables->add(tblgrp,false);
-        dbroot->addToIndex(tblgrp);
-
-        tblgrp->setBool("pf_table",true);
-        tblgrp->setStr("pf_table_id",tblID);
-
-        registerTable(tblname.str(),tblID,tblgrp);
-
-        for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+        set<string> groups = group_registry->getGroupsForObject(*i);
+        for (set<string>::iterator it=groups.begin(); it!=groups.end(); ++it)
         {
-            FWObject *o = FWReference::getObject(*i);
-            tblgrp->addRef( o );
+            string tblname = *it;
+            if (tables.count(tblname)!=0)
+            {
+                tblgrp = tables[tblname];
+            } else
+            {
+                tblgrp = createTableObject(tblname, tblname);
+            }
+            tblgrp->addRef(*i);
+            table_objects.insert(tblgrp);
         }
     }
-    re->clearChildren();
-    re->addRef(tblgrp);
+
+    if (objects.size() > 0)
+    {
+        if (tables.count(tblID)!=0)
+        {
+            tblgrp = tables[tblID];
+        } else
+        {
+// TODO: can two rules yeild the same name for the group using this method?
+            std::ostringstream tblname;
+            if (!ruleSetName.empty()) tblname << ruleSetName << ":";
+            int rp = rule->getPosition();
+            tblname << "tbl.r";
+            tblname << ((rp>0)?rp:0);
+
+            //if (rule_iface) tblname << rule_iface->getName()+".";
+            // tblname=tblname+rule->getId();
+            if (RuleElementSrc::isA(re)) tblname << ".s";
+            if (RuleElementDst::isA(re)) tblname << ".d";
+
+            while (tblnames.count(tblname.str())>0)  tblname << "x";
+
+            tblgrp = createTableObject(tblname.str(), tblID);
+
+            for (FWObject::iterator i=objects.begin(); i!=objects.end(); i++)
+            {
+                tblgrp->addRef(*i);
+            }
+        }
+
+        table_objects.insert(tblgrp);
+    }
+
+    for (set<FWObject*>::iterator i=table_objects.begin(); i!=table_objects.end(); i++)
+        re->addRef(*i);
 }
 
 string TableFactory::PrintTables()

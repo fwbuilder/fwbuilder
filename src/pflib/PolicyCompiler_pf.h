@@ -144,8 +144,6 @@ namespace fwcompiler
                 replaceFailoverInterfaceInRE(n, libfwbuilder::RuleElementItf::TYPENAME) {}
         };
 
-
-
         /**
          * like standard processor swapMultiAddressObjectsInRE,
          * but swaps compile-time address tables
@@ -291,7 +289,6 @@ namespace fwcompiler
                 splitIfInterfaceInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
         };
 
-
         /**
          * this processor is only called if we are using tables. It
          * creates two tables for each rule: one for source and
@@ -303,7 +300,8 @@ namespace fwcompiler
             void createTablesForRE(libfwbuilder::RuleElement *re,
                                    libfwbuilder::Rule        *rule);
             public:
-            createTables(const std::string &name) : PolicyRuleProcessor(name) {}
+            createTables(const std::string &name) :
+                PolicyRuleProcessor(name) { }
             virtual bool processNext();
         };
         friend class PolicyCompiler_pf::createTables;
@@ -391,7 +389,7 @@ namespace fwcompiler
             virtual void _printAddrList(libfwbuilder::FWObject  *o,bool negflag);
             virtual void _printSrcAddr(libfwbuilder::RuleElement  *o);
             virtual void _printDstAddr(libfwbuilder::RuleElement  *o);
-            virtual void _printAddr(libfwbuilder::Address  *o,bool neg=false);
+            virtual void _printAddr(libfwbuilder::FWObject  *o, bool neg=false);
 
             virtual void _printNegation(libfwbuilder::RuleElement  *o);
 

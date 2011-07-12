@@ -520,6 +520,22 @@ namespace fwcompiler {
                 swapMultiAddressObjectsInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
         };
 
+        class RegisterGroupsAndTablesInSrc : public RegisterGroupsAndTablesInRE
+        {
+            public:
+            RegisterGroupsAndTablesInSrc(const std::string &n) :
+            RegisterGroupsAndTablesInRE(n, libfwbuilder::RuleElementSrc::TYPENAME)
+            {}
+        };
+
+        class RegisterGroupsAndTablesInDst : public RegisterGroupsAndTablesInRE
+        {
+            public:
+            RegisterGroupsAndTablesInDst(const std::string &n) :
+            RegisterGroupsAndTablesInRE(n, libfwbuilder::RuleElementDst::TYPENAME)
+            {}
+        };
+
         
 	virtual int prolog();
 

@@ -33,6 +33,7 @@
 #include "fwcompiler/BaseCompiler.h"
 #include "fwcompiler/RuleProcessor.h"
 #include "fwcompiler/exceptions.h"
+#include "fwcompiler/GroupRegistry.h"
 
 #include <list>
 #include <vector>
@@ -229,6 +230,10 @@ public:
 	libfwbuilder::Library *persistent_objects;
 	libfwbuilder::Firewall *fw;
 
+        // group registry is optional, the object shuld be created outside
+        // of the compiler and set using function setGroupRegistry().
+        GroupRegistry *group_registry;
+        
         std::string ruleSetName;;
         
 	libfwbuilder::RuleSet *source_ruleset;
@@ -238,6 +243,8 @@ public:
 
 	std::stringstream output;
 
+        void registerGroupObject(libfwbuilder::ObjectGroup *grp);
+        
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }
 
@@ -858,6 +865,17 @@ public:
             virtual bool processNext();
         };
         
+        class RegisterGroupsAndTablesInRE : public BasicRuleProcessor
+        {
+            std::string re_type;
+            public:
+                RegisterGroupsAndTablesInRE(const std::string &n,
+                                            const std::string _type) :
+                BasicRuleProcessor(n) { re_type = _type; }
+            virtual bool processNext();
+        };
+        friend class Compiler::RegisterGroupsAndTablesInRE;
+
         /**
          * prints rule in some universal format (close to that visible
          * to user in the GUI). Used for debugging purposes
@@ -1013,6 +1031,11 @@ public:
         
 	std::string getCompiledScript();
         int getCompiledScriptLength();
+
+        void setGroupRegistry(GroupRegistry *gr) { group_registry = gr; }
+        
+        void expandGroup(libfwbuilder::FWObject *grp,
+                         std::list<libfwbuilder::FWObject*> &ol);
 
 	void expandGroupsInRuleElement(libfwbuilder::RuleElement *s);
 

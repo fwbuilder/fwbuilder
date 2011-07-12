@@ -763,7 +763,7 @@ string PolicyCompiler_pf::PrintRule::_printTCPFlags(libfwbuilder::TCPService *sr
     return str;
 }
 
-void PolicyCompiler_pf::PrintRule::_printAddr(Address *o, bool )
+void PolicyCompiler_pf::PrintRule::_printAddr(FWObject *o, bool )
 {
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
     if (atrt!=NULL)
@@ -787,7 +787,16 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address *o, bool )
         assert(atrt==NULL);
     }
 
-    const InetAddr *addr = o->getAddressPtr();
+    if (o->getBool("pf_table"))
+    {
+        compiler->output << "<" << o->getName() << "> ";
+        return;
+    }
+
+    Address *addr_obj = Address::cast(o);
+    assert(addr_obj!=NULL);
+
+    const InetAddr *addr = addr_obj->getAddressPtr();
     InetAddr mask;
 
     if (Interface::cast(o)!=NULL)
@@ -802,10 +811,10 @@ void PolicyCompiler_pf::PrintRule::_printAddr(Address *o, bool )
 	mask = InetAddr(InetAddr::getAllOnes());
     } else
     {
-        mask = *(o->getNetmaskPtr());
+        mask = *(addr_obj->getNetmaskPtr());
     }
 
-    if (o->dimension()==1) 
+    if (addr_obj->dimension()==1) 
     {
 	mask = InetAddr(InetAddr::getAllOnes());
     }
@@ -833,9 +842,7 @@ void PolicyCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool negflag)
         if (i!=grp->begin())  compiler->output << ", ";
         FWObject *o= *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        Address *s=Address::cast( o );
-        assert(s);
-        _printAddr(s , negflag);
+        _printAddr(o , negflag);
     }
     compiler->output << "} ";
 }
@@ -845,8 +852,6 @@ void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElement  *rel)
     FWObject *o=rel->front();
     FWReference *oref = FWReference::cast(o);
     if (o && oref!=NULL) o=oref->getPointer();
-
-    Address *src= Address::cast(o);
 
     _printNegation(rel);
 
@@ -863,18 +868,12 @@ void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElement  *rel)
         compiler->abort(rel->getParent(), errstr.str());
     }
 
-    if (rel->size()==1 && ! o->getBool("pf_table") )
+    if (rel->size()==1)
     {
-	_printAddr( src , rel->getNeg() );
+	_printAddr(o, rel->getNeg() );
     } else
     {
-        if (o->getBool("pf_table"))
-        {
-            compiler->output << "<" << o->getName() << "> ";
-        } else
-        {
-            _printAddrList(rel,rel->getNeg());
-        }
+        _printAddrList(rel,rel->getNeg());
     }
 
 }
@@ -884,8 +883,6 @@ void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElement  *rel)
     FWObject *o=rel->front();
     FWReference *oref = FWReference::cast(o);
     if (o && oref!=NULL) o=oref->getPointer();
-
-    Address *dst = Address::cast(o);
 
     _printNegation(rel);
 
@@ -902,18 +899,12 @@ void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElement  *rel)
         compiler->abort(rel->getParent(), errstr.str());
     }
 
-    if (rel->size()==1 && ! o->getBool("pf_table") )
+    if (rel->size()==1)
     {
-	_printAddr( dst , rel->getNeg());
+	_printAddr(o, rel->getNeg());
     } else
     {
-        if (o->getBool("pf_table"))
-        {
-            compiler->output << "<" << o->getName() << "> ";
-        } else
-        {
-            _printAddrList(rel,rel->getNeg());
-        }
+        _printAddrList(rel, rel->getNeg());
     }
 }
 

@@ -901,6 +901,14 @@ void PolicyCompiler_pf::compile()
 //        add(new doDstNegation("process negation in Dst"));
     add(new doSrvNegation("process negation in Srv"));
 
+    if (fw->getOptionsObject()->getBool("preserve_group_names"))
+    {
+        add(new RegisterGroupsAndTablesInSrc(
+                "register object groups and tables in Src"));
+        add(new RegisterGroupsAndTablesInDst(
+                "register object groups and tables in Dst"));
+    }
+
 // ExpandGroups opens groups, as well as groups in groups etc.
     add(new ExpandGroups("expand groups"));
     add(new dropRuleWithEmptyRE("drop rules with empty rule elements"));

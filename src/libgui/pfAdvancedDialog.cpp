@@ -224,6 +224,8 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
 
     data.registerOption( m_dialog->pf_check_shadowing,fwopt, "check_shading");
+    data.registerOption( m_dialog->pf_preserve_group_names, fwopt,
+                         "preserve_group_names");
     data.registerOption( m_dialog->pf_ignore_empty_groups,fwopt,
                          "ignore_empty_groups");
 //    data.registerOption( pf_use_tables, fwopt, "use_tables");
