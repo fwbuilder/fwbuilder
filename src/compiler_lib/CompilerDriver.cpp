@@ -187,6 +187,12 @@ bool CompilerDriver::configure(const QStringList &args)
             wdir = string(args.at(idx).toLatin1().constData());
             continue;
         }
+        if (arg == "-D")
+        {
+            idx++;
+            FWObject::setDataDir(args.at(idx).toUtf8().constData());
+            continue;
+        }
         if (arg == "-f")
         {
             idx++;

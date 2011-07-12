@@ -73,7 +73,7 @@ void Preprocessor::convertObject(FWObject *obj)
     MultiAddress *adt = MultiAddress::cast(obj);
     if (adt!=NULL && adt->isCompileTime())
     {
-        adt->loadFromSource(ipv6, inTestMode());
+        adt->loadFromSource(ipv6, getCachedFwOpt(), inTestMode());
     }
 }
 

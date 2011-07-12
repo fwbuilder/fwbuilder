@@ -188,6 +188,8 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
                         fwopt,
                         "linux24_conntrack_tcp_be_liberal", threeStateMapping);
 
+    data.registerOption(m_dialog->linux24_data_dir, fwopt, "data_dir");
+
     data.loadAll();
 
     m_dialog->tabWidget->setCurrentIndex(0);

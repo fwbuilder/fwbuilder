@@ -99,6 +99,9 @@ openbsdAdvancedDialog::openbsdAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->openbsd_path_sysctl,
                           fwopt,
                           "openbsd_path_sysctl");
+
+    data.registerOption(m_dialog->openbsd_data_dir, fwopt, "data_dir");
+
     data.loadAll();
 
     m_dialog->tabWidget->setCurrentIndex(0);

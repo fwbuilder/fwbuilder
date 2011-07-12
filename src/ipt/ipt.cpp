@@ -71,7 +71,7 @@ void usage(const char *name)
     cout << "Version " << VERSION << endl;
     cout << "Usage: " << name
          << " [-x level] [-v] [-V] [-q] [-f filename.xml] [-d destdir] "
-            "[-m] [-4|-6] firewall_object_name" << endl;
+            "[-D datadir ] [-m] [-4|-6] firewall_object_name" << endl;
 }
 
 int main(int argc, char **argv)

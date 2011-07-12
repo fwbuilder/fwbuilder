@@ -31,6 +31,7 @@
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Network.h>
 #include <fwbuilder/NetworkIPv6.h>
 
@@ -88,6 +89,30 @@ xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
+
+string AddressTable::getFilename(FWOptions *options) throw (FWException)
+{
+    string path = getStr("filename");
+    size_t found = path.find("%DATADIR%");
+    if (found == string::npos) return path;
+
+    string dataDir;
+    if (isRunTime()) {
+        dataDir = options->getStr("data_dir");
+        if (dataDir.empty()) {
+            throw FWException("Firewall 'data directory' setting is blank");
+        }
+    } else {
+        dataDir = FWObject::getDataDir();
+        if (dataDir.empty()) {
+            throw FWException("Global 'data directory' setting is blank");
+        }
+    }
+
+    path.replace(found, 9, dataDir);
+    return path;
+}
+
 /*
  * read file specified by the "filename" attribute and interpret lines
  * as addresses. Create corresponding address or network objects, add
@@ -99,9 +124,11 @@ xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
  * TODO: new objects should be added to some kind of special group in
  * the object tree, something with the name "tmp" or similar.
  */
-void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
+void AddressTable::loadFromSource(bool ipv6, FWOptions *options,
+                                  bool test_mode) throw(FWException)
 {
-    ifstream fs(getStr("filename").c_str());
+    string path = getFilename(options);
+    ifstream fs(path.c_str());
     ostringstream exmess;
     string buf;
     size_type pos;
@@ -142,7 +169,7 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
                     } catch (FWException &ex)
                     {
                         exmess << "Invalid address: "
-                               << getStr("filename") << ":"
+                               << path << ":"
                                << line
                                << " \"" << buf << "\"";
                         throw FWException(exmess.str());
@@ -161,7 +188,7 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
                     } catch (FWException &ex)
                     {
                         exmess << "Invalid address: "
-                               << getStr("filename") << ":"
+                               << path << ":"
                                << line
                                << " \"" << buf << "\"";
                         throw FWException(exmess.str());
@@ -188,7 +215,7 @@ void AddressTable::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
         // Compiler should print error message but continue.
         exmess << "File not found for Address Table: "
                << getName()
-               << " (" << getStr("filename") << ")";
+               << " (" << path << ")";
         if (test_mode)
         {
             exmess << " Using dummy address in test mode";

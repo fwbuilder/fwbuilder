@@ -112,7 +112,8 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 
     m_dialog->tabWidget->setCurrentIndex(0);
 
-    m_dialog->wDir->setText( st->getWDir() );
+    m_dialog->wDir->setText(st->getWDir());
+    m_dialog->dataDir->setText(st->getDataDir());
 
     m_dialog->objTooltips->setChecked( st->getObjTooltips() );
     m_dialog->advTooltipMode->setChecked(st->getBool("UI/AdvancedTooltips"));
@@ -388,17 +389,40 @@ void PrefsDialog::changeFont(QFont &font)
 
 void PrefsDialog::findWDir()
 {
-    QString wd = st->getWDir();
+    QString wd = m_dialog->wDir->text();
+    if (wd.isEmpty()) wd = st->getWDir();
+    if (wd.isEmpty()) wd = st->getOpenFileDir();
     QString dir = QFileDialog::getExistingDirectory(
-            this, tr("Find working directory"), wd, QFileDialog::ShowDirsOnly );
+            this, tr("Find working directory"), wd, QFileDialog::ShowDirsOnly);
 
-    if (!dir.isEmpty()) m_dialog->wDir->setText(dir);
+    if (dir.isEmpty()) return;
+    st->setOpenFileDir(dir);
+
+    m_dialog->wDir->setText(dir);
+}
+
+void PrefsDialog::findDataDir()
+{
+    QString dataDir = m_dialog->dataDir->text();
+    if (dataDir.isEmpty()) dataDir = st->getDataDir();
+    if (dataDir.isEmpty()) dataDir = st->getOpenFileDir();
+    QString dir = QFileDialog::getExistingDirectory(
+        this, tr("Find data directory"), dataDir, QFileDialog::ShowDirsOnly);
+
+    if (dir.isEmpty()) return;
+    st->setOpenFileDir(dir);
+
+    m_dialog->dataDir->setText(dir);
 }
 
 void PrefsDialog::findSSH()
 {
+    QString sshPath = m_dialog->sshPath->text();
+    if (!QFileInfo(sshPath).isFile()) sshPath = st->getSSHPath();
+    if (!QFileInfo(sshPath).isFile()) sshPath = st->getOpenFileDir();
+
     QString fp = QFileDialog::getOpenFileName(
-        this, tr("Find Secure Shell utility"), st->getOpenFileDir());
+        this, tr("Find Secure Shell utility"), sshPath);
 
     if (fp.isEmpty()) return;
     st->setOpenFileDir(fp);
@@ -408,8 +432,12 @@ void PrefsDialog::findSSH()
 
 void PrefsDialog::findSCP()
 {
+    QString scpPath = m_dialog->scpPath->text();
+    if (!QFileInfo(scpPath).isFile()) scpPath = st->getSCPPath();
+    if (!QFileInfo(scpPath).isFile()) scpPath = st->getOpenFileDir();
+
     QString fp = QFileDialog::getOpenFileName(
-        this, tr("Find SCP utility"), st->getOpenFileDir());
+        this, tr("Find SCP utility"), scpPath);
 
     if (fp.isEmpty()) return;
     st->setOpenFileDir(fp);
@@ -424,6 +452,7 @@ void PrefsDialog::accept()
 /* check if the default working directory does not exist yet */
 
     st->setWDir( wd );
+    st->setDataDir(m_dialog->dataDir->text());
 
     st->setObjTooltips( m_dialog->objTooltips->isChecked() );
     st->setBool("UI/AdvancedTooltips", m_dialog->advTooltipMode->isChecked());

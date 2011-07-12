@@ -3894,7 +3894,13 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
             // we have just one object in RE and this object is MutiAddressRunTime
             if (atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             {
-                rule->setStr("address_table_file",atrt->getSourceName());
+                string path =
+                    atrt->getSourceNameAsPath(compiler->getCachedFwOpt());
+                if (path.empty()) {
+                    compiler->abort(rule, "Empty path or data directory for address table: " + atrt->getName());
+                    return true;
+                }
+                rule->setStr("address_table_file", path);
                 osconf->registerMultiAddressObject(atrt);
             }
             if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
@@ -3935,7 +3941,14 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
         nre=RuleElement::cast( r->getFirstByType(re_type) );
         nre->clearChildren();
         nre->addRef( atrt );
-        r->setStr("address_table_file",atrt->getSourceName());
+
+        string path = atrt->getSourceNameAsPath(compiler->getCachedFwOpt());
+        if (path.empty()) {
+            compiler->abort(rule, "Empty path or data directory for address table: " + atrt->getName());
+            return true;
+        }
+        r->setStr("address_table_file", path);
+
         osconf->registerMultiAddressObject(atrt);
         tmp_queue.push_back(r);
 

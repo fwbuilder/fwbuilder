@@ -42,7 +42,7 @@ void Preprocessor_ipt::convertObject(FWObject *obj)
         if (intf->isRegular())
         {
             att->setCompileTime(true);
-            att->loadFromSource(ipv6, inTestMode());
+            att->loadFromSource(ipv6, getCachedFwOpt(), inTestMode());
         } else att->setRunTime(true);
     } else
         Preprocessor::convertObject(obj);

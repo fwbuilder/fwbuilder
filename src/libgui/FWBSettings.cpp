@@ -69,6 +69,7 @@ const char* DTDSetpath = SETTINGS_PATH_PREFIX "/System/DTDPath";
 const char* ResSetpath = SETTINGS_PATH_PREFIX "/System/ResPath";
 const char* compression = SETTINGS_PATH_PREFIX "/DataFile/compression";
 const char* wdirSetpath = SETTINGS_PATH_PREFIX "/Environment/WDir";
+const char* datadirSetpath = SETTINGS_PATH_PREFIX "/Environment/DataDir";
 const char* ofdirSetpath = SETTINGS_PATH_PREFIX "/Environment/OpenFileDir";
 const char* startupActionSetpath =
     SETTINGS_PATH_PREFIX "/Environment/StartupAction";
@@ -114,6 +115,7 @@ const char* announcementLastTime =
 const char* checkUpdatesProxy = SETTINGS_PATH_PREFIX "/UI/CheckUpdatesProxy";
 const char* reminderAboutStandardLibSuppressed =
     SETTINGS_PATH_PREFIX "/UI/reminderAboutStandardLibSuppressed";
+const char* reminderDataDir = SETTINGS_PATH_PREFIX "/UI/reminderDataDir";
 const char* introDialogEnabled = SETTINGS_PATH_PREFIX "/UI/introDialogEnabled";
 const char* newFirewallPlatform =
     SETTINGS_PATH_PREFIX "/Objects/NewFireallPlatform";
@@ -413,6 +415,16 @@ void FWBSettings::suppressReminderAboutStandardLib(bool f)
     setValue(reminderAboutStandardLibSuppressed, f);
 }
 
+bool FWBSettings::isReminderAboutDataDirSuppressed()
+{
+    return value(reminderDataDir).toBool();
+}
+
+void FWBSettings::suppressReminderAboutDataDir(bool f)
+{
+    setValue(reminderDataDir, f);
+}
+
 bool FWBSettings::hasKey(const QString &attribute)
 {
     return QSettings::contains(SETTINGS_PATH_PREFIX "/" + attribute);
@@ -473,7 +485,12 @@ void FWBSettings::setList(const QString &attribute, QStringList &list)
 }
 
 QString FWBSettings::getWDir() { return value(wdirSetpath).toString();}
-void FWBSettings::setWDir( const QString &wd ) { setValue(wdirSetpath,wd);}
+void FWBSettings::setWDir(const QString &wd) { setValue(wdirSetpath, wd);}
+QString FWBSettings::getDataDir() { return value(datadirSetpath).toString();}
+void FWBSettings::setDataDir(const QString &d) {
+    setValue(datadirSetpath, d);
+    FWObject::setDataDir(d.toUtf8().constData());
+}
 int FWBSettings::getInfoStyle() { return value(infoStyleSetpath).toInt();}
 void FWBSettings::setInfoStyle(int s) { setValue(infoStyleSetpath,s);}
 int FWBSettings::getInfoWindowHeight() { return value(infoWindowHSetpath).toInt();}

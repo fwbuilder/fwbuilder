@@ -46,7 +46,8 @@ class AttachedNetworks : public MultiAddress
 
     virtual void fromXML(xmlNodePtr parent) throw(FWException);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
-    virtual void loadFromSource(bool ipv6, bool test_mode=false) throw(FWException);
+    virtual void loadFromSource(bool ipv6, FWOptions *options,
+                                bool test_mode=false) throw(FWException);
 
     virtual std::string getSourceName();
 };

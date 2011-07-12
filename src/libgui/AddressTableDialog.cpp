@@ -148,6 +148,42 @@ void AddressTableDialog::applyChanges()
    
 }
 
+
+static void doReminderAboutDataDir()
+{
+    if (st->isReminderAboutDataDirSuppressed()) return;
+
+    QMessageBox msgBox;
+    msgBox.setText("The file you selected is inside the "
+                   "'data directory' global preference.  The path of the "
+                   "file has been converted to use the variable %DATADIR% "
+                   "so that expansion will happen properly within rules.");
+
+    msgBox.setWindowModality(Qt::ApplicationModal);
+    msgBox.setWindowFlags(Qt::Window |
+                          Qt::WindowTitleHint |
+                          Qt::CustomizeWindowHint |
+                          Qt::WindowCloseButtonHint |
+                          Qt::WindowSystemMenuHint);
+
+    msgBox.setWindowTitle("Data directory conversion");
+
+    QCheckBox cb("Do not show this again", &msgBox);
+    msgBox.addButton(&cb, QMessageBox::ResetRole);
+    msgBox.addButton(QMessageBox::Close);
+    msgBox.setDefaultButton(QMessageBox::Close);
+    msgBox.setIcon(QMessageBox::Information);
+
+    /* Hack alert!  Disconnect signals from the checkbox so that
+       QMessageBox doesn't know when it gets clicked, and treat it
+       like an "OK" action. */
+    cb.disconnect();
+
+    msgBox.exec();
+    if (cb.isChecked()) st->suppressReminderAboutDataDir(true);
+}
+
+
 void AddressTableDialog::browse()
 {
     // build a dialog that will let user select existing file or enter
@@ -162,6 +198,21 @@ void AddressTableDialog::browse()
     if (s.isEmpty()) return;
     st->setOpenFileDir(s);
 
+    QString dataDir = st->getDataDir();
+    if (!dataDir.isEmpty()) {
+        QString dataDirPath = QFileInfo(dataDir).canonicalFilePath();
+        QString filePath = QFileInfo(s).canonicalFilePath();
+        if (filePath.length() > 0 && filePath.startsWith(dataDirPath)) {
+            int truncateLen = dataDirPath.length();
+            if (dataDirPath.at(truncateLen-1) == '/' ||
+                dataDirPath.at(truncateLen-1) == '\\') {
+                truncateLen--;
+            }
+            s = filePath.replace(0, truncateLen, "%DATADIR%");
+            doReminderAboutDataDir();
+        }
+    }
+
     m_dialog->filename->setText(s);
     // assign focus to the "file name" input field so that it
     // generates signal editFinished when user clicks
@@ -174,6 +225,17 @@ void AddressTableDialog::browse()
 void AddressTableDialog::editFile( void )
 {
     QString filePath = m_dialog->filename->text();
+    if (filePath.startsWith("%DATADIR%")) {
+        QString dataDir = st->getDataDir();
+        if (dataDir.isEmpty()) {
+            QMessageBox::critical(this, "Firewall Builder",
+                                  tr("Data directory setting is blank "
+                                     "and path contains %DATADIR% variable"));
+            return;
+        }
+        filePath.replace(0, 9, dataDir);
+    }
+
     TextFileEditor editor(this, filePath);
     if (editor.load())
         editor.exec();  // its modal dialog

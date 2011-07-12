@@ -52,7 +52,8 @@ class MultiAddress : public ObjectGroup
 
     virtual std::string getSourceName();
     virtual void setSourceName(const std::string& source_name);
-    virtual void loadFromSource(bool ipv6, bool test_mode=false) throw(FWException);
+    virtual void loadFromSource(bool ipv6, FWOptions *options,
+                                bool test_mode=false) throw(FWException) = 0;
 
     /*
      * functions isCompileTime() and isRunTime() are virtual because
@@ -100,6 +101,8 @@ public:
 
     std::string getSourceName() const { return source_name; }
     std::string getSubstitutionTypeName() const { return subst_type_name; }
+
+    std::string getSourceNameAsPath(FWOptions *options) const;
 
     bool isCompileTime() const { return !run_time; }
     bool isRunTime() const { return run_time; }

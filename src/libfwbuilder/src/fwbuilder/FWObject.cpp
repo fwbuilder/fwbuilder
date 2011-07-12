@@ -58,6 +58,7 @@ using namespace libfwbuilder;
 
 const char *FWObject::TYPENAME={"UNDEF"};
 string FWObject::NOT_FOUND="";
+string FWObject::dataDir;
 
 
 //#define FWB_DEBUG

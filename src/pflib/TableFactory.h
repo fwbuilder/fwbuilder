@@ -27,6 +27,7 @@
 #define __TABLEFACTORY_HH
 
 #include <fwbuilder/libfwbuilder-config.h>
+#include <fwbuilder/Firewall.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/RuleElement.h>
 
@@ -44,6 +45,7 @@ namespace fwcompiler {
 
     class TableFactory {
         BaseCompiler *compiler;
+        libfwbuilder::Firewall *firewall;
         libfwbuilder::FWObjectDatabase *dbroot;
         libfwbuilder::FWObject *persistent_tables;
 
@@ -53,7 +55,7 @@ namespace fwcompiler {
         std::string ruleSetName;
 
 public:
-        TableFactory(BaseCompiler *comp, libfwbuilder::Library *persistent_objects);
+        TableFactory(BaseCompiler *comp, libfwbuilder::Firewall *firewall, libfwbuilder::Library *persistent_objects);
 
         void init(libfwbuilder::FWObjectDatabase *_dbroot);
         void detach();

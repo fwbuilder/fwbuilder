@@ -81,7 +81,10 @@ class FWBSettings : public QSettings
     bool isFirstRun() { return first_run; }
     
     QString getWDir();
-    void    setWDir( const QString &wd );
+    void    setWDir(const QString &wd);
+
+    QString getDataDir();
+    void    setDataDir(const QString &dataDir);
 
     QString getOpenFileDir( const QString &existingPath = "");
     void    setOpenFileDir( const QString &d );
@@ -179,6 +182,9 @@ class FWBSettings : public QSettings
 
     bool isReminderAboutStandardLibSuppressed();
     void suppressReminderAboutStandardLib(bool f);
+    
+    bool isReminderAboutDataDirSuppressed();
+    void suppressReminderAboutDataDir(bool f);
     
     enum IconSize getIconsInRulesSize();
     void setIconsInRulesSize(enum IconSize size);

@@ -47,9 +47,11 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
-TableFactory::TableFactory(BaseCompiler *comp, Library *persistent_objects)
+TableFactory::TableFactory(BaseCompiler *comp, Firewall *fwall,
+                           Library *persistent_objects)
 {
     compiler = comp;
+    firewall = fwall;
     ruleSetName = "";
     dbroot = NULL;
     persistent_tables = new ObjectGroup();
@@ -181,9 +183,15 @@ string TableFactory::PrintTables()
         {
             output << "persist";
             if ( !atrt->getSourceName().empty() )
-                output << " file \""
-                       << atrt->getSourceName()
-                       << "\"";
+            {
+                string path =
+                    atrt->getSourceNameAsPath(firewall->getOptionsObject());
+                if (path.empty()) {
+                    compiler->abort("Error: Empty path or data directory for address table: " + atrt->getName());
+                }
+                
+                output << " file \"" << path << "\"";
+            }
 
             output << endl;
             continue;

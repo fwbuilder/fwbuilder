@@ -1,3 +1,12 @@
+2011-07-11  theron	<theron@netcitadel.com>
+	* Implemented #2514, support for address table alternate paths.
+	There's a "data directory" setting under user preferences.  If the
+	user selects an address table file using "choose file" and that
+	file is "inside" the data directory, then the appropriate part of
+	the path is replaced with %DATADIR% as a variable.  If the address
+	table is marked "run-time" then the path is taken from the
+	firewall data directory option.
+
 2011-07-09  vadim  <vadim@netcitadel.com>
 
 	* pf.g (rule_extended): see #2551 Importer should parse PF rules

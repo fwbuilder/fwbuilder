@@ -450,6 +450,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             {
                 Preprocessor_pf* prep = new Preprocessor_pf(
                     objdb , fw, ipv6_policy);
+                prep->setSingleRuleCompileMode(single_rule_id);
                 if (inTestMode()) prep->setTestMode();
                 if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();
@@ -472,7 +473,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 if (table_factories.count(ruleset_name) == 0)
                 {
                     table_factories[ruleset_name] =
-                        new fwcompiler::TableFactory(this, persistent_objects);
+                        new fwcompiler::TableFactory(this, fw, persistent_objects);
                 }
 
                 NATCompiler_pf n( objdb, fw, ipv6_policy, oscnf.get(),
@@ -547,7 +548,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 if (table_factories.count(ruleset_name) == 0)
                 {
                     table_factories[ruleset_name] =
-                        new fwcompiler::TableFactory(this, persistent_objects);
+                        new fwcompiler::TableFactory(this, fw, persistent_objects);
                 }
 
                 PolicyCompiler_pf c( objdb, fw, ipv6_policy, oscnf.get(),

@@ -58,8 +58,8 @@ class DynamicGroup : public MultiAddress
         throw (FWException);
 
     virtual bool isCompileTime() const;
-    virtual void loadFromSource(bool ipv6, bool test_mode=false)
-        throw (FWException);
+    virtual void loadFromSource(bool ipv6, FWOptions *options,
+                                bool test_mode=false) throw (FWException);
 
     /*
      * verify whether given object type is approppriate as a child

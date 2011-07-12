@@ -99,6 +99,9 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->freebsd_path_pfctl,
                         fwopt, "freebsd_path_pfctl");
 
+    data.registerOption(m_dialog->freebsd_data_dir,
+                        fwopt, "data_dir");
+
     data.loadAll();
 
     m_dialog->tabWidget->setCurrentIndex(0);

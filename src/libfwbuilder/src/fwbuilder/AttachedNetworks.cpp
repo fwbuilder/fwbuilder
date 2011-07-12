@@ -108,7 +108,8 @@ void AttachedNetworks::addNetworkObject(const InetAddr *ip_addr,
  * Read addresses of the parent interface and build a group of
  * corresponding networks.
  */
-void AttachedNetworks::loadFromSource(bool ipv6, bool ) throw(FWException)
+void AttachedNetworks::loadFromSource(bool ipv6, FWOptions *options,
+                                      bool inTestMode) throw(FWException)
 {
     Interface *parent_intf = Interface::cast(getParent());
     assert(parent_intf);

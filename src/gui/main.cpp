@@ -182,6 +182,7 @@ int main( int argc, char *argv[] )
     if (fwbdebug) qDebug("Reading settings ...");
     st = new FWBSettings();
     st->init(force_first_time_run_flag);
+    FWObject::setDataDir(st->getDataDir().toUtf8().constData());
     if (fwbdebug) qDebug("done");
 
     wfl = new UserWorkflow();

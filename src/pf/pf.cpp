@@ -68,7 +68,7 @@ void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for OpenBSD PF" << endl;
     cout << "Version " << VERSION << endl;
-    cout << "Usage: " << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-m] [-4|-6] firewall_object_name" << endl;
+    cout << "Usage: " << name << " [-x] [-v] [-V] [-f filename.xml] [-o output.fw] [-d destdir] [-D datadir] [-m] [-4|-6] firewall_object_name" << endl;
 }
 
 

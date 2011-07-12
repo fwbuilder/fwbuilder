@@ -121,6 +121,8 @@ private:
     time_t creation_time;
     std::set<std::string> keywords;
 
+    static std::string dataDir;
+
 protected:
 
     std::string xml_name;
@@ -571,6 +573,9 @@ public:
     void addKeyword(const std::string &keyword);
     void removeKeyword(const std::string &keyword);
     void clearKeywords();
+
+    static std::string getDataDir() { return dataDir; }
+    static void setDataDir(const std::string &dir) { dataDir = dir; }
 };
 
 class FWObjectTypedChildIterator

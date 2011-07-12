@@ -118,7 +118,8 @@ xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
  * TODO: new object should be added to some kind of special group in
  * the object tree, something with the name "tmp" or similar.
  */
-void DNSName::loadFromSource(bool ipv6, bool test_mode) throw(FWException)
+void DNSName::loadFromSource(bool ipv6, FWOptions *options,
+                             bool test_mode) throw(FWException)
 {
     int af_type = (ipv6)?AF_INET6:AF_INET;
     try

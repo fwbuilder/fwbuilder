@@ -31,6 +31,7 @@
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/FWObjectReference.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/FWOptions.h>
 #include <fwbuilder/Network.h>
 
 #include <iostream>
@@ -86,12 +87,6 @@ bool MultiAddress::validateChild(FWObject *o)
     return ObjectGroup::validateChild(o);
 }
 
-void MultiAddress::loadFromSource(bool, bool) throw(FWException)
-{
-    cerr << "virtual function MultiAddress::loadFromSource is not implemented"
-         << endl;
-}
-
 // ========================================================================
 
 const char *MultiAddressRunTime::TYPENAME={"MultiAddressRunTime"};
@@ -112,3 +107,15 @@ MultiAddressRunTime::MultiAddressRunTime(MultiAddress *maddr)
     subst_type_name = maddr->getTypeName();
 }
 
+string MultiAddressRunTime::getSourceNameAsPath(FWOptions *options) const
+{
+    string ret = source_name;
+    size_t found = ret.find("%DATADIR%");
+    if (found == string::npos) return ret;
+
+    string dataDir = options->getStr("data_dir");
+    if (dataDir.empty()) return dataDir;
+
+    ret.replace(found, 9, dataDir);
+    return ret;
+}
