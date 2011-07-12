@@ -469,22 +469,16 @@ void NATCompiler_pf::PrintRule::_printREAddr(RuleElement *rel)
     FWObject *o=rel->front();
     if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
 
-    Address *addr= Address::cast(o);
+//    Address *addr= Address::cast(o);
 
     _printNegation(rel);
 
-    if (rel->size()==1 && ! o->getBool("pf_table") )
+    if (rel->size()==1)
     {
-	_printAddr( addr );
+	_printAddr(o);
     } else
     {
-        if (o->getBool("pf_table"))
-        {
-            compiler->output << "<" << o->getName() << "> ";
-        } else
-        {
-            _printAddrList(rel,rel->getNeg());
-        }
+        _printAddrList(rel, rel->getNeg());
     }
 }
 
@@ -497,9 +491,7 @@ void NATCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool )
         if (i!=grp->begin())  compiler->output << ", ";
         FWObject *o= *i;
         if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        Address *s=Address::cast( o );
-        assert(s);
-        _printAddr(s);
+        _printAddr(o);
     }
     compiler->output << "} ";
 }
@@ -528,11 +520,19 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
         return;
     }
 
-    Address *a = Address::cast(o);
-    const InetAddr *addr = a->getAddressPtr();
+    if (o->getBool("pf_table"))
+    {
+        compiler->output << "<" << o->getName() << "> ";
+        return;
+    }
+
+    Address *addr_obj = Address::cast(o);
+    assert(addr_obj!=NULL);
+
+    const InetAddr *addr = addr_obj->getAddressPtr();
     if (addr)
     {
-        InetAddr mask = *(a->getNetmaskPtr());
+        InetAddr mask = *(addr_obj->getNetmaskPtr());
 
         if (Interface::cast(o)!=NULL || Address::cast(o)->dimension()==1)
         {

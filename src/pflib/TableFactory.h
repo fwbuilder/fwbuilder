@@ -32,30 +32,40 @@
 #include <fwbuilder/RuleElement.h>
 
 #include <fwcompiler/BaseCompiler.h>
+#include <fwcompiler/GroupRegistry.h>
 
 #include <list>
 #include <map>
 
-namespace libfwbuilder {
+namespace libfwbuilder
+{
     class FWObject;
     class FWObjectDatabase;
 };    
 
-namespace fwcompiler {
+namespace fwcompiler
+{
 
-    class TableFactory {
+    class TableFactory
+    {
         BaseCompiler *compiler;
         libfwbuilder::Firewall *firewall;
         libfwbuilder::FWObjectDatabase *dbroot;
         libfwbuilder::FWObject *persistent_tables;
 
+        GroupRegistry *group_registry;
         std::map<std::string,libfwbuilder::FWObject*> tables;
         std::map<std::string,std::string> tblnames;
-        std::string generateTblID(libfwbuilder::RuleElement *re);
         std::string ruleSetName;
 
+        std::string generateTblID(libfwbuilder::RuleElement *re);
+        libfwbuilder::FWObject* createTableObject(const std::string &tblname,
+                                                  const std::string &tblid);
+
 public:
-        TableFactory(BaseCompiler *comp, libfwbuilder::Firewall *firewall, libfwbuilder::Library *persistent_objects);
+        TableFactory(BaseCompiler *comp, libfwbuilder::Firewall *firewall,
+                     libfwbuilder::Library *persistent_objects,
+                     GroupRegistry *group_registry);
 
         void init(libfwbuilder::FWObjectDatabase *_dbroot);
         void detach();

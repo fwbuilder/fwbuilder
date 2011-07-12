@@ -94,7 +94,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -286,30 +286,14 @@
           <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <property name="margin">
-           <number>9</number>
-          </property>
-          <item row="0" column="0" colspan="2">
+          <item row="0" column="0">
            <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn">
             <property name="text">
              <string>Accept TCP sessions opened prior to firewall restart</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="pf_modulate_state">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
+          <item row="0" column="1">
            <widget class="QCheckBox" name="pf_check_shadowing">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -328,7 +312,20 @@ the prior rule.</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="pf_modulate_state">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Modulate state for all stateful rules (applies only to TCP services)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QCheckBox" name="pf_ignore_empty_groups">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -346,6 +343,13 @@ this option only if you fully understand how it works!</string>
             </property>
             <property name="text">
              <string>Ignore empty groups</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="pf_preserve_group_names">
+            <property name="text">
+             <string>Preserve group and address table obects names in the generated pf configuration</string>
             </property>
            </widget>
           </item>

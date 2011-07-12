@@ -7,6 +7,15 @@
 	table is marked "run-time" then the path is taken from the
 	firewall data directory option.
 
+2011-07-11  Vadim Kurland  <vadim@netcitadel.com>
+
+	* TableFactory.cpp (createTablesForRE): see #2513 "Group and
+	Address Table name persistence in generated config". Compiler for
+	PF can now preserve names of object groups, dynamic groups,
+	compile-time AddressTable and compile-time DNSName objects in
+	the generated pf.conf file. This is optional and is controlled
+	by a checkbox in the firewall settings dialog.
+
 2011-07-09  vadim  <vadim@netcitadel.com>
 
 	* pf.g (rule_extended): see #2551 Importer should parse PF rules

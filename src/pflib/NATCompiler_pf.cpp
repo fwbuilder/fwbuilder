@@ -1268,6 +1268,14 @@ void NATCompiler_pf::compile()
     add( new emptyGroupsInTDst(    "check for empty groups in TDST"    ) );
     add( new emptyGroupsInTSrv(    "check for empty groups in TSRV"    ) );
 
+    if (fw->getOptionsObject()->getBool("preserve_group_names"))
+    {
+        add(new RegisterGroupsAndTablesInOSrc(
+                "register object groups and tables in OSrc"));
+        add(new RegisterGroupsAndTablesInODst(
+                "register object groups and tables in ODst"));
+    }
+
     add( new ExpandGroups( "expand groups" ) );
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));
     add( new eliminateDuplicatesInOSRC(  "eliminate duplicates in OSRC") );

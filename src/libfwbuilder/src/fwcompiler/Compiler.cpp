@@ -136,6 +136,7 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
 { 
     initialized = false;
     _cntr_ = 1; 
+    group_registry = NULL;
 
     temp_ruleset = NULL; 
 
@@ -326,6 +327,21 @@ void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
     }
 }
 
+/*
+ * Common interface to the operation of expanding of a group
+ * recursively. This just calls internal function
+ * _expand_group_recursive()
+ */
+void Compiler::expandGroup(FWObject *grp, list<FWObject*> &ol)
+{
+    for (FWObject::iterator i1=grp->begin(); i1!=grp->end(); ++i1)
+    {
+        FWObject *o = FWReference::getObject(*i1);
+        assert(o);
+        _expand_group_recursive(o, ol);
+    }
+}
+
 /**
  *   object 's' here is really src or dst or srv. Its children objects
  *   should all be references
@@ -333,12 +349,7 @@ void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
 void Compiler::expandGroupsInRuleElement(RuleElement *s)
 {
     list<FWObject*> cl;
-    for (FWObject::iterator i1=s->begin(); i1!=s->end(); ++i1)
-    {
-        FWObject *o = FWReference::getObject(*i1);
-        assert(o);
-        _expand_group_recursive(o, cl);
-    }
+    expandGroup(s, cl);
 
     s->clearChildren();
     //s->setAnyElement();
@@ -610,7 +621,14 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
                     h->setAddress(*(i->getAddressPtr()));
                     persistent_objects->add(h, false);
                     cl.push_back(h);
-                }
+
+                    // see GroupRegistry::registerGroupObject()
+                    if (group_registry != NULL)
+                    {
+                        group_registry->setGroupRegistryKey(
+                            h, group_registry->getGroupRegistryKey(aro));
+                    }
+               }
             }
 	} else
         {
@@ -910,6 +928,37 @@ bool Compiler::ReplaceFirewallObjectWithSelfInRE::processNext()
 
     tmp_queue.push_back(rule);
     return true;
+}
+
+bool Compiler::RegisterGroupsAndTablesInRE::processNext()
+{
+    Rule *rule = prev_processor->getNextRule();
+    if (rule==NULL) return false;
+
+    if (compiler->group_registry != NULL)
+    {
+        RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
+
+        for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
+        {
+            FWObject *obj = FWReference::getObject(*i);
+            if (ObjectGroup::cast(obj)!=NULL && obj->size() > 0)
+            {
+                compiler->registerGroupObject(ObjectGroup::cast(obj));
+            }
+        }
+    }
+
+    tmp_queue.push_back(rule);
+    return true;
+}
+
+void Compiler::registerGroupObject(ObjectGroup *grp)
+{
+    assert(group_registry!=NULL);
+    list<FWObject*> objects;
+    expandGroup(grp, objects);
+    group_registry->registerGroup(grp, objects);
 }
 
 bool Compiler::equalObj::operator()(FWObject *o)
@@ -1811,3 +1860,5 @@ bool Compiler::DropRulesByAddressFamilyAndServiceType::processNext()
 
     return true;
 }
+
+

@@ -16,7 +16,8 @@ SOURCES  = 	BaseCompiler.cpp \
 			OSConfigurator.cpp \
 			PolicyCompiler.cpp \
 			ServiceRuleProcessors.cpp \
-			RoutingCompiler.cpp
+			RoutingCompiler.cpp \
+			GroupRegistry.cpp
 
 HEADERS  = 	BaseCompiler.h \
 			Compiler.h \
@@ -26,7 +27,8 @@ HEADERS  = 	BaseCompiler.h \
 			PolicyCompiler.h \
 			RuleProcessor.h \
 			RoutingCompiler.h \
-			exceptions.h
+			exceptions.h \
+			GroupRegistry.h
 
 
 TARGET = fwcompiler

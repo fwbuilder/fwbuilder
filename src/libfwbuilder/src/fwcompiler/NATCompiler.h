@@ -537,6 +537,23 @@ namespace fwcompiler {
                 n, libfwbuilder::RuleElementTDst::TYPENAME) {}
         };
 
+        class RegisterGroupsAndTablesInOSrc : public RegisterGroupsAndTablesInRE
+        {
+            public:
+            RegisterGroupsAndTablesInOSrc(const std::string &n) :
+            RegisterGroupsAndTablesInRE(n, libfwbuilder::RuleElementOSrc::TYPENAME)
+            {}
+        };
+
+        class RegisterGroupsAndTablesInODst : public RegisterGroupsAndTablesInRE
+        {
+            public:
+            RegisterGroupsAndTablesInODst(const std::string &n) :
+            RegisterGroupsAndTablesInRE(n, libfwbuilder::RuleElementODst::TYPENAME)
+            {}
+        };
+
+        
     };
 
 
