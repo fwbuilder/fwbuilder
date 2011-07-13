@@ -26,15 +26,16 @@
 #include <fwbuilder/DynamicGroup.h>
 #include <fwbuilder/XMLTools.h>
 #include <fwbuilder/FWObjectDatabase.h>
+#include <fwbuilder/RuleElement.h>
 #include <cstring>
 
 using namespace std;
 using namespace libfwbuilder;
 
-#define TYPE_NONE       "none"
-#define TYPE_ANY        "any"
-#define KEYWORD_NONE    ","
-#define KEYWORD_ANY     ""
+const char *DynamicGroup::TYPE_NONE = "none";
+const char *DynamicGroup::TYPE_ANY = "any";
+const char *DynamicGroup::KEYWORD_NONE = ",";
+const char *DynamicGroup::KEYWORD_ANY = "";
 
 const char *DynamicGroup::TYPENAME={"DynamicGroup"};
 
@@ -153,20 +154,59 @@ void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
         FWObject *elem = (*tree_iter);
         if (elem == root) continue;
 
-        const set<string> &keywords = elem->getKeywords();
-
-        list<string>::const_iterator iter;
-        for (iter = m_filter.begin(); iter != m_filter.end(); ++iter) {
-            string type, keyword;
-            splitFilter(*iter, type, keyword);
-
-            if ((type == TYPE_ANY || elem->getTypeName() == type) &&
-                (keyword == KEYWORD_ANY || keywords.count(keyword) > 0)) {
-                addRef(elem);
-                break;
-            }
-        }
-
+        if (!isMemberOfGroup(elem)) continue;
+        addRef(elem);
     }
-    
+}
+
+
+static bool isInDeletedObjs(FWObject *obj)
+{
+    for ( ; ; ) {
+        obj = obj->getParent();
+        if (obj == 0) return false;
+        if (obj->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return true;
+    }
+}
+
+
+static int distanceFromRoot(FWObject *obj)
+{
+    int count = 0;
+    while (obj != 0) {
+        obj = obj->getParent();
+        count++;
+    }
+    return count;
+}
+
+
+bool DynamicGroup::isMemberOfGroup(FWObject *obj)
+{
+    if (obj == this) return false;
+    if (ObjectGroup::cast(obj) == 0 && Address::cast(obj) == 0) return false;
+    if (RuleElement::cast(obj) != 0) return false;
+    if (isInDeletedObjs(obj)) return false;
+
+    /* There's no way to figure out what are the "standard" object
+       groups (like "address tables") from within the fwbuilder
+       library, so we rely on counting how deep we are in the tree
+       instead. */
+    if (ObjectGroup::cast(obj) != 0 && distanceFromRoot(obj) <= 4) return false;
+
+
+    const set<string> &keywords = obj->getKeywords();
+
+    list<string>::const_iterator iter;
+    for (iter = m_filter.begin(); iter != m_filter.end(); ++iter) {
+        string type, keyword;
+        splitFilter(*iter, type, keyword);
+
+        if ((type == TYPE_ANY || obj->getTypeName() == type) &&
+            (keyword == KEYWORD_ANY || keywords.count(keyword) > 0)) {
+            return true;
+        }
+    }
+
+    return false;
 }

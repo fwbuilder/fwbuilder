@@ -36,12 +36,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#define TYPE_NONE       "none"
-#define TYPE_ANY        "any"
-#define KEYWORD_NONE    ","
-#define KEYWORD_ANY     ""
-
-
 DynamicItemDelegate::DynamicItemDelegate(DynamicGroupDialog *dialog,
                                          QObject *parent)
     : QItemDelegate(parent),
@@ -92,12 +86,14 @@ void DynamicItemDelegate::setEditorData(QWidget *editor,
     QComboBox *combo = static_cast<QComboBox *>(editor);
     combo->clear();
     if (index.column() == 1) {
-        if (value == TYPE_NONE) {
-            combo->addItem("None selected", TYPE_NONE);
+        if (value == DynamicGroup::TYPE_NONE) {
+            combo->addItem("None selected", DynamicGroup::TYPE_NONE);
             combo->setCurrentIndex(0);
         }
-        combo->addItem("Any type", TYPE_ANY);
-        if (value == TYPE_ANY) combo->setCurrentIndex(combo->count() - 1);
+        combo->addItem("Any type", DynamicGroup::TYPE_ANY);
+        if (value == DynamicGroup::TYPE_ANY) {
+            combo->setCurrentIndex(combo->count() - 1);
+        }
 
         combo->insertSeparator(2);
 
@@ -109,13 +105,15 @@ void DynamicItemDelegate::setEditorData(QWidget *editor,
             }
         }
     } else if (index.column() == 2) {
-        if (value == KEYWORD_NONE) {
-            combo->addItem("None selected", KEYWORD_NONE);
+        if (value == DynamicGroup::KEYWORD_NONE) {
+            combo->addItem("None selected", DynamicGroup::KEYWORD_NONE);
             combo->setCurrentIndex(0);
         }
         
-        combo->addItem("Any keyword", KEYWORD_ANY);
-        if (value == KEYWORD_ANY) combo->setCurrentIndex(combo->count() - 1);
+        combo->addItem("Any keyword", DynamicGroup::KEYWORD_ANY);
+        if (value == DynamicGroup::KEYWORD_ANY) {
+            combo->setCurrentIndex(combo->count() - 1);
+        }
         combo->insertSeparator(2);
 
         QStringList list;
@@ -276,34 +274,24 @@ void DynamicGroupDialog::loadFWObject(FWObject *o)
         FWObject *elem = (*tree_iter);
         if (elem == root) continue;
 
-        const set<string> &keywords = elem->getKeywords();
+        if (!objGroup->isMemberOfGroup(elem)) continue;
 
-        list<string>::const_iterator iter;
-        for (iter = filter.begin(); iter != filter.end(); ++iter) {
-            string type, keyword;
-            objGroup->splitFilter(*iter, type, keyword);
+        QTreeWidgetItem *item = new QTreeWidgetItem(m_ui.matchedView);
+        item->setText(0, QString::fromUtf8(elem->getName().c_str()));
+        item->setText(1, FWObjectPropertiesFactory::getObjectProperties(elem));
+        item->setData(0, Qt::UserRole, QVariant(elem->getId()));
+        QString icon = ":/Icons/";
+        icon += elem->getTypeName().c_str();
+        icon += "/icon-ref";
 
-            if ((type == TYPE_ANY || elem->getTypeName() == type) &&
-                (keyword == KEYWORD_ANY || keywords.count(keyword) > 0)) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(m_ui.matchedView);
-                item->setText(0, QString::fromUtf8(elem->getName().c_str()));
-                item->setText(1, FWObjectPropertiesFactory::getObjectProperties(elem));
-                item->setData(0, Qt::UserRole, QVariant(elem->getId()));
-                QString icon = ":/Icons/";
-                icon += elem->getTypeName().c_str();
-                icon += "/icon-ref";
-
-                QPixmap pixmap;
-                if (!QPixmapCache::find(icon, pixmap)) {
-                    pixmap.load(icon);
-                    QPixmapCache::insert(icon, pixmap);
-                }
-                item->setIcon(0, QIcon(pixmap));
-
-                m_ui.matchedView->addTopLevelItem(item);
-                break;
-            }
+        QPixmap pixmap;
+        if (!QPixmapCache::find(icon, pixmap)) {
+            pixmap.load(icon);
+            QPixmapCache::insert(icon, pixmap);
         }
+        item->setIcon(0, QIcon(pixmap));
+
+        m_ui.matchedView->addTopLevelItem(item);
     }
 }
 
@@ -318,8 +306,8 @@ void DynamicGroupDialog::addMatchClicked()
     int newRow = m_model->rowCount();
     QList<QStandardItem *> items;
     items << new QStandardItem("")
-          << new QStandardItem(TYPE_NONE)
-          << new QStandardItem(KEYWORD_NONE);
+          << new QStandardItem(DynamicGroup::TYPE_NONE)
+          << new QStandardItem(DynamicGroup::KEYWORD_NONE);
     m_model->insertRow(newRow, items);
 
     m_ui.criteriaView->openPersistentEditor(m_model->index(newRow, 0));

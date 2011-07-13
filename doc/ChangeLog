@@ -1,3 +1,10 @@
+2011-07-13  theron	<theron@netcitadel.com>
+	* Fixed #2505: make sure that objects that we show are members of
+	a dynamic group are actually objects.  Previously we were showing
+	stuff like FirewallOptions objects.  To make sure that dynamic
+	group expansion is done the same way in the UI and for the
+	compiler, also fixed #2502 (consolidate logic for DynamicGroup).
+
 2011-07-11  theron	<theron@netcitadel.com>
 	* Implemented #2514, support for address table alternate paths.
 	There's a "data directory" setting under user preferences.  If the

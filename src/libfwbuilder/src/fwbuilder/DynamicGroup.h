@@ -65,6 +65,13 @@ class DynamicGroup : public MultiAddress
      * verify whether given object type is approppriate as a child
      */
     virtual bool    validateChild(FWObject *o);
+
+    bool isMemberOfGroup(FWObject *obj);
+
+    static const char *TYPE_NONE;
+    static const char *TYPE_ANY;
+    static const char *KEYWORD_NONE;
+    static const char *KEYWORD_ANY;
 };
 
 }
