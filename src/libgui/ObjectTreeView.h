@@ -72,6 +72,8 @@ class ObjectTreeView : public QTreeWidget
     QSet<QTreeWidgetItem*> resolveParents(QTreeWidgetItem*);
 
     QString filter;
+    QSet<QStringList> expandedState;
+    void doExpandedState(bool save, QStringList &list, QTreeWidgetItem *item);
 
 protected:
 

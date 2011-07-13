@@ -15,6 +15,12 @@
 	filter, all child elements (e.g. policies, interfaces) will be
 	displayed as well.
 
+	* Fixed #2523: save the expanded/collapsed state of the tree when
+	the user starts typing something into the quick filter.  When the
+	quick filter is cleared, re-expand any items that started off
+	expanded (so we get the union of expanded items displayed by quick
+	filter plus what the user started with expanded).
+
 2011-07-11  theron	<theron@netcitadel.com>
 	* Implemented #2514, support for address table alternate paths.
 	There's a "data directory" setting under user preferences.  If the

@@ -845,11 +845,13 @@ void ObjectTreeView::updateFilter()
 }
 
 static bool filterMatches(const QString &text,
-                          ObjectTreeViewItem *item,
-                          FWObject *obj)
+                          ObjectTreeViewItem *item)
 {
     if (text.isEmpty()) return true;
     if (item->text(0).contains(text, Qt::CaseInsensitive)) return true;
+
+    if (item->getUserFolderParent() != 0) return false;
+    FWObject *obj = item->getFWObject();
 
     QByteArray utf8 = text.toUtf8();
     set<string> keys = obj->getKeywords();
@@ -862,22 +864,59 @@ static bool filterMatches(const QString &text,
     return false;
 }
 
+static uint qHash(const QStringList &list)
+{
+    uint ret = 0;
+    for (int ii = 0; ii < list.size(); ii++) {
+        ret += qHash(list.at(ii));
+    }
+    return ret;
+}
+
+void ObjectTreeView::doExpandedState(bool save, QStringList &list,
+                                     QTreeWidgetItem *item)
+{
+    list.append(item->text(0));
+    if (save) {
+        if (item->isExpanded()) expandedState.insert(list);
+    } else {
+        if (expandedState.contains(list)) item->setExpanded(true);
+    }
+
+    for (int ii = 0; ii < item->childCount(); ii++) {
+        doExpandedState(save, list, item->child(ii));
+    }
+    list.removeLast();
+}
+
 
 void ObjectTreeView::setFilter(QString text)
 {
+    if (filter.isEmpty() && !text.isEmpty()) {
+        QStringList list;
+        for (int ii = 0; ii < topLevelItemCount(); ii++) {
+            doExpandedState(true, list, topLevelItem(ii));
+        }
+    } else if (text.isEmpty() && !filter.isEmpty()) {
+        QStringList list;
+        for (int ii = 0; ii < topLevelItemCount(); ii++) {
+            doExpandedState(false, list, topLevelItem(ii));
+        }
+        expandedState.clear();
+    }
+    filter = text;
+
     if (fwbdebug)
         qDebug() << "ObjectTreeView::setFilter " << text;
 
     list<QTreeWidgetItem *> expand;
     for (QTreeWidgetItemIterator wit(this); *wit; ++wit) {
         ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem *>(*wit);
-        if (otvi->getUserFolderParent() != 0) continue;
-        FWObject *obj = otvi->getFWObject();
 
-        if (filterMatches(text, otvi, obj)) {
+        if (filterMatches(text, otvi)) {
             (*wit)->setHidden(false);
 
-            if (Firewall::cast(obj) != 0) {
+            if (Firewall::cast(otvi->getFWObject()) != 0) {
                 expand.push_back(otvi);
             }
 
