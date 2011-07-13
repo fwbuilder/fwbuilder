@@ -21,6 +21,10 @@
 	expanded (so we get the union of expanded items displayed by quick
 	filter plus what the user started with expanded).
 
+	* Tried to fix #2507: set a size for the "type" column in the
+	dynamic group dialog (on some platforms it comes out so narrow you
+	can't see it, despite it having ResizeToContents).
+
 2011-07-11  theron	<theron@netcitadel.com>
 	* Implemented #2514, support for address table alternate paths.
 	There's a "data directory" setting under user preferences.  If the

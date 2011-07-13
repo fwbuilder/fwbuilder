@@ -240,9 +240,14 @@ void DynamicGroupDialog::loadObjFilter()
     }
 
     QHeaderView *header = m_ui.criteriaView->horizontalHeader();
+    /* Try to force at least some minimum size, as the
+       ResizeToContents doesn't always seem to work */
+    header->resizeSection(0, 35);
+    header->resizeSection(1, 120);
+    header->setStretchLastSection(true);
+
     header->setResizeMode(0, QHeaderView::ResizeToContents);
     header->setResizeMode(1, QHeaderView::ResizeToContents);
-    header->setResizeMode(2, QHeaderView::Stretch);
 
     m_reloadObjFilter = false;
     m_loadedObjFilter = filter;
