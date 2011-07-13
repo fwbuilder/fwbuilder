@@ -343,6 +343,7 @@ public:
      *   Returns root of the objects tree this object is part of
      */
     FWObjectDatabase* getRoot() const;
+    int getDistanceFromRoot() const;    /* How many parents does this have? */
 
     /**
      * Sets pointer to the database root

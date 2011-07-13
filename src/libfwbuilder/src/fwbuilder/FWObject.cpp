@@ -554,6 +554,15 @@ FWObjectDatabase* FWObject::getRoot() const
     return dbroot;
 }
 
+int FWObject::getDistanceFromRoot() const
+{
+    int count = 0;
+    for (FWObject *obj = getParent(); obj != 0; obj = obj->getParent()) {
+        count++;
+    }
+    return count;
+}
+
 class pathAccumulator : public string
 {
     public:

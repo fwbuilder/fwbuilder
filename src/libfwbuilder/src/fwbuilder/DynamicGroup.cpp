@@ -162,22 +162,8 @@ void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
 
 static bool isInDeletedObjs(FWObject *obj)
 {
-    for ( ; ; ) {
-        obj = obj->getParent();
-        if (obj == 0) return false;
-        if (obj->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return true;
-    }
-}
-
-
-static int distanceFromRoot(FWObject *obj)
-{
-    int count = 0;
-    while (obj != 0) {
-        obj = obj->getParent();
-        count++;
-    }
-    return count;
+    FWObject *lib = obj->getLibrary();
+    return lib == 0 || lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID;
 }
 
 
@@ -192,8 +178,8 @@ bool DynamicGroup::isMemberOfGroup(FWObject *obj)
        groups (like "address tables") from within the fwbuilder
        library, so we rely on counting how deep we are in the tree
        instead. */
-    if (ObjectGroup::cast(obj) != 0 && distanceFromRoot(obj) <= 4) return false;
-
+    if (ObjectGroup::cast(obj) != 0 &&
+        obj->getDistanceFromRoot() <= 3) return false;
 
     const set<string> &keywords = obj->getKeywords();
 
