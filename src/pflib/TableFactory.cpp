@@ -238,7 +238,7 @@ string TableFactory::PrintTables()
                 string path =
                     atrt->getSourceNameAsPath(firewall->getOptionsObject());
                 if (path.empty()) {
-                    compiler->abort("Error: Empty path or data directory for address table: " + atrt->getName());
+                    compiler->abort("Error: Firewall's data directory not set for address table: " + atrt->getName());
                 }
                 
                 output << " file \"" << path << "\"";

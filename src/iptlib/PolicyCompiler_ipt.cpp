@@ -3896,6 +3896,10 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
             {
                 string path =
                     atrt->getSourceNameAsPath(compiler->getCachedFwOpt());
+                if (path.empty() && !atrt->getSourceName().empty()) {
+                    compiler->abort(rule, "Firewall's data directory not set for address table: " + atrt->getName());
+                    return true;
+                }
                 rule->setStr("address_table_file", path);
                 osconf->registerMultiAddressObject(atrt);
             }
@@ -3939,6 +3943,10 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
         nre->addRef( atrt );
 
         string path = atrt->getSourceNameAsPath(compiler->getCachedFwOpt());
+        if (path.empty() && !atrt->getSourceName().empty()) {
+            compiler->abort(rule, "Firewall's data directory not set for address table: " + atrt->getName());
+            return true;
+        }
         r->setStr("address_table_file", path);
 
         osconf->registerMultiAddressObject(atrt);
