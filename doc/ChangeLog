@@ -5,6 +5,10 @@
 	group expansion is done the same way in the UI and for the
 	compiler, also fixed #2502 (consolidate logic for DynamicGroup).
 
+	* Took out checks (added for #2514) for empty path in an Address
+	Table object.  It's valid to have an empty path for the situation
+	where a user wants to use an ipset in place of the table.
+
 2011-07-11  theron	<theron@netcitadel.com>
 	* Implemented #2514, support for address table alternate paths.
 	There's a "data directory" setting under user preferences.  If the
