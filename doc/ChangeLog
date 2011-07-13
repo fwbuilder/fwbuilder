@@ -11,6 +11,10 @@
 	However, if there is a path and it comes out blank in
 	getSourceNameAsPath() then that means %DATADIR% expansion failed.
 
+	* Fixed #2440.  Now when a firewall is matched in the quick
+	filter, all child elements (e.g. policies, interfaces) will be
+	displayed as well.
+
 2011-07-11  theron	<theron@netcitadel.com>
 	* Implemented #2514, support for address table alternate paths.
 	There's a "data directory" setting under user preferences.  If the

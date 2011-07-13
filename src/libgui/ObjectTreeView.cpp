@@ -868,6 +868,7 @@ void ObjectTreeView::setFilter(QString text)
     if (fwbdebug)
         qDebug() << "ObjectTreeView::setFilter " << text;
 
+    list<QTreeWidgetItem *> expand;
     for (QTreeWidgetItemIterator wit(this); *wit; ++wit) {
         ObjectTreeViewItem *otvi = dynamic_cast<ObjectTreeViewItem *>(*wit);
         if (otvi->getUserFolderParent() != 0) continue;
@@ -875,6 +876,10 @@ void ObjectTreeView::setFilter(QString text)
 
         if (filterMatches(text, otvi, obj)) {
             (*wit)->setHidden(false);
+
+            if (Firewall::cast(obj) != 0) {
+                expand.push_back(otvi);
+            }
 
             QTreeWidgetItem *parent = (*wit)->parent();
             while (parent != 0) {
@@ -886,6 +891,14 @@ void ObjectTreeView::setFilter(QString text)
         }
     }
 
+    list<QTreeWidgetItem *>::const_iterator iter;
+    for (iter = expand.begin(); iter != expand.end(); ++iter) {
+        QTreeWidgetItem *item = *iter;
+        item->setHidden(false);
+        for (int ii = 0; ii < item->childCount(); ii++) {
+            expand.push_back(item->child(ii));
+        }
+    }
+
     if (!text.isEmpty()) this->expandAll();
 }
-
