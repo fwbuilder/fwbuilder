@@ -137,7 +137,10 @@ void instDialogInstallTest::initTestCase()
 
 void instDialogInstallTest::cleanupTestCase()
 {
-    setenv("SSH_AUTH_SOCK", ssh_auth_sock, 1);
+    if (ssh_auth_sock != NULL)
+        setenv("SSH_AUTH_SOCK", ssh_auth_sock, 1);
+    else
+        unsetenv("SSH_AUTH_SOCK");
     QDir().rmdir("test_install");
     QFile::remove("test1.fw");
 }
@@ -356,7 +359,10 @@ void instDialogInstallTest::testInstall2()
     {
         QVERIFY(list->topLevelItem(i)->text(1) == "Failure");
     }
-    setenv("SSH_AUTH_SOCK", ssh_auth_sock, 1);
+    if (ssh_auth_sock != NULL)
+        setenv("SSH_AUTH_SOCK", ssh_auth_sock, 1);
+    else
+        unsetenv("SSH_AUTH_SOCK");
     QString text = dlg->findChild<QTextBrowser*>("procLogDisplay")->toPlainText();
     QVERIFY(!text.isEmpty());
 

@@ -156,7 +156,7 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 
 void instDialogClusterTest::closeContextMenu()
 {
-    QMenu *menu;
+    QMenu *menu = NULL;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -177,7 +177,7 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om,
     QPoint item_pos = findItemPos(item, tree);
     om->contextMenuRequested(item_pos);
 
-    QMenu *menu;
+    QMenu *menu = NULL;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")

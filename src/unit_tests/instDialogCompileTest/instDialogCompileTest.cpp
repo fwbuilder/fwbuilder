@@ -79,7 +79,7 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 
 void instDialogCompileTest::closeContextMenu()
 {
-    QMenu *menu;
+    QMenu *menu = NULL;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")

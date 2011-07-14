@@ -92,11 +92,13 @@ void GeneratedScriptTest::runCompiler(const std::string &test_file,
 void GeneratedScriptTest::assertDirsEqual(const std::string &left_dir,
                                           const std::string &right_dir)
 {
+    QStringList leftList, rightList;
     QDirIterator leftIt(QString (left_dir.c_str()), QDir::Files, QDirIterator::Subdirectories);
     QDirIterator rightIt(QString (right_dir.c_str()), QDir::Files, QDirIterator::Subdirectories);
     while (leftIt.hasNext() && rightIt.hasNext())
     {
-        assertFilesEqual(leftIt.next().toStdString(), rightIt.next().toStdString());
+        leftList += leftIt.next();
+        rightList += rightIt.next();
     }
 
     if (leftIt.hasNext())
@@ -106,6 +108,16 @@ void GeneratedScriptTest::assertDirsEqual(const std::string &left_dir,
     if (rightIt.hasNext())
     {
         CPPUNIT_FAIL("Directory " + right_dir + " contains more files than " + left_dir);
+    }
+
+    leftList.sort();
+    rightList.sort();
+
+    QList<QString>::const_iterator i, j;
+    for (i = leftList.constBegin(), j = rightList.constBegin();
+         i != leftList.constEnd();
+         ++i, ++j) {
+        assertFilesEqual(QString(*i).toStdString(), QString(*j).toStdString());
     }
 }
 
