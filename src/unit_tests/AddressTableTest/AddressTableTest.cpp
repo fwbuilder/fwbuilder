@@ -90,7 +90,7 @@ void AddressTableTest::positiveTest()
     address_tables_group->add(nobj);
     nobj->setName("TestADT");
     nobj->setSourceName("addresstable-1.txt");
-    nobj->loadFromSource(false, true);
+    nobj->loadFromSource(false, NULL, true);
 
     list<FWObject*>::const_iterator t = nobj->begin();
     Network *net;
@@ -120,7 +120,7 @@ void AddressTableTest::negativeTest1()
     address_tables_group->add(nobj);
     nobj->setName("TestADT2");
     nobj->setSourceName("addresstable-2.txt");
-    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, true), FWException);
+    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, NULL, true), FWException);
 }
 
 void AddressTableTest::negativeTest2()
@@ -134,6 +134,6 @@ void AddressTableTest::negativeTest2()
     address_tables_group->add(nobj);
     nobj->setName("TestADT3");
     nobj->setSourceName("addresstable-not-found.txt");
-    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, true), FWException);
+    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, NULL, true), FWException);
 }
 
