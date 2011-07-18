@@ -103,7 +103,6 @@ void AttachedNetworksDialog::loadFWObject(FWObject *o)
         addAddressToList(addr->getNetworkAddressPtr(), addr->getNetmaskPtr());
     }
 
-
     init=false;
 }
 

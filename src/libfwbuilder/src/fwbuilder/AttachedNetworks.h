@@ -34,7 +34,7 @@ class AttachedNetworks : public MultiAddress
 {
     private:
     
-    void addNetworkObject(const InetAddr *ip_addr, const InetAddr *ip_netm);
+    void addNetworkObject(const InetAddrMask &addr_mask);
     
     public:
 

@@ -70,9 +70,11 @@ xmlNodePtr AttachedNetworks::toXML(xmlNodePtr parent) throw(FWException)
 }
 
 
-void AttachedNetworks::addNetworkObject(const InetAddr *ip_addr,
-                                        const InetAddr *ip_netm)
+void AttachedNetworks::addNetworkObject(const InetAddrMask &addr_mask)
 {
+    const InetAddr *ip_addr = addr_mask.getAddressPtr();
+    const InetAddr *ip_netm = addr_mask.getNetmaskPtr();
+
     FWObject *new_obj = NULL;
 
     if (ip_addr->isV4())
@@ -108,8 +110,8 @@ void AttachedNetworks::addNetworkObject(const InetAddr *ip_addr,
  * Read addresses of the parent interface and build a group of
  * corresponding networks.
  */
-void AttachedNetworks::loadFromSource(bool ipv6, FWOptions *options,
-                                      bool inTestMode) throw(FWException)
+void AttachedNetworks::loadFromSource(bool ipv6, FWOptions*, bool)
+    throw(FWException)
 {
     Interface *parent_intf = Interface::cast(getParent());
     assert(parent_intf);
@@ -117,7 +119,7 @@ void AttachedNetworks::loadFromSource(bool ipv6, FWOptions *options,
     string c_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
 
     // assemble list of address/netmask pairs to eliminate duplicates
-    map<string, Address*> networks;
+    map<string, InetAddrMask> networks;
 
     FWObjectTypedChildIterator k = parent_intf->findByType(c_type);
     for ( ; k!=k.end(); ++k)
@@ -133,14 +135,12 @@ void AttachedNetworks::loadFromSource(bool ipv6, FWOptions *options,
         {
             net << ip_net_addr->toString() << "/" << ip_netm->toString();
         }
-        networks[net.str()] = addr;
+        networks[net.str()] = InetAddrMask(*ip_net_addr, *ip_netm);
     }
 
-    for (map<string, Address*>::iterator it=networks.begin(); it!=networks.end(); ++it)
+    for (map<string, InetAddrMask>::iterator it=networks.begin(); it!=networks.end(); ++it)
     {
-        const InetAddr *ip_netm = it->second->getNetmaskPtr();
-        const InetAddr *ip_net_addr = it->second->getNetworkAddressPtr();
-        addNetworkObject(ip_net_addr, ip_netm);
+        addNetworkObject(it->second);
     }
 }
 
