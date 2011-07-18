@@ -1,3 +1,8 @@
+2011-07-18  theron	<theron@netcitadel.com>
+	* Fixed #2511: make sure auto-scroll of items in ObjectTreeView
+	works, otherwise it's impossible to move an item into a
+	user-defined folder if there are lots of intervening items.
+
 2011-07-13  theron	<theron@netcitadel.com>
 	* Fixed #2505: make sure that objects that we show are members of
 	a dynamic group are actually objects.  Previously we were showing

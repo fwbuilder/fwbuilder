@@ -154,7 +154,8 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     setMinimumSize( QSize( 100, 0 ) );
 
-    setAutoScroll( TRUE );
+    setAutoScroll(true);
+    setAutoScrollMargin(50);
     setAllColumnsShowFocus( TRUE );
     setSelectionMode( ExtendedSelection );
     setAcceptDrops( true );
@@ -517,6 +518,9 @@ static bool isValidDropTarget(QTreeWidgetItem *item, list<FWObject *> &objs)
 
 void ObjectTreeView::dragMoveEvent(QDragMoveEvent *ev)
 {
+    /* Call the parent so that auto-scrolling works properly */
+    QTreeWidget::dragMoveEvent(ev);
+
     list<FWObject*> objs;
     if (ev->source() != this || !FWObjectDrag::decode(ev, objs) ||
         !isValidDropTarget(itemAt(ev->pos()), objs)) {
