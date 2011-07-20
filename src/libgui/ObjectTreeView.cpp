@@ -535,6 +535,9 @@ void ObjectTreeView::dragMoveEvent(QDragMoveEvent *ev)
 
 void ObjectTreeView::dropEvent(QDropEvent *ev)
 {
+    // only accept drops from the same instance of fwbuilder
+    if (ev->source() == NULL) return;
+
     ObjectTreeViewItem *dest =
         dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->pos()));
     if (dest == 0) {

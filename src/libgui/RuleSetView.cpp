@@ -2111,6 +2111,8 @@ void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 
 void RuleSetView::dropEvent(QDropEvent *ev)
 {
+    // only accept drops from the same instance of fwbuilder
+    if (ev->source() == NULL) return;
 
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
