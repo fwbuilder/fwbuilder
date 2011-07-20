@@ -909,10 +909,10 @@ void RuleSetView::editSelected(const QModelIndex& index)
             mw,
             new showObjectInTreeEvent(
                 project->getFileName(), fwosm->selectedObject->getId()));
-    }
 
-    if (!mw->isEditorVisible()) mw->showEditor();
-    switchObjectInEditor(index);
+        if (!mw->isEditorVisible()) mw->showEditor();
+        switchObjectInEditor(index);
+    }
 }
 
 void RuleSetView::editSelected()
