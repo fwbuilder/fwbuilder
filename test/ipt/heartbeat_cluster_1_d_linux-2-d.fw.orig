@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.0.3547
+#  Firewall Builder  fwb_ipt v5.0.0.3564
 #
-#  Generated Fri Jun  3 17:29:48 2011 PDT by vadim
+#  Generated Tue Jul 19 19:05:24 2011 PDT by vadim
 #
 # files: * heartbeat_cluster_1_d_linux-2-d.fw firewall.sh
 #
@@ -18,8 +18,6 @@
 
 # heartbeat_cluster_1_d:Policy:7: error: Can not build rule using dynamic interface 'eth0' of the object 'linux-1-d' because its address in unknown.
 # heartbeat_cluster_1_d:Policy:7: error: Can not build rule using dynamic interface 'eth0' of the object 'linux-1-d' because its address in unknown.
-
-# linux-2-d::: warning: Can not add virtual address for object eth0
 
 
 FWBDEBUG=""
@@ -751,7 +749,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri Jun  3 17:29:48 2011 by vadim"
+        log "Activating firewall script generated Tue Jul 19 19:05:24 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

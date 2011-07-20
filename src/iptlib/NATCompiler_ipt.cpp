@@ -877,14 +877,17 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
         cluster = Cluster::cast(
             compiler->dbcopy->findInIndex(compiler->fw->getInt("parent_cluster_id")));
 
-    Address *a=NULL;
+    Address *a = NULL;
 
     if (rule->getRuleType()==NATRule::SNAT || rule->getRuleType()==NATRule::DNAT) 
     {
         if (rule->getRuleType()==NATRule::SNAT)   
-            a=compiler->getFirstTSrc(rule);
+            a = compiler->getFirstTSrc(rule);
         else
-            a=compiler->getFirstODst(rule);
+            a = compiler->getFirstODst(rule);
+
+        Interface *iface = Interface::cast(a);
+        if (iface && ! iface->isRegular()) return true;
 
         if ( ! a->isAny() &&
              ! compiler->complexMatch(a, compiler->fw) &&
@@ -894,7 +897,8 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
             {
                 compiler->warning(
                         rule, 
-                        string("Adding of virtual address for address range is not implemented (object ") +
+                        string("Adding of virtual address for address range "
+                               "is not implemented (object ") +
                         a->getName() + ")" );
             } else
                 compiler->osconfigurator->addVirtualAddressForNAT( a );

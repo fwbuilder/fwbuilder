@@ -1,3 +1,10 @@
+2011-07-19  vadim  <vadim@netcitadel.com>
+
+	* NATCompiler_ipt.cpp (processNext): fixed SF bug 3371301 "Error
+	compiling with VLAN and masquerade". Iptables NAT rules with vlan
+	interface configured as "dynamic" and no ip address in Translated
+	Source caused compiler crash.
+
 2011-07-18  theron	<theron@netcitadel.com>
 	* Fixed #2511: make sure auto-scroll of items in ObjectTreeView
 	works, otherwise it's impossible to move an item into a

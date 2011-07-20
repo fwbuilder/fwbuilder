@@ -245,11 +245,13 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
 void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
 {
     FWOptions* options=fw->getOptionsObject();
-    if ( options->getBool("manage_virtual_addr") ) 
+    if ( options->getBool("manage_virtual_addr") )
     {
+        const InetAddr *addr_addr = addr->getAddressPtr();
+
         if (virtual_addresses.empty() || 
-            find(virtual_addresses.begin(),virtual_addresses.end(),
-                 *(addr->getAddressPtr())) == virtual_addresses.end()) 
+            find(virtual_addresses.begin(),
+                 virtual_addresses.end(), *addr_addr) == virtual_addresses.end())
         {
             FWObject *vaddr = findAddressFor(addr, fw );
             if (vaddr!=NULL)
@@ -262,7 +264,7 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                     Address::cast(vaddr)->getNetmaskPtr();
 
                 addresses.push_back(QString("%1/%2").
-                                    arg(addr->getAddressPtr()->toString().c_str()).
+                                    arg(addr_addr->toString().c_str()).
                                     arg(vaddr_netm->getLength()));
 
                 if (virtual_addresses_for_nat.count(iface->getName()) > 0)
@@ -271,11 +273,10 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                 virtual_addresses_for_nat[iface->getName()] =
                     addresses.join(" ").toStdString();
         
-                virtual_addresses.push_back(*(addr->getAddressPtr()));
+                virtual_addresses.push_back(*(addr_addr));
                 registerVirtualAddressForNat();
             } else
-                warning("Can not add virtual address for object " + 
-                        addr->getName() );
+                warning("Can not add virtual address for object " + addr->getName());
         }
         return;
     }
