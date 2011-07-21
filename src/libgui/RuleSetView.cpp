@@ -879,7 +879,8 @@ void RuleSetView::addRowMenuItemsToMenu(QMenu *menu) const
 void RuleSetView::itemDoubleClicked(const QModelIndex& index)
 {
     if (!index.isValid()) return;
-    if (index.row()<0) return;
+    if (index.row() < 0) return;
+    if (index.column() == 0) return; // double click on rule number does nothing
 
     // ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
     // if (fwosm->selectedObject!=NULL)
@@ -909,10 +910,10 @@ void RuleSetView::editSelected(const QModelIndex& index)
             mw,
             new showObjectInTreeEvent(
                 project->getFileName(), fwosm->selectedObject->getId()));
-
-        if (!mw->isEditorVisible()) mw->showEditor();
-        switchObjectInEditor(index);
     }
+
+    if (!mw->isEditorVisible()) mw->showEditor();
+    switchObjectInEditor(index);
 }
 
 void RuleSetView::editSelected()

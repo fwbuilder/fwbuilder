@@ -1,3 +1,12 @@
+2011-07-20  vadim  <vadim@netcitadel.com>
+
+	* RuleSetView.cpp (itemDoubleClicked): fixes #2566, #2618 Fix for
+	the regression introduced when I worked on #2566 "Double-clicking
+	on rule when program first starts results in empty editor pane".
+	Double click on the rule number should not do anything, but double
+	click on rule options, comment and other fields should open the
+	editor. Change done for #2566 broke this.
+
 2011-07-20  Vadim Kurland  <vadim@netcitadel.com>
 
 	* ObjectMatcher.cpp (dispatch): removed optimization in
