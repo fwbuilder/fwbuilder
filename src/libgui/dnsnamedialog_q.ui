@@ -49,7 +49,7 @@
         <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <layout class="QFormLayout" name="formLayout">
+        <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="textLabel1">
            <property name="text">
@@ -117,12 +117,25 @@ Preferences dialog, tab &quot;Objects&quot;</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="3" column="0">
           <widget class="QRadioButton" name="r_runtime">
            <property name="text">
             <string>Run Time</string>
            </property>
           </widget>
+         </item>
+         <item row="4" column="0">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>66</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
