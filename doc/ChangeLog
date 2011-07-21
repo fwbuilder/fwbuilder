@@ -1,5 +1,9 @@
 2011-07-21  vadim  <vadim@netcitadel.com>
 
+	* XMLTools.cpp (convert): see #2577 Updated error message that
+	appears when user tries to open .fwb file created by the future
+	version of fwbuilder.
+
 	* TextFileEditor.cpp (save): fixes #2567 "If file doesn't exist
 	when clicking 'edit file', then you have to hit save button twice".
 	The bug affected "edit file" function in the Address Table object

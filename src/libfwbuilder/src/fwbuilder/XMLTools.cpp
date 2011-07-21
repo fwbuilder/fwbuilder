@@ -780,13 +780,17 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         if(c<0)
         {
             string err;
-            err = string("Data file '");
+            err += string("The file '");
             err += file_name;
-            err += string("' was created by the future version of Firewall Builder.\n");
-            err += string(" File version: ");
-            err += vers;
+            err += string("' ");
+            err += string("was created by a newer version of "
+                          "Firewall Builder, please upgrade in order to "
+                          "open this file.");
             err += string("\n");
-            err += string(" Current libfwbuilder data format version: ");
+            err += string("\n");
+            err += string("DTD version in the file: ");
+            err += vers;
+            err += string(" current: ");
             err += current_version;
             throw FWException(err);
         }
