@@ -1,5 +1,9 @@
 2011-07-20  vadim  <vadim@netcitadel.com>
 
+	* FWBTree.cpp (init_statics): see #2619 "Attempting to
+	copy-and-paste a tag service results in an error". Pasting of a
+	TagService object to the "Tag Services" group did not work.
+
 	* RuleSetView.cpp (itemDoubleClicked): fixes #2566, #2618 Fix for
 	the regression introduced when I worked on #2566 "Double-clicking
 	on rule when program first starts results in empty editor pane".

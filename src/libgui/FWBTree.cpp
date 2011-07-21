@@ -209,7 +209,7 @@ void FWBTree::init_statics()
         systemGroupNames[UDPService::TYPENAME]=    "UDP"           ;
 
         systemGroupTypes[TagService::TYPENAME]=    ServiceGroup::TYPENAME;
-        systemGroupNames[TagService::TYPENAME]=    "TagService"    ;
+        systemGroupNames[TagService::TYPENAME]=    "TagServices"    ;
 
         systemGroupTypes[UserService::TYPENAME]=   ServiceGroup::TYPENAME;
         systemGroupNames[UserService::TYPENAME]=   "Users"    ;
