@@ -257,17 +257,21 @@ bool RoutingCompiler::singleAdressInRGtw::processNext()
 }
 
 // recursive network validity check
-bool RoutingCompiler::validateNetwork::checkValidNetwork(FWObject *o) {
-    
-    if( Network::cast(o) != NULL) {
+bool RoutingCompiler::validateNetwork::checkValidNetwork(FWObject *o)
+{
+    if( Network::cast(o) != NULL)
+    {
         return ((Network *)o)->isValidRoutingNet();
     }
-    
+
     /* if we have a group containing networks and groups, we want to check them too */
-    if( ObjectGroup::cast(o) != NULL) {
-        
-        FWObjectTypedChildIterator child_i = o->findByType(FWObjectReference::TYPENAME);
-        for ( ; child_i != child_i.end(); ++child_i) {
+    if( ObjectGroup::cast(o) != NULL)
+    {
+        FWObjectTypedChildIterator child_i =
+            o->findByType(FWObjectReference::TYPENAME);
+
+        for ( ; child_i != child_i.end(); ++child_i)
+        {
             FWObjectReference *child_r = FWObjectReference::cast(*child_i);
             assert(child_r);
             FWObject *child = child_r->getPointer();
@@ -276,12 +280,16 @@ bool RoutingCompiler::validateNetwork::checkValidNetwork(FWObject *o) {
             ObjectGroup *group;
             
             // Network
-            if ((network=Network::cast(child)) != NULL) {
-                if (checkValidNetwork(network) == false) {
+            if ((network=Network::cast(child)) != NULL)
+            {
+                if (checkValidNetwork(network) == false)
+                {
                     return false;
                 }
-            } else if ((group=ObjectGroup::cast(child)) != NULL) { // Group
-                if (checkValidNetwork(group) == false) {
+            } else if ((group=ObjectGroup::cast(child)) != NULL)
+            { // Group
+                if (checkValidNetwork(group) == false)
+                {
                     return false;
                 }
             }
@@ -301,8 +309,17 @@ bool RoutingCompiler::validateNetwork::processNext()
     RuleElementRDst *dstrel=rule->getRDst();
     FWObject *o = FWReference::cast(dstrel->front())->getPointer();
      
-    if( checkValidNetwork(o) == false) {
-    
+    // currently we do not support run-time DNSName and AddressTable objects
+    // in routing rules.
+    MultiAddress *ma = MultiAddress::cast(o);
+    if (ma && ma->isRunTime()) 
+    {
+        compiler->abort(rule, "Use of dynamic run-time objects "
+                        "as destination in routing rules is not supported.");
+    }
+
+    if( checkValidNetwork(o) == false)
+    {
         string msg;
         msg = "Object \"" + o->getName() +
             "\" used as destination in the routing rule " +

@@ -1,5 +1,10 @@
 2011-07-21  vadim  <vadim@netcitadel.com>
 
+	* RoutingCompiler.cpp (processNext): fixes #2565 "Run-time dns
+	name or address table in routing policy -> crash". Compiler for PF
+	crashed if user placed run-time DNSName object in "destination"
+	of a routing rule.
+
 	* RuleSetModel.cpp (initRule): see #2515 Expanded set of options
 	the user can change to pre-set parameters in the new policy rules
 	they create. Now user can set default values for action ("Deny" or
