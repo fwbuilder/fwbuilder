@@ -120,11 +120,16 @@ void InterfaceDialog::loadFWObject(FWObject *o)
          * and right after the interface has been created.
          */
         FWObject *parent_host = Host::getParentHost(s);
-        interfaceProperties *int_prop =
-            interfacePropertiesObjectFactory::getInterfacePropertiesObject(
-                parent_host);
-        int_prop->guessSubInterfaceTypeAndAttributes(s);
-        delete int_prop;
+        if (parent_host)
+        {
+            // parent_host may be NULL if interface object is located
+            // in the Deleted Objects library
+            interfaceProperties *int_prop =
+                interfacePropertiesObjectFactory::getInterfacePropertiesObject(
+                    parent_host);
+            int_prop->guessSubInterfaceTypeAndAttributes(s);
+            delete int_prop;
+        }
     }
 
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
@@ -163,117 +168,118 @@ void InterfaceDialog::loadFWObject(FWObject *o)
     }
 
     FWObject *f = Host::getParentHost(s);
-    //FWObject *f = s->getParentHost();
-
-    m_dialog->advancedconfig->setEnabled(true);
+    if (f)
+    {
+        m_dialog->advancedconfig->setEnabled(true);
 
 /* if parent is a host, hide firewall related settings */
-    if (Host::isA(f))
-    {
-        m_dialog->management->setEnabled(false);
-        m_dialog->unprotected->setEnabled(false);
-        m_dialog->dedicated_failover->setEnabled(false);
-        m_dialog->seclevel->setEnabled(false);
-        m_dialog->seclevelLabel->setEnabled(false);
-        m_dialog->netzone->setEnabled(false);
-        m_dialog->netzoneLabel->setEnabled(false);
-        // Can;t let user try to open "advanced interface settings"
-        // dialog because Host does not have "platform" and "host_OS"
-        // attributes but that dialog depends on them.
-        m_dialog->advancedconfig->setEnabled(false);
-    }
-
-    bool supports_security_levels = false;
-    bool supports_network_zones   = false;
-    bool supports_unprotected     = false;
-    bool supports_advanced_ifaces = false;
-
-    try 
-    {
-        // platform specific
-        supports_security_levels =
-            Resources::getTargetCapabilityBool(
-                f->getStr("platform"), "security_levels");
-        supports_network_zones =
-            Resources::getTargetCapabilityBool(
-                f->getStr("platform"), "network_zones");
-        supports_unprotected =
-            Resources::getTargetCapabilityBool(
-                f->getStr("platform"), "unprotected_interfaces");
-
-        // OS specific
-        supports_advanced_ifaces =
-            Resources::getTargetCapabilityBool(
-                f->getStr("host_OS"), "supports_advanced_interface_options");
-
-        // disable advanced options dialog if this is main interface of a cluster
-        if (Cluster::isA(s->getParent())) supports_advanced_ifaces = false;
-
-    } catch (FWException &ex)  { }
-
-    if (fwbdebug)
-        qDebug() << "parent=" << f->getName().c_str()
-                 << "Firewall::isA(f)=" << Firewall::isA(f)
-                 << "host_OS=" << f->getStr("host_OS").c_str()
-                 << "supports_advanced_ifaces=" << supports_advanced_ifaces;
-
-
-/* if parent is a firewall or a fw cluster, it is more complex ... */
-    if (Firewall::isA(f) || Cluster::isA(f))
-    {
-        if (supports_security_levels)
+        if (Host::isA(f))
         {
-            m_dialog->seclevel->setEnabled(true);
-            m_dialog->seclevelLabel->setEnabled(true);
-            m_dialog->seclevel->setValue( obj->getInt("security_level") );
-        } else
-        {
+            m_dialog->management->setEnabled(false);
+            m_dialog->unprotected->setEnabled(false);
+            m_dialog->dedicated_failover->setEnabled(false);
             m_dialog->seclevel->setEnabled(false);
             m_dialog->seclevelLabel->setEnabled(false);
-            m_dialog->seclevel->setValue(0);
-        }
-
-        if (supports_unprotected)
-        {
-            m_dialog->unprotected->setEnabled(true);
-            m_dialog->unprotected->setChecked( obj->getBool("unprotected") );
-        } else
-        {
-            m_dialog->unprotected->setEnabled(false);
-        }
-
-        if (supports_advanced_ifaces)
-        {
-            m_dialog->advancedconfig->setEnabled(!o->isReadOnly());
-        } else
-        {
+            m_dialog->netzone->setEnabled(false);
+            m_dialog->netzoneLabel->setEnabled(false);
+            // Can;t let user try to open "advanced interface settings"
+            // dialog because Host does not have "platform" and "host_OS"
+            // attributes but that dialog depends on them.
             m_dialog->advancedconfig->setEnabled(false);
         }
 
-        // disable interface options group if this is main interface
-        // of a cluster. This applies to subinterfaces as
-        // well. Current implementation can not generate configuration
-        // code for interfaces and subinterfaces of member firewalls
-        // from cluster interface or subinterface objects
-        m_dialog->interfaceOptionsGroup->setEnabled(!Cluster::isA(f));
+        bool supports_security_levels = false;
+        bool supports_network_zones   = false;
+        bool supports_unprotected     = false;
+        bool supports_advanced_ifaces = false;
 
-        if (supports_network_zones)
+        try 
         {
-            m_dialog->netzone->setEnabled(true);
-            m_dialog->netzoneLabel->setEnabled(true);
+            // platform specific
+            supports_security_levels =
+                Resources::getTargetCapabilityBool(
+                    f->getStr("platform"), "security_levels");
+            supports_network_zones =
+                Resources::getTargetCapabilityBool(
+                    f->getStr("platform"), "network_zones");
+            supports_unprotected =
+                Resources::getTargetCapabilityBool(
+                    f->getStr("platform"), "unprotected_interfaces");
 
-            netzone_manager->load(m_project->db());
+            // OS specific
+            supports_advanced_ifaces =
+                Resources::getTargetCapabilityBool(
+                    f->getStr("host_OS"), "supports_advanced_interface_options");
 
-            int id = FWObjectDatabase::getIntId(obj->getStr("network_zone"));
-            if (id==-1) id = 0;
+            // disable advanced options dialog if this is main interface of a cluster
+            if (Cluster::isA(s->getParent())) supports_advanced_ifaces = false;
 
-            netzone_manager->packComboBox(m_dialog->netzone, id);
-        }
-        else
+        } catch (FWException &ex)  { }
+
+        if (fwbdebug)
+            qDebug() << "parent=" << f->getName().c_str()
+                     << "Firewall::isA(f)=" << Firewall::isA(f)
+                     << "host_OS=" << f->getStr("host_OS").c_str()
+                     << "supports_advanced_ifaces=" << supports_advanced_ifaces;
+
+
+/* if parent is a firewall or a fw cluster, it is more complex ... */
+        if (Firewall::isA(f) || Cluster::isA(f))
         {
-            m_dialog->netzone->setEnabled(false);
-            m_dialog->netzoneLabel->setEnabled(false);
-            m_dialog->netzone->clear();
+            if (supports_security_levels)
+            {
+                m_dialog->seclevel->setEnabled(true);
+                m_dialog->seclevelLabel->setEnabled(true);
+                m_dialog->seclevel->setValue( obj->getInt("security_level") );
+            } else
+            {
+                m_dialog->seclevel->setEnabled(false);
+                m_dialog->seclevelLabel->setEnabled(false);
+                m_dialog->seclevel->setValue(0);
+            }
+
+            if (supports_unprotected)
+            {
+                m_dialog->unprotected->setEnabled(true);
+                m_dialog->unprotected->setChecked( obj->getBool("unprotected") );
+            } else
+            {
+                m_dialog->unprotected->setEnabled(false);
+            }
+
+            if (supports_advanced_ifaces)
+            {
+                m_dialog->advancedconfig->setEnabled(!o->isReadOnly());
+            } else
+            {
+                m_dialog->advancedconfig->setEnabled(false);
+            }
+
+            // disable interface options group if this is main interface
+            // of a cluster. This applies to subinterfaces as
+            // well. Current implementation can not generate configuration
+            // code for interfaces and subinterfaces of member firewalls
+            // from cluster interface or subinterface objects
+            m_dialog->interfaceOptionsGroup->setEnabled(!Cluster::isA(f));
+
+            if (supports_network_zones)
+            {
+                m_dialog->netzone->setEnabled(true);
+                m_dialog->netzoneLabel->setEnabled(true);
+
+                netzone_manager->load(m_project->db());
+
+                int id = FWObjectDatabase::getIntId(obj->getStr("network_zone"));
+                if (id==-1) id = 0;
+
+                netzone_manager->packComboBox(m_dialog->netzone, id);
+            }
+            else
+            {
+                m_dialog->netzone->setEnabled(false);
+                m_dialog->netzoneLabel->setEnabled(false);
+                m_dialog->netzone->clear();
+            }
         }
     }
 
