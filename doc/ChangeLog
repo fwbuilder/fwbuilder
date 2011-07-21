@@ -1,5 +1,10 @@
 2011-07-21  vadim  <vadim@netcitadel.com>
 
+	* RuleSetModel.cpp (initRule): see #2515 Expanded set of options
+	the user can change to pre-set parameters in the new policy rules
+	they create. Now user can set default values for action ("Deny" or
+	"Accept"), direction, the "stateless" flag and logging.
+
 	* FindObjectWidget.cpp (matchAttr): see #2516 "Enhance Find to
 	include searching for IP addresses in ranges". Function "find"
 	now finds ip addresses inside address ranges.

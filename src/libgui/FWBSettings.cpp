@@ -400,6 +400,15 @@ void FWBSettings::init(bool force_first_time_run)
     if (!hasKey("Objects/PolicyRule/defaultLoggingState"))
         setBool("Objects/PolicyRule/defaultLoggingState", true);
 
+    if (!hasKey("Objects/PolicyRule/defaultStateful"))
+        setBool("Objects/PolicyRule/defaultStateful", true);
+
+    if (!hasKey("Objects/PolicyRule/defaultAction"))
+        setInt("Objects/PolicyRule/defaultAction", 0);
+
+    if (!hasKey("Objects/PolicyRule/defaultDirection"))
+        setInt("Objects/PolicyRule/defaultDirection", 0);
+
     if (!hasKey("Objects/Interface/autoconfigureInterfaces"))
         setBool("Objects/Interface/autoconfigureInterfaces", true);
 

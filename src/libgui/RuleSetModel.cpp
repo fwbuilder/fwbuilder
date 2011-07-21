@@ -1510,12 +1510,30 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
     PolicyRule *newrule_as_policy_rule = PolicyRule::cast(new_rule);
     if (newrule_as_policy_rule)
     {
+        FWOptions *ruleopt = newrule_as_policy_rule->getOptionsObject();
         newrule_as_policy_rule->setLogging(supports_logging &&
                      st->getBool("Objects/PolicyRule/defaultLoggingState"));
-        newrule_as_policy_rule->setAction(PolicyRule::Deny);
-        newrule_as_policy_rule->setDirection(PolicyRule::Both);
-        FWOptions *ruleopt = newrule_as_policy_rule->getOptionsObject();
+
+        switch (st->getInt("Objects/PolicyRule/defaultAction"))
+        {
+        case 1:
+            newrule_as_policy_rule->setAction(PolicyRule::Accept); break;
+        default:
+            newrule_as_policy_rule->setAction(PolicyRule::Deny); break;
+        }
+
+        switch (st->getInt("Objects/PolicyRule/defaultDirection"))
+        {
+        case 0:
+            newrule_as_policy_rule->setDirection(PolicyRule::Both); break;
+        case 1:
+            newrule_as_policy_rule->setDirection(PolicyRule::Inbound); break;
+        case 2:
+            newrule_as_policy_rule->setDirection(PolicyRule::Outbound); break;
+        }
+
         ruleopt->setBool("stateless",
+                         ! st->getBool("Objects/PolicyRule/defaultStateful") ||
                          getStatelessFlagForAction(newrule_as_policy_rule));
     }
 

@@ -162,6 +162,15 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->rulesLoggingOn->setChecked(
         st->getBool("Objects/PolicyRule/defaultLoggingState") );
 
+    m_dialog->rulesDefaultStateful->setChecked(
+        st->getBool("Objects/PolicyRule/defaultStateful"));
+
+    m_dialog->rulesDefaultAction->setCurrentIndex(
+        st->getInt("Objects/PolicyRule/defaultAction"));
+
+    m_dialog->rulesDefaultDirection->setCurrentIndex(
+        st->getInt("Objects/PolicyRule/defaultDirection"));
+
     m_dialog->autoconfigure_interfaces->setChecked(
         st->getBool("Objects/Interface/autoconfigureInterfaces") );
 
@@ -486,6 +495,17 @@ void PrefsDialog::accept()
 
     st->setBool("Objects/PolicyRule/defaultLoggingState",
                 m_dialog->rulesLoggingOn->isChecked());
+
+    st->setBool("Objects/PolicyRule/defaultStateful",
+                m_dialog->rulesDefaultStateful->isChecked());
+
+    st->setInt("Objects/PolicyRule/defaultAction",
+                m_dialog->rulesDefaultAction->currentIndex());
+
+    st->setInt("Objects/PolicyRule/defaultDirection",
+                m_dialog->rulesDefaultDirection->currentIndex());
+
+
 
     st->setBool("Objects/Interface/autoconfigureInterfaces",
                 m_dialog->autoconfigure_interfaces->isChecked());

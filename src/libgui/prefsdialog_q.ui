@@ -383,7 +383,7 @@ own library of templates and use it in addition to the one we provide</string>
        <item row="7" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget_2">
          <property name="currentIndex">
-          <number>3</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="DNSName">
           <attribute name="title">
@@ -545,7 +545,7 @@ own library of templates and use it in addition to the one we provide</string>
            <string>Policy Rules</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_16">
-           <item row="0" column="0">
+           <item row="0" column="0" rowspan="2">
             <widget class="QLabel" name="label_16">
              <property name="minimumSize">
               <size>
@@ -568,19 +568,129 @@ own library of templates and use it in addition to the one we provide</string>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QCheckBox" name="rulesLoggingOn">
+            <widget class="QLabel" name="label_19">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Create new policy rules with logging turned on by default</string>
+              <string>This setting allows you to change whether new rules created in fwbuilder have action, logging and stateful inspection turned on or off by default.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="rulesLoggingOn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Create new policy rules with logging turned on</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
+            <widget class="QCheckBox" name="rulesDefaultStateful">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Create new policy rules with stateful inspection turned on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label_20">
+               <property name="text">
+                <string>Create new policy rules with action </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="rulesDefaultAction">
+               <item>
+                <property name="text">
+                 <string>Deny</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Accept</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="4" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_21">
+               <property name="text">
+                <string>Create new policy rules with direction</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="rulesDefaultDirection">
+               <item>
+                <property name="text">
+                 <string>Both</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Inbound</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Outbound</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="5" column="1">
             <spacer name="verticalSpacer_10">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1738,6 +1848,16 @@ are never stored permanently)</string>
    <signal>clicked()</signal>
    <receiver>prefsDialog_q</receiver>
    <slot>findDataDir()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>redBtn</sender>
