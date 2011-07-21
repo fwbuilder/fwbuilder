@@ -243,7 +243,6 @@ void DynamicGroupDialog::loadObjFilter()
     /* Try to force at least some minimum size, as the
        ResizeToContents doesn't always seem to work */
     header->resizeSection(0, 35);
-    header->resizeSection(1, 120);
     header->setStretchLastSection(true);
 
     header->setResizeMode(0, QHeaderView::ResizeToContents);
@@ -318,6 +317,11 @@ void DynamicGroupDialog::addMatchClicked()
     m_ui.criteriaView->openPersistentEditor(m_model->index(newRow, 0));
     m_ui.criteriaView->openPersistentEditor(m_model->index(newRow, 1));
     m_ui.criteriaView->openPersistentEditor(m_model->index(newRow, 2));
+
+    m_ui.criteriaView->resizeColumnsToContents();
+
+    QHeaderView *header = m_ui.criteriaView->horizontalHeader();
+    header->setStretchLastSection(true);
 
     m_ui.criteriaView->scrollToBottom();
 
