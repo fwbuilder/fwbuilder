@@ -52,6 +52,7 @@
 #include "fwbuilder/UDPService.h"
 #include "fwbuilder/MultiAddress.h"
 #include "fwbuilder/Interface.h"
+#include "fwbuilder/AddressRange.h"
 
 #include <QLineEdit>
 #include <QStackedWidget>
@@ -225,13 +226,13 @@ bool FindObjectWidget::matchID(int id)
     return s_id==id;
 }
 
-bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
+bool FindObjectWidget::matchAttr(FWObject *obj)
 {
     if (!m_widget->findDropArea->isEmpty()) return true;
-    QString s=m_widget->findAttr->currentText();
+    QString s = m_widget->findAttr->currentText();
     if (s.isEmpty()) return true;
 
-    bool res=false;
+    bool res = false;
     int  attrN = m_widget->attribute->currentIndex();
 
     switch (attrN) {
@@ -257,6 +258,31 @@ bool FindObjectWidget::matchAttr(libfwbuilder::FWObject *obj)
 
     case 1:   // Address
     {
+        if ( ! m_widget->useRegexp->isChecked())
+        {
+            AddressRange *ar = AddressRange::cast(obj);
+            if (ar)
+            {
+                const InetAddr &inet_addr_start = ar->getRangeStart();
+                const InetAddr &inet_addr_end = ar->getRangeEnd();
+
+                // if address entered by the user has /NN perfix length or
+                // /255.255.255.0 netmask, do not match it to address ranges
+                if ( ! s.contains("/"))
+                {
+                    int af = AF_INET;
+                    if (s.contains(':')) af = AF_INET6;
+
+                    InetAddr addr = InetAddr(af, s.toStdString());
+
+                    res = (inet_addr_start == addr || inet_addr_end == addr ||
+                           (inet_addr_start < addr && addr < inet_addr_end));
+                    break;
+                }
+
+            }
+        }
+
         Address *a = Address::cast(obj);
         if (a!=NULL)
         {

@@ -56,7 +56,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Address</string>
+          <string>IP Address</string>
          </property>
         </item>
         <item>
