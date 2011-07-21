@@ -1,5 +1,9 @@
 2011-07-21  vadim  <vadim@netcitadel.com>
 
+	* NATCompiler_pf_writers.cpp (_printAddr): fixes #2590 "PF: NAT
+	compiler fails when run-time address table object is used in a
+	rule"
+
 	* RoutingCompiler.cpp (processNext): fixes #2565 "Run-time dns
 	name or address table in routing policy -> crash". Compiler for PF
 	crashed if user placed run-time DNSName object in "destination"

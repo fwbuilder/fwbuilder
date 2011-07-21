@@ -41,6 +41,8 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/UserService.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AttachedNetworks.h"
 
 #include <assert.h>
 #include <QStringList>
@@ -506,11 +508,17 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
             compiler->output <<  atrt->getSourceName() << " ";
             return;
         }
-        // at this time we only support two types of MultiAddress
-        // objects: AddressTable and DNSName. Both should be converted
-        // to MultiAddressRunTime at this point. If we get some other
-        // kind of MultiAddressRunTime object, we do not know what to do
-        // with it so we stop.
+        if (atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        {
+            compiler->output << "<" << o->getName() << "> ";
+            return;
+        }
+        if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
+        {
+            compiler->output << atrt->getSourceName() << ":network";
+            return ;
+        }
+
         assert(atrt==NULL);
     }
 

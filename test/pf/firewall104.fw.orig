@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3556
+#  Firewall Builder  fwb_pf v5.0.0.3566
 #
-#  Generated Tue Jul  5 18:05:12 2011 PDT by vadim
+#  Generated Thu Jul 21 14:13:57 2011 PDT by vadim
 #
 # files: * firewall104.fw /etc/fw/pf.fw
 # files:   firewall104.conf /etc/fw/path\ with\ space/pf.conf
@@ -396,7 +396,7 @@ configure_interfaces() {
     $IFCONFIG bridge0 stp em3
 }
 
-log "Activating firewall script generated Tue Jul  5 18:05:12 2011 by vadim"
+log "Activating firewall script generated Thu Jul 21 14:13:57 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
