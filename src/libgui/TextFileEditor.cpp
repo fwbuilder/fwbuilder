@@ -117,6 +117,8 @@ void TextFileEditor::save()
             owf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
         {
             owf.close();
+            QDialog::accept();
+            return;
         } else
             QMessageBox::critical(
                 this,"Firewall Builder",

@@ -1,5 +1,10 @@
 2011-07-21  vadim  <vadim@netcitadel.com>
 
+	* TextFileEditor.cpp (save): fixes #2567 "If file doesn't exist
+	when clicking 'edit file', then you have to hit save button twice".
+	The bug affected "edit file" function in the Address Table object
+	dialog.
+
 	* NATCompiler_pf_writers.cpp (_printAddr): fixes #2590 "PF: NAT
 	compiler fails when run-time address table object is used in a
 	rule"
