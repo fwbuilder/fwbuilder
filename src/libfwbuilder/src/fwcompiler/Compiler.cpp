@@ -359,6 +359,11 @@ void Compiler::expandGroupsInRuleElement(RuleElement *s)
 
     for(FWObject::iterator i2=cl.begin(); i2!=cl.end(); ++i2)
     {
+        if (!s->validateChild(*i2))
+            abort(s->getParent(),
+                  "Object '" + (*i2)->getName() +
+                  "' can not be used in rule element " + s->getTypeName());
+
         s->addRef( *i2 );
     }
 }
