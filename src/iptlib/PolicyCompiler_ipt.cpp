@@ -1083,94 +1083,57 @@ bool PolicyCompiler_ipt::printRuleElements::processNext()
     return true;
 }
 
-bool PolicyCompiler_ipt::singleSrcNegation::processNext()
+void PolicyCompiler_ipt::SingleRENegation::processSingleObjectNegationInRE(
+    FWObject *obj, RuleElement *rel)
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    RuleElementSrc *srcrel = rule->getSrc();
 
-/*   ! A  B  C  ACTION  */
-    if (srcrel->getNeg() && srcrel->size()==1)
+    // We call singleSrcNegation before we replace AddressTable
+    // objects with MultiAddressRunTime objects
+    if (AddressTable::cast(obj) && AddressTable::cast(obj)->isRunTime() &&
+        ipt_comp->using_ipset)
     {
-        // We call singleSrcNegation before we replace AddressTable
-        // objects with MultiAddressRunTime objects
-        FWObject *o = FWReference::getObject(srcrel->front());
-        if (AddressTable::cast(o) && AddressTable::cast(o)->isRunTime() &&
-            ipt_comp->using_ipset)
-        {
-            srcrel->setNeg(false);
-            srcrel->setBool("single_object_negation", true);
-        }
-
-        Address *src = compiler->getFirstSrc(rule);  
-        // note: src can be NULL if object in this rule element is a group
-        // or MultiAddress
-        if (src!=NULL && src->countInetAddresses(true)==1 &&
-            !compiler->complexMatch(src, compiler->fw)) 
-        {
-            srcrel->setNeg(false);
-            srcrel->setBool("single_object_negation", true);
-        }
+        rel->setNeg(false);
+        rel->setBool("single_object_negation", true);
+        return;
     }
 
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-bool PolicyCompiler_ipt::singleDstNegation::processNext()
-{
-    PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    RuleElementDst *dstrel = rule->getDst();
-
-/*   A  ! B  C  ACTION  */
-    if (dstrel->getNeg() && dstrel->size()==1)
+    Address *src = Address::cast(obj);
+    // note: src can be NULL if object in this rule element is a group
+    // or MultiAddress
+    if (src!=NULL && src->countInetAddresses(true)==1 &&
+        !compiler->complexMatch(src, compiler->fw)) 
     {
-        // We call singleSrcNegation before we replace AddressTable
-        // objects with MultiAddressRunTime objects
-        FWObject *o = FWReference::getObject(dstrel->front());
-        if (AddressTable::cast(o) && AddressTable::cast(o)->isRunTime() &&
-            ipt_comp->using_ipset)
-        {
-            dstrel->setNeg(false);
-            dstrel->setBool("single_object_negation", true);
-        }
-
-        Address *dst = compiler->getFirstDst(rule);  
-        if (dst!=NULL && dst->countInetAddresses(true)==1 &&
-            !compiler->complexMatch(dst, compiler->fw)) 
-        {
-            dstrel->setNeg(false);
-            dstrel->setBool("single_object_negation", true);
-        }
+        rel->setNeg(false);
+        rel->setBool("single_object_negation", true);
+        return;
     }
 
-    tmp_queue.push_back(rule);
-    return true;
-}
-
-bool PolicyCompiler_ipt::singleSrvNegation::processNext()
-{
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-
-    RuleElementSrv *srvrel=rule->getSrv();
-    Service *srv=compiler->getFirstSrv(rule); // need to make sure it is not a group
+    Service *srv = Service::cast(obj);
     // see comment in compile() where this rule processor is used for why
     // only some services can be processed here.
     if (TagService::isA(srv) || UserService::isA(srv))
     {
 /*   A  B  ! C  ACTION  */
-        if (srvrel->getNeg() && srvrel->size()==1 && srv!=NULL ) 
-        {
-            srvrel->setNeg(false);
-            srvrel->setBool("single_object_negation", true);
-        }
+        rel->setNeg(false);
+        rel->setBool("single_object_negation", true);
+    }
+}
+
+bool PolicyCompiler_ipt::SingleRENegation::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    RuleElement *rel = RuleElement::cast(rule->getFirstByType(type_name));
+
+/*   ! A  B  C  ACTION  */
+    if (rel->getNeg() && rel->size()==1)
+    {
+        processSingleObjectNegationInRE(FWReference::getObject(rel->front()), rel);
     }
 
     tmp_queue.push_back(rule);
     return true;
 }
-
 
 bool PolicyCompiler_ipt::SrcNegation::processNext()
 {
@@ -4308,7 +4271,7 @@ void PolicyCompiler_ipt::compile()
  * Further correction: we CAN use single object negatiob with some types
  * of service objects, such as e.g. TagService or UserService
  */
-    add( new singleSrvNegation("negation in Srv if it holds 1 object"));
+    add( new SingleSrvNegation("negation in Srv if it holds 1 object"));
     add( new splitRuleIfSrvAnyActionReject(
              "split rule if action is reject and srv is any" ) );
     add( new SrvNegation( false, "process negation in Srv") );
@@ -4326,8 +4289,8 @@ void PolicyCompiler_ipt::compile()
              "split if action on reject is TCP reset 2"));
 
 
-    add( new singleSrcNegation("negation in Src if it holds single object"));
-    add( new singleDstNegation("negation in Dst if it holds single object"));
+    add( new SingleSrcNegation("negation in Src if it holds single object"));
+    add( new SingleDstNegation("negation in Dst if it holds single object"));
 
     add( new splitIfSrcNegAndFw("split rule if src has negation and fw"));
     add( new splitIfDstNegAndFw("split rule if dst has negation and fw"));

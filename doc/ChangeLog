@@ -1,3 +1,26 @@
+2011-07-20  Vadim Kurland  <vadim@netcitadel.com>
+
+	* ObjectMatcher.cpp (dispatch): removed optimization in
+	dispatch(IPv4*,void*) and dispatch(IPv6*, void*) that assumed
+	address matches a host or a firewall if it is located somewhere in
+	the subtree rooted at the firewall object. This assumption fails
+	if the address is a child of a Variable that belongs to the
+	Variables folder of this firewall. Instead, always calling
+	checkComplexMatchForSingleAddress() which uses
+	Interface::findAllInterfaces() and therefore only matches against
+	addresses that belong to the interfaces. See #2598
+
+	* PolicyCompiler_ipt.cpp (processSingleObjectNegationInRE):
+	consolidated rule processors that deal with single object negation
+	into one class. Also, taking into account Variables.
+
+	* Interface.cpp (findAllInterfaces): added more efficient way to
+	get a list of all interfaces of a firewall. This function assumes
+	interfaces are direct children of the firewall and each interface
+	may have a subinterface (one level deep). This function is faster
+	because it does not scan whole tree rooted at the firewall object
+	which might be large if firewall has lots of rules.
+
 2011-07-19  vadim  <vadim@netcitadel.com>
 
 	* NATCompiler_ipt.cpp (processNext): fixed SF bug 3371301 "Error

@@ -72,6 +72,7 @@ using namespace std;
 int Compiler::prolog() 
 {
     temp = new Group();
+    temp->setName("Temp Group");
     fw->add(temp, false);
     return 0;
 }

@@ -212,6 +212,14 @@ public:
     
         virtual bool isPrimaryObject() const { return false; }
 
+        /**
+         * finds all interfaces of the host (or firewall, since class
+         * Firewall inherits Host) without scanning whole tree rooted
+         * at this. This is more efficient than calling
+         * getByTypeDeep() when firewall has lots of rules.
+         */
+        static void findAllInterfaces(FWObject *obj, std::list<FWObject*> &interfaces);
+    
     };
 
 }

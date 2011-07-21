@@ -516,3 +516,19 @@ void Interface::replaceReferenceInternal(int old_id, int new_id, int &counter)
     }
 }
 
+/*
+ * finds all interfaces of the host (or firewall, since class Firewall
+ * inherits Host) without scanning whole tree rooted at this. This is
+ * more efficient than calling getByTypeDeep() when firewall has lots
+ * of rules.
+ */
+void Interface::findAllInterfaces(FWObject *obj, list<FWObject*> &interfaces)
+{
+    for (FWObjectTypedChildIterator it = obj->findByType(Interface::TYPENAME);
+         it != it.end(); ++it)
+    {
+        interfaces.push_back(*it);
+        findAllInterfaces(*it, interfaces);
+    }
+}
+

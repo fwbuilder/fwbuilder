@@ -288,19 +288,40 @@ protected:
          * but takes into account AddressTable objects if we compile
          * with support for ipset module
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(singleSrcNegation);
+        class SingleRENegation : public PolicyRuleProcessor
+        {
+            std::string type_name;
+            void processSingleObjectNegationInRE(libfwbuilder::FWObject *obj,
+                                                 libfwbuilder::RuleElement *re);
+            public:
+                SingleRENegation(const std::string &name,
+                     const std::string &tn) : PolicyRuleProcessor(name)
+            {
+                type_name = tn;
+            }
+            virtual bool processNext();
+        };
 
-	/**
-	 * processes rules with negation in Dst if it holds only one object
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(singleDstNegation);
+        class SingleSrcNegation : public SingleRENegation
+        {
+            public:
+            SingleSrcNegation(const std::string &name) :
+                SingleRENegation(name, libfwbuilder::RuleElementSrc::TYPENAME) {}
+        };
 
-	/**
-	 * processes rules with negation in Srv if it holds only one object
-	 */
-        DECLARE_POLICY_RULE_PROCESSOR(singleSrvNegation);
+        class SingleDstNegation : public SingleRENegation
+        {
+            public:
+            SingleDstNegation(const std::string &name) :
+                SingleRENegation(name, libfwbuilder::RuleElementDst::TYPENAME) {}
+        };
 
-
+        class SingleSrvNegation : public SingleRENegation
+        {
+            public:
+            SingleSrvNegation(const std::string &name) :
+                SingleRENegation(name, libfwbuilder::RuleElementSrv::TYPENAME) {}
+        };
 
 	/**
 	 * processes rules with negation in Src

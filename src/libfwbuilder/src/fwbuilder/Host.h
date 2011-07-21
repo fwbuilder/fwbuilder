@@ -105,7 +105,6 @@ class Host : public Address
      */
     static FWObject* getParentHost(FWObject *obj);
 
-    
     protected:
     
     Management *mgmt;

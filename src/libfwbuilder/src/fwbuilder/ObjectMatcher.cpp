@@ -182,9 +182,33 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
           (recognize_multicasts && obj1_addr->isMulticast()) )
     ) return true;
 
-
     string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
-    list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
+
+    list<FWObject*> all_addresses;
+
+    if (Host::cast(obj2))
+    {
+        /*
+         * note that compilers add copies of rules to the same firewall object
+         * (temp_ruleset object) which means the tree rooted at the firewall
+         * can be large, so searching for all interfaces using getByTypeDeep()
+         * may cause scanning very large tree.
+         */
+        list<FWObject*> all_interfaces;
+        Interface::findAllInterfaces(obj2, all_interfaces);
+
+        for (list<FWObject*>::iterator it = all_interfaces.begin();
+             it != all_interfaces.end(); ++it)
+        {
+            list<FWObject*> intf_addresses = (*it)->getByTypeDeep(addr_type);
+            all_addresses.splice(all_addresses.end(), intf_addresses);
+        }
+
+    } else
+    {
+        all_addresses = obj2->getByTypeDeep(addr_type);
+    }
+
     for (list<FWObject*>::iterator it = all_addresses.begin();
          it != all_addresses.end(); ++it)
     {
@@ -198,7 +222,7 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
         } else
         {
             if (matchRHS(obj1_addr, rhs_addr) == 0) return true;
-    }
+        }
     }
     return false;
 }
@@ -302,20 +326,12 @@ void* ObjectMatcher::dispatch(NetworkIPv6 *obj1, void *_obj2)
 void* ObjectMatcher::dispatch(IPv4 *obj1, void *_obj2)
 {
     FWObject *obj2 = (FWObject*)(_obj2);
-    FWObject *p=obj1;
-    while ( (p=p->getParent())!=NULL)
-        if (p->getId()==obj2->getId()) return obj1;
-
     return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : NULL;
 }
 
 void* ObjectMatcher::dispatch(IPv6 *obj1, void *_obj2)
 {
     FWObject *obj2 = (FWObject*)(_obj2);
-    FWObject *p=obj1;
-    while ( (p=p->getParent())!=NULL)
-        if (p->getId()==obj2->getId()) return obj1;
-
     return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : NULL;
 }
 
@@ -433,9 +449,13 @@ void* ObjectMatcher::dispatch(Host *obj1, void *_obj2)
  *  match only if all interfaces of obj1 match obj2
  */
     bool res = true;
-    list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
-    for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
+    list<FWObject*> all_interfaces;
+    Interface::findAllInterfaces(obj1, all_interfaces);
+    for (list<FWObject*>::iterator it = all_interfaces.begin();
+         it != all_interfaces.end(); ++it)
+    {
         res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
+    }
     return res ? obj1 : NULL;
 }
 
@@ -459,11 +479,7 @@ void* ObjectMatcher::dispatch(Firewall *obj1, void *_obj2)
 /*
  *  match only if all interfaces of obj1 match obj2
  */
-    bool res = true;
-    list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
-    for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
-        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);    
-    return res ? obj1 : NULL;
+    return dispatch(static_cast<Host*>(obj1), obj2);
 }
 
 void* ObjectMatcher::dispatch(Cluster *obj1, void *_obj2)
@@ -480,10 +496,6 @@ void* ObjectMatcher::dispatch(Cluster *obj1, void *_obj2)
 /*
  *  match only if all interfaces of obj1 match obj2
  */
-    bool res = true;
-    list<FWObject*> l = obj1->getByTypeDeep(Interface::TYPENAME);
-    for (list<FWObject*>::iterator it = l.begin(); it!=l.end(); ++it)
-        res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
-    return res ? obj1 : NULL;
+    return dispatch(static_cast<Host*>(obj1), obj2);
 }
 

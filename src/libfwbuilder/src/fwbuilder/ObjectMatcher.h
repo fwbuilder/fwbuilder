@@ -37,7 +37,8 @@
 namespace libfwbuilder
 {
 
-    class ObjectMatcher : public Dispatch {
+    class ObjectMatcher : public Dispatch
+    {
 
 public:
         typedef enum {EXACT, PARTIAL} address_range_match;
