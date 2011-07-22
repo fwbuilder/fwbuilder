@@ -97,6 +97,19 @@ class ObjectManipulator : public QWidget
 
     int previous_lib_index;
     QSet<int> ids ;
+
+    /*
+     * this is where we keep information about user's object browsing
+     * history. Even though latest versions of the GUI do not offer
+     * buttons "Back" and "Forward", history is still used to
+     * determine which rule set object to open when user double clicks
+     * on a firewall. We want to open the rule set they looked at
+     * last. This whole browsing history infrastructure might be an
+     * overkill for the simple purpose like that, but I'll keep it
+     * around beause I do not want to make drastic changes so close to
+     * the release date and it may become useful again in the
+     * future. Otherwise, we can get rid of it later. --vk 07/22/2011
+     */
     std::list<HistoryItem> history;
     std::list<HistoryItem>::iterator current_history_item;
     int cacheHits;
@@ -265,9 +278,6 @@ public slots:
 
      void find();
      void findObject();
-
-     virtual void back();
-     virtual void forward();
 
      virtual void lockObject();
      virtual void unlockObject();

@@ -589,16 +589,6 @@ void ProjectPanel::reopenCurrentItemParent()
     m_panel->om->reopenCurrentItemParent();
 }
 
-void ProjectPanel::back()
-{
-    m_panel->om->back();
-}
-
-void ProjectPanel::forward()
-{
-    m_panel->om->forward();
-}
-
 void ProjectPanel::lockObject()
 {
     m_panel->om->lockObject();

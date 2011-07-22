@@ -430,59 +430,6 @@ void ObjectManipulator::findObject()
     mw->findObject( obj );
 }
 
-void ObjectManipulator::back()
-{
-    if (!history.empty())
-    {
-        FWObject *obj = NULL;
-
-        current_history_item--;
-
-        if ( current_history_item != history.end())
-        {
-            ObjectTreeViewItem* otvi = current_history_item->item();
-            int obj_id = current_history_item->id();
-            obj = m_project->db()->findInIndex(obj_id);
-            if ( obj != NULL)
-            {
-                openObjectInTree( otvi, false );
-
-                if (mw->isEditorVisible()) editSelectedObject();
-            }
-        } else
-        {
-            current_history_item = history.begin();
-        }
-    }
-}
-
-void ObjectManipulator::forward()
-{
-    if (!history.empty())
-    {
-        FWObject *obj = NULL;
-
-        current_history_item++;
-
-        if ( current_history_item != history.end())
-        {
-            ObjectTreeViewItem* otvi = current_history_item->item();
-            int obj_id = current_history_item->id();
-            obj = m_project->db()->findInIndex(obj_id);
-            if ( obj != NULL)
-            {
-                openObjectInTree( otvi, false );
-
-                if (mw->isEditorVisible()) editSelectedObject();
-            }
-        } else
-        {
-            current_history_item = history.end();
-            current_history_item--;
-        }
-    }
-}
-
 void ObjectManipulator::findWhereUsedSlot()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;

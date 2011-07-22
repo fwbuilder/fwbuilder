@@ -380,16 +380,6 @@ void FWWindow::pasteRuleBelow()
     if (activeProject()) activeProject()->pasteRuleBelow();
 }
 
-void FWWindow::back()
-{
-    if (activeProject()) activeProject()->back();
-}
-
-void FWWindow::forward()
-{
-    if (activeProject()) activeProject()->forward();
-}
-
 void FWWindow::newObject()
 {
     if (activeProject())

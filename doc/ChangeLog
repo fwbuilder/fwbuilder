@@ -1,3 +1,13 @@
+2011-07-22  vadim  <vadim@netcitadel.com>
+
+	* ObjectManipulator.h (QWidget): see #2622 "Remove Back and
+	Forward buttons". We have decided behavior of the GUI was too
+	complicated since user can both act on objects directly and
+	navigate backwards and forwards to the objects found in their
+	browsing history.  Navigation using browsing history was broken
+	when quick filter was in use, too. All in all, it feels the value
+	of "back" and "forward" buttons was relatively low.
+
 2011-07-21  vadim  <vadim@netcitadel.com>
 
 	* XMLTools.cpp (convert): see #2577 Updated error message that
