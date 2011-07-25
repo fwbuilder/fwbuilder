@@ -60,9 +60,11 @@
 #include <sstream>
 #include <iterator>
 
+/*
 #ifdef _WIN32
 #define snprintf sprintf_s
 #endif
+*/
 
 /**
  * Define this if you need extra debug output.
