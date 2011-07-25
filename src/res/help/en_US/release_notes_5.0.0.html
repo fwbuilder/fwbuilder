@@ -1,0 +1,629 @@
+<h1>Firewall Builder 5.0.0 Release Notes</h1>
+
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets</a>
+</p>
+
+<!-- Highlights for this release -->
+
+<a name="summary"></a>
+<h2>Summary</h2>
+
+<p>
+  In addition to bug fixes and minor enhancements, v 5.0 includes the
+  following new features:
+</p>
+
+<ul>
+  <li>User defined system folders</li>
+  <li>Keywords for tagging objects</li>
+  <li>Dynamic Group Objects with Smart Filters</li>
+  <li>Multiple operations per filter Rule</li>
+  <li>New Attached Networks Object</li>
+  <li>Improved GUI layout and behavior</li>
+  <li>Import of PF configurations</li>
+</ul>
+
+
+<h3>User Defined System Folders</h3>
+
+<p>
+  Users can now create their own subfolders in the object tree. To add a subfolder 
+  right-click on a system folder, for example Firewalls, and select "New Subfolder".
+  You can move objects into the subfolder by dragging-and-dropping them from the 
+  parent folder in the object tree to the subfolder. You can only delete empty 
+  subfolders, so if you want to delete a subfolder first move all the objects in that 
+  subfolder to the parent folder and then you can delete the subfolder.
+</p>
+
+
+<h3>Keywords for Tagging Objects</h3>
+
+<p>
+  This feature gives users the ability to apply keywords to objects and 
+  then use the filter box to search for objects that match a keyword.
+</p>
+
+
+<h3>Dynamic Groups with Smart Filters</h3>
+
+<p>
+  A new type of group, called a Dynamic Group, has been added to the Group object
+  in the object tree. Right-click the Group object and select "New Dynamic Group" 
+  to create a new group. You can use both Keywords and Object Type to create 
+  filters of objects that should be included in the Dynamic Group. There is a 
+  preview window that displays all the objects that match the filter.
+</p>
+
+<p>
+  You can use Dynamic groups in rules just like you would use a
+  regular Group object. When Firewall Builder compiles a rule that
+  includes a Dynamic Group it will expand the group into all its
+  member objects.
+</p>
+
+
+<h3>Multiple Operations per Filter Rule</h3>
+
+<p>
+  The actions for <b>Tag</b>, <b>Classify</b> and <b>Route</b> have
+  been moved to the rule Options. This allows a user to define a
+  primary action, like Accept, and then define additional actions that
+  should be taken on traffic that matches the rule.
+</p>
+
+<p>
+  This is only supported for <b>iptables</b> and <b>PF</b>
+  platforms. For PF setting multiple actions will result in a single
+  rule with multiple actions defined. For iptables this will result in
+  multiple rules ordered so that all actions are performed correctly.
+</p> 
+
+
+<h3>New Attached Networks Object</h3>
+
+<p>
+  There is a new child object for interfaces that represents all the
+  networks that are "attached" to the interface. This means that for
+  each IP address that is configured on an interface the associated
+  network for that IP address will be included in the Attached
+  Networks object.
+</p>
+
+
+<h3>Improved GUI layout and behavior</h3>
+
+<p>
+  There are a number of changes that have been made to make the mouse
+  click behavior more consistent and the layout of the GUI has been
+  updated to make things simplier.
+</p>
+
+<h3>Import of PF configurations</h3>
+
+<p> 
+  Firewall Builder can now import PF configurations in pf.conf format. To 
+  import a pf.conf configuration go to File -> Import Firewall and follow the 
+  prompts.
+</p>
+
+<hr style="display: block">     
+
+
+<!-- ######################################################################### -->
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      "Crash when selecting New Firewall and existing firewall has
+      interface that is locked". Fixed GUI crash that happened on some
+      operations if an object in the tree was locked. For example, if
+      the user locked an interface of one of the firewall objects that
+      then proceeded to create new firewall object, the GUI would
+      crash. The problem was not limited to locking specifically
+      interface objects.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      part of the GUI usability improvements, its behavior when user
+      double clicks on "any" in a rule has changed. Now the program
+      opens object "any" in the editor and shows prompt text that
+      explains its behavior.  The editor stays read-only and should
+      appear grayed-out if palette is set up for that. 
+    </p>
+  </li>
+
+  <li>
+    <p>
+      when user double clicks on a firewall object to open it in the
+      editor, rule set view panel switches to the rule set of that
+      firewall. To decide which rule set to show, the program scans
+      history of the objects the user opened before in the same GUI
+      session and shows that firewall's rule set they opened last. If
+      user never opened any rule sets of this firewall, then the first
+      Policy object is shown. 
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed several GUI crashes that happened when user performed
+      various operations on the object tree that contained locked
+      objects. 
+    </p>
+  </li>
+
+  <li>
+    <p>
+      implementation of keywords associated with objects in the GUI;
+      ability to filter by keywords, dialog layout changes to add GUI
+      controls for keywords.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Removed obsolete localization files (Russian and
+      Japanese). These were incomplete and have never been updated for
+      v4.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Removed transfer agent code. This eliminates dependency on DBus
+      framework.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added support for creating user-defined subfolders.  The
+      subfolders exist purely in the display and are not reflected in
+      the FWObject tree, in order to keep changes in the back-end to a
+      minimum.  New attribute "subfolders" on a system folder tells
+      the gui what additional child elements to display in the tree,
+      and attribute "folder" on any FWObject tells gui which child
+      tree element to put it in.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added feature : directory location caching.  Use
+      FWBSettings::{get|set}OpenFileDir() any time we use QFileDialog
+      so that the directory you navigated to last time shows up in the
+      next file dialog.  This behavior is overridden by setting a
+      working directory.  If the directory no longer exists,
+      gracefully fall back to something sensible.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Add context menu to move an interface to be a child of another
+      interface". New context menu (submenu) allows user to move an
+      interface in the tree to make it a subinterface of another
+      interface.
+
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Implemented support for address table alternate paths.  There's
+      a "data directory" setting under user preferences.  If the user
+      selects an address table file using "choose file" and that file
+      is "inside" the data directory, then the appropriate part of the
+      path is replaced with %DATADIR% as a variable.  If the address
+      table is marked "run-time" then the path is taken from the
+      firewall data directory option.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Fixed bug: save the expanded/collapsed state of the tree when
+      the user starts typing something into the quick filter.  When
+      the quick filter is cleared, re-expand any items that started
+      off expanded (so we get the union of expanded items displayed by
+      quick filter plus what the user started with expanded).
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Attempting to copy-and-paste a tag service results in an
+      error". Pasting of a TagService object to the "Tag Services"
+      group did not work.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Enhance Find to include searching for IP addresses in
+      ranges". Function "find" now finds ip addresses inside address
+      ranges.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Expanded set of options the user can change to pre-set
+      parameters in the new policy rules they create". Now user can
+      set default values for action ("Deny" or "Accept"), direction,
+      the "stateless" flag and logging.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes bug "If file doesn't exist when clicking 'edit file',
+      then you have to hit save button twice".  The bug affected "edit
+      file" function in the Address Table object dialog.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Remove Back and Forward buttons". We have decided behavior of
+      the GUI was too complicated since user can both act on objects
+      directly and navigate backwards and forwards to the objects
+      found in their browsing history.  Navigation using browsing
+      history was broken when quick filter was in use, too. All in
+      all, it feels the value of "back" and "forward" buttons was
+      relatively low.
+    </p>
+  </li>
+
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="import"></a>
+<h2>Changes in policy importer for all supported platforms</h2>
+
+<h3>Changes that affect import of PF configurations</h3>
+<ul>
+
+  <li>
+    <p>
+      This version implements import of pf.conf configuration with the
+      following limitations:
+      <ul>
+	<li> anchors are not imported.  Anchor rules are imported but rules
+	  inside anchors are not.</li>
+	<li> only pf.conf configurations designed with the use of keyword
+	  "quick" can be imported.</li>
+	<li> Macros are expanded during import and are not recreated as
+	  objects.  Tables are imported as run-time AddressTable obejcts
+	  configured with the file name, or object groups.</li>
+	<li> User has to specify host OS and PF version number during import
+	  process because interpretation of rules with default settings
+	  of some parameters is version-dependent.</li>
+	<li> Import of IPv6 addresses and ICMPv6 matches in pf.conf is not
+	  supported at this time.</li>
+	<li> Import of TCP flag matches for flags 'E' and 'W' is not supported.</li>
+	<li> Import of "include" clause is not supported</li>
+	<li> Import of "user" and "group" matches is not supported</li>
+	<li> as of v4.2 we can not generate optional parameters for
+	  the "source-hash" pooltype. "sticky-address" is not
+	  supported either. This options are not imported.</li>
+	<li> Interface group names are not recognized</li>
+	<li> commands "set ruleset-optimization", "set loginterface",
+	  "set block-policy", "set state-defaults", "set require-order",
+	  "set fingerprints", "set reassemble", "set hostid" are not supported.</li>
+
+      </ul>
+    </p>
+  </li>
+</ul>
+
+<h3>Fixes and improvements in import of iptables configurations</h3>
+
+<ul>
+
+  <li>
+    <p>
+      Implemented import of iptables rules with target CLASSIFY.
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="libfwbuilder"></a>
+<h2>Changes and improvements in the API library libfwbuilder</h2>
+
+<ul>
+
+  <li>
+    <p>
+      <b>New object type "Attached Networks"</b>: network object that
+      automatically matches subnets an interface is attached to. The
+      object can be a child of an interface. The object is optional
+      and is not created automatically for all interfaces; user can
+      add it using context menu associated with an interface. Dialog
+      for this object allows editing of the name and comment. List of
+      network addresses represented by this object is always generated
+      automatically. Compiler for PF translates this object to
+      "en0:network" construct that is supported by PF. Compiler for
+      iptables expands it to the list of ipv4 and ipv6 networks
+      defined by the addresses of the parent interface if interface
+      has static addresses. If interface is confgiured as "dynamic"
+      and has no address in fwbuilder, then compiler treats
+      AttachedNetworks object as run-time and uses shell function to
+      determine network addresses during activation of the firewall
+      script. Compilers for other firewall platforms always treat this
+      object as compile-time and abort if it is used with dynamic
+      interface.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      <b>New object type "Dynamic Group"</b>. Dynamic group
+      automatically expands to a set of objects using matching rules
+      that at this time can match object types and keywords.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Updated error message that appears when user tries to open .fwb
+      file created by the future version of fwbuilder.
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+
+<!-- ######################################################################### -->
+<a name="compilers"></a>
+<h2>common changes that affect policy compilers for all platforms</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fixed bug "Compile fails if firewall has locked interface that
+      is set to dynamic".
+    </p>
+  </li>
+
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+
+  <li>
+    <p>
+      'Mixing Actions "Accept" and "Classify" results in incorrect
+      rules', and 'Mixing Actions "Accept" and "Tag" results in
+      incorrect ruleset'.  After we made Tag, Classify and Route rule
+      options instead of actions, rules that mix these options with
+      actions "Accept" and others, except for "Continue", should be
+      treated differently. The action are now implemented using
+      iptables rules in the table "filter" and additional rules in
+      table "mangle" is used to implement only tagging, classification
+      or routing. Generated script does not change default action in
+      table "mangle" and assumes it is "ACCEPT" so adding rules with
+      target ACCEPT in mangle table should not be necessary. Another
+      change because of this affects branching rules that use option
+      "create branch in mangle table in addition to the filter
+      table". These rules used to duplicate the same action and
+      logging rules in mangle.  Now they dont do this and only create
+      rules in mangle if branch rule set performs tagging,
+      classification or routing.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Deprecating Route option for iptables".  This target is not
+      included in any of the popular Linux distributions (checked in
+      Ubuntu, Fedora and CentOS). The GUI dialog and all support in
+      the compiler will be removed in future version of
+      fwbuilder. Beginning with 4.3.0, compiler aborts with an error
+      when it encounters a rule using this option. In older versions
+      of fwbuilder (4.2.x and before) this option was presented as an
+      action "Route".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Tag action should be done in PREROUTING so it can be acted on
+      later". If a rule has both tagging and classification options,
+      the rule should be split so that iptables command doing tagging
+      goes in PREROUTING and rule doing classification goes into
+      POSTROUTING chain.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Tag and classify actions dont work properly with branches".
+      When branching rule points to a rule set that has rules with Tag
+      and Classify options, branching should occur in mangle table
+      even when checkbox "create branch in mangle table" is not
+      checked. The fix in this change is tentative as it creates
+      branch in chains PREROUTING, POSTROUTING and OUTPUT. Since
+      target CLASSIFY is only allowed in POSTROUTING, this may create
+      conflict. Need to test more.
+
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added support for single object negation in "Inbound Interface"
+      and "Outbound Interface" columns in compiler for iptables.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug 3371301 "Error compiling with VLAN and
+      masquerade". Iptables NAT rules with vlan interface configured
+      as "dynamic" and no ip address in Translated Source caused
+      compiler crash.
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="pf"></a>
+<h2>Changes in support for PF (FreeBSD, OpenBSD)</h2>
+
+<ul>
+
+  <li>
+    <p>
+      "PF compiler should use 'self' keyword where
+      appropriate". Compiler for PF now uses keyword 'self' in rules
+      where firewall object is used in Source or Destination.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Added support for single object negation in "Interface" rule
+      element of PF NAT rules. Now compiler can produce PF commands
+      such as "nat on ! em0 ... " (for PF <4.7) or "match on ! em0
+      ..." (for PF >= 4.7)
+    </p>
+  </li>
+
+  <li>
+    <p>
+      NAT Compiler for PF should use "(interface)" syntax to the right
+      of "-&gt;" in NAT rules.  This now works for all interfaces,
+      including those that have ip addresses in fwbuilder
+      configuration, when interface object appears in "Translated
+      Source" in a nat rule. When firewall object appears in
+      "Translated Source", it gets replaced with a set of its
+      interfaces which also get translated into "-&gt; (interface)".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed bug "PF compiler crashes when ipv4+ipv6 NAT rule uses only
+      ipv4 address". This has been reported as SF bug 3305234.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      'avoid " {tcp udp icmp} " in place of protocol'. NAT compiler
+      for PF does not need to generate protocol match "proto {tcp udp
+      icmp}" when service object used in the NAT rule is "any". The
+      reason this was done this way is lost in the mist of time; it's
+      been like this since very early versions of fwbuilder.
+    </p>
+  </li>
+
+
+  <li>
+    <p>
+      "Update generated route-to configuration for PF versions 4.7 and
+      later", SF bug 3348931. The "route-to" parameter moved to the
+      end of pass rules in PF 4.7
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Crash when compiling a route with table object". Compiler for
+      PF crashed when run-time AddressTable object was used in RDst of
+      a routing rule.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      "Group and Address Table name persistence in generated
+      config". Compiler for PF can now preserve names of object
+      groups, dynamic groups, compile-time AddressTable and
+      compile-time DNSName objects in the generated pf.conf file. This
+      is optional and is controlled by a checkbox in the firewall
+      settings dialog.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes bug "Run-time dns name or address table in routing
+      policy -&gt; crash". Compiler for PF crashed if user placed
+      run-time DNSName object in "destination" of a routing rule.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes bug "PF: NAT compiler fails when run-time address table
+      object is used in a rule"
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="other"></a>
+<h2>Other changes</h2>
+
+<ul>
+
+  <li>
+    <p>
+      applied patch to provide configure command line option to
+      specify path to ccache. Thanks to user "a. k. huettel " on
+      SourceForge.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      applied two patches by Vadim Zhukov persgray@gmail.com to
+      replace calls to sprintf with safer calls to snprintf and fix
+      some compiler warnings.
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+</ul>
+
+
+
