@@ -1,3 +1,13 @@
+2011-08-01  Vadim Kurland  <vadim@netcitadel.com>
+
+	* unit_tests/ObjectMatcherTest/ObjectMatcherTest.cpp (matchTest):
+	fixed unit test (ObjectMatcher matches ipv6 only when internal
+	flag is set accordingly)
+
+2011-07-28  vadim  <vadim@netcitadel.com>
+
+	* version 5.0.0. release
+
 2011-07-22  vadim  <vadim@netcitadel.com>
 
 	* ObjectManipulator.h (QWidget): see #2622 "Remove Back and

@@ -121,7 +121,11 @@ void ObjectMatcherTest::matchTest()
     CPPUNIT_ASSERT(om.dispatch(fw1_eth1, fw1));
     CPPUNIT_ASSERT(om.dispatch(fw1_eth0, fw1_eth0));
 
-    CPPUNIT_ASSERT(om.dispatch(fw1_eth2_ipv6, fw1));
+    CPPUNIT_ASSERT( ! om.dispatch(fw1_eth2_ipv6, fw1));
+    om.setIPV6(true);
+    CPPUNIT_ASSERT( om.dispatch(fw1_eth2_ipv6, fw1));
+    om.setIPV6(false);
+
     CPPUNIT_ASSERT(om.dispatch(fw1_eth2_mac, fw1));
 
     CPPUNIT_ASSERT(om.dispatch(host1_eth0, fw1));
