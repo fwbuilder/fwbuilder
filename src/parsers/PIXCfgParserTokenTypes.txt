@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20090306): pix.g -> PIXCfgParserTokenTypes.txt$
+// $ANTLR 2.7.7 (20100319): pix.g -> PIXCfgParserTokenTypes.txt$
 PIXCfgParser    // output token vocab name
 NEWLINE=4
 QUIT="quit"=5
@@ -14,7 +14,7 @@ WORD=14
 IPV6=15
 AH="ah"=16
 EIGRP="eigrp"=17
-ESP="esp"=18
+ESP_WORD="esp"=18
 GRE="gre"=19
 IGMP="igmp"=20
 IGRP="igrp"=21

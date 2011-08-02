@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20090306): pf.g -> PFCfgParserTokenTypes.txt$
+// $ANTLR 2.7.7 (20100319): pf.g -> PFCfgParserTokenTypes.txt$
 PFCfgParser    // output token vocab name
 NEWLINE=4
 COMMENT_START=5
@@ -122,7 +122,7 @@ UDP="udp"=122
 RDP="rdp"=123
 RSVP="rsvp"=124
 GRE="gre"=125
-ESP="esp"=126
+ESP_WORD="esp"=126
 AH="ah"=127
 EIGRP="eigrp"=128
 OSPF="ospf"=129

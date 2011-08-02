@@ -1107,7 +1107,7 @@ proto_def :
         )
     ;
 
-proto_name : (IP | ICMP | IGMP | TCP | UDP | RDP | RSVP | GRE | ESP | AH |
+proto_name : (IP | ICMP | IGMP | TCP | UDP | RDP | RSVP | GRE | ESP_WORD | AH |
              EIGRP | OSPF | IPIP | VRRP | L2TP | ISIS )
         {
             importer->proto_list.push_back(LT(0)->getText());
@@ -1894,7 +1894,7 @@ tokens
 
     AH = "ah";
     EIGRP = "eigrp";
-    ESP = "esp";
+    ESP_WORD = "esp";
     GRE = "gre";
     IGMP = "igmp";
     IGRP = "igrp";

@@ -247,7 +247,7 @@ name_entry_ipv6 : IPV6 WORD
 // these are used in access-list and named object definitions
 //
 ip_protocol_names : (
-            AH | EIGRP | ESP | GRE |
+            AH | EIGRP | ESP_WORD | GRE |
             IGMP |  IGRP |  IP |  IPINIP |  IPSEC |
             NOS |  OSPF |  PCP |  PIM |  PPTP |  SNP )
     ;
@@ -2363,7 +2363,7 @@ tokens
 
     AH = "ah";
     EIGRP = "eigrp";
-    ESP = "esp";
+    ESP_WORD = "esp";
     GRE = "gre";
     IGMP = "igmp";
     IGRP = "igrp";

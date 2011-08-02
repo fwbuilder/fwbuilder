@@ -1,4 +1,4 @@
-/* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgParser.cpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pix.g" -> "PIXCfgParser.cpp"$ */
 #line 42 "pix.g"
 
     // gets inserted before the antlr generated includes in the cpp
@@ -2098,9 +2098,9 @@ void PIXCfgParser::ip_protocol_names() {
 			match(EIGRP);
 			break;
 		}
-		case ESP:
+		case ESP_WORD:
 		{
-			match(ESP);
+			match(ESP_WORD);
 			break;
 		}
 		case GRE:
@@ -2722,7 +2722,7 @@ void PIXCfgParser::service_other() {
 		case PIM:
 		case AH:
 		case EIGRP:
-		case ESP:
+		case ESP_WORD:
 		case GRE:
 		case IGMP:
 		case IGRP:
@@ -3311,7 +3311,7 @@ void PIXCfgParser::protocol_object() {
 		case PIM:
 		case AH:
 		case EIGRP:
-		case ESP:
+		case ESP_WORD:
 		case GRE:
 		case IGMP:
 		case IGRP:
@@ -3353,7 +3353,7 @@ void PIXCfgParser::protocol_object() {
 			case PIM:
 			case AH:
 			case EIGRP:
-			case ESP:
+			case ESP_WORD:
 			case GRE:
 			case IGMP:
 			case IGRP:
@@ -3663,7 +3663,7 @@ void PIXCfgParser::service_object() {
 		case PIM:
 		case AH:
 		case EIGRP:
-		case ESP:
+		case ESP_WORD:
 		case GRE:
 		case IGMP:
 		case IGRP:
@@ -3687,7 +3687,7 @@ void PIXCfgParser::service_object() {
 			case PIM:
 			case AH:
 			case EIGRP:
-			case ESP:
+			case ESP_WORD:
 			case GRE:
 			case IGMP:
 			case IGRP:
@@ -4152,7 +4152,7 @@ void PIXCfgParser::rule_extended() {
 		case PIM:
 		case AH:
 		case EIGRP:
-		case ESP:
+		case ESP_WORD:
 		case GRE:
 		case IGMP:
 		case IGRP:
@@ -4575,7 +4575,7 @@ void PIXCfgParser::ip_protocols() {
 		case PIM:
 		case AH:
 		case EIGRP:
-		case ESP:
+		case ESP_WORD:
 		case GRE:
 		case IGMP:
 		case IGRP:
@@ -4594,7 +4594,7 @@ void PIXCfgParser::ip_protocols() {
 			case PIM:
 			case AH:
 			case EIGRP:
-			case ESP:
+			case ESP_WORD:
 			case GRE:
 			case IGMP:
 			case IGRP:

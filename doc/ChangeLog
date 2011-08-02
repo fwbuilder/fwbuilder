@@ -1,8 +1,14 @@
 2011-08-01  Vadim Kurland  <vadim@netcitadel.com>
 
+	* pix.g (static_command_common_last_parameters): changed token
+	name from "ESP" to "ESP_WORD" to avoid conflict with macro "ESP"
+	that happened during build on OpenSolaris
+
 	* unit_tests/ObjectMatcherTest/ObjectMatcherTest.cpp (matchTest):
 	fixed unit test (ObjectMatcher matches ipv6 only when internal
 	flag is set accordingly)
+
+	* VERSION: set version to 5.0.1
 
 2011-07-28  vadim  <vadim@netcitadel.com>
 

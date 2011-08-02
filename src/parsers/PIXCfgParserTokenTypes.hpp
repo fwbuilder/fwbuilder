@@ -1,7 +1,7 @@
 #ifndef INC_PIXCfgParserTokenTypes_hpp_
 #define INC_PIXCfgParserTokenTypes_hpp_
 
-/* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgParserTokenTypes.hpp"$ */
+/* $ANTLR 2.7.7 (20100319): "pix.g" -> "PIXCfgParserTokenTypes.hpp"$ */
 
 #ifndef CUSTOM_API
 # define CUSTOM_API
@@ -26,7 +26,7 @@ struct CUSTOM_API PIXCfgParserTokenTypes {
 		IPV6 = 15,
 		AH = 16,
 		EIGRP = 17,
-		ESP = 18,
+		ESP_WORD = 18,
 		GRE = 19,
 		IGMP = 20,
 		IGRP = 21,
