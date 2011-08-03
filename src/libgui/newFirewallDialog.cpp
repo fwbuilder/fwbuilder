@@ -94,10 +94,12 @@ using namespace std;
 newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     QDialog(parentw)
 {
-    parent = _p;
-    db_orig = parent->getRoot();
+
+    db_orig = _p->getRoot();
     db_copy = new FWObjectDatabase();
     db_copy->duplicate(db_orig, false);
+
+    parent = db_copy->getById(_p->getId(), true);
 
     m_dialog = new Ui::newFirewallDialog_q;
     m_dialog->setupUi(this);
@@ -1276,7 +1278,6 @@ void newFirewallDialog::finishClicked()
     db_orig->fixTree();
 
     nfw = Firewall::cast(db_orig->findInIndex(nfw->getId()));
-
 
     if (tmpldb!=NULL)
     {

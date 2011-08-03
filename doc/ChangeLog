@@ -1,3 +1,11 @@
+2011-08-03  Vadim Kurland  <vadim@netcitadel.com>
+
+	* newFirewallDialog_from_template.cpp (replaceReferencesToObject):
+	see #2628 fixed crash that happened if user create new firewall
+	object from a template and changed one of the ip addresses, while
+	another firewall object created from the same template already
+	existed in the tree.
+
 2011-08-02  Vadim Kurland  <vadim@netcitadel.com>
 
 	* instDialog_ui_ops.cpp (instDialog::getInstOptions): moved "batch

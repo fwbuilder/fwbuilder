@@ -78,11 +78,12 @@ void newFirewallDialog::createFirewallFromTemplate()
     wfl->registerFlag(UserWorkflow::NEW_FW_WITH_TEMPLATE, true);
 
     QListWidgetItem *itm = m_dialog->templateList->currentItem();
-    FWObject *template_fw=templates[itm];
+    FWObject *template_fw = templates[itm];
     assert (template_fw!=NULL);
 
     string platform = readPlatform(m_dialog->platform).toAscii().constData();
     string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
+
 
     map<int, int> map_ids;
     FWObject *no = db_copy->recursivelyCopySubtree(parent, template_fw, map_ids);
@@ -119,9 +120,9 @@ void newFirewallDialog::changedAddressesInNewFirewall()
     QMap<Interface*, EditedInterfaceData> new_configuration =
         m_dialog->interfaceEditor2->getData();
 
-    list<FWObject*> all_intrfaces = nfw->getByTypeDeep(Interface::TYPENAME);
-    for (list<FWObject*>::iterator intiter=all_intrfaces.begin();
-         intiter != all_intrfaces.end(); ++intiter )
+    list<FWObject*> all_interfaces = nfw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator intiter=all_interfaces.begin();
+         intiter != all_interfaces.end(); ++intiter )
     {
         Interface *intf = Interface::cast(*intiter);
 
@@ -314,16 +315,20 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
                                                     InetAddrMask new_net)
 {
     if(old_net.isAny()) return;  // do not replace references to 0/0
-
-    QString filename = mw->activeProject()->getFileName();
+    
+    FWObject *current_lib = fw->getLibrary();
 
     // Find all matching Network and NetworkIPv6
     // objects used in the rules
     FindNetwork pred(old_net);
     list<FWObject*> res = fw->findIf(&pred);
+    set<FWObject*> old_nets;
     if (res.size())
     {
-        FWObject *current_lib = fw->getLibrary();
+        // eliminate duplicates
+        for (list<FWObject*>::iterator it=res.begin(); it!=res.end(); ++it)
+            old_nets.insert(FWObjectReference::getObject(*it));
+
         string net_type = Network::TYPENAME;
         if (old_net.getAddressPtr()->isV6()) net_type = NetworkIPv6::TYPENAME;
         FWObject *parent = 
@@ -331,19 +336,20 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
                 current_lib, net_type.c_str());
         Address *new_net_obj = Address::cast(db_copy->create(net_type));
         parent->add(new_net_obj);
+
         QString new_net_name =
             QString("%1:%2:net").arg(fw->getName().c_str()).arg(intf->getName().c_str());
         new_net_obj->setName(new_net_name.toStdString());
         new_net_obj->setAddress(*(new_net.getAddressPtr()));
         new_net_obj->setNetmask(*(new_net.getNetmaskPtr()));
 
+        QString filename = mw->activeProject()->getFileName();
         QCoreApplication::postEvent(
             mw, new insertObjectInTreeEvent(filename,
                                             parent->getId(),
                                             new_net_obj->getId()));
 
-        for (list<FWObject*>::iterator it=res.begin();
-             it!=res.end(); ++it)
+        for (set<FWObject*>::iterator it=old_nets.begin(); it!=old_nets.end(); ++it)
         {
             FWObject *old_obj = FWObjectReference::getObject(*it);
             replaceReferencesToObject(fw, old_obj, new_net_obj);
@@ -351,12 +357,12 @@ void newFirewallDialog::replaceReferencesToNetworks(Firewall *fw,
     }
 }
 
-void newFirewallDialog::replaceReferencesToObject(Firewall*,
+void newFirewallDialog::replaceReferencesToObject(Firewall *fw,
                                                   FWObject *old_obj,
                                                   FWObject *new_obj)
 {
     map<int, int> map_ids;
     map_ids[old_obj->getId()] = new_obj->getId();
-    db_copy->fixReferences(db_copy, map_ids);
+    db_copy->fixReferences(fw, map_ids);
 }
 
