@@ -93,7 +93,7 @@ class instDialog : public QDialog, public FakeWizard
     Page1Operation page_1_op;
     FirewallInstaller *installer;
     ProjectPanel *project;
-    instBatchOptionsDialog *batch_inst_opt_dlg;
+    instOptionsDialog *inst_opt_dlg;
     bool compile_only;
     bool compile_complete;
     
@@ -191,7 +191,7 @@ class instDialog : public QDialog, public FakeWizard
     
     void displayCommand(const QStringList &args);
     bool runCompiler(libfwbuilder::Firewall *fw);
-    bool runInstaller(libfwbuilder::Firewall *fw, bool cancelAllVisible = true);
+    bool runInstaller(libfwbuilder::Firewall *fw, bool installing_many_firewalls = true);
 
     QStringList prepareArgForCompiler(libfwbuilder::Firewall *fw);
     bool tableHasCheckedItems();
@@ -211,8 +211,7 @@ protected:
     virtual void showEvent( QShowEvent *ev);
     virtual void hideEvent( QHideEvent *ev);
 
-    bool getInstOptions(libfwbuilder::Firewall *fw, bool cancelAllVisible = true);
-    bool getBatchInstOptions(libfwbuilder::Firewall *first_fw);
+    bool getInstOptions(libfwbuilder::Firewall *fw, bool installing_many_firewalls = true);
     
     void prepareInstConf(libfwbuilder::Firewall *fw);
 

@@ -1044,7 +1044,7 @@ bool instDialog::tableHasCheckedItems()
 /*
  * getInstOptions() fills attributes of the cnf object
  */
-bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
+bool instDialog::getInstOptions(Firewall *fw, bool installing_many_firewalls)
 {
     if (fwbdebug)
         qDebug() << "instDialog::getInstOptions() begin"
@@ -1057,19 +1057,20 @@ bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
     readInstallerOptionsFromSettings();
     readInstallerOptionsFromFirewallObject(fw);
 
-    if (m_dialog->batchInstall->isChecked() && batch_inst_opt_dlg)
+    if (inst_opt_dlg && inst_opt_dlg->m_dialog->batchInstall->isChecked())
     {
         // in batch install mode we use the same dialog to fill cnf
         // without showing it to the user again
-        readInstallerOptionsFromDialog(fw, batch_inst_opt_dlg);
+        readInstallerOptionsFromDialog(fw, inst_opt_dlg);
     } else
     {
         // In non-batch mode installer options from the dialog
         // overwrite options set in the fw object itself.
-        instOptionsDialog *inst_opt_dlg = new instOptionsDialog(
-            this, &cnf, cancelAllVisible);
+        if (inst_opt_dlg) delete inst_opt_dlg;
+        inst_opt_dlg = new instOptionsDialog(this, &cnf, installing_many_firewalls);
 
         int resultCode = inst_opt_dlg->exec();
+
         // 0 - rejected
         // 1 - accepted
         // -1 - cancell all clicked
@@ -1079,59 +1080,23 @@ bool instDialog::getInstOptions(Firewall *fw, bool cancelAllVisible)
             delete inst_opt_dlg;
             return false;
         }
+
         if (resultCode == QDialog::Rejected)
         {
             delete inst_opt_dlg;
             return false;
         }
+
         readInstallerOptionsFromDialog(fw, inst_opt_dlg);
+
         inst_opt_dlg->close();
-        inst_opt_dlg->deleteLater();
+        // do not delete the dialog because we may need to get data from it again if
+        // in batch install mode.
+        //inst_opt_dlg->deleteLater(); 
     }
 
     if (fwbdebug)
         qDebug() << "instDialog::getInstOptions() end"
-                 << "cnf.user=" << cnf.user
-                 << "cnf.maddr=" << cnf.maddr;
-
-    return verifyManagementAddress();
-}
-
-/*
- * getBatchInstOptions() fills attributes of the cnf object for batch install
- */
-bool instDialog::getBatchInstOptions(Firewall *first_fw)
-{
-    if (fwbdebug)
-        qDebug() << "instDialog::getBatchInstOptions() begin"
-                 << "cnf.user=" << cnf.user
-                 << "cnf.maddr=" << cnf.maddr
-                 << "first_fw=" << first_fw;
-
-    cnf.fwobj = first_fw;   // NULL;
-
-    readInstallerOptionsFromSettings();
-    readInstallerOptionsFromFirewallObject(first_fw);
-
-    if (batch_inst_opt_dlg != NULL) delete batch_inst_opt_dlg;
-
-    batch_inst_opt_dlg = new instBatchOptionsDialog(this, &cnf);
-
-    if (batch_inst_opt_dlg->exec()==QDialog::Rejected)
-    {
-        stopProcessFlag = true;
-        this->m_dialog->finishButton->setEnabled(true);
-        this->m_dialog->finishButton->setDefault(true);
-        foreach(Firewall *fw, this->install_fw_list)
-            this->opCancelled(fw);
-        return false;
-    }
-    // clear aternative address in the dialog
-    batch_inst_opt_dlg->m_dialog->altAddress->setText("");
-    readInstallerOptionsFromDialog(NULL, batch_inst_opt_dlg);
-
-    if (fwbdebug)
-        qDebug() << "instDialog::getBatchInstOptions() end"
                  << "cnf.user=" << cnf.user
                  << "cnf.maddr=" << cnf.maddr;
 
@@ -1143,8 +1108,6 @@ void instDialog::readInstallerOptionsFromSettings()
     if (fwbdebug) qDebug("instDialog::readInstallerOptionsFromSettings");
 
     fwb_prompt="--**--**--";
-
-    cnf.batchInstall = m_dialog->batchInstall->isChecked();
 
     cnf.save_diff = st->value(SETTINGS_PATH_PREFIX"/Installer/savediff").toBool();
     cnf.saveStandby = st->value(SETTINGS_PATH_PREFIX"/Installer/saveStandby").toBool();
@@ -1311,6 +1274,8 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
         adm_user = fwopt->getStr("admUser").c_str();
     }
 
+    cnf.batchInstall = dlg->m_dialog->batchInstall->isChecked();
+
     cnf.dry_run     = dlg->m_dialog->test->isChecked();
     cnf.backup_file = dlg->m_dialog->backupConfigFile->text();
     cnf.backup      = !cnf.backup_file.isEmpty();
@@ -1322,18 +1287,23 @@ void instDialog::readInstallerOptionsFromDialog(Firewall *fw,
     - then check firewall options, user could have set it in the "Install"
       tab of firewall settings dialog
     - last, if all overrides are empty, take it from the management interface
+
+    - ignore alternative address if in batch mode
  */
 
-    QString aaddr = dlg->m_dialog->altAddress->text();
-    if (!aaddr.isEmpty())
+    if ( ! cnf.batchInstall)
     {
+        QString aaddr = dlg->m_dialog->altAddress->text();
+        if (!aaddr.isEmpty())
+        {
 /* alternative address can also be putty session name. In any case,
  * leave it up to ssh to resolve it and signal an error if it can't be
  * resolved ( Putty session name does not have to be in DNS at all ).
  */
-        cnf.maddr = aaddr;
-        if (fwbdebug)
-            qDebug() << "alternative addr:" << aaddr;
+            cnf.maddr = aaddr;
+            if (fwbdebug)
+                qDebug() << "alternative addr:" << aaddr;
+        }
     }
 
     // user name set in the dialog overrides that set in the fw object

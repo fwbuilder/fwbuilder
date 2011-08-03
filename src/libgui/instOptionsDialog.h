@@ -41,7 +41,7 @@ private:
     instConf *cnf;
 
 public:
-    instOptionsDialog(QWidget *parent, instConf *_cnf, bool cancelAllVisible = true);
+    instOptionsDialog(QWidget *parent, instConf *_cnf, bool installing_many_firewalls = true);
     ~instOptionsDialog();
 
     void savePassword();
@@ -54,6 +54,7 @@ public:
 
 public slots:
     void cancelAll();
+    void batchInstallStateChange();
 };
 
 #endif 

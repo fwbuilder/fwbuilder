@@ -52,14 +52,14 @@
 using namespace std;
 using namespace libfwbuilder;
 
-instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cancelAllVisible) :
+instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool installing_many_firewalls) :
     QDialog(parent)
 {
     m_dialog = new Ui::instOptionsDialog_q;
     m_dialog->setupUi(this);
     cnf = _cnf;
 
-    this->m_dialog->cancelAllButton->setVisible(cancelAllVisible);
+    this->m_dialog->cancelAllButton->setVisible(installing_many_firewalls);
 
     int fw_id = -1;
     if (cnf->fwobj)
@@ -109,39 +109,34 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
     if (cnf->user.isEmpty()) m_dialog->uname->setFocus();
     else m_dialog->pwd->setFocus();
 
+    // "batch install" checkbox moved from instDialog to instOptionsDialog
+    m_dialog->batchInstallText->setEnabled(installing_many_firewalls);
+    m_dialog->batchInstall->setEnabled(installing_many_firewalls);
+    m_dialog->batchInstall->setChecked(false);
 
-    if (cnf->batchInstall)
+    QString fwname = QString::fromUtf8(cnf->fwobj->getName().c_str());
+    m_dialog->dialogTitleLine->setText(
+        QString("<p align=\"center\"><b><font size=\"+2\">")+
+        tr("Install options for firewall '%1'").arg(fwname)+
+        QString("</font></b></p>")
+    );
+
+    QString platform = cnf->fwobj->getStr("platform").c_str();
+    string version = cnf->fwobj->getStr("version");
+
+    if (platform=="pix" || platform=="fwsm" ||
+        platform=="iosacl" ||
+        platform=="procurve_acl" )
     {
-        //m_dialog->copyFWB->hide();
+        m_dialog->copyFWB->hide();
         m_dialog->PIXgroupBox->hide();
-        m_dialog->backupConfigFile->hide();
-        m_dialog->backupConfigFileLbl->hide();
+
     } else
     {
-        QString fwname = QString::fromUtf8(cnf->fwobj->getName().c_str());
-        m_dialog->dialogTitleLine->setText(
-            QString("<p align=\"center\"><b><font size=\"+2\">")+
-            tr("Install options for firewall '%1'").arg(fwname)+
-            QString("</font></b></p>")
-        );
-
-        QString platform = cnf->fwobj->getStr("platform").c_str();
-        string version = cnf->fwobj->getStr("version");
-
-        if (platform=="pix" || platform=="fwsm" ||
-            platform=="iosacl" ||
-            platform=="procurve_acl" )
-        {
-            m_dialog->copyFWB->hide();
-            m_dialog->PIXgroupBox->hide();
-
-        } else
-        {
-            m_dialog->epwd->hide();
-            m_dialog->epwdLbl->hide();
-            m_dialog->PIXgroupBox->hide();
-            m_dialog->test->hide();  // dry run option
-        }
+        m_dialog->epwd->hide();
+        m_dialog->epwdLbl->hide();
+        m_dialog->PIXgroupBox->hide();
+        m_dialog->test->hide();  // dry run option
     }
 
 /* hide anyway, diff does not work for pix 6.3(3) */
@@ -152,7 +147,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool cance
     m_dialog->compressScript->hide();
 
     m_dialog->PIXgroupBox->adjustSize();
-    m_dialog->generalOptionsBox->adjustSize();
+    //m_dialog->generalOptionsBox->adjustSize();
     m_dialog->mainBox->adjustSize();
 
     adjustSize();
@@ -206,14 +201,26 @@ instOptionsDialog::~instOptionsDialog()
     delete m_dialog;
 }
 
-
 QString instOptionsDialog::getUName() { return m_dialog->uname->text(); }
 QString instOptionsDialog::getPWD()   { return m_dialog->pwd->text();   }
 QString instOptionsDialog::getEPWD()  { return m_dialog->epwd->text();  }
 
-
 void instOptionsDialog::cancelAll()
 {
     this->done(-1);
+}
+
+void instOptionsDialog::batchInstallStateChange()
+{
+    if (m_dialog->batchInstall->isChecked())
+    {
+        m_dialog->altAddress->setText("");
+        m_dialog->altAddressLabel->setEnabled(false);
+        m_dialog->altAddress->setEnabled(false);
+    } else
+    {
+        m_dialog->altAddressLabel->setEnabled(true);
+        m_dialog->altAddress->setEnabled(true);
+    }
 }
 

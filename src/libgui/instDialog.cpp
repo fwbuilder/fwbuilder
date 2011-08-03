@@ -96,7 +96,7 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
 
-    batch_inst_opt_dlg = NULL;
+    inst_opt_dlg = NULL;
 
     //project = mw->activeProject();
 
@@ -239,20 +239,26 @@ void instDialog::show(ProjectPanel *proj,
         return;
     }
 
-    m_dialog->batchInstall->setEnabled(false);
+    // "batch install" checkbox moved from instDialog to instOptionsDialog
+    // m_dialog->batchInstall->setEnabled(false);
 
-    if (firewalls.size() > 1)
-        m_dialog->batchInstall->setEnabled(true);
+    //if (firewalls.size() > 1)
+    //    m_dialog->batchInstall->setEnabled(true);
 
-    if (clusters.size() >= 1)  // even one cluster enables batch install btn
-        m_dialog->batchInstall->setEnabled(true);
+    //if (clusters.size() >= 1)  // even one cluster enables batch install btn
+    //    m_dialog->batchInstall->setEnabled(true);
+
+    // if this is not the first time user runs install, reset "batch install"
+    // checkbox in the installer options dialog
+    if (inst_opt_dlg)
+        inst_opt_dlg->m_dialog->batchInstall->setChecked(false);
 
     if (firewalls.size() == 1 && clusters.size() == 0)
         m_dialog->selectAllNoneFrame->hide();
     else
         m_dialog->selectAllNoneFrame->show();
 
-    m_dialog->batchInstall->setChecked(false);
+    //m_dialog->batchInstall->setChecked(false);
 
     creatingTable = false;
 
@@ -286,7 +292,7 @@ void instDialog::show(ProjectPanel *proj,
 
 instDialog::~instDialog()
 {
-    if (batch_inst_opt_dlg != NULL) delete batch_inst_opt_dlg;
+    if (inst_opt_dlg != NULL) delete inst_opt_dlg;
     delete m_dialog;
 }
 
@@ -354,16 +360,6 @@ void instDialog::mainLoopInstall()
     if (install_fw_list.size() && !canceledAll)
     {
         Firewall *fw = install_fw_list.front();
-
-        if (install_fw_list.size() == install_list_initial_size)
-        {
-            // this is the first firewall. If batch mode was requested, show
-            // installer options dialog (this will be the only time it is 
-            // shown)
-            if (m_dialog->batchInstall->isChecked() && !getBatchInstOptions(fw))
-                return;
-        }
-
         install_fw_list.pop_front();
         runInstaller(fw, install_fw_list.size()>0);
         return;
@@ -483,6 +479,7 @@ void instDialog::showPage(const int page)
             {
                 mw->fileSave();
                 currentFirewallsBar->reset();
+                currentFirewallsBar->setFormat("%v/%m");
                 currentFirewallsBar->setMaximum(compile_list_initial_size);
                 m_dialog->procLogDisplay->clear();
                 fillCompileUIList();

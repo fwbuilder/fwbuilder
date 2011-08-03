@@ -68,6 +68,7 @@ bool instDialog::runCompiler(Firewall *fw)
     cnf.fwobj = fw;
 
     currentSearchString = tr("Compiling rule sets for firewall: ");
+
     currentFirewallsBar->setValue(compile_list_initial_size - 
                                   compile_fw_list.size());
     currentProgressBar->reset();

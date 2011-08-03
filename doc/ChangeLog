@@ -1,3 +1,11 @@
+2011-08-02  Vadim Kurland  <vadim@netcitadel.com>
+
+	* instDialog_ui_ops.cpp (instDialog::getInstOptions): moved "batch
+	install" button from the main installer wizard to the dialog where
+	user enters their password. Now user can start in a non-batch
+	install mode but continue in batch install mode at any time if all
+	their firewalls authenticate with the same user name and password.
+
 2011-08-01  Vadim Kurland  <vadim@netcitadel.com>
 
 	* pix.g (static_command_common_last_parameters): changed token

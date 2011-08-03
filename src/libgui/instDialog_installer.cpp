@@ -58,7 +58,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-bool instDialog::runInstaller(Firewall *fw, bool cancelAllVisible)
+bool instDialog::runInstaller(Firewall *fw, bool installing_many_firewalls)
 {
     cnf.fwobj = fw;
     cnf.maddr = "";
@@ -68,7 +68,7 @@ bool instDialog::runInstaller(Firewall *fw, bool cancelAllVisible)
                  << fw->getName().c_str()
                  << " cnf.user=" << cnf.user;
 
-    if (!getInstOptions(fw, cancelAllVisible))
+    if (!getInstOptions(fw, installing_many_firewalls))
     {
         QTimer::singleShot( 0, this, SLOT(mainLoopInstall()));
         this->opCancelled(fw);
