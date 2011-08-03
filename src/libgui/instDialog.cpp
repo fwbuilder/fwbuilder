@@ -239,17 +239,6 @@ void instDialog::show(ProjectPanel *proj,
         return;
     }
 
-    // "batch install" checkbox moved from instDialog to instOptionsDialog
-    // m_dialog->batchInstall->setEnabled(false);
-
-    //if (firewalls.size() > 1)
-    //    m_dialog->batchInstall->setEnabled(true);
-
-    //if (clusters.size() >= 1)  // even one cluster enables batch install btn
-    //    m_dialog->batchInstall->setEnabled(true);
-
-    // if this is not the first time user runs install, reset "batch install"
-    // checkbox in the installer options dialog
     if (inst_opt_dlg)
         inst_opt_dlg->m_dialog->batchInstall->setChecked(false);
 

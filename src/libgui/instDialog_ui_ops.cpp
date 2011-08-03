@@ -1078,12 +1078,14 @@ bool instDialog::getInstOptions(Firewall *fw, bool installing_many_firewalls)
         {
             canceledAll = true;
             delete inst_opt_dlg;
+            inst_opt_dlg = NULL;
             return false;
         }
 
         if (resultCode == QDialog::Rejected)
         {
             delete inst_opt_dlg;
+            inst_opt_dlg = NULL;
             return false;
         }
 
