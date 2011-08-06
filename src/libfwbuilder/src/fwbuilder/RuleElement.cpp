@@ -267,7 +267,7 @@ bool RuleElementItf::validateChild(FWObject *o)
 
     if (Interface::cast(o)!=NULL) return true;
 
-    if (ObjectGroup::cast(o)!=NULL)
+    if (ObjectGroup::cast(o)!=NULL && o->size() > 0)
     {
         bool all_intf = true;
         for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
