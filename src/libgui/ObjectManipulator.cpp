@@ -471,8 +471,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     QMenu *movetargets = NULL;
     int moveTargetsCounter = 0;
 
-    if (!Interface::isA(currentObj) && RuleSet::cast(currentObj)==NULL &&
-        !Library::isA(currentObj) && !FWBTree().isStandardFolder(currentObj))
+    if (!Interface::isA(currentObj) &&
+        !physAddress::isA(currentObj) && 
+        RuleSet::cast(currentObj)==NULL &&
+        !Library::isA(currentObj) &&
+        !FWBTree().isStandardFolder(currentObj))
     {
         duptargets = popup_menu->addMenu( tr("Duplicate ...") );
         movetargets = popup_menu->addMenu( tr("Move ...") );
