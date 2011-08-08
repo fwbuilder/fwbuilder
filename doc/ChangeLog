@@ -1,3 +1,10 @@
+2011-08-08  Vadim Kurland  <vadim@netcitadel.com>
+
+	* configlets/freebsd/rc_conf_carp_interface: see #2636 "carp :
+	Incorrect output in rc.conf.local format". Should use
+	create_args_carp0 instead of ifconfig_carp0 to set up CARP
+	interface vhid, pass and adskew parameters.
+
 2011-08-05  Vadim Kurland  <vadim@netcitadel.com>
 
 	* RuleElement.cpp (RuleElementItf::validateChild): see #2635

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1297993801" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1312830946" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -1693,6 +1693,455 @@
         <Option name="vrrp_vrid">1</Option>
       </ClusterGroupOptions>
     </FailoverClusterGroup>
+    <Cluster id="id6497X12937" host_OS="freebsd" inactive="False" lastCompiled="1312831068" lastInstalled="0" lastModified="1312831041" platform="pf" name="pf_cluster_6" comment=" " ro="False">
+      <NAT id="id6741X12937" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <NATRule id="id6743X12937" disabled="False" group="" position="0" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="id3DC75CE7-1"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id6786X12937" disabled="False" group="" position="1" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="id3DC75CE7-1"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id6829X12937" disabled="False" group="" position="2" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="id3DC75CE7-1"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="id11417X39764"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id6872X12937" disabled="False" group="" position="3" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="id3DC75CE7-1"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id6915X12937" disabled="False" group="" position="4" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="id3DC75CE7-1"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="id2833X26920"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id6958X12937" disabled="False" group="" position="5" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="id3DC75CE7-1"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="id3346X26920"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id7001X12937" disabled="False" group="" position="6" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="tcp-HTTP"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="id15840X39764"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id7044X12937" disabled="False" group="" position="7" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="tcp-HTTP"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="id15840X39764"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <NATRule id="id7087X12937" disabled="False" group="" position="8" action="Translate" comment="">
+          <OSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </OSrc>
+          <ODst neg="False">
+            <ObjectRef ref="id11417X39764"/>
+          </ODst>
+          <OSrv neg="False">
+            <ServiceRef ref="tcp-HTTP"/>
+          </OSrv>
+          <TSrc neg="False">
+            <ObjectRef ref="sysid0"/>
+          </TSrc>
+          <TDst neg="False">
+            <ObjectRef ref="id15840X39764"/>
+          </TDst>
+          <TSrv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </TSrv>
+          <ItfInb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfInb>
+          <ItfOutb neg="False">
+            <ObjectRef ref="sysid0"/>
+          </ItfOutb>
+          <NATRuleOptions/>
+        </NATRule>
+        <RuleSetOptions/>
+      </NAT>
+      <Policy id="id6542X12937" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <PolicyRule id="id6544X12937" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <PolicyRule id="id6572X12937" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <PolicyRule id="id6600X12937" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <PolicyRule id="id6628X12937" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <PolicyRule id="id6656X12937" disabled="False" group="" log="False" position="4" action="Accept" direction="Inbound" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <PolicyRule id="id6684X12937" disabled="False" group="" log="False" position="5" action="Accept" direction="Inbound" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="True">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <PolicyRule id="id6712X12937" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">True</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <RuleSetOptions/>
+      </Policy>
+      <Routing id="id7131X12937" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <RuleSetOptions/>
+      </Routing>
+      <Interface id="id6507X12937" dedicated_failover="False" dyn="False" label="pf_clsuter_1 carp0" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp0" comment="" ro="False">
+        <IPv4 id="id6515X12937" name="pf_cluster_6:carp0:ip" comment="" ro="False" address="172.24.0.1" netmask="255.255.255.0"/>
+        <InterfaceOptions>
+          <Option name="iface_mtu">1500</Option>
+          <Option name="type">carp</Option>
+        </InterfaceOptions>
+        <FailoverClusterGroup id="id6517X12937" master_iface="id7266X12937" type="carp" name="pf_cluster_6:carp0:members" comment="">
+          <ObjectRef ref="id7266X12937"/>
+          <ObjectRef ref="id7382X12937"/>
+          <ClusterGroupOptions>
+            <Option name="carp_advbase">1</Option>
+            <Option name="carp_default_advskew">0</Option>
+            <Option name="carp_master_advskew">0</Option>
+            <Option name="carp_password">secret</Option>
+            <Option name="carp_vhid">101</Option>
+          </ClusterGroupOptions>
+        </FailoverClusterGroup>
+      </Interface>
+      <Interface id="id6522X12937" dedicated_failover="False" dyn="False" label="pf_cluster_1 carp1" mgmt="False" security_level="0" unnum="False" unprotected="False" name="carp1" comment="" ro="False">
+        <IPv4 id="id6530X12937" name="pf_cluster_6:carp1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+        <InterfaceOptions>
+          <Option name="iface_mtu">1500</Option>
+          <Option name="type">carp</Option>
+        </InterfaceOptions>
+        <FailoverClusterGroup id="id6532X12937" master_iface="id7271X12937" type="carp" name="pf_cluster_6:carp1:members" comment="">
+          <ObjectRef ref="id7271X12937"/>
+          <ObjectRef ref="id7387X12937"/>
+          <ClusterGroupOptions>
+            <Option name="carp_password">secret</Option>
+            <Option name="carp_vhid">100</Option>
+          </ClusterGroupOptions>
+        </FailoverClusterGroup>
+      </Interface>
+      <Interface id="id6537X12937" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="lo0" comment="" ro="False">
+        <IPv4 id="id6540X12937" name="pf_cluster_6:lo0:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+        <InterfaceOptions>
+          <Option name="carp_password">my_secret</Option>
+          <Option name="type">carp</Option>
+        </InterfaceOptions>
+      </Interface>
+      <FirewallOptions/>
+      <StateSyncClusterGroup id="id7135X12937" type="pfsync" name="pf_cluster_6:members" comment="">
+        <ObjectRef ref="id7266X12937"/>
+        <ObjectRef ref="id7382X12937"/>
+        <ClusterGroupOptions>
+          <Option name="syncpeer">True</Option>
+        </ClusterGroupOptions>
+      </StateSyncClusterGroup>
+    </Cluster>
   </Library>
   <Library id="id1495X69605" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id1502X69605" name="Clusters" comment="" ro="False">
@@ -2145,7 +2594,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id5462X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1296755154" platform="pf" name="pf_cluster_2" comment="using multicast address for pfsync and FreeBSD" ro="False">
+      <Cluster id="id5462X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1312838469" platform="pf" name="pf_cluster_2" comment="using multicast address for pfsync and FreeBSD" ro="False">
         <NAT id="id5559X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3009,7 +3458,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id7290X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1296755154" platform="pf" version="4.x" name="freebsd-1" comment="" ro="False">
+      <Firewall id="id7290X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1312838466" platform="pf" version="4.0" name="freebsd-1" comment="" ro="False">
         <NAT id="id7310X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3124,7 +3573,7 @@
           <Option name="sshArgs"></Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id7317X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1245802420" platform="pf" version="4.x" name="freebsd-2" comment="" ro="False">
+      <Firewall id="id7317X42213" host_OS="freebsd" inactive="False" lastCompiled="1296754097" lastInstalled="0" lastModified="1312838469" platform="pf" version="4.0" name="freebsd-2" comment="" ro="False">
         <NAT id="id7330X42213" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -3742,6 +4191,260 @@
           <Option name="pf_udp_first">0</Option>
           <Option name="pf_udp_multiple">0</Option>
           <Option name="pf_udp_single">0</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
+          <Option name="sshArgs"></Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id7258X12937" host_OS="freebsd" inactive="False" lastCompiled="1312831068" lastInstalled="0" lastModified="1312830975" platform="pf" version="" name="freebsd-3" comment="uses rc.conf file format" ro="False">
+        <NAT id="id7279X12937" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id7276X12937" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id7282X12937" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id7266X12937" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id7269X12937" name="freebsd-3:en0:ip" comment="" ro="False" address="172.24.0.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id7271X12937" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id7274X12937" name="freebsd-3:en1:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
+          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_carp_interfaces">True</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">True</Option>
+          <Option name="debug">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="generate_rc_conf_file">True</Option>
+          <Option name="generate_shell_script">False</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_block_policy"></Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_reassemble_tcp">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_debug"></Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="preserve_group_names">False</Option>
+          <Option name="prolog_place">fw_file</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
+          <Option name="sshArgs"></Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id7374X12937" host_OS="freebsd" inactive="False" lastCompiled="1312831068" lastInstalled="0" lastModified="1312830963" platform="pf" version="" name="freebsd-4" comment="uses rc.conf file format&#10;" ro="False">
+        <NAT id="id7395X12937" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id7392X12937" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id7398X12937" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id7382X12937" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="en0" comment="" ro="False">
+          <IPv4 id="id7385X12937" name="freebsd-4:en0:ip" comment="" ro="False" address="172.24.0.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Interface id="id7387X12937" dedicated_failover="False" dyn="False" label="" security_level="100" unnum="False" unprotected="False" name="en1" comment="" ro="False">
+          <IPv4 id="id7390X12937" name="freebsd-4:en1:ip" comment="" ro="False" address="192.168.1.3" netmask="255.255.255.0"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_new_tcp_with_no_syn">False</Option>
+          <Option name="activationCmd"></Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="check_shading">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="conf1_file"></Option>
+          <Option name="conf_file_name_on_firewall"></Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_carp_interfaces">True</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_pfsync_interfaces">False</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="fallback_log">False</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="generate_rc_conf_file">True</Option>
+          <Option name="generate_shell_script">False</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="in_out_code">true</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo0</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modulate_state">False</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="output_file"></Option>
+          <Option name="pass_all_out">false</Option>
+          <Option name="pf_adaptive_end">0</Option>
+          <Option name="pf_adaptive_start">0</Option>
+          <Option name="pf_block_policy"></Option>
+          <Option name="pf_do_limit_frags">False</Option>
+          <Option name="pf_do_limit_src_nodes">False</Option>
+          <Option name="pf_do_limit_states">False</Option>
+          <Option name="pf_do_limit_table_entries">False</Option>
+          <Option name="pf_do_limit_tables">False</Option>
+          <Option name="pf_do_scrub">False</Option>
+          <Option name="pf_do_timeout_frag">False</Option>
+          <Option name="pf_do_timeout_interval">False</Option>
+          <Option name="pf_flush_states">False</Option>
+          <Option name="pf_icmp_error">0</Option>
+          <Option name="pf_icmp_first">0</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_src_nodes">0</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_limit_table_entries">0</Option>
+          <Option name="pf_limit_tables">0</Option>
+          <Option name="pf_modulate_state">False</Option>
+          <Option name="pf_optimization"></Option>
+          <Option name="pf_other_first">0</Option>
+          <Option name="pf_other_multiple">0</Option>
+          <Option name="pf_other_single">0</Option>
+          <Option name="pf_scrub_fragm_crop">False</Option>
+          <Option name="pf_scrub_fragm_drop_ovl">False</Option>
+          <Option name="pf_scrub_maxmss">1460</Option>
+          <Option name="pf_scrub_minttl">0</Option>
+          <Option name="pf_scrub_no_df">False</Option>
+          <Option name="pf_scrub_random_id">False</Option>
+          <Option name="pf_scrub_reassemble">True</Option>
+          <Option name="pf_scrub_reassemble_tcp">False</Option>
+          <Option name="pf_scrub_use_maxmss">False</Option>
+          <Option name="pf_scrub_use_minttl">False</Option>
+          <Option name="pf_set_adaptive">False</Option>
+          <Option name="pf_set_debug"></Option>
+          <Option name="pf_set_icmp_error">False</Option>
+          <Option name="pf_set_icmp_first">False</Option>
+          <Option name="pf_set_other_first">False</Option>
+          <Option name="pf_set_other_multiple">False</Option>
+          <Option name="pf_set_other_single">False</Option>
+          <Option name="pf_set_tcp_closed">False</Option>
+          <Option name="pf_set_tcp_closing">False</Option>
+          <Option name="pf_set_tcp_established">False</Option>
+          <Option name="pf_set_tcp_finwait">False</Option>
+          <Option name="pf_set_tcp_first">False</Option>
+          <Option name="pf_set_tcp_opening">False</Option>
+          <Option name="pf_set_udp_first">False</Option>
+          <Option name="pf_set_udp_multiple">False</Option>
+          <Option name="pf_set_udp_single">False</Option>
+          <Option name="pf_state_policy"></Option>
+          <Option name="pf_tcp_closed">0</Option>
+          <Option name="pf_tcp_closing">0</Option>
+          <Option name="pf_tcp_established">0</Option>
+          <Option name="pf_tcp_finwait">0</Option>
+          <Option name="pf_tcp_first">0</Option>
+          <Option name="pf_tcp_opening">0</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pf_udp_first">0</Option>
+          <Option name="pf_udp_multiple">0</Option>
+          <Option name="pf_udp_single">0</Option>
+          <Option name="preserve_group_names">False</Option>
           <Option name="prolog_place">fw_file</Option>
           <Option name="prolog_script"></Option>
           <Option name="scpArgs"></Option>

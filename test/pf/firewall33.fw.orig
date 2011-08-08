@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3566
+#  Firewall Builder  fwb_pf v5.0.1.3572
 #
-#  Generated Thu Jul 21 14:14:11 2011 PDT by vadim
+#  Generated Mon Aug  8 15:26:55 2011 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 # files:   firewall33.conf /etc/fw/firewall33.conf
@@ -168,7 +168,7 @@ configure_interfaces() {
     update_addresses_of_interface "lo 127.0.0.1/0xff000000" ""
 }
 
-log "Activating firewall script generated Thu Jul 21 14:14:11 2011 by vadim"
+log "Activating firewall script generated Mon Aug  8 15:26:55 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces

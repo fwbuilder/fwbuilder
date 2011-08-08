@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for f in *.fw; do
+for f in *.fw *rc.conf*; do
   j=${f}.orig
   mv $f $j
 done

@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_pf v5.0.0.3566
+#  Firewall Builder  fwb_pf v5.0.1.3572
 #
-#  Generated Thu Jul 21 14:14:24 2011 PDT by vadim
+#  Generated Mon Aug  8 15:27:06 2011 PDT by vadim
 #
 # files: * pf_cluster_1_openbsd-1.fw /etc/pf_cluster_1_openbsd-1.fw
 # files:   pf_cluster_1_openbsd-1.conf /etc/pf_cluster_1_openbsd-1.conf
@@ -299,7 +299,7 @@ configure_interfaces() {
     update_addresses_of_interface "carp1 192.168.1.1/0xffffff00" ""
 }
 
-log "Activating firewall script generated Thu Jul 21 14:14:24 2011 by vadim"
+log "Activating firewall script generated Mon Aug  8 15:27:06 2011 by vadim"
 
 set_kernel_vars
 configure_interfaces
