@@ -377,6 +377,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
                                             bool regular,
                                             bool ipv6)
 {
+
     if ( regular && ( addr.isEmpty() || netm.isEmpty() ) )
     {
         setError("Firewall Builder", tr("Empty address or netmask field"));
@@ -400,7 +401,7 @@ bool InterfaceEditorWidget::validateAddress(const QString &addr,
         int ilen = netm.toInt (&ok);
         if (ok)
         {
-            if (ilen < 0 || (!ipv6 && (ilen > 32)) || (ilen>64) )
+            if (ilen < 0 || (ipv6 && ilen > 128) || (!ipv6 && ilen > 32))
             {
                 setError("Firewall Builder",
                          tr("Invalid netmask '%1/%2'").arg(addr).arg(netm));
