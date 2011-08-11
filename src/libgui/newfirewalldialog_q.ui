@@ -67,7 +67,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page1">
       <layout class="QGridLayout" name="gridLayout_4">
@@ -1049,5 +1049,25 @@ You can change  interface names and their IP addresses on the next page. Templat
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>newFirewallDialog_q</sender>
+   <signal>rejected()</signal>
+   <receiver>newFirewallDialog_q</receiver>
+   <slot>cleanup()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>324</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>cancelClicked()</slot>
+  <slot>cleanup()</slot>
+ </slots>
 </ui>

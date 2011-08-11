@@ -77,7 +77,7 @@ class newFirewallDialog : public QDialog, public FakeWizard
     std::list<std::string>              possible_inside_interface_labels;
     std::list<std::string>              possible_outside_interface_labels;
     std::list<std::string>              possible_dmz_interface_labels;
-    
+
     void fillInterfaceData(libfwbuilder::Interface *intf, QTextBrowser *qte);
 
     void fillInterfaceSLList();
@@ -135,6 +135,7 @@ protected slots:
     void nextClicked();
     void backClicked();
 
+    void cleanup();    
 };
 
 #endif // __NEWFIREWALLDIALOG_H

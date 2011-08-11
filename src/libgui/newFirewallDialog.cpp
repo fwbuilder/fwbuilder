@@ -1065,7 +1065,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     return true;
 }
 
-void newFirewallDialog::cancelClicked()
+void newFirewallDialog::cleanup()
 {
     if (nfw)
     {
@@ -1079,7 +1079,11 @@ void newFirewallDialog::cancelClicked()
         delete tmpldb;
         tmpldb = NULL;
     }
+}
 
+void newFirewallDialog::cancelClicked()
+{
+    cleanup();
     reject();
 }
 

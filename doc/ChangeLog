@@ -1,5 +1,8 @@
 2011-08-11  Vadim Kurland  <vadim@netcitadel.com>
 
+	* newFirewallDialog.cpp (cleanup): fixes #2642 "GUI crashes if
+	user cancels newFirewall dialog".
+
 	* RuleOptionsDialog.cpp (fillInterfaces): the drop-down list of
 	interfaces for the "route-through" rule option for PF and iptables
 	should include not only cluster interfaces, but also interfaces of
