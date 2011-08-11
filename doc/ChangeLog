@@ -1,3 +1,13 @@
+2011-08-11  Vadim Kurland  <vadim@netcitadel.com>
+
+	* RuleOptionsDialog.cpp (fillInterfaces): the drop-down list of
+	interfaces for the "route-through" rule option for PF and iptables
+	should include not only cluster interfaces, but also interfaces of
+	all members. This way, we can make compiler generate configuration
+	"pass in quick on em0 route-to { ( em0 10.1.1.2 ) } ... " for a
+	rule of a PF cluster. Here "em0" is an interface of a member, not
+	the cluster.
+
 2011-08-08  Vadim Kurland  <vadim@netcitadel.com>
 
 	* configlets/freebsd/rc_conf_carp_interface: see #2636 "carp :

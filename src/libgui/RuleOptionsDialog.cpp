@@ -37,6 +37,9 @@
 #include "FWObjectDropArea.h"
 
 #include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/FWOptions.h"
 #include "fwbuilder/Resources.h"
@@ -512,8 +515,7 @@ void RuleOptionsDialog::iptRouteContinueToggled()
 
 void RuleOptionsDialog::fillInterfaces(QComboBox* cb)
 {
-    cb->clear();
-    cb->addItem("");
+    QSet<QString> deduplicated_interface_names;
 
     list<FWObject*> interfaces = firewall->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=interfaces.begin(); i!=interfaces.end(); ++i)
@@ -521,9 +523,41 @@ void RuleOptionsDialog::fillInterfaces(QComboBox* cb)
         Interface *iface = Interface::cast(*i);
         assert(iface);
 
-        cb->addItem(iface->getName().c_str());
+        if (iface->isLoopback()) continue;
+
+        deduplicated_interface_names.insert(iface->getName().c_str());
+
+        if (Cluster::isA(firewall))
+        {
+            FailoverClusterGroup *failover_group =
+                FailoverClusterGroup::cast(
+                    iface->getFirstByType(FailoverClusterGroup::TYPENAME));
+            if (failover_group)
+            {
+                for (FWObject::iterator it=failover_group->begin();
+                     it!=failover_group->end(); ++it)
+                {
+                    FWObject *mi = FWReference::getObject(*it);
+                    if (Interface::isA(mi) && ! iface->isLoopback())
+                    {
+                        deduplicated_interface_names.insert(mi->getName().c_str());
+                    }
+                }
+            }
+        }
     }
 
+    QStringList sorted_interfaces;
+    QSetIterator<QString> it(deduplicated_interface_names);
+    while (it.hasNext())
+    {
+        sorted_interfaces << it.next();
+    }
+    sorted_interfaces.sort();
+
+    cb->clear();
+    cb->addItem("");
+    cb->addItems(sorted_interfaces);
 }
 
 
