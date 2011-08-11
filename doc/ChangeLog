@@ -1,5 +1,10 @@
 2011-08-11  Vadim Kurland  <vadim@netcitadel.com>
 
+	* freebsd/carp_interface: see #2638 "When CARP password is empty
+	the advskew value is not read". Should skip "pass <word>"
+	parameter of the ifconfig command that creates carp interface
+	if user did not set up any password.
+
 	* OSConfigurator_linux24_interfaces.cpp (validateInterfaces):
 	see #2639 "support for vlan subinterfaces of bridge interfaces
 	(e.g.  br0.5)". Currently fwbuilder can not generate script to

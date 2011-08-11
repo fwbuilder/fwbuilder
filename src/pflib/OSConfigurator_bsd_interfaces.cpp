@@ -568,7 +568,7 @@ void OSConfigurator_bsd::interfaceConfigLineCARPInternal(
     FWOptions *failover_opts =
         FailoverClusterGroup::cast(failover_group)->getOptionsObject();
     string carp_password = failover_opts->getStr("carp_password");
-    if (carp_password.empty()) carp_password = "\"\"";
+    //if (carp_password.empty()) carp_password = "\"\"";
     int vhid = failover_opts->getInt("carp_vhid");
 
     // use the same default as the one we use in
@@ -599,6 +599,7 @@ void OSConfigurator_bsd::interfaceConfigLineCARPInternal(
     configlet->setVariable("have_base_inetrface", !base_interface.empty());
     configlet->setVariable("base_inetrface", base_interface.c_str());
     configlet->setVariable("carp_password", carp_password.c_str());
+    configlet->setVariable("have_password", !carp_password.empty());
     configlet->setVariable("vhid", vhid);
 
     interface_configuration_lines[iface->getName().c_str()] <<  configlet->expand();

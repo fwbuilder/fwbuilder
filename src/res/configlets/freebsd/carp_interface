@@ -14,6 +14,6 @@
 ##
 ## Unlike in OpenBSD, in FreeBSD ifconfig does not understand carpdev parameter
 
-$IFCONFIG {{$carp_interface}} vhid {{$vhid}} pass {{$carp_password}} {{if have_advbase}} advbase {{$advbase}}{{endif}} {{if have_advskew}} advskew {{$advskew}}{{endif}}
+$IFCONFIG {{$carp_interface}} vhid {{$vhid}} {{if have_password}}pass {{$carp_password}}{{endif}} {{if have_advbase}} advbase {{$advbase}}{{endif}} {{if have_advskew}} advskew {{$advskew}}{{endif}}
     
 
