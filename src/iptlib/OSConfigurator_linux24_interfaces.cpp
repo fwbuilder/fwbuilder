@@ -530,106 +530,126 @@ string OSConfigurator_linux24::printDynamicAddressesConfigurationCommands()
 
 bool OSConfigurator_linux24::validateInterfaces()
 {
-    /*
-     * Per #315:
-     *
-     * The test should scan all subinterfaces of each interface and
-     * try to find inetrfaces wth the same name, then check the
-     * type. So, for the combination br0/br1, the type of br1
-     * is (probably) "bridge" which is not allowed.
-     */
-    FWObjectTypedChildIterator i = fw->findByType(Interface::TYPENAME);
-    for ( ; i!=i.end(); ++i ) 
+    FWOptions* options = fw->getOptionsObject();
+    if ( options->getBool("configure_bridge_interfaces") ) 
     {
-        Interface *iface = Interface::cast(*i);
-        assert(iface);
-        FWObjectTypedChildIterator j = iface->findByType(Interface::TYPENAME);
-        for ( ; j!=j.end(); ++j ) 
+        /*
+         * Per #315:
+         *
+         * The test should scan all subinterfaces of each interface and
+         * try to find inetrfaces wth the same name, then check the
+         * type. So, for the combination br0/br1, the type of br1
+         * is (probably) "bridge" which is not allowed.
+         */
+        FWObjectTypedChildIterator i = fw->findByType(Interface::TYPENAME);
+        for ( ; i!=i.end(); ++i ) 
         {
-            Interface *subinterface = Interface::cast(*j);
-            FWObject::const_iterator it = find_if(
-                fw->begin(), fw->end(),
-                FWObjectNameEQPredicate(subinterface->getName()));
-            if (it != fw->end() && Interface::isA(*it))
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+            FWObjectTypedChildIterator j = iface->findByType(Interface::TYPENAME);
+            for ( ; j!=j.end(); ++j ) 
             {
-                Interface *other_iface = Interface::cast(*it);
-                // Have top-level interface with the same name
-                if (other_iface->getOptionsObject()->getStr("type") == "bridge")
+                Interface *subinterface = Interface::cast(*j);
+                FWObject::const_iterator it = find_if(
+                    fw->begin(), fw->end(),
+                    FWObjectNameEQPredicate(subinterface->getName()));
+                if (it != fw->end() && Interface::isA(*it))
                 {
-                    QString err(
-                        "Subinterface '%1' of interface '%2' has the same name as "
-                        "another bridge interface of the firewall '%3'. "
-                        "The configuration where bridge interface is "
-                        "a subinterface of another interface is not supported.");
-                    abort(
-                        err.arg(subinterface->getName().c_str()).
-                        arg(iface->getName().c_str()).
-                        arg(fw->getName().c_str()).toStdString());
-                    return false;
-                }                    
+                    Interface *other_iface = Interface::cast(*it);
+                    // Have top-level interface with the same name
+                    if (other_iface->getOptionsObject()->getStr("type") == "bridge")
+                    {
+                        QString err(
+                            "Subinterface '%1' of interface '%2' has the same name as "
+                            "another bridge interface of the firewall '%3'. "
+                            "The configuration where bridge interface is "
+                            "a subinterface of another interface is not supported.");
+                        abort(
+                            err.arg(subinterface->getName().c_str()).
+                            arg(iface->getName().c_str()).
+                            arg(fw->getName().c_str()).toStdString());
+                        return false;
+                    }                    
+                }
             }
         }
     }
 
-    /*
-     * Per #324:
-     *
-     * Unsupported configurations: 
-     *
-     * vlan interfaces under bridge interface (e.g. br0 = [eth1,
-     * eth2], vlan inetrface br0.100 is not supported)
-     *
-     * bridge interface as part of bonding interface (e.g. bond0 =
-     * [br0, br1]) (This is covered by the case above, including
-     * unusual interface names)
-     *
-     * vlan interface as a slave of bonding interface (e.g. eth0.100,
-     * eth1.100, bond0 = [eth0.100, eth1.100]). Only regular
-     * interfaces can be slaves of bonding interface. If subinterface
-     * type is "slave" but its name matches one of the vlan interface
-     * regexes, assume this is vlan. Slave subintrfaces do not have to
-     * be copies, one can have "eth4" only once, as a slave, so here
-     * we rely on the subinterface type.
-     *
-     *  Allowed configurations:
-     *
-     * vlans can be created under bonding interface (e.g. bond0.100),
-     * both regular interfaces and vlans can be bridge ports.  }
-     */
-
-    i = fw->findByType(Interface::TYPENAME);
-    for ( ; i!=i.end(); ++i ) 
+    if (options->getBool("configure_vlan_interfaces"))
     {
-        Interface *iface = Interface::cast(*i);
-        assert(iface);
-        FWObjectTypedChildIterator j = iface->findByType(Interface::TYPENAME);
-        for ( ; j!=j.end(); ++j ) 
-        {
-            Interface *subinterface = Interface::cast(*j);
-            if (subinterface->getOptionsObject()->getStr("type") == "8021q" &&
-                iface->getOptionsObject()->getStr("type") == "bridge")
-            {
-                QString err("Vlan subinterfaces of bridge interfaces are not supported. "
-                            "Interface '%1', subinterface '%2'");
-                abort(
-                    err.arg(iface->getName().c_str()).
-                    arg(subinterface->getName().c_str()).toStdString());
-            }
+        /*
+         * Per #324:
+         *
+         * Unsupported configurations: 
+         *
+         * vlan interfaces under bridge interface (e.g. br0 = [eth1,
+         * eth2], vlan inetrface br0.100 is not supported)
+         *
+         * bridge interface as part of bonding interface (e.g. bond0 =
+         * [br0, br1]) (This is covered by the case above, including
+         * unusual interface names)
+         *
+         * vlan interface as a slave of bonding interface (e.g. eth0.100,
+         * eth1.100, bond0 = [eth0.100, eth1.100]). Only regular
+         * interfaces can be slaves of bonding interface. If subinterface
+         * type is "slave" but its name matches one of the vlan interface
+         * regexes, assume this is vlan. Slave subintrfaces do not have to
+         * be copies, one can have "eth4" only once, as a slave, so here
+         * we rely on the subinterface type.
+         *
+         *  Allowed configurations:
+         *
+         * vlans can be created under bonding interface (e.g. bond0.100),
+         * both regular interfaces and vlans can be bridge ports.  }
+         */
 
-            if (subinterface->getOptionsObject()->getStr("type") != "8021q" &&
-                iface->getOptionsObject()->getStr("type") == "bonding")
+        FWObjectTypedChildIterator i = fw->findByType(Interface::TYPENAME);
+        for ( ; i!=i.end(); ++i ) 
+        {
+            Interface *iface = Interface::cast(*i);
+            assert(iface);
+            FWObjectTypedChildIterator j = iface->findByType(Interface::TYPENAME);
+            for ( ; j!=j.end(); ++j ) 
             {
-                QString subint_name = subinterface->getName().c_str();
-                QRegExp vlan1("[a-zA-Z-]+\\d{1,}\\.\\d{1,}");
-                QRegExp vlan2("vlan\\d{1,}");
-                if (vlan1.indexIn(subint_name) != -1 || vlan1.indexIn(subint_name) != -1)
+                Interface *subinterface = Interface::cast(*j);
+
+                if ( options->getBool("configure_bridge_interfaces") ) 
                 {
-                    QString err("Vlan subinterfaces as slaves of bonding interfaces are not supported. "
-                                "Interface '%1', subinterface '%2'");
-                    abort(
-                        err.arg(iface->getName().c_str()).
-                        arg(subinterface->getName().c_str()).toStdString());
+                    if (subinterface->getOptionsObject()->getStr("type") == "8021q" &&
+                        iface->getOptionsObject()->getStr("type") == "bridge")
+                    {
+                        QString err(
+                            "Vlan subinterfaces of bridge interfaces "
+                            "are not supported. "
+                            "Interface '%1', subinterface '%2'");
+                        abort(
+                            err.arg(iface->getName().c_str()).
+                            arg(subinterface->getName().c_str()).toStdString());
+                    }
                 }
+
+                if ( options->getBool("configure_bonding_interfaces"))
+                {
+                    if (subinterface->getOptionsObject()->getStr("type") != "8021q" &&
+                        iface->getOptionsObject()->getStr("type") == "bonding")
+                    {
+                        QString subint_name = subinterface->getName().c_str();
+                        QRegExp vlan1("[a-zA-Z-]+\\d{1,}\\.\\d{1,}");
+                        QRegExp vlan2("vlan\\d{1,}");
+                        if (vlan1.indexIn(subint_name) != -1 ||
+                            vlan1.indexIn(subint_name) != -1)
+                        {
+                            QString err(
+                                "Vlan subinterfaces as slaves of bonding interfaces "
+                                "are not supported. "
+                                "Interface '%1', subinterface '%2'");
+                            abort(
+                                err.arg(iface->getName().c_str()).
+                                arg(subinterface->getName().c_str()).toStdString());
+                        }
+                    }
+                }
+
             }
         }
     }

@@ -1,5 +1,12 @@
 2011-08-11  Vadim Kurland  <vadim@netcitadel.com>
 
+	* OSConfigurator_linux24_interfaces.cpp (validateInterfaces):
+	see #2639 "support for vlan subinterfaces of bridge interfaces
+	(e.g.  br0.5)". Currently fwbuilder can not generate script to
+	configure vlan subinterfaces of bridge interfaces, however if user
+	did not request this configuration script to be generated,
+	compiler should not abort when it encounters this combination.
+
 	* InterfaceEditorWidget.cpp (validateAddress): fixes #2641
 	"newFirewall dialog does not accept ipv6 addresses with long
 	prefixes". The dialog did not allow ipv6 addresses of inetrfaces
