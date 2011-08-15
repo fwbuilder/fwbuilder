@@ -161,7 +161,25 @@ void IPv4Dialog::validate(bool *result)
     {
         try
         {
-            InetAddr( m_dialog->netmask->text().toLatin1().constData() );
+            InetAddr nm( m_dialog->netmask->text().toLatin1().constData() );
+
+            if (!nm.isValidV4Netmask())
+            {
+                *result = false;
+                if (QApplication::focusWidget() != NULL)
+                {
+                    blockSignals(true);
+                    // Do not allow netmask with zeroes inside.
+                    QMessageBox::critical(
+                        this, "Firewall Builder",
+                        tr("Netmasks with zeroes in the middle are not supported"),
+                        tr("&Continue"), 0, 0,
+                        0 );
+                    blockSignals(false);
+                }
+                return;
+            }
+
         } catch (FWException &ex)
         {
             *result = false;
