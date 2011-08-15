@@ -71,6 +71,35 @@ void InetAddrMaskTest::testStringToInetAddr()
         
     sa1 = new InetAddr("1.0.0");
     CPPUNIT_ASSERT_MESSAGE("1.0.0 -> " + sa1->toString(), sa1->toString() == "1.0.0.0");
+
+    sa1 = new InetAddr("255.255.255.255");
+    CPPUNIT_ASSERT_MESSAGE("255.255.255.255 -> " + sa1->toString(), sa1->toString() == "255.255.255.255");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+
+    sa1 = new InetAddr("255.255.255.128");
+    CPPUNIT_ASSERT_MESSAGE("255.255.255.128 -> " + sa1->toString(), sa1->toString() == "255.255.255.128");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+
+    sa1 = new InetAddr("255.255.255.0");
+    CPPUNIT_ASSERT_MESSAGE("255.255.255.0 -> " + sa1->toString(), sa1->toString() == "255.255.255.0");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+
+    sa1 = new InetAddr("255.255.0.0");
+    CPPUNIT_ASSERT_MESSAGE("255.255.0.0 -> " + sa1->toString(), sa1->toString() == "255.255.0.0");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+
+    sa1 = new InetAddr("255.0.0.0");
+    CPPUNIT_ASSERT_MESSAGE("255.0.0.0 -> " + sa1->toString(), sa1->toString() == "255.0.0.0");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+
+    sa1 = new InetAddr("0.0.0.0");
+    CPPUNIT_ASSERT_MESSAGE("0.0.0.0 -> " + sa1->toString(), sa1->toString() == "0.0.0.0");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+
+    sa1 = new InetAddr("255.0.255.0");
+    CPPUNIT_ASSERT_MESSAGE("255.0.255.0 -> " + sa1->toString(), sa1->toString() == "255.0.255.0");
+    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == false);
+
 }
 
 void InetAddrMaskTest::testStringToInetAddrExceptions()
@@ -132,7 +161,7 @@ void InetAddrMaskTest::testStringToInetAddrMask()
     sa = a1->getAddressPtr()->toString();
     CPPUNIT_ASSERT(sa=="0.0.0.0");
     // 0.0.0.0/0.0.0.0 has maximum dimension (represents all possible addresses)
-    CPPUNIT_ASSERT(a1->dimension() == (1<<31)-1);
+    CPPUNIT_ASSERT(a1->dimension() == (((unsigned int)1)<<31)-1);
 
     InetAddrMask *a2 = new InetAddrMask(InetAddr("1.1.1.1"), InetAddr("255.255.255.0"));
     sa = a2->getAddressPtr()->toString();

@@ -110,6 +110,8 @@ class InetAddr
         return sizeof(ipv6) * 8;
     }
 
+    bool isValidV4Netmask();
+    
     void init_from_uint128(uint128 int128a);
     uint128 to_uint128() const;
     

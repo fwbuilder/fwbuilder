@@ -1,5 +1,16 @@
 2011-08-14  Vadim Kurland  <vadim@netcitadel.com>
 
+	* InetAddr.cpp (InetAddr::isValidV4Netmask): function
+	InetAddr::isValidV4Netmask() checks that netmask represented by
+	the object consists of a sequence of "1" bits, followed by the
+	sequence of "0" bits and therefore does not have zeroes in the
+	middle.
+
+	* NetworkDialog.cpp (NetworkDialog::validate): added check to make
+	sure user does not enter netmask with zeroes in the middle for the
+	IPv4 network object. Netmasks like that are not supported by
+	fwbuilder.
+
 	* RuleSetView.cpp (RuleSetView::addColumnRelatedMenu): fixes #2643
 	"GUI crashes when user cuts a rule, then right-mouse click in any
 	rule element of another"

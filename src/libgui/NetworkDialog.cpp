@@ -178,6 +178,7 @@ void NetworkDialog::validate(bool *result)
         }
 
         InetAddr nm( m_dialog->netmask->text().toStdString() );
+
         if (nm.isAny())
         {
             // permit netmask 0.0.0.0 if the address is also 0.0.0.0
@@ -198,6 +199,23 @@ void NetworkDialog::validate(bool *result)
                 }
                 return;
             }
+        }
+
+        if (!nm.isValidV4Netmask())
+        {
+            *result = false;
+            if (QApplication::focusWidget() != NULL)
+            {
+                blockSignals(true);
+                // Do not allow netmask with zeroes inside.
+                QMessageBox::critical(
+                    this, "Firewall Builder",
+                    tr("Netmasks with zeroes in the middle are not supported"),
+                    tr("&Continue"), 0, 0,
+                    0 );
+                blockSignals(false);
+            }
+            return;
         }
 
     } catch (FWException &ex)

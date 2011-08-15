@@ -155,6 +155,27 @@ void InetAddr::init_from_int(unsigned int len)
    }
 }
 
+/*
+ * Netmask with "holes" is accepted by InetAddr, but we do not support
+ * it at this time. This function returns true if InetAddr object
+ * corresponds to an integer with a string of consequitive "1" bits
+ * and then string of consequtive "0" bits. The function only works
+ * for ipv4 addresses.
+ */
+bool InetAddr::isValidV4Netmask()
+{
+    assert(isV4());
+
+    unsigned int n = ntohl(ipv4.s_addr);
+
+    while (n & 0x80000000)
+    {
+        n = n<<1;
+    }
+
+    return (n == 0);
+}
+
 // uint128 is always in the host order
 void InetAddr::init_from_uint128(uint128 la)
 {
