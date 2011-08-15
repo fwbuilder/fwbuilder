@@ -766,12 +766,23 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 delID->setEnabled(!re->isAny());
 
                 // see #1976 do not allow pasting object that has been deleted
+                // also disable "Paste" if object in the clipboard is a rule
+
                 FWObject *obj_in_clipboard =
                     FWObjectClipboard::obj_clipboard->getObject();
-                bool obj_deleted = (obj_in_clipboard &&
-                                    obj_in_clipboard->getLibrary()->getId() ==
-                                    FWObjectDatabase::DELETED_OBJECTS_ID);
-                pasteID->setEnabled(obj_in_clipboard!=NULL && !obj_deleted);
+
+                pasteID->setEnabled(true);
+                        
+                if (obj_in_clipboard == NULL) pasteID->setEnabled(false);
+                else
+                {
+                    if (Rule::cast(obj_in_clipboard) != NULL)
+                        pasteID->setEnabled(false);
+
+                    FWObject *lib = obj_in_clipboard->getLibrary();
+                    if (lib != NULL && lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+                        pasteID->setEnabled(false);
+                }
 
                 string cap_name;
                 if (Policy::cast(md->getRuleSet())!=NULL) cap_name="negation_in_policy";

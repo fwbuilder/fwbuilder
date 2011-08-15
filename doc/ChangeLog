@@ -1,3 +1,9 @@
+2011-08-14  Vadim Kurland  <vadim@netcitadel.com>
+
+	* RuleSetView.cpp (RuleSetView::addColumnRelatedMenu): fixes #2643
+	"GUI crashes when user cuts a rule, then right-mouse click in any
+	rule element of another"
+
 2011-08-11  Vadim Kurland  <vadim@netcitadel.com>
 
 	* freebsd/carp_interface: see #2638 "When CARP password is empty
