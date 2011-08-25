@@ -1,5 +1,9 @@
 2011-08-25  Vadim Kurland  <vadim@netcitadel.com>
 
+	* ObjectManipulator.cpp (openLibForObject): fixes #2648 "right
+	mouse click on firewall object in "Deleted objects" library causes
+	GUI crash"
+
 	* PolicyCompiler_ipt.cpp (processNext): fixes #2650 "rules with
 	address range that includes firewall address in Src are placed in
 	OUTPUT chain even though addresses that do not match the firewall

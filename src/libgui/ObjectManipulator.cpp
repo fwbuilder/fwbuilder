@@ -415,6 +415,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 /* in extended selection mode there may be several selected items */
 
     ObjectTreeView *objTreeView = getCurrentObjectTree();
+    if (objTreeView == NULL) return;
+
     QTreeWidgetItem *item = objTreeView->itemAt(pos);//clicked item
 
     if (fwbdebug)
@@ -1213,7 +1215,9 @@ void ObjectManipulator::editSelectedObject()
 {
     if (fwbdebug) qDebug("ObjectManipulator::editSelectedObject");
 
-    if (getCurrentObjectTree()->getNumSelected()==0) return;
+    ObjectTreeView *objTreeView = getCurrentObjectTree();
+    if (objTreeView == NULL) return;
+    if (objTreeView->getNumSelected()==0) return;
 
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
     if (obj==NULL) return;
@@ -1415,6 +1419,14 @@ void ObjectManipulator::openLibForObject(FWObject *obj)
     {
         FWObject *parent = obj->getParent();
         FWObject *lib = parent->getLibrary();
+        // see #2648 if a library was deleted with all of its
+        // contents, then it is possible that variable lib may point
+        // to such deleted library, which is located inside of the
+        // "Deleted Objects" library.
+        if (lib->getParent()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+            lib = m_project->db()->findInIndex(
+                FWObjectDatabase::DELETED_OBJECTS_ID);
+
         m_objectManipulator->libs->setCurrentIndex(
             libs_model->getIdxForLib(lib).row());
     }
