@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.0.3547
+#  Firewall Builder  fwb_ipt v5.0.1.3575
 #
-#  Generated Fri Jun  3 17:27:33 2011 PDT by vadim
+#  Generated Thu Aug 25 13:46:29 2011 PDT by vadim
 #
 # files: * firewall2-2.fw /etc/fw/firewall2-2.fw
 #
@@ -915,24 +915,24 @@ script_body() {
     # firewall2-2:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '5 (eth1,eth3)'  below it
     # firewall2-2:Policy:4: error: Rule '4 (eth1,eth3)' shadows rule '6 (eth1,eth3)'  below it
 
-    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT -o eth3  -p udp -m udp  -m multiport -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth3  -p udp -m udp  -m multiport  -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 5 (eth1,eth3)
     # 
     echo "Rule 5 (eth1,eth3)"
     # 
-    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -s 0.0.0.0  -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -s 0.0.0.0  -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth1  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -i eth3  -p udp -m udp  -m multiport  -s 0.0.0.0   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 6 (eth1,eth3)
     # 
     echo "Rule 6 (eth1,eth3)"
     # 
-    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24  -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT -o eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24  -d 255.255.255.255  --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth1  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -o eth3  -p udp -m udp  -m multiport  -s 192.168.1.0/24   -d 255.255.255.255   --dports 68,67  -m state --state NEW  -j ACCEPT
     # 
     # Rule 7 (global)
     # 
@@ -1091,8 +1091,8 @@ script_body() {
     # iptables version is >= 1.2.11
     # also test for bug #2526173
     $IPTABLES -N RULE_19
-    $IPTABLES -A INPUT -s 0.0.0.0  -j RULE_19
-    $IPTABLES -A FORWARD -s 0.0.0.0  -j RULE_19
+    $IPTABLES -A INPUT  -s 0.0.0.0   -j RULE_19
+    $IPTABLES -A FORWARD  -s 0.0.0.0   -j RULE_19
     $IPTABLES -A RULE_19  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 19 - DENY **" --ulog-qthreshold 1
     $IPTABLES -A RULE_19  -j DROP
     # 
@@ -1104,6 +1104,7 @@ script_body() {
     # iptables version is >= 1.2.11
     $IPTABLES -A INPUT -p udp -m udp -m iprange --src-range 192.168.1.1-192.168.1.100  --dport 161  -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT -p udp -m udp -m iprange --src-range 192.168.1.1-192.168.1.100  --dport 161  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -p udp -m udp -m iprange --src-range 192.168.1.1-192.168.1.100  --dport 161  -m state --state NEW  -j ACCEPT
     # 
     # Rule 21 (global)
     # 
@@ -1280,7 +1281,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Fri Jun  3 17:27:33 2011 by vadim"
+        log "Activating firewall script generated Thu Aug 25 13:46:29 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files

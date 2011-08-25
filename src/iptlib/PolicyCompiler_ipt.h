@@ -488,6 +488,31 @@ protected:
 	 */
         DECLARE_POLICY_RULE_PROCESSOR(splitIfDstAny);
 
+        /**
+         * Split rule if src has addressRange object that matches the
+         * firewall
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(splitIfSrcMatchingAddressRange);
+
+        /**
+         * Split rule if dst has addressRange object that matches the
+         * firewall
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(splitIfDstMatchingAddressRange);
+
+        /**
+         * If Src has an AddressRange object that represents single
+         * address, replace it with corresponding IPv4 object
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(specialCaseAddressRangeInSrc);
+
+        /**
+         * If Dst has an AddressRange object that represents single
+         * address, replace it with corresponding IPv4 object
+         */
+        DECLARE_POLICY_RULE_PROCESSOR(specialCaseAddressRangeInDst);
+
+        
 	/**
 	 * split rule if Src==any 
 	 * 

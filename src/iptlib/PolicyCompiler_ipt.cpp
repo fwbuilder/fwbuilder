@@ -27,6 +27,7 @@
 #include "OSConfigurator_linux24.h"
 #include "utils.h"
 
+#include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
@@ -2296,6 +2297,149 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
     return true;
 }
 
+/**
+ * If Src has an AddressRange object that represents single address,
+ * replace it with corresponding IPv4 object. Call this rule processor
+ * before splitIfSrcMatchingAddressRange
+ *
+ * #2650
+ */
+bool PolicyCompiler_ipt::specialCaseAddressRangeInSrc::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
+
+    if (src && !src->isAny() && AddressRange::isA(src) &&
+        src->dimension() == 1)
+    {
+        Address *new_addr = compiler->dbcopy->createIPv4();
+        new_addr->setName(src->getName() + "_addr");
+        new_addr->setAddress(AddressRange::cast(src)->getRangeStart());
+        new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
+        compiler->persistent_objects->add(new_addr);
+
+        src->clearChildren();
+        src->addRef(new_addr);
+    }
+
+    tmp_queue.push_back(rule); // add old rule in any case
+
+    return true;
+}
+
+/**
+ * If Dst has an AddressRange object that represents single address,
+ * replace it with corresponding IPv4 object. Call this rule processor
+ * before splitIfDstMatchingAddressRange
+ *
+ * #2650
+ */
+bool PolicyCompiler_ipt::specialCaseAddressRangeInDst::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
+
+    if (dst && !dst->isAny() && AddressRange::isA(dst) &&
+        dst->dimension() == 1)
+    {
+        Address *new_addr = compiler->dbcopy->createIPv4();
+        new_addr->setName(dst->getName() + "_addr");
+        new_addr->setAddress(AddressRange::cast(dst)->getRangeStart());
+        new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
+        compiler->persistent_objects->add(new_addr);
+
+        dst->clearChildren();
+        dst->addRef(new_addr);
+    }
+
+    tmp_queue.push_back(rule); // add old rule in any case
+
+    return true;
+}
+
+/**
+ * Split rule if src has addressRange object that matches the
+ * firewall.  If some addresses inside the range match the firewall,
+ * while others dont, the rule must be placed in both OUTPUT and
+ * FORWARD chains.
+ *
+ * #2650
+ */
+bool PolicyCompiler_ipt::splitIfSrcMatchingAddressRange::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
+
+    bool b, m;
+    b=m= !( compiler->getCachedFwOpt()->getBool("bridging_fw") );
+
+    /*
+     * directions outbound or both: if src is an address range that
+     * matches fw, we should split the rule to make sure we match both
+     * in OUTPUT and FORWARD
+     */
+    if ( rule->getDirection() != PolicyRule::Inbound && 
+         src && !src->isAny() && AddressRange::isA(src) &&
+         ipt_comp->complexMatch(src, ipt_comp->fw, b, m))
+    {
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
+        compiler->temp_ruleset->add(r);
+        r->duplicate(rule);
+        ipt_comp->setChain(r, "OUTPUT");
+        r->setDirection( PolicyRule::Outbound );
+        tmp_queue.push_back(r);
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
+
+/**
+ * Split rule if dst has addressRange object that matches the
+ * firewall.  If some addresses inside the range match the firewall,
+ * while others dont, the rule must be placed in both INPUT and
+ * FORWARD chains.
+ *
+ * #2650
+ */
+bool PolicyCompiler_ipt::splitIfDstMatchingAddressRange::processNext()
+{
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+
+    Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
+
+    bool b, m;
+    b=m= !( compiler->getCachedFwOpt()->getBool("bridging_fw") );
+
+    /*
+     * directions inbound or both: if src is an address range that
+     * matches fw, we should split the rule to make sure we match both
+     * in INPUT and FORWARD
+     */
+    if ( rule->getDirection() != PolicyRule::Outbound && 
+         dst && !dst->isAny() && AddressRange::isA(dst) &&
+         ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
+    {
+        PolicyRule *r= compiler->dbcopy->createPolicyRule();
+        compiler->temp_ruleset->add(r);
+        r->duplicate(rule);
+        ipt_comp->setChain(r, "INPUT");
+        r->setDirection( PolicyRule::Outbound );
+        tmp_queue.push_back(r);
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
 bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
@@ -2949,7 +3093,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
  *
  */
     if ( compiler->getCachedFwOpt()->getBool("bridging_fw") &&
-         compiler->complexMatch(src,compiler->fw,false,false) )
+         compiler->complexMatch(src, compiler->fw, false, false) )
     {
         /* Correction for bug #1231 : as of fwbuilder v4.0 (and
          * really, probably as of 3.0), bridge ports must be created
@@ -2990,14 +3134,18 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     {
     case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
-        if (!src->isAny() && compiler->complexMatch(src, compiler->fw, b, m))
+        if (! src->isAny() &&
+            ! AddressRange::isA(src) &&   // #2650
+            compiler->complexMatch(src, compiler->fw, b, m))
             ipt_comp->setChain(rule,"OUTPUT");
         break;
 
     case PolicyRule::Both:
 /* direction == Both
  */
-        if (!src->isAny() && compiler->complexMatch(src, compiler->fw, b, m)) 
+        if (! src->isAny() &&
+            ! AddressRange::isA(src) &&   // #2650
+            compiler->complexMatch(src, compiler->fw, b, m))
         {
             ipt_comp->setChain(rule,"OUTPUT");
             rule->setDirection( PolicyRule::Outbound );
@@ -3088,7 +3236,8 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
     {
     case PolicyRule::Inbound:
 /* if direction is "Inbound", chain can never be OUTPUT, but could be FORWARD */
-        if (!dst->isAny() &&
+        if (! dst->isAny() &&
+            ! AddressRange::isA(dst) &&   // #2650
             (compiler->complexMatch(dst,compiler->fw,b,m) ||
              std::find(cluster_members.begin(),
                        cluster_members.end(),
@@ -3100,7 +3249,8 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
     case PolicyRule::Both:
 /* direction == Both
  */
-        if (!dst->isAny() && 
+        if (! dst->isAny() && 
+            ! AddressRange::isA(dst) &&   // #2650
             (compiler->complexMatch(dst,compiler->fw,b,m) ||
              std::find(cluster_members.begin(),
                        cluster_members.end(),
@@ -3252,6 +3402,12 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
         Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
         Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
 
+/*
+ * Note that we deal with address ranges in splitIfSrcMatchingAddressRange and
+ * splitIfDstMatchingAddressRange. At this point we treat ranges as always
+ * not matching the firewall (so the go into FORWARD chain)
+ */
+
         bool b,m;
 /* 
  * do not check for broadcasts and multicasts in bridging firewall because
@@ -3263,7 +3419,7 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
         {
         case PolicyRule::Inbound:
 /* if direction is "Inbound", chain can never be OUTPUT, but could be FORWARD */
-            if (dst && !dst->isAny() &&
+            if (dst && !dst->isAny() && ! AddressRange::isA(dst) &&   // #2650
                 ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
             {
                 ipt_comp->setChain(rule,"INPUT");
@@ -3272,7 +3428,7 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
 
         case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
-            if (src && !src->isAny() &&
+            if (src && !src->isAny() && ! AddressRange::isA(src) &&   // #2650
                 ipt_comp->complexMatch(src, ipt_comp->fw, b, m))
             {
                 ipt_comp->setChain(rule,"OUTPUT");
@@ -3282,14 +3438,14 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
         default:
 
 /* direction == Both */
-            if (dst && !dst->isAny() &&
+            if (dst && !dst->isAny() && ! AddressRange::isA(dst) &&   // #2650
                 ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
             {
                 ipt_comp->setChain(rule,"INPUT");
                 break;
             }
 
-            if (src && !src->isAny() &&
+            if (src && !src->isAny() && ! AddressRange::isA(src) &&   // #2650
                 ipt_comp->complexMatch(src, ipt_comp->fw, b, m))
             {
                 ipt_comp->setChain(rule,"OUTPUT");
@@ -4352,6 +4508,16 @@ void PolicyCompiler_ipt::compile()
          * addresses in the range may match firewall
          */
         add( new addressRanges("process address ranges"));
+    } else
+    {
+        add( new specialCaseAddressRangeInSrc(
+                 "replace single address range in Src"));
+        add( new specialCaseAddressRangeInDst(
+                 "replace single address range in Dst"));
+        add( new splitIfSrcMatchingAddressRange(
+                 "split rule if Src contains matching address range object"));
+        add( new splitIfDstMatchingAddressRange(
+                 "split rule if Dst contains matching address range object"));
     }
 
     add( new dropRuleWithEmptyRE("drop rules with empty rule elements"));

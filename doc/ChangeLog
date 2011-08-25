@@ -1,3 +1,10 @@
+2011-08-25  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_ipt.cpp (processNext): fixes #2650 "rules with
+	address range that includes firewall address in Src are placed in
+	OUTPUT chain even though addresses that do not match the firewall
+	should go in FORWARD"
+
 2011-08-14  Vadim Kurland  <vadim@netcitadel.com>
 
 	* InetAddr.cpp (InetAddr::isValidV4Netmask): function
