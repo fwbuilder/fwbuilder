@@ -1,5 +1,10 @@
 2011-08-25  Vadim Kurland  <vadim@netcitadel.com>
 
+	* see #2646 and SF bug 3395658: Added few ipv4 and ipv6 network
+	objects to the Standard objects library: TEST-NET-2,
+	TEST-NET-3 (RFC 5735, RFC 5737), translated-ipv4, mapped-ipv4,
+	Teredo, unique-local and few others.
+
 	* ObjectManipulator.cpp (openLibForObject): fixes #2648 "right
 	mouse click on firewall object in "Deleted objects" library causes
 	GUI crash"
