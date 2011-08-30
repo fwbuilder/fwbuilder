@@ -128,7 +128,7 @@
            <item>
             <widget class="QLabel" name="textLabel2_2_2">
              <property name="text">
-              <string>Netmask (bit length):</string>
+              <string>Prefix length:</string>
              </property>
              <property name="wordWrap">
               <bool>false</bool>
