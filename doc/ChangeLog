@@ -1,5 +1,8 @@
 2011-08-30  Vadim Kurland  <vadim@netcitadel.com>
 
+	* linux24advanceddialog_q.ui: fixes SF bug 3302121 "cosmetic
+	mis-format in fwb Linux paths dialog"
+
 	* DNSNameDialog.cpp (applyChanges): fixes SF bug 3388055 Adding a
 	"DNS Name" with a trailing space causes failure.
 
