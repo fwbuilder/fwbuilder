@@ -1,3 +1,8 @@
+2011-08-30  Vadim Kurland  <vadim@netcitadel.com>
+
+	* DNSNameDialog.cpp (applyChanges): fixes SF bug 3388055 Adding a
+	"DNS Name" with a trailing space causes failure.
+
 2011-08-25  Vadim Kurland  <vadim@netcitadel.com>
 
 	* see #2646 and SF bug 3395658: Added few ipv4 and ipv6 network

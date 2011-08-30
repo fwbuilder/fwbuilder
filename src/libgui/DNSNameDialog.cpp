@@ -131,7 +131,7 @@ void DNSNameDialog::applyChanges()
         m_dialog->obj_name->text() != m_dialog->dnsrec->text())
         m_dialog->dnsrec->setText(m_dialog->obj_name->text());
 
-    s->setSourceName( m_dialog->dnsrec->text().toLatin1().constData() );
+    s->setSourceName( m_dialog->dnsrec->text().trimmed().toLatin1().constData() );
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {
