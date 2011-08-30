@@ -1,0 +1,250 @@
+<h1>Firewall Builder 5.0.1 Release Notes</h1>
+
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets</a>
+</p>
+
+<!-- Highlights for this release -->
+
+<a name="summary"></a>
+<h2>Summary</h2>
+
+<p>
+  v 5.0.1 is a minor bug fix release.
+</p>
+
+
+<hr style="display: block">     
+
+
+<!-- ######################################################################### -->
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      moved "batch install" button from the main installer wizard to
+      the dialog where user enters their password. Now user can start
+      in a non-batch install mode but continue in batch install mode
+      at any time if all their firewalls authenticate with the same
+      user name and password.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2628 fixed crash that happened if user create new firewall
+      object from a template and changed one of the ip addresses,
+      while another firewall object created from the same template
+      already existed in the tree.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2635 Object type AttachedNetworks is not allowed in the
+      "interface" rule element.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      The drop-down list of interfaces for the "route-through" rule
+      option for PF and iptables should include not only cluster
+      interfaces, but also interfaces of all members. This way, we can
+      make compiler generate configuration "pass in quick on em0
+      route-to { ( em0 10.1.1.2 ) } ... " for a rule of a PF
+      cluster. Here "em0" is an interface of a member, not the
+      cluster.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2642 "GUI crashes if user cancels newFirewall dialog".
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2641 "newFirewall dialog does not accept ipv6 addresses
+      with long prefixes". The dialog did not allow ipv6 addresses of
+      inetrfaces with netmask > 64 bit.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2643 "GUI crashes when user cuts a rule, then right-mouse
+      click in any rule element of another"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      added check to make sure user does not enter netmask with zeroes
+      in the middle for the IPv4 network object. Netmasks like that
+      are not supported by fwbuilder.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2648 "right mouse click on firewall object in "Deleted
+      objects" library causes GUI crash"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes SF bug 3388055 Adding a "DNS Name" with a trailing space
+      causes failure.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes SF bug 3302121 "cosmetic mis-format in fwb Linux paths
+      dialog"
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes SF bug 3247094 "Nomenclature of IP address edit dialog".
+      Network ipv6 dialog says "Prefix length".
+    </p>
+  </li>
+
+
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="import"></a>
+<h2>Changes in policy importer for all supported platforms</h2>
+
+<h3>Changes that affect import of PIX configurations</h3>
+<ul>
+
+  <li>
+    <p>
+      changed token name from "ESP" to "ESP_WORD" to avoid conflict
+      with macro "ESP" that happened during build on OpenSolaris
+    </p>
+  </li>
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="libfwbuilder"></a>
+<h2>Changes and improvements in the API library libfwbuilder</h2>
+
+<ul>
+
+  <li>
+    <p>
+      function InetAddr::isValidV4Netmask() checks that netmask
+      represented by the object consists of a sequence of "1" bits,
+      followed by the sequence of "0" bits and therefore does not have
+      zeroes in the middle.
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+</ul>
+
+
+
+
+
+<!-- ######################################################################### -->
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+
+  <li>
+    <p>
+      see #2639 "support for vlan subinterfaces of bridge interfaces
+      (e.g.  br0.5)". Currently fwbuilder can not generate script to
+      configure vlan subinterfaces of bridge interfaces, however if
+      user did not request this configuration script to be generated,
+      compiler should not abort when it encounters this combination.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2650 "rules with address range that includes firewall
+      address in Src are placed in OUTPUT chain even though addresses
+      that do not match the firewall should go in FORWARD"
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="pf"></a>
+<h2>Changes in support for PF (FreeBSD, OpenBSD)</h2>
+
+<ul>
+
+  <li>
+    <p>
+      see #2636 "carp : Incorrect output in rc.conf.local
+      format". Should use create_args_carp0 instead of ifconfig_carp0
+      to set up CARP interface vhid, pass and adskew parameters.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      see #2638 "When CARP password is empty the advskew value is not
+      read". Should skip "pass <word>" parameter of the ifconfig
+      command that creates carp interface if user did not set up any
+      password.
+    </p>
+  </li>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="other"></a>
+<h2>Other changes</h2>
+
+<ul>
+
+  <li>
+    <p>
+      see #2646 and SF bug 3395658: Added few ipv4 and ipv6 network
+      objects to the Standard objects library: TEST-NET-2,
+      TEST-NET-3 (RFC 5735, RFC 5737), translated-ipv4, mapped-ipv4,
+      Teredo, unique-local and few others.
+    </p>
+  </li>
+
+</ul>
+
+
+
