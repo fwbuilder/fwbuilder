@@ -498,6 +498,25 @@ void FWObjectDatabase::buildIndex()
     addToIndexRecursive(this);
 }
 
+void FWObjectDatabase::validateIndex()
+{
+    std::map<int, FWObject*>::iterator it;
+    for (it=obj_index.begin(); it!=obj_index.end(); ++it)
+    {
+        if (it->second->getRoot() != this)
+        {
+            cerr << "Object '" << it->second->getName() << "'"
+                 << " ( "
+                 << it->second 
+                 << " type " << it->second->getTypeName() << ")"
+                 << " in index of db " << this
+                 << " has incorrect db root ptr " 
+                 << it->second->getRoot()
+                 << endl;
+        }
+    }
+}
+
 void FWObjectDatabase::_clearReferenceCounters(FWObject *o)
 {
     o->clearRefCounter();

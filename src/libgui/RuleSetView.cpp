@@ -1504,9 +1504,7 @@ void RuleSetView::pasteRuleAbove()
          i!=FWObjectClipboard::obj_clipboard->end(); ++i)
     {
         Rule *rule = Rule::cast(createInsertTemplate(i->second, i->first));
-
         if (!rule || !md->checkRuleType(rule)) continue;
-
         project->undoStack->push(
             new FWCmdRuleInsert(
                 project, md->getRuleSet(), md->getRulePosition(index), false, rule));
@@ -1557,9 +1555,30 @@ FWObject* RuleSetView::createInsertTemplate(ProjectPanel* proj_p, int id)
         md->getRuleSet()->remove(t);
 
         project->m_panel->om->reload();
-    } else {
+
+    } else
+    {
         t = proj_p->db()->create(co->getTypeName());
         t->duplicate(co);
+    }
+
+    if (fwbdebug)
+    {
+        cerr << "rulesrt->getRoot()=" << md->getRuleSet()->getRoot()
+             << " "
+             << "proj_p->db()=" << proj_p->db()
+             << " "
+             << "proj_p file=" << proj_p->getFileName().toStdString()
+             << " " 
+             << "id=" << id
+             << " " 
+             << "co=" << co
+             << " " 
+             << "co->getRoot()=" << co->getRoot()
+             << endl;
+
+        cerr << "Validating database index" << endl;
+        proj_p->db()->getRoot()->validateIndex();
     }
 
     return t;

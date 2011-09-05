@@ -595,9 +595,10 @@ FWObject* FWObjectDatabase::_recursively_copy_subtree(
 
             // search for old_ptr_obj in the index. If it is found, we do not
             // need to copy it and its ID is valid (perhaps standard object?)
-            if (findInIndex(old_ptr_obj->getId())!=NULL)
+            n_ptr_obj = findInIndex(old_ptr_obj->getId());
+            if (n_ptr_obj != NULL)
             {
-                nobj->addRef(old_ptr_obj);
+                nobj->addRef(n_ptr_obj);
                 continue;
             }
 

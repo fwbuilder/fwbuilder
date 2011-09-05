@@ -336,6 +336,11 @@ public:
         void getIndexStats(int &index_size, int &hit_counter, int &miss_counter);
 
         /**
+         * this function is intended for debugging.
+         */
+        void validateIndex();
+        
+        /**
          * Some operations, such as object tree merging, should ignore
          * read-only flag on individual objects.
          */
