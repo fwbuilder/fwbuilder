@@ -1,3 +1,10 @@
+2011-09-04  Vadim Kurland  <vadim@netcitadel.com>
+
+	* FWObjectDatabase_tree_ops.cpp (_recursively_copy_subtree): see
+	#2654 fixes GUI crash that occured if user copied a rule from file
+	A to file B, then closed file B, opened file C and tried to copy
+	the same rule from A to C'
+
 2011-08-30  Vadim Kurland  <vadim@netcitadel.com>
 
 	* fixes SF bug 3247094 "Nomenclature of IP address edit dialog".
