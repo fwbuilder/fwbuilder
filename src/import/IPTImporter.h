@@ -175,6 +175,10 @@ class IPTImporter : public Importer
     virtual libfwbuilder::Firewall* finalize();
 
     bool isStandardChain(const std::string &ipt_chain);
+
+    void registerTable(const std::string &table_name);
+
+    bool isSupportedTable(const std::string &table_name);
 };
 
 #endif

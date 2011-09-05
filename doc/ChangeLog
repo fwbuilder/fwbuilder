@@ -1,5 +1,11 @@
 2011-09-04  Vadim Kurland  <vadim@netcitadel.com>
 
+	* IPTImporter.cpp (IPTImporter::isSupportedTable): see #2653
+	Importer for iptables checks that netfilter table used in
+	the original iptables config is one of the tables we support.
+	Currently only "filter", "mangle" and "nat" are supported. Also
+	see #2651, #2652
+
 	* FWObjectDatabase_tree_ops.cpp (_recursively_copy_subtree): see
 	#2654 fixes GUI crash that occured if user copied a rule from file
 	A to file B, then closed file B, opened file C and tried to copy

@@ -145,6 +145,25 @@ void IPTImporter::clear()
     iprange_dst_to = "";
 }
 
+void IPTImporter::registerTable(const string &table_name)
+{
+    current_table = table_name;
+
+    if ( ! isSupportedTable(table_name))
+    {
+        QString err = QObject::tr(
+            "Unrecognized netfilter table \"%1\". "
+            "Only tables \"filter\", \"mangle\" and \"nat\" are supported.")
+            .arg(QString::fromUtf8(table_name.c_str()));
+        reportError(err);
+    }
+}
+
+bool IPTImporter::isSupportedTable(const string &table_name)
+{
+    return (table_name == "nat" || table_name == "filter" || table_name == "mangle");
+}
+
 string IPTImporter::getBranchName(const std::string &suffix)
 {
     ostringstream str;
@@ -1187,6 +1206,16 @@ void IPTImporter::pushPolicyRule()
             current_rule, QString::fromUtf8(rule_comment.c_str()));
     }
 
+    if ( ! isSupportedTable(current_table))
+    {
+        QString err = QObject::tr(
+            "Rule can not be imported correctly because "
+            "original configuration uses "
+            "unrecognized netfilter table \"%1\". ")
+            .arg(QString::fromUtf8(current_table.c_str()));
+        reportError(err);
+    }
+
     if (error_tracker->hasWarnings())
     {
         QStringList warn = error_tracker->getWarnings();
@@ -1691,9 +1720,7 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
                         ruleset->setName("Mangle");
                         getFirewallObject()->add(ruleset);
                     }
-                } 
-
-                if (current_table == "filter")
+                } else
                 {
                     for (list<FWObject*>::iterator it=policies.begin();
                          it!=policies.end(); ++it)

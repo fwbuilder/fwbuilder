@@ -195,7 +195,7 @@ start_table : STAR WORD
                 // clear current table
                 importer->current_table = "";
             }
-            importer->current_table = LT(0)->getText();
+            importer->registerTable(LT(0)->getText());
             *dbg << "TABLE " << LT(0)->getText() << std::endl;
         }
     ;
