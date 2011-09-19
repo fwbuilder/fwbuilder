@@ -1,5 +1,8 @@
 2011-09-19  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PolicyCompiler_cisco_acls.cpp (setInterfaceAndDirectionBySrc):
+	see #2656 "Generated Cisco ASA access-list has duplicate entry".
+
 	* snmp.cpp (SNMPCrawler::run_impl): fixes #2658 "snmp network
 	discovery creates duplicate address and network objects"
 

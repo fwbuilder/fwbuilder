@@ -97,6 +97,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionBySrc::processNext()
             Interface *ifs = Interface::cast(rule->getRoot()->findInIndex(intf_id));
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
+            if (ifs->isLoopback()) continue;   // skip!
 
             PolicyRule *new_rule = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
@@ -177,6 +178,7 @@ bool PolicyCompiler_cisco::setInterfaceAndDirectionByDst::processNext()
             Interface *ifs = Interface::cast(rule->getRoot()->findInIndex(intf_id));
             assert(ifs);
             if (ifs->isUnprotected()) continue;   // skip!
+            if (ifs->isLoopback()) continue;   // skip!
 
             PolicyRule *new_rule = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
