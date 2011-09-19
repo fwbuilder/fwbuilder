@@ -34,6 +34,12 @@ class iosInterfaces : public interfaceProperties
 
 public:
     iosInterfaces() : interfaceProperties() {}
+
+    // simple name validation: does not allow space. Unlike this function
+    // in the base class, permit "-"
+    virtual bool basicValidateInterfaceName(libfwbuilder::Interface *intf,
+                                            const QString &proposed_name,
+                                            QString &err);
     virtual bool parseVlan(const QString&, QString*, int*);
 };
 

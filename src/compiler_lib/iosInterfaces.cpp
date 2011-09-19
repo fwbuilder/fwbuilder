@@ -25,7 +25,15 @@
 
 #include "iosInterfaces.h"
 
+#include "fwbuilder/Interface.h"
+
+#include <QDebug>
+#include <QObject>
 #include <QRegExp>
+
+using namespace std;
+using namespace libfwbuilder;
+
 
 bool iosInterfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
 {
@@ -39,3 +47,17 @@ bool iosInterfaces::parseVlan(const QString &name, QString *base_name, int *vlan
     return false;
 }
 
+// simple name validation: does not allow space and "-"
+// However some platform permit space (procurve).
+bool iosInterfaces::basicValidateInterfaceName(Interface *,
+                                               const QString &obj_name,
+                                               QString &err)
+{
+    if (obj_name.indexOf(' ') != -1)
+    {
+        err = QObject::tr("Interface name '%1' can not contain white space").arg(obj_name);
+        return false;
+    }
+    return true;
+}
+    
