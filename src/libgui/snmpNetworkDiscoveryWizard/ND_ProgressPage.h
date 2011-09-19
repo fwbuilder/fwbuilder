@@ -26,6 +26,7 @@
 
 // for HAVE_LIBSNMP
 #include "fwbuilder/libfwbuilder-config.h"
+#include "fwbuilder/InetAddrMask.h"
 
 #include "ui_nd_progresspage_q.h"
 
@@ -43,6 +44,8 @@ class ND_ProgressPage : public QWizardPage
     QTextCharFormat error_format;
     QTextCharFormat warning_format;
 
+    std::vector<libfwbuilder::InetAddrMask>  include_networks;
+        
 public:
     ND_ProgressPage(QWidget *parent);
     virtual ~ND_ProgressPage();
@@ -55,6 +58,7 @@ private:
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
+    virtual bool isComplete() const;
 
 public slots:
 

@@ -48,7 +48,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-bool fwbdebug_nd = true;
+bool fwbdebug_nd = false;
 
 
 ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
@@ -123,6 +123,12 @@ bool ND_ProgressPage::validatePage()
     return (objects->size() > 0);
 }
 
+bool ND_ProgressPage::isComplete() const
+{
+    if (crawler != NULL && crawler->isRunning()) return false;
+    return true;
+}
+
 void ND_ProgressPage::crawlerDestroyed(QObject *obj)
 {
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::crawlerDestroyed() obj=" << obj;
@@ -155,8 +161,8 @@ void ND_ProgressPage::initializePage()
     QString seedHostAddress = getAddrByName(seedHostName, AF_INET);
     InetAddr seedHostInetAddr = InetAddr( seedHostAddress.toLatin1().constData() );
 
-    vector<libfwbuilder::InetAddrMask>  include_networks;
-    
+    include_networks.clear();
+
     bool limit_scan = false;
     if ( ! snmpInclAddr.isEmpty() && ! snmpInclMask.isEmpty())
     {
@@ -215,6 +221,7 @@ void ND_ProgressPage::cleanupPage()
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(crawlerFinished()));
     if (crawler != NULL && crawler->isRunning()) crawler->stop();
+    include_networks.clear();
 }
 
 void ND_ProgressPage::stop()

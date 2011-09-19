@@ -1278,12 +1278,12 @@ SNMPCrawler::SNMPCrawler(const InetAddr &_seed,
                          long _snmp_timeout,
 			 int  _dns_retries,
 			 int  _dns_timeout,
-                         const vector<InetAddrMask> *_include)
+                         const vector<InetAddrMask> *_limit_to_networks)
 {
     init(_seed, _community, _recursive, 
          _do_dns, _follow_ptp, _dns_threads, 
 	 _snmp_retries,  _snmp_timeout, _dns_retries, _dns_timeout, 
-	 _include);
+	 _limit_to_networks);
 }
 
 SNMPCrawler::~SNMPCrawler()
@@ -1300,9 +1300,9 @@ void SNMPCrawler::init(const InetAddr &_seed,
 		       long _snmp_timeout,
 		       int  _dns_retries,
 		       int  _dns_timeout,
-		       const vector<InetAddrMask> *_include)
+		       const vector<InetAddrMask> *_limit_to_networks)
 {
-    include      = _include;
+    limit_to_networks = _limit_to_networks;
     community    = _community;
     snmp_retries = _snmp_retries;
     snmp_timeout = _snmp_timeout;
@@ -1349,14 +1349,14 @@ list<InterfaceData> SNMPCrawler::guessInterface(
 
 bool SNMPCrawler::included(const InetAddr &a) const
 {
-    if (!include)
+    if (!limit_to_networks)
         return true; // no include list provided. All hosts are OK.
     
     // currently we allow the user to specify only ipv4 in the inlcude list
     if (a.isV6()) return true;
 
-    for (vector<InetAddrMask>::const_iterator i=include->begin();
-         i!=include->end(); ++i)
+    for (vector<InetAddrMask>::const_iterator i=limit_to_networks->begin();
+         i!=limit_to_networks->end(); ++i)
     {
         if ((*i).belongs(a)) return true;
     }

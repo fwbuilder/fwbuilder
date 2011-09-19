@@ -449,7 +449,7 @@ class SNMPCrawler : public BackgroundOp
 {
     private:
 
-    const std::vector<InetAddrMask> *include    ;
+    const std::vector<InetAddrMask> *limit_to_networks ;
     static const InetAddrMask LOOPBACK_NET ;
     static const InetAddrMask IPV6_LOOPBACK_NET ;
     static const InetAddr PTP_NETMASK  ;
