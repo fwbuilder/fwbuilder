@@ -456,7 +456,7 @@ class SNMPCrawler : public BackgroundOp
 
     std::map<InetAddr, std::string> queue;
     std::map<InetAddr, CrawlerFind> found;
-    std::set<InetAddrMask*> networks;
+    std::set<InetAddrMask> networks;
     std::string community;
     int                          snmp_retries ;
     long                         snmp_timeout ;
@@ -510,7 +510,7 @@ class SNMPCrawler : public BackgroundOp
 	      const std::vector<InetAddrMask> *include=NULL);
 
     std::map<InetAddr, CrawlerFind>  getAllIPs();
-    std::set<InetAddrMask*> getNetworks();
+    std::set<InetAddrMask> getNetworks();
         
     virtual void run_impl(Logger *logger,SyncFlag *stop_program)
         throw(FWException);

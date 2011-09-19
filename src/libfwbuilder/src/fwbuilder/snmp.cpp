@@ -1316,8 +1316,6 @@ void SNMPCrawler::init(const InetAddr &_seed,
     queue.clear();
     found.clear();
 
-    for (set<InetAddrMask*>::iterator i=networks.begin(); i!=networks.end();++i)
-        delete *i;
     networks.clear();
 
     queue[_seed]="";
@@ -1577,7 +1575,8 @@ void SNMPCrawler::run_impl(Logger *logger,
                         // map interfaces with InterfaceData objects.
                         // This object is destroyed when all InterfaceData
                         // objects are destroyed. Create a copy.
-                        networks.insert(new InetAddrMask(*addr, *netm));
+
+                        networks.insert(*net);
                     }
                 }
             }
@@ -1730,8 +1729,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                         *logger << str;
 
                         networks.insert(
-                            new InetAddrMask(j->getDestination(),
-                                             j->getNetmask()));
+                            InetAddrMask(j->getDestination(), j->getNetmask()));
                         
                         nplus++;
                     }
@@ -1827,7 +1825,7 @@ void SNMPCrawler::bacresolve_results(Logger *logger,
 }
 
 
-set<InetAddrMask*> SNMPCrawler::getNetworks()
+set<InetAddrMask> SNMPCrawler::getNetworks()
 {
     return networks;
 }

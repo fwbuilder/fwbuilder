@@ -255,8 +255,8 @@ void ND_ProgressPage::crawlerFinished()
 
     if (crawler==NULL) return;
 
-    set<InetAddrMask*>::iterator m;
-    set<InetAddrMask*> discovered_networks = crawler->getNetworks();
+    set<InetAddrMask>::iterator m;
+    set<InetAddrMask> discovered_networks = crawler->getNetworks();
     map<InetAddr, CrawlerFind> discovered_addresses = crawler->getAllIPs();
 
     logLine(tr("Discovered %1 networks").arg(discovered_networks.size()));
@@ -264,25 +264,25 @@ void ND_ProgressPage::crawlerFinished()
     for (m=discovered_networks.begin(); m!=discovered_networks.end(); ++m)
     {
         ObjectDescriptor od;
-        InetAddrMask *net = *m;
+        InetAddrMask net = *m;
 
-        logLine(QString("network %1").arg(net->toString().c_str()));
+        logLine(QString("network %1").arg(net.toString().c_str()));
 
         // if address in *m is ipv6, recreate it as Inet6AddrMask and
         // use type NetworkIPv6
-        if (net->getAddressPtr()->isV6())
+        if (net.getAddressPtr()->isV6())
         {
-            Inet6AddrMask in6am(*(net->getAddressPtr()),
-                                *(net->getNetmaskPtr()));
+            Inet6AddrMask in6am(*(net.getAddressPtr()),
+                                *(net.getNetmaskPtr()));
             od.sysname = in6am.toString(); // different from ipv6
             od.type = NetworkIPv6::TYPENAME;
         } else
         {
-            od.sysname = net->toString();
+            od.sysname = net.toString();
             od.type = Network::TYPENAME;
         }
-        od.addr = *(net->getAddressPtr());
-        od.netmask = *(net->getNetmaskPtr());
+        od.addr = *(net.getAddressPtr());
+        od.netmask = *(net.getNetmaskPtr());
         od.isSelected = false;
 
         networks->push_back(od);

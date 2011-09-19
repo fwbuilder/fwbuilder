@@ -72,7 +72,7 @@ public:
     void stop();
 
     std::map<libfwbuilder::InetAddr, libfwbuilder::CrawlerFind>  getAllIPs();
-    std::set<libfwbuilder::InetAddrMask*> getNetworks();
+    std::set<libfwbuilder::InetAddrMask> getNetworks();
     
 signals:
     void finished();

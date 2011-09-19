@@ -102,7 +102,7 @@ map<InetAddr, CrawlerFind>  SNMPCrawlerThread::getAllIPs()
     return q->getAllIPs();
 }
 
-set<InetAddrMask*> SNMPCrawlerThread::getNetworks()
+set<InetAddrMask> SNMPCrawlerThread::getNetworks()
 {
     return q->getNetworks();
 }
