@@ -1,3 +1,9 @@
+2011-09-24  Vadim Kurland  <vadim@netcitadel.com>
+
+	* NamedObjectsAndGroupsSupport.cpp (CreateObjectGroups::processNext):
+	fixes #2660 "compiler for IOSACL crashed when address range appears
+	in a rule AND object-group option is turned ON"
+
 2011-09-19  Vadim Kurland  <vadim@netcitadel.com>
 
 	* PolicyCompiler_cisco_acls.cpp (setInterfaceAndDirectionBySrc):

@@ -510,7 +510,25 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
     const InetAddr *srcaddr = o->getAddressPtr();
     if (srcaddr)
     {
-        const InetAddr srcmask = *(o->getNetmaskPtr());
+        const InetAddr *nm = o->getNetmaskPtr();
+        InetAddr srcmask;
+
+        if (nm != NULL)
+        {
+            srcmask = *nm;
+        } else
+        {
+            cerr << "Address object "
+                 << o
+                 << " "
+                 << o->getName()
+                 << " (" << o->getTypeName() << ") "
+                 << " has no netmask"
+                 << endl;
+            srcmask = InetAddr(InetAddr::getAllOnes(srcaddr->addressFamily()));
+        }
+
+//        const InetAddr srcmask = *(o->getNetmaskPtr());
 
         if (srcaddr->isAny() && srcmask.isAny())
         {

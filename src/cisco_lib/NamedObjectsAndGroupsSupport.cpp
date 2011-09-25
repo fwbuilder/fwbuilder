@@ -110,8 +110,16 @@ bool CreateObjectGroups::processNext()
 
     if (re->size()==1)
     {
-        tmp_queue.push_back(rule);
-        return true;
+        /* create object group if the object in the RE is AddressRange
+         * because IOS normally does not support ranges in ACLs, but
+         * supports them in groups
+         */
+        FWObject *re_obj = FWReference::getObject(re->front());
+        if ( ! AddressRange::isA(re_obj))
+        {
+            tmp_queue.push_back(rule);
+            return true;
+        }
     }
 
     BaseObjectGroup *obj_group = findObjectGroup(re);
