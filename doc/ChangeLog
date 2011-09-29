@@ -1,3 +1,10 @@
+2011-09-29  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_ipt.cpp (compile): fixes SF bug #3414382
+	"Segfault in fwb_ipt dealing with empty groups". Compiler for
+	iptables used to crash when an empty group was used in the
+	"Interface" column of a policy rule.
+
 2011-09-24  Vadim Kurland  <vadim@netcitadel.com>
 
 	* NamedObjectsAndGroupsSupport.cpp (CreateObjectGroups::processNext):

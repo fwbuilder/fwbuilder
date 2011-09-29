@@ -4390,6 +4390,7 @@ void PolicyCompiler_ipt::compile()
 
     add( new Logging1("check global logging override option"));
 
+    add( new emptyGroupsInItf("check for empty groups in Itf"));
     add( new expandGroupsInItf("expand groups in Interface" ));
     add( new replaceClusterInterfaceInItf(
              "replace cluster interfaces with member interfaces in the Interface rule element"));

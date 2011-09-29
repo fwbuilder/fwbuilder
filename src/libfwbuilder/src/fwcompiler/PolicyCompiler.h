@@ -381,6 +381,17 @@ namespace fwcompiler {
                 emptyGroupsInRE(n,libfwbuilder::RuleElementSrv::TYPENAME) {}
         };
 
+        /**
+         *  deals with empty groups in Itf. See description for
+         *  Compiler::emptyGroupsInRE
+         */
+        class emptyGroupsInItf : public Compiler::emptyGroupsInRE
+        {
+            public:
+            emptyGroupsInItf(const std::string &n) :
+                emptyGroupsInRE(n,libfwbuilder::RuleElementItf::TYPENAME) {}
+        };
+
 
 	/**
 	 * checks for host and network objects with address 0.0.0.0
