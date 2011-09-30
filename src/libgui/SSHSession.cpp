@@ -185,6 +185,7 @@ void SSHSession::startSession()
 
     env.push_back( QString("TMP=")+getenv("TMP") );
     env.push_back( QString("PATH=")+getenv("PATH") );
+    env.push_back( QString("KRB5CCNAME=")+getenv("KRB5CCNAME") );
     env.push_back( QString("SSH_AUTH_SOCK=")+getenv("SSH_AUTH_SOCK") );
 
 //    emit printStdout_sign( tr("Running command %1\n").arg(cmd) );

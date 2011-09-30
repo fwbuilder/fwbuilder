@@ -1,5 +1,9 @@
 2011-09-29  Vadim Kurland  <vadim@netcitadel.com>
 
+	* SSHSession.cpp (startSession): enable fwbuilder to take
+	advantage of GSSAPIAuthentication with openssh using suggestion by
+	Matthias Witte witte@netzquadrat.de
+
 	* PolicyCompiler_ipt.cpp (compile): fixes SF bug #3414382
 	"Segfault in fwb_ipt dealing with empty groups". Compiler for
 	iptables used to crash when an empty group was used in the
