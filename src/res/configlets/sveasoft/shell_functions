@@ -13,7 +13,7 @@
 
 log() {
     echo "$1"
-    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
+    which "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 check_file() {

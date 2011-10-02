@@ -233,6 +233,20 @@
       was used in the "Interface" column of a policy rule.
     </p>
   </li>
+
+  <li>
+    <p>
+      see SF bug #3416900 "Replace `command` with `which`".  Generated
+      script (Linux/iptables) used to use "command -v" to check if
+      command line tools it needs are present on the system. This was
+      used to find iptables, lsmod, modprobe, ifconfig, vconfig,
+      logger and others. Some embedded Linux distributions, notably
+      TomatoUSB, come without support for "command". Switching to
+      "which" that is more ubuquitous and should be available pretty
+      much everywhere.
+    </p>
+  </li>
+
 </ul>
 
 
