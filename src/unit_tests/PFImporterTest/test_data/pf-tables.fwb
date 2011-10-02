@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1310086930" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1317585236" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -92,6 +92,13 @@
         <NetworkIPv6 id="id2383X75851" name="link-local ipv6" comment="RFC4291   Link-local unicast net" ro="False" address="fe80::" netmask="10"/>
         <NetworkIPv6 id="id2685X75851" name="multicast ipv6" comment="RFC4291  ipv6 multicast addresses" ro="False" address="ff00::" netmask="8"/>
         <NetworkIPv6 id="id2986X75851" name="experimental ipv6" comment="RFC2928, RFC4773 &#10;&#10;&quot;The block of Sub-TLA IDs assigned to the IANA&#10;(i.e., 2001:0000::/29 - 2001:01F8::/29) is for&#10;assignment for testing and experimental usage to&#10;support activities such as the 6bone, and&#10;for new approaches like exchanges.&quot;  [RFC2928]&#10;&#10;" ro="False" address="2001::" netmask="23"/>
+        <Network id="id3289X12564" name="TEST-NET-2" comment="RFC 5735&#10;RFC 5737&#10;" ro="False" address="198.51.100.0" netmask="255.255.255.0"/>
+        <Network id="id3300X12564" name="TEST-NET-3" comment="RFC 5735&#10;RFC 5737" ro="False" address="203.0.113.0" netmask="255.255.255.0"/>
+        <Network id="id3311X12564" name="Benchmark tests network" comment="RFC 5735" ro="False" address="198.18.0.0" netmask="255.254.0.0"/>
+        <NetworkIPv6 id="id3326X12564" name="mapped-ipv4" comment="" ro="False" address="::ffff:0.0.0.0" netmask="96"/>
+        <NetworkIPv6 id="id3341X12564" name="translated-ipv4" comment="" ro="False" address="::ffff:0:0:0" netmask="96"/>
+        <NetworkIPv6 id="id3350X12564" name="Teredo" comment="" ro="False" address="2001::" netmask="32"/>
+        <NetworkIPv6 id="id3359X12564" name="unique-local" comment="" ro="False" address="fc00::" netmask="7"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
