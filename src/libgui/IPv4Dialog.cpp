@@ -141,7 +141,7 @@ void IPv4Dialog::validate(bool *result)
     assert(s!=NULL);
     try
     {
-        InetAddr( m_dialog->address->text().toLatin1().constData() );
+        InetAddr( m_dialog->address->text().trimmed().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *result = false;
@@ -161,7 +161,7 @@ void IPv4Dialog::validate(bool *result)
     {
         try
         {
-            InetAddr nm( m_dialog->netmask->text().toLatin1().constData() );
+            InetAddr nm( m_dialog->netmask->text().trimmed().toLatin1().constData() );
 
             if (!nm.isValidV4Netmask())
             {
@@ -212,7 +212,7 @@ void IPv4Dialog::applyChanges()
     try
     {
         s->setAddress(
-            InetAddr(m_dialog->address->text().toLatin1().constData()) );
+            InetAddr(m_dialog->address->text().trimmed().toLatin1().constData()) );
     } catch (FWException &ex) { }
 
     if ( showNetmask )
@@ -220,7 +220,7 @@ void IPv4Dialog::applyChanges()
         try
         {
             s->setNetmask(
-                InetAddr(m_dialog->netmask->text().toLatin1().constData()) );
+                InetAddr(m_dialog->netmask->text().trimmed().toLatin1().constData()) );
         } catch (FWException &ex) { }
     } else
         s->setNetmask(InetAddr());
@@ -240,7 +240,7 @@ void IPv4Dialog::DNSlookup()
 
     if (!dnsBusy)
     {
-        QString name = m_dialog->obj_name->text();
+        QString name = m_dialog->obj_name->text().trimmed();
         if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s", name.toAscii().constData());
         dnsBusy=true;
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );

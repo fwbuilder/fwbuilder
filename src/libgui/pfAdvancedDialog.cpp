@@ -110,9 +110,9 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
 
     QString init_script_name = QString::fromUtf8(
-        fwopt->getStr("output_file").c_str());
+        fwopt->getStr("output_file").c_str()).trimmed();
     QString conf_file_name = QString::fromUtf8(
-        fwopt->getStr("conf1_file").c_str());
+        fwopt->getStr("conf1_file").c_str()).trimmed();
 
     if (!init_script_name.isEmpty() && conf_file_name.isEmpty())
     {
