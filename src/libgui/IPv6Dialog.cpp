@@ -144,7 +144,7 @@ void IPv6Dialog::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData() );
+        InetAddr(AF_INET6, m_dialog->address->text().trimmed().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res = false;
@@ -164,7 +164,7 @@ void IPv6Dialog::validate(bool *res)
         try
         {
             bool ok = false;
-            InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok));
+            InetAddr(AF_INET6, m_dialog->netmask->text().trimmed().toInt(&ok));
             if (!ok) throw FWException("");
         } catch (FWException &ex)
         {
@@ -199,7 +199,7 @@ void IPv6Dialog::applyChanges()
     try
     {
         s->setAddress(
-            InetAddr(AF_INET6, m_dialog->address->text().toLatin1().constData()) );
+            InetAddr(AF_INET6, m_dialog->address->text().trimmed().toLatin1().constData()) );
     } catch (FWException &ex) { }
 
     if ( showNetmask )
@@ -208,7 +208,7 @@ void IPv6Dialog::applyChanges()
         {
             bool ok = false;
             s->setNetmask(
-                InetAddr(AF_INET6, m_dialog->netmask->text().toInt(&ok)) );
+                InetAddr(AF_INET6, m_dialog->netmask->text().trimmed().toInt(&ok)) );
             if (!ok) throw FWException("");
         } catch (FWException &ex) { }
     } else
@@ -228,7 +228,7 @@ void IPv6Dialog::DNSlookup()
 
     if (!dnsBusy)
     {
-        QString name = m_dialog->obj_name->text();
+        QString name = m_dialog->obj_name->text().trimmed();
         if (fwbdebug)
             qDebug("IPv6Dialog::DNSlookup()  name=%s",
                    name.toAscii().constData());

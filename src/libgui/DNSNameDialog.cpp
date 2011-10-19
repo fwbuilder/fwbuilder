@@ -129,7 +129,7 @@ void DNSNameDialog::applyChanges()
 
     if (st->getBool("Objects/DNSName/useNameForDNSRecord") &&
         m_dialog->obj_name->text() != m_dialog->dnsrec->text())
-        m_dialog->dnsrec->setText(m_dialog->obj_name->text());
+        m_dialog->dnsrec->setText(m_dialog->obj_name->text().trimmed());
 
     s->setSourceName( m_dialog->dnsrec->text().trimmed().toLatin1().constData() );
 

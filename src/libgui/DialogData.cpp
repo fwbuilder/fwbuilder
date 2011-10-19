@@ -248,12 +248,14 @@ void DialogData::saveAll(FWObject *new_obj)
         if (dynamic_cast<QLineEdit*>(i->w)!=NULL)
         {
             QLineEdit *edit=dynamic_cast<QLineEdit*>(i->w);
-            use_obj->setStr(i->attr.toLatin1().constData(), edit->text().toLatin1().constData() );
+            use_obj->setStr(i->attr.toLatin1().constData(),
+                            edit->text().trimmed().toLatin1().constData() );
         }
         if (dynamic_cast<QTextEdit*>(i->w)!=NULL)
         {
             QTextEdit *edit=dynamic_cast<QTextEdit*>(i->w);
-            use_obj->setStr(i->attr.toLatin1().constData(), edit->toPlainText().toLatin1().constData() );
+            use_obj->setStr(i->attr.toLatin1().constData(),
+                            edit->toPlainText().toLatin1().constData() );
         }
         if (dynamic_cast<QRadioButton*>(i->w)!=NULL)
         {

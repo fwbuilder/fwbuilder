@@ -844,7 +844,7 @@ QString FirewallInstaller::getGeneratedFileName(Firewall *fw)
 {
     FWOptions  *fwopt = fw->getOptionsObject();
     QString generated_file;
-    QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str());
+    QString ofname = QString::fromUtf8(fwopt->getStr("output_file").c_str()).trimmed();
     if (!ofname.isEmpty())
     {
         generated_file = ofname;

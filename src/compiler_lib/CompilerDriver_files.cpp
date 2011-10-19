@@ -238,7 +238,7 @@ QString CompilerDriver::getOutputFileNameInternal(Firewall *current_fw,
 
     FWOptions* options = current_fw->getOptionsObject();
     QString name_from_option =
-        QString::fromUtf8(options->getStr(option_name.toStdString()).c_str());
+        QString::fromUtf8(options->getStr(option_name.toStdString()).c_str()).trimmed();
 
     if (!name_from_option.isEmpty()) return name_from_option;
     else return fw_name + "." + ext;

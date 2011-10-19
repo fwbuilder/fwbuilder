@@ -1,3 +1,13 @@
+2011-10-19  Vadim Kurland  <vadim@netcitadel.com>
+
+	* CompilerDriver_files.cpp (CompilerDriver::getOutputFileNameInternal):
+	fixed a bug (no number): if the file name user entered in "Output
+	file name" field in the "advanced settings" dialog of a firewall
+	object ended with a white space, policy installer failed with an error
+	"No such file or directory"
+
+	* build 5.0.1.3583
+
 2011-10-02  Vadim Kurland  <vadim@netcitadel.com>
 
 	* shell_functions: see SF bug #3416900 "Replace `command` with
