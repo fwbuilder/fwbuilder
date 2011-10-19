@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3530
+!  Firewall Builder  fwb_pix v5.0.1.3581
 !
-!  Generated Wed Apr 20 10:40:39 2011 PDT by vadim
+!  Generated Wed Oct 19 16:51:07 2011 PDT by vadim
 !
 ! Compiled for pix 6.3
 ! Outbound ACLs: not supported
@@ -21,8 +21,6 @@
 ! C firewall33:Policy:7: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 ! C firewall33:Policy:8: error: Run-time AddressTable and DNSName objects are not supported.
 
-! N firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
-! N firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 ! N firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 ! N firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 ! N firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
@@ -75,8 +73,6 @@ floodguard disable
 
 
 object-group network id43867C2418346.src.net.0
-  network-object host 157.166.224.25 
-  network-object host 157.166.224.26 
   network-object host 157.166.226.25 
   network-object host 157.166.226.26 
   network-object host 157.166.255.18 
@@ -84,13 +80,11 @@ object-group network id43867C2418346.src.net.0
 exit
 
 object-group network id438728A918346.dst.net.0
-  network-object host 74.125.224.48 
-  network-object host 74.125.224.49 
-  network-object host 74.125.224.50 
-  network-object host 74.125.224.51 
-  network-object host 74.125.224.52 
-  network-object host 157.166.224.25 
-  network-object host 157.166.224.26 
+  network-object host 74.125.224.112 
+  network-object host 74.125.224.113 
+  network-object host 74.125.224.114 
+  network-object host 74.125.224.115 
+  network-object host 74.125.224.116 
   network-object host 157.166.226.25 
   network-object host 157.166.226.26 
   network-object host 157.166.255.18 
@@ -140,8 +134,6 @@ static (inside,outside) interface  access-list id43867C4918346.0 0 0
 ! firewall33:NAT:1: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 
 global (outside) 1 interface
-access-list id43876E2618346.0 permit ip any  host 157.166.224.25  
-access-list id43876E2618346.0 permit ip any  host 157.166.224.26  
 access-list id43876E2618346.0 permit ip any  host 157.166.226.25  
 access-list id43876E2618346.0 permit ip any  host 157.166.226.26  
 access-list id43876E2618346.0 permit ip any  host 157.166.255.18  

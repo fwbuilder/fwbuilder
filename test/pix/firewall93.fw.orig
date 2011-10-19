@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3530
+!  Firewall Builder  fwb_pix v5.0.1.3581
 !
-!  Generated Wed Apr 20 10:40:45 2011 PDT by vadim
+!  Generated Wed Oct 19 16:51:13 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -92,6 +92,7 @@ service-policy global_policy global
 
 clear xlate
 clear config nat
+clear config object-group
 clear config object
 
 object network dmz-range-1.0
@@ -102,12 +103,20 @@ object network inside-range-1.0
   range 10.0.0.1 10.0.0.5
 exit
 
+object-group network id26270X5313.osrc.net.0
+  network-object object inside-range-1.0
+exit
+
+object-group network id26270X5313.osrc.net.1
+  network-object object dmz-range-1.0
+exit
+
 
 
 ! 
 ! Rule  0 (NAT)
-nat (inside,outside) source dynamic inside-range-1.0 interface description "0 (NAT)"
-nat (dmz,outside) source dynamic dmz-range-1.0 interface description "0 (NAT)"
+nat (inside,outside) source dynamic id26270X5313.osrc.net.0 interface description "0 (NAT)"
+nat (dmz,outside) source dynamic id26270X5313.osrc.net.1 interface description "0 (NAT)"
 
 
 

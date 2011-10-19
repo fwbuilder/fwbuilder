@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_pix v4.2.0.3530
+!  Firewall Builder  fwb_pix v5.0.1.3581
 !
-!  Generated Wed Apr 20 10:40:43 2011 PDT by vadim
+!  Generated Wed Oct 19 16:51:11 2011 PDT by vadim
 !
 ! Compiled for pix 8.3
 ! Outbound ACLs: supported
@@ -187,6 +187,10 @@ object-group network id21353X4994.osrc.net.0
   network-object object internal_subnet_2.0
 exit
 
+object-group network id20069X32406.osrc.net.0
+  network-object object test_range_1.0
+exit
+
 object-group network id130599X29063.tsrc.net.0
   network-object object outside_range.0
   network-object object firewall90:FastEthernet1:ip.0
@@ -280,7 +284,7 @@ nat (inside,outside) source dynamic id178211X29963.osrc.net.0 firewall90:FastEth
 nat (inside,outside) source dynamic id21353X4994.osrc.net.0 firewall90:FastEthernet1:ip-1.0 service smtp.0 smtp.0 description "4 (NAT)"
 ! 
 ! Rule  5 (NAT)
-nat (inside,outside) source dynamic test_range_1.0 firewall90:FastEthernet1:ip-1.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "5 (NAT)"
+nat (inside,outside) source dynamic id20069X32406.osrc.net.0 firewall90:FastEthernet1:ip-1.0 destination static spamhost1.0 spamhost1.0 service smtp.0 smtp.0 description "5 (NAT)"
 ! 
 ! Rule  6 (NAT)
 nat (inside,outside) source static hostA:eth0.0 firewall90:FastEthernet1:ip-1.0 destination static spamhost1.0 external_gw_1.0 service smtp.0 smtp.0 description "6 (NAT)"
@@ -331,7 +335,7 @@ nat (inside,outside) source static hostA:eth0.0 firewall90:FastEthernet1:ip-1.0 
 ! Rule  16 (NAT)
 ! for #1908
 ! "static" vs "dynamic"
-nat (inside,outside) source dynamic hostA:eth0.0 outside_range.0 description "16 (NAT)"
+nat (inside,outside) source dynamic hostA:eth0.0 id241772X29764.tsrc.net.0 description "16 (NAT)"
 ! 
 ! Rule  17 (NAT)
 ! for #1908  "static" vs "dynamic"
@@ -350,7 +354,7 @@ nat (inside,outside) source dynamic hostA:eth0.0 id21177X3720.tsrc.net.0 interfa
 ! "static" vs "dynamic"
 ! firewall90:NAT:19: warning: Objects used in Original Source and Translated Source of the rule dictate that the same interface 'outside' is going to be used as real and mapped interface in the generated nat command.
 
-nat (outside,outside) source dynamic outside_range.0 firewall90:FastEthernet1:ip-1.0 description "19 (NAT)"
+nat (outside,outside) source dynamic id241772X29764.tsrc.net.0 firewall90:FastEthernet1:ip-1.0 description "19 (NAT)"
 ! 
 ! Rule  20 (NAT)
 ! for #1908
