@@ -280,7 +280,15 @@ namespace fwcompiler {
 	 * this processor splits rule element if src or dst contains
 	 * address range
 	 */
-        DECLARE_POLICY_RULE_PROCESSOR(addressRanges);
+        class addressRanges : public PolicyRuleProcessor
+        {
+            protected:
+            void expandAddressRangesInSrc(libfwbuilder::PolicyRule *rule);
+            void expandAddressRangesInDst(libfwbuilder::PolicyRule *rule);
+            public:
+            addressRanges(const std::string &name) : PolicyRuleProcessor(name) {}
+            virtual bool processNext();
+        };
 
 
 	/**

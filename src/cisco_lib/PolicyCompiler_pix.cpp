@@ -310,7 +310,30 @@ bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
         return true;
     }
 
+    tmp_queue.push_back(rule);
+    return true;
+}
 
+/*
+ * See #2662: commands "ssh", "telnet" and "http" (those that control
+ * access on the corresponding protocols to the firewall itself)
+ * accept only ip address of a host or a network as their
+ * argument. They do not accept address range, named object or object
+ * group. This is so at least as of ASA 8.3. Since we expand address
+ * ranges only for versions < 8.3 and use named object for 8.3 and
+ * later, we need to make this additional check and still expand
+ * address ranges in rules that will later convert to "ssh", "telnet"
+ * or "http" command. Call this rule processor after telnetToFirewall,
+ * sshToFirewall and httpToFirewall
+ */
+bool PolicyCompiler_pix::AddressRangesIfTcpServiceToFW::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+
+    if (rule->getBool("tcp_service_to_fw"))
+    {
+        expandAddressRangesInSrc(rule);
+    }
 
     tmp_queue.push_back(rule);
     return true;
@@ -451,6 +474,9 @@ void PolicyCompiler_pix::compile()
              "separate rules controlling ssh to firewall" ));
     add( new httpToFirewall(
              "separate rules controlling http to firewall"));
+
+    add( new AddressRangesIfTcpServiceToFW(
+             "process address ranges in rules that control telnet/ssh/http to Fw"));
 
     add( new separateSrcPort("split rules matching source ports"));
     add( new separateCustom("split rules matching custom services"));

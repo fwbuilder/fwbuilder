@@ -106,6 +106,15 @@ namespace fwcompiler {
 	 */
 	DECLARE_POLICY_RULE_PROCESSOR( assignRuleToInterface_v6 );
 
+        class AddressRangesIfTcpServiceToFW : public PolicyCompiler::addressRanges
+        {
+            public:
+            AddressRangesIfTcpServiceToFW(const std::string &n):
+                addressRanges(n) {}
+            virtual bool processNext();
+        };
+        friend class AddressRangesIfTcpServiceToFW;
+
 	/**
 	 * split rules with direction "both".
 	 * TODO: This is used in OpenBSD pf. Move to class PolicyCompiler

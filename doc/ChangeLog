@@ -1,5 +1,23 @@
 2011-10-19  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PolicyCompiler_pix.cpp (AddressRangesIfTcpServiceToFW::processNext): 
+	see #2662 "Crash when compiling ASA rule with IP range". Need to
+	split address range if it is used in "source" of a rule that
+	controls telnet, ssh or http to the firewall itself and firewall's
+	version is >= 8.3. Commands "ssh", "telnet" and "http" (those that
+	control access on the corresponding protocols to the firewall
+	itself) accept only ip address of a host or a network as their
+	argument. They do not accept address range, named object or object
+	group. This is so at least as of ASA 8.3. Since we expand address
+	ranges only for versions < 8.3 and use named object for 8.3 and
+	later, we need to make this additional check and still expand
+	address ranges in rules that will later convert to "ssh", "telnet"
+	or "http" command. Compiler also generates redundant object-group
+	statement with CIDR blocks generated from the address range but
+	does not use this group in the rule. This does not break generated
+	configuration but the object-group is redundant since it is never
+	used. This will be rectified in future versions.
+
 	* CompilerDriver_files.cpp (CompilerDriver::getOutputFileNameInternal):
 	fixed a bug (no number): if the file name user entered in "Output
 	file name" field in the "advanced settings" dialog of a firewall

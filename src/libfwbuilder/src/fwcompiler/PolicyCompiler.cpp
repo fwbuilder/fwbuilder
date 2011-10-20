@@ -457,18 +457,26 @@ bool  PolicyCompiler::ExpandMultipleAddresses::processNext()
     return true;
 }
 
-bool  PolicyCompiler::addressRanges::processNext()
+void PolicyCompiler::addressRanges::expandAddressRangesInSrc(PolicyRule *rule)
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    RuleElementSrc *src=rule->getSrc();    assert(src);
-    RuleElementDst *dst=rule->getDst();    assert(dst);
+    RuleElementSrc *src = rule->getSrc();    assert(src);
     compiler->_expandAddressRanges(rule, src);
+}
+
+void PolicyCompiler::addressRanges::expandAddressRangesInDst(PolicyRule *rule)
+{
+    RuleElementDst *dst = rule->getDst();    assert(dst);
     compiler->_expandAddressRanges(rule, dst);
+}
+
+bool PolicyCompiler::addressRanges::processNext()
+{
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    expandAddressRangesInSrc(rule);
+    expandAddressRangesInDst(rule);
     tmp_queue.push_back(rule);
     return true;
 }
-
-
 
 Rule* PolicyCompiler::getDifference(PolicyRule &r1, PolicyRule &r2)
 {
