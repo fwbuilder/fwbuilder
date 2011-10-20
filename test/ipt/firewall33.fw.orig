@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3575
+#  Firewall Builder  fwb_ipt v5.0.1.3583
 #
-#  Generated Thu Aug 25 13:47:01 2011 PDT by vadim
+#  Generated Wed Oct 19 17:51:31 2011 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -42,7 +42,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
+    which "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 getInterfaceVarName() {
@@ -118,7 +118,7 @@ diff_intf() {
 
 find_program() {
   PGM=$1
-  command -v $PGM >/dev/null 2>&1 || {
+  which $PGM >/dev/null 2>&1 || {
     echo "$PGM not found"
     exit 1
   }
@@ -333,8 +333,6 @@ script_body() {
     # 
     echo "Rule 1 (NAT)"
     # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.224.25  -j MASQUERADE
-    $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.224.26  -j MASQUERADE
     $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.226.25  -j MASQUERADE
     $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.226.26  -j MASQUERADE
     $IPTABLES -t nat -A POSTROUTING -o eth0.100   -d 157.166.255.18  -j MASQUERADE
@@ -371,14 +369,10 @@ script_body() {
     # 
     echo "Rule 0 (global)"
     # 
-    $IPTABLES -A INPUT  -s 157.166.224.25   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT  -s 157.166.224.26   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT  -s 157.166.226.25   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT  -s 157.166.226.26   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT  -s 157.166.255.18   -m state --state NEW  -j ACCEPT
     $IPTABLES -A INPUT  -s 157.166.255.19   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -s 157.166.224.25   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -s 157.166.224.26   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -s 157.166.226.25   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -s 157.166.226.26   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -s 157.166.255.18   -m state --state NEW  -j ACCEPT
@@ -415,8 +409,6 @@ script_body() {
     $IPTABLES -A OUTPUT  -j Cid4386E38318346.0
     $IPTABLES -A INPUT  -j Cid4386E38318346.0
     $IPTABLES -A FORWARD  -j Cid4386E38318346.0
-    $IPTABLES -A Cid4386E38318346.0  -d 157.166.224.25   -j RETURN
-    $IPTABLES -A Cid4386E38318346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid4386E38318346.0  -d 157.166.226.25   -j RETURN
     $IPTABLES -A Cid4386E38318346.0  -d 157.166.226.26   -j RETURN
     $IPTABLES -A Cid4386E38318346.0  -d 157.166.255.18   -j RETURN
@@ -471,8 +463,6 @@ script_body() {
     $IPTABLES -A Cid438728A918346.0  -d 74.125.224.114   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 74.125.224.115   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 74.125.224.116   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 157.166.224.25   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.255.18   -j RETURN
@@ -500,8 +490,6 @@ script_body() {
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid438728CD18346.0
     $IPTABLES -A FORWARD  -m state --state NEW  -j Cid438728CD18346.0
     $IPTABLES -A Cid438728CD18346.0  -d www.google.com  -j RETURN
-    $IPTABLES -A Cid438728CD18346.0  -d 157.166.224.25   -j RETURN
-    $IPTABLES -A Cid438728CD18346.0  -d 157.166.224.26   -j RETURN
     $IPTABLES -A Cid438728CD18346.0  -d 157.166.226.25   -j RETURN
     $IPTABLES -A Cid438728CD18346.0  -d 157.166.226.26   -j RETURN
     $IPTABLES -A Cid438728CD18346.0  -d 157.166.255.18   -j RETURN
@@ -595,7 +583,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Aug 25 13:47:01 2011 by vadim"
+        log "Activating firewall script generated Wed Oct 19 17:51:31 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

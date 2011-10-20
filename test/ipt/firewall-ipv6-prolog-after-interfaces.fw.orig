@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3575
+#  Firewall Builder  fwb_ipt v5.0.1.3583
 #
-#  Generated Thu Aug 25 13:48:40 2011 PDT by vadim
+#  Generated Wed Oct 19 17:53:00 2011 PDT by vadim
 #
 # files: * firewall-ipv6-prolog-after-interfaces.fw /etc/firewall-ipv6-prolog-after-interfaces.fw
 #
@@ -38,7 +38,7 @@ LOGGER="/usr/bin/logger"
 
 log() {
     echo "$1"
-    command -v "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
+    which "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
 }
 
 getInterfaceVarName() {
@@ -114,7 +114,7 @@ diff_intf() {
 
 find_program() {
   PGM=$1
-  command -v $PGM >/dev/null 2>&1 || {
+  which $PGM >/dev/null 2>&1 || {
     echo "$PGM not found"
     exit 1
   }
@@ -441,7 +441,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Aug 25 13:48:40 2011 by vadim"
+        log "Activating firewall script generated Wed Oct 19 17:53:00 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files
