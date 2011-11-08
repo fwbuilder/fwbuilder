@@ -505,10 +505,12 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 if (nat->isTop())
                 {
-                    generated_scripts[ruleset_name] = main_str;
+                    if (generated_scripts.count(ruleset_name) == 0)
+                        generated_scripts[ruleset_name] = main_str;
                 } else
                 {
-                    generated_scripts[ruleset_name] = new ostringstream();
+                    if (generated_scripts.count(ruleset_name) == 0)
+                        generated_scripts[ruleset_name] = new ostringstream();
                 }
 
                 if (n.getCompiledScriptLength() > 0)
@@ -582,10 +584,12 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
                 if (policy->isTop())
                 {
-                    generated_scripts["__main__"] = main_str;
+                    if (generated_scripts.count("__main__") == 0)
+                        generated_scripts["__main__"] = main_str;
                 } else
                 {
-                    generated_scripts[ruleset_name] = new ostringstream();
+                    if (generated_scripts.count(ruleset_name) == 0)
+                        generated_scripts[ruleset_name] = new ostringstream();
                 }
 
                 if (c.getCompiledScriptLength() > 0)

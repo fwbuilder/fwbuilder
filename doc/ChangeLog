@@ -1,5 +1,10 @@
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
+	* CompilerDriver_pf_run.cpp (CompilerDriver_pf::run): fixed SF bug
+	#3429377 "PF: IPv6 rules are not added in IPv4/IPv6
+	ruleset (anchor)". Compiler for PF did not inlcude rules generated
+	for IPv6 in generated PF anchor configuration files.
+
 	* BaseObjectDialog.cpp (connectSignalsOfAllWidgetsToSlotChange):
 	fixed SF bug #3433587 "Manual edit of new service Destination Port
 	END value fails". This bug made it impossible to edit the value of
