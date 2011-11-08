@@ -1,5 +1,8 @@
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
+	* RuleSetViewDelegate.cpp (sizeHint): fixes #2665 "Adding text to
+	comment causes rule to go from 2 rows to 1 row"
+
 	* ACL.cpp (ciscoACL::trimLine): fixed SF bug 3435004: "Empty lines
 	in comment result in "Incomplete Command" in IOS".
 

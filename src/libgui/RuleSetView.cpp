@@ -2755,10 +2755,15 @@ void RuleSetView::updateColumnSizeForIndex(QModelIndex index)
     resizeColumns();
 }
 
+void RuleSetView::updateSectionSizesForIndex(QModelIndex idx1, QModelIndex idx2)
+{
+    updateAllColumnsSize();
+}
+
 void RuleSetView::setModel(QAbstractItemModel *model)
 {
     connect (model, SIGNAL (dataChanged(QModelIndex,QModelIndex)),
-             this, SLOT (updateAllColumnsSize()));
+             this, SLOT (updateSectionSizesForIndex(QModelIndex,QModelIndex)));
     connect (model, SIGNAL (layoutChanged()),
              this, SLOT (updateAllColumnsSize()));
 

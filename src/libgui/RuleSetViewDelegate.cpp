@@ -466,8 +466,24 @@ QSize RuleSetViewDelegate::sizeHint(const QStyleOptionViewItem & option,
         {
             return node->sizes[index.column()];
         }
+
         res = calculateCellSizeForRule(newOpt, index, node) + QSize(1,1);
         node->sizes[index.column()] = res;
+
+        // make sure cell height is equal to max height of all cells
+        // in the same row. See #2665
+        QSize tallest_cell = QSize(0, 0);
+        for (unsigned int c=0; c<=index.column(); ++c)
+        {
+            QSize cell_size = node->sizes[c];
+            if (cell_size.isValid())
+            {
+                int max_height = qMax(tallest_cell.height(), cell_size.height());
+                tallest_cell.setHeight(max_height);
+                node->sizes[c].setHeight(max_height);
+            }
+        }
+
         return res;
     }
 

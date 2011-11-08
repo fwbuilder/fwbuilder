@@ -197,6 +197,8 @@ public slots:
 
     void updateAllColumnsSize();
     void updateColumnSizeForIndex(QModelIndex);
+    void updateSectionSizesForIndex(QModelIndex, QModelIndex);
+    
     void updateObject(libfwbuilder::FWObject* object);
 
     void compileCurrentRule();
