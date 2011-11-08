@@ -249,13 +249,17 @@ void PolicyCompiler_ipfw::PrintRule::_printAction(PolicyRule *rule)
  *  not print interface name for dynamic interface ('cause ipfilter
  *  does not support it)
  */
-void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
+void PolicyCompiler_ipfw::PrintRule::_printAddr(FWObject *o, bool neg)
 {
+
     if (o->getId()==compiler->fw->getId())
     {
         compiler->output << "me ";
         return;
     }
+
+    Address *addr_obj = Address::cast(o);
+    assert(addr_obj!=NULL);
 
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
     if (atrt!=NULL)
@@ -273,19 +277,19 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(Address  *o,bool neg)
         assert(atrt==NULL);
     }
 
-    const InetAddr *addr = o->getAddressPtr();
+    const InetAddr *addr = addr_obj->getAddressPtr();
     if (Interface::cast(o)!=NULL && addr==NULL)
     {
         compiler->output << "me ";
     }
     if (addr)
     {
-        InetAddr mask = *(o->getNetmaskPtr());
+        InetAddr mask = *(addr_obj->getNetmaskPtr());
 
         if (Interface::cast(o)!=NULL)
             mask = InetAddr(InetAddr::getAllOnes());
 
-        if (o->dimension()==1)
+        if (addr_obj->dimension()==1)
             mask = InetAddr(InetAddr::getAllOnes());
 
         if (addr->isAny() && mask.isAny()) 

@@ -220,7 +220,7 @@ namespace fwcompiler {
             virtual std::string _printPort(int rs,int re,bool neg=false);
             virtual void _printProtocol(libfwbuilder::Service *srv);
             virtual void _printAction(libfwbuilder::PolicyRule *r);
-            virtual void _printAddr(libfwbuilder::Address  *o,bool neg=false);
+            virtual void _printAddr(libfwbuilder::FWObject  *o,bool neg=false);
             virtual void _printDirection(libfwbuilder::PolicyRule *r);
             virtual void _printOppositeDirection(libfwbuilder::PolicyRule *r);
             virtual void _printInterface(libfwbuilder::PolicyRule *r);

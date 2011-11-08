@@ -1,3 +1,9 @@
+2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printAddr): fixed
+	SF bug #3426843 "ipfw doesn't work for self-reference, in
+	5.0.0.3568 version".
+
 2011-10-19  Vadim Kurland  <vadim@netcitadel.com>
 
 	* PolicyCompiler_pix.cpp (AddressRangesIfTcpServiceToFW::processNext): 
