@@ -92,6 +92,13 @@
         <NetworkIPv6 id="id2383X75851" name="link-local ipv6" comment="RFC4291   Link-local unicast net" ro="False" address="fe80::" netmask="10"/>
         <NetworkIPv6 id="id2685X75851" name="multicast ipv6" comment="RFC4291  ipv6 multicast addresses" ro="False" address="ff00::" netmask="8"/>
         <NetworkIPv6 id="id2986X75851" name="experimental ipv6" comment="RFC2928, RFC4773 &#10;&#10;&quot;The block of Sub-TLA IDs assigned to the IANA&#10;(i.e., 2001:0000::/29 - 2001:01F8::/29) is for&#10;assignment for testing and experimental usage to&#10;support activities such as the 6bone, and&#10;for new approaches like exchanges.&quot;  [RFC2928]&#10;&#10;" ro="False" address="2001::" netmask="23"/>
+        <Network id="id3289X12564" name="TEST-NET-2" comment="RFC 5735&#10;RFC 5737&#10;" ro="False" address="198.51.100.0" netmask="255.255.255.0"/>
+        <Network id="id3300X12564" name="TEST-NET-3" comment="RFC 5735&#10;RFC 5737" ro="False" address="203.0.113.0" netmask="255.255.255.0"/>
+        <Network id="id3311X12564" name="Benchmark tests network" comment="RFC 5735" ro="False" address="198.18.0.0" netmask="255.254.0.0"/>
+        <NetworkIPv6 id="id3326X12564" name="mapped-ipv4" comment="" ro="False" address="::ffff:0.0.0.0" netmask="96"/>
+        <NetworkIPv6 id="id3341X12564" name="translated-ipv4" comment="" ro="False" address="::ffff:0:0:0" netmask="96"/>
+        <NetworkIPv6 id="id3350X12564" name="Teredo" comment="" ro="False" address="2001::" netmask="32"/>
+        <NetworkIPv6 id="id3359X12564" name="unique-local" comment="" ro="False" address="fc00::" netmask="7"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
@@ -2272,7 +2279,7 @@
           <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1281749780" lastInstalled="0" lastModified="1281750719" platform="iosacl" version="12.1" name="c3620" comment="" ro="False">
+      <Firewall id="id464359FE16989" host_OS="ios" inactive="False" lastCompiled="1281749780" lastInstalled="0" lastModified="1320770465" platform="iosacl" version="12.1" name="c3620" comment="" ro="False">
         <NAT id="id46435A0216989" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -2298,7 +2305,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id464C8AAD10931" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id464C8AAD10931" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="this comment has empty lines at the end&#10;&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2319,7 +2326,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id464C8AA110931" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="">
+          <PolicyRule id="id464C8AA110931" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="this comment has empty line in the middle&#10;&#10;last line&#10;">
             <Src neg="False">
               <ObjectRef ref="sysid0"/>
             </Src>
@@ -2340,7 +2347,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id46435A1C16989" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="">
+          <PolicyRule id="id46435A1C16989" disabled="False" group="" log="False" position="3" action="Accept" direction="Inbound" comment="    this comment starts with a whitespace&#10;">
             <Src neg="False">
               <ObjectRef ref="id46435A0F16989"/>
             </Src>
@@ -2361,7 +2368,7 @@
               <Option name="stateless">False</Option>
             </PolicyRuleOptions>
           </PolicyRule>
-          <PolicyRule id="id4643662716989" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="">
+          <PolicyRule id="id4643662716989" disabled="False" group="" log="False" position="4" action="Accept" direction="Outbound" comment="this comment ends with a whitespace  ">
             <Src neg="False">
               <ObjectRef ref="id46435A0F16989"/>
             </Src>

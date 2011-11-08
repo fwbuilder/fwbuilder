@@ -44,8 +44,24 @@ string ciscoACL::addLine(const std::string &s)
  */
 string ciscoACL::trimLine(const string &s)
 {
-    if (s.length() < 100)  return s;
-    return s.substr(0, 100);
+    string trimmed_comment_line;
+    
+    if (s.length() < 100)  trimmed_comment_line = s;
+    else trimmed_comment_line = s.substr(0, 100);
+
+    // remove white space at the beginning and the end
+    string whitespaces(" \t\f\v\n\r");
+    string::size_type n1,n2;
+
+    n1 = trimmed_comment_line.find_first_not_of(whitespaces);
+    if (n1 != string::npos) trimmed_comment_line.erase(0, n1);
+    else trimmed_comment_line.clear(); // all whitespace
+
+    n2 = trimmed_comment_line.find_last_not_of(whitespaces);
+    if (n2 != string::npos) trimmed_comment_line.erase(n2+1);
+    else trimmed_comment_line.clear();
+
+    return trimmed_comment_line;
 }
 
 string ciscoACL::quoteLine(const string &s)
@@ -74,18 +90,27 @@ string ciscoACL::addRemark(const std::string &rl, const std::string &comment)
         {
             string::size_type n, c1;
             c1 = 0;
+            string trimmed_comment_line;
+
             while ( (n = comment.find("\n", c1)) != string::npos )
             {
-                acl.push_back(" remark " + quoteLine(
-                                  trimLine(comment.substr(c1, n-c1))));
-                output += printLastLine();
-                nlines++;
+                trimmed_comment_line = trimLine(comment.substr(c1, n-c1));
+                if (!trimmed_comment_line.empty())
+                {
+                    acl.push_back(" remark " + quoteLine(trimmed_comment_line));
+                    output += printLastLine();
+                    nlines++;
+                }
                 c1 = n + 1;
             }
-            acl.push_back(" remark " + quoteLine(
-                              trimLine(comment.substr(c1))));
-            output += printLastLine();
-            nlines++;
+
+            trimmed_comment_line = trimLine(comment.substr(c1, n-c1));
+            if (!trimmed_comment_line.empty())
+            {
+                acl.push_back(" remark " + quoteLine(trimmed_comment_line));
+                output += printLastLine();
+                nlines++;
+            }
         }
 
         _last_rule_label = rl;

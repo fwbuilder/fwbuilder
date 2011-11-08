@@ -1,5 +1,8 @@
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
+	* ACL.cpp (ciscoACL::trimLine): fixed SF bug 3435004: "Empty lines
+	in comment result in "Incomplete Command" in IOS".
+
 	* CompilerDriver_pf_run.cpp (CompilerDriver_pf::run): fixed SF bug
 	#3429377 "PF: IPv6 rules are not added in IPv4/IPv6
 	ruleset (anchor)". Compiler for PF did not inlcude rules generated

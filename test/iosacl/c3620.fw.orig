@@ -1,9 +1,9 @@
 !
 !  This is automatically generated file. DO NOT MODIFY !
 !
-!  Firewall Builder  fwb_iosacl v4.2.0.3505
+!  Firewall Builder  fwb_iosacl v5.0.1.3584
 !
-!  Generated Mon Mar 21 12:45:58 2011 PDT by vadim
+!  Generated Tue Nov  8 08:41:19 2011 PST by vadim
 !
 ! Compiled for iosacl 12.1
 !
@@ -42,11 +42,19 @@ ip access-list extended e1_0_in
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
 ! 
 ! Rule  1 (Ethernet1/0)
+! this comment has empty lines at the end
+! 
    remark 1 (Ethernet1/0)
+   remark this comment has empty lines at the end
   permit tcp  any  any  eq 80 
 ! 
 ! Rule  2 (Ethernet1/0)
+! this comment has empty line in the middle
+! 
+! last line
    remark 2 (Ethernet1/0)
+   remark this comment has empty line in the middle
+   remark last line
   permit tcp  any  any  eq 443 
 ! 
 ! Rule  5 (Ethernet1/0)
@@ -80,15 +88,25 @@ ip access-list extended e1_0_out
   permit tcp  host 192.168.171.2 eq 22 host 10.3.14.41 
 ! 
 ! Rule  1 (Ethernet1/0)
+! this comment has empty lines at the end
+! 
    remark 1 (Ethernet1/0)
+   remark this comment has empty lines at the end
   permit tcp  any  any  eq 80 
 ! 
 ! Rule  2 (Ethernet1/0)
+! this comment has empty line in the middle
+! 
+! last line
    remark 2 (Ethernet1/0)
+   remark this comment has empty line in the middle
+   remark last line
   permit tcp  any  any  eq 443 
 ! 
 ! Rule  4 (Ethernet1/0)
+! this comment ends with a whitespace  
    remark 4 (Ethernet1/0)
+   remark this comment ends with a whitespace
   permit ip  10.3.14.0 0.0.0.255 any  
 exit
 
@@ -142,7 +160,9 @@ ip access-list extended fe0_0_in
   permit tcp  host 10.3.14.41 host 192.168.171.2 eq 22 
 ! 
 ! Rule  3 (FastEthernet0/0)
+!     this comment starts with a whitespace
    remark 3 (FastEthernet0/0)
+   remark this comment starts with a whitespace
   permit ip  10.3.14.0 0.0.0.255 any  
 ! 
 ! Rule  7 (global)
