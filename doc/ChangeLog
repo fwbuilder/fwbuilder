@@ -5,6 +5,11 @@
 	ruleset (anchor)". Compiler for PF did not inlcude rules generated
 	for IPv6 in generated PF anchor configuration files.
 
+	* CompilerDriver_pf_run.cpp (CompilerDriver_pf::run): fixed SF bug
+	3428992: "PF: rules order problem with IPv4 and IPv6". Compiler
+	for PF should group ipv4 and ipv6 NAT rules together, before it
+	generates ipv4 and ipv6 policy rules.
+
 	* BaseObjectDialog.cpp (connectSignalsOfAllWidgetsToSlotChange):
 	fixed SF bug #3433587 "Manual edit of new service Destination Port
 	END value fails". This bug made it impossible to edit the value of

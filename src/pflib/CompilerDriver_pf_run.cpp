@@ -424,50 +424,37 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
         }
 
         ostringstream* main_str = new ostringstream();
+        list<NATCompiler_pf::redirectRuleInfo> redirect_rules_info;
 
         for (vector<int>::iterator i=ipv4_6_runs.begin();
              i!=ipv4_6_runs.end(); ++i)
         {
-            int policy_af = *i;
-            bool ipv6_policy = (policy_af == AF_INET6);
+            int ruleset_address_family = *i;
+            bool is_ipv6 = (ruleset_address_family == AF_INET6);
+            Preprocessor_pf* prep = new Preprocessor_pf(objdb , fw, is_ipv6);
+            prep->setSingleRuleCompileMode(single_rule_id);
+            if (inTestMode()) prep->setTestMode();
+            if (inEmbeddedMode()) prep->setEmbeddedMode();
+            prep->compile();
+            delete prep;
+        }
 
-            // Count rules for each address family
-            int nat_count = 0;
-            int policy_count = 0;
+        // ################################################################
+        // First I process NAT rules, both ipv4 and ipv6, then process
+        // ipv4 and ipv6 policy rules. See SF bug 3428992
 
-            for (list<FWObject*>::iterator p=all_nat.begin();
-                 p!=all_nat.end(); ++p)
-            {
-                NAT *nat = NAT::cast(*p);
-                if (nat->matchingAddressFamily(policy_af)) nat_count++;
-            }
-
-            for (list<FWObject*>::iterator p=all_policies.begin();
-                 p!=all_policies.end(); ++p)
-            {
-                Policy *policy = Policy::cast(*p);
-                if (policy->matchingAddressFamily(policy_af)) policy_count++;
-            }
-
-            if (nat_count || policy_count)
-            {
-                Preprocessor_pf* prep = new Preprocessor_pf(
-                    objdb , fw, ipv6_policy);
-                prep->setSingleRuleCompileMode(single_rule_id);
-                if (inTestMode()) prep->setTestMode();
-                if (inEmbeddedMode()) prep->setEmbeddedMode();
-                prep->compile();
-                delete prep;
-            }
-
-            list<NATCompiler_pf::redirectRuleInfo> redirect_rules_info;
+        for (vector<int>::iterator i=ipv4_6_runs.begin();
+             i!=ipv4_6_runs.end(); ++i)
+        {
+            int ruleset_address_family = *i;
+            bool is_ipv6 = (ruleset_address_family == AF_INET6);
 
             for (list<FWObject*>::iterator p=all_nat.begin();
                  p!=all_nat.end(); ++p )
             {
                 NAT *nat = NAT::cast(*p);
 
-                if (!nat->matchingAddressFamily(policy_af)) continue;
+                if (!nat->matchingAddressFamily(ruleset_address_family)) continue;
                 if (nat->getBool(".skip_ruleset")) continue;
 
                 QString ruleset_name = QString::fromUtf8(nat->getName().c_str());
@@ -479,7 +466,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                         new fwcompiler::TableFactory(this, fw, persistent_objects, &group_registry);
                 }
 
-                NATCompiler_pf n( objdb, fw, ipv6_policy, oscnf.get(),
+                NATCompiler_pf n( objdb, fw, is_ipv6, oscnf.get(),
                                   table_factories[ruleset_name]
                 );
 
@@ -538,14 +525,23 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 redirect_rules_info.insert(redirect_rules_info.begin(),
                                            lst.begin(), lst.end());
             }
+        }
 
+        // ################################################################
+        // Process policy rule sets
+
+        for (vector<int>::iterator i=ipv4_6_runs.begin();
+             i!=ipv4_6_runs.end(); ++i)
+        {
+            int ruleset_address_family = *i;
+            bool is_ipv6 = (ruleset_address_family == AF_INET6);
 
             for (list<FWObject*>::iterator p=all_policies.begin();
                  p!=all_policies.end(); ++p )
             {
                 Policy *policy = Policy::cast(*p);
 
-                if (!policy->matchingAddressFamily(policy_af)) continue;
+                if (!policy->matchingAddressFamily(ruleset_address_family)) continue;
                 if (policy->getBool(".skip_ruleset")) continue;
 
                 QString ruleset_name = QString::fromUtf8(policy->getName().c_str());
@@ -557,7 +553,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                         new fwcompiler::TableFactory(this, fw, persistent_objects, &group_registry);
                 }
 
-                PolicyCompiler_pf c( objdb, fw, ipv6_policy, oscnf.get(),
+                PolicyCompiler_pf c( objdb, fw, is_ipv6, oscnf.get(),
                                      &redirect_rules_info,
                                      table_factories[ruleset_name]
                 );
