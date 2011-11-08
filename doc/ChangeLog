@@ -1,5 +1,13 @@
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
+	* BaseObjectDialog.cpp (connectSignalsOfAllWidgetsToSlotChange):
+	fixed SF bug #3433587 "Manual edit of new service Destination Port
+	END value fails". This bug made it impossible to edit the value of
+	the end of the port range because as soon as the value became less
+	than the value of the beginning the range, the GUI would reset it
+	to be equal to the value of the beginning of the range. This
+	affected both TCP and UDP service object dialogs.
+
 	* PolicyCompiler_ipfw_writers.cpp (PrintRule::_printAddr): fixed
 	SF bug #3426843 "ipfw doesn't work for self-reference, in
 	5.0.0.3568 version".

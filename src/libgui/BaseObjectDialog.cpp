@@ -79,7 +79,7 @@ void BaseObjectDialog::connectSignalsOfAllWidgetsToSlotChange()
         QSpinBox *sb = qobject_cast<QSpinBox*>(w);
         if (sb)
         {
-            connect(sb, SIGNAL(valueChanged(int)), this, SLOT(changed()));
+            connect(sb, SIGNAL(editingFinished()), this, SLOT(changed()));
             continue;
         }
 
