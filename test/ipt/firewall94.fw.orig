@@ -4,15 +4,15 @@
 #
 #  Firewall Builder  fwb_ipt v5.0.1.3584
 #
-#  Generated Tue Nov  8 18:08:44 2011 PST by vadim
+#  Generated Tue Nov  8 18:09:17 2011 PST by vadim
 #
-# files: * firewall61-1.3.x.fw /etc/firewall61-1.3.x.fw
+# files: * firewall94.fw /etc/fw/firewall94.fw
 #
 # Compiled for iptables 1.3.0
 #
-# testing time litmiting for iptables 1.3.x
+# testing rules that use address ranges that include or not include fw
 
-# firewall61-1.3.x:Policy_ipv6:: warning: target TCPMSS is not supported by ip6tables before v1.3.8
+
 
 
 FWBDEBUG=""
@@ -283,8 +283,8 @@ load_modules() {
 
 verify_interfaces() {
     :
-    echo "Verifying interfaces: eth0 eth1"
-    for i in eth0 eth1 ; do
+    echo "Verifying interfaces: eth0"
+    for i in eth0 ; do
         $IP link show "$i" > /dev/null 2>&1 || {
             log "Interface $i does not exist"
             exit 1
@@ -310,8 +310,7 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     # Configure interfaces
-    update_addresses_of_interface "eth0 192.168.1.1/24" ""
-    update_addresses_of_interface "eth1 222.222.222.222/24" ""
+    update_addresses_of_interface "eth0 fe80::20c:29ff:fe28:c078/64 192.168.1.2/24" ""
 }
 
 script_body() {
@@ -323,94 +322,11 @@ script_body() {
     $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
     $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
     $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-    # ================ Table 'mangle', automatic rules
-    $IPTABLES -t mangle -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 
 
 
-    # ================ Table 'mangle', rule set fw61-Policy
-    # 
-    # Rule fw61-Policy 0 (global)
-    # 
-    echo "Rule fw61-Policy 0 (global)"
-    # 
-    $IPTABLES -N fw61-Policy -t mangle
-    $IPTABLES -N fw61-Policy_0 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 00:00  --timestop 23:59  --days Sat -j fw61-Policy_0
-    $IPTABLES -t mangle -A fw61-Policy_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_0  -j DROP
-    # 
-    # Rule fw61-Policy 1 (global)
-    # 
-    echo "Rule fw61-Policy 1 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_1 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 00:00  --timestop 23:59  --days Sun -j fw61-Policy_1
-    $IPTABLES -t mangle -A fw61-Policy_1  -j LOG  --log-level info --log-prefix "RULE 1 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_1  -j DROP
-    # 
-    # Rule fw61-Policy 2 (global)
-    # 
-    echo "Rule fw61-Policy 2 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_2 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 18:00  --timestop 23:59  -j fw61-Policy_2
-    $IPTABLES -t mangle -A fw61-Policy_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_2  -j DROP
-    # 
-    # Rule fw61-Policy 3 (global)
-    # 
-    echo "Rule fw61-Policy 3 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_3 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 00:00  --timestop 23:59  --days Sat,Sun -j fw61-Policy_3
-    $IPTABLES -t mangle -A fw61-Policy_3  -j LOG  --log-level info --log-prefix "RULE 3 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_3  -j DROP
-    # 
-    # Rule fw61-Policy 4 (global)
-    # 
-    echo "Rule fw61-Policy 4 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_4 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 09:00  --timestop 17:00  --days Mon,Tue,Wed,Thu,Fri -j fw61-Policy_4
-    $IPTABLES -t mangle -A fw61-Policy_4  -j LOG  --log-level info --log-prefix "RULE 4 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_4  -j DROP
-    # 
-    # Rule fw61-Policy 5 (global)
-    # 
-    echo "Rule fw61-Policy 5 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_5 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 01:01  --timestop 02:02  --days Sun,Mon -j fw61-Policy_5
-    $IPTABLES -t mangle -A fw61-Policy_5  -j LOG  --log-level info --log-prefix "RULE 5 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_5  -j DROP
-    # 
-    # Rule fw61-Policy 6 (global)
-    # 
-    echo "Rule fw61-Policy 6 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_6 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 01:01  --timestop 02:02  --days Sun,Mon -j fw61-Policy_6
-    $IPTABLES -t mangle -A fw61-Policy_6  -j LOG  --log-level info --log-prefix "RULE 6 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_6  -j DROP
-    # 
-    # Rule fw61-Policy 7 (global)
-    # 
-    echo "Rule fw61-Policy 7 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_7 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 00:00  --timestop 01:00  --days Fri,Sat -j fw61-Policy_7
-    $IPTABLES -t mangle -A fw61-Policy_7  -j LOG  --log-level info --log-prefix "RULE 7 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_7  -j DROP
-    # 
-    # Rule fw61-Policy 8 (global)
-    # 
-    echo "Rule fw61-Policy 8 (global)"
-    # 
-    $IPTABLES -N fw61-Policy_8 -t mangle
-    $IPTABLES -t mangle -A fw61-Policy -m time  --timestart 01:00  --timestop 02:00  --days Fri,Sat -j fw61-Policy_8
-    $IPTABLES -t mangle -A fw61-Policy_8  -j LOG  --log-level info --log-prefix "RULE 8 -- DENY "
-    $IPTABLES -t mangle -A fw61-Policy_8  -j DROP
+
+
 
     # ================ Table 'filter', rule set Policy
     # 
@@ -418,42 +334,152 @@ script_body() {
     # 
     echo "Rule 0 (global)"
     # 
-    $IPTABLES -N RULE_0
-    $IPTABLES -A OUTPUT  -j RULE_0
-    $IPTABLES -A INPUT  -j RULE_0
-    $IPTABLES -A FORWARD  -j RULE_0
-    $IPTABLES -A RULE_0  -j LOG  --log-level info --log-prefix "RULE 0 -- BRANCH "
-    $IPTABLES -N fw61-Policy
-    $IPTABLES -A RULE_0  -j fw61-Policy
-
-
-    # ================ IPv6
-
-
-    # ================ Table 'filter', automatic rules
-    # accept established sessions
-    $IP6TABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
-    $IP6TABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
-    $IP6TABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
-    # ================ Table 'mangle', automatic rules
-    # target TCPMSS is not supported by ip6tables before v1.3.8
-
-
-
-
-
-    # ================ Table 'filter', rule set Policy_ipv6
+    # address range in src includes firewall
+    $IPTABLES -A INPUT -m iprange --src-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT -m iprange --src-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m iprange --src-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
     # 
-    # Rule Policy_ipv6 0 (global)
+    # Rule 1 (global)
     # 
-    echo "Rule Policy_ipv6 0 (global)"
+    echo "Rule 1 (global)"
     # 
-    $IP6TABLES -N Policy_ipv6_0
-    $IP6TABLES -A OUTPUT  -j Policy_ipv6_0
-    $IP6TABLES -A INPUT  -j Policy_ipv6_0
-    $IP6TABLES -A FORWARD  -j Policy_ipv6_0
-    $IP6TABLES -A Policy_ipv6_0  -j LOG  --log-level info --log-prefix "RULE 0 -- DENY "
-    $IP6TABLES -A Policy_ipv6_0  -j DROP
+    $IPTABLES -A INPUT -m iprange --src-range 192.168.1.3-192.168.1.5  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m iprange --src-range 192.168.1.3-192.168.1.5  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 2 (global)
+    # 
+    echo "Rule 2 (global)"
+    # 
+    # address range in src includes firewall
+    $IPTABLES -A OUTPUT -m iprange --src-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m iprange --src-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 3 (global)
+    # 
+    echo "Rule 3 (global)"
+    # 
+    $IPTABLES -A FORWARD -m iprange --src-range 192.168.1.3-192.168.1.5  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 4 (global)
+    # 
+    echo "Rule 4 (global)"
+    # 
+    # address range in dst includes firewall
+    $IPTABLES -A OUTPUT -m iprange --dst-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT -m iprange --dst-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m iprange --dst-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 5 (global)
+    # 
+    echo "Rule 5 (global)"
+    # 
+    $IPTABLES -A OUTPUT -m iprange --dst-range 192.168.1.3-192.168.1.5  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m iprange --dst-range 192.168.1.3-192.168.1.5  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 6 (global)
+    # 
+    echo "Rule 6 (global)"
+    # 
+    # address range in dst includes firewall
+    $IPTABLES -A INPUT -m iprange --dst-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m iprange --dst-range 192.168.1.1-192.168.1.3  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 7 (global)
+    # 
+    echo "Rule 7 (global)"
+    # 
+    $IPTABLES -A FORWARD -m iprange --dst-range 192.168.1.3-192.168.1.5  -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 8 (global)
+    # 
+    echo "Rule 8 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 255.255.255.255   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 9 (global)
+    # 
+    echo "Rule 9 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -s 255.255.255.255   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 10 (global)
+    # 
+    echo "Rule 10 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -s 255.255.255.255   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 11 (global)
+    # 
+    echo "Rule 11 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -s 255.255.255.255   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 12 (global)
+    # 
+    echo "Rule 12 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 0.0.0.0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -s 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 13 (global)
+    # 
+    echo "Rule 13 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -s 0.0.0.0   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 14 (global)
+    # 
+    echo "Rule 14 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -s 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 15 (global)
+    # 
+    echo "Rule 15 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -s 0.0.0.0   -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 16 (global)
+    # 
+    echo "Rule 16 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 17 (global)
+    # 
+    echo "Rule 17 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 18 (global)
+    # 
+    echo "Rule 18 (global)"
+    # 
+    $IPTABLES -A OUTPUT  -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 19 (global)
+    # 
+    echo "Rule 19 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -d 255.255.255.255   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 20 (global)
+    # 
+    echo "Rule 20 (global)"
+    # 
+    $IPTABLES -A INPUT  -d 0.0.0.0   -m state --state NEW  -j ACCEPT
+    # 
+    # Rule 21 (global)
+    # 
+    echo "Rule 21 (global)"
+    # 
+    $IPTABLES -A INPUT  -s 192.168.1.0/24   -d 0.0.0.0   -m state --state NEW  -j ACCEPT
 }
 
 ip_forward() {
@@ -464,7 +490,6 @@ ip_forward() {
 reset_all() {
     :
     reset_iptables_v4
-  reset_iptables_v6
 }
 
 block_action() {
@@ -476,9 +501,6 @@ stop_action() {
     $IPTABLES -P OUTPUT  ACCEPT
     $IPTABLES -P INPUT   ACCEPT
     $IPTABLES -P FORWARD ACCEPT
-    $IP6TABLES -P OUTPUT  ACCEPT
-    $IP6TABLES -P INPUT   ACCEPT
-    $IP6TABLES -P FORWARD ACCEPT
 }
 
 check_iptables() {
@@ -513,12 +535,12 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Nov  8 18:08:44 2011 by vadim"
+        log "Activating firewall script generated Tue Nov  8 18:09:17 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
         
-        load_modules " ipv6"
+        load_modules " "
         configure_interfaces
         verify_interfaces
         

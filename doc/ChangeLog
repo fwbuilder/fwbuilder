@@ -1,5 +1,22 @@
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PolicyCompiler_ipt.cpp (specialCaseAddressRangeInRE): fixed bug
+	in the rule processor that replaces AddressRange object that
+	represents single address with an IPv4 object. Also eliminated
+	code redundancy.
+
+	* PolicyCompiler_ipt.cpp (splitIfDstMatchingAddressRange): fixes
+	#2663 "Rule with "old-broadcast" object results in invalid
+	iptables INPUT chain".  Compiler was choosing chain INPUT with
+	direction "outbound" for rules that had old broadcast address in
+	"Source", this lead to invalid iptables configuration with chain
+	INPUT and "-o eth0" interface match clause.
+
+	* ObjectMatcher.cpp (checkComplexMatchForSingleAddress): see #2663
+	Special handling of the "old broadcast" address. This
+	address (0.0.0.0) should be treated just like 255.255.255.255 when
+	we check if an address "matches" the firewall.
+
 	* RuleSetViewDelegate.cpp (sizeHint): fixes #2665 "Adding text to
 	comment causes rule to go from 2 rows to 1 row"
 

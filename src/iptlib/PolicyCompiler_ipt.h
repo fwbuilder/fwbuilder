@@ -501,17 +501,32 @@ protected:
         DECLARE_POLICY_RULE_PROCESSOR(splitIfDstMatchingAddressRange);
 
         /**
-         * If Src has an AddressRange object that represents single
-         * address, replace it with corresponding IPv4 object
+         * If rule element RE has an AddressRange object that
+         * represents single address, replace it with corresponding
+         * IPv4 object
          */
-        DECLARE_POLICY_RULE_PROCESSOR(specialCaseAddressRangeInSrc);
+        class specialCaseAddressRangeInRE : public PolicyRuleProcessor
+        {
+            std::string re_type;
+            public:
+            specialCaseAddressRangeInRE(const std::string &name,
+                      const std::string &t) : PolicyRuleProcessor(name) { re_type=t; }
+            virtual bool processNext();
+        };
 
-        /**
-         * If Dst has an AddressRange object that represents single
-         * address, replace it with corresponding IPv4 object
-         */
-        DECLARE_POLICY_RULE_PROCESSOR(specialCaseAddressRangeInDst);
+        class specialCaseAddressRangeInSrc : public specialCaseAddressRangeInRE
+        {
+        public:
+        specialCaseAddressRangeInSrc(const std::string &n) :
+            specialCaseAddressRangeInRE(n,libfwbuilder::RuleElementSrc::TYPENAME) {}
+        };
 
+        class specialCaseAddressRangeInDst : public specialCaseAddressRangeInRE
+        {
+        public:
+        specialCaseAddressRangeInDst(const std::string &n) :
+            specialCaseAddressRangeInRE(n,libfwbuilder::RuleElementDst::TYPENAME) {}
+        };
         
 	/**
 	 * split rule if Src==any 

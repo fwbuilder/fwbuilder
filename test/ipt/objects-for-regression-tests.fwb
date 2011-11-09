@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1305570543" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1320796455" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -92,6 +92,13 @@
         <NetworkIPv6 id="id2383X75851" name="link-local ipv6" comment="RFC4291   Link-local unicast net" ro="False" address="fe80::" netmask="10"/>
         <NetworkIPv6 id="id2685X75851" name="multicast ipv6" comment="RFC4291  ipv6 multicast addresses" ro="False" address="ff00::" netmask="8"/>
         <NetworkIPv6 id="id2986X75851" name="experimental ipv6" comment="RFC2928, RFC4773 &#10;&#10;&quot;The block of Sub-TLA IDs assigned to the IANA&#10;(i.e., 2001:0000::/29 - 2001:01F8::/29) is for&#10;assignment for testing and experimental usage to&#10;support activities such as the 6bone, and&#10;for new approaches like exchanges.&quot;  [RFC2928]&#10;&#10;" ro="False" address="2001::" netmask="23"/>
+        <Network id="id3289X12564" name="TEST-NET-2" comment="RFC 5735&#10;RFC 5737&#10;" ro="False" address="198.51.100.0" netmask="255.255.255.0"/>
+        <Network id="id3300X12564" name="TEST-NET-3" comment="RFC 5735&#10;RFC 5737" ro="False" address="203.0.113.0" netmask="255.255.255.0"/>
+        <Network id="id3311X12564" name="Benchmark tests network" comment="RFC 5735" ro="False" address="198.18.0.0" netmask="255.254.0.0"/>
+        <NetworkIPv6 id="id3326X12564" name="mapped-ipv4" comment="" ro="False" address="::ffff:0.0.0.0" netmask="96"/>
+        <NetworkIPv6 id="id3341X12564" name="translated-ipv4" comment="" ro="False" address="::ffff:0:0:0" netmask="96"/>
+        <NetworkIPv6 id="id3350X12564" name="Teredo" comment="" ro="False" address="2001::" netmask="32"/>
+        <NetworkIPv6 id="id3359X12564" name="unique-local" comment="" ro="False" address="fc00::" netmask="7"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
@@ -4742,6 +4749,12 @@
         </Option>
       </RuleSetOptions>
     </Policy>
+    <Interface id="id100925X6006" dedicated_failover="False" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="ppp-dsl" comment="" ro="False">
+      <InterfaceOptions/>
+    </Interface>
+    <Interface id="id100922X6006" dedicated_failover="False" dyn="True" label="" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+      <InterfaceOptions/>
+    </Interface>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -5737,6 +5750,8 @@
         <AddressRange id="id504951X83572" name="range 33 1-3" comment="" ro="False" start_address="33.33.33.1" end_address="33.33.33.3"/>
         <AddressRange id="id528432X83572" name="range 33 30-33" comment="" ro="False" start_address="33.33.33.30" end_address="33.33.33.33"/>
         <AddressRange id="id528565X83572" name="range 33 1-33" comment="" ro="False" start_address="33.33.33.1" end_address="33.33.33.33"/>
+        <AddressRange id="id1041300X6006" name="r-192.168.1.1-3" comment="" ro="False" start_address="192.168.1.1" end_address="192.168.1.3"/>
+        <AddressRange id="id1108242X6006" name="r-192.168.1.3-5" comment="" ro="False" start_address="192.168.1.3" end_address="192.168.1.5"/>
       </ObjectGroup>
     </ObjectGroup>
     <ServiceGroup id="stdid05_1" name="Services" comment="" ro="False">
@@ -64270,6 +64285,921 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="use_iptables_restore">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">False</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id100907X6006" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1320802654" platform="iptables" version="1.3.0" name="firewall94" comment="testing rules that use address ranges that include or not include fw" ro="False">
+        <NAT id="id101046X6006" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id100928X6006" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <PolicyRule id="id100930X6006" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="address range in src includes firewall">
+            <Src neg="False">
+              <ObjectRef ref="id1041300X6006"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id100958X6006" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id1108242X6006"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C86E6E</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3186996X6006" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="address range in src includes firewall">
+            <Src neg="False">
+              <ObjectRef ref="id1041300X6006"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3186940X6006" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id1108242X6006"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C86E6E</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1508745X6006" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="address range in dst includes firewall">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id1041300X6006"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C08B5A</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1508689X6006" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id1108242X6006"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C08B5A</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3388751X6006" disabled="False" group="" log="False" position="6" action="Accept" direction="Both" comment="address range in dst includes firewall">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id1041300X6006"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C08B5A</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3388695X6006" disabled="False" group="" log="False" position="7" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id1108242X6006"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C08B5A</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3052555X6006" disabled="False" group="" log="False" position="8" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3052611X6006" disabled="False" group="" log="False" position="9" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#C0BA44</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3591072X6006" disabled="False" group="" log="False" position="10" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3591016X6006" disabled="False" group="" log="False" position="11" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115C"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#C0BA44</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id907793X6006" disabled="False" group="" log="False" position="12" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1910114X6006" disabled="False" group="" log="False" position="13" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="color">#8BC065</Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3793781X6006" disabled="False" group="" log="False" position="14" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id3793725X6006" disabled="False" group="" log="False" position="15" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="color">#8BC065</Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1709381X6006" disabled="False" group="" log="False" position="16" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id1910178X6006" disabled="False" group="" log="False" position="17" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id374151X10986" disabled="False" group="" log="False" position="18" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id374095X10986" disabled="False" group="" log="False" position="19" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+              <ObjectRef ref="id3F6D115C"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="pf_classify_str"></Option>
+              <Option name="stateless">False</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id440321X9954" disabled="False" group="" log="False" position="20" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id440265X9954" disabled="False" group="" log="False" position="21" action="Accept" direction="Both" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3DC75CE7-1"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="id3F6D115D"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="classification">False</Option>
+              <Option name="classify_str"></Option>
+              <Option name="connlimit_above_not">False</Option>
+              <Option name="connlimit_masklen">0</Option>
+              <Option name="connlimit_value">0</Option>
+              <Option name="firewall_is_part_of_any_and_networks">0</Option>
+              <Option name="hashlimit_burst">0</Option>
+              <Option name="hashlimit_dstlimit">False</Option>
+              <Option name="hashlimit_expire">0</Option>
+              <Option name="hashlimit_gcinterval">0</Option>
+              <Option name="hashlimit_max">0</Option>
+              <Option name="hashlimit_mode_dstip">False</Option>
+              <Option name="hashlimit_mode_dstport">False</Option>
+              <Option name="hashlimit_mode_srcip">False</Option>
+              <Option name="hashlimit_mode_srcport">False</Option>
+              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_size">0</Option>
+              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_value">0</Option>
+              <Option name="ipt_continue">False</Option>
+              <Option name="ipt_gw"></Option>
+              <Option name="ipt_iif"></Option>
+              <Option name="ipt_mark_connections">False</Option>
+              <Option name="ipt_oif"></Option>
+              <Option name="ipt_tee">False</Option>
+              <Option name="limit_burst">0</Option>
+              <Option name="limit_suffix"></Option>
+              <Option name="limit_value">0</Option>
+              <Option name="limit_value_not">False</Option>
+              <Option name="log_level"></Option>
+              <Option name="log_prefix"></Option>
+              <Option name="pf_classify_str"></Option>
+              <Option name="routing">False</Option>
+              <Option name="stateless">False</Option>
+              <Option name="tagging">False</Option>
+              <Option name="tagobject_id"></Option>
+              <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Policy id="id100987X6006" name="Policy_v6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="False">
+          <RuleSetOptions>
+            <Option name="mangle_only_rule_set">False</Option>
+          </RuleSetOptions>
+        </Policy>
+        <Routing id="id101049X6006" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id100915X6006" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+          <IPv4 id="id100919X6006" name="firewall94:eth0:ip" comment="" ro="False" address="192.168.1.2" netmask="255.255.255.0"/>
+          <IPv6 id="id100920X6006" name="firewall94:eth0:ip6" comment="" ro="False" address="fe80::20c:29ff:fe28:c078" netmask="64"/>
+          <InterfaceOptions/>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">True</Option>
+          <Option name="accept_new_tcp_with_no_syn">True</Option>
+          <Option name="action_on_reject"></Option>
+          <Option name="activationCmd"></Option>
+          <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+          <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+          <Option name="admUser"></Option>
+          <Option name="altAddress"></Option>
+          <Option name="bridging_fw">False</Option>
+          <Option name="check_shading">False</Option>
+          <Option name="clamp_mss_to_mtu">False</Option>
+          <Option name="clear_unknown_interfaces">False</Option>
+          <Option name="cmdline"></Option>
+          <Option name="compiler"></Option>
+          <Option name="configure_bonding_interfaces">False</Option>
+          <Option name="configure_bridge_interfaces">False</Option>
+          <Option name="configure_interfaces">True</Option>
+          <Option name="configure_vlan_interfaces">False</Option>
+          <Option name="debug">False</Option>
+          <Option name="drop_invalid">False</Option>
+          <Option name="epilog_script"></Option>
+          <Option name="firewall_dir"></Option>
+          <Option name="firewall_is_part_of_any_and_networks">True</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="ignore_empty_groups">False</Option>
+          <Option name="ipv4_6_order">ipv4_first</Option>
+          <Option name="limit_suffix"></Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">True</Option>
+          <Option name="local_nat">False</Option>
+          <Option name="log_all">False</Option>
+          <Option name="log_invalid">False</Option>
+          <Option name="log_ip_opt">False</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A</Option>
+          <Option name="log_tcp_opt">False</Option>
+          <Option name="log_tcp_seq">False</Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="manage_virtual_addr">True</Option>
+          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_ssh">False</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="output_file"></Option>
+          <Option name="prolog_place">top</Option>
+          <Option name="prolog_script"></Option>
+          <Option name="scpArgs"></Option>
+          <Option name="script_name_on_firewall"></Option>
+          <Option name="sshArgs"></Option>
+          <Option name="ulog_cprange">0</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="ulog_qthreshold">1</Option>
+          <Option name="use_ULOG">False</Option>
+          <Option name="use_iptables_restore">False</Option>
+          <Option name="use_m_set">False</Option>
+          <Option name="use_numeric_log_levels">False</Option>
+          <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

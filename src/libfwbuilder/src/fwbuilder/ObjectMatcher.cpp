@@ -182,6 +182,10 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(const InetAddr *obj1_addr,
           (recognize_multicasts && obj1_addr->isMulticast()) )
     ) return true;
 
+    // case of "old boradcast"
+    if (recognize_broadcasts && obj1_addr->isAny())
+        return true;
+
     string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
 
     list<FWObject*> all_addresses;
@@ -362,6 +366,10 @@ void* ObjectMatcher::dispatch(AddressRange *obj1, void *_obj2)
         ( (recognize_broadcasts && range_end.isBroadcast()) || 
           (recognize_multicasts && range_end.isMulticast()) )
     ) return obj1;
+
+    // case of "old boradcast"
+    if (recognize_broadcasts && range_start == range_end && range_start.isAny())
+        return obj1;
 
     string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
     list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);

@@ -2298,60 +2298,45 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
 }
 
 /**
- * If Src has an AddressRange object that represents single address,
- * replace it with corresponding IPv4 object. Call this rule processor
- * before splitIfSrcMatchingAddressRange
+ * If rule element RE (Src or Dst) has an AddressRange object that
+ * represents single address, replace it with corresponding IPv4
+ * object. Call this rule processor before splitIfSrcMatchingAddressRange
  *
  * #2650
  */
-bool PolicyCompiler_ipt::specialCaseAddressRangeInSrc::processNext()
+bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
 {
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
+    list<FWObject*> new_children;
 
-    if (src && !src->isAny() && AddressRange::isA(src) &&
-        src->dimension() == 1)
+    RuleElement *rel = RuleElement::cast( rule->getFirstByType(re_type) );
+
+    for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
-        Address *new_addr = compiler->dbcopy->createIPv4();
-        new_addr->setName(src->getName() + "_addr");
-        new_addr->setAddress(AddressRange::cast(src)->getRangeStart());
-        new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        compiler->persistent_objects->add(new_addr);
-
-        src->clearChildren();
-        src->addRef(new_addr);
+        FWObject *ref = *i1;
+        Address *addr_obj = compiler->correctForCluster(
+            Address::cast(FWReference::getObject(ref)));
+        if (addr_obj && !addr_obj->isAny() && AddressRange::isA(addr_obj) &&
+            addr_obj->dimension() == 1)
+        {
+            Address *new_addr = compiler->dbcopy->createIPv4();
+            new_addr->setName(addr_obj->getName() + "_addr");
+            new_addr->setAddress(AddressRange::cast(addr_obj)->getRangeStart());
+            new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
+            compiler->persistent_objects->add(new_addr);
+            new_children.push_back(new_addr);
+        } else
+            new_children.push_back(addr_obj);
     }
 
-    tmp_queue.push_back(rule); // add old rule in any case
-
-    return true;
-}
-
-/**
- * If Dst has an AddressRange object that represents single address,
- * replace it with corresponding IPv4 object. Call this rule processor
- * before splitIfDstMatchingAddressRange
- *
- * #2650
- */
-bool PolicyCompiler_ipt::specialCaseAddressRangeInDst::processNext()
-{
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-
-    Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
-
-    if (dst && !dst->isAny() && AddressRange::isA(dst) &&
-        dst->dimension() == 1)
+    if (new_children.size() > 0)
     {
-        Address *new_addr = compiler->dbcopy->createIPv4();
-        new_addr->setName(dst->getName() + "_addr");
-        new_addr->setAddress(AddressRange::cast(dst)->getRangeStart());
-        new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
-        compiler->persistent_objects->add(new_addr);
-
-        dst->clearChildren();
-        dst->addRef(new_addr);
+        rel->clearChildren();
+        for (list<FWObject*>::iterator i1=new_children.begin(); i1!=new_children.end(); ++i1) 
+        {
+            rel->addRef(*i1);
+        }
     }
 
     tmp_queue.push_back(rule); // add old rule in any case
@@ -2431,7 +2416,7 @@ bool PolicyCompiler_ipt::splitIfDstMatchingAddressRange::processNext()
         compiler->temp_ruleset->add(r);
         r->duplicate(rule);
         ipt_comp->setChain(r, "INPUT");
-        r->setDirection( PolicyRule::Outbound );
+        r->setDirection( PolicyRule::Inbound );
         tmp_queue.push_back(r);
     }
 
@@ -3405,7 +3390,9 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
 /*
  * Note that we deal with address ranges in splitIfSrcMatchingAddressRange and
  * splitIfDstMatchingAddressRange. At this point we treat ranges as always
- * not matching the firewall (so the go into FORWARD chain)
+ * not matching the firewall (so the go into FORWARD chain), except for ranges
+ * that consist of 1 address. These should be treated as a single address. This
+ * is for #2650
  */
 
         bool b,m;
@@ -3438,6 +3425,7 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
         default:
 
 /* direction == Both */
+
             if (dst && !dst->isAny() && ! AddressRange::isA(dst) &&   // #2650
                 ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
             {

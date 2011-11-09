@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3583
+#  Firewall Builder  fwb_ipt v5.0.1.3584
 #
-#  Generated Wed Oct 19 17:50:56 2011 PDT by vadim
+#  Generated Tue Nov  8 18:07:36 2011 PST by vadim
 #
 # files: * firewall2.fw /etc/fw/firewall2.fw
 #
@@ -1283,7 +1283,7 @@ script_body() {
     # also test for bug #2526173
     $IPTABLES -N RULE_19
     $IPTABLES -A INPUT  -s 0.0.0.0   -j RULE_19
-    $IPTABLES -A FORWARD  -s 0.0.0.0   -j RULE_19
+    $IPTABLES -A OUTPUT  -s 0.0.0.0   -j RULE_19
     $IPTABLES -A RULE_19  -m limit --limit 5/second -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 19 - DENY **" --ulog-qthreshold 1
     $IPTABLES -A RULE_19  -j DROP
     # 
@@ -1503,7 +1503,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Wed Oct 19 17:50:56 2011 by vadim"
+        log "Activating firewall script generated Tue Nov  8 18:07:36 2011 by vadim"
         check_tools
         
         check_run_time_address_table_files
