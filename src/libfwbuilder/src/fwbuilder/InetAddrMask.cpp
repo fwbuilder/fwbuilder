@@ -47,8 +47,17 @@ using namespace libfwbuilder;
 
 void InetAddrMask::setNetworkAndBroadcastAddress()
 {
-    *network_address = *address & *netmask;
-    *broadcast_address = *address | (~(*netmask));
+    // see #2670. Per RFC3021 network with netmask /31 has no network
+    // and direct broadcast addresses.
+    if (netmask->isV4() && netmask->getLength() >= 31)
+    {
+        *network_address = *address;
+        *broadcast_address = InetAddr(32);
+    } else
+    {
+        *network_address = *address & *netmask;
+        *broadcast_address = *address | (~(*netmask));
+    }
 }
 
 InetAddrMask::InetAddrMask(bool)

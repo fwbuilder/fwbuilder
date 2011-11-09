@@ -4,13 +4,13 @@
 #
 #  Firewall Builder  fwb_ipt v5.0.1.3584
 #
-#  Generated Tue Nov  8 18:28:22 2011 PST by vadim
+#  Generated Tue Nov  8 18:37:40 2011 PST by vadim
 #
-# files: * firewall-ipv6-nd-ns-1.fw /etc/firewall-ipv6-nd-ns-1.fw
+# files: * firewall95.fw /etc/fw/firewall95.fw
 #
-# Compiled for iptables 1.4.0
+# Compiled for iptables 1.3.0
 #
-# automatic ND/NS rules
+# testing rules that use address ranges that include or not include fw
 
 
 
@@ -121,8 +121,6 @@ find_program() {
 }
 check_tools() {
   find_program $IPTABLES 
-  find_program $IPTABLES_RESTORE
-  find_program $IP6TABLES_RESTORE
  find_program $MODPROBE 
   find_program $IP 
 }
@@ -285,8 +283,8 @@ load_modules() {
 
 verify_interfaces() {
     :
-    echo "Verifying interfaces: eth0 eth1"
-    for i in eth0 eth1 ; do
+    echo "Verifying interfaces: eth0"
+    for i in eth0 ; do
         $IP link show "$i" > /dev/null 2>&1 || {
             log "Interface $i does not exist"
             exit 1
@@ -312,109 +310,43 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     # Configure interfaces
-    update_addresses_of_interface "eth0 fe80::21d:9ff:fe8b:8e94/64 1.1.1.1/24" ""
-    update_addresses_of_interface "eth1 192.0.2.1/24" ""
+    update_addresses_of_interface "eth0 192.168.1.10/31" ""
 }
 
 script_body() {
     # ================ IPv4
 
 
-
-    (
-
-    echo '*filter'
     # ================ Table 'filter', automatic rules
-    echo :INPUT DROP [0:0]
-    echo :FORWARD DROP [0:0]
-    echo :OUTPUT DROP [0:0]
     # accept established sessions
-    echo "-A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    # drop packets that do not match any valid state and log them
-    echo ":drop_invalid - [0:0]"
-    echo "-A OUTPUT   -m state --state INVALID  -j drop_invalid "
-    echo "-A INPUT    -m state --state INVALID  -j drop_invalid "
-    echo "-A FORWARD  -m state --state INVALID  -j drop_invalid "
-    echo "-A drop_invalid -j ULOG --ulog-nlgroup 1  --ulog-qthreshold 1 --ulog-prefix \"INVALID state -- DENY \""
-    echo "-A drop_invalid -j DROP "
-
-    echo COMMIT
-
-
-    echo '*mangle'
-    # ================ Table 'mangle', automatic rules
-    echo "-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-
-    echo COMMIT
-
-
-
-    ) | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?
-    test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
+    $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
+    $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 
 
 
-    # ================ IPv6
 
 
-
-    (
-
-    echo '*filter'
-    # ================ Table 'filter', automatic rules
-    echo :INPUT DROP [0:0]
-    echo :FORWARD DROP [0:0]
-    echo :OUTPUT DROP [0:0]
-    # accept established sessions
-    echo "-A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    echo "-A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT "
-    # rules to permit IPv6 Neighbor discovery
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    echo "-A OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT "
-    # drop packets that do not match any valid state and log them
-    echo ":drop_invalid - [0:0]"
-    echo "-A OUTPUT   -m state --state INVALID  -j drop_invalid "
-    echo "-A INPUT    -m state --state INVALID  -j drop_invalid "
-    echo "-A FORWARD  -m state --state INVALID  -j drop_invalid "
-    echo "-A drop_invalid -j LOG --log-level debug --log-prefix \"INVALID state -- DENY \""
-    echo "-A drop_invalid -j DROP "
-
-    echo COMMIT
-
-
-    echo '*mangle'
-    # ================ Table 'mangle', automatic rules
-    echo "-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
-
-    echo COMMIT
-
-
-
-
-    ) | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?
-    test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
+    # ================ Table 'filter', rule set Policy
+    # 
+    # Rule 0 (global)
+    # 
+    echo "Rule 0 (global)"
+    # 
+    # address 192.168.1.11 should not be considered a broadcast on the subnet attached to eth0
+    $IPTABLES -A OUTPUT  -d 192.168.1.11   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -d 192.168.1.11   -m state --state NEW  -j ACCEPT
 }
 
 ip_forward() {
     :
     echo 1 > /proc/sys/net/ipv4/ip_forward
-echo 1 > /proc/sys/net/ipv6/conf/all/forwarding
 }
 
 reset_all() {
     :
     reset_iptables_v4
-  reset_iptables_v6
 }
 
 block_action() {
@@ -426,9 +358,6 @@ stop_action() {
     $IPTABLES -P OUTPUT  ACCEPT
     $IPTABLES -P INPUT   ACCEPT
     $IPTABLES -P FORWARD ACCEPT
-    $IP6TABLES -P OUTPUT  ACCEPT
-    $IP6TABLES -P INPUT   ACCEPT
-    $IP6TABLES -P FORWARD ACCEPT
 }
 
 check_iptables() {
@@ -463,16 +392,16 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Nov  8 18:28:22 2011 by vadim"
+        log "Activating firewall script generated Tue Nov  8 18:37:40 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
         
-        load_modules " ipv6"
+        load_modules " "
         configure_interfaces
         verify_interfaces
         
-        
+         reset_all 
         
         script_body
         ip_forward

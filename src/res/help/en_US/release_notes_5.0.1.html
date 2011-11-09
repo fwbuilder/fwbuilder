@@ -246,6 +246,10 @@
 
   <li>
     <p>
+      fixed bug #2670. Per RFC3021 network with netmask /31 has no
+      network and direct broadcast addresses. When interface of the
+      firewall is configured with netmask /31, policy compilers should
+      not treat the second address of this "subnet" as a broadcast.
     </p>
   </li>
 

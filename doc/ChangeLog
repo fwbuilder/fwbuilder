@@ -1,5 +1,9 @@
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
+	* InetAddrMask.cpp (setNetworkAndBroadcastAddress): see #2670. Per
+	RFC3021 network with netmask /31 has no network and direct
+	broadcast addresses.
+
 	* PolicyCompiler_ipt.cpp (specialCaseAddressRangeInRE): fixed bug
 	in the rule processor that replaces AddressRange object that
 	represents single address with an IPv4 object. Also eliminated
