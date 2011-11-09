@@ -300,6 +300,23 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixed #2663 "Rule with "old-broadcast" object results in invalid
+      iptables INPUT chain".  Compiler was choosing chain INPUT with
+      direction "outbound" for rules that had old broadcast address in
+      "Source", this lead to invalid iptables configuration with chain
+      INPUT and "-o eth0" interface match clause.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed bug in the rule processor that replaces AddressRange
+      object that represents single address with an IPv4 object. Also
+      eliminated code redundancy.
+    </p>
+  </li>
 </ul>
 
 
