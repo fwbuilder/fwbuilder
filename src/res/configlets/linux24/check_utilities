@@ -31,16 +31,17 @@
 find_program() {
   PGM=$1
   which $PGM >/dev/null 2>&1 || {
-    echo "$PGM not found"
+    echo "\"$PGM\" not found"
     exit 1
   }
 }
 
 check_tools() {
+  find_program which
   find_program $IPTABLES 
 {{if need_iptables_restore}}  find_program $IPTABLES_RESTORE{{endif}}
 {{if need_ip6tables_restore}}  find_program $IP6TABLES_RESTORE{{endif}}
-{{if need_modprobe}} find_program $MODPROBE {{endif}}
+{{if need_modprobe}}  find_program $MODPROBE {{endif}}
   find_program $IP 
 {{if need_vconfig}}  find_program $VCONFIG {{endif}}
 {{if need_brctl}}  find_program $BRCTL {{endif}}

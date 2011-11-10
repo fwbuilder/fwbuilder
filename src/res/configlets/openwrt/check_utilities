@@ -15,12 +15,13 @@
 find_program() {
   PGM=$1
   which $PGM >/dev/null 2>&1 || {
-    echo "$PGM not found"
+    echo "\"$PGM\" not found"
     exit 1
   }
 }
 
 check_tools() {
+  find_program which
   find_program $IP 
 {{if need_vconfig}}  find_program $VCONFIG {{endif}}
 {{if need_brctl}}  find_program $BRCTL {{endif}}

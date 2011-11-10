@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3584
+#  Firewall Builder  fwb_ipt v5.0.1.3585
 #
-#  Generated Tue Nov  8 18:27:20 2011 PST by vadim
+#  Generated Thu Nov 10 11:58:09 2011 PST by vadim
 #
 # files: * firewall41-1.fw /etc/firewall41-1.fw
 #
@@ -115,13 +115,14 @@ diff_intf() {
 find_program() {
   PGM=$1
   which $PGM >/dev/null 2>&1 || {
-    echo "$PGM not found"
+    echo "\"$PGM\" not found"
     exit 1
   }
 }
 check_tools() {
+  find_program which
   find_program $IPTABLES 
- find_program $MODPROBE 
+  find_program $MODPROBE 
   find_program $IP 
   find_program $IPSET 
 }
@@ -596,7 +597,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Tue Nov  8 18:27:20 2011 by vadim"
+        log "Activating firewall script generated Thu Nov 10 11:58:09 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
