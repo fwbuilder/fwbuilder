@@ -1,3 +1,10 @@
+2011-11-10  Vadim Kurland  <vadim@netcitadel.com>
+
+	* IC_PlatformWarningPage.cpp (initializePage): fixes #2668 Remove
+	"static routes" from the explanation text in ASA/PIX import
+	dialog.  We can not import PIX/ASA routing configuration at this
+	time.
+
 2011-11-08  Vadim Kurland  <vadim@netcitadel.com>
 
 	* InetAddrMask.cpp (setNetworkAndBroadcastAddress): see #2670. Per
