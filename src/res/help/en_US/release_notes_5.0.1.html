@@ -225,6 +225,14 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixes #2668 Remove "static routes" from the explanation text in
+      ASA/PIX import dialog.  We can not import PIX/ASA routing
+      configuration at this time.
+    </p>
+  </li>
+
 </ul>
 
 
@@ -321,6 +329,16 @@
       eliminated code redundancy.
     </p>
   </li>
+
+  <li>
+    <p>
+      fixes #2664 Update error message when "which" command
+      fails. Generated iptables script uses "which" to check if all
+      utilities it uses exist on the machine.  We should also check if
+      "which" itself exists and issue meaningful error message if not.
+    </p>
+  </li>
+
 </ul>
 
 
