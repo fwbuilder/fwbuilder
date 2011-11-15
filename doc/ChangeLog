@@ -1,3 +1,8 @@
+2011-11-15  Vadim Kurland  <vadim@netcitadel.com>
+
+	* CustomServiceDialog.cpp (loadFWObject): fixes #2669 "Cant
+	inspect custom Service object in Standard objects library".
+
 2011-11-10  Vadim Kurland  <vadim@netcitadel.com>
 
 	* configlets/linux24/check_utilities: fixes #2664 Update error
