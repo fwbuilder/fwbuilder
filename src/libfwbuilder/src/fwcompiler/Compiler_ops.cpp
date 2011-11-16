@@ -504,7 +504,7 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
         bool res = (o1_pa->getPhysAddress()==o2_pa->getPhysAddress());
         RETURN(res);
     }
-    
+
     const InetAddr *o1b;
     const InetAddr *o1e;
     const InetAddr *o2b;
@@ -518,8 +518,8 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
     {
         if (Network::isA(&o1))
         {
-            o1b = o1.getAddressPtr();
-            o1e = o1.getBroadcastAddressPtr();
+            o1b = static_cast<const Network*>(&o1)->getFirstHostPtr();
+            o1e = static_cast<const Network*>(&o1)->getLastHostPtr();
         } else
         {
             o1b = o1.getAddressPtr();
@@ -535,8 +535,8 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
     {
         if (Network::isA(&o2))
         {
-            o2b = o2.getAddressPtr();
-            o2e = o2.getBroadcastAddressPtr();
+            o2b = static_cast<const Network*>(&o2)->getFirstHostPtr();
+            o2e = static_cast<const Network*>(&o2)->getLastHostPtr();
         } else
         {
             o2b = o2.getAddressPtr();

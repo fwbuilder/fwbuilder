@@ -116,3 +116,16 @@ void Network::setAddressNetmask(const std::string& s)
     inet_addr_mask = new InetAddrMask(s);
 }
 
+const InetAddr* Network::getFirstHostPtr() const
+{
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
+    if (inet_addr_mask) return inet_addr_mask->getFirstHostPtr();
+    return NULL;
+}
+
+const InetAddr* Network::getLastHostPtr() const
+{
+    const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
+    if (inet_addr_mask) return inet_addr_mask->getLastHostPtr();
+    return NULL;
+}

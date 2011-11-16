@@ -1,3 +1,10 @@
+2011-11-16  Vadim Kurland  <vadim@netcitadel.com>
+
+	* InetAddrMask.cpp (InetAddrMask::setNetworkAndBroadcastAddress):
+	fixed bug (no number) introduced when I was working on #2670.
+	Setting broadcast address in the network object with netmask /31
+	to 255.255.255.255 broke rule shadowing algorithm.
+
 2011-11-10  Vadim Kurland  <vadim@netcitadel.com>
 
 	* configlets/linux24/check_utilities: fixes #2664 Update error

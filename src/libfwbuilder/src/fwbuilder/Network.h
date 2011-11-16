@@ -63,6 +63,9 @@ public:
     
     virtual const Address* getAddressObject() const { return this; }
 
+    const InetAddr* getFirstHostPtr() const;
+    const InetAddr* getLastHostPtr() const;
+    
     virtual void setAddress(const InetAddr &a);
     virtual void setNetmask(const InetAddr &nm);
     virtual void setAddressNetmask(const std::string& s);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1320805960" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1321469139" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -4756,6 +4756,118 @@
       <InterfaceOptions/>
     </Interface>
     <IPv6 id="id101907X15152" name="firewall95:eth0:ip6" comment="" ro="False" address="fe80::20c:29ff:fe28:c078" netmask="64"/>
+    <Firewall id="id211140X25212" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1321462676" platform="iptables" version="1.3.0" name="firewall96" comment="firewall has interface with netmask /31" ro="False">
+      <NAT id="id211187X25212" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <RuleSetOptions/>
+      </NAT>
+      <Policy id="id211153X25212" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <PolicyRule id="id211155X25212" disabled="False" group="" log="False" position="0" action="Accept" direction="Both" comment="address 192.168.1.11 should not be considered a broadcast on the subnet attached to eth0">
+          <Src neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Src>
+          <Dst neg="False">
+            <ObjectRef ref="id102617X15152"/>
+          </Dst>
+          <Srv neg="False">
+            <ServiceRef ref="sysid1"/>
+          </Srv>
+          <Itf neg="False">
+            <ObjectRef ref="sysid0"/>
+          </Itf>
+          <When neg="False">
+            <IntervalRef ref="sysid2"/>
+          </When>
+          <PolicyRuleOptions>
+            <Option name="color">#C86E6E</Option>
+            <Option name="pf_classify_str"></Option>
+            <Option name="stateless">False</Option>
+          </PolicyRuleOptions>
+        </PolicyRule>
+        <RuleSetOptions/>
+      </Policy>
+      <Policy id="id211184X25212" name="Policy_v6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="True" top_rule_set="False">
+        <RuleSetOptions>
+          <Option name="mangle_only_rule_set">False</Option>
+        </RuleSetOptions>
+      </Policy>
+      <Routing id="id211190X25212" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+        <RuleSetOptions/>
+      </Routing>
+      <Interface id="id211148X25212" dedicated_failover="False" dyn="False" label="" security_level="0" unnum="False" unprotected="False" name="eth0" comment="" ro="False">
+        <IPv4 id="id211151X25212" name="firewall96:eth0:ip" comment="/31 netmask" ro="False" address="192.168.1.10" netmask="255.255.255.254"/>
+        <InterfaceOptions/>
+      </Interface>
+      <Interface id="id211280X25212" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="ppp0" comment="" ro="False">
+        <IPv4 id="id211314X25212" name="firewall96:ppp0:ip" comment="" ro="False" address="10.1.1.10" netmask="255.255.255.254"/>
+        <InterfaceOptions>
+          <Option name="type">ethernet</Option>
+        </InterfaceOptions>
+      </Interface>
+      <Management address="0.0.0.0">
+        <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+        <FWBDManagement enabled="False" identity="" port="-1"/>
+        <PolicyInstallScript arguments="" command="" enabled="False"/>
+      </Management>
+      <FirewallOptions>
+        <Option name="accept_established">True</Option>
+        <Option name="accept_new_tcp_with_no_syn">True</Option>
+        <Option name="action_on_reject"></Option>
+        <Option name="activationCmd"></Option>
+        <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
+        <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
+        <Option name="admUser"></Option>
+        <Option name="altAddress"></Option>
+        <Option name="bridging_fw">False</Option>
+        <Option name="check_shading">False</Option>
+        <Option name="clamp_mss_to_mtu">False</Option>
+        <Option name="clear_unknown_interfaces">False</Option>
+        <Option name="cmdline"></Option>
+        <Option name="compiler"></Option>
+        <Option name="configure_bonding_interfaces">False</Option>
+        <Option name="configure_bridge_interfaces">False</Option>
+        <Option name="configure_interfaces">True</Option>
+        <Option name="configure_vlan_interfaces">False</Option>
+        <Option name="debug">False</Option>
+        <Option name="drop_invalid">False</Option>
+        <Option name="epilog_script"></Option>
+        <Option name="firewall_dir"></Option>
+        <Option name="firewall_is_part_of_any_and_networks">True</Option>
+        <Option name="flush_and_set_default_policy">True</Option>
+        <Option name="ignore_empty_groups">False</Option>
+        <Option name="ipv4_6_order">ipv4_first</Option>
+        <Option name="limit_suffix"></Option>
+        <Option name="limit_value">0</Option>
+        <Option name="linux24_ip_forward">1</Option>
+        <Option name="load_modules">True</Option>
+        <Option name="local_nat">False</Option>
+        <Option name="log_all">False</Option>
+        <Option name="log_invalid">False</Option>
+        <Option name="log_ip_opt">False</Option>
+        <Option name="log_level">info</Option>
+        <Option name="log_prefix">RULE %N -- %A</Option>
+        <Option name="log_tcp_opt">False</Option>
+        <Option name="log_tcp_seq">False</Option>
+        <Option name="loopback_interface">lo</Option>
+        <Option name="manage_virtual_addr">True</Option>
+        <Option name="mgmt_addr"></Option>
+        <Option name="mgmt_ssh">False</Option>
+        <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+        <Option name="output_file"></Option>
+        <Option name="prolog_place">top</Option>
+        <Option name="prolog_script"></Option>
+        <Option name="scpArgs"></Option>
+        <Option name="script_name_on_firewall"></Option>
+        <Option name="sshArgs"></Option>
+        <Option name="ulog_cprange">0</Option>
+        <Option name="ulog_nlgroup">1</Option>
+        <Option name="ulog_qthreshold">1</Option>
+        <Option name="use_ULOG">False</Option>
+        <Option name="use_iptables_restore">False</Option>
+        <Option name="use_m_set">False</Option>
+        <Option name="use_numeric_log_levels">False</Option>
+        <Option name="verify_interfaces">True</Option>
+      </FirewallOptions>
+    </Firewall>
   </Library>
   <Library id="syslib001" color="#d2ffd0" name="User" comment="User defined objects" ro="False">
     <ObjectGroup id="stdid01_1_clusters" name="Clusters" comment="" ro="False"/>
@@ -4811,6 +4923,8 @@
         <IPv4 id="id58601X22302" name="Address" comment="comment&#10;foo&#10;bar&#10;" ro="False" address="192.0.2.100" netmask="0.0.0.0"/>
         <IPv4 id="id1880621X8221" name="addr-222.222.222.40" comment="" ro="False" address="222.222.222.40" netmask="0.0.0.0"/>
         <IPv4 id="id102617X15152" name="a-192.168.1.11" comment="" ro="False" address="192.168.1.11" netmask="0.0.0.0"/>
+        <IPv4 id="id103971X10701" name="addr-24.56.78.90" comment="" ro="False" address="24.56.78.90" netmask="0.0.0.0"/>
+        <IPv4 id="id103974X10701" name="addr-192.168.11.11" comment="" ro="False" address="192.168.11.11" netmask="0.0.0.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid04_1" name="Groups" comment="" ro="False">
         <ObjectGroup id="id3B4572AF" name="group1" comment="" ro="False">
@@ -5739,6 +5853,8 @@
         <Network id="id55251X40565" name="lan_192.168.111" comment="" ro="False" address="192.168.111.0" netmask="255.255.255.0"/>
         <Network id="id55271X40565" name="lan_192.168.211" comment="" ro="False" address="192.168.211.0" netmask="255.255.255.0"/>
         <Network id="id55291X40565" name="lan_192.168.212" comment="" ro="False" address="192.168.212.0" netmask="255.255.255.0"/>
+        <Network id="id103983X10701" name="net-192.168.11.10/31" comment="" ro="False" address="192.168.11.10" netmask="255.255.255.254"/>
+        <Network id="id104090X10701" name="net-192.168.11.0" comment="" ro="False" address="192.168.11.0" netmask="255.255.255.0"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15_1" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3CD8769F" name="test_range_1" comment="" ro="False" start_address="192.168.1.11" end_address="192.168.1.15"/>
@@ -56086,7 +56202,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id54445X20318" host_OS="linux24" inactive="False" lastCompiled="1272404602" lastInstalled="0" lastModified="1272387229" platform="iptables" version="" name="test-shadowing-3" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;testing shadowing when rules have non-default options" ro="False">
+      <Firewall id="id54445X20318" host_OS="linux24" inactive="False" lastCompiled="1272404602" lastInstalled="0" lastModified="1321469200" platform="iptables" version="" name="test-shadowing-3" comment="testing shadowing detection&#10;compiler runs with -xt flag&#10;testing shadowing when rules have non-default options" ro="False">
         <NAT id="id54554X20318" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -56670,6 +56786,137 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
               <Option name="pf_classify_str"></Option>
               <Option name="stateless">False</Option>
               <Option name="ulog_nlgroup">1</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Policy id="id103984X10701" name="Policy_6" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id104030X10701" disabled="False" group="" log="False" position="0" action="Deny" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id104090X10701"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id104050X10701" disabled="False" group="" log="False" position="1" action="Deny" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id103983X10701"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions/>
+        </Policy>
+        <Policy id="id104117X10701" name="Policy_7" comment="" ro="False" ipv4_rule_set="True" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id104175X10701" disabled="False" group="" log="False" position="0" action="Deny" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id103983X10701"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id104203X10701" disabled="False" group="" log="False" position="1" action="Deny" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id103974X10701"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <RuleSetOptions>
+            <Option name="mangle_only_rule_set">False</Option>
+          </RuleSetOptions>
+        </Policy>
+        <Policy id="id104272X10701" name="Policy_8" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
+          <PolicyRule id="id104310X10701" disabled="False" group="" log="False" position="0" action="Deny" direction="Inbound" comment="even though this is a trivial case,&#10;I had a bug with handling networks with netmask /31 that broke it">
+            <Src neg="False">
+              <ObjectRef ref="id103971X10701"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
+            </PolicyRuleOptions>
+          </PolicyRule>
+          <PolicyRule id="id104298X10701" disabled="False" group="" log="False" position="1" action="Deny" direction="Inbound" comment="">
+            <Src neg="False">
+              <ObjectRef ref="id3CEBFCAE"/>
+            </Src>
+            <Dst neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Dst>
+            <Srv neg="False">
+              <ServiceRef ref="sysid1"/>
+            </Srv>
+            <Itf neg="False">
+              <ObjectRef ref="sysid0"/>
+            </Itf>
+            <When neg="False">
+              <IntervalRef ref="sysid2"/>
+            </When>
+            <PolicyRuleOptions>
+              <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
@@ -65204,7 +65451,7 @@ echo '%FWBPROMPT%'; sh /tmp/%FWSCRIPT%
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id101894X15152" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1320806245" platform="iptables" version="1.3.0" name="firewall95" comment="testing rules that use address ranges that include or not include fw" ro="False">
+      <Firewall id="id101894X15152" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1321462732" platform="iptables" version="1.3.0" name="firewall95" comment="firewall has intrface with netmask /31&#10;" ro="False">
         <NAT id="id102533X15152" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>

@@ -74,6 +74,7 @@ protected:
     InetAddr* netmask;
     InetAddr* broadcast_address;
     InetAddr* network_address;
+    InetAddr* last_host;
 
     explicit InetAddrMask(bool no_address);
 
@@ -94,6 +95,11 @@ public:
     virtual const InetAddr* getBroadcastAddressPtr() const {
         return broadcast_address; }
 
+    const InetAddr* getFirstHostPtr() const {
+        return network_address;}
+    const InetAddr* getLastHostPtr() const{
+        return last_host;}
+    
     virtual void setAddress(const InetAddr &a);
     virtual void setNetmask(const InetAddr &nm);
 

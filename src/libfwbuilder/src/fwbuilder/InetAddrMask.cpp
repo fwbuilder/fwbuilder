@@ -53,10 +53,13 @@ void InetAddrMask::setNetworkAndBroadcastAddress()
     {
         *network_address = *address;
         *broadcast_address = InetAddr(32);
+        *last_host = *address;
+        if (netmask->getLength() == 31) *last_host = *last_host + 1;
     } else
     {
         *network_address = *address & *netmask;
         *broadcast_address = *address | (~(*netmask));
+        *last_host = *broadcast_address;
     }
 }
 
@@ -70,6 +73,7 @@ InetAddrMask::InetAddrMask(bool)
     netmask = NULL;
     broadcast_address = NULL;
     network_address = NULL;
+    last_host = NULL;
 }
 
 InetAddrMask::InetAddrMask()
@@ -78,6 +82,7 @@ InetAddrMask::InetAddrMask()
     netmask = new InetAddr();
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
+    last_host = new InetAddr();
 }
 
 InetAddrMask::InetAddrMask(const InetAddr &a, const InetAddr &n)
@@ -86,6 +91,7 @@ InetAddrMask::InetAddrMask(const InetAddr &a, const InetAddr &n)
     netmask = new InetAddr(n);
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
+    last_host = new InetAddr();
     setNetworkAndBroadcastAddress();
 }
 
@@ -95,6 +101,7 @@ InetAddrMask::InetAddrMask(const InetAddrMask& other)
     netmask = new InetAddr(*(other.netmask));
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
+    last_host = new InetAddr();
     setNetworkAndBroadcastAddress();
 }
 
@@ -104,6 +111,7 @@ InetAddrMask::InetAddrMask(const string &s) throw(FWException)
     netmask = new InetAddr();
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
+    last_host = new InetAddr();
 
     if(s.find_first_not_of(".1234567890/")!=string::npos)
     {
@@ -142,6 +150,7 @@ InetAddrMask::~InetAddrMask()
     if (netmask!=NULL) delete netmask;
     if (network_address!=NULL) delete network_address;
     if (broadcast_address!=NULL) delete broadcast_address;
+    if (last_host!=NULL) delete last_host;
 }
 
 bool InetAddrMask::isAny()
