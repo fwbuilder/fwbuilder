@@ -152,8 +152,8 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
     m_dialog->code->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->code);
 
-    m_dialog->platform->setEnabled(!o->isReadOnly());
-    setDisabledPalette(m_dialog->platform);
+    // do not make "platform" widget disabled when object is read-only
+    // to let the user flip between platforms to see the configuration. See #2669
 
     m_dialog->protocol->setEnabled(!o->isReadOnly());
     setDisabledPalette(m_dialog->protocol);
