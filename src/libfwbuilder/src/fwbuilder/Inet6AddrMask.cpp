@@ -75,6 +75,7 @@ Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) :
     
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
+    last_host = new InetAddr();
     setNetworkAndBroadcastAddress();
 }
 
@@ -85,6 +86,7 @@ Inet6AddrMask::Inet6AddrMask(const InetAddr &a, const InetAddr &n) :
     netmask = new InetAddr(AF_INET6, n.getLength());
     broadcast_address = new InetAddr();
     network_address = new InetAddr();
+    last_host = new InetAddr();
     setNetworkAndBroadcastAddress();
 }
 

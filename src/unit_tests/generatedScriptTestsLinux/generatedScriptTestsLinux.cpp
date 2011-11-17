@@ -156,11 +156,13 @@ void GeneratedScriptTest::CheckUtilitiesTest()
     QStringList utils;
 
     QStringList test1_utils;
+    test1_utils << "find_program which";
     test1_utils << "find_program $IPTABLES";
     test1_utils << "find_program $MODPROBE";
     test1_utils << "find_program $IP";
 
     QStringList test2_utils;
+    test2_utils << "find_program which";
     test2_utils << "find_program $IPTABLES";
     test2_utils << "find_program $IPTABLES_RESTORE";
     test2_utils << "find_program $MODPROBE";
