@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3585
+#  Firewall Builder  fwb_ipt v5.0.1.3588
 #
-#  Generated Thu Nov 10 11:57:29 2011 PST by vadim
+#  Generated Mon Nov 21 11:50:27 2011 PST by vadim
 #
 # files: * firewall23-1.fw /etc/fw/firewall23-1.fw
 #
@@ -321,19 +321,19 @@ script_body() {
     # 
     echo "Rule 13 (eth2)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 1:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-is-bridged --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 1:12
     # 
     # Rule 14 (eth3)
     # 
     echo "Rule 14 (eth3)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth3 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 2:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-is-bridged --physdev-out eth3 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 2:12
     # 
     # Rule 15 (eth2)
     # 
     echo "Rule 15 (eth2)"
     # 
-    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 1:12
+    $IPTABLES -t mangle -A POSTROUTING -m physdev --physdev-is-bridged --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j CLASSIFY --set-class 1:12
 
     # ================ Table 'filter', rule set Policy
     # 
@@ -416,8 +416,8 @@ script_body() {
     # 
     echo "Rule 8 (eth2,eth3)"
     # 
-    $IPTABLES -A FORWARD -m physdev --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD -m physdev --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-is-bridged --physdev-out eth2  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-is-bridged --physdev-out eth3  -d 192.168.1.0/24   -m state --state NEW  -j ACCEPT
     # 
     # Rule 9 (eth2,eth3)
     # 
@@ -430,7 +430,7 @@ script_body() {
     # 
     echo "Rule 10 (eth2)"
     # 
-    $IPTABLES -A FORWARD -m physdev --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-is-bridged --physdev-out eth2  -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     # 
     # Rule 11 (eth2)
     # 
@@ -442,13 +442,13 @@ script_body() {
     # 
     echo "Rule 12 (eth3)"
     # 
-    $IPTABLES -A FORWARD -m physdev --physdev-out eth3  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD -m physdev --physdev-is-bridged --physdev-out eth3  -s 192.168.1.10   -d 224.0.0.0/4   -m state --state NEW  -j ACCEPT
     # 
     # Rule 15 (eth2)
     # 
     echo "Rule 15 (eth2)"
     # 
-    $IPTABLES -A FORWARD -m physdev --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j LOG  --log-level debug
+    $IPTABLES -A FORWARD -m physdev --physdev-is-bridged --physdev-out eth2 -p tcp -m tcp  -d 192.168.1.0/24   --dport 22  -j LOG  --log-level debug
     # 
     # Rule 16 (global)
     # 
@@ -586,7 +586,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Nov 10 11:57:29 2011 by vadim"
+        log "Activating firewall script generated Mon Nov 21 11:50:27 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

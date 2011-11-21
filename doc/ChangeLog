@@ -1,3 +1,11 @@
+2011-11-21  Vadim Kurland  <vadim@netcitadel.com>
+
+	* PolicyCompiler_PrintRule.cpp (_printDirectionAndInterface): SF
+	bug #3439613.  physdev module does not allow --physdev-out for
+	non-bridged traffic anymore. We should add --physdev-is-bridged to
+	make sure this matches only bridged packets.
+
+
 2011-11-16  Vadim Kurland  <vadim@netcitadel.com>
 
 	* InetAddrMask.cpp (InetAddrMask::setNetworkAndBroadcastAddress):

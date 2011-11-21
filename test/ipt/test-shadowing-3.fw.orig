@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3585
+#  Firewall Builder  fwb_ipt v5.0.1.3588
 #
-#  Generated Thu Nov 10 11:59:25 2011 PST by vadim
+#  Generated Mon Nov 21 11:52:38 2011 PST by vadim
 #
 # files: * test-shadowing-3.fw /etc/test-shadowing-3.fw
 #
@@ -17,6 +17,10 @@
 # test-shadowing-3:Policy_3:0: error: Rule 'Policy_3 0 (eth0)' shadows rule 'Policy_3 1 (eth0)'  below it
 
 # test-shadowing-3:Policy_5:0: error: Rule 'Policy_5 0 (eth0)' shadows rule 'Policy_5 1 (eth0)'  below it
+
+# test-shadowing-3:Policy_6:0: error: Rule 'Policy_6 0 (global)' shadows rule 'Policy_6 1 (global)'  below it
+
+# test-shadowing-3:Policy_7:0: error: Rule 'Policy_7 0 (global)' shadows rule 'Policy_7 1 (global)'  below it
 
 
 FWBDEBUG=""
@@ -431,6 +435,54 @@ script_body() {
     # 
     # 30/sec
     $IPTABLES -A Policy_5 -o eth0   -s 192.168.1.0/24   -m state --state NEW  -m hashlimit --hashlimit 30/second --hashlimit-mode srcip --hashlimit-name test -j ACCEPT
+    # ================ Table 'filter', rule set Policy_6
+    # 
+    # Rule Policy_6 0 (global)
+    # 
+    echo "Rule Policy_6 0 (global)"
+    # 
+    # test-shadowing-3:Policy_6:0: error: Rule 'Policy_6 0 (global)' shadows rule 'Policy_6 1 (global)'  below it
+
+    $IPTABLES -N Policy_6
+    $IPTABLES -A Policy_6 -i +   -s 192.168.11.0/24   -j DROP
+    # 
+    # Rule Policy_6 1 (global)
+    # 
+    echo "Rule Policy_6 1 (global)"
+    # 
+    $IPTABLES -A Policy_6 -i +   -s 192.168.11.10/31   -j DROP
+    # ================ Table 'filter', rule set Policy_7
+    # 
+    # Rule Policy_7 0 (global)
+    # 
+    echo "Rule Policy_7 0 (global)"
+    # 
+    # test-shadowing-3:Policy_7:0: error: Rule 'Policy_7 0 (global)' shadows rule 'Policy_7 1 (global)'  below it
+
+    $IPTABLES -N Policy_7
+    $IPTABLES -A Policy_7 -i +   -s 192.168.11.10/31   -j DROP
+    # 
+    # Rule Policy_7 1 (global)
+    # 
+    echo "Rule Policy_7 1 (global)"
+    # 
+    $IPTABLES -A Policy_7 -i +   -s 192.168.11.11   -j DROP
+    # ================ Table 'filter', rule set Policy_8
+    # 
+    # Rule Policy_8 0 (global)
+    # 
+    echo "Rule Policy_8 0 (global)"
+    # 
+    # even though this is a trivial case,
+    # I had a bug with handling networks with netmask /31 that broke it
+    $IPTABLES -N Policy_8
+    $IPTABLES -A Policy_8 -i +   -s 24.56.78.90   -j DROP
+    # 
+    # Rule Policy_8 1 (global)
+    # 
+    echo "Rule Policy_8 1 (global)"
+    # 
+    $IPTABLES -A Policy_8 -i +   -s 222.222.222.0/24   -j DROP
     # ================ Table 'filter', rule set Policy
     # 
     # Rule 0 (eth0)
@@ -500,7 +552,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Thu Nov 10 11:59:25 2011 by vadim"
+        log "Activating firewall script generated Mon Nov 21 11:52:38 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

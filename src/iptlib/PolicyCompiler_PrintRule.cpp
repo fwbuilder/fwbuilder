@@ -474,11 +474,21 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
             (version.empty() ||
              XMLTools::version_compare(version, "1.3.0")>=0))
         {
+            // http://www.netfilter.org/projects/iptables/files/changes-iptables-1.2.9.txt
+            // See SF bug #3439613
+            // https://sourceforge.net/tracker/index.php?func=detail&aid=3439613&group_id=5314&atid=1129518#
+            //
+            // physdev module does not allow --physdev-out for
+            // non-bridged traffic anymore. We should add
+            // --physdev-is-bridged to make sure this matches only
+            // bridged packets.
+
             if (rule->getDirection()==PolicyRule::Inbound)   
-                res << "-m physdev --physdev-in"  << iface_name; 
+                res << "-m physdev --physdev-in"  << iface_name;
 
             if (rule->getDirection()==PolicyRule::Outbound)  
-                res << "-m physdev --physdev-out"  << iface_name; 
+                res << "-m physdev --physdev-is-bridged --physdev-out"  << iface_name;
+
         } else
         {
             if (rule->getDirection()==PolicyRule::Inbound)   
