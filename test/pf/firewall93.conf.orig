@@ -1,0 +1,93 @@
+
+set timeout udp.single 5
+
+#
+# Scrub rules
+#
+match all scrub (reassemble tcp no-df )
+match out all scrub (random-id min-ttl  1 max-mss  1460)
+
+
+# Tables: (7)
+table <fw93_group_1> { 22.22.22.0/28 , 192.168.1.10 } 
+table <fw93_group_1-copy> { 22.22.22.0/28 , 192.168.1.10 } 
+table <fw93_group_2> { 192.168.171.2 } 
+table <fw93_group_3> { 192.168.1.1 , 192.168.1.2 , 192.168.1.3/30 , 192.168.1.200 , 192.168.1.201 , 192.168.2.0/24 , 192.168.2.128/25 } 
+table <fw93_group_4_ipv6> { 3ffe:1200:2001:1:8000::1 , fe80::/64 } 
+table <fw93_group_5_mix> { 192.168.1.0/24 , 192.168.2.0/24 , ::ffff:0:0:0/96 , fc00::/7 , fe80::/64 } 
+table <fw93_group_6> { 192.168.1.0/24 , 192.168.1.10 } 
+
+# 
+# Rule  0 (NAT)
+match out on  em0 from 10.1.1.0/24 to any nat-to (em0) 
+
+# Policy compiler errors and warnings:
+# firewall93:Policy:0: warning: Changing rule direction due to self reference
+# 
+# Rule  backup ssh access rule
+#    backup ssh access rule 
+pass in   quick inet proto tcp  from 10.3.14.30  to self port 22  label "RULE -1 -- ACCEPT"  
+# 
+# Rule  0 (global)
+# firewall93:Policy:0: warning: Changing rule direction due to self reference
+
+pass in   quick inet proto tcp  from 10.3.14.0/24  to self port 22  label "RULE 0 -- ACCEPT"  
+# 
+# Rule  1 (global)
+pass  quick inet  from <fw93_group_1>  to any  label "RULE 1 -- ACCEPT"  
+# 
+# Rule  2 (global)
+# see #2671
+pass  quick inet proto tcp  from <fw93_group_1>  to any port 3128  label "RULE 2 -- ACCEPT"  
+pass  quick inet proto udp  from <fw93_group_1>  to any port 53  label "RULE 2 -- ACCEPT"  
+# 
+# Rule  3 (global)
+# using the same group second time,
+# objects should not get duplicated
+# in the generated table. See #2671
+pass  quick inet  from any  to <fw93_group_1>  label "RULE 3 -- ACCEPT"  
+# 
+# Rule  4 (global)
+# just one object in the group
+pass  quick inet  from <fw93_group_2>  to any  label "RULE 4 -- ACCEPT"  
+# 
+# Rule  5 (global)
+# object a-192.168.1.10 is a member
+# of at least two groups used in this rule
+pass  quick inet  from { <fw93_group_1> , <fw93_group_2> , <fw93_group_6> }  to any  label "RULE 5 -- ACCEPT"  
+# 
+# Rule  6 (global)
+# the same rule, same objects as rule 3,
+# but different group with the same objects
+pass  quick inet  from <fw93_group_1-copy>  to any  label "RULE 6 -- ACCEPT"  
+# 
+# Rule  7 (global)
+block in   quick inet  from <fw93_group_6>  to any no state  label "RULE 7 -- DROP"  
+# 
+# Rule  8 (global)
+# group uses address table object
+pass  quick inet  from any  to <fw93_group_3>  label "RULE 8 -- ACCEPT"  
+# 
+# Rule  11 (global)
+block in   quick inet  from <fw93_group_5_mix>  to any no state  label "RULE 11 -- DROP"  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet  from any  to any no state  label "RULE 10000 -- DROP"  
+
+# 
+# Rule  9 (global)
+block in   quick inet6  from <fw93_group_4_ipv6>  to any no state  label "RULE 9 -- DROP"  
+# 
+# Rule  10 (global)
+# the same group second time,
+# check for duplicates. See #2671
+block in   quick inet6  from any  to <fw93_group_4_ipv6> no state  label "RULE 10 -- DROP"  
+# 
+# Rule  11 (global)
+block in   quick inet6  from <fw93_group_5_mix>  to any no state  label "RULE 11 -- DROP"  
+# 
+# Rule  fallback rule
+#    fallback rule 
+block  quick inet6  from any  to any no state  label "RULE 10000 -- DROP"  
+

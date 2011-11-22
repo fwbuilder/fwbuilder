@@ -780,16 +780,14 @@ bool PolicyCompiler_pf::splitIfInterfaceInRE::processNext()
 
 bool PolicyCompiler_pf::createTables::processNext()
 {
-    PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyCompiler_pf *pf_comp = dynamic_cast<PolicyCompiler_pf*>(compiler);
+    PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
-    RuleElementSrc *src=rule->getSrc();
-    RuleElementDst *dst=rule->getDst();
-//    RuleElementSrv *srv=rule->getSrv();
+    RuleElementSrc *src = rule->getSrc();
+    RuleElementDst *dst = rule->getDst();
 
-    if (src->size()!=1) pf_comp->tables->createTablesForRE(src,rule);
-    if (dst->size()!=1) pf_comp->tables->createTablesForRE(dst,rule);
-//    if (srv->size()!=1) createTablesForRE(srv,rule);
+    if (!src->isAny()) pf_comp->tables->createTablesForRE(src, rule);
+    if (!dst->isAny()) pf_comp->tables->createTablesForRE(dst, rule);
 
     tmp_queue.push_back(rule);
     return true;

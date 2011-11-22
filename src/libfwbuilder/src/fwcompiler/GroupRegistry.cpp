@@ -25,6 +25,9 @@
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWReference.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
+
 
 using namespace libfwbuilder;
 using namespace std;
@@ -32,6 +35,17 @@ using namespace std;
 
 GroupRegistry::GroupRegistry()
 {}
+
+/*
+ * Generate stable key to be used as a key in rule_element_groups map.
+ * This key should not change when rule processors create copies of
+ * rules, this means we can't use rule and rule element ID.
+ */
+string GroupRegistry::getREKey(libfwbuilder::RuleElement *re)
+{
+    Rule *rule = Rule::cast(re->getParent());
+    return rule->getLabel() + "_" + re->getTypeName();
+}
 
 void GroupRegistry::registerGroup(FWObject *grp, const list<FWObject*> &objects)
 {
@@ -43,6 +57,21 @@ void GroupRegistry::registerGroup(FWObject *grp, const list<FWObject*> &objects)
         group_registry[str_id].insert(grp->getName());
         setGroupRegistryKey(o, str_id);
     }
+}
+
+/*
+ * register a group as a member of given rule element. 
+ */
+void GroupRegistry::registerGroupInRE(RuleElement *re, FWObject *grp)
+{
+    string key_str = getREKey(re);
+    rule_element_groups[key_str].insert(grp->getName());
+}
+
+set<string> GroupRegistry::getGroupsForRE(RuleElement *re)
+{
+    string key_str = getREKey(re);
+    return rule_element_groups[key_str];
 }
 
 set<string> GroupRegistry::getGroupsForObject(FWObject *obj)

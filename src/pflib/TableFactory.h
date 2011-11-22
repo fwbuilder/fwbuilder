@@ -36,6 +36,8 @@
 
 #include <list>
 #include <map>
+#include <set>
+
 
 namespace libfwbuilder
 {
@@ -57,7 +59,8 @@ namespace fwcompiler
         std::map<std::string,libfwbuilder::FWObject*> tables;
         std::map<std::string,std::string> tblnames;
         std::string ruleSetName;
-
+        std::map<std::string, std::set<int> > table_deduplicator;
+        
         std::string generateTblID(libfwbuilder::RuleElement *re);
         libfwbuilder::FWObject* createTableObject(const std::string &tblname,
                                                   const std::string &tblid);
@@ -77,7 +80,8 @@ public:
                            libfwbuilder::FWObject *tbl) throw(libfwbuilder::FWException);
         void createTablesForRE(libfwbuilder::RuleElement *re,
                                libfwbuilder::Rule        *rule);
-
+        void addObjectToTable(libfwbuilder::FWObject *tblgrp,
+                              libfwbuilder::FWObject *obj);
         std::string PrintTables();
 
     };

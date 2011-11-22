@@ -31,16 +31,31 @@
 #include <map>
 
 
+namespace libfwbuilder
+{
+    class RuleElement;
+};
+
+
 class GroupRegistry
 {
     // key: object Id, value: a set of names of groups it belongs to
     std::map<std::string, std::set<std::string> > group_registry;
 
+    // key: rule element id, value: a set of names of groups that belonged to it
+    std::map<std::string, std::set<std::string> > rule_element_groups;
+
+    std::string getREKey(libfwbuilder::RuleElement *re);
+    
 public:
     GroupRegistry();
 
     void registerGroup(libfwbuilder::FWObject *grp,
                        const std::list<libfwbuilder::FWObject*> &objects);
+
+    void registerGroupInRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *grp);
+
+    std::set<std::string> getGroupsForRE(libfwbuilder::RuleElement *re);
     std::set<std::string> getGroupsForObject(libfwbuilder::FWObject *obj);
 
     std::string getGroupRegistryKey(libfwbuilder::FWObject *obj);

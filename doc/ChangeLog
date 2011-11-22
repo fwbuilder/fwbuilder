@@ -1,5 +1,32 @@
 2011-11-21  Vadim Kurland  <vadim@netcitadel.com>
 
+	* TableFactory.cpp (TableFactory::createTablesForRE): see #2671
+	Duplicate objects appear in PF table when option "preserve group
+	and addresses table object names" is in effect. This happened if
+	the same user-defined group was used in multiple rules or
+	different rule element of the same rule. In this case generated PF
+	table would have several copies of the same addresses.
+
+	* TableFactory.cpp (TableFactory::createTablesForRE): see #2672 PF
+	option "preserve group and addresses table object names" does not
+	work right when the same object is used in several different
+	groups. If the same object was a member of multiple groups and
+	these groups were used in the same or different rules of the same
+	PF firewall, compiler used all groups in all rules. This could
+	create match for objects that were not intended to be part of some
+	rules. This problem has been fixed. Note that configuration with
+	a combination of ipv4 and ipv6 objects as members of the same
+	user-defined group when group is used in mixed ipv4+ipv6 rule
+	set still does not work right. In this case compiler generates
+	table that exactly reflects configuration user created in the
+	GUI (i.e. includes both ipv4 and ipv6 addresses) and then uses
+	this table in both "inet" and "inet6" rules.
+	
+	* PolicyCompiler_pf.cpp (createTables): With this fix, when option
+	"preserve group and addresses table object names" is in effect,
+	compiler for PF will create named tables for the user-defined
+	object group even if it contains just one object.
+
 	* PolicyCompiler_PrintRule.cpp (_printDirectionAndInterface): SF
 	bug #3439613.  physdev module does not allow --physdev-out for
 	non-bridged traffic anymore. We should add --physdev-is-bridged to

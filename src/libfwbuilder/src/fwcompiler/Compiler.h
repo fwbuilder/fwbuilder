@@ -243,7 +243,8 @@ public:
 
 	std::stringstream output;
 
-        void registerGroupObject(libfwbuilder::ObjectGroup *grp);
+        void registerGroupObject(libfwbuilder::RuleElement *re,
+                                 libfwbuilder::ObjectGroup *grp);
         
         void registerIPv6Rule() { countIPv6Rules++; }
         bool haveIPv6Rules() { return countIPv6Rules > 0; }

@@ -950,7 +950,7 @@ bool Compiler::RegisterGroupsAndTablesInRE::processNext()
             FWObject *obj = FWReference::getObject(*i);
             if (ObjectGroup::cast(obj)!=NULL && obj->size() > 0)
             {
-                compiler->registerGroupObject(ObjectGroup::cast(obj));
+                compiler->registerGroupObject(re, ObjectGroup::cast(obj));
             }
         }
     }
@@ -959,12 +959,13 @@ bool Compiler::RegisterGroupsAndTablesInRE::processNext()
     return true;
 }
 
-void Compiler::registerGroupObject(ObjectGroup *grp)
+void Compiler::registerGroupObject(RuleElement *re, ObjectGroup *grp)
 {
     assert(group_registry!=NULL);
     list<FWObject*> objects;
     expandGroup(grp, objects);
     group_registry->registerGroup(grp, objects);
+    group_registry->registerGroupInRE(re, grp);
 }
 
 bool Compiler::equalObj::operator()(FWObject *o)
