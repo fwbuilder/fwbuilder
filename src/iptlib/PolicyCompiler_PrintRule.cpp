@@ -452,6 +452,7 @@ string PolicyCompiler_ipt::PrintRule::_printMultiport(PolicyRule *rule)
 
 string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *rule)
 {
+    PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     QStringList res;
 
     if (rule->getStr(".iface") == "nil") return "";
@@ -467,28 +468,53 @@ string PolicyCompiler_ipt::PrintRule::_printDirectionAndInterface(PolicyRule *ru
         rule_iface_obj = FWObjectReference::getObject(itfrel->front());
         rule_iface = Interface::cast(rule_iface_obj);
         iface_name = rule_iface_obj->getName().c_str();
-
         if (iface_name.endsWith("*")) iface_name.replace("*", "+");
  
         if (rule_iface && rule_iface->isBridgePort() &&
             (version.empty() ||
              XMLTools::version_compare(version, "1.3.0")>=0))
         {
-            // http://www.netfilter.org/projects/iptables/files/changes-iptables-1.2.9.txt
-            // See SF bug #3439613
-            // https://sourceforge.net/tracker/index.php?func=detail&aid=3439613&group_id=5314&atid=1129518#
-            //
-            // physdev module does not allow --physdev-out for
-            // non-bridged traffic anymore. We should add
-            // --physdev-is-bridged to make sure this matches only
-            // bridged packets.
+            /*
+              http://www.netfilter.org/projects/iptables/files/changes-iptables-1.2.9.txt
+              See SF bug #3439613
+              https://sourceforge.net/tracker/index.php?func=detail&aid=3439613&group_id=5314&atid=1129518#
+            
+              physdev module does not allow --physdev-out for
+              non-bridged traffic anymore. We should add
+              --physdev-is-bridged to make sure this matches only
+              bridged packets.
 
-            if (rule->getDirection()==PolicyRule::Inbound)   
+              Also, adding "-i" / "-o" clause to match parent bridge
+              interface. This allows us to correctly match which
+              bridge the packet comes through in configurations using
+              wildcard bridge port interfaces. For example, when br0
+              and br1 have "vnet+" bridge port interface, iptables can
+              still correctly match which bridge the packet went
+              through using "-o br0" or "-o br1" clause. This can be
+              useful in installations with many bridged interfaces
+              that get created and destroyed dynamically, e.g.  with
+              virtual machines.
+
+              However add "-i br0" / "-o br0" only when there is more
+              than one bridge interface _and_ bridge port name ends with
+              a wild card symbol "+"
+            */
+
+            QString parent_name = rule_iface->getParent()->getName().c_str();
+
+            if (rule->getDirection()==PolicyRule::Inbound)
+            {
+                if (ipt_comp->bridge_count > 1 && iface_name.endsWith("+"))
+                    res << "-i" << parent_name;
                 res << "-m physdev --physdev-in"  << iface_name;
+            }
 
-            if (rule->getDirection()==PolicyRule::Outbound)  
-                res << "-m physdev --physdev-is-bridged --physdev-out"  << iface_name;
-
+            if (rule->getDirection()==PolicyRule::Outbound)
+            {
+                if (ipt_comp->bridge_count > 1 && iface_name.endsWith("+"))
+                    res << "-o" << parent_name;
+                res << "-m physdev --physdev-is-bridged --physdev-out" << iface_name;
+            }
         } else
         {
             if (rule->getDirection()==PolicyRule::Inbound)   

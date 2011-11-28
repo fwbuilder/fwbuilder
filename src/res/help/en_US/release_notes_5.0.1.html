@@ -351,7 +351,17 @@
       SF bug #3439613.  physdev module does not allow --physdev-out
       for non-bridged traffic anymore. We should add
       --physdev-is-bridged to make sure this matches only bridged
-      packets.
+      packets. Also adding "-i" / "-o" clause to match parent bridge
+      interface. This allows us to correctly match which bridge the
+      packet comes through in configurations using wildcard bridge
+      port interfaces. For example, when br0 and br1 have "vnet+"
+      bridge port interface, iptables can still correctly match which
+      bridge the packet went through using "-o br0" or "-o br1"
+      clause. This can be useful in installations with many bridged
+      interfaces that get created and destroyed dynamically, e.g.
+      with virtual machines. Note that the "-i br0" / "-o br0" clause
+      is only added when there is more than one bridge interface and
+      bridge port name ends with a wild card symbol "+"
     </li>
   </ul>
 </ul>

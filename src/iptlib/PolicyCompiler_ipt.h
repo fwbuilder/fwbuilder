@@ -82,6 +82,9 @@ protected:
         typedef std::list<std::string> chain_list;
         std::map<std::string, chain_list*> chains;
 
+        // number of bridge interfaces (br0 / br1 / etc)
+        int bridge_count;
+        
         // use minus_n_commands map to track creation of chains.
         // Using external map object for this to be able to track
         // new chains across different compiler runs (used to process
@@ -1006,6 +1009,7 @@ public:
             have_connmark_in_output = false;
             my_table = "filter";
             minus_n_commands = m_n_commands_map;
+            bridge_count = 0;
         }
         virtual ~PolicyCompiler_ipt();
 

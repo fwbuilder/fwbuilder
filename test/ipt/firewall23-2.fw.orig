@@ -4,15 +4,18 @@
 #
 #  Firewall Builder  fwb_ipt v5.0.1.3590
 #
-#  Generated Mon Nov 28 12:22:13 2011 PST by vadim
+#  Generated Mon Nov 28 12:21:20 2011 PST by vadim
 #
-# files: * firewall41-1.fw /etc/firewall41-1.fw
+# files: * firewall23-2.fw /etc/fw/firewall23-2.fw
 #
-# Compiled for iptables 1.4.1.1
+# Compiled for iptables 1.3.0
 #
-# testing run time address table objects with module set
+# This is BRIDGING FIREWALL
+# with two bridges and wildcard bridge port interfaces
 
-# firewall41-1::: warning: Can not add virtual address for object atbl.1
+# see SF bug #3439613
+
+
 
 
 FWBDEBUG=""
@@ -122,9 +125,7 @@ find_program() {
 check_tools() {
   find_program which
   find_program $IPTABLES 
-  find_program $MODPROBE 
   find_program $IP 
-  find_program $IPSET 
 }
 reset_iptables_v4() {
   $IPTABLES -P OUTPUT  DROP
@@ -254,129 +255,6 @@ clear_addresses_except_known_interfaces() {
          done
 }
 
-check_module_ipset() {
-    $IPSET --list > /dev/null 2>&1 || {
-        echo "Detected an error with ipset utility :"
-        $IPSET -V
-        exit 1
-    }
-}
-
-reload_address_table() {
-    addrtbl_name=$1
-    data_file=$2
-
-    test -z "$addrtbl_name" -o -z "$data_file" && {
-        echo "Usage: reload_address_table address_table_object_name file_name"
-        exit 1
-    }
-
-    $IPSET -X tmp_fwb_set:ip -q
-    $IPSET -X tmp_fwb_set:net -q
-
-    $IPSET -N tmp_fwb_set:ip  iphash
-    $IPSET -N tmp_fwb_set:net nethash
-
-    grep -Ev '^#|^;|^\s*$' $data_file | while read L ; do
-        set $L
-        addr=$1
-        if echo $addr | grep -q "/"
-        then
-            $IPSET -A tmp_fwb_set:net $addr
-        else
-            $IPSET -A tmp_fwb_set:ip $addr
-        fi
-    done
-
-    $IPSET --list ${addrtbl_name}:ip >/dev/null || $IPSET -N ${addrtbl_name}:ip iphash
-    $IPSET --list ${addrtbl_name}:net >/dev/null || $IPSET -N ${addrtbl_name}:net nethash
-
-    $IPSET -W ${addrtbl_name}:ip tmp_fwb_set:ip
-    $IPSET -W ${addrtbl_name}:net tmp_fwb_set:net
-
-    $IPSET --list ${addrtbl_name} >/dev/null || {
-        $IPSET -N ${addrtbl_name} setlist
-    }
-
-    $IPSET --list ${addrtbl_name} | grep -q ${addrtbl_name}:ip || {
-        $IPSET -A ${addrtbl_name} ${addrtbl_name}:ip
-    }
-
-    $IPSET --list ${addrtbl_name} | grep -q ${addrtbl_name}:net || {
-        $IPSET -A ${addrtbl_name} ${addrtbl_name}:net
-    }
-
-    $IPSET -X tmp_fwb_set:ip
-    $IPSET -X tmp_fwb_set:net
-}
-
-add_to_address_table() {
-    addrtbl_name=$1
-    data_file=$2
-    address=$3
-
-    test -z "$addrtbl_name" -o -z "$data_file" -o -z "$address" && {
-        echo "Usage: add_to_address_table address_table_object_name file_name address"
-        exit 1
-    }
-
-    echo $address >> $data_file
-
-    if echo $address | grep -q "/"
-    then
-        $IPSET -A ${addrtbl_name}:net $address
-    else
-        $IPSET -A ${addrtbl_name}:ip $address
-    fi
-}
-
-remove_from_address_table() {
-    addrtbl_name=$1
-    data_file=$2
-    address=$3
-
-    test -z "$addrtbl_name" -o -z "$data_file" -o -z "$address" && {
-        echo "Usage: remove_from_address_table address_table_object_name file_name address"
-        exit 1
-    }
-
-    escaped_addr=$(echo $address | sed 's!/!\\/!')
-    sed -i "/^ *$escaped_addr *\$/d" $data_file
-
-    if echo $address | grep -q "/"
-    then
-        $IPSET -D ${addrtbl_name}:net $address
-    else
-        $IPSET -D ${addrtbl_name}:ip $address
-    fi
-}
-
-test_address_table() {
-    addrtbl_name=$1
-    address=$2
-
-    test -z "$addrtbl_name" -o -z "$address" && {
-        echo "Usage: test_address_table address_table_object_name address"
-        exit 1
-    }
-
-    if echo $address | grep -q "/"
-    then
-        $IPSET -T ${addrtbl_name}:net $address
-    else
-        $IPSET -T ${addrtbl_name}:ip $address
-    fi
-}
-
-
-load_run_time_address_table_files() {
-    :
-    reload_address_table "atbl.1" "addr-table-1.tbl"
-reload_address_table "block_these" "block-hosts.tbl"
-}
-
-
-
 check_file() {
     test -r "$2" || {
         echo "Can not find file $2 referenced by address table object $1"
@@ -386,36 +264,17 @@ check_file() {
 
 check_run_time_address_table_files() {
     :
-    check_file "atbl.1" "addr-table-1.tbl"
-check_file "block_these" "block-hosts.tbl"
+    
 }
 
 load_modules() {
     :
-    OPTS=$1
-    MODULES_DIR="/lib/modules/`uname -r`/kernel/net/"
-    MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
-    echo $OPTS | grep -q nat && {
-        MODULES="$MODULES $(find $MODULES_DIR -name '*nat*'|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
-    }
-    echo $OPTS | grep -q ipv6 && {
-        MODULES="$MODULES $(find $MODULES_DIR -name nf_conntrack_ipv6|sed  -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
-    }
-    for module in $MODULES; do 
-        if $LSMOD | grep ${module} >/dev/null; then continue; fi
-        $MODPROBE ${module} ||  exit 1 
-    done
+    
 }
 
 verify_interfaces() {
     :
-    echo "Verifying interfaces: eth0 eth1"
-    for i in eth0 eth1 ; do
-        $IP link show "$i" > /dev/null 2>&1 || {
-            log "Interface $i does not exist"
-            exit 1
-        }
-    done
+    
 }
 
 prolog_commands() {
@@ -436,11 +295,14 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     # Configure interfaces
-    update_addresses_of_interface "eth0 1.1.1.1/24" ""
-    update_addresses_of_interface "eth1 2.2.2.2/24" ""
+    update_addresses_of_interface "lo 127.0.0.1/8" ""
 }
 
 script_body() {
+    echo 30 > /proc/sys/net/ipv4/tcp_fin_timeout 
+     echo 1800 > /proc/sys/net/ipv4/tcp_keepalive_intvl 
+
+
     # ================ IPv4
 
 
@@ -449,104 +311,47 @@ script_body() {
     $IPTABLES -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT 
     $IPTABLES -A OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT 
     $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # ================ Table 'mangle', automatic rules
+    $IPTABLES -t mangle -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 
 
-    # ================ Table 'nat',  rule set NAT
-    # 
-    # Rule 0 (NAT)
-    # 
-    echo "Rule 0 (NAT)"
-    # 
-    $IPTABLES -t nat -A POSTROUTING -o eth0  -m set  --set atbl.1 src  -j SNAT --to-source 1.1.1.1
-    # 
-    # Rule 1 (NAT)
-    # 
-    echo "Rule 1 (NAT)"
-    # 
-    $IPTABLES -t nat -N Cid2287813X9995.0
-    $IPTABLES -t nat -A POSTROUTING -o eth0   -j Cid2287813X9995.0
-    $IPTABLES -t nat -A Cid2287813X9995.0 -m set  --set atbl.1 src  -j RETURN
-    $IPTABLES -t nat -A Cid2287813X9995.0  -j SNAT --to-source 1.1.1.1
-    # 
-    # Rule 2 (NAT)
-    # 
-    echo "Rule 2 (NAT)"
-    # 
-    $IPTABLES -t nat -A PREROUTING -m set  --set atbl.1 dst  -j DNAT --to-destination 192.168.1.10
 
 
 
     # ================ Table 'filter', rule set Policy
     # 
-    # Rule 0 (global)
+    # Rule 0 (vnet+)
     # 
-    echo "Rule 0 (global)"
+    echo "Rule 0 (vnet+)"
     # 
-    $IPTABLES -A OUTPUT -m set  --set atbl.1 dst  -m state --state NEW  -j ACCEPT
+    # -i br0
+    $IPTABLES -A INPUT -i br0 -m physdev --physdev-in vnet+  -m state --state NEW  -j ACCEPT
     # 
-    # Rule 1 (global)
+    # Rule 1 (vnet+)
     # 
-    echo "Rule 1 (global)"
+    echo "Rule 1 (vnet+)"
     # 
-    $IPTABLES -N Cid1162747X27867.0
-    $IPTABLES -A INPUT -m set  ! --set atbl.1 dst  -m state --state NEW  -j Cid1162747X27867.0
-    $IPTABLES -A Cid1162747X27867.0  -s 1.1.1.1   -j ACCEPT
-    $IPTABLES -A Cid1162747X27867.0  -s 2.2.2.2   -j ACCEPT
-    $IPTABLES -A OUTPUT -m set  ! --set atbl.1 dst  -m state --state NEW  -j ACCEPT
+    # -i br1
+    $IPTABLES -A INPUT -i br1 -m physdev --physdev-in vnet+  -m state --state NEW  -j ACCEPT
     # 
-    # Rule 2 (global)
+    # Rule 2 (vnet+)
     # 
-    echo "Rule 2 (global)"
+    echo "Rule 2 (vnet+)"
     # 
-    $IPTABLES -A OUTPUT -m set  ! --set atbl.1 dst  -m state --state NEW  -j ACCEPT
+    # -o br0
+    $IPTABLES -A OUTPUT -o br0 -m physdev --physdev-is-bridged --physdev-out vnet+  -m state --state NEW  -j ACCEPT
     # 
-    # Rule 3 (global)
+    # Rule 3 (vnet+)
     # 
-    echo "Rule 3 (global)"
+    echo "Rule 3 (vnet+)"
     # 
-    $IPTABLES -A OUTPUT -m set  --set atbl.1 dst  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A OUTPUT -m set  --set block_these dst  -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 4 (global)
-    # 
-    echo "Rule 4 (global)"
-    # 
-    $IPTABLES -A INPUT -m set  --set atbl.1 src  -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 5 (global)
-    # 
-    echo "Rule 5 (global)"
-    # 
-    $IPTABLES -N Cid1162799X27867.0
-    $IPTABLES -A OUTPUT -m set  ! --set atbl.1 src  -m state --state NEW  -j Cid1162799X27867.0
-    $IPTABLES -A Cid1162799X27867.0  -d 1.1.1.1   -j ACCEPT
-    $IPTABLES -A Cid1162799X27867.0  -d 2.2.2.2   -j ACCEPT
-    $IPTABLES -A INPUT -m set  ! --set atbl.1 src  -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 6 (global)
-    # 
-    echo "Rule 6 (global)"
-    # 
-    $IPTABLES -A INPUT -m set  ! --set atbl.1 src  -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 7 (global)
-    # 
-    echo "Rule 7 (global)"
-    # 
-    $IPTABLES -A INPUT -m set  --set atbl.1 src  -m state --state NEW  -j ACCEPT
-    $IPTABLES -A INPUT -m set  --set block_these src  -m state --state NEW  -j ACCEPT
-    # 
-    # Rule 8 (global)
-    # 
-    echo "Rule 8 (global)"
-    # 
-    $IPTABLES -A OUTPUT -m set  --set atbl.1 dst  -j DROP
-    $IPTABLES -A FORWARD -m set  --set atbl.1 dst  -j DROP
+    # -o br1
+    $IPTABLES -A OUTPUT -o br1 -m physdev --physdev-is-bridged --physdev-out vnet+  -m state --state NEW  -j ACCEPT
 }
 
 ip_forward() {
     :
-    echo 1 > /proc/sys/net/ipv4/ip_forward
+    
 }
 
 reset_all() {
@@ -597,15 +402,12 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Nov 28 12:22:13 2011 by vadim"
+        log "Activating firewall script generated Mon Nov 28 12:21:20 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
         
-        check_module_ipset
-        load_run_time_address_table_files
-        
-        load_modules "nat "
+        load_modules " "
         configure_interfaces
         verify_interfaces
         
@@ -650,25 +452,9 @@ case "$cmd" in
         ;;
 
 
-    reload_address_table)
-        reload_address_table $2 $3
-        ;;
-
-    add_to_address_table)
-        add_to_address_table $2 $3 $4
-        ;;
-
-    remove_from_address_table)
-        remove_from_address_table $2 $3 $4
-        ;;
-
-    test_address_table)
-        test_address_table $2 $3
-        ;;
-
 
     *)
-        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces|reload_address_table|add_to_address_table|remove_from_address_table|test_address_table]"
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
         ;;
 
 esac

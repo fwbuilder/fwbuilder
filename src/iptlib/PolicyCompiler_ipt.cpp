@@ -480,6 +480,20 @@ int PolicyCompiler_ipt::prolog()
     actually_used_module_set = false;
 
     build_interface_groups(dbcopy, persistent_objects, fw, ipv6, regular_interfaces);
+
+    // count bridge interfaces. We need this later in
+    // PrintRule::_printDirectionAndInterface
+
+    list<FWObject*> l2 = fw->getByTypeDeep(Interface::TYPENAME);
+    for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i) 
+    {
+        Interface *iface = Interface::cast(*i);
+        assert(iface);
+
+        string interface_type = iface->getOptionsObject()->getStr("type");
+        if (interface_type == "bridge") bridge_count++;
+    }
+
     return n;
 }
 

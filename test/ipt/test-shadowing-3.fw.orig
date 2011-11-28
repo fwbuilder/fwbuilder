@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3588
+#  Firewall Builder  fwb_ipt v5.0.1.3590
 #
-#  Generated Mon Nov 21 11:52:38 2011 PST by vadim
+#  Generated Mon Nov 28 12:23:47 2011 PST by vadim
 #
 # files: * test-shadowing-3.fw /etc/test-shadowing-3.fw
 #
@@ -552,7 +552,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Nov 21 11:52:38 2011 by vadim"
+        log "Activating firewall script generated Mon Nov 28 12:23:47 2011 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
