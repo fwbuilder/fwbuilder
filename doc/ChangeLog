@@ -1,5 +1,12 @@
 2011-11-28  Vadim Kurland  <vadim@netcitadel.com>
 
+	* NATCompiler_PrintRule.cpp (_printIpSetMatch): fixed SF bug
+	#3443609 Return of ID: 3059893": iptables "--set" option
+	deprecated".  Need to use --match-set instead of --set if iptables
+	version is >= 1.4.4. The fix done for #3059893 was only in the
+	policy compiler but needs to be done in both policy and nat
+	compilers.
+
 	* PolicyCompiler_PrintRule.cpp (_printDirectionAndInterface): more
 	fixes for SF bug #3439613. Adding "-i" / "-o" clause to match
 	parent bridge interface. This allows us to correctly match which

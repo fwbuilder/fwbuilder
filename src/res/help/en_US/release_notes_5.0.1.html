@@ -346,8 +346,8 @@
     </p>
   </li>
 
-  <ul>
-    <li>
+  <li>
+    <p>
       SF bug #3439613.  physdev module does not allow --physdev-out
       for non-bridged traffic anymore. We should add
       --physdev-is-bridged to make sure this matches only bridged
@@ -362,8 +362,19 @@
       with virtual machines. Note that the "-i br0" / "-o br0" clause
       is only added when there is more than one bridge interface and
       bridge port name ends with a wild card symbol "+"
-    </li>
-  </ul>
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixed SF bug #3443609 Return of ID: 3059893": iptables "--set"
+      option deprecated".  Need to use --match-set instead of --set if
+      iptables version is >= 1.4.4. The fix done for #3059893 was only
+      in the policy compiler but needs to be done in both policy and
+      nat compilers.
+    </p>
+  </li>
+
 </ul>
 
 

@@ -506,7 +506,14 @@ string NATCompiler_ipt::PrintRule::_printIpSetMatch(Address  *o, RuleElement *re
     string suffix = "dst";
     if (RuleElementOSrc::isA(rel)) suffix = "src";
     if (RuleElementODst::isA(rel)) suffix = "dst";
-    string set_match = "--set " + set_name + " " + suffix;
+
+    string set_match_option;
+    if (XMLTools::version_compare(version, "1.4.4")>=0)
+        set_match_option = "--match-set";
+    else
+        set_match_option = "--set";
+
+    string set_match = set_match_option + " " + set_name + " " + suffix;
     ostringstream ostr;
     ostr << "-m set " << _printSingleOptionWithNegation("", rel, set_match);
     return ostr.str();
