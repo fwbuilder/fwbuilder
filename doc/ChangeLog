@@ -1,3 +1,9 @@
+2011-11-30  Vadim Kurland  <vadim@netcitadel.com>
+
+	* NATCompiler_pf.cpp (NATCompiler_pf::compile): fixes #2674
+	NAT compiler for PF crashed when AttachedNetworks object
+	was used in Translated Source of a NAT rule.
+
 2011-11-28  Vadim Kurland  <vadim@netcitadel.com>
 
 	* NATCompiler_PrintRule.cpp (_printIpSetMatch): fixed SF bug

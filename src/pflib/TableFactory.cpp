@@ -344,7 +344,7 @@ string TableFactory::PrintTables()
                 }
                 if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
                 {
-                    output << atrt->getSourceName() << ":network";
+                    output << atrt->getSourceName() << ":network ";
                 }
             } else
             {

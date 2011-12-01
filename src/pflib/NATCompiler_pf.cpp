@@ -1286,11 +1286,17 @@ void NATCompiler_pf::compile()
              " swap MultiAddress -> MultiAddressRunTime in OSrc") );
     add( new swapMultiAddressObjectsInODst(
              " swap MultiAddress -> MultiAddressRunTime in ODst") );
+    add( new swapMultiAddressObjectsInTSrc(
+             " swap MultiAddress -> MultiAddressRunTime in TSrc") );
+    add( new swapMultiAddressObjectsInTDst(
+             " swap MultiAddress -> MultiAddressRunTime in TDst") );
 
     add( new swapAddressTableObjectsInOSrc(
              "AddressTable -> MultiAddressRunTime in OSrc") );
     add( new swapAddressTableObjectsInODst(
              "AddressTable -> MultiAddressRunTime in ODst") );
+    add( new swapAddressTableObjectsInTSrc(
+             "AddressTable -> MultiAddressRunTime in TSrc") );
     add( new swapAddressTableObjectsInTDst(
              "AddressTable -> MultiAddressRunTime in TDst") );
 
@@ -1298,6 +1304,8 @@ void NATCompiler_pf::compile()
              "process MultiAddress objects in OSrc") );
     add( new processMultiAddressObjectsInODst(
              "process MultiAddress objects in ODst") );
+    add( new processMultiAddressObjectsInTSrc(
+             "process MultiAddress objects in TSrc") );
     add( new processMultiAddressObjectsInTDst(
              "process MultiAddress objects in TDst") );
 

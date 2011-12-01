@@ -54,7 +54,7 @@ pass  quick inet  from <fw93_group_2>  to any  label "RULE 4 -- ACCEPT"
 # Rule  5 (global)
 # object a-192.168.1.10 is a member
 # of at least two groups used in this rule
-pass  quick inet  from { <fw93_group_1> , <fw93_group_2> , <fw93_group_6> }  to any  label "RULE 5 -- ACCEPT"  
+pass  quick inet  from { <fw93_group_2> , <fw93_group_6> , <fw93_group_1> }  to any  label "RULE 5 -- ACCEPT"  
 # 
 # Rule  6 (global)
 # the same rule, same objects as rule 3,

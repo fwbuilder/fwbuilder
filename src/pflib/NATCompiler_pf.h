@@ -266,6 +266,14 @@ namespace fwcompiler
         };
         friend class swapAddressTableObjectsInODst;
             
+        class swapAddressTableObjectsInTSrc : public swapAddressTableObjectsInRE
+        {
+            public:
+            swapAddressTableObjectsInTSrc(const std::string &n) :
+                swapAddressTableObjectsInRE(n,
+                                  libfwbuilder::RuleElementTSrc::TYPENAME) {}
+        };
+            
         class swapAddressTableObjectsInTDst : public swapAddressTableObjectsInRE
         {
             public:
@@ -311,6 +319,15 @@ namespace fwcompiler
                                  libfwbuilder::RuleElementODst::TYPENAME) {}
         };
 
+        class processMultiAddressObjectsInTSrc :
+                  public processMultiAddressObjectsInRE
+        {
+            public:
+            processMultiAddressObjectsInTSrc(const std::string &n) :
+                processMultiAddressObjectsInRE(n,
+                                 libfwbuilder::RuleElementTSrc::TYPENAME) {}
+        };
+
         class processMultiAddressObjectsInTDst :
                   public processMultiAddressObjectsInRE
         {
@@ -319,7 +336,7 @@ namespace fwcompiler
                 processMultiAddressObjectsInRE(n,
                                  libfwbuilder::RuleElementTDst::TYPENAME) {}
         };
-
+                  
         /**
          * this processor is only called if we are using tables. It
          * creates two tables for each rule element Processor

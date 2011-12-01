@@ -780,7 +780,7 @@ void PolicyCompiler_pf::PrintRule::_printAddr(FWObject *o, bool )
         }
         if (atrt->getSubstitutionTypeName()==AttachedNetworks::TYPENAME)
         {
-            compiler->output << atrt->getSourceName() << ":network";
+            compiler->output << atrt->getSourceName() << ":network ";
             return ;
         }
 

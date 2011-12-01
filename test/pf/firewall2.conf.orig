@@ -160,6 +160,12 @@ rdr proto tcp from any to 22.22.22.22 port 119 -> { 192.168.1.10 , 255.255.255.2
 # 
 # Rule  37 (NAT)
 rdr on  eth1 proto tcp from any to (eth1) port 119 -> { 192.168.1.10 , 255.255.255.255 } port 119 round-robin 
+# 
+# Rule  38 (NAT)
+nat from eth0:network to any -> 22.22.22.0/24 
+# 
+# Rule  39 (NAT)
+nat from eth0:network to any -> eth1:network 
 
 # Policy compiler errors and warnings:
 # firewall2:Policy:12: warning: Changing rule direction due to self reference
