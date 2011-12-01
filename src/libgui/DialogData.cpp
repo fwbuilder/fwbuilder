@@ -249,7 +249,7 @@ void DialogData::saveAll(FWObject *new_obj)
         {
             QLineEdit *edit=dynamic_cast<QLineEdit*>(i->w);
             use_obj->setStr(i->attr.toLatin1().constData(),
-                            edit->text().trimmed().toLatin1().constData() );
+                            edit->text().toLatin1().constData() );
         }
         if (dynamic_cast<QTextEdit*>(i->w)!=NULL)
         {
