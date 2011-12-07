@@ -83,7 +83,8 @@ ipfAdvancedDialog::ipfAdvancedDialog(QWidget *parent,FWObject *o)
     }
 
     m_dialog->tabWidget->setTabEnabled(6,false); //Disable tab
-    data.registerOption(m_dialog->ipv4before_2, fwopt, "ipv4_6_order", QStringList() <<  "IPv4 before IPv6" <<"ipv4_first" << "IPv6 before IPv4" << "ipv6_first"      );
+    data.registerOption(m_dialog->ipv4before_2, fwopt, "ipv4_6_order",
+                        QStringList() <<  tr("IPv4 before IPv6") <<"ipv4_first" << tr("IPv6 before IPv4") << "ipv6_first");
     data.registerOption( m_dialog->ipf_log_or_block,fwopt, "ipf_log_or_block"    );
     data.registerOption( m_dialog->ipf_log_body,fwopt, "ipf_log_body"        );
     data.registerOption( m_dialog->ipf_check_shadowing,fwopt, "check_shading"       );

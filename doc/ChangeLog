@@ -1,3 +1,9 @@
+2011-12-07  Vadim Kurland  <vadim@netcitadel.com>
+
+	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):
+	fixed strings that should be translated; these strings
+	caused problems when translation was loaded at the run time.
+
 2011-11-30  Vadim Kurland  <vadim@netcitadel.com>
 
 	* NATCompiler_pf.cpp (NATCompiler_pf::compile): fixes #2674

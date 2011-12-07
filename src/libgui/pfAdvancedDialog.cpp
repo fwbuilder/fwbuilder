@@ -124,9 +124,9 @@ pfAdvancedDialog::pfAdvancedDialog(QWidget *parent,FWObject *o)
 
     data.registerOption(m_dialog->ipv4before, fwopt,
                         "ipv4_6_order",
-                        QStringList() <<  "IPv4 before IPv6"
+                        QStringList() <<  tr("IPv4 before IPv6")
                         <<"ipv4_first"
-                        << "IPv6 before IPv4"
+                        << tr("IPv6 before IPv4")
                         << "ipv6_first");
 
     data.registerOption( m_dialog->pf_log_prefix,fwopt, "log_prefix");
