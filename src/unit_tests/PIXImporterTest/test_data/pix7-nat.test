@@ -157,6 +157,9 @@ nat (inside) 1 access-list WEB2
 
 ! multiple address blocks in pool 3 and multiple lines in access list WEB2
 nat (inside) 3 access-list WEB2
+
+! example of nat () 1 0 0 command
+nat (inside) 3 0 0
   
 static (inside,dmz20) 10.0.0.16 10.1.1.16 netmask 255.255.255.240
 static (inside,dmz20) 10.0.0.100 10.1.1.100 netmask 255.255.255.255

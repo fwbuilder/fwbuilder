@@ -1,5 +1,8 @@
 2011-12-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* pix.g (nat_addr_match): fixes #2677 Policy importer for PIX/ASA
+	could not parse command "nat (inside) 1 0 0"
+
 	* iptAdvancedDialog.cpp (iptAdvancedDialog::iptAdvancedDialog):
 	fixed strings that should be translated; these strings
 	caused problems when translation was loaded at the run time.

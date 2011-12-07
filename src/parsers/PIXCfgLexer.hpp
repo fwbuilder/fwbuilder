@@ -9,7 +9,7 @@
 
 #line 11 "PIXCfgLexer.hpp"
 #include <antlr/config.hpp>
-/* $ANTLR 2.7.7 (20100319): "pix.g" -> "PIXCfgLexer.hpp"$ */
+/* $ANTLR 2.7.7 (20090306): "pix.g" -> "PIXCfgLexer.hpp"$ */
 #include <antlr/CommonToken.hpp>
 #include <antlr/InputBuffer.hpp>
 #include <antlr/BitSet.hpp>

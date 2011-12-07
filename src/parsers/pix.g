@@ -2005,6 +2005,31 @@ nat_addr_match :
             }
         )?
     |
+        INT_CONST
+        {
+            if (LT(0)->getText() != std::string("0"))
+            {
+                importer->reportError(
+                    std::string("Unknown string ")+LT(0)->getText()+
+                    std::string("; expected \"0\""));
+                *dbg << " UNKNOWN STRING " << LT(0)->getText();
+            }
+            importer->nat_a = "0.0.0.0";
+        }
+        (
+            INT_CONST
+            {
+                if (LT(0)->getText() != std::string("0"))
+                {
+                    importer->reportError(
+                        std::string("Unknown string ")+LT(0)->getText()+
+                        std::string("; expected \"0\""));
+                    *dbg << " UNKNOWN STRING " << LT(0)->getText();
+                }
+                importer->nat_nm = "0.0.0.0";
+            }
+        )?
+    |
         ACCESS_LIST acl_name:WORD
         {
             importer->nat_acl = acl_name->getText();
