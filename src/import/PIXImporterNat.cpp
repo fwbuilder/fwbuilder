@@ -289,128 +289,186 @@ void PIXImporter::buildSNATRule()
     // Parser matches INT_CONST so it can't be anything but integer...
     assert (ok);
 
-    foreach(GlobalPool pool, global_pools[pool_num])
+    if (pool_num == 0) buildNoNATRule();
+    else
     {
-        if (fwbdebug)
+        foreach(GlobalPool pool, global_pools[pool_num])
         {
-            qDebug() << "NAT command num=" << pool_num;
-            qDebug() << "nat_a=" << nat_a.c_str()
-                     << "nat_nm=" << nat_nm.c_str();
-            qDebug() << "Using pool " << pool.toString();
-        }
-
-        Interface *post_intf = getInterfaceByLabel(pool.pool_interface);
-
-        newNATRule();
-
-        NATRule *rule = NATRule::cast(current_rule);
-
-        Interface *pre_intf = getInterfaceByLabel(prenat_interface);
-
-        rule->setAction(NATRule::Translate);
-
-        if ( ! nat_a.empty())
-        {
-            // makeSrcObj() uses these variables
-            src_a = nat_a;
-            src_nm = nat_nm;
-
-            RuleElement* osrc = rule->getOSrc();
-            assert(osrc!=NULL);
-            FWObject *s = makeSrcObj();
-            if (s) osrc->addRef( s );
-        }
-
-        ObjectSignature sig(error_tracker);
-        FWObject *addr = NULL;
-
-        if (pool.start == "interface")
-        {
-            addr = post_intf;
-        } else
-        {
-            if (pool.start == pool.end)
+            if (fwbdebug)
             {
-                sig.type_name = Address::TYPENAME;
-                sig.address = pool.start.c_str();
-                sig.netmask = pool.netmask.c_str();
+                qDebug() << "NAT command num=" << pool_num;
+                qDebug() << "nat_a=" << nat_a.c_str()
+                         << "nat_nm=" << nat_nm.c_str();
+                qDebug() << "Using pool " << pool.toString();
+            }
+
+            Interface *post_intf = getInterfaceByLabel(pool.pool_interface);
+
+            newNATRule();
+
+            NATRule *rule = NATRule::cast(current_rule);
+
+            Interface *pre_intf = getInterfaceByLabel(prenat_interface);
+
+            rule->setAction(NATRule::Translate);
+
+            if ( ! nat_a.empty())
+            {
+                // makeSrcObj() uses these variables
+                src_a = nat_a;
+                src_nm = nat_nm;
+
+                RuleElement* osrc = rule->getOSrc();
+                assert(osrc!=NULL);
+                FWObject *s = makeSrcObj();
+                if (s) osrc->addRef( s );
+            }
+
+            ObjectSignature sig(error_tracker);
+            FWObject *addr = NULL;
+
+            if (pool.start == "interface")
+            {
+                addr = post_intf;
             } else
             {
-                sig.type_name = AddressRange::TYPENAME;
-                sig.setAddressRangeStart(pool.start.c_str());
-                sig.setAddressRangeEnd(pool.end.c_str());
-            }
-            addr = commitObject(address_maker->createObject(sig));
-        }
-
-        RuleElement* tsrc = rule->getTSrc();
-        assert(tsrc!=NULL);
-        if (addr) tsrc->addRef( addr );
-
-        RuleElement *itf_i_re = rule->getItfInb();
-        assert(itf_i_re!=NULL);
-        itf_i_re->addRef(pre_intf);
-
-        RuleElement *itf_o_re = rule->getItfOutb();
-        assert(itf_o_re!=NULL);
-        itf_o_re->addRef(post_intf);
-
-        if ( ! nat_acl.empty())
-        {
-            UnidirectionalRuleSet *rs = all_rulesets[nat_acl];
-            if (rs)
-            {
-                for(FWObject::iterator rs_it=rs->ruleset->begin();
-                    rs_it!=rs->ruleset->end(); ++rs_it)
+                if (pool.start == pool.end)
                 {
-                    PolicyRule *policy_rule = PolicyRule::cast(*rs_it);
-            
-                    if (policy_rule)
-                    {
-                        FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
-                        NATRule *nat_rule = NATRule::cast(
-                            dbroot->create(NATRule::TYPENAME));
-                        nat_rule->duplicate(rule);
-
-                        RuleElement* osrc = nat_rule->getOSrc();
-                        RuleElement* odst = nat_rule->getODst();
-                        RuleElement* osrv = nat_rule->getOSrv();
-
-                        /* copy objects from a policy rule into "original"
-                         * rule elements of a nat rule
-                         *
-                         * Src --> OSrc
-                         * Dst --> ODst
-                         * Srv --> OSrv
-                         */
-                        RuleElement *re = policy_rule->getSrc();
-                        FWObject::iterator it;
-                        for (it=re->begin(); it!=re->end(); ++it)
-                            osrc->addRef(FWReference::getObject(*it));
-
-                        re = policy_rule->getDst();
-                        for (it=re->begin(); it!=re->end(); ++it)
-                            odst->addRef(FWReference::getObject(*it));
-
-                        re = policy_rule->getSrv();
-                        for (it=re->begin(); it!=re->end(); ++it)
-                            osrv->addRef(FWReference::getObject(*it));
-
-                        current_ruleset->ruleset->add(nat_rule);
-                        addStandardImportComment(
-                            nat_rule, QString::fromUtf8(rule_comment.c_str()));
-                    }
+                    sig.type_name = Address::TYPENAME;
+                    sig.address = pool.start.c_str();
+                    sig.netmask = pool.netmask.c_str();
+                } else
+                {
+                    sig.type_name = AddressRange::TYPENAME;
+                    sig.setAddressRangeStart(pool.start.c_str());
+                    sig.setAddressRangeEnd(pool.end.c_str());
                 }
-
-                rs->to_be_deleted = true;
+                addr = commitObject(address_maker->createObject(sig));
             }
-        } else
-        {
-            // add it to the current ruleset
-            current_ruleset->ruleset->add(rule);
-            addStandardImportComment(rule,
-                                     QString::fromUtf8(rule_comment.c_str()));
+
+            RuleElement* tsrc = rule->getTSrc();
+            assert(tsrc!=NULL);
+            if (addr) tsrc->addRef( addr );
+
+            RuleElement *itf_i_re = rule->getItfInb();
+            assert(itf_i_re!=NULL);
+            itf_i_re->addRef(pre_intf);
+
+            RuleElement *itf_o_re = rule->getItfOutb();
+            assert(itf_o_re!=NULL);
+            itf_o_re->addRef(post_intf);
+
+            if ( ! nat_acl.empty())
+            {
+                natRuleWithACL(rule);
+            } else
+            {
+                // add it to the current ruleset
+                current_ruleset->ruleset->add(rule);
+                addStandardImportComment(rule,
+                                         QString::fromUtf8(rule_comment.c_str()));
+            }
         }
     }
-
 }
+
+
+void PIXImporter::buildNoNATRule()
+{
+    addMessageToLog(QString("NAT exemption rule (\"nat (interface) 0\" command)"));
+
+    if (fwbdebug)
+    {
+        qDebug() << "NAT command num=0";
+        qDebug() << "nat_a=" << nat_a.c_str() << "nat_nm=" << nat_nm.c_str();
+    }
+
+    newNATRule();
+
+    NATRule *rule = NATRule::cast(current_rule);
+    rule->setRuleType(libfwbuilder::NATRule::NONAT);
+
+    Interface *pre_intf = getInterfaceByLabel(prenat_interface);
+
+    rule->setAction(NATRule::Translate);
+
+    if ( ! nat_a.empty())
+    {
+        // makeSrcObj() uses these variables
+        src_a = nat_a;
+        src_nm = nat_nm;
+
+        RuleElement* osrc = rule->getOSrc();
+        assert(osrc!=NULL);
+        FWObject *s = makeSrcObj();
+        if (s) osrc->addRef( s );
+    }
+
+    RuleElement *itf_i_re = rule->getItfInb();
+    assert(itf_i_re!=NULL);
+    itf_i_re->addRef(pre_intf);
+
+    if ( ! nat_acl.empty())
+    {
+        natRuleWithACL(rule);
+    } else
+    {
+        // add it to the current ruleset
+        current_ruleset->ruleset->add(rule);
+        addStandardImportComment(rule,
+                                 QString::fromUtf8(rule_comment.c_str()));
+    }
+}
+
+void PIXImporter::natRuleWithACL(NATRule *rule)
+{
+
+    UnidirectionalRuleSet *rs = all_rulesets[nat_acl];
+    if (rs)
+    {
+        for(FWObject::iterator rs_it=rs->ruleset->begin();
+            rs_it!=rs->ruleset->end(); ++rs_it)
+        {
+            PolicyRule *policy_rule = PolicyRule::cast(*rs_it);
+            
+            if (policy_rule)
+            {
+                FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
+                NATRule *nat_rule = NATRule::cast(
+                    dbroot->create(NATRule::TYPENAME));
+                nat_rule->duplicate(rule);
+
+                RuleElement* osrc = nat_rule->getOSrc();
+                RuleElement* odst = nat_rule->getODst();
+                RuleElement* osrv = nat_rule->getOSrv();
+
+                /* copy objects from a policy rule into "original"
+                 * rule elements of a nat rule
+                 *
+                 * Src --> OSrc
+                 * Dst --> ODst
+                 * Srv --> OSrv
+                 */
+                RuleElement *re = policy_rule->getSrc();
+                FWObject::iterator it;
+                for (it=re->begin(); it!=re->end(); ++it)
+                    osrc->addRef(FWReference::getObject(*it));
+
+                re = policy_rule->getDst();
+                for (it=re->begin(); it!=re->end(); ++it)
+                    odst->addRef(FWReference::getObject(*it));
+
+                re = policy_rule->getSrv();
+                for (it=re->begin(); it!=re->end(); ++it)
+                    osrv->addRef(FWReference::getObject(*it));
+
+                current_ruleset->ruleset->add(nat_rule);
+                addStandardImportComment(
+                    nat_rule, QString::fromUtf8(rule_comment.c_str()));
+            }
+        }
+
+        rs->to_be_deleted = true;
+    }
+}
+

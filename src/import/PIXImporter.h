@@ -73,6 +73,7 @@ class PIXImporter : public IOSImporter
     void mixServiceObjects(libfwbuilder::FWObject *src_ports,
                            libfwbuilder::FWObject *dst_ports,
                            libfwbuilder::FWObject *service_group);
+    void natRuleWithACL(libfwbuilder::NATRule *rule);
     
 public:
 
@@ -128,6 +129,7 @@ public:
     void pushNATRule();
     void buildDNATRule();
     void buildSNATRule();
+    void buildNoNATRule();
     virtual void pushRule();
     
     // this method actually adds interfaces to the firewall object

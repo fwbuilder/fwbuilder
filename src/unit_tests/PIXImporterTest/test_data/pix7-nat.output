@@ -48,32 +48,29 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 109: filtering rule: access list WEB, action permit
 111: filtering rule: access list WEB2, action permit
 112: filtering rule: access list WEB2, action permit
-114: filtering rule: access list NET1, action permit
-142: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
-143: Source translation rule ("nat" command)
-145: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
-146: Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
-147: Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
-148: Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
-149: Global address pool: number 3, interface outside, address range 192.0.2.20-192.0.2.20, netmask 255.255.255.255 
-150: Global address pool: number 3, interface outside, address range 192.0.2.30-192.0.2.31, netmask 255.255.255.255 
-152: Source translation rule ("nat" command)
+113: filtering rule: access list EXEMPT, action permit
+115: filtering rule: access list NET1, action permit
+143: Global address pool: number 1, interface outside, address range interface-interface, netmask 255.255.255.255 
+144: Source translation rule ("nat" command)
+146: Global address pool: number 2, interface outside, address range 192.0.2.10-192.0.2.10, netmask 255.255.255.255 
+147: Global address pool: number 2, interface outside, address range 192.0.2.11-192.0.2.15, netmask 255.255.255.255 
+148: Global address pool: number 2, interface outside, address range 192.0.2.128-192.0.2.128, netmask 255.255.255.240 
+149: Global address pool: number 2, interface dmz20, address range 10.0.0.128-10.0.0.128, netmask 255.255.255.240 
+150: Global address pool: number 3, interface outside, address range 192.0.2.20-192.0.2.20, netmask 255.255.255.255 
+151: Global address pool: number 3, interface outside, address range 192.0.2.30-192.0.2.31, netmask 255.255.255.255 
 153: Source translation rule ("nat" command)
-155: Source translation rule ("nat" command)
+154: Source translation rule ("nat" command)
 156: Source translation rule ("nat" command)
-159: Source translation rule ("nat" command)
-162: Source translation rule ("nat" command)
-164: Destination translation rule ("static" command)
-165: Destination translation rule ("static" command)
-166: Destination translation rule ("static" command)
-167: Destination translation rule ("static" command)
-168: Destination translation rule ("static" command)
+157: Source translation rule ("nat" command)
+160: Source translation rule ("nat" command)
+163: Source translation rule ("nat" command)
+163: NAT exemption rule ("nat (interface) 0" command)
+166: Source translation rule ("nat" command)
 170: Destination translation rule ("static" command)
 171: Destination translation rule ("static" command)
 172: Destination translation rule ("static" command)
 173: Destination translation rule ("static" command)
 174: Destination translation rule ("static" command)
-175: Destination translation rule ("static" command)
 176: Destination translation rule ("static" command)
 177: Destination translation rule ("static" command)
 178: Destination translation rule ("static" command)
@@ -119,17 +116,23 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 218: Destination translation rule ("static" command)
 219: Destination translation rule ("static" command)
 220: Destination translation rule ("static" command)
+221: Destination translation rule ("static" command)
+222: Destination translation rule ("static" command)
+223: Destination translation rule ("static" command)
+224: Destination translation rule ("static" command)
 225: Destination translation rule ("static" command)
 226: Destination translation rule ("static" command)
-227: Destination translation rule ("static" command)
-229: Destination translation rule ("static" command)
+231: Destination translation rule ("static" command)
 232: Destination translation rule ("static" command)
-235: Interface Ethernet0.101 ruleset outside_in direction 'in'
-236: Interface Ethernet1 ruleset inside_in direction 'in'
-237: Interface Ethernet1 ruleset inside_out direction 'out'
-278: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-278: filtering rule: access list ssh_commands_inside, action permit
-279: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-279: filtering rule: access list ssh_commands_inside, action permit
-280: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
-280: filtering rule: access list ssh_commands_outside, action permit
+233: Destination translation rule ("static" command)
+235: Destination translation rule ("static" command)
+238: Destination translation rule ("static" command)
+241: Interface Ethernet0.101 ruleset outside_in direction 'in'
+242: Interface Ethernet1 ruleset inside_in direction 'in'
+243: Interface Ethernet1 ruleset inside_out direction 'out'
+284: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+284: filtering rule: access list ssh_commands_inside, action permit
+285: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+285: filtering rule: access list ssh_commands_inside, action permit
+286: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+286: filtering rule: access list ssh_commands_outside, action permit

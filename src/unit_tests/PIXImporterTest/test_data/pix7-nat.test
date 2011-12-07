@@ -110,6 +110,7 @@ access-list WEB permit tcp 10.1.1.0 255.255.255.0 4.2.2.1 255.255.255.255 eq 80
 
 access-list WEB2 permit tcp 192.168.2.0 255.255.255.0 4.2.2.1 255.255.255.255 eq 80
 access-list WEB2 permit tcp 192.168.3.0 255.255.255.0 4.2.2.1 255.255.255.255 eq 80
+access-list EXEMPT permit ip 192.168.4.0 255.255.255.0 any
 
 access-list NET1 permit ip host 10.1.1.20 host 4.2.2.1
 
@@ -158,8 +159,13 @@ nat (inside) 1 access-list WEB2
 ! multiple address blocks in pool 3 and multiple lines in access list WEB2
 nat (inside) 3 access-list WEB2
 
+! nat exemption example
+nat (inside) 0 access-list EXEMPT
+
 ! example of nat () 1 0 0 command
 nat (inside) 3 0 0
+
+
   
 static (inside,dmz20) 10.0.0.16 10.1.1.16 netmask 255.255.255.240
 static (inside,dmz20) 10.0.0.100 10.1.1.100 netmask 255.255.255.255

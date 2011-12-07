@@ -1,5 +1,9 @@
 2011-12-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PIXImporterNat.cpp (PIXImporter::buildNoNATRule): fixes #2679
+	Policy importer for PIX/ASA could not import "nat exemption" rule
+	(for example: "nat (inside) 0 access-list EXEMPT")
+
 	* pix.g (nat_addr_match): fixes #2677 Policy importer for PIX/ASA
 	could not parse command "nat (inside) 1 0 0"
 
