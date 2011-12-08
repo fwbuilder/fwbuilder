@@ -350,13 +350,19 @@ void PIXImporter::buildSNATRule()
             assert(tsrc!=NULL);
             if (addr) tsrc->addRef( addr );
 
-            RuleElement *itf_i_re = rule->getItfInb();
-            assert(itf_i_re!=NULL);
-            itf_i_re->addRef(pre_intf);
+            if (pre_intf)
+            {
+                RuleElement *itf_i_re = rule->getItfInb();
+                assert(itf_i_re!=NULL);
+                itf_i_re->addRef(pre_intf);
+            }
 
-            RuleElement *itf_o_re = rule->getItfOutb();
-            assert(itf_o_re!=NULL);
-            itf_o_re->addRef(post_intf);
+            if (post_intf)
+            {
+                RuleElement *itf_o_re = rule->getItfOutb();
+                assert(itf_o_re!=NULL);
+                itf_o_re->addRef(post_intf);
+            }
 
             if ( ! nat_acl.empty())
             {

@@ -2037,6 +2037,12 @@ nat_addr_match :
     ;
 
 nat_command_last_parameters :
+        // nat (real_ifc) nat_id real_ip [mask [dns] [outside] [[tcp] tcp_max_conns [emb_limit]] [udp udp_max_conns] [norandomseq]]
+        //
+        // here we deal with parameters starting with "dns". Note that compiler
+        // does not know anything about max_conns and emb_limit options anyway
+        //
+        //
         //  <0-65535>    The maximum number of simultaneous TCP connections
         //  dns          Rewrite DNS address record
         //  norandomseq  Disable TCP sequence number randomization
@@ -2045,15 +2051,9 @@ nat_command_last_parameters :
         //  udp          Configure UDP specific parameters
         // <cr>
 
-        (DNS)?
-        (OUTSIDE)?
-        (TCP | UDP)?
-        max_conn:INT_CONST (max_emb_conn:INT_CONST)?
-        {
-            importer->static_max_conn = max_conn->getText();
-            if (max_emb_conn)
-                importer->static_max_emb_conn = max_emb_conn->getText();
-        }
+        nat_and_static_command_common_last_parameters
+    |
+        OUTSIDE
     ;
 
 nat_new_top_level_command :
@@ -2284,22 +2284,34 @@ static_command_common_last_parameters :
         //  udp          Configure UDP specific parameters
         //  <cr>
 
-        DNS
-        {
-            importer->addMessageToLog(
-                QString("Warning: 'static' command option 'dns' is not supported"));
-        }
-    |
-        NORANDOMSEQ
-        {
-            importer->addMessageToLog(
-                QString("Warning: 'static' command option 'norandomseq' is not supported"));
-        }
+        nat_and_static_command_common_last_parameters
     |
         NETMASK nm:IPV4
         {
             importer->real_nm = nm->getText();
             *dbg << "real netmask: " << importer->real_nm;
+        }
+    ;
+
+nat_and_static_command_common_last_parameters :
+        // <0-65535>    The maximum number of simultaneous tcp connections
+        //  dns          Use the created xlate to rewrite DNS address record
+        //  netmask      Configure Netmask to apply to IP addresses
+        //  norandomseq  Disable TCP sequence number randomization
+        //  tcp          Configure TCP specific parameters
+        //  udp          Configure UDP specific parameters
+        //  <cr>
+
+        DNS
+        {
+            importer->addMessageToLog(
+                QString("Warning: 'nat' and 'static' command option 'dns' is not supported"));
+        }
+    |
+        NORANDOMSEQ
+        {
+            importer->addMessageToLog(
+                QString("Warning: 'nat' and 'static' command option 'norandomseq' is not supported"));
         }
     |
         (TCP | UDP)?

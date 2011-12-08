@@ -1,5 +1,8 @@
 2011-12-07  Vadim Kurland  <vadim@netcitadel.com>
 
+	* pix.g (nat_command_last_parameters): fixes #2678 Policy importer
+	for PIX/ASA could not parse nat command with parameter "outside"
+
 	* PIXImporterNat.cpp (PIXImporter::buildNoNATRule): fixes #2679
 	Policy importer for PIX/ASA could not import "nat exemption" rule
 	(for example: "nat (inside) 0 access-list EXEMPT")

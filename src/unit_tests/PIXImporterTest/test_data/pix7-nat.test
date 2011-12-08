@@ -165,6 +165,9 @@ nat (inside) 0 access-list EXEMPT
 ! example of nat () 1 0 0 command
 nat (inside) 3 0 0
 
+! "nat outside example with max_conn parameter
+nat (dmz20) 2 10.2.2.0 255.255.255.0 outside 1000
+
 
   
 static (inside,dmz20) 10.0.0.16 10.1.1.16 netmask 255.255.255.240

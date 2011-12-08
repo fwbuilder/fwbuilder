@@ -66,14 +66,12 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 163: Source translation rule ("nat" command)
 163: NAT exemption rule ("nat (interface) 0" command)
 166: Source translation rule ("nat" command)
-170: Destination translation rule ("static" command)
-171: Destination translation rule ("static" command)
-172: Destination translation rule ("static" command)
+169: Source translation rule ("nat" command)
 173: Destination translation rule ("static" command)
 174: Destination translation rule ("static" command)
+175: Destination translation rule ("static" command)
 176: Destination translation rule ("static" command)
 177: Destination translation rule ("static" command)
-178: Destination translation rule ("static" command)
 179: Destination translation rule ("static" command)
 180: Destination translation rule ("static" command)
 181: Destination translation rule ("static" command)
@@ -122,17 +120,20 @@ Warning: interface Ethernet6 was not imported because it is in "shutdown" mode
 224: Destination translation rule ("static" command)
 225: Destination translation rule ("static" command)
 226: Destination translation rule ("static" command)
-231: Destination translation rule ("static" command)
-232: Destination translation rule ("static" command)
-233: Destination translation rule ("static" command)
+227: Destination translation rule ("static" command)
+228: Destination translation rule ("static" command)
+229: Destination translation rule ("static" command)
+234: Destination translation rule ("static" command)
 235: Destination translation rule ("static" command)
+236: Destination translation rule ("static" command)
 238: Destination translation rule ("static" command)
-241: Interface Ethernet0.101 ruleset outside_in direction 'in'
-242: Interface Ethernet1 ruleset inside_in direction 'in'
-243: Interface Ethernet1 ruleset inside_out direction 'out'
-284: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-284: filtering rule: access list ssh_commands_inside, action permit
-285: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
-285: filtering rule: access list ssh_commands_inside, action permit
-286: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
-286: filtering rule: access list ssh_commands_outside, action permit
+241: Destination translation rule ("static" command)
+244: Interface Ethernet0.101 ruleset outside_in direction 'in'
+245: Interface Ethernet1 ruleset inside_in direction 'in'
+246: Interface Ethernet1 ruleset inside_out direction 'out'
+287: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+287: filtering rule: access list ssh_commands_inside, action permit
+288: Interface Ethernet1 ruleset ssh_commands_inside direction 'in'
+288: filtering rule: access list ssh_commands_inside, action permit
+289: Interface Ethernet0.101 ruleset ssh_commands_outside direction 'in'
+289: filtering rule: access list ssh_commands_outside, action permit

@@ -208,6 +208,7 @@ public:
 	public: void nat_new_top_level_command();
 	public: void nat_addr_match();
 	public: void nat_command_last_parameters();
+	public: void nat_and_static_command_common_last_parameters();
 	public: void static_starts_with_hostaddr();
 	public: void static_starts_with_tcp_udp();
 	public: void static_mapped_addr_match();
@@ -319,6 +320,8 @@ private:
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_42;
 	static const unsigned long _tokenSet_43_data_[];
 	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_43;
+	static const unsigned long _tokenSet_44_data_[];
+	static const ANTLR_USE_NAMESPACE(antlr)BitSet _tokenSet_44;
 };
 
 #endif /*INC_PIXCfgParser_hpp_*/
