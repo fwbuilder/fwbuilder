@@ -1,3 +1,11 @@
+2012-01-02  Vadim Kurland  <vadim@netcitadel.com>
+
+	* VERSION (FWB_MICRO_VERSION): v 5.0.2
+
+2011-12-23  Vadim Kurland  <vadim@netcitadel.com>
+
+	* v5.0.1 released
+
 2011-12-07  Vadim Kurland  <vadim@netcitadel.com>
 
 	* pix.g (nat_command_last_parameters): fixes #2678 Policy importer
