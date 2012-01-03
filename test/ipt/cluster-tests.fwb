@@ -92,6 +92,13 @@
         <NetworkIPv6 id="id2383X75851" name="link-local ipv6" comment="RFC4291   Link-local unicast net" ro="False" address="fe80::" netmask="10"/>
         <NetworkIPv6 id="id2685X75851" name="multicast ipv6" comment="RFC4291  ipv6 multicast addresses" ro="False" address="ff00::" netmask="8"/>
         <NetworkIPv6 id="id2986X75851" name="experimental ipv6" comment="RFC2928, RFC4773 &#10;&#10;&quot;The block of Sub-TLA IDs assigned to the IANA&#10;(i.e., 2001:0000::/29 - 2001:01F8::/29) is for&#10;assignment for testing and experimental usage to&#10;support activities such as the 6bone, and&#10;for new approaches like exchanges.&quot;  [RFC2928]&#10;&#10;" ro="False" address="2001::" netmask="23"/>
+        <Network id="id3289X12564" name="TEST-NET-2" comment="RFC 5735&#10;RFC 5737&#10;" ro="False" address="198.51.100.0" netmask="255.255.255.0"/>
+        <Network id="id3300X12564" name="TEST-NET-3" comment="RFC 5735&#10;RFC 5737" ro="False" address="203.0.113.0" netmask="255.255.255.0"/>
+        <Network id="id3311X12564" name="Benchmark tests network" comment="RFC 5735" ro="False" address="198.18.0.0" netmask="255.254.0.0"/>
+        <NetworkIPv6 id="id3326X12564" name="mapped-ipv4" comment="" ro="False" address="::ffff:0.0.0.0" netmask="96"/>
+        <NetworkIPv6 id="id3341X12564" name="translated-ipv4" comment="" ro="False" address="::ffff:0:0:0" netmask="96"/>
+        <NetworkIPv6 id="id3350X12564" name="Teredo" comment="" ro="False" address="2001::" netmask="32"/>
+        <NetworkIPv6 id="id3359X12564" name="unique-local" comment="" ro="False" address="fc00::" netmask="7"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
@@ -318,6 +325,12 @@
         <TCPService id="id41291887" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-java-1" comment="Java VNC viewer, display 1" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5801" dst_range_end="5801"/>
         <TCPService id="id41291888" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-1" comment="Regular VNC viewer, display 1" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5901" dst_range_end="5901"/>
         <TCPService id="id463FE5FE11008" ack_flag="False" ack_flag_mask="False" established="True" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="All TCP established" comment="Some firewall platforms can match TCP packets with flags ACK or RST set; the option is usually called &quot;established&quot;.&#10;&#10;Note that you can use this object only in the policy rules of the firewall that supports this option.&#10;&#10;If you need to match reply packets for a specific TCP service and wish to use option &quot;established&quot;, make a copy of this object and set source port range to match the service.&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id1577X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rtmp" comment="Real Time Messaging Protocol" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1935" dst_range_end="1935"/>
+        <TCPService id="id1590X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-client" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5222" dst_range_end="5222"/>
+        <TCPService id="id1609X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-server" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5269" dst_range_end="5269"/>
+        <TCPService id="id1622X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-client-ssl" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5223" dst_range_end="5223"/>
+        <TCPService id="id1631X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-server-ssl" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5270" dst_range_end="5270"/>
+        <TCPService id="id1644X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nrpe" comment="NRPE add-on for Nagios  http://www.nagios.org/&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5666" dst_range_end="5666"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
         <UDPService id="udp-ALL_UDP_Masqueraded" name="ALL UDP Masqueraded" comment="ipchains used to use this port range for masqueraded packets" ro="False" src_range_start="61000" src_range_end="65095" dst_range_start="0" dst_range_end="0"/>
@@ -1901,7 +1914,7 @@
           <ObjectRef ref="id4055X2906"/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id2772X94039" host_OS="linux24" inactive="False" lastCompiled="1248541095" lastInstalled="0" lastModified="1272731835" platform="iptables" name="vrrp_cluster_1" comment="" ro="False">
+      <Cluster id="id2772X94039" host_OS="linux24" inactive="False" lastCompiled="1248541095" lastInstalled="0" lastModified="1325552048" platform="iptables" name="vrrp_cluster_1" comment="" ro="False">
         <NAT id="id2866X94039" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id2867X94039" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -2222,7 +2235,7 @@
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1265516307" lastInstalled="0" lastModified="1294434730" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
+      <Cluster id="id3433X13311" host_OS="linux24" inactive="False" lastCompiled="1265516307" lastInstalled="0" lastModified="1325552048" platform="iptables" name="heartbeat_cluster_1" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;" ro="False">
         <NAT id="id3587X13311" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id5131X78768" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3231,7 +3244,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id3937X13563" host_OS="linux24" lastCompiled="1272731846" lastInstalled="0" lastModified="1272731842" platform="iptables" name="vrrp_cluster_2" comment="" ro="False">
+      <Cluster id="id3937X13563" host_OS="linux24" lastCompiled="1272731846" lastInstalled="0" lastModified="1325552048" platform="iptables" name="vrrp_cluster_2" comment="" ro="False">
         <NAT id="id3941X13563" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id5083X25627" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3537,7 +3550,7 @@
           <ClusterGroupOptions/>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id4400X28690" host_OS="linux24" inactive="False" lastCompiled="1248555910" lastInstalled="0" lastModified="1272731835" platform="iptables" name="openais_cluster_1" comment="" ro="False">
+      <Cluster id="id4400X28690" host_OS="linux24" inactive="False" lastCompiled="1248555910" lastInstalled="0" lastModified="1325552048" platform="iptables" name="openais_cluster_1" comment="" ro="False">
         <NAT id="id4568X28690" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id4569X28690" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -3911,7 +3924,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id5184X20350" host_OS="linux24" inactive="False" lastCompiled="1265516308" lastInstalled="0" lastModified="1272731835" platform="iptables" name="heartbeat_cluster_2" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;&#10;same as heartbeat_cluster_1 except using unicast for conntrack and heartbeat&#10;" ro="False">
+      <Cluster id="id5184X20350" host_OS="linux24" inactive="False" lastCompiled="1265516308" lastInstalled="0" lastModified="1325552048" platform="iptables" name="heartbeat_cluster_2" comment="This is an example of linux/heartbeat cluster with two policy rule sets. Branching rule in the top policy passes control to rule set to_fw, which is different in member firewalls.  See ticket #372 for explanation.&#10;&#10;same as heartbeat_cluster_1 except using unicast for conntrack and heartbeat&#10;" ro="False">
         <NAT id="id5369X20350" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id5370X20350" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -4395,7 +4408,7 @@
           </ClusterGroupOptions>
         </StateSyncClusterGroup>
       </Cluster>
-      <Cluster id="id58476X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269724200" platform="iptables" name="heartbeat_cluster_1_d" comment="" ro="False">
+      <Cluster id="id58476X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1325552042" platform="iptables" name="heartbeat_cluster_1_d" comment="" ro="False">
         <NAT id="id58844X27834" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <NATRule id="id288869X75145" disabled="False" group="" position="0" action="Translate" comment="">
             <OSrc neg="False">
@@ -5647,7 +5660,7 @@
       <ServiceGroup id="id1513X69605" name="TagServices" comment="" ro="False"/>
     </ServiceGroup>
     <ObjectGroup id="id1514X69605" name="Firewalls" comment="" ro="False">
-      <Firewall id="id2735X69605" host_OS="linux24" inactive="False" lastCompiled="1272731846" lastInstalled="0" lastModified="1272731828" platform="iptables" version="" name="linux-1" comment="  " ro="False">
+      <Firewall id="id2735X69605" host_OS="linux24" inactive="False" lastCompiled="1272731846" lastInstalled="0" lastModified="1325552048" platform="iptables" version="1.4.0" name="linux-1" comment="  " ro="False">
         <NAT id="id2827X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -5822,7 +5835,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id3009X69605" host_OS="linux24" inactive="False" lastCompiled="1272731846" lastInstalled="0" lastModified="1272731835" platform="iptables" version="" name="linux-2" comment="" ro="False">
+      <Firewall id="id3009X69605" host_OS="linux24" inactive="False" lastCompiled="1272731846" lastInstalled="0" lastModified="1325552045" platform="iptables" version="1.4.0" name="linux-2" comment="" ro="False">
         <NAT id="id3101X69605" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
           <RuleSetOptions/>
         </NAT>
@@ -6567,7 +6580,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id57974X27834" host_OS="linux24" lastCompiled="0" lastInstalled="0" lastModified="1269723357" platform="iptables" version="" name="linux-1-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id57974X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1325552038" platform="iptables" version="" name="linux-1-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id58864X27834" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
           <RuleSetOptions/>
         </NAT>
@@ -6686,7 +6699,7 @@
           <Option name="verify_interfaces">True</Option>
         </FirewallOptions>
       </Firewall>
-      <Firewall id="id58236X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1269723372" platform="iptables" version="" name="linux-2-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
+      <Firewall id="id58236X27834" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1325552042" platform="iptables" version="" name="linux-2-d" comment="This firewall has two interfaces. Eth0 faces outside and has a dynamic address; eth1 faces inside.&#10;Policy includes basic rules to permit unrestricted outbound access and anti-spoofing rules. Access to the firewall is permitted only from internal network and only using SSH. The firewall uses one of the machines on internal network for DNS. Internal network is configured with address 192.168.1.0/255.255.255.0" ro="False">
         <NAT id="id58870X27834" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="False">
           <RuleSetOptions/>
         </NAT>

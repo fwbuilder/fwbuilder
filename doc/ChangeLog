@@ -1,5 +1,14 @@
 2012-01-02  Vadim Kurland  <vadim@netcitadel.com>
 
+	* PolicyCompiler_ipt.cpp (specialCaseAddressRangeInRE::processNext):
+	fixed SF bug #3468358 "change in rule-compilation between 5.0.0
+	and 5.0.1". Rule with cluster interface in "Destination"
+	should compile into matching ip addresses assigned to the cluster
+	interface object and corresponding member firewall's interface
+	object, but in v5.0.1 it only matched member interface
+	address. This bug triggered when iptables version was set to
+	1.2.11 or greater. This was a regression from v5.0.0
+	
 	* VERSION (FWB_MICRO_VERSION): v 5.0.2
 
 2011-12-23  Vadim Kurland  <vadim@netcitadel.com>

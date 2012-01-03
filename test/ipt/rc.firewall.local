@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.1.3590
+#  Firewall Builder  fwb_ipt v5.0.2.3593
 #
-#  Generated Mon Nov 28 13:42:52 2011 PST by vadim
+#  Generated Mon Jan  2 16:46:57 2012 PST by vadim
 #
 # files: * rc.firewall.local /etc/rc.d//rc.firewall.local
 #

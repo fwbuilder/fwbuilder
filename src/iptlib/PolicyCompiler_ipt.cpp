@@ -2328,9 +2328,15 @@ bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
 
     for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
-        FWObject *ref = *i1;
-        Address *addr_obj = compiler->correctForCluster(
-            Address::cast(FWReference::getObject(ref)));
+        Address *addr_obj = Address::cast(FWReference::getObject(*i1));
+        if (addr_obj == NULL) continue;
+/*
+ * commented out for SF bug 3468358
+ * Why did I need to replace cluster interface with member interface if
+ * addresses of interfaces can not be AddressRange objects ?
+ *        Address *addr_obj = compiler->correctForCluster(Address::cast(obj));
+ */
+
         if (addr_obj && !addr_obj->isAny() && AddressRange::isA(addr_obj) &&
             addr_obj->dimension() == 1)
         {
