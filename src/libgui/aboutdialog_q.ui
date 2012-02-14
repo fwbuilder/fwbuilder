@@ -470,7 +470,7 @@ p, li { white-space: pre-wrap; }
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Copyright 2002-2011  NetCitadel, LLC</string>
+      <string>Copyright 2002-2011  NetCitadel, Inc</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

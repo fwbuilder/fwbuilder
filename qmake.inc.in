@@ -67,6 +67,7 @@ unix {
 
         CONFIG += warn_on
 
+#		DEFINES += __STDC_FORMAT_MACROS
     }
 }
 

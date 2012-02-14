@@ -113,13 +113,8 @@ bool HttpGet::get(const QUrl &_url)
   #endif
 #endif
 
-    QString reg = "u";
-#ifdef ELC
-    if (getRegistrationStatus()==2) reg = "r";
-#endif
-
-    QString agent = QString("fwbuilder/%1 (%2; %3; b:999999; s:%5; %6)")
-        .arg(VERSION).arg(os).arg(locale).arg(sig).arg(reg);
+    QString agent = QString("fwbuilder/%1 (%2; %3; b:999999; s:%5; u)")
+        .arg(VERSION).arg(os).arg(locale).arg(sig);
 
     hdr.setValue("User-Agent", agent);
     request_id = http.request(hdr, NULL, &strm);

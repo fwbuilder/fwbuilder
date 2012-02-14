@@ -620,10 +620,6 @@ void FWWindow::showIntroDialog()
         return;
     }
 
-#ifdef ELC
-    if (regCheck()) return;
-#endif
-
     if (!st->getBool("UI/NoStartTip"))
     {
         StartTipDialog *stdlg = new StartTipDialog(this);
