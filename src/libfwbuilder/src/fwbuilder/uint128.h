@@ -36,7 +36,7 @@
 
 #include <stdio.h>
 
-#define __STDC_FORMAT_MACROS
+// #define __STDC_FORMAT_MACROS
 #include <inttypes.h>   // for sprintf formats for "long long"
 
 // convinience macro

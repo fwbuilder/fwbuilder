@@ -34,6 +34,9 @@ unix {
     QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter @CXXFLAGS@
     QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter @CXXFLAGS@
 
+    QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS
+    QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS
+
     exec_prefix = @EXEC_PREFIX@
     DESTDIR =
 

@@ -1,3 +1,11 @@
+2012-02-13  Vadim Kurland  <vadim@netcitadel.com>
+
+	* qmake.inc.in (QMAKE_CXXFLAGS_DEBUG): fix for SF bug #3468802.
+	Need to define macro __STDC_FORMAT_MACROS. This still needs to be
+	tested on all build machines.
+
+	build 3594
+	
 2012-01-02  Vadim Kurland  <vadim@netcitadel.com>
 
 	* PolicyCompiler_ipt.cpp (specialCaseAddressRangeInRE::processNext):
