@@ -66,10 +66,6 @@ unix {
         PKGLOCALEDIR = $$res.path/locale
 
         CONFIG += warn_on
-
-        QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS
-        QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS
-
     }
 }
 
@@ -80,6 +76,9 @@ win32 {
 FWB_SIG = $$(FWB_SIG)
 if (isEmpty(FWB_SIG)) { FWB_SIG=26932 }
 DEFINES += FWB_SIG=$$FWB_SIG
+
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS
 
 exists(qmake2.inc) {
   include(qmake2.inc)
