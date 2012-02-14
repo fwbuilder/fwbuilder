@@ -42,7 +42,6 @@
 #include "FWObjectClipboard.h"
 #include "FWBTree.h"
 #include "FWBSettings.h"
-#include "UserWorkflow.h"
 #include "FWObjectPropertiesFactory.h"
 #include "upgradePredicate.h"
 #include "ObjConflictResolutionDialog.h"
@@ -613,7 +612,6 @@ void FWWindow::showIntroDialog()
 
         if (msg_box.clickedButton() == watch_button)
         {
-            wfl->registerFlag(UserWorkflow::INTRO_TUTOTIAL, true);
             int ab_group = st->getABTestingGroup();
             QString url("http://www.fwbuilder.org/4.0/quick_start_guide_%1.html");
             QDesktopServices::openUrl(QUrl(url.arg(ab_group), QUrl::StrictMode));

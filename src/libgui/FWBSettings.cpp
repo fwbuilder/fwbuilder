@@ -601,16 +601,6 @@ void FWBSettings::setShowUndoPanel(bool f) {setValue(showUndoPanel, f);}
 bool FWBSettings::getIconsWithText() { return value(iconsWithText).toBool(); }
 void FWBSettings::setIconsWithText(bool f) {setValue(iconsWithText, f);}
 
-QByteArray FWBSettings::getUserWorkflowFlags()
-{
-    return value(userWorkflowFlags).toByteArray();
-}
-
-void FWBSettings::setUserWorkflowFlags(const QByteArray &f)
-{
-    setValue(userWorkflowFlags, f);
-}
-
 bool FWBSettings::haveScreenPosition(const QString &wname)
 {
     QString val = value(QString(screenPositionSetpath)+wname ).toString();

@@ -104,7 +104,6 @@ extern int errno;
 #include "FWWindow.h"
 #include "FWBSettings.h"
 #include "FWBApplication.h"
-#include "UserWorkflow.h"
 
 #include <QStringList>
 #include <QFile>
@@ -117,7 +116,6 @@ using namespace std;
 FWWindow *mw = NULL; 
 FWBSettings *st = NULL; 
 FWBApplication *app = NULL; 
-UserWorkflow *wfl; 
 int sig = FWB_SIG; 
 
 string cmd_str = "";

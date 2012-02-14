@@ -32,7 +32,6 @@
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "Help.h"
-#include "UserWorkflow.h"
 
 #include "fwbuilder/Constants.h"
 
@@ -231,7 +230,6 @@ void StartTipDialog::prevTip()
 
 void StartTipDialog::showGettingStartedTutorial()
 {
-    wfl->registerFlag(UserWorkflow::INTRO_TUTOTIAL, true);
     int ab_group = st->getABTestingGroup();
     QString url("http://www.fwbuilder.org/4.0/quick_start_guide_%1.html");
     QDesktopServices::openUrl(QUrl(url.arg(ab_group), QUrl::StrictMode));

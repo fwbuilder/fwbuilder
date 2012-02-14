@@ -35,7 +35,6 @@
 #include "FirewallInstaller.h"
 #include "SSHSession.h"
 #include "SSHUnx.h"
-#include "UserWorkflow.h"
 #include "instDialog.h"
 
 #include "fwbuilder/Resources.h"
@@ -535,8 +534,6 @@ void FirewallInstaller::runJobs()
 
     instJob current_job = job_list.front();
     job_list.pop_front();
-
-    wfl->registerFlag(UserWorkflow::INSTALL_RAN, true);
 
     switch (current_job.job) 
     {

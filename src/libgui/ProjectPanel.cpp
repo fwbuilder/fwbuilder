@@ -39,7 +39,6 @@
 #include "fwbuilder/RuleElement.h"
 
 #include "FWBSettings.h"
-#include "UserWorkflow.h"
 #include "FWBTree.h"
 #include "FWObjectPropertiesFactory.h"
 #include "FWWindow.h"
@@ -704,8 +703,6 @@ void ProjectPanel::compileThis()
     // see comment in FWWindow::compile()
     if (db()->isDirty()) return;
 
-    wfl->registerFlag(UserWorkflow::COMPILE, true);
-
     set<Firewall*> fw;
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
     if (f)
@@ -722,8 +719,6 @@ void ProjectPanel::installThis()
     save();
     // see comment in FWWindow::compile()
     if (db()->isDirty()) return;
-
-    wfl->registerFlag(UserWorkflow::INSTALL, true);
 
     set<Firewall*> fw;
     Firewall *f = Firewall::cast(visibleRuleSet->getParent());
@@ -794,7 +789,6 @@ void ProjectPanel::compile()
     if (db()->isDirty()) return;
 
     //fileSave();
-    wfl->registerFlag(UserWorkflow::COMPILE, true);
     mainW->compile();
 }
 
@@ -809,7 +803,6 @@ void ProjectPanel::compile(set<Firewall*> vf)
     if (db()->isDirty()) return;
 
     //fileSave();
-    wfl->registerFlag(UserWorkflow::COMPILE, true);
     mainW->compile(vf);
 }
 
@@ -819,7 +812,6 @@ void ProjectPanel::install(set<Firewall*> vf)
     // see comment in FWWindow::compile()
     if (db()->isDirty()) return;
 
-    wfl->registerFlag(UserWorkflow::INSTALL, true);
     mainW->install(vf);
 }
 
@@ -829,7 +821,6 @@ void ProjectPanel::install()
     // see comment in FWWindow::compile()
     if (db()->isDirty()) return;
 
-    wfl->registerFlag(UserWorkflow::INSTALL, true);
     mainW->install();
 }
 

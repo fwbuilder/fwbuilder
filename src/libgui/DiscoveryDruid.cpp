@@ -82,7 +82,6 @@
 #include "fwbuilder/Logger.h"
 
 #include "FWBSettings.h"
-#include "UserWorkflow.h"
 #include "ObjectManipulator.h"
 #include "FWWindow.h"
 #include "networkZoneManager.h"
@@ -851,8 +850,6 @@ void DiscoveryDruid::startConfigImport()
         thread = new ConfigImport(buffer, platform, m_dialog->obj_name->text().toStdString());
         thread->setTargetWidget(this);
         thread->start();
-
-        wfl->registerFlag(UserWorkflow::IMPORT, true);
 
     } else
     {

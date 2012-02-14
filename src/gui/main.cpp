@@ -62,7 +62,6 @@
 #include "findDialog.h"
 #include "ProjectPanel.h"
 #include "RCS.h"
-#include "UserWorkflow.h"
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Tools.h"
@@ -94,7 +93,6 @@ bool auto_load_from_rcs_head_revision = false;
 FWBApplication *app = NULL;
 FWWindow *mw = NULL;
 FWBSettings *st = NULL;
-UserWorkflow *wfl = NULL;
 int fwbdebug = 0;
 bool safemode = false;
 bool cli_print = false;
@@ -185,11 +183,9 @@ int main( int argc, char *argv[] )
     FWObject::setDataDir(st->getDataDir().toUtf8().constData());
     if (fwbdebug) qDebug("done");
 
-    wfl = new UserWorkflow();
-
     QPixmapCache::setCacheLimit(4096);
 
-    INIT2;
+//    INIT2;
 
     string full_res_path = Constants::getResourcesFilePath();
 

@@ -38,7 +38,6 @@
 #include "ProjectPanel.h"
 #include "HttpGet.h"
 #include "RuleSetView.h"
-#include "UserWorkflow.h"
 
 #include "fwbuilder/Resources.h"
 
@@ -551,14 +550,9 @@ void PrefsDialog::accept()
 
     st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
 
-    wfl->registerFlag(UserWorkflow::USING_HTTP_PROXY,
-                      !st->getCheckUpdatesProxy().isEmpty());
-
     // annoyingly, widget shotTip has the name opposite to its meaning.
     // When it is checked, we do not show tip of the day.
 
-    wfl->registerFlag(UserWorkflow::TIP_OF_THE_DAY_DISABLED,
-                      m_dialog->showTips->isChecked());
     st->setBool("UI/NoStartTip", m_dialog->showTips->isChecked());
 
     st->setSSHPath( m_dialog->sshPath->text() );
@@ -567,28 +561,6 @@ void PrefsDialog::accept()
 
     st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
     
-    wfl->registerFlag(UserWorkflow::SSH_CONFIGURED, 
-                      !m_dialog->sshPath->text().isEmpty() &&
-                      !m_dialog->scpPath->text().isEmpty());
-
-
-    if (m_dialog->checkUpdates->isChecked())
-    {
-        wfl->registerFlag(UserWorkflow::UPDATE_CHECKS_DISABLED, false);
-    } else
-    {
-        wfl->registerFlag(UserWorkflow::UPDATE_CHECKS_DISABLED, true);
-
-        if (st->getCheckUpdates())
-        {
-            // update checking was enabled but the user disabled it in
-            // this preferences dialog session. Run last closing
-            // report before disabling both update check and closing
-            // report.
-            wfl->report();
-        }
-    }
-
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
 
     for (int row=0; row < m_dialog->enabled_platforms->rowCount(); ++row)

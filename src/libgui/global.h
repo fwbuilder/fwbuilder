@@ -35,12 +35,10 @@ class QString;
 class FWBApplication;
 class FWWindow;
 class FWBSettings;
-class UserWorkflow;
 
 extern FWBApplication *app;
 extern FWWindow *mw;
 extern FWBSettings *st;
-extern UserWorkflow *wfl;
 
 extern std::string     appRootDir;
 extern std::string     userDataDir;

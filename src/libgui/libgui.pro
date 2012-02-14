@@ -185,7 +185,6 @@ HEADERS += ../../config.h \
     IconSetter.h \
     TutorialDialog.h \
     MDIEventFilter.h \
-    UserWorkflow.h \
     FWBApplication.h \
     WorkflowIcons.h \
     FirewallCodeViewer.h \
@@ -403,7 +402,6 @@ SOURCES += ProjectPanel.cpp \
     UsageResolver.cpp \
     TutorialDialog.cpp \
     MDIEventFilter.cpp \
-    UserWorkflow.cpp \
     FWBApplication.cpp \
     WorkflowIcons.cpp \
     FirewallCodeViewer.cpp \

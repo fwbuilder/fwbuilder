@@ -25,7 +25,6 @@
 
 
 #include "global.h"
-#include "UserWorkflow.h"
 #include "FWBSettings.h"
 #include "FWBApplication.h"
 #include "FWWindow.h"
@@ -48,7 +47,6 @@ void FWBApplication::quit()
 
     if (st->getCheckUpdates())
     {
-        wfl->report();
         QTimer::singleShot(100, this, SLOT(delayedQuit()));
     } else
         delayedQuit();
@@ -57,13 +55,6 @@ void FWBApplication::quit()
 void FWBApplication::delayedQuit()
 {
     if (fwbdebug) qDebug() << "FWBApplication::delayedQuit()";
-
-    if (timeout < 20 && wfl->reportInProgress())
-    {
-        timeout++;
-        QTimer::singleShot(100, this, SLOT(delayedQuit()));
-        return;
-    }
 
     QApplication::quit();
 }

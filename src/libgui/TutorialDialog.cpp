@@ -27,7 +27,6 @@
 
 #include "TutorialDialog.h"
 #include "ui_TutorialDialog.h"
-#include "UserWorkflow.h"
 
 #include <QDebug>
 #include <QFile>
@@ -82,7 +81,6 @@ void TutorialDialog::initializeTutorial(QString tutorial)
     currentPage = 0;
     showPage(currentPage);
 
-    wfl->registerTutorialViewing(tutorial);
 }
 
 TutorialDialog::~TutorialDialog()

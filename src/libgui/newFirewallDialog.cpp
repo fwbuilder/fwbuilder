@@ -33,7 +33,6 @@
 #include "FWBSettings.h"
 #include "FWBTree.h"
 #include "events.h"
-#include "UserWorkflow.h"
 #include "FWBApplication.h"
 #include "QDesktopWidget"
 #include "networkZoneManager.h"
@@ -1125,8 +1124,6 @@ void newFirewallDialog::finishClicked()
 
     } else
     {
-        wfl->registerFlag(UserWorkflow::NEW_FW_NO_TEMPLATE, true);
-
         // Create from interface list (obtained either manually or via snmp)
         if ( !this->m_dialog->interfaceEditor1->isValid() )
             return;

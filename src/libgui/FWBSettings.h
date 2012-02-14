@@ -267,9 +267,6 @@ class FWBSettings : public QSettings
     bool getShowUndoPanel();
     void setShowUndoPanel(bool);
 
-    QByteArray getUserWorkflowFlags();
-    void setUserWorkflowFlags(const QByteArray &);
-    
     bool getIconsWithText();
     void setIconsWithText(bool f);
     
