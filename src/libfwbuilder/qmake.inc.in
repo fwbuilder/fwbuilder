@@ -43,6 +43,9 @@ unix {
     doc.path = @DOCDIR@
 }
 
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS
+
 exists(qmake2.inc) {
   include( qmake2.inc)
 }
