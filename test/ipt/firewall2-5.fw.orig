@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3593
+#  Firewall Builder  fwb_ipt v5.0.2.3595
 #
-#  Generated Mon Jan  2 16:44:48 2012 PST by vadim
+#  Generated Mon Feb 20 11:50:17 2012 PST by vadim
 #
 # files: * firewall2-5.fw /etc/fw/firewall2-5.fw
 #
@@ -296,6 +296,13 @@ run_epilog_and_exit() {
 configure_interfaces() {
     :
     # Configure interfaces
+    # See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=429689
+    # this ensures that secondary ip address is "promoted" to primary
+    # when primary address is deleted, instead of deleting both
+    # primary and secondary addresses. It looks like this is only
+    # available starting from Linux 2.6.16 
+    test -f /proc/sys/net/ipv4/conf/all/promote_secondaries && \
+        echo 1 >  /proc/sys/net/ipv4/conf/all/promote_secondaries
     update_addresses_of_interface "eth0 192.168.1.1/24" ""
     update_addresses_of_interface "eth1 222.222.222.222/24 222.222.222.40/24 222.222.222.41/24" ""
     update_addresses_of_interface "eth3 33.33.33.25/29" ""
@@ -477,7 +484,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Jan  2 16:44:48 2012 by vadim"
+        log "Activating firewall script generated Mon Feb 20 11:50:17 2012 by vadim"
         check_tools
         
         check_run_time_address_table_files

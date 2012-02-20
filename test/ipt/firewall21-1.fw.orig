@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3593
+#  Firewall Builder  fwb_ipt v5.0.2.3595
 #
-#  Generated Mon Jan  2 16:44:34 2012 PST by vadim
+#  Generated Mon Feb 20 11:49:59 2012 PST by vadim
 #
 # files: * firewall21-1.fw /etc/fw/firewall21-1.fw
 #
@@ -496,7 +496,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Jan  2 16:44:34 2012 by vadim"
+        log "Activating firewall script generated Mon Feb 20 11:49:59 2012 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
