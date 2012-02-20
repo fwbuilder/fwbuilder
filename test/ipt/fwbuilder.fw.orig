@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v5.0.2.3595
 #
-#  Generated Mon Feb 20 11:51:01 2012 PST by vadim
+#  Generated Mon Feb 20 14:11:11 2012 PST by vadim
 #
 # files: * fwbuilder.fw /etc/init.d/fwbuilder.fw
 #
@@ -505,7 +505,7 @@ status_action() {
 }
 
 start() {
-    log "Activating firewall script generated Mon Feb 20 11:51:01 2012 by vadim"
+    log "Activating firewall script generated Mon Feb 20 14:11:11 2012 by vadim"
     check_tools
      prolog_commands 
     check_run_time_address_table_files

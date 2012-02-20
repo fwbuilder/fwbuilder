@@ -1,5 +1,17 @@
 2012-02-20  Vadim Kurland  <vadim@netcitadel.com>
 
+	* configlets/linux24/routing_functions (OLD_ROUTES): fixes SF bug
+	3489096 "dd-wrt-jffs: all routes are deleted if there is an
+	error". The problem affects all supported Linux-like
+	systems. Shell code that restores old static routing table entries
+	in case of an error with commands adding new routing entries was
+	broken and left the machine with no routes at all.
+
+	* configlets/linux24/routing_functions: using mktemp to create
+	temporary directory. If mktemp is not available, fall back onto
+	less secure but guaranteed to work method where I generate
+	randomized the name of the temporary directory using process ID.
+
 	* OSConfigurator_linux24_interfaces.cpp (printInterfaceConfigurationCommands):
 	fixes #2684 "fix address deletion in configlet update_addresses".
 	This only applies to Linux firewalls and configurations where an

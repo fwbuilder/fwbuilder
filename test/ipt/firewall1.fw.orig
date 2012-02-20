@@ -4,7 +4,7 @@
 #
 #  Firewall Builder  fwb_ipt v5.0.2.3595
 #
-#  Generated Mon Feb 20 11:49:32 2012 PST by vadim
+#  Generated Mon Feb 20 14:09:42 2012 PST by vadim
 #
 # files: * firewall1.fw /etc/fw/firewall1.fw
 #
@@ -1277,7 +1277,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Feb 20 11:49:32 2012 by vadim"
+        log "Activating firewall script generated Mon Feb 20 14:09:42 2012 by vadim"
         check_tools
         
         check_run_time_address_table_files
