@@ -1,0 +1,20 @@
+## -*- mode: shell-script; -*- 
+##
+## Double '##' comments are removed when configlet is processed.
+## Single '#' comments stay.
+##
+## Some shells (not bash) do not like empty functions. Placing a comment
+## inside the function does not help. Using dummy ":" as a placeholder.
+##
+{{if have_interfaces}}
+{{if need_promote_command}}
+# See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=429689
+# this ensures that secondary ip address is "promoted" to primary
+# when primary address is deleted, instead of deleting both
+# primary and secondary addresses. It looks like this is only
+# available starting from Linux 2.6.16 
+test -f /proc/sys/net/ipv4/conf/all/promote_secondaries && \
+    echo 1 >  /proc/sys/net/ipv4/conf/all/promote_secondaries
+{{endif}}
+{{$configure_interfaces_script}}
+{{endif}}
