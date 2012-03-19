@@ -1,3 +1,13 @@
+2012-03-18  Vadim Kurland  <vadim@netcitadel.com>
+
+	* CompilerDriver.cpp (CompilerDriver::populateClusterElements):
+	fixes #2686 "automatic rules for heartbeat are not generated for
+	vlan subinterfaces"
+
+	* clusterMembersDialog.cpp (clusterMembersDialog::clusterMembersDialog):
+	fixes #2685 "Clicking "Manage Members" in a vlan subinterface of a
+	cluster causes crash".
+
 2012-02-13  Vadim Kurland  <vadim@netcitadel.com>
 
 	* qmake.inc.in (QMAKE_CXXFLAGS_DEBUG): fix for SF bug #3468802.

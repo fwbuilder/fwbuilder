@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3593
+#  Firewall Builder  fwb_ipt v5.0.2.3594
 #
-#  Generated Mon Jan  2 16:46:23 2012 PST by vadim
+#  Generated Sun Mar 18 19:43:44 2012 PDT by vadim
 #
 # files: * firewall-ipv6-1.fw /etc/firewall-ipv6-1.fw
 #
@@ -21,11 +21,7 @@
 # firewall-ipv6-1:Policy:14: error: Rule '14 (global)' shadows rule '16 (global)'  below it
 # firewall-ipv6-1:Policy:14: error: Rule '14 (global)' shadows rule '17 (global)'  below it
 # firewall-ipv6-1:Policy:13: error: Rule '13 (global)' shadows rule '17 (global)'  below it
-# firewall-ipv6-1:Policy:21: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-1:Policy:21: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-1:Policy:21: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 
-# firewall-ipv6-1:Policy_ipv6:2: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 7 (global)'  below it
 # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 9 (global)'  below it
 # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 10 (global)'  below it
@@ -33,8 +29,6 @@
 # firewall-ipv6-1:Policy_ipv6:6: error: Rule 'Policy_ipv6 6 (global)' shadows rule 'Policy_ipv6 12 (global)'  below it
 # firewall-ipv6-1:Policy_ipv6:8: error: Rule 'Policy_ipv6 8 (global)' shadows rule 'Policy_ipv6 13 (global)'  below it
 # firewall-ipv6-1:Policy_ipv6:0: error: Rule 'Policy_ipv6 0 (global)' shadows rule 'Policy_ipv6 14 (global)'  below it
-# firewall-ipv6-1:Policy_ipv6:2: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-1:Policy_ipv6:2: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 # firewall-ipv6-1:Policy_ipv6:6: warning: Making rule stateless because it matches ICMPv6
 # firewall-ipv6-1:Policy_ipv6:6: warning: Making rule stateless because it matches ICMPv6
 # firewall-ipv6-1:Policy_ipv6:7: warning: Making rule stateless because it matches ICMPv6
@@ -485,12 +479,10 @@ script_body() {
     # 
     echo "Rule 21 (global)"
     # 
-    # firewall-ipv6-1:Policy:21: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     $IPTABLES -N RULE_21
-    $IPTABLES -A OUTPUT  -d 192.0.2.1   -j RULE_21
+    $IPTABLES -A OUTPUT  -d 72.55.148.116   -j RULE_21
     $IPTABLES -A OUTPUT  -d 207.251.84.150   -j RULE_21
-    $IPTABLES -A FORWARD  -d 192.0.2.1   -j RULE_21
+    $IPTABLES -A FORWARD  -d 72.55.148.116   -j RULE_21
     $IPTABLES -A FORWARD  -d 207.251.84.150   -j RULE_21
     $IPTABLES -A RULE_21  -j ULOG  --ulog-nlgroup 1 --ulog-prefix "RULE 21 -- DENY " --ulog-qthreshold 1
     $IPTABLES -A RULE_21  -j DROP
@@ -545,18 +537,6 @@ script_body() {
     $IP6TABLES -A OUTPUT  -d ny6ix.net  -m state --state NEW  -j ACCEPT
     $IP6TABLES -A FORWARD  -d 6bone.net  -m state --state NEW  -j ACCEPT
     $IP6TABLES -A FORWARD  -d ny6ix.net  -m state --state NEW  -j ACCEPT
-    # 
-    # Rule Policy_ipv6 2 (global)
-    # 
-    echo "Rule Policy_ipv6 2 (global)"
-    # 
-    # firewall-ipv6-1:Policy_ipv6:2: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
-    $IP6TABLES -N Policy_ipv6_2
-    $IP6TABLES -A OUTPUT  -d 2001:db8::1   -j Policy_ipv6_2
-    $IP6TABLES -A FORWARD  -d 2001:db8::1   -j Policy_ipv6_2
-    $IP6TABLES -A Policy_ipv6_2  -j LOG  --log-level info --log-prefix "RULE 2 -- DENY "
-    $IP6TABLES -A Policy_ipv6_2  -j DROP
     # 
     # Rule Policy_ipv6 3 (global)
     # 
@@ -724,7 +704,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Jan  2 16:46:23 2012 by vadim"
+        log "Activating firewall script generated Sun Mar 18 19:43:44 2012 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

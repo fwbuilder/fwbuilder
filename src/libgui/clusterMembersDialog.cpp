@@ -53,8 +53,9 @@ clusterMembersDialog::clusterMembersDialog(QWidget *parent, FWObject *o)
 
     // assign clustergroup object
     obj = o;
-    host_os = obj->getParent()->getStr("host_OS").c_str();
-    platform = obj->getParent()->getStr("platform").c_str();
+    FWObject *parent_host = Host::getParentHost(obj);
+    host_os = parent_host->getStr("host_OS").c_str();
+    platform = parent_host->getStr("platform").c_str();
 
     // if empty, retry with parent of parent (interface level)
     if (host_os.isEmpty())

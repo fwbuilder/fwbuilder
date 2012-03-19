@@ -1045,7 +1045,7 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
 
     // get a list of pointers to all cluster interfaces. Can't use findByType()
     // and iterator because we'll be adding interfaces in the middle of the loop
-    list<FWObject*> cluster_interfaces = cluster->getByType(Interface::TYPENAME);
+    list<FWObject*> cluster_interfaces = cluster->getByTypeDeep(Interface::TYPENAME);
 
     list<FWObject*>::iterator cl_iface = cluster_interfaces.begin();
     for (; cl_iface != cluster_interfaces.end(); ++cl_iface)

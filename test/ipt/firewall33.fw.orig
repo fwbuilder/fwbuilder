@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3593
+#  Firewall Builder  fwb_ipt v5.0.2.3594
 #
-#  Generated Mon Jan  2 16:45:09 2012 PST by vadim
+#  Generated Sun Mar 18 19:43:04 2012 PDT by vadim
 #
 # files: * firewall33.fw /etc/fw/firewall33.fw
 #
@@ -15,8 +15,6 @@
 # firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 # firewall33:Policy:2: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
 # firewall33:Policy:6: error: DNSName object "buildmaster (ct)" (compile time) can not resolve dns name "buildmaster" (AF_INET): Host or network 'buildmaster' not found; last error: Unknown error Using dummy address in test mode
-# firewall33:Policy:12: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall33:Policy:12: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 
 
 FWBDEBUG=""
@@ -459,11 +457,11 @@ script_body() {
     $IPTABLES -A OUTPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A INPUT  -m state --state NEW  -j Cid438728A918346.0
     $IPTABLES -A FORWARD  -m state --state NEW  -j Cid438728A918346.0
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.48   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.49   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.50   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.51   -j RETURN
-    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.52   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.112   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.113   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.114   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.115   -j RETURN
+    $IPTABLES -A Cid438728A918346.0  -d 74.125.224.116   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.25   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.226.26   -j RETURN
     $IPTABLES -A Cid438728A918346.0  -d 157.166.255.18   -j RETURN
@@ -512,11 +510,9 @@ script_body() {
     # 
     echo "Rule 12 (global)"
     # 
-    # firewall33:Policy:12: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
-    $IPTABLES -A OUTPUT  -d 192.0.2.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A OUTPUT  -d 72.55.148.116   -m state --state NEW  -j ACCEPT
     $IPTABLES -A OUTPUT  -d 207.251.84.150   -m state --state NEW  -j ACCEPT
-    $IPTABLES -A FORWARD  -d 192.0.2.1   -m state --state NEW  -j ACCEPT
+    $IPTABLES -A FORWARD  -d 72.55.148.116   -m state --state NEW  -j ACCEPT
     $IPTABLES -A FORWARD  -d 207.251.84.150   -m state --state NEW  -j ACCEPT
     # 
     # Rule 13 (global)
@@ -584,7 +580,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Jan  2 16:45:09 2012 by vadim"
+        log "Activating firewall script generated Sun Mar 18 19:43:04 2012 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

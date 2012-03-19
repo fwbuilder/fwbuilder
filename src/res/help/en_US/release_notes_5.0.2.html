@@ -1,0 +1,115 @@
+<h1>Firewall Builder 5.1.0 Release Notes</h1>
+
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets</a>
+</p>
+
+<!-- Highlights for this release -->
+
+<a name="summary"></a>
+<h2>Summary</h2>
+
+<p>
+  v 5.1.0 is a bug fix release.
+</p>
+
+
+<hr style="display: block">     
+
+
+<!-- ######################################################################### -->
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fixes #2685 "Clicking "Manage Members" in a vlan subinterface of a
+      cluster causes crash".
+    </p>
+  </li>
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="import"></a>
+<h2>Changes in policy importer for all supported platforms</h2>
+
+<h3>Changes that affect import of PIX configurations</h3>
+<ul>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="libfwbuilder"></a>
+<h2>Changes and improvements in the API library libfwbuilder</h2>
+
+<ul>
+
+  <li>
+    <p>
+    </p>
+  </li>
+
+
+</ul>
+
+
+
+<!-- ######################################################################### -->
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fixed SF bug #3468358 "change in rule-compilation between 5.0.0
+      and 5.0.1". Rule with cluster interface in "Destination"
+      should compile into matching ip addresses assigned to the cluster
+      interface object and corresponding member firewall's interface
+      object, but in v5.0.1 it only matched member interface
+      address. This bug triggered when iptables version was set to
+      1.2.11 or greater. This was a regression from v5.0.0
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes #2686 "automatic rules for heartbeat are not generated for
+      vlan subinterfaces"
+    </p>
+  </li>
+
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="other"></a>
+<h2>Other changes</h2>
+
+<ul>
+
+  <li>
+    <p>
+      fix for SF bug #3468802.  Need to define macro
+      __STDC_FORMAT_MACROS. This still needs to be tested on all build
+      machines.
+    </p>
+  </li>
+
+</ul>
+
+
+

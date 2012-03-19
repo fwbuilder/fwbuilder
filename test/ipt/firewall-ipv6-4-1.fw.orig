@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3593
+#  Firewall Builder  fwb_ipt v5.0.2.3594
 #
-#  Generated Mon Jan  2 16:46:39 2012 PST by vadim
+#  Generated Sun Mar 18 19:43:48 2012 PDT by vadim
 #
 # files: * firewall-ipv6-4-1.fw /etc/firewall-ipv6-4-1.fw
 #
@@ -14,16 +14,8 @@
 
 # firewall-ipv6-4-1:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
 # firewall-ipv6-4-1:Policy:4: error: Rule '4 (global)' shadows rule '6 (global)'  below it
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 
 # firewall-ipv6-4-1:Policy:2: error: Rule '2 (global)' shadows rule '3 (global)'  below it
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 
 
 FWBDEBUG=""
@@ -393,10 +385,8 @@ script_body() {
     echo "-A FORWARD  -d ny6ix.net  -m state --state NEW  -j ACCEPT "
     # 
     # Rule  8 (global)
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     echo ":RULE_8 - [0:0]"
-    echo "-A FORWARD  -d 192.0.2.1   -j RULE_8 "
+    echo "-A FORWARD  -d 72.55.148.116   -j RULE_8 "
     echo "-A FORWARD  -d 207.251.84.150   -j RULE_8 "
     echo "-A RULE_8  -j ULOG  --ulog-nlgroup 1 --ulog-prefix \"RULE 8 -- DENY \" --ulog-qthreshold 1 "
     echo "-A RULE_8  -j DROP "
@@ -475,14 +465,6 @@ script_body() {
     # Rule  7 (global)
     echo "-A FORWARD  -d 6bone.net  -m state --state NEW  -j ACCEPT "
     echo "-A FORWARD  -d ny6ix.net  -m state --state NEW  -j ACCEPT "
-    # 
-    # Rule  8 (global)
-    # firewall-ipv6-4-1:Policy:8: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET6): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
-    echo ":RULE_8 - [0:0]"
-    echo "-A FORWARD  -d 2001:db8::1   -j RULE_8 "
-    echo "-A RULE_8  -j LOG  --log-level info --log-prefix \"RULE 8 -- DENY \""
-    echo "-A RULE_8  -j DROP "
     # 
     # Rule  11 (global)
     echo ":RULE_11 - [0:0]"
@@ -569,7 +551,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Jan  2 16:46:39 2012 by vadim"
+        log "Activating firewall script generated Sun Mar 18 19:43:48 2012 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

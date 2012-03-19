@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3593
+#  Firewall Builder  fwb_ipt v5.0.2.3594
 #
-#  Generated Mon Jan  2 16:45:20 2012 PST by vadim
+#  Generated Sun Mar 18 19:43:09 2012 PDT by vadim
 #
 # files: * firewall37.fw /etc/fw/firewall37.fw
 #
@@ -14,12 +14,9 @@
 
 # normal script mode (not using  iptables-restore)
 
-# firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-# firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 # firewall37:mangle_rules:7: warning: Empty group or address table object 'empty Ogroup'
 # firewall37:mangle_rules:7: warning: After removal of all empty groups and address table objects rule element Src becomes 'any' in the rule mangle_rules 7 (global)
 # Dropping rule mangle_rules 7 (global) because option 'Ignore rules with empty groups' is in effect
-# firewall37:mangle_rules:13: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
 
 
 FWBDEBUG=""
@@ -710,10 +707,8 @@ script_body() {
     # 
     echo "Rule mangle_rules 4 (global)"
     # 
-    # firewall37:mangle_rules:4: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
-    $IPTABLES -t mangle -A INPUT  -s 192.0.2.1  -m mark --mark 1  -m state --state NEW  -j ACCEPT
-    $IPTABLES -t mangle -A PREROUTING  -s 192.0.2.1  -m mark --mark 1  -m state --state NEW  -j ACCEPT
+    $IPTABLES -t mangle -A INPUT  -s 72.55.148.116  -m mark --mark 1  -m state --state NEW  -j ACCEPT
+    $IPTABLES -t mangle -A PREROUTING  -s 72.55.148.116  -m mark --mark 1  -m state --state NEW  -j ACCEPT
     # 
     # Rule mangle_rules 5 (global)
     # 
@@ -774,11 +769,9 @@ script_body() {
     # 
     echo "Rule mangle_rules 13 (global)"
     # 
-    # firewall37:mangle_rules:13: error: DNSName object "6bone.net (ct)" (compile time) can not resolve dns name "6bone.net" (AF_INET): Host or network '6bone.net' not found; last error: Unknown error Using dummy address in test mode
-
     $IPTABLES -N Cid480281X13558.0 -t mangle
     $IPTABLES -t mangle -A PREROUTING -i +  -m mark --mark 1  -m state --state NEW  -j Cid480281X13558.0
-    $IPTABLES -t mangle -A Cid480281X13558.0  -s 192.0.2.1   -j RETURN
+    $IPTABLES -t mangle -A Cid480281X13558.0  -s 72.55.148.116   -j RETURN
     $IPTABLES -t mangle -A Cid480281X13558.0  -j ACCEPT
     # 
     # Rule mangle_rules 14 (global)
@@ -1314,7 +1307,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Mon Jan  2 16:45:20 2012 by vadim"
+        log "Activating firewall script generated Sun Mar 18 19:43:09 2012 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files
