@@ -2,9 +2,9 @@
 #
 #  This is automatically generated file. DO NOT MODIFY !
 #
-#  Firewall Builder  fwb_ipt v5.0.2.3594
+#  Firewall Builder  fwb_ipt v5.0.2.3596
 #
-#  Generated Sun Mar 18 19:43:09 2012 PDT by vadim
+#  Generated Sun Mar 18 21:16:45 2012 PDT by vadim
 #
 # files: * firewall36-2.fw /etc/firewall36-2.fw
 #
@@ -343,9 +343,20 @@ script_body() {
 
     # ============== ROUTING RULES ============== 
 
-    TMPDIRNAME="/tmp/.fwbuilder.tempdir.$$"
+    HAVE_MKTEMP=$(which mktemp)
+
+    test -n "$HAVE_MKTEMP" && {
+      TMPDIRNAME=$(mktemp -d)
+      test -z "$TMPDIRNAME" && exit 1
+    }
+
+    test -z "$HAVE_MKTEMP" && {
+      TMPDIRNAME="/tmp/.fwbuilder.tempdir.$$"
+      (umask 077 && mkdir $TMPDIRNAME) || exit 1
+    }
+
     TMPFILENAME="$TMPDIRNAME/.fwbuilder.out"
-    (umask 077 && mkdir $TMPDIRNAME) || exit 1
+    OLD_ROUTES="$TMPDIRNAME/.old_routes"
 
     #
     # This function stops stdout redirection
@@ -365,8 +376,7 @@ script_body() {
       # delete current routing rules
       $IP route show | while read route ; do $IP route del $route ; done
       # restore old routing rules
-      (IFS="
-    "; for route in $oldRoutes; do (IFS=' '; $IP route add $route); done)
+      sh $OLD_ROUTES
       echo "...done"
       restore_script_output
       epilog_commands
@@ -380,7 +390,8 @@ script_body() {
 
     # store previous routing configuration (sort: 'via' GW has to be
     # inserted after device routes)
-    oldRoutes=$($IP route show | sort -k 2)
+
+    $IP route show | sort -k 2 | awk '{printf "ip route add %s\n",$0;}' > $OLD_ROUTES
 
     echo "Deleting routing rules previously set by user space processes..."
     $IP route show | grep -v 'proto kernel' | \
@@ -455,7 +466,7 @@ test -z "$cmd" && {
 
 case "$cmd" in
     start)
-        log "Activating firewall script generated Sun Mar 18 19:43:09 2012 by vadim"
+        log "Activating firewall script generated Sun Mar 18 21:16:45 2012 by vadim"
         check_tools
          prolog_commands 
         check_run_time_address_table_files

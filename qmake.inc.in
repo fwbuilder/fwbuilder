@@ -66,6 +66,8 @@ unix {
         PKGLOCALEDIR = $$res.path/locale
 
         CONFIG += warn_on
+
+#		DEFINES += __STDC_FORMAT_MACROS
     }
 }
 

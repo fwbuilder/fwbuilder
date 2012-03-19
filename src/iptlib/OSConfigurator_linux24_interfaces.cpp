@@ -65,6 +65,8 @@
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
+#include <QtDebug>
+
 
 using namespace libfwbuilder;
 using namespace fwcompiler;
@@ -121,12 +123,17 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 {
     FWOptions* options = fw->getOptionsObject();
 
-    QStringList gencmd;
     std::auto_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 
+    Configlet script(fw, "linux24", "configure_interfaces");
+    script.removeComments();
+    script.collapseEmptyStrings(true);
+
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
+    bool need_promote_command = false;
+    QStringList gencmd;
     list<FWObject*>::iterator i;
     for (i=interfaces.begin(); i!=interfaces.end(); ++i )
     {
@@ -153,12 +160,20 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 
             gencmd.push_back(
                 printUpdateAddressCommand(iface, update_addresses, ignore_addresses));
+
+            // update_addresses list looks like this:
+            // ("eth0", "22.22.22.22/24", "22.22.22.23/24") 
+            // I need to add "promote" command only when there is more than 1 address.
+            need_promote_command |= (update_addresses.size() > 2);
         }
 
         known_interfaces.push_back(iface_name);
     }
 
-    return gencmd.join("\n").toStdString() + "\n";
+    script.setVariable("have_interfaces", interfaces.size() > 0);
+    script.setVariable("need_promote_command", need_promote_command);
+    script.setVariable("configure_interfaces_script", gencmd.join("\n"));
+    return script.expand().toStdString() + "\n";
 }
 
 

@@ -49,23 +49,6 @@
 </ul>
 
 
-
-<!-- ######################################################################### -->
-<a name="libfwbuilder"></a>
-<h2>Changes and improvements in the API library libfwbuilder</h2>
-
-<ul>
-
-  <li>
-    <p>
-    </p>
-  </li>
-
-
-</ul>
-
-
-
 <!-- ######################################################################### -->
 <a name="iptables"></a>
 <h2>Changes in support for iptables</h2>
@@ -91,6 +74,41 @@
     </p>
   </li>
 
+  <li>
+    <p>
+      fixes #2684 "fix address deletion in configlet
+      update_addresses".  This only applies to Linux firewalls and
+      configurations where an interface has two or more ip
+      addresses. If user deleted one of the addresses that happens to
+      be the "primary" address of the interface in the GUI, generated
+      script deleted both addresses on the firewall machine instead of
+      just one and left interface with no addresses at all. The fix is
+      to use /proc variable
+      /proc/sys/net/ipv4/conf/all/promote_secondaries that makes the
+      kernel "promote" secondary address to a "primary" status when
+      primary address is deleted. Default behavior in Linux kernel is
+      to delete all addresses when primary address is deleted.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      using mktemp to create temporary directory in the generated
+      script. If mktemp is not available, fall back onto less secure
+      but guaranteed to work method where I generate randomized the
+      name of the temporary directory using process ID.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      fixes SF bug 3489096 "dd-wrt-jffs: all routes are deleted if
+      there is an error". The problem affects all supported Linux-like
+      systems. Shell code that restores old static routing table
+      entries in case of an error with commands adding new routing
+      entries was broken and left the machine with no routes at all.
+    </p>
+  </li>
 
 </ul>
 

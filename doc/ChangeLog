@@ -8,6 +8,33 @@
 	fixes #2685 "Clicking "Manage Members" in a vlan subinterface of a
 	cluster causes crash".
 
+2012-02-20  Vadim Kurland  <vadim@netcitadel.com>
+
+	* configlets/linux24/routing_functions (OLD_ROUTES): fixes SF bug
+	3489096 "dd-wrt-jffs: all routes are deleted if there is an
+	error". The problem affects all supported Linux-like
+	systems. Shell code that restores old static routing table entries
+	in case of an error with commands adding new routing entries was
+	broken and left the machine with no routes at all.
+
+	* configlets/linux24/routing_functions: using mktemp to create
+	temporary directory. If mktemp is not available, fall back onto
+	less secure but guaranteed to work method where I generate
+	randomized the name of the temporary directory using process ID.
+
+	* OSConfigurator_linux24_interfaces.cpp (printInterfaceConfigurationCommands):
+	fixes #2684 "fix address deletion in configlet update_addresses".
+	This only applies to Linux firewalls and configurations where an
+	interface has two or more ip addresses. If user deleted one of the
+	addresses that happens to be the "primary" address of the
+	interface in the GUI, generated script deleted both addresses on
+	the firewall machine instead of just one and left interface with
+	no addresses at all. The fix is to use /proc variable
+	/proc/sys/net/ipv4/conf/all/promote_secondaries that makes the
+	kernel "promote" secondary address to a "primary" status when
+	primary address is deleted. Default behavior in Linux kernel is to
+	delete all addresses when primary address is deleted.
+
 2012-02-13  Vadim Kurland  <vadim@netcitadel.com>
 
 	* qmake.inc.in (QMAKE_CXXFLAGS_DEBUG): fix for SF bug #3468802.
@@ -26,7 +53,7 @@
 	object, but in v5.0.1 it only matched member interface
 	address. This bug triggered when iptables version was set to
 	1.2.11 or greater. This was a regression from v5.0.0
-	
+
 	* VERSION (FWB_MICRO_VERSION): v 5.0.2
 
 2011-12-23  Vadim Kurland  <vadim@netcitadel.com>
