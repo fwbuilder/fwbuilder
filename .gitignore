@@ -11,11 +11,7 @@ core
 *.fw
 *.conf
 *.app
-*.icns
-*.ico
-*.plist
 !src/gui/FwbuilderInfo.plist
-*.rc
 *.dylib
 *.spec
 *.control

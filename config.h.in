@@ -1,6 +1,10 @@
 
 #include "VERSION.h"
 
+#if defined(_WIN32)
+#  include "config.win32.h"
+#else
+
 #undef BUILD_NUM
 
 #undef PACKAGE_LOCALE_DIR
@@ -117,4 +121,5 @@ using namespace std;
 #  define VSNPRINTF _vsnprintf
 #endif
 
+#endif
 

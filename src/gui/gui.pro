@@ -64,6 +64,19 @@ STATIC_LIBS += $$LIBS_FWCOMPILER
 
 LIBS = $$STATIC_LIBS $$LIBS
 
+win32 {
+    RC_FILE = fwbuilder-windows.rc
+	win_ico.files = fwbuilder-windows.ico
+	win_ico.path = $$PREFIX
+	INSTALLS += win_ico
+}
+
+macx {
+    QMAKE_INFO_PLIST = FwbuilderInfo.plist
+    ICON = fwbuilder-macosx.icns
+	SOURCES += main_mac.cpp
+}
+
 # TRANSLATIONS = fwbuilder_ru.ts fwbuilder_ja.ts fwbuilder_en.ts
 # ja.path = $$PKGLOCALEDIR
 # ja.files = fwbuilder_ja.qm

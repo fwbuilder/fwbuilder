@@ -600,3 +600,10 @@ DEPENDPATH += \
 
 RESOURCES += MainRes.qrc
 
+win32 {
+    # add "." to include path to make sure #include works when we
+    # compile modules in subdirectories, such as
+    # importAddressListWizard and other wizards. This seems to only be
+    # necessary on Windows
+    INCLUDEPATH += .
+}

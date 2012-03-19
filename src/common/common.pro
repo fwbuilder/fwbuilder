@@ -8,7 +8,7 @@ include(../../qmake.inc)
 
 TEMPLATE = lib
 
-SOURCES = init.cpp
+SOURCES = init.cpp init2.cpp
 
 HEADERS = ../../config.h commoninit.h
 

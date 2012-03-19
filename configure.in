@@ -669,7 +669,8 @@ AC_CONFIG_FILES([ qmake.inc
                   src/libfwbuilder/etc/fwbuilder.dtd
                   packaging/fwbuilder.control
                   packaging/fwbuilder.spec
-                  packaging/fwbuilder-static-qt.spec])
+                  packaging/fwbuilder-static-qt.spec
+                  packaging/fwbuilder.nsi])
 
 
 AC_OUTPUT
