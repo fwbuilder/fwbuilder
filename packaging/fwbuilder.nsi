@@ -11,8 +11,8 @@ Var STARTMENU_FOLDER
 ; GENERATION is used to build the path in the registry, it should be coordinated
 ; with the path defined in FWBSettings class
 ;
-!define GENERATION "@GENERATION@"
-!define GENERATION_SHORT "@GENERATION_SHORT@"
+!define GENERATION "5.1"
+!define GENERATION_SHORT "51"
 !define VERSION "5.1.0.3598"
 
 

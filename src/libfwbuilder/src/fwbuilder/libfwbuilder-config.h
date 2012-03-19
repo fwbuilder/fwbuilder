@@ -13,7 +13,7 @@
  * Template files directory dir
  * DO NOT USE THIS CONSTANT DIRECTLY - USE Constants class instead!
  */
-#  define RES_DIR "/home/vadim/src/v4/build/install_root/share/fwbuilder-5.1.0.3598"
+#  define RES_DIR "/usr/local/share/fwbuilder-5.1.0.3598"
 
 /* #undef UCD_SNMP */
 #  define HAVE_LIBSNMP 1
@@ -59,7 +59,7 @@
  * Template files directory dir
  * DO NOT USE THIS CONSTANT DIRECTLY - USE Constants class instead!
  */
-#define RES_DIR "/home/vadim/src/v4/build/install_root/share/fwbuilder-5.1.0.3598"
+#define RES_DIR "/usr/local/share/fwbuilder-5.1.0.3598"
 
 #define HAVE_LIBSNMP 1
 /* #undef UCD_SNMP */
