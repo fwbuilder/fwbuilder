@@ -6,14 +6,14 @@
 
 
 #ifdef _WIN32
-#  pragma warning(disable:4786)
+/* #  pragma warning(disable:4786) */
 #  define _WIN32_WINNT 0x0501
 
 /*
  * Template files directory dir
  * DO NOT USE THIS CONSTANT DIRECTLY - USE Constants class instead!
- */
 #  define RES_DIR "/usr/local/share/fwbuilder-5.1.0.3598"
+ */
 
 /* #undef UCD_SNMP */
 #  define HAVE_LIBSNMP 1
