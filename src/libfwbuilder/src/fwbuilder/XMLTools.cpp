@@ -25,10 +25,12 @@
 */
 
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/XMLTools.h>
-#include <fwbuilder/ThreadTools.h>
+
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/ThreadTools.h"
 
 #include <zlib.h>
 

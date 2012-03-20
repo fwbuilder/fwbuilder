@@ -24,10 +24,12 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/IPRoute.h>
+
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/IPRoute.h"
 
 #include <stdio.h>
 #include <iostream>

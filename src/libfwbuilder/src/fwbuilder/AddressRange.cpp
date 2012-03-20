@@ -26,10 +26,12 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/AddressRange.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/XMLTools.h"
 
 using namespace libfwbuilder;
 

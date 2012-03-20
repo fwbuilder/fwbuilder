@@ -26,14 +26,16 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/XMLTools.h"
  
 using namespace libfwbuilder;
 

@@ -10,6 +10,7 @@
 
 */
  
+#include "config.h"
 #include "fwbuilder/libfwbuilder-config.h"
 
 #include "Compiler.h"

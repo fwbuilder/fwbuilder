@@ -23,11 +23,12 @@
 
 */
 
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 #include <assert.h>
 
 #include "BaseCompiler.h"
-
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <iostream>
 #include <iomanip>

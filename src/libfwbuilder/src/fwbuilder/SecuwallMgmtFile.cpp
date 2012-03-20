@@ -14,10 +14,12 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/SecuwallMgmtFile.h>
-#include <fwbuilder/Tools.h>
+
+#include "fwbuilder/SecuwallMgmtFile.h"
+#include "fwbuilder/Tools.h"
 
 #include <iostream>
 #include <fstream>

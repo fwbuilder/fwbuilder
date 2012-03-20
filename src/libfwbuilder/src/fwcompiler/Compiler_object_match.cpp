@@ -25,9 +25,11 @@
 
 #include <assert.h>
 
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 #include "Compiler.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"

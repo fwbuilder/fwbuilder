@@ -38,17 +38,19 @@
 
  */
 
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 #include <assert.h>
 #include <iostream>
 #include <sstream>
 #include <cstring>
 
-#include <fwbuilder/libfwbuilder-config.h>
-#include <fwbuilder/Inet6AddrMask.h>
+#include "fwbuilder/Inet6AddrMask.h"
 
-#include <fwbuilder/IPv6.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/XMLTools.h>
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/XMLTools.h"
 
 using namespace std;
 using namespace libfwbuilder;

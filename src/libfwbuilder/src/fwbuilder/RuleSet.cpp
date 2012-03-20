@@ -25,12 +25,14 @@
 */
 
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/RuleSet.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 

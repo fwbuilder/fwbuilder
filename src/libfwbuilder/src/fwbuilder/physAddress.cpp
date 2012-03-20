@@ -25,12 +25,14 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/physAddress.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
+
+#include "fwbuilder/physAddress.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 #include <iostream>
 //#include <ostream>

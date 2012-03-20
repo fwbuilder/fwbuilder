@@ -27,23 +27,25 @@
 #include <time.h>
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/FailoverClusterGroup.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/IPv4.h>
-#include <fwbuilder/IPv6.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/Management.h>
-#include <fwbuilder/NAT.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/Routing.h>
-#include <fwbuilder/RuleElement.h>
-#include <fwbuilder/StateSyncClusterGroup.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Management.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 #include <algorithm>

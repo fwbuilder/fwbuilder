@@ -24,7 +24,9 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 
 #ifndef _WIN32
 #  include <netdb.h>
@@ -49,8 +51,9 @@
 #include <sstream>
 #include <cstdlib>
 #include <cstring>
-#include <fwbuilder/dns.h>
-#include <fwbuilder/ThreadTools.h>
+
+#include "fwbuilder/dns.h"
+#include "fwbuilder/ThreadTools.h"
 
 using namespace std;
 using namespace libfwbuilder;

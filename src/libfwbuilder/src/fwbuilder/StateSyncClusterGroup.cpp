@@ -24,10 +24,12 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/StateSyncClusterGroup.h>
-#include <fwbuilder/FWOptions.h>
+
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FWOptions.h"
 
 using namespace std;
 using namespace libfwbuilder;

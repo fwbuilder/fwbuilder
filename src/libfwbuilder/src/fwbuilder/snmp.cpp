@@ -21,7 +21,9 @@
 
 */
 
+#include "config.h"
 #include "fwbuilder/libfwbuilder-config.h"
+
 
 #ifdef HAVE_LIBSNMP
 

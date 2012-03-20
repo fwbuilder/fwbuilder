@@ -24,9 +24,11 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/InetAddrMask.h>
+
+#include "fwbuilder/InetAddrMask.h"
 
 #include <stdio.h>
 #include <iostream>

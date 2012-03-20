@@ -23,25 +23,27 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/RuleElement.h>
-#include <fwbuilder/Rule.h>
 
-#include <fwbuilder/IPService.h>
-#include <fwbuilder/TagService.h>
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Rule.h"
 
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/Network.h>
-#include <fwbuilder/Firewall.h>
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/TagService.h"
 
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/FWIntervalReference.h>
+#include "fwbuilder/Interval.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/Firewall.h"
 
-#include <fwbuilder/XMLTools.h>
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWIntervalReference.h"
+
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 

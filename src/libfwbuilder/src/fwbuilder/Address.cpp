@@ -27,12 +27,14 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
+#include "fwbuilder/Address.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 using namespace libfwbuilder;
 using namespace std;

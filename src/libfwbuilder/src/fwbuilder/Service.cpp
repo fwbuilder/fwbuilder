@@ -23,12 +23,14 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/Service.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
+
+#include "fwbuilder/Service.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 using namespace libfwbuilder;
 using namespace std;

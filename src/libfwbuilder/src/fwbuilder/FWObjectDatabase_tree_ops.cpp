@@ -25,22 +25,24 @@
 
 #include <stdlib.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/FWObjectDatabase.h>
 
-#include <fwbuilder/Library.h>
-#include <fwbuilder/Host.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/Group.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/RuleSet.h>
-#include <fwbuilder/ClusterGroup.h>
-#include <fwbuilder/FWReference.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/FWIntervalReference.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
+
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Host.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Group.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/FWReference.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWIntervalReference.h"
 
 #include <iostream>
 #include <sstream>

@@ -25,15 +25,17 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/AddressTable.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/Network.h>
-#include <fwbuilder/NetworkIPv6.h>
+
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
 
 #include <iostream>
 #include <fstream>

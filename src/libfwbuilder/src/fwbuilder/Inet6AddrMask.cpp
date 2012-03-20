@@ -26,13 +26,15 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/Inet6AddrMask.h>
+
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/Inet6AddrMask.h"
 
 extern "C" {
-#include <fwbuilder/inet_net.h>
+#include "fwbuilder/inet_net.h"
 }
 
 #include <stdio.h>

@@ -24,7 +24,9 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 
 #include <sys/types.h>
 

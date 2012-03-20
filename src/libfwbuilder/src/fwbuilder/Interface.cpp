@@ -24,17 +24,19 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/FailoverClusterGroup.h>
-#include <fwbuilder/XMLTools.h>
-#include <fwbuilder/IPv4.h>
-#include <fwbuilder/IPv6.h>
-#include <fwbuilder/Host.h>
-#include <fwbuilder/AttachedNetworks.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Resources.h>
+
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/Host.h"
+#include "fwbuilder/AttachedNetworks.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Resources.h"
 
 using namespace std;
 using namespace libfwbuilder;

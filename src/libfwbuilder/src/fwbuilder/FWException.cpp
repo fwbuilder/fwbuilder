@@ -24,9 +24,11 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWException.h>
+
+#include "fwbuilder/FWException.h"
 
 using namespace std;
 using namespace libfwbuilder;

@@ -25,27 +25,29 @@
 */
 
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/Service.h>
-#include <fwbuilder/ServiceGroup.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/Interval.h>
 
-#include <fwbuilder/IPService.h>
-#include <fwbuilder/ICMPService.h>
-#include <fwbuilder/ICMP6Service.h>
-#include <fwbuilder/TCPService.h>
-#include <fwbuilder/UDPService.h>
-#include <fwbuilder/CustomService.h>
-#include <fwbuilder/TagService.h>
-#include <fwbuilder/UserService.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/RuleSet.h>
+#include "fwbuilder/Service.h"
+#include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/Address.h"
+#include "fwbuilder/Interval.h"
+
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/RuleSet.h"
 
 #include <iostream>
 

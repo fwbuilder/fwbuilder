@@ -26,10 +26,12 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
-#include <fwbuilder/Inet6AddrMask.h>
-#include <fwbuilder/NetworkIPv6.h>
-#include <fwbuilder/XMLTools.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
+#include "fwbuilder/Inet6AddrMask.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <string>
 #include <sstream>

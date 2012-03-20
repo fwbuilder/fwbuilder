@@ -24,21 +24,23 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/Tools.h>
-#include <fwbuilder/XMLTools.h>
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/Library.h>
 
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/RuleSet.h>
-#include <fwbuilder/RuleElement.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/Host.h>
-#include <fwbuilder/Interface.h>
+#include "fwbuilder/Tools.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/Library.h"
+
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/Host.h"
+#include "fwbuilder/Interface.h"
 
 #include <stdlib.h>
 #include <stdio.h>

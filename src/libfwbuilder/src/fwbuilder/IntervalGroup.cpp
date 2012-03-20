@@ -24,12 +24,14 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/IntervalGroup.h>
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/FWIntervalReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
+
+#include "fwbuilder/IntervalGroup.h"
+#include "fwbuilder/Interval.h"
+#include "fwbuilder/FWIntervalReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 using namespace std;
 using namespace libfwbuilder;

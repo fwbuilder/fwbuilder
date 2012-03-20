@@ -26,12 +26,14 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/NAT.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/FWObjectDatabase.h>
+
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 using namespace libfwbuilder;
 

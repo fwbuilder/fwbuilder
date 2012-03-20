@@ -25,6 +25,8 @@ install*
 ltmain.sh
 configure
 libtool
+qmake.inc
+config.h
 .obj
 .moc
 .ui

@@ -17,28 +17,30 @@
 #include <time.h>
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/Cluster.h>
-#include <fwbuilder/StateSyncClusterGroup.h>
-#include <fwbuilder/FailoverClusterGroup.h>
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/Management.h>
-#include <fwbuilder/IPv4.h>
-#include <fwbuilder/IPv6.h>
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
 
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/NAT.h>
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Management.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
 
-#include <fwbuilder/Routing.h>
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
 
-#include <fwbuilder/RuleElement.h>
+#include "fwbuilder/Routing.h"
 
-#include <fwbuilder/XMLTools.h>
+#include "fwbuilder/RuleElement.h"
+
+#include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Resources.h"
 
 using namespace std;

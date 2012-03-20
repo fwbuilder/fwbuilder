@@ -25,19 +25,21 @@
 #include <sstream>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/RuleElement.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/XMLTools.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/NAT.h>
-#include <fwbuilder/Routing.h>
-#include <fwbuilder/TagService.h>
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/TagService.h"
 
 using namespace std;
 using namespace libfwbuilder;

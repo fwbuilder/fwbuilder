@@ -30,11 +30,13 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
-#include <fwbuilder/Routing.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/FWObjectDatabase.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
 using namespace libfwbuilder;
 

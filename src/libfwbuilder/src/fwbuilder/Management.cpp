@@ -28,12 +28,14 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Tools.h>
-#include <fwbuilder/Management.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Tools.h"
+#include "fwbuilder/Management.h"
+#include "fwbuilder/XMLTools.h"
 
 #include <iostream>
 

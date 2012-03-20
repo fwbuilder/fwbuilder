@@ -27,10 +27,12 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/UserService.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/UserService.h"
+#include "fwbuilder/XMLTools.h"
 
 using namespace std;
 using namespace libfwbuilder;

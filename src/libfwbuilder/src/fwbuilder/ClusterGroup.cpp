@@ -14,13 +14,15 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/ClusterGroup.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/FWOptions.h>
+
+#include "fwbuilder/ClusterGroup.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/FWOptions.h"
 
 using namespace std;
 using namespace libfwbuilder;

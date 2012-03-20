@@ -24,11 +24,13 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWIntervalReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/FWIntervalReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/XMLTools.h"
 
 using namespace libfwbuilder;
 

@@ -25,7 +25,9 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -38,7 +40,7 @@
 #include <errno.h>
 #include <signal.h>
 
-#include <fwbuilder/BackgroundOp.h>
+#include "fwbuilder/BackgroundOp.h"
 
 using namespace std;
 using namespace libfwbuilder;

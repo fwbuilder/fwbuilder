@@ -112,7 +112,7 @@ using namespace std;
 #  define SNPRINTF  _snprintf
 #  define VSNPRINTF _vsnprintf
 
-#  define _WIN32_WINNT 0x0502
+#  define WINVER 0x0502
 
 #else
 

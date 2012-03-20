@@ -25,10 +25,12 @@
 */
 
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/TCPUDPService.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/TCPUDPService.h"
+#include "fwbuilder/XMLTools.h"
 
 using namespace libfwbuilder;
 using namespace std;

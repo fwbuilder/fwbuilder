@@ -24,13 +24,15 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/Interface.h>
+
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/Interface.h"
 
 extern "C" {
-#  include <fwbuilder/inet_net.h>
+#  include "fwbuilder/inet_net.h"
 }
 
 #ifndef _WIN32

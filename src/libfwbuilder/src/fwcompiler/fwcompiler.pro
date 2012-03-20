@@ -5,6 +5,8 @@ include(../../qmake.inc)
 TEMPLATE = lib
 CONFIG += staticlib
 
+INCLUDEPATH += "../../../../"
+
 #
 SOURCES  = 	BaseCompiler.cpp \
 			Compiler.cpp \

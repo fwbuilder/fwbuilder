@@ -26,10 +26,12 @@
 
 #include <assert.h>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/Firewall.h>
+
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Firewall.h"
 
 #include <iostream>
 

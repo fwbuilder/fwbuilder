@@ -24,12 +24,14 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/XMLTools.h>
+
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/XMLTools.h"
 
 using namespace libfwbuilder;
 

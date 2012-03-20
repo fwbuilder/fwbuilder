@@ -23,6 +23,10 @@
 
 */
 
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -33,55 +37,53 @@
 #include <cstring>
 #include <signal.h>
 
-#include <fwbuilder/memcheck.h>
+#include "fwbuilder/memcheck.h"
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectDatabase.h"
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/FWObjectDatabase.h>
-
-#include <fwbuilder/AttachedNetworks.h>
-#include <fwbuilder/Library.h>
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/ICMPService.h>
-#include <fwbuilder/ICMP6Service.h>
-#include <fwbuilder/IPService.h>
-#include <fwbuilder/TCPService.h>
-#include <fwbuilder/UDPService.h>
-#include <fwbuilder/CustomService.h>
-#include <fwbuilder/FWReference.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/FWIntervalReference.h>
-#include <fwbuilder/Host.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/IPv4.h>
-#include <fwbuilder/IPv6.h>
-#include <fwbuilder/physAddress.h>
-#include <fwbuilder/DNSName.h>
-#include <fwbuilder/AddressTable.h>
-#include <fwbuilder/Group.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/RuleElement.h>
-#include <fwbuilder/RuleSet.h>
-#include <fwbuilder/FWOptions.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/Cluster.h>
-#include <fwbuilder/StateSyncClusterGroup.h>
-#include <fwbuilder/FailoverClusterGroup.h>
-#include <fwbuilder/NAT.h>
-#include <fwbuilder/Policy.h>
-#include <fwbuilder/Routing.h>
-#include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/ServiceGroup.h>
-#include <fwbuilder/IntervalGroup.h>
-#include <fwbuilder/Network.h>
-#include <fwbuilder/NetworkIPv6.h>
-#include <fwbuilder/AddressRange.h>
-#include <fwbuilder/Management.h>
-#include <fwbuilder/XMLTools.h>
-#include <fwbuilder/TagService.h>
-#include <fwbuilder/UserService.h>
+#include "fwbuilder/AttachedNetworks.h"
+#include "fwbuilder/Library.h"
+#include "fwbuilder/Interval.h"
+#include "fwbuilder/ICMPService.h"
+#include "fwbuilder/ICMP6Service.h"
+#include "fwbuilder/IPService.h"
+#include "fwbuilder/TCPService.h"
+#include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
+#include "fwbuilder/FWReference.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWIntervalReference.h"
+#include "fwbuilder/Host.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/physAddress.h"
+#include "fwbuilder/DNSName.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/Group.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/RuleElement.h"
+#include "fwbuilder/RuleSet.h"
+#include "fwbuilder/FWOptions.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/StateSyncClusterGroup.h"
+#include "fwbuilder/FailoverClusterGroup.h"
+#include "fwbuilder/NAT.h"
+#include "fwbuilder/Policy.h"
+#include "fwbuilder/Routing.h"
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/IntervalGroup.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/Management.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/TagService.h"
+#include "fwbuilder/UserService.h"
 
 #include <iostream>
 #include <sstream>

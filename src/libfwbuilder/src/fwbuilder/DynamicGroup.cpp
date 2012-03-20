@@ -21,12 +21,14 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/DynamicGroup.h>
-#include <fwbuilder/XMLTools.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/RuleElement.h>
+#include "fwbuilder/DynamicGroup.h"
+#include "fwbuilder/XMLTools.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/RuleElement.h"
+
 #include <cstring>
 
 using namespace std;

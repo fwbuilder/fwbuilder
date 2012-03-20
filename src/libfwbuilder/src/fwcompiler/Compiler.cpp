@@ -21,11 +21,12 @@
 
 */
 
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 #include <assert.h>
 
 #include "Compiler.h"
-
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/Cluster.h"

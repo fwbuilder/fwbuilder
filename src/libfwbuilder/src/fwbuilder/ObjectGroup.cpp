@@ -24,28 +24,30 @@
 
 */
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
 
-#include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/Service.h>
-#include <fwbuilder/ServiceGroup.h>
-#include <fwbuilder/FWServiceReference.h>
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Interval.h>
 
-#include <fwbuilder/Host.h>
-#include <fwbuilder/Firewall.h>
-#include <fwbuilder/Cluster.h>
-#include <fwbuilder/Network.h>
-#include <fwbuilder/NetworkIPv6.h>
-#include <fwbuilder/IPv4.h>
-#include <fwbuilder/IPv6.h>
-#include <fwbuilder/DNSName.h>
-#include <fwbuilder/AddressTable.h>
-#include <fwbuilder/AddressRange.h>
-#include <fwbuilder/FWObjectReference.h>
-#include <fwbuilder/RuleSet.h>
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/Service.h"
+#include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Interval.h"
+
+#include "fwbuilder/Host.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Cluster.h"
+#include "fwbuilder/Network.h"
+#include "fwbuilder/NetworkIPv6.h"
+#include "fwbuilder/IPv4.h"
+#include "fwbuilder/IPv6.h"
+#include "fwbuilder/DNSName.h"
+#include "fwbuilder/AddressTable.h"
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/FWObjectReference.h"
+#include "fwbuilder/RuleSet.h"
 
 using namespace std;
 using namespace libfwbuilder;

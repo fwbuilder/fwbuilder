@@ -27,14 +27,16 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
 
-#include <fwbuilder/FWObjectDatabase.h>
-#include <fwbuilder/Host.h>
-#include <fwbuilder/Interface.h>
-#include <fwbuilder/Management.h>
 
-#include <fwbuilder/XMLTools.h>
+#include "fwbuilder/FWObjectDatabase.h"
+#include "fwbuilder/Host.h"
+#include "fwbuilder/Interface.h"
+#include "fwbuilder/Management.h"
+
+#include "fwbuilder/XMLTools.h"
 
 using namespace std;
 using namespace libfwbuilder;

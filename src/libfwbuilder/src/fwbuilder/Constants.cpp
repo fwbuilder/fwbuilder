@@ -21,9 +21,10 @@
 
 */
 
-#include "../../config.h"
-#include "fwbuilder/Constants.h"
+#include "config.h"
 #include "fwbuilder/libfwbuilder-config.h"
+
+#include "fwbuilder/Constants.h"
 
 using namespace std;
 using namespace libfwbuilder;
