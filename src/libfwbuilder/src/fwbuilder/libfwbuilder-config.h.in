@@ -15,8 +15,8 @@
  */
 
 /* #undef UCD_SNMP */
-#  define HAVE_LIBSNMP 1
-#  define NET_SNMP 1
+/* #undef HAVE_LIBSNMP 1 */
+/* #unde  NET_SNMP 1 */
 
 /*
  * stdint.h must be installed on windows to satisfy uint128.h
