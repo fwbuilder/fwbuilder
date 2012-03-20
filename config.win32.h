@@ -88,7 +88,7 @@
 #undef HAVE_MEMPCPY
 #undef HAVE_STRCHR
 
-#define HAVE_LIBSNMP 1
+/* #undef HAVE_LIBSNMP */
 #define HAVE_ANTLR_RUNTIME 1
 
 #define SNPRINTF  _snprintf
