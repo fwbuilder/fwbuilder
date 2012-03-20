@@ -42,7 +42,6 @@ fwb_procurve_acl
 transfer_secuwall
 .configure_marker
 .build_marker
-qmake.inc
 src/unit_tests/*/*Test
 src/unit_tests/*/*Tests
 src/unit_tests/*/*.output
