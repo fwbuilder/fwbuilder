@@ -107,12 +107,18 @@ using namespace std;
 #endif
 #endif
 
-#ifndef _WIN32
-#  define SNPRINTF  snprintf
-#  define VSNPRINTF vsnprintf
-#else
+#ifdef _WIN32
+
 #  define SNPRINTF  _snprintf
 #  define VSNPRINTF _vsnprintf
+
+#  define _WIN32_WINNT 0x0502
+
+#else
+
+#  define SNPRINTF  snprintf
+#  define VSNPRINTF vsnprintf
+
 #endif
 
 
