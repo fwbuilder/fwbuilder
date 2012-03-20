@@ -3,57 +3,6 @@
 
 #define FREEXMLBUFF(x) xmlFree((void*)(x))
 
-
-#ifdef _WIN32
-/* #  pragma warning(disable:4786) */
-#  define _WIN32_WINNT 0x0501
-
-/*
- * Template files directory dir
- * DO NOT USE THIS CONSTANT DIRECTLY - USE Constants class instead!
-#  define RES_DIR "resources"
- */
-
-/* #undef UCD_SNMP */
-/* #undef HAVE_LIBSNMP 1 */
-/* #unde  NET_SNMP 1 */
-
-/*
- * stdint.h must be installed on windows to satisfy uint128.h
- */
-#  define HAVE_STDINT_H 1
-
-/* xmlSaveFile */
-#  define HAVE_XMLSAVEFORMATFILEENC 1
-
-/* #undef HAVE_LIBXSLT_XSLTCONFIG_H */
-
-/* strtok_s on windows */
-#  define HAVE_STRTOK_S  1
-
-/* net-snmp lib checks HAVE_STRTOK_R on windows. This function
- * exists both on windows and mac
- */
-#  define HAVE_STRTOK_R  1
-#  define WORDS_LITTLEENDIAN
-
-/*
- * newer versions of UCD-SNMP use this function. This should be preferred way,
- * but Mandrake 8.2 comes with ucd-snmp v.4.2.3 which does not have it.
- */
-#  define HAVE_SNPRINT_OBJID  1
-
-/*
- * always need this for openssl
- */
-#  define OPENSSL_NO_KRB5
-
-#  define SNPRINTF  _snprintf
-#  define VSNPRINTF _vsnprintf
-#  define FS_SEPARATOR "\\"
-
-#else
-
 /* 
  * Template files directory dir
  * DO NOT USE THIS CONSTANT DIRECTLY - USE Constants class instead!
@@ -105,9 +54,8 @@
  */
 #undef HAVE_SNPRINT_OBJID
 
-#  define SNPRINTF  snprintf
-#  define VSNPRINTF vsnprintf
-#  define FS_SEPARATOR "/"
+#define SNPRINTF  snprintf
+#define VSNPRINTF vsnprintf
+#define FS_SEPARATOR "/"
 
-#endif
 
