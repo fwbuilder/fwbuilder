@@ -28,7 +28,7 @@
 #ifndef __ICMPSERVICE_HH_FLAG__
 #define __ICMPSERVICE_HH_FLAG__
 
-#include <fwbuilder/Service.h>
+#include "fwbuilder/Service.h"
 
 namespace libfwbuilder
 {

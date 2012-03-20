@@ -27,8 +27,8 @@
 #ifndef __DNS_NAME_HH_FLAG__
 #define __DNS_NAME_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/MultiAddress.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/MultiAddress.h"
 
 namespace libfwbuilder
 {

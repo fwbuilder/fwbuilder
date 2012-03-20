@@ -53,7 +53,7 @@
 #  include <io.h>
 #endif
 
-#include <fwbuilder/FWException.h>
+#include "fwbuilder/FWException.h"
 
 namespace libfwbuilder
 {

@@ -25,7 +25,7 @@
 #ifndef __RULE_HH_FLAG__
 #define __RULE_HH_FLAG__
 
-#include <fwbuilder/Group.h>
+#include "fwbuilder/Group.h"
 
 namespace libfwbuilder
 {

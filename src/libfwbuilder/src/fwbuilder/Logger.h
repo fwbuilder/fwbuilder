@@ -30,9 +30,9 @@
 
 #include <sstream>
 
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/Tools.h>
-#include <fwbuilder/ThreadTools.h>
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/Tools.h"
+#include "fwbuilder/ThreadTools.h"
 
 namespace libfwbuilder
 {

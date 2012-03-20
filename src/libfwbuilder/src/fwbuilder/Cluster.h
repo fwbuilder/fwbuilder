@@ -17,7 +17,7 @@
 #ifndef __CLUSTER_HH__
 #define __CLUSTER_HH__
 
-#include <fwbuilder/Firewall.h>
+#include "fwbuilder/Firewall.h"
 
 namespace libfwbuilder
 {

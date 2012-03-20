@@ -28,7 +28,7 @@
 #ifndef  __FWOBJECTREF_HH_FLAG__
 #define  __FWOBJECTREF_HH_FLAG__
 
-#include <fwbuilder/FWReference.h>
+#include "fwbuilder/FWReference.h"
 
 namespace libfwbuilder
 {

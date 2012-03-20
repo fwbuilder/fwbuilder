@@ -27,7 +27,7 @@
 #ifndef __FAILOVERCLUSTERGROUP_HH_
 #define __FAILOVERCLUSTERGROUP_HH_
 
-#include <fwbuilder/ClusterGroup.h>
+#include "fwbuilder/ClusterGroup.h"
 
 namespace libfwbuilder
 {

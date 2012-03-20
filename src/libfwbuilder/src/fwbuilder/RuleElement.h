@@ -28,13 +28,13 @@
 #ifndef __RULEELEMENT_HH_FLAG__
 #define __RULEELEMENT_HH_FLAG__
 
-#include <fwbuilder/Group.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/Service.h>
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/ObjectGroup.h>
-#include <fwbuilder/ServiceGroup.h>
-#include <fwbuilder/IntervalGroup.h>
+#include "fwbuilder/Group.h"
+#include "fwbuilder/Address.h"
+#include "fwbuilder/Service.h"
+#include "fwbuilder/Interval.h"
+#include "fwbuilder/ObjectGroup.h"
+#include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/IntervalGroup.h"
 
 namespace libfwbuilder
 {

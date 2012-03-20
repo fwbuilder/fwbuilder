@@ -27,7 +27,7 @@
 #ifndef __SYNC_QUEUE_H_FLAG__
 #define __SYNC_QUEUE_H_FLAG__
 
-#include <fwbuilder/ThreadTools.h>
+#include "fwbuilder/ThreadTools.h"
 
 namespace libfwbuilder
 {

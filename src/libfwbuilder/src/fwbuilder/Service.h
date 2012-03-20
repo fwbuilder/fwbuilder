@@ -27,7 +27,7 @@
 #ifndef __GEN_SERVICE_HH_FLAG__
 #define __GEN_SERVICE_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
+#include "fwbuilder/FWObject.h"
 
 namespace libfwbuilder
 {

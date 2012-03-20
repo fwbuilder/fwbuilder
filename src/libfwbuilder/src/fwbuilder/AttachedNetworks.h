@@ -25,7 +25,7 @@
 #ifndef _ATTACHEDNETWORKS_HH_
 #define _ATTACHEDNETWORKS_HH_
 
-#include <fwbuilder/MultiAddress.h>
+#include "fwbuilder/MultiAddress.h"
 
 namespace libfwbuilder
 {

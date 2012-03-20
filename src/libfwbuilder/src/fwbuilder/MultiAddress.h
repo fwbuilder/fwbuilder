@@ -27,9 +27,9 @@
 #ifndef __GEN_MULTIADDRESS_HH_FLAG__
 #define __GEN_MULTIADDRESS_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/ObjectGroup.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Address.h"
+#include "fwbuilder/ObjectGroup.h"
 #include <vector>
 
 

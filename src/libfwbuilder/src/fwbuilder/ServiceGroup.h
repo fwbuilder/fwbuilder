@@ -27,7 +27,7 @@
 #ifndef __SERVICEGROUP_HH_FLAG__
 #define __SERVICEGROUP_HH_FLAG__
 
-#include <fwbuilder/Group.h>
+#include "fwbuilder/Group.h"
 
 namespace libfwbuilder
 {

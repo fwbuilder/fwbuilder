@@ -29,10 +29,10 @@
 
 #include <string>
 
-#include <fwbuilder/InetAddrMask.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/ObjectMatcher.h>
+#include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/Address.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/ObjectMatcher.h"
 
 namespace libfwbuilder
 {

@@ -32,8 +32,8 @@
 #include <vector>
 #include <stdio.h>
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/FWObjectReference.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWObjectReference.h"
 
 namespace libfwbuilder
 {

@@ -28,7 +28,7 @@
 #ifndef  __FWSRVREF_HH_FLAG__
 #define  __FWSRVREF_HH_FLAG__
 
-#include <fwbuilder/FWReference.h>
+#include "fwbuilder/FWReference.h"
 
 namespace libfwbuilder
 {

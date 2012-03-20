@@ -24,7 +24,7 @@
 #ifndef __DynamicGroup_h__
 #define __DynamicGroup_h__
 
-#include <fwbuilder/MultiAddress.h>
+#include "fwbuilder/MultiAddress.h"
 
 namespace libfwbuilder
 {

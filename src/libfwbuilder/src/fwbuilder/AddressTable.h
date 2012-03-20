@@ -27,7 +27,7 @@
 #ifndef __GEN_ADDRESSTABLE_HH_FLAG__
 #define __GEN_ADDRESSTABLE_HH_FLAG__
 
-#include <fwbuilder/MultiAddress.h>
+#include "fwbuilder/MultiAddress.h"
 
 namespace libfwbuilder
 {

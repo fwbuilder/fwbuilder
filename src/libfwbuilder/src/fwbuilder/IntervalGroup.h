@@ -28,7 +28,7 @@
 #ifndef __INTERVALGROUP_HH_FLAG__
 #define __INTERVALGROUP_HH_FLAG__
 
-#include <fwbuilder/Group.h>
+#include "fwbuilder/Group.h"
 
 namespace libfwbuilder
 {

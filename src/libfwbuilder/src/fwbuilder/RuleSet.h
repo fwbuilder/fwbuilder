@@ -29,9 +29,9 @@
 #ifndef __RULESET_HH_FLAG__
 #define __RULESET_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/Rule.h>
-#include <fwbuilder/InetAddr.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Rule.h"
+#include "fwbuilder/InetAddr.h"
 
 namespace libfwbuilder
 {

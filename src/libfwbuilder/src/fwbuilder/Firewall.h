@@ -27,7 +27,7 @@
 #ifndef __FIREWALL_HH_FLAG__
 #define __FIREWALL_HH_FLAG__
 
-#include <fwbuilder/Host.h>
+#include "fwbuilder/Host.h"
 #include <time.h>   // for time_t
 
 #include <list>

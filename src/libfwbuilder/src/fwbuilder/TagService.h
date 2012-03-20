@@ -28,8 +28,8 @@
 #ifndef __GEN_TAGSERVICE_HH_FLAG__
 #define __GEN_TAGSERVICE_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/Service.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Service.h"
 
 namespace libfwbuilder
 {

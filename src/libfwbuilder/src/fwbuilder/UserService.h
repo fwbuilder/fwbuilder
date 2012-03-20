@@ -30,7 +30,7 @@
 #ifndef __USERSERVICE_HH_FLAG__
 #define __USERSERVICE_HH_FLAG__
 
-#include <fwbuilder/Service.h>
+#include "fwbuilder/Service.h"
 
 #include <map>
 

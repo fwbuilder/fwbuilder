@@ -27,7 +27,7 @@
 #ifndef __THREAD_TOOLS_H_FLAG__
 #define __THREAD_TOOLS_H_FLAG__
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "fwbuilder/libfwbuilder-config.h"
 
 #include <time.h> //for time_t definition
 #include <pthread.h>
@@ -35,7 +35,7 @@
 #include <string>
 #include <queue>
 
-#include <fwbuilder/FWException.h>
+#include "fwbuilder/FWException.h"
 
 namespace libfwbuilder
 {

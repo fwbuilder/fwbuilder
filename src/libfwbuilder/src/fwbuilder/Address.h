@@ -27,9 +27,9 @@
 #ifndef __GEN_ADDRESS_HH_FLAG__
 #define __GEN_ADDRESS_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/InetAddrMask.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/InetAddrMask.h"
 
 namespace libfwbuilder
 {

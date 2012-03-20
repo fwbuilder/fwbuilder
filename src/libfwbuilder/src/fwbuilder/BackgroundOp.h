@@ -40,11 +40,11 @@
 # include <pthread.h>
 #endif
 
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/Tools.h>
-#include <fwbuilder/ThreadTools.h>
-#include <fwbuilder/Pool.h>
-#include <fwbuilder/Logger.h>
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/Tools.h"
+#include "fwbuilder/ThreadTools.h"
+#include "fwbuilder/Pool.h"
+#include "fwbuilder/Logger.h"
 
 // #include <sigc++/signal_system.h>
 

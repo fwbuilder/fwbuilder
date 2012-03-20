@@ -28,8 +28,8 @@
 #ifndef __NAT_HH_FLAG__
 #define __NAT_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/RuleSet.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/RuleSet.h"
 
 namespace libfwbuilder
 {

@@ -29,8 +29,8 @@
 #ifndef __ROUTING_HH_FLAG__
 #define __ROUTING_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/RuleSet.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/RuleSet.h"
 
 namespace libfwbuilder
 {

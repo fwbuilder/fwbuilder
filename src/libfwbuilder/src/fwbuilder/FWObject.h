@@ -40,10 +40,10 @@
 #include <fstream>
 #include <cstdlib>
 
-#include <fwbuilder/libfwbuilder-config.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/ObjectMatcher.h>
-#include <fwbuilder/Dispatch.h>
+#include "fwbuilder/libfwbuilder-config.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/ObjectMatcher.h"
+#include "fwbuilder/Dispatch.h"
 
 
 namespace libfwbuilder

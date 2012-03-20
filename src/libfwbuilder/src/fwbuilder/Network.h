@@ -27,11 +27,11 @@
 #ifndef __NETWORK_HH_FLAG__
 #define __NETWORK_HH_FLAG__
 
-#include <fwbuilder/Address.h>
-#include <fwbuilder/InetAddrMask.h>
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/InetAddrMask.h>
-#include <fwbuilder/ObjectMatcher.h>
+#include "fwbuilder/Address.h"
+#include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/ObjectMatcher.h"
 
 namespace libfwbuilder
 {

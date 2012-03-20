@@ -22,7 +22,7 @@
 #ifndef __CLUSTERGROUP_HH_
 #define __CLUSTERGROUP_HH_
 
-#include <fwbuilder/ObjectGroup.h>
+#include "fwbuilder/ObjectGroup.h"
 
 namespace libfwbuilder
 {

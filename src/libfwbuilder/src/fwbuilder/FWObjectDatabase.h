@@ -27,10 +27,10 @@
 #ifndef __FWOBJECTDATABASE_HH_FLAG__
 #define __FWOBJECTDATABASE_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/ThreadTools.h>
-#include <fwbuilder/XMLTools.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/ThreadTools.h"
+#include "fwbuilder/XMLTools.h"
 
 #ifdef _WIN32
 #  include <sys/timeb.h>

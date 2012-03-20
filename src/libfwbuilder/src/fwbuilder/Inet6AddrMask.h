@@ -46,8 +46,8 @@
 #  include <winsock2.h>
 #endif
 
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/InetAddrMask.h>
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/InetAddrMask.h"
 
 namespace libfwbuilder
 {

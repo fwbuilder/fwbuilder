@@ -28,7 +28,7 @@
 #ifndef __INTERVAL_HH_FLAG__
 #define __INTERVAL_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
+#include "fwbuilder/FWObject.h"
 
 namespace libfwbuilder
 {

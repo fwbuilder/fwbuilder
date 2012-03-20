@@ -28,9 +28,9 @@
 #ifndef  __FWINTERVALREF_HH_FLAG__
 #define  __FWINTERVALREF_HH_FLAG__
 
-#include <fwbuilder/FWReference.h>
-#include <fwbuilder/Interval.h>
-#include <fwbuilder/IntervalGroup.h>
+#include "fwbuilder/FWReference.h"
+#include "fwbuilder/Interval.h"
+#include "fwbuilder/IntervalGroup.h"
 
 namespace libfwbuilder
 {

@@ -28,7 +28,7 @@
 #ifndef __DNS_HH_FLAG__
 #define __DNS_HH_FLAG__
 
-#include <fwbuilder/libfwbuilder-config.h>
+#include "fwbuilder/libfwbuilder-config.h"
 
 #ifndef _WIN32
 
@@ -52,10 +52,10 @@
 
 #endif // _WIN32
 
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/FWException.h>
-#include <fwbuilder/BackgroundOp.h>
-#include <fwbuilder/ThreadTools.h>
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/FWException.h"
+#include "fwbuilder/BackgroundOp.h"
+#include "fwbuilder/ThreadTools.h"
 
 #include <vector>
 #include <map>

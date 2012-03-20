@@ -28,7 +28,7 @@
 #ifndef __TCPSERVICE_HH_FLAG__
 #define __TCPSERVICE_HH_FLAG__
 
-#include <fwbuilder/TCPUDPService.h>
+#include "fwbuilder/TCPUDPService.h"
 
 namespace libfwbuilder
 {

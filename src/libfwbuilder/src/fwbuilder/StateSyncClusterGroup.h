@@ -27,7 +27,7 @@
 #ifndef __STATESYNCCLUSTERGROUP_HH_
 #define __STATESYNCCLUSTERGROUP_HH_
 
-#include <fwbuilder/ClusterGroup.h>
+#include "fwbuilder/ClusterGroup.h"
 
 namespace libfwbuilder
 {

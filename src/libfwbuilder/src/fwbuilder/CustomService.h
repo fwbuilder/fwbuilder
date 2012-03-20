@@ -30,7 +30,7 @@
 #ifndef __CUSTOMSERVICE_HH_FLAG__
 #define __CUSTOMSERVICE_HH_FLAG__
 
-#include <fwbuilder/Service.h>
+#include "fwbuilder/Service.h"
 
 #include <map>
 

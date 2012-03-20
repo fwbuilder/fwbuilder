@@ -28,8 +28,8 @@
 #ifndef __MANAGEMENT_HH_FLAG__
 #define __MANAGEMENT_HH_FLAG__
 
-#include <fwbuilder/InetAddr.h>
-#include <fwbuilder/FWObject.h>
+#include "fwbuilder/InetAddr.h"
+#include "fwbuilder/FWObject.h"
 
 namespace libfwbuilder
 {

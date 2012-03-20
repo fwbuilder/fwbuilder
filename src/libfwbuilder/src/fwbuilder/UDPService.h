@@ -28,7 +28,7 @@
 #ifndef __UDPSERVICE_HH_FLAG__
 #define __UDPSERVICE_HH_FLAG__
 
-#include <fwbuilder/TCPUDPService.h>
+#include "fwbuilder/TCPUDPService.h"
 
 namespace libfwbuilder
 {

@@ -27,9 +27,9 @@
 #ifndef __PHYS_ADDRESS_HH_FLAG__
 #define __PHYS_ADDRESS_HH_FLAG__
 
-#include <fwbuilder/FWObject.h>
-#include <fwbuilder/Address.h>
-#include <fwbuilder/ObjectMatcher.h>
+#include "fwbuilder/FWObject.h"
+#include "fwbuilder/Address.h"
+#include "fwbuilder/ObjectMatcher.h"
 
 namespace libfwbuilder
 {
