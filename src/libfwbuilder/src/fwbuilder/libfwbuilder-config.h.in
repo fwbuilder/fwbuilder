@@ -54,8 +54,11 @@
  */
 #undef HAVE_SNPRINT_OBJID
 
+#ifndef SNPRINTF
 #define SNPRINTF  snprintf
 #define VSNPRINTF vsnprintf
+#endif
+
 #define FS_SEPARATOR "/"
 
 

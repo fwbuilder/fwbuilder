@@ -65,7 +65,6 @@ win32 {
     CONFIG += staticlib
 
     DEFINES += LIBXML_STATIC LIBXSLT_STATIC 
-    INCLUDEPATH += ../../../fwb-lm/include
     INCLUDEPATH += c:/local/include c:/local/include/libxml2 c:/MinGW/include
     LIBS += -LC:\local\lib
 #    LIBS += ws2_32.lib pthreadVC.lib 
