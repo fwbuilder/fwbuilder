@@ -27,7 +27,7 @@
 #ifndef __PROTOTYPEDIALOG_H_
 #define __PROTOTYPEDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <prototypedialog_q.h>
 
 #include "fwbuilder/FWObject.h"

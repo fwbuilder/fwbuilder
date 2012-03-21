@@ -26,7 +26,7 @@
 #ifndef __COMMENTEDITORPANEL_H__
 #define __COMMENTEDITORPANEL_H__
 
-#include "../../config.h"
+#include "config.h"
 #include "BaseObjectDialog.h"
 #include <ui_commenteditorpanel_q.h>
 #include <QWidget>

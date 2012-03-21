@@ -17,7 +17,7 @@
 #ifndef __CLUSTERGROUPDIALOG_H_
 #define __CLUSTERGROUPDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_clustergroupdialog_q.h>
 #include "BaseObjectDialog.h"
 

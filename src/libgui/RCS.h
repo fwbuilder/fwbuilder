@@ -27,7 +27,7 @@
 #ifndef __RCS_H_FLAG__
 #define __RCS_H_FLAG__
 
-#include "../../config.h"
+#include "config.h"
 
 #include <qobject.h>
 #include <qprocess.h>

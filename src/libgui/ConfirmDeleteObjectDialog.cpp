@@ -23,12 +23,12 @@
 
 */
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
 #include "platforms.h"
-#include "../../definitions.h"
+#include "definitions.h"
 
 #include "ConfirmDeleteObjectDialog.h"
 #include "FindWhereUsedWidget.h"

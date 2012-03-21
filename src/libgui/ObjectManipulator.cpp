@@ -25,7 +25,7 @@
 
 
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 #include "utils_no_qt.h"
 #include "platforms.h"

@@ -27,7 +27,7 @@
 #ifndef __TIMEDIALOG_H_
 #define __TIMEDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_timedialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

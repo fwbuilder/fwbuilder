@@ -9,7 +9,7 @@
 
 #if defined __cplusplus
 
-#include "../../definitions.h"
+#include "definitions.h"
 #include "global.h"
 #include "utils.h"
 

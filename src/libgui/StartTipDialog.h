@@ -27,7 +27,7 @@
 #ifndef __STARTTIPDIALOG_H_
 #define __STARTTIPDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 
 #include "ui_starttipdialog_q.h"
 #include "HttpGet.h"

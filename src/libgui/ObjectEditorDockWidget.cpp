@@ -23,7 +23,7 @@
 
 */
 
-#include "../../config.h"
+#include "config.h"
 
 #include "ObjectEditorDockWidget.h"
 #include "ObjectEditor.h"

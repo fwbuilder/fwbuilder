@@ -27,7 +27,7 @@
 #ifndef __CUSTOMSERVICEDIALOG_H_
 #define __CUSTOMSERVICEDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_customservicedialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

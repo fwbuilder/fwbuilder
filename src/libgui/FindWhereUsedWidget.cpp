@@ -23,8 +23,8 @@
 
 */
 
-#include "../../config.h"
-#include "../../definitions.h"
+#include "config.h"
+#include "definitions.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"

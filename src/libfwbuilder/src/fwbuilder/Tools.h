@@ -39,7 +39,7 @@
 # define nil NULL
 #endif
 
-#include "../../../config.h"
+#include "config.h"
 
 #include <string>
 #include <map>

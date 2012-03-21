@@ -27,7 +27,7 @@
 #ifndef __LONGTEXTDIALOG_H_
 #define __LONGTEXTDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_longtextdialog_q.h>
 
 class longTextDialog : public QDialog

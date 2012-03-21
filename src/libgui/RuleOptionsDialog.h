@@ -27,7 +27,7 @@
 #ifndef __RULEOPTIONSDIALOG_H_
 #define __RULEOPTIONSDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_ruleoptionsdialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

@@ -27,8 +27,8 @@
 #ifndef  __FWOPTINS_HH_FLAG__
 #define  __FWOPTINS_HH_FLAG__
 
-#include "fwbuilder/FWObject.h"
 #include "fwbuilder/XMLTools.h"
+#include "fwbuilder/FWObject.h"
 
 namespace libfwbuilder
 {

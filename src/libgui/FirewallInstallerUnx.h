@@ -28,7 +28,7 @@
 #define __FIREWALLINSTALLERUNX_H_
 
 
-#include "../../config.h"
+#include "config.h"
 
 #include "FirewallInstaller.h"
 

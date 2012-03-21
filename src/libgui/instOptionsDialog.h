@@ -27,7 +27,7 @@
 #ifndef __INSTOPTIONSDIALOG_H_
 #define __INSTOPTIONSDIALOG_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_instoptionsdialog_q.h>
 
 class instConf;

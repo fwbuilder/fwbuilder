@@ -27,7 +27,7 @@
 #ifndef __DISCOVERYDRUID_H_
 #define __DISCOVERYDRUID_H_
 
-#include "../../config.h"
+#include "config.h"
 #include <ui_discoverydruid_q.h>
 
 #include <qobject.h>

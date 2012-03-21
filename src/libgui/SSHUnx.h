@@ -27,7 +27,7 @@
 #ifndef  __SSHUNX_H_
 #define  __SSHUNX_H_
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 
 #include "SSHSession.h"

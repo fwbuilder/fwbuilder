@@ -27,7 +27,7 @@
 #ifndef  __SSHCISCO_H_
 #define  __SSHCISCO_H_
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 
 #include "SSHSession.h"

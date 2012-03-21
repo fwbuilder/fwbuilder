@@ -26,7 +26,7 @@
 #ifndef INTERFACESTABWIDGET_H
 #define INTERFACESTABWIDGET_H
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"

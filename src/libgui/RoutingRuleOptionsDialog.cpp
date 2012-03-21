@@ -27,7 +27,7 @@
 */
 
 
-#include "../../config.h"
+#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"

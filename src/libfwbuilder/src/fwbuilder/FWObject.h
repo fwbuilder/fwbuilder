@@ -27,6 +27,9 @@
 #ifndef  __FWOBJECT_HH_FLAG__
 #define  __FWOBJECT_HH_FLAG__
 
+#include "config.h"
+#include "fwbuilder/libfwbuilder-config.h"
+
 #include <time.h>
 #include <string>
 #include <list>
@@ -40,7 +43,6 @@
 #include <fstream>
 #include <cstdlib>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/ObjectMatcher.h"
 #include "fwbuilder/Dispatch.h"
