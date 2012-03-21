@@ -13,7 +13,7 @@ Var STARTMENU_FOLDER
 ;
 !define GENERATION "5.1"
 !define GENERATION_SHORT "51"
-!define VERSION "5.1.0.3598"
+!define VERSION "5.1.0.3599"
 
 
 
