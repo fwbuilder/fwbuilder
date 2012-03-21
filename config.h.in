@@ -107,12 +107,6 @@ using namespace std;
 #define PACKAGE_DATA_DIR   ""
 #define PACKAGE_SOURCE_DIR ""
 
-#define RCS_FILE_NAME      "rcs.exe"
-#define RCSDIFF_FILE_NAME  "rcsdiff.exe"
-#define RLOG_FILE_NAME     "rlog.exe"
-#define CI_FILE_NAME       "ci.exe"
-#define CO_FILE_NAME       "co.exe"
-
 /*
  * Normally this macro defines directory where system-wide QT
  * translations are installed. We do not use it on win32 since
