@@ -38,6 +38,13 @@
 
 #define MANIFEST_MARKER "# files: "
 
+#undef RCS_DIR
+#undef RCS_FILE_NAME
+#undef RCSDIFF_FILE_NAME
+#undef RLOG_FILE_NAME
+#undef CI_FILE_NAME
+#undef CO_FILE_NAME
+
 #undef HAVE_LOCALE_H
 #undef HAVE_GETOPT_H
 #undef HAVE_SETLOCALE
@@ -120,13 +127,6 @@ using namespace std;
 #undef PACKAGE_LOCALE_DIR
 #undef PACKAGE_DATA_DIR
 #undef PACKAGE_SOURCE_DIR
-
-#undef RCS_DIR
-#undef RCS_FILE_NAME
-#undef RCSDIFF_FILE_NAME
-#undef RLOG_FILE_NAME
-#undef CI_FILE_NAME
-#undef CO_FILE_NAME
 
 #define SNPRINTF  snprintf
 #define VSNPRINTF vsnprintf
