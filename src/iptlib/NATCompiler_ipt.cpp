@@ -25,7 +25,7 @@
 
 #include "NATCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
-#include "utils.h"
+#include "ipt_utils.h"
 
 #include "combinedAddress.h"
 

@@ -30,7 +30,7 @@ SOURCES	 =  CompilerDriver_ipt.cpp \
 			Preprocessor_ipt.cpp \
 			combinedAddress.cpp \
 			AutomaticRules_ipt.cpp \
-			utils.cpp
+			ipt_utils.cpp
 
 HEADERS	 = ../../config.h \
 			CompilerDriver_ipt.h \
@@ -46,7 +46,7 @@ HEADERS	 = ../../config.h \
 			Preprocessor_ipt.h \
 			combinedAddress.h \
 			AutomaticRules_ipt.h \
-			utils.h
+			ipt_utils.h
 
 CONFIG += staticlib
 
