@@ -24,7 +24,6 @@
 #include "FWWindow.h"
 #include "FWBSettings.h"
 #include "FWBApplication.h"
-#include "UserWorkflow.h"
 #include "FWObjectClipboard.h"
 
 #include "common/commoninit.h"
@@ -49,8 +48,7 @@ extern void init_platforms();  // defined in platforms.cpp
 
 void build_app(int argc, char** argv,
                FWBApplication** app,
-               FWBSettings** st,
-               UserWorkflow** wfl)
+               FWBSettings** st)
 
 { 
     Q_INIT_RESOURCE(MainRes); 
@@ -64,8 +62,6 @@ void build_app(int argc, char** argv,
     (*st)->setBool("UI/NoStartTip", true);  
     (*st)->setIntroDialogEnabled(false); 
     (*st)->suppressReminderAboutStandardLib(true); 
-
-    *wfl = new UserWorkflow(); 
 
     string full_res_path = Constants::getResourcesFilePath(); 
 

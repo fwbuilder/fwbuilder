@@ -11,7 +11,7 @@ LIBS += $$CPPUNIT_LIBS
 
 SOURCES += main.cpp Inet6AddrMaskTest.cpp
 HEADERS += Inet6AddrMaskTest.h
-INCLUDEPATH += ../../libfwbuilder/src
+INCLUDEPATH += ../../.. ../../libfwbuilder/src
 DEPENDPATH  += ../../libfwbuilder/src
 LIBS += ../../libfwbuilder/src/fwbuilder/libfwbuilder.a
 run_tests.commands = echo "Running tests..." && ./${TARGET}

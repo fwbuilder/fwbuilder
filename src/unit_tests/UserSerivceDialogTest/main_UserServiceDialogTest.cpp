@@ -31,7 +31,6 @@
 #include "FWWindow.h"
 #include "FWBSettings.h"
 #include "FWBApplication.h"
-#include "UserWorkflow.h"
 
 
 using namespace std;
@@ -41,14 +40,12 @@ int fwbdebug = 0;
 FWWindow *mw = NULL; 
 FWBSettings *st = NULL; 
 FWBApplication *app = NULL; 
-UserWorkflow *wfl; 
 int sig = FWB_SIG; 
 
 
 extern void build_app(int argc, char** argv,
                       FWBApplication** app,
-                      FWBSettings** st,
-                      UserWorkflow** wfl);
+                      FWBSettings** st);
 
 int main(int argc, char** argv)
 { 
@@ -56,7 +53,7 @@ int main(int argc, char** argv)
     app->setOrganizationName(QLatin1String("NetCitadel")); 
     app->setApplicationName(QLatin1String("Firewall Builder")); 
 
-    build_app(argc, argv, &app, &st, &wfl);
+    build_app(argc, argv, &app, &st);
 
 
     QTest::qExec(new UserServiceDialogTest()); 

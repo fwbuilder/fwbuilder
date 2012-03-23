@@ -9,9 +9,7 @@ build() {
 	local _d="$1"
 	shift
 	(
-	    cd "$_d" &&
-	    ([ -f Makefile ] || $QMAKE $QMAKEPARAMS) &&
-	    "$@"
+	    cd "$_d" && $QMAKE $QMAKEPARAMS && "$@"
 	)
 }
 

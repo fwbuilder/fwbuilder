@@ -69,7 +69,6 @@
 #include <QCoreApplication>
 
 #include "FWBApplication.h"
-#include "UserWorkflow.h"
 #include "FWObjectClipboard.h"
 #include "StartTipDialog.h"
 
@@ -82,7 +81,6 @@ void instDialogClusterTest::initTestCase()
 {
     new FWObjectClipboard();
     mw = new FWWindow();
-    wfl = new UserWorkflow();
     mw->show();
     mw->startupLoad();
 

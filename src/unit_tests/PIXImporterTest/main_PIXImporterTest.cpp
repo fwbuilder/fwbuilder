@@ -29,7 +29,6 @@
 #include "FWWindow.h"
 #include "FWBSettings.h"
 #include "FWBApplication.h"
-#include "UserWorkflow.h"
 
 #include <QApplication>
 #include <QString>
@@ -42,7 +41,6 @@ int fwbdebug = 0;
 FWWindow *mw = NULL; 
 FWBSettings *st = NULL; 
 FWBApplication *app = NULL; 
-UserWorkflow *wfl; 
 int sig = FWB_SIG; 
 std::string platform;
 
