@@ -3,7 +3,7 @@
 
 include(../qmake.inc)
 
-TEMPLATE = lib
+TEMPLATE = app
 
 TARGET = migration
 

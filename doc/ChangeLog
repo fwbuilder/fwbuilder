@@ -1,3 +1,13 @@
+2013-08-10  Sirius Bakke <sirius.bakke@uninett.no>
+	* Version 5.2.0
+	* Search for objects by port number or ip addres
+	* View graphical diff and autocompile firewall when loading file
+	* Support for Cisco NXOS Access lists
+	* Added support for dummy objects in rules
+	* Port to Qt5
+	* New buildscript for OSX
+	* Added build instructions for Windows
+
 2012-03-21  Vadim Kurland  <vadim@netcitadel.com>
 
 	* running autoconf, configure as part of windows build. Merged
