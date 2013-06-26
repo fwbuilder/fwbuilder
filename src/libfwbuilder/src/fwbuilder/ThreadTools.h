@@ -37,6 +37,17 @@
 
 #include "fwbuilder/FWException.h"
 
+#ifdef _MSC_VER
+#  ifdef _WIN64
+typedef __int64 ssize_t;
+#  elif _WIN32
+typedef _W64 int ssize_t;
+#endif
+#else
+#include <unistd.h>
+#define HAVE_SSIZE_T 1
+#endif
+
 namespace libfwbuilder
 {
 
