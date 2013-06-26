@@ -427,6 +427,9 @@ void FWBSettings::init(bool force_first_time_run)
     if (!hasKey("Objects/PolicyRule/defaultDirection"))
         setInt("Objects/PolicyRule/defaultDirection", 0);
 
+    if (!hasKey("Objects/PolicyRule/defaultInterface"))
+        setInt("Objects/PolicyRule/defaultInterface", 0);
+
     if (!hasKey("Objects/Interface/autoconfigureInterfaces"))
         setBool("Objects/Interface/autoconfigureInterfaces", true);
 

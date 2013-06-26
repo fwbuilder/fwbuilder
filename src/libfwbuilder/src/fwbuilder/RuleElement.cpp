@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -187,6 +192,22 @@ bool RuleElementSrc::validateChild(FWObject *o)
     return ObjectGroup::validateChild(o);
 }
 
+int RuleElementSrc::getDummyElementId() const
+{
+    return FWObjectDatabase::DUMMY_ADDRESS_ID;
+}
+
+bool RuleElementSrc::isDummy() const
+{
+    for (FWObject::const_iterator i1 = begin(); i1 != end(); ++i1) {
+        if (FWObject *obj = FWObjectReference::getObject(*i1))
+            if ((obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID)
+                    && FWObjectDatabase::getStringId(obj->getId()) == "dummyaddressid0")
+                return true;
+    }
+    return false;
+}
+
 
 
 const char *RuleElementDst::TYPENAME={"Dst"};
@@ -214,6 +235,22 @@ bool RuleElementDst::validateChild(FWObject *o)
     return ObjectGroup::validateChild(o);
 }
 
+int RuleElementDst::getDummyElementId() const
+{
+    return FWObjectDatabase::DUMMY_ADDRESS_ID;
+}
+
+bool RuleElementDst::isDummy() const
+{
+    for (FWObject::const_iterator i1 = begin(); i1 != end(); ++i1) {
+        if (FWObject *obj = FWObjectReference::getObject(*i1))
+            if ((obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID)
+                    && FWObjectDatabase::getStringId(obj->getId()) == "dummyaddressid0")
+                return true;
+    }
+    return false;
+}
+
 
 
 const char *RuleElementSrv::TYPENAME={"Srv"};
@@ -239,6 +276,22 @@ bool RuleElementSrv::validateChild(FWObject *o)
     if (FWServiceReference::cast(o)!=NULL) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ServiceGroup::validateChild(o);
+}
+
+int RuleElementSrv::getDummyElementId() const
+{
+    return FWObjectDatabase::DUMMY_SERVICE_ID;
+}
+
+bool RuleElementSrv::isDummy() const
+{
+    for (FWObject::const_iterator i1 = begin(); i1 != end(); ++i1) {
+        if (FWObject *obj = FWObjectReference::getObject(*i1))
+            if ((obj->getId() == FWObjectDatabase::DUMMY_SERVICE_ID)
+                    && FWObjectDatabase::getStringId(obj->getId()) == "dummyserviceid0")
+                return true;
+    }
+    return false;
 }
 
 
@@ -281,6 +334,23 @@ bool RuleElementItf::validateChild(FWObject *o)
     }
     return false;
 }
+
+int RuleElementItf::getDummyElementId() const
+{
+    return FWObjectDatabase::DUMMY_INTERFACE_ID;
+}
+
+bool RuleElementItf::isDummy() const
+{
+    for (FWObject::const_iterator i1 = begin(); i1 != end(); ++i1) {
+        if (FWObject *obj = FWObjectReference::getObject(*i1))
+            if ((obj->getId() == FWObjectDatabase::DUMMY_INTERFACE_ID)
+                    && FWObjectDatabase::getStringId(obj->getId()) == "dummyinterfaceid0")
+                return true;
+    }
+    return false;
+}
+
 
 /*
  * this method checks if an object 'o' is a child of the same firewall

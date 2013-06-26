@@ -164,6 +164,7 @@ class instDialog : public QDialog, public FakeWizard
     //libfwbuilder::Firewall *findFirewallbyTableItem(QTableWidgetItem *item);
     
     void setSuccessState(QTreeWidgetItem *item);
+    void setWarningState(QTreeWidgetItem *item);
     void setFailureState(QTreeWidgetItem *item);
     void setErrorState(QTreeWidgetItem *item);
     void setInProcessState(QTreeWidgetItem *item);
@@ -185,6 +186,7 @@ class instDialog : public QDialog, public FakeWizard
 
     void summary();
     void opSuccess(libfwbuilder::Firewall *fw);
+    void opWarning(libfwbuilder::Firewall *fw);
     void opError(libfwbuilder::Firewall *fw);
     void opCancelled(libfwbuilder::Firewall *fw);
 

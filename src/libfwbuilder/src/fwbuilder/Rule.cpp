@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -40,6 +45,7 @@
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/TagService.h"
+#include "fwbuilder/Interface.h"
 
 using namespace std;
 using namespace libfwbuilder;
@@ -67,6 +73,7 @@ void Rule::disable() { setBool("disabled",true); }
 void Rule::enable() { setBool("disabled",false); }
 bool Rule::isDisabled() const  { return( getBool("disabled")); }
 bool Rule::isEmpty() { return false; }
+bool Rule::isDummyRule() { return false; }
 
 void Rule::setBranch(RuleSet*) {};
 
@@ -290,6 +297,67 @@ void PolicyRule::setDirection(const string& dir)
     if (dir=="Inbound")   { setDirection(Inbound); return; }
     if (dir=="Outbound")  { setDirection(Outbound); return; }
     setDirection(Both);
+}
+
+void PolicyRule::setDummySource()
+{
+    FWObjectDatabase *root = getRoot();
+    FWObject *dummySource = root->findInIndex(FWObjectDatabase::DUMMY_ADDRESS_ID);
+    if (!dummySource || (root->getStringId(dummySource->getId()) != "dummyaddressid0"))
+        return;
+
+    FWObject::iterator i1 = begin();
+    (*i1)->addRef(dummySource);
+    src_re = RuleElementSrc::cast(*i1);
+}
+
+void PolicyRule::setDummyDestination()
+{
+    FWObjectDatabase *root = getRoot();
+    FWObject *dummyDestination = root->findInIndex(FWObjectDatabase::DUMMY_ADDRESS_ID);
+    if (!dummyDestination || (root->getStringId(dummyDestination->getId()) != "dummyaddressid0"))
+        return;
+
+    FWObject::iterator i1 = begin();
+    i1++;
+    (*i1)->addRef(dummyDestination);
+    dst_re = RuleElementDst::cast(*i1);
+}
+
+void PolicyRule::setDummyService()
+{
+    FWObjectDatabase *root = getRoot();
+    FWObject *dummyService = root->findInIndex(FWObjectDatabase::DUMMY_SERVICE_ID);
+    if (!dummyService || (root->getStringId(dummyService->getId()) != "dummyserviceid0"))
+        return;
+
+    FWObject::iterator i1 = begin();
+    i1++;
+    i1++;
+    (*i1)->addRef(dummyService);
+    srv_re = RuleElementSrv::cast(*i1);
+}
+
+void PolicyRule::setDummyInterface()
+{
+    FWObjectDatabase *root = getRoot();
+    FWObject *dummyInterface = root->findInIndex(FWObjectDatabase::DUMMY_INTERFACE_ID);
+    if (!dummyInterface || (root->getStringId(dummyInterface->getId()) != "dummyinterfaceid0"))
+        return;
+
+    FWObject::iterator i1 = begin();
+    i1++;
+    i1++;
+    i1++;
+    (*i1)->addRef(dummyInterface);
+    itf_re = RuleElementItf::cast(*i1);
+}
+
+bool PolicyRule::isDummyRule()
+{
+    if (getSrc()->isDummy() || getDst()->isDummy() || getSrv()->isDummy() || getItf()->isDummy())
+        return true;
+    return false;
 }
 
 bool   PolicyRule::getLogging() const    { return getBool("log"); }

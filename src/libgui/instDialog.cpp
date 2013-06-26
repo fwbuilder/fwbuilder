@@ -479,7 +479,8 @@ void instDialog::showPage(const int page)
                 {
                     Firewall *fw = *i;
                     if (compile_status[fw] ==
-                        fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS)
+                        fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS
+                            || fwcompiler::BaseCompiler::FWCOMPILER_WARNING)
                     {
                         setNextEnabled(page, true);
                         m_dialog->nextButton->setDefault(true);

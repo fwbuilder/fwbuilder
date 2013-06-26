@@ -374,14 +374,16 @@ void RuleSetViewDelegate::paintObject(
         }
 
         QString icon;
-        if (!re->isAny()) icon = QString(o1->getTypeName().c_str()); // + "/icon";
+        if (!re->isAny() && !re->isDummy()) icon = QString(o1->getTypeName().c_str()); // + "/icon";
         QString text = objectText(re, o1);
+
+        if (re->isDummy()) painter->setPen( QColor("darkred") );
 
         drawIconAndText(painter,
                         itemRect.adjusted(HORIZONTAL_MARGIN, VERTICAL_MARGIN, -HORIZONTAL_MARGIN, -VERTICAL_MARGIN),
                         icon, text, re->getNeg());
 
-        if ((sectionModel->selectedObject == o1) && !(option.state & QStyle::State_HasFocus) && !re->isAny())
+        if ((sectionModel->selectedObject == o1) && !(option.state & QStyle::State_HasFocus) && !re->isAny() && !re->isDummy())
         {
             painter->setPen( QColor("red") );
             painter->drawRect(itemRect.left()+1, itemRect.top()+1, itemRect.width()-2, itemRect.height()-2);

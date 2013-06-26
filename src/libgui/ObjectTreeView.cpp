@@ -228,9 +228,12 @@ bool ObjectTreeView::event( QEvent *event )
 
             if (obj==NULL) return false;
 
-            if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
-                obj->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
-                obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID)
+            if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID  ||
+                obj->getId() == FWObjectDatabase::ANY_SERVICE_ID  ||
+                obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID ||
+                obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID ||
+                obj->getId() == FWObjectDatabase::DUMMY_SERVICE_ID ||
+                obj->getId() == FWObjectDatabase::DUMMY_INTERFACE_ID)
                 return false;
 
             cr = visualItemRect(itm);
@@ -378,6 +381,11 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
     if (FWBTree().isSystem(obj)) return NULL;
 */
+    if ((current_obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID)   ||
+        (current_obj->getId() == FWObjectDatabase::DUMMY_INTERFACE_ID) ||
+        (current_obj->getId() == FWObjectDatabase::DUMMY_SERVICE_ID))
+        return;
+
     QString icn = (":/Icons/"+current_obj->getTypeName()+"/icon-ref").c_str();
 
     vector<FWObject*> so = getSimplifiedSelection();

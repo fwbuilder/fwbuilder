@@ -210,6 +210,7 @@ void BaseCompiler::error(FWObject *fw,
 
 void BaseCompiler::warning(const string &str)
 {
+    status = FWCOMPILER_WARNING;
     printError(str);
 }
 
@@ -218,6 +219,7 @@ void BaseCompiler::warning(FWObject *fw,
                            FWObject *rule,
                            const string &errstr)
 {
+    status = FWCOMPILER_WARNING;
     message("warning", fw, ruleset, rule, errstr);
 }
 

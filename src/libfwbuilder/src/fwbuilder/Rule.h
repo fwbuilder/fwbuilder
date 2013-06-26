@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   This program is free software which we release under the GNU General Public
   License. You may redistribute and/or modify this program under the terms
   of that license as published by the Free Software Foundation; either
@@ -106,6 +111,7 @@ class Rule : public Group
     void setAbsRuleNumber(int rn) { abs_rule_number=rn; }
 
     virtual bool isEmpty();
+    virtual bool isDummyRule();
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
                                        bool preserve_id = true)
@@ -221,6 +227,7 @@ public:
     virtual void setBranch(RuleSet *ruleset);
 
     virtual bool isEmpty();
+    virtual bool isDummyRule();
 
     /**
      * Removes reference to given object among
@@ -258,6 +265,11 @@ public:
     void   setDirection(Direction dir) { direction = dir; }
     std::string getDirectionAsString() const;
     void   setDirection(const std::string& dir);
+
+    void setDummySource();
+    void setDummyDestination();
+    void setDummyService();
+    void setDummyInterface();
 
     bool getLogging() const;
     void setLogging(bool flag);

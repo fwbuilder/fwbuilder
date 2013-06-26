@@ -739,6 +739,12 @@ bool Compiler::Begin::processNext()
             Rule *rule = Rule::cast(*i);
             if (rule == NULL) continue;
             if (rule->isDisabled()) continue;
+            if (rule->isDummyRule()) {
+                compiler->warning(rule, "Rule contains dummy object and is not parsed.");
+                continue;
+            }
+
+
             Rule  *r = Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
             compiler->temp_ruleset->add(r);
             r->duplicate(rule);

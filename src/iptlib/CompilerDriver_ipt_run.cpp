@@ -784,6 +784,10 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         }
 
         free(timestr);
+
+        if (!all_errors.isEmpty())
+            status = BaseCompiler::FWCOMPILER_WARNING;
+
     }
     catch (FWException &ex)
     {

@@ -161,7 +161,8 @@ int main(int argc, char **argv)
         }
 
         driver->compile();
-        int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        //int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        int ret = driver->getStatus();
 
         delete driver;
         delete objdb;

@@ -156,7 +156,8 @@ int main(int argc, char **argv)
             exit(1);
         }
         driver->compile();
-        int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        //int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        int ret = driver->getStatus();
 
 	QTime time_spent = QTime().addMSecs(total_time_timer.elapsed());
 	cerr << "Compile time: "

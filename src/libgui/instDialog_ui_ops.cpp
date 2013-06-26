@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -317,6 +322,19 @@ void instDialog::setSuccessState(QTreeWidgetItem *item)
     item->setFont(0,f);
 }
 
+void instDialog::setWarningState(QTreeWidgetItem *item)
+{
+    QBrush b = item->foreground(1);
+    b.setColor(QColor("orange"));
+    item->setForeground(1,b);
+    item->setForeground(0,b);
+
+    QFont f = item->font(1);
+    f.setBold(true);
+    item->setFont(1,f);
+    item->setFont(0,f);
+}
+
 void instDialog::setFailureState(QTreeWidgetItem *item)
 {
     QBrush b = item->foreground(1);
@@ -367,6 +385,21 @@ void instDialog::opSuccess(Firewall *fw)
     {
         itm->setText(1,tr("Success"));
         setSuccessState(itm);
+    }
+    currentLabel->setText("");
+}
+
+void instDialog::opWarning(Firewall *fw)
+{
+    if (fwbdebug)
+        qDebug() << "instDialog::opWarning fw=" << fw->getName().c_str();
+
+    compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_WARNING;
+    QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
+    if (itm)
+    {
+        itm->setText(1,tr("Success with warning"));
+        setWarningState(itm);
     }
     currentLabel->setText("");
 }

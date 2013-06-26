@@ -417,6 +417,10 @@ QString CompilerDriver_iosacl::run(const std::string &cluster_id,
             abort(err.arg(fw_file.fileName())
                   .arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
+
+        if (!all_errors.isEmpty())
+            status = BaseCompiler::FWCOMPILER_WARNING;
+
     }
     catch (FWException &ex)
     {

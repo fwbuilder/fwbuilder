@@ -271,7 +271,10 @@ public:
               STANDARD_LIB_ID = 4,
               USER_LIB_ID = 5,
               TEMPLATE_LIB_ID = 6,
-              DELETED_OBJECTS_ID = 7
+              DELETED_OBJECTS_ID = 7,
+              DUMMY_ADDRESS_ID = 8,
+              DUMMY_SERVICE_ID = 9,
+              DUMMY_INTERFACE_ID = 10
         } standard_ids;
 
         static void registerObjectType(const std::string &type_name,

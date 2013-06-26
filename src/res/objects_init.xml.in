@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1265059184" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="@FWBUILDER_XML_VERSION@" lastModified="1372251600" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
+    <DummyNetwork id="dummyaddressid0" name="Dummy" comment="Dummy Network" ro="False" address="255.255.255.255" netmask="255.255.255.255"/>
+    <DummyIPService id="dummyserviceid0" protocol_num="0" name="Dummy" comment="Dummy IP Service" ro="False"/>
+    <DummyInterface id="dummyinterfaceid0" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Dummy" comment="Dummy Interface" ro="False"> 
+        <InterfaceOptions/>
+    </DummyInterface>
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid16" name="Addresses" comment="" ro="False">
         <IPv4 id="id2001X88798" name="all-hosts" comment="" ro="False" address="224.0.0.1" netmask="0.0.0.0"/>

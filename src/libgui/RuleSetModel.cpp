@@ -1558,6 +1558,18 @@ void PolicyModel::initRule(Rule *new_rule, Rule *old_rule)
             newrule_as_policy_rule->setDirection(PolicyRule::Outbound); break;
         }
 
+        if (st->getInt("Objects/PolicyRule/defaultSource"))
+            newrule_as_policy_rule->setDummySource();
+
+        if (st->getInt("Objects/PolicyRule/defaultDestination"))
+            newrule_as_policy_rule->setDummyDestination();
+
+        if (st->getInt("Objects/PolicyRule/defaultService"))
+            newrule_as_policy_rule->setDummyService();
+
+        if (st->getInt("Objects/PolicyRule/defaultInterface"))
+            newrule_as_policy_rule->setDummyInterface();
+
         ruleopt->setBool("stateless",
                          ! st->getBool("Objects/PolicyRule/defaultStateful") ||
                          getStatelessFlagForAction(newrule_as_policy_rule));

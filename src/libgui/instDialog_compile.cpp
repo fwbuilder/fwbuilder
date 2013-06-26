@@ -47,6 +47,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
+#include "fwcompiler/BaseCompiler.h"
 
 #include <errno.h>
 #include <iostream>
@@ -290,9 +291,15 @@ void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
         return;
     }
 
-    if (ret_code==0 && status==QProcess::NormalExit && !isAutoCompiling)
+//    if (ret_code==0 && status==QProcess::NormalExit)
+    if ((ret_code==fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS
+         || ret_code==fwcompiler::BaseCompiler::FWCOMPILER_WARNING)
+            && status==QProcess::NormalExit && !isAutoCompiling)
     {
-        opSuccess(cnf.fwobj);
+        if (ret_code==fwcompiler::BaseCompiler::FWCOMPILER_WARNING)
+            opWarning(cnf.fwobj);
+        else
+            opSuccess(cnf.fwobj);
 //        mw->updateLastCompiledTimestamp(cnf.fwobj);
 
         QCoreApplication::postEvent(

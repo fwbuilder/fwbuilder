@@ -178,6 +178,18 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
     m_dialog->rulesDefaultDirection->setCurrentIndex(
         st->getInt("Objects/PolicyRule/defaultDirection"));
 
+    m_dialog->rulesDefaultSource->setCurrentIndex(
+        st->getInt("Objects/PolicyRule/defaultSource"));
+
+    m_dialog->rulesDefaultDestination->setCurrentIndex(
+        st->getInt("Objects/PolicyRule/defaultDestination"));
+
+    m_dialog->rulesDefaultService->setCurrentIndex(
+        st->getInt("Objects/PolicyRule/defaultService"));
+
+    m_dialog->rulesDefaultInterface->setCurrentIndex(
+        st->getInt("Objects/PolicyRule/defaultInterface"));
+
     m_dialog->autoconfigure_interfaces->setChecked(
         st->getBool("Objects/Interface/autoconfigureInterfaces") );
 
@@ -563,7 +575,17 @@ void PrefsDialog::accept()
     st->setInt("Objects/PolicyRule/defaultDirection",
                 m_dialog->rulesDefaultDirection->currentIndex());
 
+    st->setInt("Objects/PolicyRule/defaultSource",
+                m_dialog->rulesDefaultSource->currentIndex());
 
+    st->setInt("Objects/PolicyRule/defaultDestination",
+                m_dialog->rulesDefaultDestination->currentIndex());
+
+    st->setInt("Objects/PolicyRule/defaultService",
+                m_dialog->rulesDefaultService->currentIndex());
+
+    st->setInt("Objects/PolicyRule/defaultInterface",
+                m_dialog->rulesDefaultInterface->currentIndex());
 
     st->setBool("Objects/Interface/autoconfigureInterfaces",
                 m_dialog->autoconfigure_interfaces->isChecked());
