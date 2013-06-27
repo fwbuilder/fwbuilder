@@ -439,6 +439,7 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
         // corresponding resource .xml file
         if (platform=="pix" ||
             platform=="fwsm" ||
+            platform=="nxosacl" ||
             platform=="iosacl" ||
             platform=="procurve_acl")
         {

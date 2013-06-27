@@ -1,0 +1,37 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script.
+##
+## These are commands built-in policy installer runs on the firewall
+##
+##  Variables:
+##
+##  {{$rbtimeout}}  -- rollback timeout (min)
+##  {{$rbtimeout_sec}}  -- rollback timeout (sec)
+##  {{$test}}       -- doing installation in test mode
+##
+
+terminal width 256
+terminal length 0
+
+##{{if schedule_rollback}}
+##
+##{{if version_lt_123}}
+##reload in {{$rbtimeout}}
+##{{endif}}
+##
+##{{if version_ge_124}}
+##config term
+##event manager  applet fwbuilder-rollback
+##event timer countdown name rollback-countdown time {{$rbtimeout_sec}}
+##action 1.0 cli command "enable"
+##action 1.1 cli command "configure replace nvram:startup-config force"
+##exit
+##exit
+##{{endif}}
+##
+##{{endif}}
+
+config term
+

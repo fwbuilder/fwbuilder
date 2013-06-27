@@ -1239,6 +1239,8 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         cnf.sshArgs = fwopt->getStr("sshArgs").c_str();
         cnf.scpArgs = fwopt->getStr("scpArgs").c_str();
         cnf.useSCPForRouter = fwopt->getBool("use_scp");
+        cnf.useNXOSSession = fwopt->getBool("use_nxos_session");
+
 
         cnf.activationCmd = fwopt->getStr("activationCmd").c_str();
 

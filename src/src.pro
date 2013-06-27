@@ -23,6 +23,7 @@ SUBDIRS  =  libfwbuilder \
 			ipf \
 			ipfw \
 			cisco_lib \
+			nxosacl \
 			iosacl \
 			pix \
 			procurve_acl \

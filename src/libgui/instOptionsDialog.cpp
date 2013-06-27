@@ -125,7 +125,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool insta
     string version = cnf->fwobj->getStr("version");
 
     if (platform=="pix" || platform=="fwsm" ||
-        platform=="iosacl" ||
+        platform=="iosacl" || platform=="nxosacl" ||
         platform=="procurve_acl" )
     {
         m_dialog->copyFWB->hide();

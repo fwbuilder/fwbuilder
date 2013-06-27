@@ -8,6 +8,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			PolicyCompiler_cisco_acls.cpp      \
 			NamedObjectsAndGroupsSupport.cpp   \
 			NamedObjectsManager.cpp            \
+			NamedObjectsManagerNXOS.cpp        \
 			NamedObjectsManagerIOS.cpp         \
 			NamedObjectsManagerPIX.cpp         \
 			RoutingCompiler_cisco.cpp          \
@@ -20,11 +21,18 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			Helper.cpp                         \
 			inspectionProtocol.cpp             \
 			InspectionClassMap.cpp             \
+			OSConfigurator_nxos.cpp            \
 			OSConfigurator_ios.cpp             \
+			CompilerDriver_nxosacl.cpp         \
+			CompilerDriver_nxosacl_run.cpp     \
 			CompilerDriver_iosacl.cpp          \
 			CompilerDriver_iosacl_run.cpp      \
+			PolicyCompiler_nxosacl.cpp         \
+			PolicyCompiler_nxosacl_writers.cpp \
 			PolicyCompiler_iosacl.cpp          \
 			PolicyCompiler_iosacl_writers.cpp  \
+			RoutingCompiler_nxosacl.cpp        \
+			RoutingCompiler_nxosacl_writers.cpp \
 			RoutingCompiler_iosacl.cpp         \
 			RoutingCompiler_iosacl_writers.cpp \
 			CompilerDriver_pix.cpp             \
@@ -48,6 +56,7 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			BaseObjectGroup.cpp              \
 			PIXObjectGroup.cpp               \
 			ASA8ObjectGroup.cpp              \
+			NXOSObjectGroup.cpp               \
 			IOSObjectGroup.cpp               \
 			PolicyCompiler_pix.cpp           \
 			PolicyCompiler_pix_writers.cpp   \
@@ -56,7 +65,8 @@ SOURCES	 =  PolicyCompiler_cisco.cpp           \
 			RoutingCompiler_pix.cpp          \
 			RoutingCompiler_pix_writers.cpp  \
 			AutomaticRules_cisco.cpp         \
-			AutomaticRules_iosacl.cpp
+			AutomaticRules_iosacl.cpp        \
+			AutomaticRules_nxosacl.cpp
 
 HEADERS	 = ../../config.h                   \
             PortRangeConverter.h            \
@@ -75,6 +85,7 @@ HEADERS	 = ../../config.h                   \
 			InspectionClassMap.h            \
 			PolicyCompiler_cisco.h          \
 			RoutingCompiler_cisco.h         \
+			CompilerDriver_nxosacl.h        \
 			CompilerDriver_iosacl.h         \
 			OSConfigurator_ios.h            \
 			PolicyCompiler_iosacl.h         \
@@ -89,12 +100,13 @@ HEADERS	 = ../../config.h                   \
 			BaseObjectGroup.h               \
 			PIXObjectGroup.h                \
 			ASA8ObjectGroup.h               \
+			NXOSObjectGroup.h                \
 			IOSObjectGroup.h                \
 			PolicyCompiler_pix.h            \
 			RoutingCompiler_pix.h           \
 			AutomaticRules_cisco.h          \
-			AutomaticRules_iosacl.h
-
+			AutomaticRules_iosacl.h         \
+			AutomaticRules_nxosacl.h
 
 macx:LIBS  += $$LIBS_FWCOMPILER
 

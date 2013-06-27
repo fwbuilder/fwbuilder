@@ -1,0 +1,50 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/nxos/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+
+! temporary access list for "safety net install"
+
+{{if ipv4}}
+no ip access-list extended tmp_acl
+ip access-list extended tmp_acl
+  permit ip {{$management_addr}} {{$management_netm}} any 
+  deny ip any any 
+exit
+
+interface {{$management_interface}}
+  no ip access-group in
+  no ip access-group out
+  ip access-group tmp_acl in
+exit
+{{endif}}
+
+{{if ipv6}}
+no ipv6 access-list tmp_acl
+ipv6 access-list tmp_acl
+{{if slash_notation}}
+  permit ipv6 {{$management_addr}} any 
+{{endif}}
+{{if host_addr}}
+  permit ipv6 host {{$management_addr}} any 
+{{endif}}
+  permit icmp any any
+  deny ipv6 any any 
+exit
+
+interface {{$management_interface}}
+  no ipv6 traffic-filter in
+  no ipv6 traffic-filter out
+  ipv6 traffic-filter tmp_acl in
+exit
+{{endif}}
+

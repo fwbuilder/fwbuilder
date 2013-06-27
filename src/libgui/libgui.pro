@@ -35,6 +35,7 @@ HEADERS += ../../config.h \
     SSHCisco.h \
     SSHPIX.h \
     SSHIOS.h \
+    SSHNXOS.h \
     SSHProcurve.h \
     debugDialog.h \
     findDialog.h \
@@ -107,6 +108,8 @@ HEADERS += ../../config.h \
     pixosAdvancedDialog.h \
     iosaclAdvancedDialog.h \
     iosAdvancedDialog.h \
+    nxosaclAdvancedDialog.h \
+    nxosAdvancedDialog.h \
     ipcoposAdvancedDialog.h \
     linux24AdvancedDialog.h \
     linksysAdvancedDialog.h \
@@ -251,6 +254,7 @@ SOURCES += ProjectPanel.cpp \
     SSHCisco.cpp \
     SSHPIX.cpp \
     SSHIOS.cpp \
+    SSHNXOS.cpp \
     SSHProcurve.cpp \
     debugDialog.cpp \
     findDialog.cpp \
@@ -323,6 +327,8 @@ SOURCES += ProjectPanel.cpp \
     pixosAdvancedDialog.cpp \
     iosaclAdvancedDialog.cpp \
     iosAdvancedDialog.cpp \
+    nxosaclAdvancedDialog.cpp \
+    nxosAdvancedDialog.cpp \
     ipcoposAdvancedDialog.cpp \
     linux24AdvancedDialog.cpp \
     linksysAdvancedDialog.cpp \
@@ -488,6 +494,8 @@ FORMS = FWBMainWindow_q.ui \
     pixosadvanceddialog_q.ui \
     iosacladvanceddialog_q.ui \
     iosadvanceddialog_q.ui \
+    nxosacladvanceddialog_q.ui \
+    nxosadvanceddialog_q.ui \
     procurveacladvanceddialog_q.ui \
     simpletexteditor_q.ui \
     simpleinteditor_q.ui \

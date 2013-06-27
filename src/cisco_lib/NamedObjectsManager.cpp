@@ -29,6 +29,7 @@
 #include "PIXObjectGroup.h"
 #include "ASA8ObjectGroup.h"
 #include "IOSObjectGroup.h"
+#include "NXOSObjectGroup.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
@@ -63,6 +64,12 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 using namespace std;
 
+FWObject* create_NXOSObjectGroup(int id)
+{
+    FWObject *nobj = new NXOSObjectGroup();
+    if (id > -1) nobj->setId(id);
+    return nobj;
+}
 
 FWObject* create_IOSObjectGroup(int id)
 {
@@ -102,6 +109,8 @@ NamedObjectsManager::NamedObjectsManager(Library *persistent_objects,
     BaseObjectGroup::name_disambiguation.clear();
     NamedObject::name_disambiguation.clear();
 
+    FWObjectDatabase::registerObjectType(NXOSObjectGroup::TYPENAME,
+                                         &create_NXOSObjectGroup);
     FWObjectDatabase::registerObjectType(IOSObjectGroup::TYPENAME,
                                          &create_IOSObjectGroup);
     FWObjectDatabase::registerObjectType(PIXObjectGroup::TYPENAME,

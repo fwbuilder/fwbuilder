@@ -51,6 +51,7 @@ class instConf {
     bool      saveStandby;
     bool      batchInstall;
     bool      useSCPForRouter; // use scp for cisco ios, pix and hp procurve
+    bool      useNXOSSession; // use NXOS Session Manager
 
     QString   pgm;
     QString   wdir;

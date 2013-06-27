@@ -34,6 +34,7 @@ qtdbus_test
 fwbedit
 qrc_MainRes.cpp
 fwb_iosacl
+fwb_nxosacl
 fwb_ipf
 fwb_ipfw
 fwb_ipt

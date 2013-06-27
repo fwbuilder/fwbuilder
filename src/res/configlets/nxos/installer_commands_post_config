@@ -1,0 +1,33 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script.
+##
+## These are commands built-in policy installer runs on the firewall
+##
+##  Variables:
+##
+##  {{$rbtimeout}}  -- rollback timeout
+##  {{$test}}       -- doing installation in test mode
+##
+
+
+##{{if version_lt_124}}
+##{{if cancel_rollback}}
+##reload cancel
+##{{endif}}
+##{{endif}}
+##
+##
+##{{if version_ge_124}}
+##{{if cancel_rollback}}
+##config term
+##no event manager applet fwbuilder-rollback
+##exit
+##{{endif}}
+##{{endif}}
+
+{{if run}}
+##wr mem
+{{endif}}
+

@@ -1,0 +1,62 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using regular user account for authentication
+##
+##  Variables:
+##
+##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}     -- directory on the firewall ("flash:" or "nvram:" or similar)
+##  {{$fwscript}}  -- script name on the firewall
+##  {{$rbtimeout}} -- rollback timeout
+##  {{$rbtimeout_sec}} -- rollback timeout (sec)
+##
+##  {{$firewall_name}} -- the name of the firewall object
+##
+
+{{if using_scp}}
+
+## scp, no session
+{{if not_using_nxos_session}}
+copy {{$fwdir}}{{$fwscript}} running-config
+{{endif}}
+
+## scp and session
+{{if using_nxos_session}}
+del {{$fwdir}}/{{$fwscript}}.run
+config session fwb_{{$firewall_name}}
+echo "config term" > {{$fwdir}}/{{$fwscript}}.run
+show file {{$fwdir}}/{{$fwscript}} >> {{$fwdir}}/{{$fwscript}}.run
+run-script {{$fwdir}}/{{$fwscript}}.run >> {{$fwdir}}/{{$fwscript}}
+commit
+del {{$fwdir}}/{{$fwscript}}
+del {{$fwdir}}/{{$fwscript}}.run
+{{endif}}
+
+exit
+
+{{endif}}
+
+
+
+{{if not_using_scp}}
+config term
+
+{{if using_nxos_session}}
+config session fwb_{{$firewall_name}}
+{{endif}}
+
+{{$fwbuilder_generated_configuration_lines}}
+
+{{if using_nxos_session}}
+commit
+{{endif}}
+
+exit
+
+{{endif}}
