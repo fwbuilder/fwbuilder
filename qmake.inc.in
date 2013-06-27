@@ -141,7 +141,7 @@ win32 {
 
 macx {
 
-//	PREFIX = "$$DESTDIR"
+    #	PREFIX = "$$DESTDIR"
 	DOCDIR = "$$PREFIX/doc/"
 	MANDIR = "$$PREFIX/share/man"
 
