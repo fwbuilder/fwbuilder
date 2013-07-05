@@ -6,6 +6,11 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -57,6 +62,14 @@ public:
     libfwbuilder::FWObject* getObject(int id);
     int id() const {return 1;}
     bool mergeWith(const QUndoCommand *other);
+    QHash<int, int> m_diffLog;
+    void setDiffType(libfwbuilder::Rule *rule, DiffType::Type diffType);
+    void resetDiffType(libfwbuilder::Rule *rule);
+
+private:
+    void addStatistics(libfwbuilder::Rule *rule, DiffType::Type diffType, DiffType::Type origDiffType);
+    void removeStatistics(libfwbuilder::Rule *rule, DiffType::Type diffType, DiffType::Type origDiffType);
+    void modifyStatistics(int id, DiffType::Type diffType, bool increment);
 
 };
 

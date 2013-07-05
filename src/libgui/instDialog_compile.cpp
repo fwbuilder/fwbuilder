@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -50,6 +55,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QFile>
+#include <QDir>
 #include <QtDebug>
 
 using namespace std;
@@ -211,6 +217,14 @@ Can't compile firewall policy."),
     args.push_back("-f");
     args.push_back(project->getRCS()->getFileName());
 
+    // If we are compiling in the background (for diff), set wdir to temp directory
+    if (isAutoCompiling) {
+        QDir tempDir(project->getTemporaryDirPath());
+        if (!tempDir.exists())
+            tempDir.mkdir(project->getTemporaryDirPath());
+        wdir = tempDir.absolutePath();
+    }
+
     if (wdir!="")
     {
         args.push_back("-d");
@@ -276,7 +290,7 @@ void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
         return;
     }
 
-    if (ret_code==0 && status==QProcess::NormalExit)
+    if (ret_code==0 && status==QProcess::NormalExit && !isAutoCompiling)
     {
         opSuccess(cnf.fwobj);
 //        mw->updateLastCompiledTimestamp(cnf.fwobj);

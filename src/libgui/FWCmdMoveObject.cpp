@@ -34,6 +34,7 @@
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/RuleSet.h"
 #include "fwbuilder/Library.h"
+#include "fwbuilder/RuleElement.h"
 
 #include <QObject>
 #include <QtDebug>
@@ -112,6 +113,8 @@ void FWCmdMoveObject::undo()
             {
                 FWObject *cobj = project->db()->findInIndex(obj_id);
                 if (cobj) o->addRef(cobj);
+                if (RuleElement::cast(o))
+                    resetDiffType(Rule::cast(o->getParent()));
             }
         }
     }
@@ -142,6 +145,8 @@ void FWCmdMoveObject::redo()
             {
                 FWObject *cobj = project->db()->findInIndex(obj_id);
                 if (cobj) o->removeRef(cobj);
+                if (RuleElement::cast(o))
+                    setDiffType(Rule::cast(o->getParent()), DiffType::Edit);
             }
         }
     }

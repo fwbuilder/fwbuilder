@@ -6,6 +6,11 @@
 
   Author:  Roman Bovsunivskiy     a2k0001@gmail.com
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -35,12 +40,16 @@ namespace Ui {
     class FirewallCodeViewer_q;
 }
 
+class ProjectPanel;
+
+#include <QProcess>
+
 class FirewallCodeViewer : public QDialog {
     Q_OBJECT
     QStringList files;
     QMap<int, int> pages;
 public:
-    FirewallCodeViewer(QStringList files, QString path, QWidget *parent = 0);
+    FirewallCodeViewer(QStringList files, QString path, ProjectPanel *project, QWidget *parent = 0);
     ~FirewallCodeViewer();
 
 protected:
@@ -48,8 +57,12 @@ protected:
 
 private:
     Ui::FirewallCodeViewer_q *ui;
+    ProjectPanel *m_project;
+
+    void showDiff(const QString &destinationFileName, const QString &sourceFileName);
 public slots:
     void fileSelected(int);
+    void processError(QProcess::ProcessError);
     void hideCloseButton();
     void keyPressEvent(QKeyEvent *event)
     {
@@ -57,7 +70,8 @@ public slots:
             return QDialog::keyPressEvent(event);
         event->setAccepted(false);
     }
-
+    void showDiff();
+    void showDiffSelectFile();
 };
 
 #endif // FIREWALLCODEVIEWER_H

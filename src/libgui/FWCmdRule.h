@@ -85,6 +85,7 @@ public:
 
     void redoOnModel(RuleSetModel *md);
     void undoOnModel(RuleSetModel *md);
+    const libfwbuilder::Rule* getInsertedRule() const { return insertedRule; }
 };
 
 /********************************************************
@@ -105,6 +106,7 @@ public:
 
     virtual void redoOnModel(RuleSetModel *md);
     virtual void undoOnModel(RuleSetModel *md);
+    const QList<libfwbuilder::Rule*> getDeletedRules() const { return this->rulesToDelete; }
 };
 
 /********************************************************
@@ -245,7 +247,7 @@ class FWCmdRuleChange : public FWCmdChange
 
 protected:
     void prepareRuleSetView();
-    void selectAffectedRule();
+    libfwbuilder::Rule* selectAffectedRule();
     virtual libfwbuilder::Rule* getRule();
 
 public:

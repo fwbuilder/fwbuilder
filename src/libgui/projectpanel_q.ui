@@ -18,7 +18,16 @@
     <normaloff>:/Images/fwbuilder3.png</normaloff>:/Images/fwbuilder3.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
     <number>2</number>
    </property>
    <item row="0" column="0">
@@ -46,7 +55,16 @@
        <number>0</number>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item row="0" column="0">
@@ -197,6 +215,41 @@
            </spacer>
           </item>
           <item>
+           <widget class="QToolButton" name="diff_this_fw">
+            <property name="toolTip">
+             <string>View diff</string>
+            </property>
+            <property name="statusTip">
+             <string>View diff</string>
+            </property>
+            <property name="whatsThis">
+             <string>View diff</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="MainRes.qrc">
+              <normaloff>:/Icons/newobject_32.png</normaloff>:/Icons/newobject_32.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
+            <property name="popupMode">
+             <enum>QToolButton::DelayedPopup</enum>
+            </property>
+            <property name="arrowType">
+             <enum>Qt::NoArrow</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QToolButton" name="compile_this_fw">
             <property name="toolTip">
              <string>Compile this firewall</string>
@@ -325,8 +378,8 @@
    <slot>compileThis()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>276</x>
-     <y>35</y>
+     <x>750</x>
+     <y>37</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -341,8 +394,8 @@
    <slot>installThis()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>35</y>
+     <x>789</x>
+     <y>37</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -357,8 +410,8 @@
    <slot>addRule()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>27</y>
+     <x>195</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -373,12 +426,28 @@
    <slot>inspectThis()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>345</x>
-     <y>22</y>
+     <x>828</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
      <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>diff_this_fw</sender>
+   <signal>clicked()</signal>
+   <receiver>ProjectPanel_q</receiver>
+   <slot>diffThis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>693</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>559</x>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -388,5 +457,6 @@
   <slot>installThis()</slot>
   <slot>addRule()</slot>
   <slot>inspectThis()</slot>
+  <slot>diffThis()</slot>
  </slots>
 </ui>

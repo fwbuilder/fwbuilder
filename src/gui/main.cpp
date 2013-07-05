@@ -280,6 +280,9 @@ int main( int argc, char *argv[] )
     res.clear();
 
     XMLTools::close();
+
+    // We need to call FWWindow::~FWWindow() to remove temporary directory
+    delete mw;
 }
 
 

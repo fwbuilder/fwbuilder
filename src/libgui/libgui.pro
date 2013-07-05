@@ -223,6 +223,11 @@ HEADERS += ../../config.h \
 	importFirewallConfigurationWizard/IC_NetworkZonesPage.h \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.h \
 	importFirewallConfigurationWizard/ImporterThread.h \
+    RuleSetDiffDialog.h \
+    RuleSetDiffDelegate.h \
+    RuleSetDiffModel.h \
+    BackgroundCompileInfoWidget.h \
+    temporarydir.h
 
 
 
@@ -439,7 +444,12 @@ SOURCES += ProjectPanel.cpp \
 	importFirewallConfigurationWizard/IC_ProgressPage.cpp \
 	importFirewallConfigurationWizard/IC_NetworkZonesPage.cpp \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.cpp \
-	importFirewallConfigurationWizard/ImporterThread.cpp
+	importFirewallConfigurationWizard/ImporterThread.cpp \
+    RuleSetDiffDialog.cpp \
+    RuleSetDiffDelegate.cpp \
+    RuleSetDiffModel.cpp \
+    BackgroundCompileInfoWidget.cpp \
+    temporarydir.cpp
 
 
 FORMS = FWBMainWindow_q.ui \
@@ -573,6 +583,7 @@ FORMS = FWBMainWindow_q.ui \
 	importFirewallConfigurationWizard/ic_platformwarningpage_q.ui \
 	importFirewallConfigurationWizard/ic_progresspage_q.ui \
 	importFirewallConfigurationWizard/ic_networkzonespage_q.ui \
+    rulesetdiffdialog_q.ui
 
 
 # fwtransfer stuff.

@@ -6,6 +6,11 @@
 
   Author:  alek@codeminders.com
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -61,6 +66,15 @@ class FWBTree;
 #define DEFAULT_H_SPLITTER_POSITION 250
 #define DEFAULT_V_SPLITTER_POSITION 450
 
+namespace DiffType {
+    enum Type {
+        None,
+        Add,
+        Remove,
+        Edit,
+        Move
+    };
+}
 
 class ProjectPanel: public QWidget {
     Q_OBJECT;
@@ -74,7 +88,7 @@ class ProjectPanel: public QWidget {
     bool ruleSetRedrawPending;
     bool ready;
     
-    libfwbuilder::FWObjectDatabase *objdb;
+    libfwbuilder::FWObjectDatabase *objdb, *origObjdb;
     
     findDialog *fd;
         
@@ -103,6 +117,9 @@ class ProjectPanel: public QWidget {
     std::map<int, bool> updateObjectsInTreePool;
 
     bool treeReloadPending;
+    QHash<int, int> m_diffLog;
+    QHash<QString, QString> m_renamedGroups;
+    QHash<QPair<int, DiffType::Type>, int> m_statistics;
 
 public:
 
@@ -132,8 +149,20 @@ public:
     void loadObjects(libfwbuilder::FWObjectDatabase *db);
     void clearObjects();
     libfwbuilder::FWObjectDatabase* db() { return objdb; };
+    libfwbuilder::FWObjectDatabase* origDb() { return origObjdb; }
     bool hasObject(libfwbuilder::FWObject* obj)
     { return objdb->findInIndex(obj->getId()); };
+
+
+    void setDiffType(int id, enum DiffType::Type type) { m_diffLog.insert(id, type); }
+    int getDiffType(int id) { return m_diffLog.value(id, DiffType::None); }
+    const QHash<int, int>& getDiffLog() { return m_diffLog; }
+    QHash<QString, QString>& getRenamedGroups() { return m_renamedGroups; }
+    QHash<QPair<int, DiffType::Type>, int>& getStatistics() { return m_statistics; }
+    int getStatistics(int ruleSetId, DiffType::Type diffType)
+    { return m_statistics.value(QPair<int, DiffType::Type>(ruleSetId, diffType), 0); }
+
+    const QString getTemporaryDirPath() const;
 
     // libfwbuilder::RuleElement* getRE(libfwbuilder::Rule* r, int col );
 
@@ -274,6 +303,7 @@ public:
     virtual void inspectThis();
     virtual void inspectAll();
     virtual void addRule();
+    virtual void diffThis();
 
     void updateLastModifiedTimestampForAllFirewalls();
     void updateObjectInTree();

@@ -135,6 +135,7 @@ class instDialog : public QDialog, public FakeWizard
     bool onlySelected;
     bool secondPageVisited;
     bool canceledAll;
+    bool isAutoCompiling;
 
     QTextCharFormat normal_format;
     QTextCharFormat error_format;
@@ -234,6 +235,8 @@ protected:
 public slots:
 
     void show(ProjectPanel *project, bool install, bool onlySelected, std::set<libfwbuilder::Firewall*> fws);
+    void autoCompile(ProjectPanel *project);
+
     void compilerFinished(int ret_code, QProcess::ExitStatus);
     void installerFinished(int ret_code, QProcess::ExitStatus);
     void installerSuccess();
@@ -270,6 +273,9 @@ public slots:
 
 signals:
     void activateRule(ProjectPanel*, QString, QString, int);
+    void currentFirewallsBarValueChanged(int);
+    void currentFirewallsBarMaximumValueChanged(int);
+    void autoCompileDone();
 };
 
 

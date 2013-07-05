@@ -212,8 +212,7 @@ void RuleSetViewDelegate::paintRule(QPainter *painter,
 
     if (node != 0)
     {
-        FWOptions *ropt = node->rule->getOptionsObject();
-        QString color = ropt->getStr("color").c_str();
+        QString color = getRuleColor(node);
         if (!color.isEmpty())
         {
             painter->fillRect(option.rect, QColor(color));
@@ -711,4 +710,10 @@ DrawingContext RuleSetViewDelegate::initContext(
                                 -HORIZONTAL_MARGIN, -VERTICAL_MARGIN);
 
     return ctx;
+}
+
+QString RuleSetViewDelegate::getRuleColor(RuleNode *node) const
+{
+    FWOptions *ropt = node->rule->getOptionsObject();
+    return QString(ropt->getStr("color").c_str());
 }

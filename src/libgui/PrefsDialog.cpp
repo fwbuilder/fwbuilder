@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -150,11 +155,14 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 //    dontSaveStdLib->setChecked( st->getDontSaveStdLib() );
 
     m_dialog->sshPath->setText( st->getSSHPath() );
-    m_dialog->scpPath->setText( st->getSCPPath() );
+    m_dialog->scpPath->setText( st->getSCPPath() );;
     m_dialog->sshTimeout->setValue( st->getSSHTimeout() );
 
     m_dialog->rememberSshPass->setChecked(
         st->getBool("Environment/RememberSshPassEnabled") );
+
+    m_dialog->autoCompileChk->setChecked( st->getBool("/Diff/AutoCompile"));
+    m_dialog->diffPath->setText( st->getDiffPath() );
 
     m_dialog->showTips->setChecked( st->getBool("UI/NoStartTip") );
 
@@ -244,6 +252,22 @@ PrefsDialog::PrefsDialog(QWidget *parent) : QDialog(parent)
 #if !defined(Q_OS_WIN32)
     m_dialog->plink_hint->hide();
 #endif
+
+    // Diff Viewer
+
+    colors[FWBSettings::ADD_COLOR]=st->getDiffColor(FWBSettings::ADD_COLOR);
+    setButtonColor(m_dialog->addColorBtn, colors[FWBSettings::ADD_COLOR]);
+
+    colors[FWBSettings::EDIT_COLOR]=st->getDiffColor(FWBSettings::EDIT_COLOR);
+    setButtonColor(m_dialog->editColorBtn, colors[FWBSettings::EDIT_COLOR]);
+
+    colors[FWBSettings::MOVE_COLOR]=st->getDiffColor(FWBSettings::MOVE_COLOR);
+    setButtonColor(m_dialog->moveColorBtn, colors[FWBSettings::MOVE_COLOR]);
+
+    colors[FWBSettings::REMOVE_COLOR]=st->getDiffColor(FWBSettings::REMOVE_COLOR);
+    setButtonColor(m_dialog->removeColorBtn, colors[FWBSettings::REMOVE_COLOR]);
+
+    m_dialog->displayUnmodifiedRulesChk->setChecked(st->getDisplayUnmodifiedRules());
 
     // Fill lists of platforms and host OS
 
@@ -350,6 +374,26 @@ void PrefsDialog::changeGrayColor()
     changeColor(m_dialog->grayBtn, FWBSettings::GRAY);
 }
 
+void PrefsDialog::changeAddColor()
+{
+    changeColor(m_dialog->addColorBtn, FWBSettings::ADD_COLOR);
+}
+
+void PrefsDialog::changeEditColor()
+{
+    changeColor(m_dialog->editColorBtn, FWBSettings::EDIT_COLOR);
+}
+
+void PrefsDialog::changeMoveColor()
+{
+    changeColor(m_dialog->moveColorBtn, FWBSettings::MOVE_COLOR);
+}
+
+void PrefsDialog::changeRemoveColor()
+{
+    changeColor(m_dialog->removeColorBtn, FWBSettings::REMOVE_COLOR);
+}
+
 void PrefsDialog::changeIconSize25()
 {
     //st->setIconsInRulesSize(FWBSettings::SIZE25X25);
@@ -451,6 +495,21 @@ void PrefsDialog::findSCP()
     st->setOpenFileDir(fp);
 
     m_dialog->scpPath->setText(fp);
+}
+
+void PrefsDialog::findDiff()
+{
+    QString diffPath = m_dialog->diffPath->text();
+    if (!QFileInfo(diffPath).isFile()) diffPath = st->getDiffPath();
+    if (!QFileInfo(diffPath).isFile()) diffPath = st->getOpenFileDir();
+
+    QString fp = QFileDialog::getOpenFileName(
+        this, tr("Find Diff utility"), diffPath);
+
+    if (fp.isEmpty()) return;
+    st->setOpenFileDir(fp);
+
+    m_dialog->diffPath->setText(fp);
 }
 
 void PrefsDialog::accept()
@@ -559,9 +618,19 @@ void PrefsDialog::accept()
     st->setSCPPath( m_dialog->scpPath->text() );
     st->setSSHTimeout(m_dialog->sshTimeout->value());
 
+    st->setBool("/Diff/AutoCompile", m_dialog->autoCompileChk->isChecked());
+    st->setDiffPath( m_dialog->diffPath->text() );
+
     st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
     
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
+
+    st->setDiffColor(FWBSettings::ADD_COLOR,    colors[FWBSettings::ADD_COLOR]);
+    st->setDiffColor(FWBSettings::EDIT_COLOR,   colors[FWBSettings::EDIT_COLOR]);
+    st->setDiffColor(FWBSettings::MOVE_COLOR,   colors[FWBSettings::MOVE_COLOR]);
+    st->setDiffColor(FWBSettings::REMOVE_COLOR, colors[FWBSettings::REMOVE_COLOR]);
+
+    st->setDisplayUnmodifiedRules( m_dialog->displayUnmodifiedRulesChk->isChecked() );
 
     for (int row=0; row < m_dialog->enabled_platforms->rowCount(); ++row)
     {
@@ -651,4 +720,14 @@ void PrefsDialog::objTooltipsEnabled(bool enabled)
     if (!enabled && m_dialog->advTooltipMode->isChecked())
         m_dialog->advTooltipMode->setChecked(false);
     m_dialog->advTooltipMode->setEnabled(enabled);
+}
+
+void PrefsDialog::selectTab(const QString &name)
+{
+    for (int i = m_dialog->tabWidget->count(); i >= 0; i--) {
+        if (m_dialog->tabWidget->tabText(i) == name) {
+            m_dialog->tabWidget->setCurrentIndex(i);
+            return;
+        }
+    }
 }

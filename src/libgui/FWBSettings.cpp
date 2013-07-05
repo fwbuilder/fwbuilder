@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -75,6 +80,7 @@ const char* startupActionSetpath =
     SETTINGS_PATH_PREFIX "/Environment/StartupAction";
 const char* labelColorPath = SETTINGS_PATH_PREFIX "/ColorLabels/color_";
 const char* labelTextPath = SETTINGS_PATH_PREFIX "/ColorLabels/text_";
+const char* diffColorPath = SETTINGS_PATH_PREFIX "/Diff/color_";
 const char* lastEditedSetpath = SETTINGS_PATH_PREFIX "/Environment/LastEdited";
 const char* autoSave = SETTINGS_PATH_PREFIX "/Environment/autoSave";
 const char* expandTreeSetpath = SETTINGS_PATH_PREFIX "/UI/ExpandTree";
@@ -126,6 +132,7 @@ const char* startsCounter = SETTINGS_PATH_PREFIX "/startsCounter";
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
 const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
+const char* DiffPath = SETTINGS_PATH_PREFIX "/Diff/DiffPath";
 
 const char* appGUID = "/fwbuilder_gui/ApplicationGUID";
 const char* appGUID_4_0 = "/4.0/ApplicationGUID";
@@ -136,6 +143,8 @@ const char* SSHTimeout = "Sessions/fwb_session_with_keepalive/PingIntervalSecs";
 #else
 const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 #endif
+
+const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodifiedRules";
 
 
 /**
@@ -337,6 +346,15 @@ void FWBSettings::init(bool force_first_time_run)
     { setLabelColor(PURPLE,"#A37EC0"); setLabelText(PURPLE,"Purple"); }
     if (getLabelColor(GRAY  ).isEmpty())
     { setLabelColor(GRAY  ,"#C0C0C0"); setLabelText(GRAY  ,"Gray"); }
+
+    if (getDiffColor(ADD_COLOR).isEmpty())
+    { setDiffColor(ADD_COLOR,"#8BC065"); }
+    if (getDiffColor(EDIT_COLOR).isEmpty())
+    { setDiffColor(EDIT_COLOR,"#7694C0"); }
+    if (getDiffColor(MOVE_COLOR).isEmpty())
+    { setDiffColor(MOVE_COLOR,"#C0C0C0"); }
+    if (getDiffColor(REMOVE_COLOR).isEmpty())
+    { setDiffColor(REMOVE_COLOR,"#C86E6E"); }
 
     ok = contains(showIconsInRules);
     if (!ok) setShowIconsInRules(true);
@@ -779,6 +797,18 @@ QString FWBSettings::getLabelColorStr(enum LabelColors c)
     }
 }
 
+QString FWBSettings::getDiffColorStr(enum LabelColors c)
+{
+    switch (c)
+    {
+    case ADD_COLOR:     return "add";
+    case EDIT_COLOR:    return "edit";
+    case MOVE_COLOR:    return "move";
+    case REMOVE_COLOR:  return "remove";
+    default:            return "default";
+    }
+}
+
 QString FWBSettings::getLabelColor(enum LabelColors c)
 {
     return value(QString(labelColorPath) + getLabelColorStr(c)).toString();
@@ -799,6 +829,16 @@ void FWBSettings::setLabelText(enum LabelColors c, const QString &s)
     setValue(QString(labelTextPath) + getLabelColorStr(c),s);
 }
 
+QString FWBSettings::getDiffColor(FWBSettings::LabelColors c)
+{
+    return value(QString(diffColorPath) + getDiffColorStr(c)).toString();
+}
+
+void FWBSettings::setDiffColor(FWBSettings::LabelColors c, const QString &s)
+{
+    setValue(QString(diffColorPath) + getDiffColorStr(c), s);
+}
+
 QString FWBSettings::getSSHPath()
 {
     return value(SSHPath).toString();
@@ -817,6 +857,16 @@ QString FWBSettings::getSCPPath()
 void FWBSettings::setSCPPath(const QString &path)
 {
     setValue(SCPPath,path);
+}
+
+QString FWBSettings::getDiffPath()
+{
+    return value(DiffPath).toString();
+}
+
+void FWBSettings::setDiffPath(const QString &path)
+{
+    setValue(DiffPath,path);
 }
 
 // Putty uses different parameter name for the server alive interval
@@ -1236,4 +1286,14 @@ bool FWBSettings::customTemplatesEnabled()
 void FWBSettings::setCustomTemplatesEnabled(bool f)
 {
     setValue(customTemplatesEn, f);
+}
+
+bool FWBSettings::getDisplayUnmodifiedRules()
+{
+    return value(displayUnmodifiedRules).toBool();
+}
+
+void FWBSettings::setDisplayUnmodifiedRules(bool f)
+{
+    setValue(displayUnmodifiedRules, f);
 }

@@ -107,6 +107,8 @@ private:
     void paintMetric(QPainter *painter, const QStyleOptionViewItem &option, const QVariant &v) const;
 
     QString constructActionText(ActionDesc &actionDesc)const;
+
+    virtual QString getRuleColor(RuleNode * node ) const;
 };
 
 #endif // RULESETVIEWDELEGATE_H

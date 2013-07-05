@@ -6,6 +6,11 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -37,6 +42,7 @@
 #include "fwbuilder/NAT.h"
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/RuleElement.h"
+#include "fwbuilder/Firewall.h"
 
 
 #include <QDebug>
@@ -136,11 +142,14 @@ void FWCmdRuleInsert::redoOnModel(RuleSetModel *md)
     }
 
     getRuleSetView()->selectRE(insertedRule,0);
+
+    setDiffType(insertedRule, DiffType::Add);
 }
 
 void FWCmdRuleInsert::undoOnModel(RuleSetModel *md)
 {
     QModelIndex index = md->index(insertedRule);
+    resetDiffType(insertedRule);
     getRuleSetView()->scrollTo(index,  QAbstractItemView::PositionAtCenter);
     getRuleSetView()->unselect();
     md->removeRow(index.row(), index.parent());
@@ -218,6 +227,8 @@ void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
         qDebug() << "FWCmdRuleDelete::redoOnModel(RuleSetModel *md)";
     foreach(Rule* rule, rulesToDelete)
     {
+        setDiffType(rule, DiffType::Remove);
+
         QModelIndex index = md->index(rule, 0);
         md->removeRow(index.row(), index.parent());
     }
@@ -229,6 +240,9 @@ void FWCmdRuleDelete::redoOnModel(RuleSetModel *md)
 void FWCmdRuleDelete::undoOnModel(RuleSetModel *md)
 {
     md->restoreRules(rulesToDelete);
+    foreach(Rule* rule, rulesToDelete) {
+        resetDiffType(rule);
+    }
 }
 
 
@@ -247,6 +261,9 @@ FWCmdRuleDeleteFromGroup::FWCmdRuleDeleteFromGroup(
 void FWCmdRuleDeleteFromGroup::undoOnModel(RuleSetModel *md)
 {
     md->restoreRules(rulesToDelete, false);
+    foreach(Rule* rule, rulesToDelete) {
+        resetDiffType(rule);
+    }
 }
 
 /********************************************************
@@ -317,11 +334,15 @@ FWCmdRuleMove::FWCmdRuleMove(ProjectPanel *project, RuleSet* ruleset,
 void FWCmdRuleMove::redoOnModel(RuleSetModel *md)
 {
     move(md, direction);
+    for (int id = firstId; id <= lastId; ++id)
+        setDiffType(Rule::cast(getObject(id)), DiffType::Move);
 }
 
 void FWCmdRuleMove::undoOnModel(RuleSetModel *md)
 {
     move(md, !direction);
+    for (int id = firstId; id <= lastId; ++id)
+        resetDiffType(Rule::cast(getObject(id)));
 }
 
 void FWCmdRuleMove::move(RuleSetModel *md, bool direction)
@@ -364,12 +385,18 @@ FWCmdRuleRenameGroup::FWCmdRuleRenameGroup(
 
 void FWCmdRuleRenameGroup::redoOnModel(RuleSetModel *md)
 {
+    project->getRenamedGroups().insert(project->getRenamedGroups().key(oldName, oldName),
+                                    newName);
+
     QModelIndex grp = md->index(oldName);
     md->renameGroup(grp, newName);
 }
 
 void FWCmdRuleRenameGroup::undoOnModel(RuleSetModel *md)
 {
+    project->getRenamedGroups().insert(project->getRenamedGroups().key(newName),
+                                    oldName);
+
     QModelIndex grp =  md->index(newName);
     md->renameGroup(grp, oldName);
 }
@@ -389,6 +416,9 @@ FWCmdRuleRemoveFromGroup::FWCmdRuleRemoveFromGroup(
 
 void FWCmdRuleRemoveFromGroup::redoOnModel(RuleSetModel *md)
 {
+    for (int id = firstRule->getId(); id <= lastRule->getId(); ++id)
+        setDiffType(Rule::cast(getObject(id)), DiffType::Move);
+
     QModelIndex group = md->index(groupName);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
@@ -397,6 +427,9 @@ void FWCmdRuleRemoveFromGroup::redoOnModel(RuleSetModel *md)
 
 void FWCmdRuleRemoveFromGroup::undoOnModel(RuleSetModel *md)
 {
+    for (int id = firstRule->getId(); id <= lastRule->getId(); ++id)
+        resetDiffType(Rule::cast(getObject(id)));
+
     QModelIndex group = md->index(groupName);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
@@ -434,6 +467,9 @@ FWCmdRuleNewGroup::FWCmdRuleNewGroup(
 
 void FWCmdRuleNewGroup::redoOnModel(RuleSetModel *md)
 {
+    for (int id = firstRule->getId(); id <= lastRule->getId(); ++id)
+        setDiffType(Rule::cast(getObject(id)), DiffType::Move);
+
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
     QModelIndex index = md->createNewGroup(groupName, first.row(), last.row());
@@ -443,6 +479,9 @@ void FWCmdRuleNewGroup::redoOnModel(RuleSetModel *md)
 
 void FWCmdRuleNewGroup::undoOnModel(RuleSetModel *md)
 {
+    for (int id = firstRule->getId(); id <= lastRule->getId(); ++id)
+        resetDiffType(Rule::cast(getObject(id)));
+
     QModelIndex group = md->index(groupName);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
@@ -465,6 +504,9 @@ FWCmdRuleAddToGroup::FWCmdRuleAddToGroup(
 
 void FWCmdRuleAddToGroup::redoOnModel(RuleSetModel *md)
 {
+    for (int id = firstRule->getId(); id <= lastRule->getId(); ++id)
+        setDiffType(Rule::cast(getObject(id)), DiffType::Move);
+
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
 
@@ -475,6 +517,9 @@ void FWCmdRuleAddToGroup::redoOnModel(RuleSetModel *md)
 
 void FWCmdRuleAddToGroup::undoOnModel(RuleSetModel *md)
 {
+    for (int id = firstRule->getId(); id <= lastRule->getId(); ++id)
+        resetDiffType(Rule::cast(getObject(id)));
+
     QModelIndex group = md->index(groupName);
     QModelIndex first = md->index(firstRule, 0);
     QModelIndex last = md->index(lastRule, 0);
@@ -493,27 +538,32 @@ FWCmdRuleChange::FWCmdRuleChange(
 {
 }
 
-void FWCmdRuleChange::selectAffectedRule()
+Rule* FWCmdRuleChange::selectAffectedRule()
 {
     RuleSetView* rsv = project->getCurrentRuleSetView();
     RuleSetModel* md = (RuleSetModel*)rsv->model();
 
     Rule* currentRule = md->getRule(rsv->currentIndex());
     if(currentRule == 0 || (currentRule->getId() != getRule()->getId())) rsv->selectRE(getRule(), 0);
+    return currentRule;
 }
 
 void FWCmdRuleChange::redo()
 {
     prepareRuleSetView();
     FWCmdChange::redo();
-    selectAffectedRule();
+    Rule *affectedRule = selectAffectedRule();
+    if (affectedRule)
+        setDiffType(affectedRule, DiffType::Edit);
 }
 
 void FWCmdRuleChange::undo()
 {
     prepareRuleSetView();
     FWCmdChange::undo();
-    selectAffectedRule();
+    Rule *affectedRule = selectAffectedRule();
+    if (affectedRule)
+        resetDiffType(affectedRule);
 }
 
 void FWCmdRuleChange::notify()
