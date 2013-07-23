@@ -606,8 +606,34 @@ void RuleSetModel::insertRule(Rule *rule) {
     } else
     {
         QModelIndex index = this->index(targetRule);
-        ruleset->insert_before(targetRule,rule);
-        insertRuleToModel(rule, index, false);
+        /*
+         * Bugfix: when inserting a new rule abow a group, doing undo and then redo
+         * we need to check which group the rule really belongs to
+         */
+
+        if (targetRule->getStr("group") != rule->getStr("group")) {
+            // The new rule at the index we are about to re-insert
+            // are not in the same group as the old rule was
+
+            // We'll get the group name from the rule above the current index
+            targetRule = ruleset->getRuleByNum(rule->getPosition() - 1);
+            if (targetRule) {
+                index = this->index(targetRule);
+                ruleset->insert_after(targetRule,rule);
+                insertRuleToModel(rule, index, true);
+            } else {
+                // We are inserting on the top and there's no rule above
+                // the current index. Let's just insert the rule at the top then,
+                // and not put it into the group below
+                rule->setParent(ruleset);
+                ruleset->insert_before(ruleset->getRuleByNum(0), rule);
+                index = QModelIndex();
+                insertRuleToModel(rule, index);
+            }
+        } else {
+            ruleset->insert_before(targetRule,rule);
+            insertRuleToModel(rule, index, false);
+        }
     }
     ruleset->renumberRules();
 }
