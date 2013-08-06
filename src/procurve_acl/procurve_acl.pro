@@ -1,6 +1,7 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
 include(../../qmake.inc)
+QT -= gui
 #
 #
 # PACKAGE = fwbuilder-procurve_acl-$$FWB_VERSION

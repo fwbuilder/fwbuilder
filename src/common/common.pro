@@ -5,7 +5,7 @@
 # on QT
 
 include(../../qmake.inc)
-
+QT -= gui
 TEMPLATE = lib
 
 SOURCES = init.cpp init2.cpp

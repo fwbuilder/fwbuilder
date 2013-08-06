@@ -1,7 +1,7 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
 include(../../qmake.inc)
-
+QT -= gui
 SOURCES	 =  pix.cpp
 
 HEADERS	 = ../../config.h

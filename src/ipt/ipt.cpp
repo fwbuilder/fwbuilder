@@ -40,7 +40,7 @@
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QStringList>
 #include <QTextCodec>
 #include <QTime>
@@ -76,7 +76,7 @@ void usage(const char *name)
 
 int main(int argc, char **argv)
 {   
-    QApplication app(argc, argv, false);
+    QCoreApplication app(argc, argv, false);
 
     QTime total_time_timer;
     total_time_timer.start();

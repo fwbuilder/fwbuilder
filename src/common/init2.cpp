@@ -6,7 +6,7 @@
 #if defined(Q_OS_MACX) || defined(Q_OS_WIN32)
 #  include <qsettings.h>
 #  include <QDir>
-#  include <QApplication>
+#  include <QCoreApplication>
 #  include <assert.h>
 #endif
 
@@ -52,13 +52,13 @@ void init_win()
  */
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
 
-    if (QCoreApplication::instance()==NULL)
-    {
-        int ac = 0;
-        char **av = { NULL };
-        new QApplication( ac, av );
-    }
-    QDir dir(QApplication::applicationDirPath());
+//    if (QCoreApplication::instance()==NULL)
+//    {
+//        int ac = 0;
+//        char **av = { NULL };
+//        new QApplication( ac, av );
+//    }
+    QDir dir(QCoreApplication::applicationDirPath());
 
     appRootDir = string(dir.absolutePath().toAscii().constData());
 
