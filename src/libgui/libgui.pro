@@ -1,7 +1,7 @@
 # -*- mode: makefile; tab-width: 4; -*-
 
 QT += network
-
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 include(../../qmake.inc)
 
 exists(qmake.inc):include( qmake.inc)
@@ -226,12 +226,11 @@ HEADERS += ../../config.h \
 	importFirewallConfigurationWizard/IC_NetworkZonesPage.h \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.h \
 	importFirewallConfigurationWizard/ImporterThread.h \
-    RuleSetDiffDialog.h \
-    RuleSetDiffDelegate.h \
-    RuleSetDiffModel.h \
-    BackgroundCompileInfoWidget.h \
-    temporarydir.h
-
+    	RuleSetDiffDialog.h \
+	RuleSetDiffDelegate.h \
+    	RuleSetDiffModel.h \
+    	BackgroundCompileInfoWidget.h \
+    	temporarydir.h
 
 
 SOURCES += ProjectPanel.cpp \
@@ -451,12 +450,11 @@ SOURCES += ProjectPanel.cpp \
 	importFirewallConfigurationWizard/IC_NetworkZonesPage.cpp \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.cpp \
 	importFirewallConfigurationWizard/ImporterThread.cpp \
-    RuleSetDiffDialog.cpp \
-    RuleSetDiffDelegate.cpp \
-    RuleSetDiffModel.cpp \
-    BackgroundCompileInfoWidget.cpp \
-    temporarydir.cpp
-
+    	RuleSetDiffDialog.cpp \
+    	RuleSetDiffDelegate.cpp \
+    	RuleSetDiffModel.cpp \
+    	BackgroundCompileInfoWidget.cpp \
+    	temporarydir.cpp
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \

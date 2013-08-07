@@ -1,5 +1,6 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 include(../../qmake.inc)
 QT -= gui
 SOURCES	 =  pix.cpp

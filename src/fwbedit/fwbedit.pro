@@ -6,6 +6,7 @@ include(../../qmake.inc)
 
 TEMPLATE = app
 QT += network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 SOURCES	 = fwbedit.cpp new_object.cpp repair_tree.cpp list_object.cpp merge.cpp import.cpp
 HEADERS	 = ../../config.h fwbedit.h upgradePredicate.h

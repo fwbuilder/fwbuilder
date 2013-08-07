@@ -659,7 +659,7 @@ void ObjectManipulator::addLib(FWObject *lib)
     ObjectTreeViewItem *itm1=new ObjectTreeViewItem( objTreeView );
 
     itm1->setLib("");
-    itm1->setExpanded(TRUE);
+    itm1->setExpanded(true);
 
     itm1->setFlags(itm1->flags() & ~Qt::ItemIsDragEnabled);
 

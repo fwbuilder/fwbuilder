@@ -35,8 +35,6 @@ RuleSetDiffModel::RuleSetDiffModel(QObject *parent, RuleSetModel *model, Project
 
 void RuleSetDiffModel::displayUnmodifiedRules(bool val)
 {
-    if (m_displayUnmodifiedRules == val) return;
-
     beginResetModel();
     m_displayUnmodifiedRules = val;
     endResetModel();

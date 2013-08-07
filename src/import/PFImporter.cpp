@@ -468,7 +468,11 @@ void PFImporter::convertTcpFlags(QList<int> &flags_list,
 {
     for (int i=0; i<flags_str.size(); ++i)
     {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         switch (flags_str.at(i).toAscii())
+#else
+        switch (flags_str.at(i).toLatin1())
+#endif
         {
         case 'U': flags_list << TCPService::URG; break;
         case 'A': flags_list << TCPService::ACK; break;

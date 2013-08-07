@@ -86,7 +86,11 @@ using namespace libfwbuilder;
 ObjectTreeView::ObjectTreeView(ProjectPanel* project,
                                QWidget* parent,
                                const char * name,
+                               #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                                Qt::WFlags f) :
+                               #else
+                               Qt::WindowFlags f) :
+                               #endif
     QTreeWidget(parent), 
     m_project(project)
 {
@@ -153,7 +157,11 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     //header()->hide();
 
     header()->setDefaultAlignment(Qt::AlignLeft);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     header()->setResizeMode(QHeaderView::Interactive);
+#else
+    header()->setSectionResizeMode(QHeaderView::Interactive);
+#endif
 
     showOrHideAttributesColumn();
 
@@ -161,11 +169,11 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     setAutoScroll(true);
     setAutoScrollMargin(50);
-    setAllColumnsShowFocus( TRUE );
+    setAllColumnsShowFocus( true );
     setSelectionMode( ExtendedSelection );
     setAcceptDrops( true );
     setDragDropMode( QAbstractItemView::DragDrop );
-    setRootIsDecorated( TRUE );
+    setRootIsDecorated( true );
 
     setFocusPolicy(Qt::StrongFocus);
 

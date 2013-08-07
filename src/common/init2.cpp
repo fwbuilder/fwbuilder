@@ -60,7 +60,11 @@ void init_win()
 //    }
     QDir dir(QCoreApplication::applicationDirPath());
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     appRootDir = string(dir.absolutePath().toAscii().constData());
+#else
+    appRootDir = string(dir.absolutePath().toLatin1().constData());
+#endif
 
 /* On windows and mac we install API resources (DTD etc) in the 
  * dir right above the one where we install resources for the GUI and compilers

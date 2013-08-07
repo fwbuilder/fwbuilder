@@ -170,7 +170,6 @@
 #include <qtextstream.h>
 #include <qtimer.h>
 #include <qtoolbutton.h>
-
 #include "temporarydir.h"
  
 extern bool regCheck();

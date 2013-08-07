@@ -33,6 +33,7 @@
 #include <QDropEvent>
 #include <map>
 #include <list>
+#include <QDrag>
 
 namespace libfwbuilder {
     class FWObject;

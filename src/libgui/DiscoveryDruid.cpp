@@ -1505,7 +1505,11 @@ void DiscoveryDruid::saveScanLog()
         QTextStream strm(&f);
         QString txt = m_dialog->discoverylog->toPlainText();
         strm << txt << endl;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (fwbdebug) qDebug("%s",txt.toAscii().constData());
+#else
+        if (fwbdebug) qDebug("%s",txt.toLatin1().constData());
+#endif
         if (fwbdebug)
             qDebug("--------------------------------");
         f.close();
@@ -2113,7 +2117,11 @@ int DiscoveryDruid::monitorOperation()
         addToLog(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (1)");
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (fwbdebug) qDebug(buf.toAscii().constData());
+#else
+        if (fwbdebug) qDebug(buf.toLatin1().constData());
+#endif
         if (fwbdebug) qDebug("----------------------------------------------");*/
 
         fl=true;
@@ -2145,7 +2153,11 @@ int DiscoveryDruid::monitorOperation()
         addToLog(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (2)");
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (fwbdebug) qDebug(buf.toAscii().constData());
+#else
+        if (fwbdebug) qDebug(buf.toLatin1().constData());
+#endif
         if (fwbdebug) qDebug("----------------------------------------------");*/
 
       //  completed(-1);   // this sends signal to another widget
@@ -2758,12 +2770,19 @@ void HostsFileImport::run()
     {
         try
         {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             hf->parse( file_name.toAscii().constData() );
+#else
+            hf->parse( file_name.toLatin1().constData() );
+#endif
         } catch ( FWException &ex )
         {
             last_error = ex.toString().c_str();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             *Log << "Exception: " << last_error.toAscii().constData() << "\n";
-
+#else
+            *Log << "Exception: " << last_error.toLatin1().constData() << "\n";
+#endif
             delete hf;
             done();
             return;

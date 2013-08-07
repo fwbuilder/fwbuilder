@@ -3,6 +3,7 @@
 include(../../qmake.inc)
 QT -= gui
 #
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 SOURCES	 =  ipf.cpp
 
 HEADERS	 = ../../config.h

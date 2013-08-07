@@ -229,9 +229,16 @@ void IPv6Dialog::DNSlookup()
     if (!dnsBusy)
     {
         QString name = m_dialog->obj_name->text().trimmed();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (fwbdebug)
             qDebug("IPv6Dialog::DNSlookup()  name=%s",
                    name.toAscii().constData());
+
+#else
+        if (fwbdebug)
+            qDebug("IPv6Dialog::DNSlookup()  name=%s",
+                   name.toLatin1().constData());
+#endif
 
         dnsBusy=true;
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
@@ -256,8 +263,13 @@ void IPv6Dialog::DNSlookup()
             assert(host!=NULL);
             name = host->getName().c_str();
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  name=%s",
                 name.toAscii().constData());
+#else
+            if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  name=%s",
+                name.toLatin1().constData());
+#endif
             dnsBusy=true;
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
 

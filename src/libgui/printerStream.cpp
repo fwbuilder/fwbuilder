@@ -380,7 +380,11 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
 
         tbl->scrollTo(it.index(), QAbstractItemView::PositionAtTop);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         printPixmap(QPixmap::grabWidget(tbl));
+#else
+        printPixmap(tbl->grab());
+#endif
 
         if (bottomIt == end) break;
 
@@ -506,7 +510,11 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         tbl->update();
 
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         printPixmap(QPixmap::grabWidget(tbl));  //,0,0,-1,pixMapHeight));
+#else
+        printPixmap(tbl->grab());  //,0,0,-1,pixMapHeight));
+#endif
 
         if (bottom_row>=(rowCount-1)) break;
 

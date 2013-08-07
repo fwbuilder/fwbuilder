@@ -150,7 +150,11 @@ void ObjectIconView::dragEnterEvent( QDragEnterEvent *ev)
         qDebug("ObjectIconView::dragEnterEvent");
 //    ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QWidget *fromWidget = ev->source();
+#else
+    QWidget *fromWidget = qobject_cast<QWidget*>(ev->source());
+#endif
 
     // The source of DnD object must be the same instance of fwbuilder
     if (!fromWidget)

@@ -1527,7 +1527,7 @@ void ObjectManipulator::libChanged(int list_row)
             otvi = dynamic_cast<ObjectTreeViewItem*>(
                 objTreeView->invisibleRootItem()->child(0));
         else
-            assert(FALSE);
+            assert(false);
     }
 
     showObjectInTree( otvi );

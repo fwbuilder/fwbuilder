@@ -63,7 +63,11 @@ FWObjectDropArea::~FWObjectDropArea()
     delete m_objectDropArea;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WFlags f):
+#else
+FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WindowFlags f):
+#endif
     QWidget(p)
 {
     setObjectName( QString(n) );

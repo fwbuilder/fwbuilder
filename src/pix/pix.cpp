@@ -95,7 +95,9 @@ int main(int argc, char **argv)
     QCoreApplication app(argc, argv, false);
 
     // compilers always write file names into manifest in Utf8
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
     
     QStringList args = app.arguments();

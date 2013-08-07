@@ -498,14 +498,25 @@ FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType
     QString level1 = path.section('/',0,0);
     QString level2 = path.section('/',1,1);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     FWObject::iterator i=std::find_if(lib->begin(),lib->end(),
         FWObjectNameEQPredicate(static_cast<const char*>(level1.toAscii())));
+#else
+    FWObject::iterator i=std::find_if(lib->begin(),lib->end(),
+        FWObjectNameEQPredicate(static_cast<const char*>(level1.toLatin1())));
+#endif
     if (i==lib->end()) return NULL;
     FWObject *l1obj = *i;
     if (level2.isEmpty()) return l1obj;
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     i=std::find_if(l1obj->begin(),l1obj->end(),
         FWObjectNameEQPredicate(static_cast<const char*>(level2.toAscii())));
+#else
+    i=std::find_if(l1obj->begin(),l1obj->end(),
+        FWObjectNameEQPredicate(static_cast<const char*>(level2.toLatin1())));
+#endif
+
     if (i==l1obj->end()) return NULL;
     return (*i);
 }

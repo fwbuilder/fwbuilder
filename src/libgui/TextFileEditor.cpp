@@ -113,8 +113,13 @@ void TextFileEditor::save()
     QFile owf(file_name);
     if ( ! owf.exists())
     {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (owf.open(QIODevice::WriteOnly) &&
             owf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
+#else
+        if (owf.open(QIODevice::WriteOnly) &&
+            owf.write(m_dialog->editor->toPlainText().toLatin1().constData()) >= 0)
+#endif
         {
             owf.close();
             QDialog::accept();
@@ -131,8 +136,13 @@ void TextFileEditor::save()
     QString tmp_file_name = file_name + ".tmp";
 
     QFile wf(tmp_file_name);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     if (wf.open(QIODevice::WriteOnly) &&
         wf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
+#else
+    if (wf.open(QIODevice::WriteOnly) &&
+        wf.write(m_dialog->editor->toPlainText().toLatin1().constData()) >= 0)
+#endif
     {
         wf.close();
         QFile old_file(file_name);

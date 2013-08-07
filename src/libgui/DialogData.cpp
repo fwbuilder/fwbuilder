@@ -132,15 +132,24 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
             if (fwbdebug)
             {
                 qDebug("loadToWidget -- QComboBox  dopt.mapping.count()=%d",dopt.mapping.count());
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                 qDebug("loadToWidget -- QComboBox  s=%s",s.toAscii().constData());
+#else
+                qDebug("loadToWidget -- QComboBox  s=%s",s.toLatin1().constData());
+#endif
             }
 
             while ( idx < dopt.mapping.count()/2 )
             {
                 if (fwbdebug)
                 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                     qDebug("loadToWidget -- QComboBox  (*i1)=%s",(*i1).toAscii().constData());
                     qDebug("loadToWidget -- QComboBox  (*i2)=%s",(*i2).toAscii().constData());
+#else
+                    qDebug("loadToWidget -- QComboBox  (*i1)=%s",(*i1).toLatin1().constData());
+                    qDebug("loadToWidget -- QComboBox  (*i2)=%s",(*i2).toLatin1().constData());
+#endif
                 }
 
                 if (s== (*i2)) { current_item = idx; }

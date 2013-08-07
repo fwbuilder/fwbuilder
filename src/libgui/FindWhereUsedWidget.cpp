@@ -122,7 +122,11 @@ void FindWhereUsedWidget::setShowObject(bool fl)
  */
 void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item, int)
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
+#else
+    FWObject *container = (FWObject*)(item->data(1, Qt::UserRole).value<void*>());
+#endif
 
     if (flShowObject && container!=NULL)
     {
@@ -140,8 +144,11 @@ void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item, int)
  */
 void FindWhereUsedWidget::itemClicked(QTreeWidgetItem* item, int)
 {
-    FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
+#else
+    FWObject *container = (FWObject*)(item->data(1, Qt::UserRole).value<void*>());
+#endif
     if (flShowObject && container!=NULL)
     {
         showObject(container);

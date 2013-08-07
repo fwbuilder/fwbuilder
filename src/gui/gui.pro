@@ -3,6 +3,7 @@
 TEMPLATE = app
 LANGUAGE = C++
 QT += network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)

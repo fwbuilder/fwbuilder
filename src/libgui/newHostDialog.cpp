@@ -296,7 +296,11 @@ void newHostDialog::getInterfacesViaSNMP()
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
         QString a = getAddrByName(name, AF_INET);
         QApplication::restoreOverrideCursor();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         addr = InetAddr(a.toAscii().constData());
+#else
+        addr = InetAddr(a.toLatin1().constData());
+#endif
     } catch (FWException &ex)
     {
         QMessageBox::warning(
@@ -393,8 +397,13 @@ void newHostDialog::showPage(const int page)
 
             tmpldb = new FWObjectDatabase();
             tmpldb->setReadOnly( false );
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             tmpldb->load( m_dialog->templateFilePath->text().toAscii().data(),
                           &upgrade_predicate, Constants::getDTDDirectory());
+#else
+            tmpldb->load( m_dialog->templateFilePath->text().toLatin1().data(),
+                          &upgrade_predicate, Constants::getDTDDirectory());
+#endif
         }
         list<FWObject*> fl;
 

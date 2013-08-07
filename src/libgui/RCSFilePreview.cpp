@@ -79,7 +79,7 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 
     m_widget->RCSTreeView->setAllColumnsShowFocus( true );
     m_widget->RCSTreeView->setSelectionMode(QAbstractItemView::SingleSelection );
-    m_widget->RCSTreeView->setRootIsDecorated( FALSE );
+    m_widget->RCSTreeView->setRootIsDecorated( false );
 
 //    m_widget->RCSTreeView->sortByColumn( 0, Qt::AscendingOrder );
 
@@ -117,8 +117,13 @@ void RCSFilePreview::selectedRevision(QTreeWidgetItem *itm)
     rcs->setSelectedRev(rev);
     m_widget->comment->setText( rcsComments[rev] );
     if (fwbdebug)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         qDebug("RCSFilePreview::selectedRevision : %s",
                rev.toAscii().constData());
+#else
+        qDebug("RCSFilePreview::selectedRevision : %s",
+               rev.toLatin1().constData());
+#endif
 }
 
 bool RCSFilePreview::showFileRLog( const QString &filename )
