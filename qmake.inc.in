@@ -108,9 +108,10 @@ win32 {
 
     INCLUDEPATH += "../.."
 
-    INCLUDEPATH += c:/local/include c:/local/include/libxml2 c:/MinGW/include
+    INCLUDEPATH += /local/include /local/include/libxml2 /local/include/net-snmp /include
 
-   LIBS += -L "c:/local/lib"
+   LIBS += -L/local/lib -L/local/bin
+   # LIBS += -l xslt -l xml2 -l iconv -l pthread -l ws2_32
    LIBS += -l xslt -l xml2 -l iconv -l pthread -l netsnmp -l ws2_32
 
 # workaround for QT += dbus not working atm
@@ -165,13 +166,15 @@ macx {
 # 9.0.0. Chances are, the same thing may be happening with other
 # dependency libraries. Building on 10.6 with deployment target 10.5
 # should solve the problem
-	QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.5
-	QMAKE_MAC_SDK = /Developer/SDKs/MacOSX10.5.sdk
+	QMAKE_MACOSX_DEPLOYMENT_TARGET = $$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+	QMAKE_CXXFLAGS += -mmacosx-version-min=$$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+	QMAKE_MAC_SDK = $$(QMAKE_MAC_SDK)
 
 	CONFIG += qt thread rtti stl warn_on debug  # release
 
 # not compiling for PPC because of problems on Snow Leopard
-	CONFIG += x86 
+	CONFIG -= x86
+	CONFIG += x86_64
 
 # See http://trolltech.com/developer/task-tracker/index_html?method=entry&id=211852
 # for why ppc architecture is commented out.

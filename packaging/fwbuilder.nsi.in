@@ -241,6 +241,7 @@ Section "FWBuilder (required)"
   File "doc\README.pix"
   File "doc\README.pix_routing"
   File "doc\README.routing"
+  File "doc\README.nxosacl"
 
   File /oname=fwbuilder.ico "src\gui\fwbuilder-windows.ico"
 
@@ -253,31 +254,32 @@ Section "FWBuilder (required)"
   File /a "src\pf\release\fwb_pf.exe"
   File /a "src\pix\release\fwb_pix.exe"
   File /a "src\procurve_acl\release\fwb_procurve_acl.exe"
+  File /a "src\nxosacl\release\fwb_nxosacl.exe"
 
-  File "c:\MinGW\bin\libiconv-2.dll"
-  File "c:\MinGW\bin\libpthread-2.dll"
-  File "c:\MinGW\bin\libgcc_s_dw2-1.dll"
-  File "c:\MinGW\bin\libstdc++-6.dll"
-
-  File "c:\local\bin\libxml2-2.dll"
-  File "c:\local\bin\libxslt-1.dll"
+  File "windows\bin\libiconv-2.dll"
+  File "windows\bin\pthreadGC2.dll"
+  File "windows\bin\libgcc_s_dw2-1.dll"
+  File "windows\bin\libstdc++-6.dll"
+  File "windows\bin\zlib1.dll"
+  File "windows\bin\libxml2-2.dll"
+  File "windows\bin\libxslt-1.dll"
 
 ; Install RCS for these files
 ;
-  File "c:\local\bin\ci.exe"
-  File "c:\local\bin\co.exe"
-  File "c:\local\bin\rcs.exe"
-  File "c:\local\bin\rcsdiff.exe"
-  File "c:\local\bin\rlog.exe"
-  File "c:\local\bin\diff.exe"
-  File "c:\local\bin\rcslib.dll"
+  File "windows\bin\win32\ci.exe"
+  File "windows\bin\win32\co.exe"
+  File "windows\bin\win32\rcs.exe"
+  File "windows\bin\win32\rcsdiff.exe"
+  File "windows\bin\win32\rlog.exe"
+  File "windows\bin\win32\diff.exe"
+  File "windows\bin\win32\rcslib.dll"
 
 ;  File "c:\local\bin\netsnmp.dll"
 
-  File "c:\local\qt-everywhere-commercial-src-4.7.3\bin\QtCore4.dll"
-  File "c:\local\qt-everywhere-commercial-src-4.7.3\bin\QtGui4.dll"
-  File "c:\local\qt-everywhere-commercial-src-4.7.3\bin\QtNetwork4.dll"
-  File "c:\local\qt-everywhere-commercial-src-4.7.3\bin\QtTest4.dll"
+  File "windows\bin\QtCore4.dll"
+  File "windows\bin\QtGui4.dll"
+  File "windows\bin\QtNetwork4.dll"
+;  File "c:\local\qt-everywhere-commercial-src-4.7.3\bin\QtTest4.dll"
 
   File /nonfatal /oname=resources\locale\qt_de.qm "c:\local\qt-everywhere-commercial-src-4.7.3\translations\qt_de.qm"
   File /nonfatal /oname=resources\locale\qt_fr.qm "c:\local\qt-everywhere-commercial-src-4.7.3\translations\qt_fr.qm"
@@ -285,8 +287,8 @@ Section "FWBuilder (required)"
 
 
 ;; Starting with 4.0.2, we now package putty tools with fwbuilder
-  File "c:\PuTTY\plink.exe"
-  File "c:\PuTTY\pscp.exe"
+  File "windows\bin\plink.exe"
+  File "windows\bin\pscp.exe"
 
 
 ; Write the installation path into the registry
