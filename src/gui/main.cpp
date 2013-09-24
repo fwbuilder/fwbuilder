@@ -122,6 +122,15 @@ int main( int argc, char *argv[] )
 
     ssh_wrapper(argc, argv);
 
+    //QApplication::setDesktopSettingsAware(desktopaware);
+ 
+    Q_INIT_RESOURCE(MainRes);
+
+    QApplication::setGraphicsSystem("native");
+    app = new FWBApplication( argc, argv );
+    app->setOrganizationName(QLatin1String("NetCitadel"));
+    app->setApplicationName(QLatin1String("Firewall Builder"));
+
     // can not use "-p" for command line printing because
     // Mac OS X supplies switch "-psnXXXXX" when program is
     // started via Finder.
@@ -165,15 +174,6 @@ int main( int argc, char *argv[] )
 
     if ( (argc-1)==optind)
         filename = strdup( argv[optind++] );
-
-    //QApplication::setDesktopSettingsAware(desktopaware);
- 
-    Q_INIT_RESOURCE(MainRes);
-
-    QApplication::setGraphicsSystem("native");
-    app = new FWBApplication( argc, argv );
-    app->setOrganizationName(QLatin1String("NetCitadel"));
-    app->setApplicationName(QLatin1String("Firewall Builder"));
 
     if (fwbdebug) qDebug("Initializing ...");
 
