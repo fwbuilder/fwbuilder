@@ -170,6 +170,7 @@ int main( int argc, char *argv[] )
  
     Q_INIT_RESOURCE(MainRes);
 
+    QApplication::setGraphicsSystem("native");
     app = new FWBApplication( argc, argv );
     app->setOrganizationName(QLatin1String("NetCitadel"));
     app->setApplicationName(QLatin1String("Firewall Builder"));
