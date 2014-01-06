@@ -58,9 +58,9 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 #ifdef _WIN32
-string fs_separator = "\\";
+static string fs_separator = "\\";
 #else
-string fs_separator = "/";
+static string fs_separator = "/";
 #endif
 
 
