@@ -834,9 +834,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     {
         popup_menu->addSeparator();
         FWObject *h = Host::getParentHost(currentObj);
-        list<FWObject*> top_level_interfaces = h->getByType(Interface::TYPENAME);
-        top_level_interfaces.sort(FWObjectNameCmpPredicate());
-        addSubinterfaceSubmenu(popup_menu, top_level_interfaces);
+        if (h != NULL) {
+            list<FWObject*> top_level_interfaces = h->getByType(Interface::TYPENAME);
+            top_level_interfaces.sort(FWObjectNameCmpPredicate());
+            addSubinterfaceSubmenu(popup_menu, top_level_interfaces);
+        }
     }
 
     popup_menu->addSeparator();
