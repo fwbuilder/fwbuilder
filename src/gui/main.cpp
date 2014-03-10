@@ -126,7 +126,9 @@ int main( int argc, char *argv[] )
  
     Q_INIT_RESOURCE(MainRes);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QApplication::setGraphicsSystem("native");
+#endif
     app = new FWBApplication( argc, argv );
     app->setOrganizationName(QLatin1String("NetCitadel"));
     app->setApplicationName(QLatin1String("Firewall Builder"));
