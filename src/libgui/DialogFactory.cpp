@@ -64,6 +64,7 @@
 #include "ipfwAdvancedDialog.h"
 #include "pfAdvancedDialog.h"
 #include "pixAdvancedDialog.h"
+#include "junosaclAdvancedDialog.h"
 #include "nxosaclAdvancedDialog.h"
 #include "iosaclAdvancedDialog.h"
 #include "ipcopAdvancedDialog.h"
@@ -85,6 +86,7 @@
 #include "solarisAdvancedDialog.h"
 #include "macosxAdvancedDialog.h"
 #include "pixosAdvancedDialog.h"
+#include "junosAdvancedDialog.h"
 #include "nxosAdvancedDialog.h"
 #include "iosAdvancedDialog.h"
 #include "ipcoposAdvancedDialog.h"
@@ -245,6 +247,7 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
     if (platform == "iptables" && os_family == "secuwall")
         dlgname = "secuwall";
 
+    if (dlgname=="junosacl")   return new junosaclAdvancedDialog(parent,o);
     if (dlgname=="nxosacl")   return new nxosaclAdvancedDialog(parent,o);
     if (dlgname=="iosacl")   return new iosaclAdvancedDialog(parent,o);
     if (dlgname=="ipcop")    return new ipcopAdvancedDialog(parent,o);
@@ -284,6 +287,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     if (dlgname=="solaris")   return new solarisAdvancedDialog(parent, o);
     if (dlgname=="macosx")    return new macosxAdvancedDialog(parent, o);
     if (dlgname=="pix_os")    return new pixosAdvancedDialog(parent, o);
+    if (dlgname=="junos")       return new junosAdvancedDialog(parent, o);
     if (dlgname=="nxos")       return new nxosAdvancedDialog(parent, o);
     if (dlgname=="ios")       return new iosAdvancedDialog(parent, o);
     if (dlgname=="ipcop")     return new ipcoposAdvancedDialog(parent, o);

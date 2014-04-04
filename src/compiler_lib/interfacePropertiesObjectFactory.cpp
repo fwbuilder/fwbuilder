@@ -28,6 +28,7 @@
 #include "linux24Interfaces.h"
 #include "nxosInterfaces.h"
 #include "iosInterfaces.h"
+#include "junosInterfaces.h"
 #include "procurveInterfaces.h"
 #include "openbsdInterfaces.h"
 #include "freebsdInterfaces.h"
@@ -63,6 +64,8 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
     if (os_family == "nxos") return new nxosInterfaces();
 
     if (os_family == "ios") return new iosInterfaces();
+
+    if (os_family == "junos") return new junosInterfaces();
 
     if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
 

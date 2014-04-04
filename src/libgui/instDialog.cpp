@@ -703,6 +703,12 @@ bool instDialog::isProcurve()
     return (platform=="procurve_acl");
 }
 
+bool instDialog::isJuniper()
+{
+    string platform = cnf.fwobj->getStr("platform");
+    return (platform=="junosacl");
+}
+
 /*
  * "uncheck" checkbox in the "install" column to make sure we do not
  * try to install this firewall. Used in instDialog_compile on failure.

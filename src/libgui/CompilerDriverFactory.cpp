@@ -37,6 +37,7 @@
 #include "CompilerDriver_pix.h"
 #include "CompilerDriver_procurve_acl.h"
 #include "CompilerDriver_nxosacl.h"
+#include "../juniper_lib/CompilerDriver_junosacl.h"
 
 #include <string>
 
@@ -54,6 +55,7 @@ CompilerDriver* CompilerDriverFactory::createCompilerDriver(Firewall *fw)
     if (platform == "ipfw") return new CompilerDriver_ipfw(fw->getRoot());
     if (platform == "iosacl") return new CompilerDriver_iosacl(fw->getRoot());
     if (platform == "nxosacl") return new CompilerDriver_nxosacl(fw->getRoot());
+    if (platform == "junosacl") return new CompilerDriver_junosacl(fw->getRoot());
     if (platform == "pix" || platform == "fwsm")
         return new CompilerDriver_pix(fw->getRoot());
     if (platform == "procurve_acl")

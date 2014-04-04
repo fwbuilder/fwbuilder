@@ -315,6 +315,8 @@ void RuleSetViewDelegate::paintOptions(
         if (icon.contains("Log")) parameter = tr("log");
         if (icon.contains("Options")) parameter = tr("(options)");
 
+        if (icon.contains("Accounting")) parameter = tr("(counter)");
+
         drawIconAndText(painter,
                         itemRect.adjusted(
                             HORIZONTAL_MARGIN, VERTICAL_MARGIN,

@@ -1,0 +1,23 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using regular user account for authentication
+##
+##  Variables:
+##
+##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}     -- directory on the firewall ("flash:" or "nvram:" or similar)
+##  {{$fwscript}}  -- script name on the firewall
+##  {{$rbtimeout}} -- rollback timeout
+##  {{$rbtimeout_sec}} -- rollback timeout (sec)
+##
+##  {{$firewall_name}} -- the name of the firewall object
+##
+
+load replace {{$fwdir}}/{{$fwscript}}
+commit

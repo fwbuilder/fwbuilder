@@ -1473,6 +1473,9 @@ QStringList PolicyModel::getRuleOptions(Rule* r) const
 
     if (policyRule->getLogging()) res << "Log";
 
+    if (!policyRule->getOptionsObject()->getStr("counter_name").empty())
+        res << "Accounting";
+
     if ( ! isDefaultPolicyRuleOptions(r->getOptionsObject())) res << "Options";
 
     FWObject *firewall = r;

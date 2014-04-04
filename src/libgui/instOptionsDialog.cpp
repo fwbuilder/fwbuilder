@@ -131,6 +131,11 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool insta
         m_dialog->copyFWB->hide();
         m_dialog->PIXgroupBox->hide();
 
+    } else if (platform=="junosacl") {
+        m_dialog->copyFWB->hide();
+        m_dialog->PIXgroupBox->hide();
+        m_dialog->epwd->hide();
+        m_dialog->epwdLbl->hide();
     } else
     {
         m_dialog->epwd->hide();

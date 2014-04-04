@@ -36,6 +36,7 @@ HEADERS += ../../config.h \
     SSHPIX.h \
     SSHIOS.h \
     SSHNXOS.h \
+    SSHJUNOS.h \
     SSHProcurve.h \
     debugDialog.h \
     findDialog.h \
@@ -110,6 +111,8 @@ HEADERS += ../../config.h \
     iosAdvancedDialog.h \
     nxosaclAdvancedDialog.h \
     nxosAdvancedDialog.h \
+    junosaclAdvancedDialog.h \
+    junosAdvancedDialog.h \
     ipcoposAdvancedDialog.h \
     linux24AdvancedDialog.h \
     linksysAdvancedDialog.h \
@@ -137,6 +140,7 @@ HEADERS += ../../config.h \
     instDialog.h \
     FirewallInstaller.h \
     FirewallInstallerCisco.h \
+    FirewallInstallerJuniper.h \
     FirewallInstallerProcurve.h \
     FirewallInstallerUnx.h \
     newFirewallDialog.h \
@@ -254,6 +258,7 @@ SOURCES += ProjectPanel.cpp \
     SSHPIX.cpp \
     SSHIOS.cpp \
     SSHNXOS.cpp \
+    SSHJUNOS.cpp \
     SSHProcurve.cpp \
     debugDialog.cpp \
     findDialog.cpp \
@@ -328,6 +333,8 @@ SOURCES += ProjectPanel.cpp \
     iosAdvancedDialog.cpp \
     nxosaclAdvancedDialog.cpp \
     nxosAdvancedDialog.cpp \
+    junosaclAdvancedDialog.cpp \
+    junosAdvancedDialog.cpp \
     ipcoposAdvancedDialog.cpp \
     linux24AdvancedDialog.cpp \
     linksysAdvancedDialog.cpp \
@@ -358,6 +365,7 @@ SOURCES += ProjectPanel.cpp \
     instDialog_installer.cpp \
     FirewallInstaller.cpp \
     FirewallInstallerCisco.cpp \
+    FirewallInstallerJuniper.cpp \
     FirewallInstallerProcurve.cpp \
     FirewallInstallerUnx.cpp \
     newFirewallDialog.cpp \
@@ -494,6 +502,8 @@ FORMS = FWBMainWindow_q.ui \
     iosadvanceddialog_q.ui \
     nxosacladvanceddialog_q.ui \
     nxosadvanceddialog_q.ui \
+    junosacladvanceddialog_q.ui \
+    junosadvanceddialog_q.ui \
     procurveacladvanceddialog_q.ui \
     simpletexteditor_q.ui \
     simpleinteditor_q.ui \
@@ -605,6 +615,7 @@ INCLUDEPATH += \
     ../iptlib \
     ../pflib \
     ../cisco_lib \
+    ../juniper_lib \
     ../compiler_lib \
 	../libfwbuilder/src
 
@@ -613,6 +624,7 @@ DEPENDPATH += \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
+    ../juniper_lib \
     ../compiler_lib \
 	../libfwbuilder/src
 

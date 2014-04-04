@@ -231,6 +231,7 @@ protected:
 
     bool isCiscoFamily();
     bool isProcurve();
+	bool isJuniper();
 
     void interpretLogLine(const QString &buf);
     

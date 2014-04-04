@@ -41,6 +41,7 @@ fwb_ipt
 fwb_pf
 fwb_pix
 fwb_procurve_acl
+fwb_junosacl
 transfer_secuwall
 .configure_marker
 .build_marker
