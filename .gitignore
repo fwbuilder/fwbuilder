@@ -52,3 +52,6 @@ src/unit_tests/generatedScriptTestsSecuwall/ref.*
 src/unit_tests/generatedScriptTestsSecuwall/secuwall-1/
 src/unit_tests/generatedScriptTestsSecuwall/secuwall-2/
 *.pro.user
+src/libfwbuilder/etc/fwbuilder.dtd
+src/res/objects_init.xml
+src/res/templates.xml
