@@ -196,5 +196,5 @@ void FWCmdBasic::modifyStatistics(int id, DiffType::Type diffType, bool incremen
                 QPair<int, DiffType::Type>(id, diffType));
 
     project->getStatistics().insert(
-                QPair<int, DiffType::Type>(id, diffType), increment ? n++ : n--);
+                QPair<int, DiffType::Type>(id, diffType), increment ? ++n : --n);
 }
