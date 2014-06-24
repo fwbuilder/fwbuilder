@@ -33,6 +33,7 @@
 #include "FWWindow.h"
 
 #include <QFile>
+#include <QDir>
 #include <QLocale>
 #include <QtDebug>
 
@@ -57,6 +58,9 @@ Help::Help(QWidget *, const QString &title, bool _load_links_in_browser) :
     connect(http_getter, SIGNAL(done(const QString&)),
             this, SLOT(downloadComplete(const QString&)));
 
+    connect(m_dialog->comboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(showReleaseNotesSelected()));
+
     QString locale = QLocale::system().name(); //"en_US";
 
     // Set up path to help qtextBrowser find contents, such as files for <img>
@@ -73,6 +77,7 @@ Help::Help(QWidget *, const QString &title, bool _load_links_in_browser) :
     //raise();
 
     flags = windowFlags()| Qt::WindowMinimizeButtonHint;
+    m_dialog->comboBox->hide();
 };
 
 Help::~Help()
@@ -164,8 +169,31 @@ QString Help::findHelpFile(const QString &file_base_name)
     return "";
 }
 
+void Help::showAllReleaseNotes(const QString &path)
+{
+    m_dialog->comboBox->show();
+
+    QStringList filters;
+    filters << "release_notes_*.html";
+
+    QDir dir;
+    dir.setPath(QFileInfo(path).path());
+
+    m_dialog->comboBox->addItems(dir.entryList(filters, QDir::NoFilter, QDir::Name | QDir::Reversed));
+}
+
+void Help::showReleaseNotesSelected()
+{
+    if (!m_dialog->comboBox->isVisible()) return;
+
+    QString file_name = m_dialog->comboBox->currentText();
+
+    setSource(QUrl("file:" + file_name));
+}
+
 void Help::closeEvent(QCloseEvent *event)
 {
+    m_dialog->comboBox->hide();
     window_geometry = QWidget::saveGeometry();
     QDialog::closeEvent(event);
 }

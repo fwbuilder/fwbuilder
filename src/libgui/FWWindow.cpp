@@ -1525,6 +1525,7 @@ void FWWindow::showReleaseNotes()
         h->hide();
     } else
     {
+        h->showAllReleaseNotes(h->findHelpFile(file_name));
         // I do not know why, but url "file://file_name" does not seem to work.
         // But "file:file_name" works.
         h->setSource(QUrl("file:" + file_name));
