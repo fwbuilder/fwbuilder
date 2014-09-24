@@ -1,0 +1,114 @@
+<h1>Firewall Builder 5.3.0 Release Notes</h1>
+
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets</a>
+</p>
+
+<!-- Highlights for this release -->
+
+<a name="summary"></a>
+<h2>Summary</h2>
+
+<p>
+  In addition to bug fixes and minor enhancements, v 5.3 includes the
+  following new features:
+</p>
+
+<ul>
+  <li>Support for Junos Access lists</li>
+  <li>Show all release notes</li>
+</ul>
+
+<h3>Support for Junos Access lists</h3>
+<p>
+  Firewall Builder now supports generating output for the Junos platform.
+  This implementation is based on the Cisco IOS code and shares codebase
+  where applicable.
+</p>
+
+<h4>Units and interfaces</h4>
+<p>
+  The Junos compiler expects the <i>units</i> to be subinterfaces of the main
+  interfaces. E.g. <i>unit 10</i> is a subinterface of <i>ge-0/0/0</i>.<br/>
+  <br/>
+  To configure <i>ge-0/0/0 unit 10</i>, do the following steps:
+  <ol>
+    <li>Add a new interface and rename to <i>ge-0/0/0</i></li>
+    <li>Add a new interface and rename to <i>unit 10</i></li>
+    <li>Make interface <i>unit 10</i> a subinterface of <i>ge-0/0/0</i></li>
+  </ol>
+</p>
+
+<h4>Deny and Reject</h4>
+In the policy viewer, the <i>Deny<i> action will generate the following output 
+<pre>then { discard; }</pre>
+while the <i>Reject</i> action will generate
+<pre>then { reject; }</pre>
+You may set parameters for the <i>Reject</i> action to specify ICMP reply.
+<br />
+
+<h3>Show release notes for previous releases</h3>
+  You may now select any of the available release notes in the release notes
+  viewer, not only for the current version.
+
+<hr style="display: block">
+
+<!-- ######################################################################### -->
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      When using Dummy and deleting an object in the object tree viewer,
+      any objects using <i>only</i> that object will now use Dummy 
+      instead of Any.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Fixed wrong diff counting for DiffViewer.
+    </p>
+  </li>
+
+
+</ul>
+
+<!-- ######################################################################### -->
+<a name="nxos"></a>
+<h2>Changes in support for NXOS</h2>
+
+<ul>
+  <li>
+    <p>
+      Added support for compiling a single rule for NXOS.
+    </p>
+  </li>
+</ul>
+
+<!-- ######################################################################### -->
+<a name="other"></a>
+<h2>Other changes</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Fixed compile error: QApplication::setGraphicsSystem is removed in Qt5.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Fixed NULL pointer dereference for Dummy interface when right
+      clicking on the Dummy interface in the object tree viewer.
+    </p>
+  </li>
+
+</ul>
+
+
+

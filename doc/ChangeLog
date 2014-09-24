@@ -1,3 +1,8 @@
+2014-09-24  Sirius Bakke <sirius.bakke@uninett.no>
+    * Version 5.3.0
+    * Support for Junos Access lists
+    * Show release notes for previous releases
+
 2013-08-10  Sirius Bakke <sirius.bakke@uninett.no>
 	* Version 5.2.0
 	* Search for objects by port number or ip addres
