@@ -94,6 +94,7 @@ SSHJunos::SSHJunos(QWidget *_par,
 
     errorsConfigState.clear();
     errorsConfigState.push_back("error: configuration check-out failed");
+    errorsConfigState.push_back("syntax error");
 
 }
 
