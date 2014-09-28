@@ -523,7 +523,7 @@ string PolicyCompiler_junosacl::PrintRule::_printSrcService(Service *srv)
 	int re = TCPUDPService::cast(srv)->getSrcRangeEnd();
         string outstr = _printPortRangeOp(rs, re);
         if (outstr.size())
-            return "source-port: " + outstr;
+            return "source-port " + outstr;
     }
 
     return "";
