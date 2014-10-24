@@ -640,7 +640,7 @@ string PolicyCompiler_junosacl::PrintRule::_printProtocol(Service *srv)
     if (junosacl_comp->ipv6) addr_family_prefix = "ipv6 ";
 
     string proto = srv->getProtocolName();
-    if (ICMP6Service::isA(srv)) proto = "icmp";
+    if (ICMP6Service::isA(srv)) proto = "icmp6";
 
     if (CustomService::isA(srv)) 
     {
