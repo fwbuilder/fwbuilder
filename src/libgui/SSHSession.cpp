@@ -301,7 +301,8 @@ void SSHSession::terminate()
             // this processes events and lets QProcess send signal finished()
             // in case user hit Cancel at just right time when background process
             // already exited but QProcess has not noticed this yet.
-            proc->waitForFinished(100);
+            if (proc != NULL)
+                proc->waitForFinished(100);
         }
 
         // If QProcess sent signal finished() while we were waiting in
