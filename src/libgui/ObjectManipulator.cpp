@@ -403,8 +403,159 @@ static void addKeywordsMenu(ObjectManipulator *om, QMenu *menu)
 }
 
 
+void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, FWObject *currentObj, ObjectTreeViewItem *item, bool &addSubfolder)
+{
+    addSubfolder = item != 0;
+    string path;
+    if (currentObj == NULL) {
+        path = item->getUserFolderParent()->getPath(true);
+    }
+    else {
+        path = currentObj->getPath(true);
+    }
+
+    //Do not allow to create subfolders on real objects
+    if(item==0 && (currentObj!=NULL
+                      &&!Firewall::isA(currentObj)
+                      &&!Cluster::isA(currentObj)
+                      &&!IPv4::isA(currentObj)
+                      &&!IPv6::isA(currentObj)
+                      &&!DNSName::isA(currentObj)
+                      &&!AddressTable::isA(currentObj)
+                      &&!AddressRange::isA(currentObj)
+                      &&!Host::isA(currentObj)
+                      &&!Network::isA(currentObj)
+                      &&!NetworkIPv6::isA(currentObj)
+                      &&!DynamicGroup::isA(currentObj)
+                      &&!CustomService::isA(currentObj)
+                      &&!IPService::isA(currentObj)
+                      &&!ICMPService::isA(currentObj)
+                      &&!ICMP6Service::isA(currentObj)
+                      &&!TCPService::isA(currentObj)
+                      &&!UDPService::isA(currentObj)
+                      &&!TagService::isA(currentObj)
+                      &&!ServiceGroup::isA(currentObj)
+                      &&!UserService::isA(currentObj)
+                      &&!Interval::isA(currentObj)
+                      )) {
+        addSubfolder = true;
+    }
+
+    if (path.find("Firewalls") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, Firewall::TYPENAME));
+    }
+
+    if (path.find("Clusters") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, Cluster::TYPENAME));
+    }
+
+    if (path.find("Objects/Addresses") == 0)
+    {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, IPv4::TYPENAME));
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, IPv6::TYPENAME));
+    }
+
+    if (path.find("Objects/DNS Names") == 0)
+    {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, DNSName::TYPENAME));
+    }
+
+    if (path.find("Objects/Address Tables") == 0)
+    {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, AddressTable::TYPENAME));
+    }
+
+    if (path.find("Objects/Address Ranges") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, AddressRange::TYPENAME));
+    }
+
+    if (path.find("Objects/Hosts") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, Host::TYPENAME));
+    }
+
+    if (path.find("Objects/Networks") == 0)
+    {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, Network::TYPENAME));
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, NetworkIPv6::TYPENAME));
+    }
+
+    if (path.find("Objects/Groups") == 0) {
+        //We don't want to add subfolders to groups of objects.
+        //Unfortunately the main folders are objectgroups themselves.
+        //This is a temporary workaround
+        if(path!="Objects/Groups") {
+            addSubfolder = false;
+        }
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, ObjectGroup::TYPENAME));
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, DynamicGroup::TYPENAME));
+    }
+
+    if (path.find("Services/Custom") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, CustomService::TYPENAME));
+    }
+
+    if (path.find("Services/IP") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, IPService::TYPENAME));
+    }
+
+    if (path.find("Services/ICMP") == 0)
+    {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, ICMPService::TYPENAME));
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, ICMP6Service::TYPENAME));
+    }
+
+    if (path.find("Services/TCP") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, TCPService::TYPENAME));
+    }
+
+    if (path.find("Services/UDP") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, UDPService::TYPENAME));
+    }
+
+    if (path.find("Services/TagServices") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, TagService::TYPENAME));
+    }
+
+    if (path.find("Services/Groups") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, ServiceGroup::TYPENAME));
+    }
+
+    if (path.find("Services/Users") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, UserService::TYPENAME));
+    }
+
+    if (path.find("Time") == 0) {
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, Interval::TYPENAME));
+    }
+}
+
 void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 {
+    QList<QAction*>::iterator iter;
+    QList<QAction*> AddObjectActions;
+    bool addSubfolder = false;
     if (popup_menu == NULL)
     {
         popup_menu = new QMenu(this);
@@ -426,6 +577,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     ObjectTreeViewItem *otvi=dynamic_cast<ObjectTreeViewItem*>(item);
     if (otvi==NULL)  return;  // happens when user clicks outside an item
 
+    lastClickedItem = otvi;
+
     FWObject *obj = otvi->getFWObject();
     if (obj == 0) {
         assert(otvi->getUserFolderParent() != 0);
@@ -435,6 +588,12 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
         if (objTreeView->getNumSelected() > 0) {
             action->setEnabled(false);
         }
+
+        addSubfolderActions(AddObjectActions, NULL, otvi, addSubfolder);
+
+        for (iter=AddObjectActions.begin(); iter!=AddObjectActions.end(); iter++)
+            (*iter)->setEnabled(true);
+
         popup_menu->exec(QCursor::pos());
         return;
     }
@@ -549,11 +708,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
 
     popup_menu->addSeparator();
 
-    QList<QAction*> AddObjectActions;
+
     
     if (getCurrentObjectTree()->getNumSelected()==1)
     {
-        bool addSubfolder = false;
+
         if ( (Firewall::isA(currentObj) || Host::isA(currentObj)) &&
              ! currentObj->isReadOnly() )
         {
@@ -657,126 +816,8 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
                     popup_menu, StateSyncClusterGroup::TYPENAME));
         }
 
-        if (currentObj->getPath(true)=="Firewalls") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, Firewall::TYPENAME));
-        }
 
-        if (currentObj->getPath(true)=="Clusters") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, Cluster::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/Addresses")
-        {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, IPv4::TYPENAME));
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, IPv6::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/DNS Names")
-        {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, DNSName::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/Address Tables")
-        {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, AddressTable::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/Address Ranges") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, AddressRange::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/Hosts") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, Host::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/Networks")
-        {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, Network::TYPENAME));
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, NetworkIPv6::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Objects/Groups") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, ObjectGroup::TYPENAME));
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, DynamicGroup::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/Custom") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, CustomService::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/IP") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, IPService::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/ICMP")
-        {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, ICMPService::TYPENAME));
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, ICMP6Service::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/TCP") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, TCPService::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/UDP") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, UDPService::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/TagServices") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, TagService::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/Groups") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, ServiceGroup::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Services/Users") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, UserService::TYPENAME));
-        }
-
-        if (currentObj->getPath(true)=="Time") {
-            addSubfolder = true;
-            AddObjectActions.append(
-                addNewObjectMenuItem(popup_menu, Interval::TYPENAME));
-        }
+        addSubfolderActions(AddObjectActions, currentObj, NULL, addSubfolder);
 
         if (addSubfolder) {
             QAction *action =
@@ -885,12 +926,11 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (movetargets)
         movetargets->setEnabled(delMenuItem);
 
-    QList<QAction*>::iterator iter;
-    for (iter=AddObjectActions.begin(); iter!=AddObjectActions.end(); iter++)
-        (*iter)->setEnabled(newMenuItem);
+
 
 //    if (inDeletedObjects) movID->setText( tr("Undelete...") );
-
+    for (iter=AddObjectActions.begin(); iter!=AddObjectActions.end(); iter++)
+        (*iter)->setEnabled(newMenuItem);
     popup_menu->exec(QCursor::pos());
 }
 

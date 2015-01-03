@@ -246,6 +246,12 @@ void ObjectManipulator::createNewObject()
                     m_project->getFileName(), ruleset->getId()));
     }
 
+    //directly move object to it's subfolder
+    list<FWObject*> newObjs;
+    newObjs.push_back(new_obj);
+    moveItems(lastClickedItem, newObjs);
+    lastClickedItem = NULL;
+
     m_project->undoStack->push(macro);
 }
 
@@ -711,7 +717,6 @@ FWObject* ObjectManipulator::newHost(QUndoCommand* macro)
         parent->remove(o, false);
         new_state->add(o);
     }
-
     return o;
 }
 

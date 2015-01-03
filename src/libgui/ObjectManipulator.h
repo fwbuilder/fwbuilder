@@ -124,6 +124,8 @@ class ObjectManipulator : public QWidget
 
     QMenu *popup_menu;
 
+    ObjectTreeViewItem *lastClickedItem;
+
 /* this is a reverse idex of all objects in all trees. We use it to
  * quickly locate given object in the tree and open it
  */
@@ -488,6 +490,7 @@ public:
     
      void reminderAboutStandardLib();
      
+     void addSubfolderActions(QList<QAction*> &AddObjectActions, libfwbuilder::FWObject *currentObj, ObjectTreeViewItem *item, bool &addSubfolder);
 signals:
      void libraryAccessChanged(bool writable);
 };
