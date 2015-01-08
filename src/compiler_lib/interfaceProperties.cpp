@@ -475,7 +475,7 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
     // Do not modify read-only object
     if (intf->isReadOnly()) return;
 
-    FWObject *f = Host::getParentHost(intf);
+    //FWObject *f = Host::getParentHost(intf);
     //FWObject *f = intf->getParentHost();
 
     // Resources* os_res = Resources::os_res[f->getStr("host_OS")];

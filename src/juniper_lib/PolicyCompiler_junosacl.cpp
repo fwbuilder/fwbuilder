@@ -291,6 +291,7 @@ void PolicyCompiler_junosacl::compile()
     string version = fw->getStr("version");
     bool supports_object_groups = XMLTools::version_compare(version, "12.4")>=0 &&
         fw->getOptionsObject()->getBool("iosacl_use_object_groups") && ! ipv6;
+    Q_UNUSED(supports_object_groups);
 
     string vers = fw->getStr("version");
     string platform = fw->getStr("platform");

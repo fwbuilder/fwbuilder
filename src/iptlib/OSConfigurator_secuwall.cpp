@@ -948,6 +948,8 @@ int OSConfigurator_secuwall::generateSSHKeys()
         cout << " Found existing DSA key: skipping key generation." << endl;
     }
 
+    Q_UNUSED(i);
+
     /* Add RSA pub key of fwadmin to the firewall's known hosts file */
     fwadmin_keyfilename = getenv("HOME");
     fwadmin_keyfilename += fwadmin_ssh_key;

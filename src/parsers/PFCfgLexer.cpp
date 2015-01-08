@@ -550,7 +550,7 @@ tryAgain:;
 void PFCfgLexer::mWhitespace(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = Whitespace;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	switch ( LA(1)) {
@@ -625,13 +625,13 @@ void PFCfgLexer::mWhitespace(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCOMMENT_START(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMENT_START;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('#' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -639,13 +639,13 @@ void PFCfgLexer::mCOMMENT_START(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mNEWLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEWLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	if ((LA(1) == 0xd /* '\r' */ ) && (LA(2) == 0xa /* '\n' */ )) {
@@ -672,78 +672,78 @@ void PFCfgLexer::mNEWLINE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mINT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = INT_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mHEX_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEX_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mNUMBER(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mNEG_INT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEG_INT_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COLON;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mHEX_DIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEX_DIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	switch ( LA(1)) {
@@ -792,13 +792,13 @@ void PFCfgLexer::mHEX_DIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mDIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	matchRange('0','9');
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -806,13 +806,13 @@ void PFCfgLexer::mDIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mNUM_3DIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUM_3DIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	matchRange('0','9');
@@ -840,13 +840,13 @@ void PFCfgLexer::mNUM_3DIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mNUM_HEX_4DIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUM_HEX_4DIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	mHEX_DIGIT(false);
 	{
@@ -882,13 +882,13 @@ void PFCfgLexer::mNUM_HEX_4DIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER_ADDRESS_OR_WORD;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	switch ( LA(1)) {
 	case 0x3a /* ':' */ :
@@ -1638,13 +1638,13 @@ void PFCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mSTRING(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STRING;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\"' /* charlit */ );
 	{ // ( ... )*
@@ -1665,13 +1665,13 @@ void PFCfgLexer::mSTRING(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mPIPE_CHAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PIPE_CHAR;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('|' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1679,13 +1679,13 @@ void PFCfgLexer::mPIPE_CHAR(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mPERCENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PERCENT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('%' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1693,13 +1693,13 @@ void PFCfgLexer::mPERCENT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mAMPERSAND(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = AMPERSAND;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('&' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1707,13 +1707,13 @@ void PFCfgLexer::mAMPERSAND(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mAPOSTROPHE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = APOSTROPHE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\'' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1721,13 +1721,13 @@ void PFCfgLexer::mAPOSTROPHE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mSTAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STAR;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('*' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1735,13 +1735,13 @@ void PFCfgLexer::mSTAR(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mPLUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PLUS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('+' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1749,13 +1749,13 @@ void PFCfgLexer::mPLUS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCOMMA(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMA;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(',' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1763,13 +1763,13 @@ void PFCfgLexer::mCOMMA(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mMINUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = MINUS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('-' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1777,13 +1777,13 @@ void PFCfgLexer::mMINUS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mDOT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DOT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('.' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1791,13 +1791,13 @@ void PFCfgLexer::mDOT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mSLASH(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SLASH;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('/' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1805,13 +1805,13 @@ void PFCfgLexer::mSLASH(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mSEMICOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SEMICOLON;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(';' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1819,13 +1819,13 @@ void PFCfgLexer::mSEMICOLON(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mEQUAL(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = EQUAL;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('=' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1833,13 +1833,13 @@ void PFCfgLexer::mEQUAL(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mQUESTION(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = QUESTION;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('?' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1847,13 +1847,13 @@ void PFCfgLexer::mQUESTION(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCOMMERCIAL_AT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMERCIAL_AT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('@' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1861,13 +1861,13 @@ void PFCfgLexer::mCOMMERCIAL_AT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mOPENING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_PAREN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('(' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1875,13 +1875,13 @@ void PFCfgLexer::mOPENING_PAREN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_PAREN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(')' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1889,13 +1889,13 @@ void PFCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_SQUARE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('[' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1903,13 +1903,13 @@ void PFCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_SQUARE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(']' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1917,13 +1917,13 @@ void PFCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mOPENING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_BRACE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('{' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1931,13 +1931,13 @@ void PFCfgLexer::mOPENING_BRACE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_BRACE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('}' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1945,13 +1945,13 @@ void PFCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mCARET(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CARET;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('^' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1959,13 +1959,13 @@ void PFCfgLexer::mCARET(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mUNDERLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = UNDERLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('_' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1973,13 +1973,13 @@ void PFCfgLexer::mUNDERLINE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mTILDE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = TILDE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('~' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1987,13 +1987,13 @@ void PFCfgLexer::mTILDE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mEXLAMATION(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = EXLAMATION;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('!' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -2001,13 +2001,13 @@ void PFCfgLexer::mEXLAMATION(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mLESS_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LESS_THAN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('<' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -2015,13 +2015,13 @@ void PFCfgLexer::mLESS_THAN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mGREATER_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = GREATER_THAN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('>' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -2029,13 +2029,13 @@ void PFCfgLexer::mGREATER_THAN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PFCfgLexer::mDOUBLE_QUOTE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DOUBLE_QUOTE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\"' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -2043,7 +2043,7 @@ void PFCfgLexer::mDOUBLE_QUOTE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 

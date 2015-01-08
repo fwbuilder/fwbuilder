@@ -191,6 +191,7 @@ void ObjectManipulator::pasteObj()
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     int idx = 0;
     FWObject *last_object = NULL;
+    Q_UNUSED(last_object);
     map<int,int> map_ids;
     if (fwbdebug)
     {

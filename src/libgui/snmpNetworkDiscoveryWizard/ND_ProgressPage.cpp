@@ -164,6 +164,7 @@ void ND_ProgressPage::initializePage()
     include_networks.clear();
 
     bool limit_scan = false;
+    Q_UNUSED(limit_scan);
     if ( ! snmpInclAddr.isEmpty() && ! snmpInclMask.isEmpty())
     {
         try

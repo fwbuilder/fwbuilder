@@ -95,12 +95,12 @@ void ProjectPanel::initMain(FWWindow *main)
     ready = false;
 
     int total_width = DEFAULT_H_SPLITTER_POSITION;
-    int total_height = DEFAULT_V_SPLITTER_POSITION;
+    //int total_height = DEFAULT_V_SPLITTER_POSITION; //UNUSED
 
     if (mainW)
     {
         total_width = mainW->width();
-        total_height = mainW->height();
+        //total_height = mainW->height(); //UNUSED
     }
 
     setMainSplitterPosition(DEFAULT_H_SPLITTER_POSITION,

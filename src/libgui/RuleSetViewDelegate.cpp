@@ -480,7 +480,7 @@ QSize RuleSetViewDelegate::sizeHint(const QStyleOptionViewItem & option,
         // make sure cell height is equal to max height of all cells
         // in the same row. See #2665
         QSize tallest_cell = QSize(0, 0);
-        for (unsigned int c=0; c<=index.column(); ++c)
+        for (int c=0; c<=index.column(); ++c)
         {
             QSize cell_size = node->sizes[c];
             if (cell_size.isValid())
@@ -533,6 +533,7 @@ QSize RuleSetViewDelegate::calculateCellSizeForRule(
     Q_UNUSED(node);
 
     QSize iconSize = getIconSize();
+    Q_UNUSED(iconSize);
     int itemHeight = getItemHeight();
 
     QSize result = QSize(50,itemHeight);

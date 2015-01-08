@@ -255,11 +255,12 @@ string PolicyCompiler_junosacl::PrintRule::_printRule(PolicyRule *rule)
     serviceStr = "";
 
     serviceStr = _printDstService( compiler->getFirstSrv(rule) );
-    if (serviceStr.size())
+    if (serviceStr.size()) {
         if (isdigit(serviceStr.at(0)))
             ruleout << "                    destination-port " << serviceStr << ";\n";
         else
             ruleout << "                    " << serviceStr << ";\n";
+    }
 
     } else {
         ruleout << "                    " << protocol_command << _printProtocol(Service::cast(FWReference::cast(srvobj)->getPointer())) << ";\n";

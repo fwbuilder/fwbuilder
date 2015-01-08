@@ -497,6 +497,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     PolicyCompiler_cisco *cisco_comp =
         dynamic_cast<PolicyCompiler_cisco*>(compiler);
+    Q_UNUSED(cisco_comp);
 
     RuleElementSrv *srv = rule->getSrv();
     Address *a = compiler->getFirstDst(rule);

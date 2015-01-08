@@ -498,6 +498,7 @@ void ObjectManipulator::unlockObject()
 void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 {
     bool firstAction = true ;
+    Q_UNUSED(firstAction);
 
     if (fwbdebug)
         qDebug() << "ObjectManipulator::deleteObject"
@@ -506,6 +507,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 
     FWObject *object_library = obj->getLibrary();
     FWObject *parent = obj->getParent();
+    Q_UNUSED(parent);
     FWObject *deleted_objects_lib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID );
 

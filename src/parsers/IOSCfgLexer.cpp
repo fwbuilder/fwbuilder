@@ -384,7 +384,7 @@ tryAgain:;
 void IOSCfgLexer::mLINE_COMMENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LINE_COMMENT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match("!");
 	{ // ( ... )*
@@ -406,13 +406,13 @@ void IOSCfgLexer::mLINE_COMMENT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mWhitespace(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = Whitespace;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	switch ( LA(1)) {
@@ -487,13 +487,13 @@ void IOSCfgLexer::mWhitespace(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mNEWLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEWLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	if ((LA(1) == 0xd /* '\r' */ ) && (LA(2) == 0xa /* '\n' */ )) {
@@ -520,52 +520,52 @@ void IOSCfgLexer::mNEWLINE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mINT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = INT_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mHEX_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEX_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mNEG_INT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEG_INT_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mDIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	matchRange('0','9');
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -573,13 +573,13 @@ void IOSCfgLexer::mDIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mHEXDIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEXDIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	switch ( LA(1)) {
 	case 0x30 /* '0' */ :
@@ -616,13 +616,13 @@ void IOSCfgLexer::mHEXDIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mNUMBER(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	bool synPredMatched104 = false;
@@ -886,13 +886,13 @@ void IOSCfgLexer::mNUMBER(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mDOT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DOT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('.' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -900,13 +900,13 @@ void IOSCfgLexer::mDOT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mWORD(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = WORD;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	switch ( LA(1)) {
@@ -1145,13 +1145,13 @@ void IOSCfgLexer::mWORD(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mSTRING(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STRING;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\"' /* charlit */ );
 	{ // ( ... )*
@@ -1172,13 +1172,13 @@ void IOSCfgLexer::mSTRING(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mPIPE_CHAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PIPE_CHAR;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('|' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1186,13 +1186,13 @@ void IOSCfgLexer::mPIPE_CHAR(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mNUMBER_SIGN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER_SIGN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('#' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1200,13 +1200,13 @@ void IOSCfgLexer::mNUMBER_SIGN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mPERCENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PERCENT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('%' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1214,13 +1214,13 @@ void IOSCfgLexer::mPERCENT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mAMPERSAND(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = AMPERSAND;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('&' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1228,13 +1228,13 @@ void IOSCfgLexer::mAMPERSAND(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mAPOSTROPHE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = APOSTROPHE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\'' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1242,13 +1242,13 @@ void IOSCfgLexer::mAPOSTROPHE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mOPENING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_PAREN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('(' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1256,13 +1256,13 @@ void IOSCfgLexer::mOPENING_PAREN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_PAREN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(')' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1270,13 +1270,13 @@ void IOSCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mSTAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STAR;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('*' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1284,13 +1284,13 @@ void IOSCfgLexer::mSTAR(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mPLUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PLUS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('+' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1298,13 +1298,13 @@ void IOSCfgLexer::mPLUS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCOMMA(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMA;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(',' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1312,13 +1312,13 @@ void IOSCfgLexer::mCOMMA(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mMINUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = MINUS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('-' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1326,13 +1326,13 @@ void IOSCfgLexer::mMINUS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mSLASH(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SLASH;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('/' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1340,13 +1340,13 @@ void IOSCfgLexer::mSLASH(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COLON;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(':' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1354,13 +1354,13 @@ void IOSCfgLexer::mCOLON(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mSEMICOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SEMICOLON;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(';' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1368,13 +1368,13 @@ void IOSCfgLexer::mSEMICOLON(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mLESS_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LESS_THAN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('<' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1382,13 +1382,13 @@ void IOSCfgLexer::mLESS_THAN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mEQUALS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = EQUALS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('=' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1396,13 +1396,13 @@ void IOSCfgLexer::mEQUALS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mGREATER_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = GREATER_THAN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('>' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1410,13 +1410,13 @@ void IOSCfgLexer::mGREATER_THAN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mQUESTION(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = QUESTION;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('?' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1424,13 +1424,13 @@ void IOSCfgLexer::mQUESTION(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCOMMERCIAL_AT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMERCIAL_AT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('@' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1438,13 +1438,13 @@ void IOSCfgLexer::mCOMMERCIAL_AT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_SQUARE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('[' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1452,13 +1452,13 @@ void IOSCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_SQUARE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(']' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1466,13 +1466,13 @@ void IOSCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCARET(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CARET;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('^' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1480,13 +1480,13 @@ void IOSCfgLexer::mCARET(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mUNDERLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = UNDERLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('_' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1494,13 +1494,13 @@ void IOSCfgLexer::mUNDERLINE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mOPENING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_BRACE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('{' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1508,13 +1508,13 @@ void IOSCfgLexer::mOPENING_BRACE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_BRACE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('}' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1522,13 +1522,13 @@ void IOSCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void IOSCfgLexer::mTILDE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = TILDE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('~' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1536,7 +1536,7 @@ void IOSCfgLexer::mTILDE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 

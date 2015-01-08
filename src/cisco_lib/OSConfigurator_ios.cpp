@@ -167,7 +167,7 @@ string OSConfigurator_ios::_printLogging()
     Helper helper(this);
 
     ostringstream  str;
-    bool logging_on=false;
+    //bool logging_on=false; //UNUSED
 
     bool iosacl_generate_logging_commands = fw->getOptionsObject()->getBool(
         "iosacl_generate_logging_commands");
@@ -201,21 +201,21 @@ string OSConfigurator_ios::_printLogging()
             if ( ! trap_level.empty() )
                 str << "logging trap " << trap_level << endl;
 
-            logging_on=true;
+            //logging_on=true;
         }
 
         if ( ! buffered ) str << "no logging buffered" << endl;
         else
         {
             str << "logging buffered " << buffered_level << endl;
-            logging_on=true;
+            //logging_on=true;
         }
 
         if ( ! console )  str << "no logging console" << endl;
         else
         {
             str << "logging console " << console_level << endl;
-            logging_on=true;
+            //logging_on=true;
         }
 
         str << endl;

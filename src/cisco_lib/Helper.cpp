@@ -414,6 +414,7 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
         if (a==NULL)
         {
             Rule *rule = Rule::cast(re->getParent());
+            Q_UNUSED(rule);
             compiler->abort(
                 re->getParent(), 
                 string("findInterfaceByNetzoneOrAll failed to retrieve first "

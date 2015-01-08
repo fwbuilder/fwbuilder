@@ -649,6 +649,7 @@ void FindObjectWidget::_replaceCurrent()
         QPushButton *btn_continue = 
             msg_box.addButton(
                 QObject::tr("Continue"), QMessageBox::AcceptRole);
+        Q_UNUSED(btn_continue);
         QPushButton *btn_stop = 
             msg_box.addButton(
                 QObject::tr("Stop"), QMessageBox::RejectRole);

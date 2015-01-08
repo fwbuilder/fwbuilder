@@ -366,6 +366,7 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
         int left_hdr_w = 0;
 
         int top_hdr_h = 0;
+        Q_UNUSED(top_hdr_h);
         if (top_margin && tbl->header() != NULL)
             top_hdr_h = tbl->header()->height();
 
@@ -478,6 +479,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
             left_hdr_w = tbl->verticalHeader()->width();
 
         int top_hdr_h = 0;
+        Q_UNUSED(top_hdr_h);
         if (top_margin && tbl->horizontalHeader() != NULL)
             top_hdr_h = tbl->horizontalHeader()->height();
 
