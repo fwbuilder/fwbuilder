@@ -89,7 +89,6 @@ case "$cmd" in
         check_run_time_address_table_files
         {{if using_ipset}}
         check_module_ipset
-        load_run_time_address_table_files
         {{endif}}
         load_modules "{{$load_modules_with_nat}} {{$load_modules_with_ipv6}}"
         configure_interfaces
@@ -99,6 +98,9 @@ case "$cmd" in
         {{if prolog_after_flush}} prolog_commands {{endif}}
         script_body
         ip_forward
+        {{if using_ipset}}
+        load_run_time_address_table_files
+        {{endif}}
         epilog_commands
         RETVAL=$?
         ;;

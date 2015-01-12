@@ -56,6 +56,9 @@ reload_address_table() {
     $IPSET -N tmp_fwb_set:ip  iphash
     $IPSET -N tmp_fwb_set:net nethash
 
+    DATAFILE_SIZE=`wc -l $data_file|cut -d" " -f 1`
+    echo "Processing $DATAFILE_SIZE items in file: $data_file"
+
     grep -Ev '^#|^;|^\s*$' $data_file | while read L ; do
         set $L
         addr=$1
