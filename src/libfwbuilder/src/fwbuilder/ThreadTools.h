@@ -31,7 +31,7 @@
 
 #include <time.h> //for time_t definition
 #include <pthread.h>
-
+#include <unistd.h>
 #include <string>
 #include <queue>
 
