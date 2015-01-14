@@ -809,11 +809,14 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
     ObjectTreeViewItem *sub = new ObjectTreeViewItem(item);
 
 
-    FWObject* newFolder = obj->getRoot()->create("ObjectGroup");
+    FWObject* newFolder = obj->getRoot()->create(ObjectGroup::TYPENAME);
     newFolder->setParent(obj);
+    newFolder->setName(folder.toUtf8().constData()
+                       );
     sub->setFWObject(newFolder);
     allItems[newFolder] = sub;
     obj->setStr("folder", folder.toUtf8().constData());
+    newFolder->setStr("folder", getFolderNameString(newFolder));
 
     sub->setUserFolderParent(obj);
     sub->setUserFolderName(folder);
@@ -822,6 +825,21 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
     refreshSubtree(item, sub);
 }
 
+
+std::string ObjectManipulator::getFolderNameString(libfwbuilder::FWObject *obj) {
+    std::string result = "";
+    FWObject *parent = obj->getParent();
+
+
+    while(parent != NULL) {
+        result = parent->getName() + "/" + result;
+        parent = parent->getParent();
+    }
+
+    result = result  + obj->getName();
+
+    return result;
+}
 
 void ObjectManipulator::removeUserFolderFromTree(FWObject *obj,
                                                  const QString &folder)
