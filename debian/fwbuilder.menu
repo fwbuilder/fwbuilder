@@ -1,0 +1,2 @@
+?package(fwbuilder):needs="X11" section="Applications/System/Security/" \
+  title="Firewall Builder" command="/usr/bin/fwbuilder"

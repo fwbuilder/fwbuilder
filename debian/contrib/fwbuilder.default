@@ -1,0 +1,8 @@
+# Defaults for fwbuilder initscript
+
+# Master system-wide fwbuilder switch. The initscript
+# will not run if it is not set to yes.
+START_FWBUILDER=yes
+
+# Directory to look for the fwbuilder generated script
+FWBSCRIPT_DIR=/etc/fwbuilder

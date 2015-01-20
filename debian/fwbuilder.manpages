@@ -1,0 +1,9 @@
+debian/tmp/usr/share/man/man1/fwbuilder.1
+debian/tmp/usr/share/man/man1/fwbedit.1
+doc/fwb_compile_all.1
+debian/tmp/usr/share/man/man1/fwb_ipf.1
+debian/tmp/usr/share/man/man1/fwb_ipfw.1
+debian/tmp/usr/share/man/man1/fwb_pf.1
+debian/tmp/usr/share/man/man1/fwb_iosacl.1
+debian/tmp/usr/share/man/man1/fwb_pix.1
+debian/tmp/usr/share/man/man1/fwb_ipt.1
