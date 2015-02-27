@@ -719,8 +719,11 @@ string PolicyCompiler_junosacl::PrintRule::_printAddr(Address  *o)
                 }
             } else
             {
-//                str << srcaddr->toString() << "/" << srcmask.getLength();
-                str << srcaddr->toString() << "/" << 32;
+                if (srcaddr->isV4())
+                    str << srcaddr->toString() << "/" << 32;
+                else
+                    str << srcaddr->toString() << "/" << 128;
+//                    str << srcaddr->toString() << "/" << srcmask.getLength();
             }
         }
         return str.str();
