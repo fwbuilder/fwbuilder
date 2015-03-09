@@ -42,6 +42,7 @@
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/UDPService.h"
+#include "fwbuilder/CustomService.h"
 
 #include "compiler_lib/junosInterfaces.h"
 
@@ -281,6 +282,41 @@ bool PolicyCompiler_junosacl::splitTCPServiceWithFlags::processNext()
     return true;
 }
 
+bool PolicyCompiler_junosacl::checkIPv4FragmentService::processNext()
+{
+    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    RuleElementSrv *srv = rule->getSrv();
+
+    if (srv->size() > 1)
+    {
+        CustomService *fragment_srv = NULL;
+        for (list<FWObject*>::iterator i1=srv->begin(); i1!=srv->end(); ++i1)
+        {
+            FWObject *o   = *i1;
+            FWObject *obj = NULL;
+            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+            Service *s=Service::cast(obj);
+            assert(s!=NULL);
+
+            CustomService *custom_srv = CustomService::cast(s);
+            if (custom_srv && (!custom_srv->getCodeForPlatform(compiler->myPlatformName()).substr(0, 15).compare("fragment-offset")) ) {
+                if (!fragment_srv) {
+                    fragment_srv = custom_srv;
+                } else {
+                    if (fragment_srv->getId() != custom_srv->getId())
+                        compiler->abort(
+                                    rule,
+                                    "You have contradicting IPv4 fragmentation services in the same rule.");
+                }
+            }
+        }
+    }
+
+    tmp_queue.push_back(rule);
+
+    return true;
+}
+
 
 void PolicyCompiler_junosacl::compile()
 {
@@ -322,6 +358,8 @@ void PolicyCompiler_junosacl::compile()
         add( new eliminateDuplicatesInSRC("eliminate duplicates in SRC"));
         add( new eliminateDuplicatesInDST("eliminate duplicates in DST"));
         add( new eliminateDuplicatesInSRV("eliminate duplicates in SRV"));
+
+        add( new checkIPv4FragmentService("Avoid contradiction IPv4 fragmentation services"));
 
         //add( new ExpandMultipleAddressesInSrc(
         //         "expand objects with multiple addresses in SRC" ) );
@@ -365,6 +403,8 @@ void PolicyCompiler_junosacl::compile()
     add( new eliminateDuplicatesInSRC( "eliminate duplicates in SRC" ) );
     add( new eliminateDuplicatesInDST( "eliminate duplicates in DST" ) );
     add( new eliminateDuplicatesInSRV( "eliminate duplicates in SRV" ) );
+
+    add( new checkIPv4FragmentService("Avoid contradiction IPv4 fragmentation services"));
 
     // TODO: fix processMultiAddressObjects
 //    add( new processMultiAddressObjectsInSrc(

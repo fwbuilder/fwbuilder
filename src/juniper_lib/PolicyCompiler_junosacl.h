@@ -200,6 +200,12 @@ namespace fwcompiler {
          */
         DECLARE_POLICY_RULE_PROCESSOR(splitTCPServiceWithFlags);
         friend class PolicyCompiler_junosacl::splitTCPServiceWithFlags;
+
+        /**
+          * Avoid contradiction IPv4 fragmentation services
+          */
+        DECLARE_POLICY_RULE_PROCESSOR(checkIPv4FragmentService);
+        friend class PolicyCompiler_junosacl::checkIPv4FragmentService;
         
 	/**
 	 *  this processor prints single policy rule, assuming all
