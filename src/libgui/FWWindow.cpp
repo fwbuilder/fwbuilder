@@ -1521,8 +1521,14 @@ void FWWindow::showReleaseNotes()
     h->setName("Firewall Builder Release Notes");
     if (h->findHelpFile(file_name).isEmpty())
     {
-        // the file does not exist
-        h->hide();
+        // the file does not exist - find the latest release note
+        // use release_notes_5.3.0 to find the release notes directory
+        h->showAllReleaseNotes(h->findHelpFile(QString("release_notes_5.3.0.html")));
+        h->raise();
+        h->show();
+
+        // use the generated list of release notes and select the first one
+        h->showReleaseNotesSelected();
     } else
     {
         h->showAllReleaseNotes(h->findHelpFile(file_name));
