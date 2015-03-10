@@ -489,7 +489,7 @@ p, li { white-space: pre-wrap; }
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Copyright 2013-2014  UNINETT AS</string>
+      <string>Copyright 2013-2015 UNINETT AS</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
