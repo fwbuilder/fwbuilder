@@ -1,3 +1,8 @@
+2015-03-10  Sirius Bakke <sirius.bakke@uninett.no>
+    * Version 5.3.6
+    * Several bugfixes for Junos, including rollback on syntax error,
+      correct netmask for host objects and ssh password prompt lock-up
+
 2014-09-24  Sirius Bakke <sirius.bakke@uninett.no>
     * Version 5.3.0
     * Support for Junos Access lists

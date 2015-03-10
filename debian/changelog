@@ -1,3 +1,9 @@
+fwbuilder (5.3.6-1) unstable; urgency=low
+  * JunOS fix for /128 netmask on IPv6 issue.
+  * JunOS fix ssh password prompt.
+
+ -- Sirius Bakke <sirius.bakke@uninett.no>  Tue, 10 Mar 2015 16:40:00 +0200
+
 fwbuilder (5.3.3-0.rc1) unstable; urgency=low
 
   * 5.3.3-rc1 from upstream.
