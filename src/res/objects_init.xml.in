@@ -430,7 +430,7 @@
           <CustomServiceCommand platform="pix"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id6861X14323" name="Fragment Small Offset IPv4 UDP" comment="" ro="False" protocol="udp" address_family="ipv4">
+        <CustomService id="id3B6CEB55" name="Fragment Small Offset IPv4 UDP" comment="Only implemented for Junos ACL." ro="False" protocol="udp" address_family="ipv4">
           <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
@@ -443,9 +443,9 @@
           <CustomServiceCommand platform="procurve_acl"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id191207X5261" name="Fragment IPv6" comment="" ro="False" protocol="fragment" address_family="ipv6">
+        <CustomService id="id3B6CEB56" name="Fragment IPv6 UDP" comment="Only implemented for Junos ACL." ro="False" protocol="fragment" address_family="ipv6">
           <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
-          <CustomServiceCommand platform="iosacl">cccc</CustomServiceCommand>
+          <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
           <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
           <CustomServiceCommand platform="iptables"></CustomServiceCommand>
@@ -456,7 +456,7 @@
           <CustomServiceCommand platform="procurve_acl"></CustomServiceCommand>
           <CustomServiceCommand platform="unknown"></CustomServiceCommand>
         </CustomService>
-        <CustomService id="id573577X17557" name="Fragment IPv4" comment="" ro="False" protocol="udp" address_family="ipv4">
+        <CustomService id="id3B6CEB57" name="Fragment IPv4 UDP" comment="Only implemented for Junos ACL." ro="False" protocol="udp" address_family="ipv4">
           <CustomServiceCommand platform="fwsm"></CustomServiceCommand>
           <CustomServiceCommand platform="iosacl"></CustomServiceCommand>
           <CustomServiceCommand platform="ipf"></CustomServiceCommand>
