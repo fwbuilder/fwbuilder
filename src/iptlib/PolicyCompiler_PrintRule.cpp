@@ -1632,11 +1632,17 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 */
     if (!ruleopt->getBool("stateless") || rule->getBool("force_state_check") )
     {
+        string state_module_option;
         /*
          * But not, when the line already contains a state matching
          */
-        if (command_line.str().find("-m state --state", 0) == string::npos)
-            command_line << " -m state --state NEW ";
+        if (XMLTools::version_compare(version, "1.4.4")>=0)
+            state_module_option = "-m conntrack --ctstate";
+        else
+            state_module_option = "-m state --state";
+
+        if (command_line.str().find(state_module_option, 0) == string::npos)
+            command_line << " " << state_module_option << " NEW ";
     }
 
     command_line << _printTimeInterval(rule);
