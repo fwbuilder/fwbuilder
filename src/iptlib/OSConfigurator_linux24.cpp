@@ -309,6 +309,7 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
     QStringList output;
     FWOptions* options = fw->getOptionsObject();
 
+    string version = fw->getStr("version");
     // string host_os = fw->getStr("host_OS");
     // string os_family = Resources::os_res[host_os]->
     //     getResourceStr("/FWBuilderResources/Target/family");
