@@ -143,8 +143,8 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
         else
             opt_wait = "";
 
-	res = string((ipt_comp->ipv6) ? "$IP6TABLES -N " : "$IPTABLES -N ") +
-            opt_wait + chain;
+	res = string((ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ") +
+            opt_wait + "-N " + chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
         res += "\n";
 	(*(ipt_comp->minus_n_commands))[chain] = true;
@@ -163,7 +163,9 @@ string PolicyCompiler_ipt::PrintRule::_startRuleLine()
     else
         opt_wait = "";
 
-    if (ipt_comp->my_table != "filter") res += opt_wait + "-t " + ipt_comp->my_table + " ";
+    res += opt_wait;
+
+    if (ipt_comp->my_table != "filter") res += "-t " + ipt_comp->my_table + " ";
 
     res += "-A ";
     return res;
