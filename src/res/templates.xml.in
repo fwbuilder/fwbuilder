@@ -105,7 +105,7 @@
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
-        <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="iptables">-m conntrack --ctstate ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
@@ -114,7 +114,7 @@
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
         <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
-        <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="iptables">-m conntrack --ctstate ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
