@@ -136,8 +136,15 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
-	res = string((ipt_comp->ipv6) ? "$IP6TABLES -N " : "$IPTABLES -N ") +
-            chain;
+        string opt_wait;
+
+        if (XMLTools::version_compare(version, "1.4.20")>=0)
+            opt_wait = "-w ";
+        else
+            opt_wait = "";
+
+	res = string((ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ") +
+            opt_wait + "-N " + chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
         res += "\n";
 	(*(ipt_comp->minus_n_commands))[chain] = true;
@@ -149,6 +156,14 @@ string PolicyCompiler_ipt::PrintRule::_startRuleLine()
 {            
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    string opt_wait;
+
+    if (XMLTools::version_compare(version, "1.4.20")>=0)
+        opt_wait = "-w ";
+    else
+        opt_wait = "";
+
+    res += opt_wait;
 
     if (ipt_comp->my_table != "filter") res += "-t " + ipt_comp->my_table + " ";
 

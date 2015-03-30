@@ -20,15 +20,15 @@ stop_action() {
     reset_all
 
 {{if have_ipv4}}
-    $IPTABLES -P OUTPUT  ACCEPT
-    $IPTABLES -P INPUT   ACCEPT
-    $IPTABLES -P FORWARD ACCEPT
+    $IPTABLES {{$opt_wait}} -P OUTPUT  ACCEPT
+    $IPTABLES {{$opt_wait}} -P INPUT   ACCEPT
+    $IPTABLES {{$opt_wait}} -P FORWARD ACCEPT
 {{endif}}
 
 {{if have_ipv6}}
-    $IP6TABLES -P OUTPUT  ACCEPT
-    $IP6TABLES -P INPUT   ACCEPT
-    $IP6TABLES -P FORWARD ACCEPT
+    $IP6TABLES {{$opt_wait}} -P OUTPUT  ACCEPT
+    $IP6TABLES {{$opt_wait}} -P INPUT   ACCEPT
+    $IP6TABLES {{$opt_wait}} -P FORWARD ACCEPT
 {{endif}}
 }
 

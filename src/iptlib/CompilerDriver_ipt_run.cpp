@@ -678,6 +678,11 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         script_buffer = "";
 
         Configlet block_action(fw, "linux24", "block_action");
+        if (XMLTools::version_compare(fw_version, "1.4.20") >= 0)
+            block_action.setVariable("opt_wait", "-w");
+        else
+            block_action.setVariable("opt_wait", "");
+
         block_action.collapseEmptyStrings(true);
 
         // the name of the option is historical (including the typo)
@@ -701,6 +706,11 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         stop_action.collapseEmptyStrings(true);
         stop_action.setVariable("have_ipv4", have_ipv4);
         stop_action.setVariable("have_ipv6", have_ipv6);
+
+        if (XMLTools::version_compare(fw_version, "1.4.20") >= 0)
+            stop_action.setVariable("opt_wait", "-w");
+        else
+            stop_action.setVariable("opt_wait", "");
 
         script_skeleton.setVariable("stop_action", stop_action.expand());
 

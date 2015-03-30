@@ -309,6 +309,7 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
     QStringList output;
     FWOptions* options = fw->getOptionsObject();
 
+    string version = fw->getStr("version");
     // string host_os = fw->getStr("host_OS");
     // string os_family = Resources::os_res[host_os]->
     //     getResourceStr("/FWBuilderResources/Target/family");
@@ -359,6 +360,11 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
      * default policy
      */
     Configlet reset_iptables(fw, "linux24", "reset_iptables");
+    if (XMLTools::version_compare(version, "1.4.20") >= 0)
+        reset_iptables.setVariable("opt_wait", "-w");
+    else
+        reset_iptables.setVariable("opt_wait", "");
+
     output.push_back(reset_iptables.expand());
 
     Configlet addr_conf(fw, "linux24", "update_addresses");
