@@ -769,6 +769,18 @@ void GroupObjectDialog::deleteObj()
             qDebug("GroupObjectDialog::deleteObj()  (*it)=%d", (*it));
 
         FWObject* selectedObject = m_project->db()->findInIndex(*it);
+
+        // Bugfix: Do not delete an object in locked group with the Delete key
+        set<FWObject*> res_tmp;
+        m_project->db()->getRoot()->findWhereObjectIsUsed(selectedObject, m_project->db()->getRoot(), res_tmp);
+        foreach(FWObject* o, res_tmp) {
+            if (FWObjectReference::cast(o))
+                if (Group::cast(o->getParent()))
+                    if (o->isReadOnly())
+                        return;
+        }
+
+
         int o_id = selectedObject->getId();
 
         for (int it=0; it<listView->topLevelItemCount(); ++it)
