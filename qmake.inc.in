@@ -105,6 +105,7 @@ win32 {
 
     DEFINES += LIBXML_STATIC LIBXSLT_STATIC
     DEFINES += LIBEXSLT_STATIC XMLSEC_STATIC
+    DEFINES += WIN32_LEAN_AND_MEAN
 
     INCLUDEPATH += "../.."
 
@@ -112,7 +113,8 @@ win32 {
 
    LIBS += -L/local/lib -L/local/bin
    # LIBS += -l xslt -l xml2 -l iconv -l pthread -l ws2_32
-   LIBS += -l xslt -l xml2 -l iconv -l pthread -l netsnmp -l ws2_32
+   #LIBS += -l xslt -l xml2 -l iconv -l pthread -l netsnmp -l ws2_32
+   LIBS += -lxslt -lxml2 -liconv -lpthread -lz -lws2_32
 
 # workaround for QT += dbus not working atm
 # Standard QT binary Windows distribution does not include QtDBus library
