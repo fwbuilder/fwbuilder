@@ -72,7 +72,8 @@ QString CompilerDriver_junosacl::assembleFwScript(Cluster *cluster,
     options->setStr("prolog_place", "");
 
     assembleFwScriptInternal(cluster, fw, cluster_member,
-                             oscnf, &script_skeleton, &top_comment, "!", true);
+                             oscnf, &script_skeleton, &top_comment,
+                             QString::fromStdString(comment_symbol), true);
     return script_skeleton.expand();
 }
 

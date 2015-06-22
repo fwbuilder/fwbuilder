@@ -19,6 +19,7 @@ string fs_separator = "/";
 CompilerDriver_junosacl::CompilerDriver_junosacl(FWObjectDatabase *db) :
     CompilerDriver(db)
 {
+    comment_symbol = "#";
 }
 
 // create a copy of itself, including objdb

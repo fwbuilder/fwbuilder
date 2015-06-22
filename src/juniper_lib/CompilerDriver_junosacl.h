@@ -26,6 +26,7 @@ namespace fwcompiler {
 protected:
     std::string system_configuration_script;
     std::string policy_script;
+    std::string comment_symbol;
 
     void printProlog(QTextStream &file, const std::string &prolog_code);
 
