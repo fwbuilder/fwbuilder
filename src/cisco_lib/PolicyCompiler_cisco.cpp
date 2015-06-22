@@ -773,7 +773,7 @@ void PolicyCompiler_cisco::regroup()
         string cmd(buf);
         string::size_type n=cmd.find(' ');
         
-        list<string>::iterator s = ::find(commands.begin(),commands.end(),cmd.substr(0,n+1));
+        list<string>::iterator s = std::find(commands.begin(),commands.end(),cmd.substr(0,n+1));
         if (s!=commands.end()) slot = *s;
 
         script[slot].push_back(buf);
