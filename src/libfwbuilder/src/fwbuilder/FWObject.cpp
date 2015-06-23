@@ -992,6 +992,8 @@ void FWObject::removeAllInstances(FWObject *rm)
 
 void FWObject::removeRef(FWObject *obj)
 {
+    if (!obj) return;
+
     int  obj_id = obj->getId();
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
