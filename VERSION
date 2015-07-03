@@ -19,7 +19,11 @@ GENERATION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION"
 # Git may generate version info for us
 # May be overridden by setting NO_GIT_VER environment variable
 if [ ! -n "${NO_GIT_VER}" ]; then
-    GIT_VERSION=`git describe --tags --dirty --always`
+    GIT_DIRTY_FLAG="--dirty"
+    if [ -n "${NO_GIT_DIRTY}" ]; then
+        GIT_DIRTY_FLAG=""
+    fi
+    GIT_VERSION=`git describe --tags ${GIT_DIRTY_FLAG} --always`
     if [ -n "${GIT_VERSION}" ]; then
         VERSION=${GIT_VERSION#v}
         GENERATION=${VERSION%.*}
