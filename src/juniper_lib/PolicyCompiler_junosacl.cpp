@@ -133,7 +133,7 @@ bool PolicyCompiler_junosacl::ValidateInterfaceUnitName::processNext()
         if (PolicyRule *rule = PolicyRule::cast(*i))
             if (FWObject *obj = FWReference::getObject(*rule->getItf()->begin())) {
                 if (!jInterface->parseVlan(QString::fromStdString(obj->getName()), NULL, NULL))
-                    compiler->abort(rule, QString("Interface name error: ")
+                    compiler->abort(rule, QString("junosacl policy rules must use a 'unit <value>' subinterface, not the main interface. You used: ")
                                     .append(QString::fromStdString(obj->getName()))
                                     .toStdString());
             }
