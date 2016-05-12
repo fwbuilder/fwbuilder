@@ -1796,7 +1796,8 @@ bool NATCompiler_ipt::splitNATBranchRule::processNext()
         RuleSet *branch = rule->getBranch();
         if (branch) 
         {
-            string branch_name = branch->getName();
+            string branch_name  = branch->getName();
+
             if (ipt_comp->branch_ruleset_to_chain_mapping)
             {
                 map<string, list<string> >::const_iterator lit = 
@@ -1828,25 +1829,37 @@ bool NATCompiler_ipt::splitNATBranchRule::processNext()
                 }
             }
 
-            compiler->warning(rule,
-                              "NAT branching rule does not have information"
-                              " about targets used in the branch ruleset"
-                              " to choose proper chain in the nat table."
-                              " Will split the rule and place it in both"
-                              " PREROUTNING and POSTROUTING");
-            NATRule *r = compiler->dbcopy->createNATRule();
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            r->setStr("ipt_chain", "POSTROUTING");
-            r->setStr("ipt_target", branch_name);
-            tmp_queue.push_back(r);
+            {
+                NATRule *r;
+                string prefix, new_chain, tgt_chain;
+                string prepost[] = { "PRE", "POST" };
+                int i;
 
-            r = compiler->dbcopy->createNATRule();
-            compiler->temp_ruleset->add(r);
-            r->duplicate(rule);
-            r->setStr("ipt_chain", "PREROUTING");
-            r->setStr("ipt_target", branch_name);
-            tmp_queue.push_back(r);
+                compiler->warning(rule,
+                                  "NAT branching rule does not have information"
+                                  " about targets used in the branch ruleset"
+                                  " to choose proper chain in the nat table."
+                                  " Will split the rule and place it in both"
+                                  " PREROUTNING and POSTROUTING");
+
+                prefix = (ipt_comp->getRuleSetName() + "_");
+                if (prefix == string("NAT_")) prefix = "";
+
+                for (i = 0; i < 2; i++) {
+                   r = compiler->dbcopy->createNATRule();
+                   compiler->temp_ruleset->add(r);
+                   r->duplicate(rule);
+                   new_chain = prefix + prepost[i] + "ROUTING";
+                   tgt_chain = branch_name + "_" + prepost[i] + "ROUTING";
+
+                   ipt_comp->registerRuleSetChain(new_chain);
+                   ipt_comp->registerRuleSetChain(tgt_chain);
+                   r->setStr("ipt_chain", new_chain);
+                   r->setStr("ipt_target", tgt_chain);
+                   tmp_queue.push_back(r);
+                }
+            }
+
 
             return true;
         }

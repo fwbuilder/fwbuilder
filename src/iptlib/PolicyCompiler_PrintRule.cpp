@@ -136,8 +136,15 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
-	res = string((ipt_comp->ipv6) ? "$IP6TABLES -N " : "$IPTABLES -N ") +
-            chain;
+        string opt_wait;
+
+        if (XMLTools::version_compare(version, "1.4.20")>=0)
+            opt_wait = "-w ";
+        else
+            opt_wait = "";
+
+	res = string((ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ") +
+            opt_wait + "-N " + chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
         res += "\n";
 	(*(ipt_comp->minus_n_commands))[chain] = true;
@@ -149,6 +156,14 @@ string PolicyCompiler_ipt::PrintRule::_startRuleLine()
 {            
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     string res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    string opt_wait;
+
+    if (XMLTools::version_compare(version, "1.4.20")>=0)
+        opt_wait = "-w ";
+    else
+        opt_wait = "";
+
+    res += opt_wait;
 
     if (ipt_comp->my_table != "filter") res += "-t " + ipt_comp->my_table + " ";
 
@@ -1632,11 +1647,17 @@ string PolicyCompiler_ipt::PrintRule::PolicyRuleToString(PolicyRule *rule)
 */
     if (!ruleopt->getBool("stateless") || rule->getBool("force_state_check") )
     {
+        string state_module_option;
         /*
          * But not, when the line already contains a state matching
          */
-        if (command_line.str().find("-m state --state", 0) == string::npos)
-            command_line << " -m state --state NEW ";
+        if (XMLTools::version_compare(version, "1.4.4")>=0)
+            state_module_option = "conntrack --ctstate";
+        else
+            state_module_option = "state --state";
+
+        if (command_line.str().find("-m " + state_module_option, 0) == string::npos)
+            command_line << " -m " << state_module_option << " NEW ";
     }
 
     command_line << _printTimeInterval(rule);
@@ -1708,6 +1729,7 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     ostringstream res;
     bool isIPv6 = ipt_comp->ipv6;
+    string state_module_option;
 
     string s = compiler->getCachedFwOpt()->getStr("linux24_ip_forward");
     bool ipforward= (s.empty() || s=="1" || s=="On" || s=="on");
@@ -1728,6 +1750,13 @@ string PolicyCompiler_ipt::PrintRule::_printOptionalGlobalRules()
     configlet.setVariable("accept_established", 
                           compiler->getCachedFwOpt()->getBool("accept_established") &&
                           ipt_comp->my_table=="filter");
+
+    if (XMLTools::version_compare(version, "1.4.4")>=0)
+        state_module_option = "conntrack --ctstate";
+    else
+        state_module_option = "state --state";
+
+    configlet.setVariable("state_module_option", state_module_option.c_str());
 
     list<FWObject*> ll = compiler->fw->getByTypeDeep(Interface::TYPENAME);
     for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)

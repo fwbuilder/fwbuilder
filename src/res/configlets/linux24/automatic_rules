@@ -50,9 +50,9 @@
 
 {{if accept_established}}
 # accept established sessions
-{{$begin_rule}} INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
-{{$begin_rule}} FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT   -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT  -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 {{endif}}
 
 
@@ -67,16 +67,16 @@
 
 {{if mgmt_access}}
 # backup ssh access
-{{$begin_rule}} INPUT  -p tcp -m tcp  -s {{$ssh_management_address}}  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p tcp -m tcp  -d {{$ssh_management_address}}  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p tcp -m tcp  -s {{$ssh_management_address}}  --dport 22  -m {{$state_module_option}} NEW,ESTABLISHED -j  ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT  -p tcp -m tcp  -d {{$ssh_management_address}}  --sport 22  -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
 {{endif}}
 
 {{if drop_new_tcp_with_no_syn}}
 # drop TCP sessions opened prior firewall restart
-{{$begin_rule}} INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP {{$end_rule}}
-{{$begin_rule}} OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP {{$end_rule}}
+{{$begin_rule}} INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m {{$state_module_option}} NEW -j DROP {{$end_rule}}
+{{$begin_rule}} OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m {{$state_module_option}} NEW -j DROP {{$end_rule}}
 {{if ipforw}}
-{{$begin_rule}} FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m state --state NEW -j DROP {{$end_rule}}
+{{$begin_rule}} FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m {{$state_module_option}} NEW -j DROP {{$end_rule}}
 {{endif}}
 {{endif}}
 
@@ -100,20 +100,20 @@
 
 {{if drop_invalid}}
 # drop packets that do not match any valid state 
-{{$begin_rule}} OUTPUT   -m state --state INVALID  -j DROP {{$end_rule}}
-{{$begin_rule}} INPUT    -m state --state INVALID  -j DROP {{$end_rule}}
+{{$begin_rule}} OUTPUT   -m {{$state_module_option}} INVALID  -j DROP {{$end_rule}}
+{{$begin_rule}} INPUT    -m {{$state_module_option}} INVALID  -j DROP {{$end_rule}}
 {{if ipforw}}
-{{$begin_rule}} FORWARD  -m state --state INVALID  -j DROP {{$end_rule}}
+{{$begin_rule}} FORWARD  -m {{$state_module_option}} INVALID  -j DROP {{$end_rule}}
 {{endif}}
 {{endif}}
 
 {{if drop_invalid_and_log}}
 # drop packets that do not match any valid state and log them
 {{$create_drop_invalid_chain}}
-{{$begin_rule}} OUTPUT   -m state --state INVALID  -j drop_invalid {{$end_rule}}
-{{$begin_rule}} INPUT    -m state --state INVALID  -j drop_invalid {{$end_rule}}
+{{$begin_rule}} OUTPUT   -m {{$state_module_option}} INVALID  -j drop_invalid {{$end_rule}}
+{{$begin_rule}} INPUT    -m {{$state_module_option}} INVALID  -j drop_invalid {{$end_rule}}
 {{if ipforw}}
-{{$begin_rule}} FORWARD  -m state --state INVALID  -j drop_invalid {{$end_rule}}
+{{$begin_rule}} FORWARD  -m {{$state_module_option}} INVALID  -j drop_invalid {{$end_rule}}
 {{endif}}
 
 {{if use_ulog}}

@@ -121,8 +121,15 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 
     if ( ipt_comp->minus_n_commands->count(chain)==0 )
     {
+        string opt_wait;
+
+        if (XMLTools::version_compare(version, "1.4.20")>=0)
+            opt_wait = "-w ";
+        else
+            opt_wait = "";
+
         string ipt_cmd = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
-	res << ipt_cmd << "-t nat -N " << chain << endl;
+	res << ipt_cmd << opt_wait << "-t nat -N " << chain << endl;
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res.str();
@@ -132,7 +139,15 @@ string NATCompiler_ipt::PrintRule::_startRuleLine()
 {            
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
     string res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
-    return res + string("-t nat -A ");
+
+    string opt_wait;
+
+    if (XMLTools::version_compare(version, "1.4.20")>=0)
+        opt_wait = "-w ";
+    else
+        opt_wait = ""; 
+
+    return res + opt_wait + string("-t nat -A ");
 }
 
 string NATCompiler_ipt::PrintRule::_endRuleLine()

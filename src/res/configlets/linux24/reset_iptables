@@ -12,32 +12,38 @@
 ## {{if var}} is conditional operator.
 ##
 reset_iptables_v4() {
-  $IPTABLES -P OUTPUT  DROP
-  $IPTABLES -P INPUT   DROP
-  $IPTABLES -P FORWARD DROP
+  local list
 
-cat /proc/net/ip_tables_names | while read table; do
-  $IPTABLES -t $table -L -n | while read c chain rest; do
+  $IPTABLES {{$opt_wait}} -P OUTPUT  DROP
+  $IPTABLES {{$opt_wait}} -P INPUT   DROP
+  $IPTABLES {{$opt_wait}} -P FORWARD DROP
+
+  while read table; do
+      list=$($IPTABLES {{$opt_wait}} -t $table -L -n)
+      printf "%s" "$list" | while read c chain rest; do
       if test "X$c" = "XChain" ; then
-        $IPTABLES -t $table -F $chain
+        $IPTABLES {{$opt_wait}} -t $table -F $chain
       fi
-  done
-  $IPTABLES -t $table -X
-done
+      done
+      $IPTABLES {{$opt_wait}} -t $table -X
+  done < /proc/net/ip_tables_names
 }
 
 reset_iptables_v6() {
-  $IP6TABLES -P OUTPUT  DROP
-  $IP6TABLES -P INPUT   DROP
-  $IP6TABLES -P FORWARD DROP
+  local list
 
-cat /proc/net/ip6_tables_names | while read table; do
-  $IP6TABLES -t $table -L -n | while read c chain rest; do
+  $IP6TABLES {{$opt_wait}} -P OUTPUT  DROP
+  $IP6TABLES {{$opt_wait}} -P INPUT   DROP
+  $IP6TABLES {{$opt_wait}} -P FORWARD DROP
+
+  while read table; do
+      list=$($IP6TABLES {{$opt_wait}} -t $table -L -n)
+      printf "%s" "$list" | while read c chain rest; do
       if test "X$c" = "XChain" ; then
-        $IP6TABLES -t $table -F $chain
+        $IP6TABLES {{$opt_wait}} -t $table -F $chain
       fi
-  done
-  $IP6TABLES -t $table -X
-done
+      done
+      $IP6TABLES {{$opt_wait}} -t $table -X
+  done < /proc/net/ip6_tables_names
 }
 
