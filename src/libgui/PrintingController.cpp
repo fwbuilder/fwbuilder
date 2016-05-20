@@ -377,10 +377,17 @@ void PrintingController::printLegend(bool newPageForSection)
             row=0;
         }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (fwbdebug)
             qDebug("Legend table: row=%d col=%d %s %s",
                    row, col, type_name.toAscii().constData(),
                    objName.toAscii().constData());
+#else
+        if (fwbdebug)
+            qDebug("Legend table: row=%d col=%d %s %s",
+                   row, col, type_name.toLatin1().constData(),
+                   objName.toLatin1().constData());
+#endif
 
         QString icn = ":/Icons/"+type_name+"/icon";
         QPixmap pm;

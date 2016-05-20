@@ -461,7 +461,11 @@ void newFirewallDialog::getInterfacesViaSNMP()
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
             QString a = getAddrByName(m_dialog->snmpIP->text(), AF_INET);
             QApplication::restoreOverrideCursor();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             addr = InetAddr(a.toAscii().constData());
+#else
+            addr = InetAddr(a.toLatin1().constData());
+#endif
             getInterfacesBusy = false;
         }
         catch (FWException &ex)
@@ -657,9 +661,15 @@ void newFirewallDialog::showPage(const int page)
             tmpldb->setReadOnly( false );
             try
             {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                 tmpldb->load(
                     m_dialog->templateFilePath->text().toAscii().data(),
                     &upgrade_predicate, Constants::getDTDDirectory());
+#else
+                tmpldb->load(
+                    m_dialog->templateFilePath->text().toLatin1().data(),
+                    &upgrade_predicate, Constants::getDTDDirectory());
+#endif
             }
             catch (FWException &ex)
             {
@@ -709,8 +719,13 @@ void newFirewallDialog::showPage(const int page)
   many almost identical templates to provide enough choices for all
   possible platforms, or we should not filter by platform.
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             string platform = readPlatform(m_dialog->platform).toAscii().constData();
             string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
+#else
+            string platform = readPlatform(m_dialog->platform).toLatin1().constData();
+            string host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
+#endif
             if (o->getStr("platform") != platform || o->getStr("host_OS") != host_os)
                 continue;
 */
@@ -1107,8 +1122,13 @@ void newFirewallDialog::finishClicked()
         if ( !this->m_dialog->interfaceEditor2->isValid() )
             return;
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     string platform = readPlatform(m_dialog->platform).toAscii().constData();
     string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
+#else
+    string platform = readPlatform(m_dialog->platform).toLatin1().constData();
+    string host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
+#endif
 
     st->setNewFirewallPlatform(platform.c_str());
 

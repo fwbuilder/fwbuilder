@@ -79,7 +79,8 @@ AC_MSG_CHECKING(checking version of QT this qmake is part of)
 qmake_version=`$QMAKE -v 2>&1 | awk '/Using Qt version/ { print $4;}'`
 case $qmake_version in
     4.*) AC_MSG_RESULT( $qmake_version ) ;;
-      *) AC_MSG_ERROR( "$qmake_version -- v4.x is required") ;;
+    5.*) AC_MSG_RESULT( $qmake_version ) ;;
+      *) AC_MSG_ERROR( "$qmake_version -- v4.x or v5.x is required") ;;
 esac
 
 

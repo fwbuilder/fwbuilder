@@ -7,6 +7,11 @@
   Author:  alek@codeminders.com
            refactoring and bugfixes: vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -52,6 +57,9 @@
 #include "WorkflowIcons.h"
 #include "FirewallCodeViewer.h"
 
+#include "RuleSetDiffDialog.h"
+#include "temporarydir.h"
+
 #include <QtDebug>
 #include <QMdiSubWindow>
 #include <QMdiArea>
@@ -87,12 +95,12 @@ void ProjectPanel::initMain(FWWindow *main)
     ready = false;
 
     int total_width = DEFAULT_H_SPLITTER_POSITION;
-    int total_height = DEFAULT_V_SPLITTER_POSITION;
+    //int total_height = DEFAULT_V_SPLITTER_POSITION; //UNUSED
 
     if (mainW)
     {
         total_width = mainW->width();
-        total_height = mainW->height();
+        //total_height = mainW->height(); //UNUSED
     }
 
     setMainSplitterPosition(DEFAULT_H_SPLITTER_POSITION,
@@ -107,6 +115,7 @@ void ProjectPanel::initMain(FWWindow *main)
     fd->hide();
 
     m_panel->icons->setUpSignals(this);
+
 }
 
 void ProjectPanel::reset()
@@ -132,6 +141,7 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     editingTemplateLib(false),
     ruleSetRedrawPending(false),
     objdb(0),
+    origObjdb(0),
     fd(0),
     autosaveTimer(new QTimer(static_cast<QObject*>(this))), ruleSetTabIndex(0),
     visibleFirewall(0),
@@ -158,6 +168,9 @@ ProjectPanel::ProjectPanel(QWidget *parent):
     connect(m_panel->topSplitter, SIGNAL(splitterMoved(int,int)),
             this, SLOT(splitterPositionChanged(int,int)));
 
+    m_diffLog = QHash<int, int>();
+    m_renamedGroups = QHash<QString, QString>();
+    m_statistics = QHash<QPair<int, DiffType::Type>, int>();
 }
 
 ProjectPanel::~ProjectPanel()
@@ -167,6 +180,7 @@ ProjectPanel::~ProjectPanel()
     undoStack->clear();
     if (rcs) delete rcs;
     if (objdb) delete objdb;
+    if (origObjdb) delete origObjdb;
     delete m_panel;
 
     if (fwbdebug) qDebug() << "ProjectPanel::~ProjectPanel() done";
@@ -212,6 +226,19 @@ void ProjectPanel::loadObjects(FWObjectDatabase*)
 void ProjectPanel::clearObjects()
 {
     m_panel->om->clearObjects();
+}
+
+const QString ProjectPanel::getTemporaryDirPath() const
+{
+    if (mainW->getTemporaryDirPath() != QString()) {
+        if (!rcs->getFileName().isEmpty()) {
+            QFileInfo fi(rcs->getFileName());
+            return QString(mainW->getTemporaryDirPath())
+                    .append("/").append(fi.baseName());
+        }
+        return mainW->getTemporaryDirPath();
+    }
+    return QString();
 }
 
 void ProjectPanel::clearFirewallTabs()
@@ -695,6 +722,16 @@ void ProjectPanel::addRule()
     getCurrentRuleSetView()->insertRule();
 }
 
+/*
+ * This slot is connected to the "diff rule" button in the mini-toolbar
+ * at the top of the rule set view
+ */
+void ProjectPanel::diffThis()
+{
+    RuleSetDiffDialog rdd(this);
+    rdd.exec();
+}
+
 void ProjectPanel::compileThis()
 {
     if (visibleRuleSet==NULL) return ;
@@ -948,7 +985,7 @@ void ProjectPanel::inspect(set<Firewall *> fws)
     else viewer_title = QString("<b>%1</b>").arg(first_fw->getName().c_str());
 
     FirewallCodeViewer *viewer =
-        new FirewallCodeViewer(files, viewer_title, this);
+        new FirewallCodeViewer(files, viewer_title, this, this);
     viewer->show();
 }
 

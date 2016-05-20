@@ -135,6 +135,7 @@ class instDialog : public QDialog, public FakeWizard
     bool onlySelected;
     bool secondPageVisited;
     bool canceledAll;
+    bool isAutoCompiling;
 
     QTextCharFormat normal_format;
     QTextCharFormat error_format;
@@ -163,6 +164,7 @@ class instDialog : public QDialog, public FakeWizard
     //libfwbuilder::Firewall *findFirewallbyTableItem(QTableWidgetItem *item);
     
     void setSuccessState(QTreeWidgetItem *item);
+    void setWarningState(QTreeWidgetItem *item);
     void setFailureState(QTreeWidgetItem *item);
     void setErrorState(QTreeWidgetItem *item);
     void setInProcessState(QTreeWidgetItem *item);
@@ -184,6 +186,7 @@ class instDialog : public QDialog, public FakeWizard
 
     void summary();
     void opSuccess(libfwbuilder::Firewall *fw);
+    void opWarning(libfwbuilder::Firewall *fw);
     void opError(libfwbuilder::Firewall *fw);
     void opCancelled(libfwbuilder::Firewall *fw);
 
@@ -228,12 +231,15 @@ protected:
 
     bool isCiscoFamily();
     bool isProcurve();
+	bool isJuniper();
 
     void interpretLogLine(const QString &buf);
     
 public slots:
 
     void show(ProjectPanel *project, bool install, bool onlySelected, std::set<libfwbuilder::Firewall*> fws);
+    void autoCompile(ProjectPanel *project);
+
     void compilerFinished(int ret_code, QProcess::ExitStatus);
     void installerFinished(int ret_code, QProcess::ExitStatus);
     void installerSuccess();
@@ -270,6 +276,9 @@ public slots:
 
 signals:
     void activateRule(ProjectPanel*, QString, QString, int);
+    void currentFirewallsBarValueChanged(int);
+    void currentFirewallsBarMaximumValueChanged(int);
+    void autoCompileDone();
 };
 
 

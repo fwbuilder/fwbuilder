@@ -682,9 +682,14 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
     if ((proto == "udp" || proto == "tcp-udp") && ports["tcp"].contains(name))
         return ports["tcp"][name];
 
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     struct servent *se = getservbyname(name.toAscii().constData(),
                                        proto.toAscii().constData());
+#else
+    struct servent *se = getservbyname(name.toLatin1().constData(),
+                                       proto.toLatin1().constData());
+#endif
+
     if (se!=NULL)
     {
         int port = ntohs(se->s_port);

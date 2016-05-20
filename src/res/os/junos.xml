@@ -1,0 +1,64 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources>
+    <Target name="junos">
+      <description>Juniper Junos</description>
+      <status>active</status>
+      <compiler>fwb_junosacl</compiler>
+      <family>junos</family>
+      <dialog>junos</dialog>
+      <cluster_dialog>basic</cluster_dialog>
+
+      <options>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <default>
+        </default>
+
+        <activation>
+          <fwdir>/tmp</fwdir>
+          <fwdir_test>/tmp</fwdir_test>
+        </activation>
+      </options>
+
+      <capabilities>
+        <supports_routing>True</supports_routing>
+        <supports_metric>True</supports_metric>
+        <supports_routing_itf>True</supports_routing_itf>
+        <supports_advanced_interface_options>False</supports_advanced_interface_options>
+        <supports_cluster>True</supports_cluster>
+      </capabilities>
+
+      <protocols>
+        <failover>
+          <string>none,None</string>
+        </failover>
+        <state_sync>
+          <string>none,None</string>
+        </state_sync>
+
+        <none>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>True</manage_addresses>
+          <dialog></dialog>
+        </none>
+      </protocols>
+
+      <interfaces>
+        <cluster>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+      </subinterfaces>
+
+
+    </Target>
+
+</FWBuilderResources>

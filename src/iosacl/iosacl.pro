@@ -7,7 +7,7 @@ include(../../qmake.inc)
 #
 # QMAKE_CXXFLAGS_DEBUG += -DPACKAGE="\"$$PACKAGE\""
 # QMAKE_CXXFLAGS_RELEASE += -DPACKAGE="\"$$PACKAGE\""
-
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 SOURCES	 =  iosacl.cpp
 
 HEADERS	 = ../../config.h

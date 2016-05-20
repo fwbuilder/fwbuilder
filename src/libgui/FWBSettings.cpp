@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -75,6 +80,7 @@ const char* startupActionSetpath =
     SETTINGS_PATH_PREFIX "/Environment/StartupAction";
 const char* labelColorPath = SETTINGS_PATH_PREFIX "/ColorLabels/color_";
 const char* labelTextPath = SETTINGS_PATH_PREFIX "/ColorLabels/text_";
+const char* diffColorPath = SETTINGS_PATH_PREFIX "/Diff/color_";
 const char* lastEditedSetpath = SETTINGS_PATH_PREFIX "/Environment/LastEdited";
 const char* autoSave = SETTINGS_PATH_PREFIX "/Environment/autoSave";
 const char* expandTreeSetpath = SETTINGS_PATH_PREFIX "/UI/ExpandTree";
@@ -126,6 +132,7 @@ const char* startsCounter = SETTINGS_PATH_PREFIX "/startsCounter";
 const char* targetStatus = SETTINGS_PATH_PREFIX "/TargetStatus/";
 const char* SSHPath = SETTINGS_PATH_PREFIX "/SSH/SSHPath";
 const char* SCPPath = SETTINGS_PATH_PREFIX "/SSH/SCPPath";
+const char* DiffPath = SETTINGS_PATH_PREFIX "/Diff/DiffPath";
 
 const char* appGUID = "/fwbuilder_gui/ApplicationGUID";
 const char* appGUID_4_0 = "/4.0/ApplicationGUID";
@@ -136,6 +143,8 @@ const char* SSHTimeout = "Sessions/fwb_session_with_keepalive/PingIntervalSecs";
 #else
 const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 #endif
+
+const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodifiedRules";
 
 
 /**
@@ -338,6 +347,15 @@ void FWBSettings::init(bool force_first_time_run)
     if (getLabelColor(GRAY  ).isEmpty())
     { setLabelColor(GRAY  ,"#C0C0C0"); setLabelText(GRAY  ,"Gray"); }
 
+    if (getDiffColor(ADD_COLOR).isEmpty())
+    { setDiffColor(ADD_COLOR,"#8BC065"); }
+    if (getDiffColor(EDIT_COLOR).isEmpty())
+    { setDiffColor(EDIT_COLOR,"#7694C0"); }
+    if (getDiffColor(MOVE_COLOR).isEmpty())
+    { setDiffColor(MOVE_COLOR,"#C0C0C0"); }
+    if (getDiffColor(REMOVE_COLOR).isEmpty())
+    { setDiffColor(REMOVE_COLOR,"#C86E6E"); }
+
     ok = contains(showIconsInRules);
     if (!ok) setShowIconsInRules(true);
 
@@ -408,6 +426,9 @@ void FWBSettings::init(bool force_first_time_run)
 
     if (!hasKey("Objects/PolicyRule/defaultDirection"))
         setInt("Objects/PolicyRule/defaultDirection", 0);
+
+    if (!hasKey("Objects/PolicyRule/defaultInterface"))
+        setInt("Objects/PolicyRule/defaultInterface", 0);
 
     if (!hasKey("Objects/Interface/autoconfigureInterfaces"))
         setBool("Objects/Interface/autoconfigureInterfaces", true);
@@ -692,8 +713,13 @@ void FWBSettings::restoreGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-    qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
-               name.toAscii().constData(), w->isVisible(), x,y);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
+                   name.toAscii().constData(), w->isVisible(), x,y);
+#else
+        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
+                   name.toLatin1().constData(), w->isVisible(), x,y);
+#endif
     }
 
     w->resize( QSize(width,height) );
@@ -728,8 +754,13 @@ void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
 
     if (fwbdebug)
     {
-    qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
-               name.toAscii().constData(), w->isVisible(), x,y);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
+                   name.toAscii().constData(), w->isVisible(), x,y);
+#else
+        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
+                   name.toLatin1().constData(), w->isVisible(), x,y);
+#endif
     }
 
     w->resize( QSize(width,height) );
@@ -756,8 +787,13 @@ void FWBSettings::saveGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-    qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
-               name.toAscii().constData(), w->isVisible(), val.toAscii().constData());
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
+                   name.toAscii().constData(), w->isVisible(), val.toAscii().constData());
+#else
+        qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
+                   name.toLatin1().constData(), w->isVisible(), val.toLatin1().constData());
+#endif
     }
 
     setValue(QString(WindowGeometrySetpath)+name, val);
@@ -776,6 +812,18 @@ QString FWBSettings::getLabelColorStr(enum LabelColors c)
     case PURPLE: return "purple";
     case GRAY:   return "gray";
     default:     return "default";
+    }
+}
+
+QString FWBSettings::getDiffColorStr(enum LabelColors c)
+{
+    switch (c)
+    {
+    case ADD_COLOR:     return "add";
+    case EDIT_COLOR:    return "edit";
+    case MOVE_COLOR:    return "move";
+    case REMOVE_COLOR:  return "remove";
+    default:            return "default";
     }
 }
 
@@ -799,6 +847,16 @@ void FWBSettings::setLabelText(enum LabelColors c, const QString &s)
     setValue(QString(labelTextPath) + getLabelColorStr(c),s);
 }
 
+QString FWBSettings::getDiffColor(FWBSettings::LabelColors c)
+{
+    return value(QString(diffColorPath) + getDiffColorStr(c)).toString();
+}
+
+void FWBSettings::setDiffColor(FWBSettings::LabelColors c, const QString &s)
+{
+    setValue(QString(diffColorPath) + getDiffColorStr(c), s);
+}
+
 QString FWBSettings::getSSHPath()
 {
     return value(SSHPath).toString();
@@ -817,6 +875,16 @@ QString FWBSettings::getSCPPath()
 void FWBSettings::setSCPPath(const QString &path)
 {
     setValue(SCPPath,path);
+}
+
+QString FWBSettings::getDiffPath()
+{
+    return value(DiffPath).toString();
+}
+
+void FWBSettings::setDiffPath(const QString &path)
+{
+    setValue(DiffPath,path);
 }
 
 // Putty uses different parameter name for the server alive interval
@@ -1019,15 +1087,26 @@ void FWBSettings::setTimeOfLastUpdateAvailableWarning(uint v)
 
 uint FWBSettings::getTimeOfLastAnnouncement(const QString &announcement)
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
                                             QCryptographicHash::Md5).toHex();
+#else
+    QByteArray h = QCryptographicHash::hash(announcement.toLatin1().constData(),
+                                            QCryptographicHash::Md5).toHex();
+#endif
     return value(QString(announcementLastTime).arg(h.constData())).toUInt();
 }
 
 void FWBSettings::setTimeOfLastAnnouncement(const QString &announcement, uint v)
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
                                             QCryptographicHash::Md5).toHex();
+#else
+    QByteArray h = QCryptographicHash::hash(announcement.toLatin1().constData(),
+                                            QCryptographicHash::Md5).toHex();
+#endif
+
     setValue(QString(announcementLastTime).arg(h.constData()), v);
 }
 
@@ -1236,4 +1315,14 @@ bool FWBSettings::customTemplatesEnabled()
 void FWBSettings::setCustomTemplatesEnabled(bool f)
 {
     setValue(customTemplatesEn, f);
+}
+
+bool FWBSettings::getDisplayUnmodifiedRules()
+{
+    return value(displayUnmodifiedRules).toBool();
+}
+
+void FWBSettings::setDisplayUnmodifiedRules(bool f)
+{
+    setValue(displayUnmodifiedRules, f);
 }

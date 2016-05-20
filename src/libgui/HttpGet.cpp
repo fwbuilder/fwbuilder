@@ -23,6 +23,11 @@
 
 */
 
+#include "HttpGet.h"
+
+#include <qglobal.h>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+
 #include "config.h"
 #include "global.h"
 
@@ -31,7 +36,6 @@
 #include <QHttpResponseHeader>
 #include <QLocale>
 
-#include "HttpGet.h"
 #include "FWBSettings.h"
 
 using namespace std;
@@ -95,7 +99,6 @@ bool HttpGet::get(const QUrl &_url)
         if (proxy_port.isEmpty()) proxy_port = "80";
         http.setProxy(proxy_host, proxy_port.toInt());
     }
-
     http.setHost(url.host(), url.port(80));
     QHttpRequestHeader hdr(QLatin1String("GET"), url.toString());
     hdr.setValue("Host", url.host());
@@ -115,7 +118,6 @@ bool HttpGet::get(const QUrl &_url)
 
     QString agent = QString("fwbuilder/%1 (%2; %3; b:999999; s:%5; u)")
         .arg(VERSION).arg(os).arg(locale).arg(sig);
-
     hdr.setValue("User-Agent", agent);
     request_id = http.request(hdr, NULL, &strm);
     return true;
@@ -170,3 +172,9 @@ void HttpGet::abort()
 {
     http.abort();
 }
+
+#else // QT_VERSION 5.0.0+
+
+HttpGet::HttpGet(QObject *parent) : QObject(parent) {}
+
+#endif // QT_VERSION < QT_VERSION_CHECK(5, 0, 0)

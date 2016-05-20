@@ -41,7 +41,11 @@
 #endif
 
 #include <QString>
-#include <QApplication>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#   include <QApplication>
+#else
+#   include <QtWidgets/QApplication>
+#endif
 #include <QTimer>
 #include <QPixmapCache>
 #include <QTextCodec>
@@ -118,6 +122,17 @@ int main( int argc, char *argv[] )
 
     ssh_wrapper(argc, argv);
 
+    //QApplication::setDesktopSettingsAware(desktopaware);
+ 
+    Q_INIT_RESOURCE(MainRes);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QApplication::setGraphicsSystem("native");
+#endif
+    app = new FWBApplication( argc, argv );
+    app->setOrganizationName(QLatin1String("NetCitadel"));
+    app->setApplicationName(QLatin1String("Firewall Builder"));
+
     // can not use "-p" for command line printing because
     // Mac OS X supplies switch "-psnXXXXX" when program is
     // started via Finder.
@@ -161,14 +176,6 @@ int main( int argc, char *argv[] )
 
     if ( (argc-1)==optind)
         filename = strdup( argv[optind++] );
-
-    //QApplication::setDesktopSettingsAware(desktopaware);
- 
-    Q_INIT_RESOURCE(MainRes);
-
-    app = new FWBApplication( argc, argv );
-    app->setOrganizationName(QLatin1String("NetCitadel"));
-    app->setApplicationName(QLatin1String("Firewall Builder"));
 
     if (fwbdebug) qDebug("Initializing ...");
 
@@ -280,6 +287,9 @@ int main( int argc, char *argv[] )
     res.clear();
 
     XMLTools::close();
+
+    // We need to call FWWindow::~FWWindow() to remove temporary directory
+    delete mw;
 }
 
 

@@ -1,7 +1,9 @@
 #-*- mode: makefile; tab-width: 4; -*-
 #
 include(../../qmake.inc)
+QT -= gui
 #
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 SOURCES	 =  pf.cpp
 
 HEADERS	 = ../../config.h

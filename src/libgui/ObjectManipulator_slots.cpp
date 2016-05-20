@@ -191,6 +191,7 @@ void ObjectManipulator::pasteObj()
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     int idx = 0;
     FWObject *last_object = NULL;
+    Q_UNUSED(last_object);
     map<int,int> map_ids;
     if (fwbdebug)
     {
@@ -233,10 +234,18 @@ void ObjectManipulator::pasteObj()
         // Check if we have already copied the same object before
         QString buff;
         buff.sprintf(".copy_of_%p", co->getRoot());
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         string dedup_attribute = buff.toAscii().constData();
+#else
+        string dedup_attribute = buff.toLatin1().constData();
+#endif
 
         buff.sprintf("%d", co->getId());
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         QByteArray bytes = buff.toAscii();
+#else
+        QByteArray bytes = buff.toLatin1();
+#endif
         FWObject *n_obj =
             target_object->getRoot()->findObjectByAttribute(dedup_attribute,
                                                             bytes.constData());

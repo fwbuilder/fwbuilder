@@ -16,7 +16,9 @@ SOURCES	 =  CompilerDriver.cpp \
 			linux24Interfaces.cpp \
 			openbsdInterfaces.cpp \
 			freebsdInterfaces.cpp \
+			nxosInterfaces.cpp \
 			iosInterfaces.cpp \
+			junosInterfaces.cpp \
 			procurveInterfaces.cpp \
 			pixInterfaces.cpp \
 			interfacePropertiesObjectFactory.cpp \
@@ -29,7 +31,9 @@ HEADERS	 = ../../config.h \
 			linux24Interfaces.h \
 			openbsdInterfaces.h \
 			freebsdInterfaces.h \
+			nxosInterfaces.h \
 			iosInterfaces.h \
+			junosInterfaces.h \
 			procurveInterfaces.h \
 			pixInterfaces.h \
 			interfacePropertiesObjectFactory.h \

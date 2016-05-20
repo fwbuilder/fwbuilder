@@ -104,6 +104,7 @@ void IC_PlatformWarningPage::initializePage()
 
 
         bool iptables_c = false;
+        Q_UNUSED(iptables_c);
         platformOk = false;
 
         PreImport pi(buf);

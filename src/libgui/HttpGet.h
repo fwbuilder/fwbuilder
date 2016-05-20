@@ -26,12 +26,16 @@
 #ifndef HTTPGET_H
 #define HTTPGET_H
 
+#include <QString>
+#include <QUrl>
+#include <QObject>
+
+#include <qglobal.h>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+
 #include <QBuffer>
 #include <QHttp>
-#include <QString>
 #include <QByteArray>
-#include <QUrl>
-
 
 class HttpGet : public QObject
 {
@@ -62,5 +66,29 @@ private slots:
     void httpDone(int id, bool error);
     void fileDone();
 };
+
+#else // QT_VERSION = 5.0.0+
+
+class HttpGet : public QObject
+{
+    Q_OBJECT;
+
+public:
+    HttpGet(QObject *parent = 0);
+    bool get(const QUrl &url) { return false; }
+    QString getLastError() { return QString("HttpGet is disabled when compiled with Qt 5"); }
+    bool getStatus() { return false; }
+    QString toString() { return QString(); }
+    void abort() {}
+
+signals:
+    void done(const QString &res);
+
+private slots:
+    void httpDone(int id, bool error) {}
+    void fileDone() {}
+};
+
+#endif // QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 
 #endif

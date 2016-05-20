@@ -31,7 +31,13 @@
 #include <string>
 #include <list>
 #include <functional>
-#include <QMenu>
+
+#include <qglobal.h>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#   include <QMenu>
+#else
+#   include <QtWidgets/QMenu>
+#endif
 
 class QObject;
 class QWidget;

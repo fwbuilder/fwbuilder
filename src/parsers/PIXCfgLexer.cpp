@@ -495,7 +495,7 @@ tryAgain:;
 void PIXCfgLexer::mLINE_COMMENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LINE_COMMENT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match("!");
 	{ // ( ... )*
@@ -518,13 +518,13 @@ void PIXCfgLexer::mLINE_COMMENT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEWLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	if ((LA(1) == 0xd /* '\r' */ ) && (LA(2) == 0xa /* '\n' */ )) {
@@ -551,13 +551,13 @@ void PIXCfgLexer::mNEWLINE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCOLON_COMMENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COLON_COMMENT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	mCOLON(false);
 	{ // ( ... )*
@@ -580,13 +580,13 @@ void PIXCfgLexer::mCOLON_COMMENT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COLON;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(':' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -594,13 +594,13 @@ void PIXCfgLexer::mCOLON(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mWhitespace(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = Whitespace;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	switch ( LA(1)) {
@@ -675,65 +675,65 @@ void PIXCfgLexer::mWhitespace(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mINT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = INT_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mHEX_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEX_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mNUMBER(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mNEG_INT_CONST(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NEG_INT_CONST;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
 	   _token = makeToken(_ttype);
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mDIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	matchRange('0','9');
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -741,13 +741,13 @@ void PIXCfgLexer::mDIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mHEXDIGIT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = HEXDIGIT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	matchRange('a','f');
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -755,13 +755,13 @@ void PIXCfgLexer::mHEXDIGIT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER_ADDRESS_OR_WORD;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	{
 	bool synPredMatched338 = false;
@@ -1436,13 +1436,13 @@ void PIXCfgLexer::mNUMBER_ADDRESS_OR_WORD(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mDOT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = DOT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('.' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1450,13 +1450,13 @@ void PIXCfgLexer::mDOT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mSTRING(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STRING;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\"' /* charlit */ );
 	{ // ( ... )*
@@ -1477,13 +1477,13 @@ void PIXCfgLexer::mSTRING(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mPIPE_CHAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PIPE_CHAR;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('|' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1491,13 +1491,13 @@ void PIXCfgLexer::mPIPE_CHAR(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mNUMBER_SIGN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = NUMBER_SIGN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('#' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1505,13 +1505,13 @@ void PIXCfgLexer::mNUMBER_SIGN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mPERCENT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PERCENT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('%' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1519,13 +1519,13 @@ void PIXCfgLexer::mPERCENT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mAMPERSAND(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = AMPERSAND;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('&' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1533,13 +1533,13 @@ void PIXCfgLexer::mAMPERSAND(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mAPOSTROPHE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = APOSTROPHE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('\'' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1547,13 +1547,13 @@ void PIXCfgLexer::mAPOSTROPHE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mOPENING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_PAREN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('(' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1561,13 +1561,13 @@ void PIXCfgLexer::mOPENING_PAREN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_PAREN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(')' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1575,13 +1575,13 @@ void PIXCfgLexer::mCLOSING_PAREN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mSTAR(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = STAR;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('*' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1589,13 +1589,13 @@ void PIXCfgLexer::mSTAR(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mPLUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = PLUS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('+' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1603,13 +1603,13 @@ void PIXCfgLexer::mPLUS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCOMMA(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMA;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(',' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1617,13 +1617,13 @@ void PIXCfgLexer::mCOMMA(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mMINUS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = MINUS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('-' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1631,13 +1631,13 @@ void PIXCfgLexer::mMINUS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mSLASH(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SLASH;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('/' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1645,13 +1645,13 @@ void PIXCfgLexer::mSLASH(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mSEMICOLON(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = SEMICOLON;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(';' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1659,13 +1659,13 @@ void PIXCfgLexer::mSEMICOLON(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mLESS_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = LESS_THAN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('<' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1673,13 +1673,13 @@ void PIXCfgLexer::mLESS_THAN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mEQUALS(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = EQUALS;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('=' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1687,13 +1687,13 @@ void PIXCfgLexer::mEQUALS(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mGREATER_THAN(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = GREATER_THAN;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('>' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1701,13 +1701,13 @@ void PIXCfgLexer::mGREATER_THAN(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mQUESTION(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = QUESTION;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('?' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1715,13 +1715,13 @@ void PIXCfgLexer::mQUESTION(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCOMMERCIAL_AT(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = COMMERCIAL_AT;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('@' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1729,13 +1729,13 @@ void PIXCfgLexer::mCOMMERCIAL_AT(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_SQUARE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('[' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1743,13 +1743,13 @@ void PIXCfgLexer::mOPENING_SQUARE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_SQUARE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match(']' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1757,13 +1757,13 @@ void PIXCfgLexer::mCLOSING_SQUARE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCARET(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CARET;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('^' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1771,13 +1771,13 @@ void PIXCfgLexer::mCARET(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mUNDERLINE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = UNDERLINE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('_' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1785,13 +1785,13 @@ void PIXCfgLexer::mUNDERLINE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mOPENING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = OPENING_BRACE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('{' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1799,13 +1799,13 @@ void PIXCfgLexer::mOPENING_BRACE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = CLOSING_BRACE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('}' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1813,13 +1813,13 @@ void PIXCfgLexer::mCLOSING_BRACE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mTILDE(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = TILDE;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('~' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1827,13 +1827,13 @@ void PIXCfgLexer::mTILDE(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 void PIXCfgLexer::mEXLAMATION(bool _createToken) {
 	int _ttype; ANTLR_USE_NAMESPACE(antlr)RefToken _token; ANTLR_USE_NAMESPACE(std)string::size_type _begin = text.length();
 	_ttype = EXLAMATION;
-	ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
+	//ANTLR_USE_NAMESPACE(std)string::size_type _saveIndex;
 	
 	match('!' /* charlit */ );
 	if ( _createToken && _token==ANTLR_USE_NAMESPACE(antlr)nullToken && _ttype!=ANTLR_USE_NAMESPACE(antlr)Token::SKIP ) {
@@ -1841,7 +1841,7 @@ void PIXCfgLexer::mEXLAMATION(bool _createToken) {
 	   _token->setText(text.substr(_begin, text.length()-_begin));
 	}
 	_returnToken = _token;
-	_saveIndex=0;
+	//_saveIndex=0;
 }
 
 

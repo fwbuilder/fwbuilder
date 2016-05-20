@@ -64,6 +64,7 @@ class findDialog;
 class FindObjectWidget;
 class FindWhereUsedWidget;
 class CompilerOutputPanel;
+class TemporaryDir;
 
 namespace Ui {
     class FWBMainWindow_q;
@@ -119,6 +120,8 @@ class FWWindow : public QMainWindow {
     void attachEditorToProjectPanel(ProjectPanel *pp);
 
     QList<QAction*> ruleStaticActions;
+
+    TemporaryDir *m_temporaryDir;
 
 public:
     QVector <QString> windowsTitles;
@@ -202,6 +205,7 @@ public slots:
     virtual void install(std::set<libfwbuilder::Firewall * > vf);
     virtual void install();
     virtual void inspect();
+    virtual void autoCompile();
 
     virtual void insertRule();
     virtual void addRuleAfterCurrent();
@@ -369,6 +373,8 @@ public slots:
 
     void addNewObjectMenu(QMenu*);
     void showNewObjectMenu();
+
+    QString getTemporaryDirPath() const;
     
  protected:
 

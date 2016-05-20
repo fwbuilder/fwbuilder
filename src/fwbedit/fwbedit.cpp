@@ -503,6 +503,7 @@ int main(int argc, char * const *argv)
             case 'p': parent = optarg; break;
             case 'a':
                 int num=0;
+                Q_UNUSED(num);
                 if (optarg!=NULL)
                 {
                     string str = optarg;
@@ -553,6 +554,7 @@ int main(int argc, char * const *argv)
             case 'c': comment_txt = optarg; break;
             case 'a':
                 int num=0;
+                Q_UNUSED(num);
                 if (optarg!=NULL)
                 {
                     string str = optarg;

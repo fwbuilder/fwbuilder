@@ -1,0 +1,707 @@
+fwbuilder (5.3.6-1) unstable; urgency=low
+  * JunOS fix for /128 netmask on IPv6 issue.
+  * JunOS fix ssh password prompt.
+
+ -- Sirius Bakke <sirius.bakke@uninett.no>  Tue, 10 Mar 2015 16:40:00 +0200
+
+fwbuilder (5.3.3-0.rc1) unstable; urgency=low
+
+  * 5.3.3-rc1 from upstream.
+  * Bugfixes.
+
+ -- Morten Knutsen <morten.knutsen@uninett.no>  Tue, 20 Jan 2015 14:18:00 +0200
+
+fwbuilder (5.3.2-1) unstable; urgency=low
+
+  * JunOS fix for icmpv6 issue.
+
+ -- Morten Knutsen <morten.knutsen@uninett.no>  Fri, 24 Oct 2014 09:18:00 +0200
+
+fwbuilder (5.3.1-1) unstable; urgency=low
+
+  * Various JunOS fixes.
+
+ -- Morten Knutsen <morten.knutsen@uninett.no>  Tue, 30 Sep 2014 12:38:33 +0200
+
+fwbuilder (5.3.0-2) unstable; urgency=low
+
+  * Add missing binaries.
+
+ -- Morten Knutsen <morten.knutsen@uninett.no>  Wed, 24 Sep 2014 15:38:33 +0200
+
+fwbuilder (5.3.0-1) unstable; urgency=low
+
+  * Bump to newest version.
+
+ -- Morten Knutsen <morten.knutsen@uninett.no>  Wed, 24 Sep 2014 13:38:33 +0200
+
+fwbuilder (5.1.0-3) unstable; urgency=low
+
+  * generation of firewall was missing due to the removal of fwblookup
+    Merci beaucoup à Roland Mas (Closes: #678006)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Tue, 19 Jun 2012 11:38:33 +0200
+
+fwbuilder (5.1.0-2) unstable; urgency=low
+
+  * ACK NMU (thanks)
+  * Fix the FTBFS under HURD
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sun, 17 Jun 2012 22:37:12 +0200
+
+fwbuilder (5.1.0-1.1) unstable; urgency=low
+
+  * Non maintainer upload
+  * Fix build failure with GCC 4.7 (Ilya Barygin). Closes: #674349.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 29 May 2012 09:23:33 +0000
+
+fwbuilder (5.1.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Standards-Version updated to version 3.9.3
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Fri, 13 Apr 2012 14:32:30 +0200
+
+fwbuilder (5.0.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Mon, 26 Dec 2011 19:42:33 +0100
+
+fwbuilder (5.0.0-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sat, 17 Sep 2011 13:00:26 +0200
+
+fwbuilder (4.2.2-1) unstable; urgency=low
+
+  * New upstream release (important regression)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Thu, 12 May 2011 08:50:42 +0200
+
+fwbuilder (4.2.1-1) unstable; urgency=low
+
+  * New upstream release
+  * netfilter-extensions-source added as suggests of fwbuilder 
+   (Closes: #605613)
+  * Migration files were not installed (Closes: #626276)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Tue, 10 May 2011 23:57:04 +0200
+
+fwbuilder (4.2.0-1) unstable; urgency=low
+
+  * New upstream release (no longer need the separate package libfwbuilder)
+  * Standards-Version updated to version 3.9.2
+  * Update of the watch file
+  * Switch to dpkg-source 3.0 (quilt) format
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sun, 08 May 2011 19:41:21 +0200
+
+fwbuilder (4.1.3-2) unstable; urgency=low
+
+  * Upload in unstable
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Mon, 07 Feb 2011 17:19:10 +0100
+
+fwbuilder (4.1.3-1) experimental; urgency=low
+
+  * New upstream release
+  * Missing files added (Closes: #601877)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sat, 11 Dec 2010 11:43:37 +0100
+
+fwbuilder (4.1.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Tue, 12 Oct 2010 21:48:53 +0200
+
+fwbuilder (4.1.1-1) unstable; urgency=low
+
+  * New upstream release (Closes: #594428)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Thu, 26 Aug 2010 00:24:43 +0200
+
+fwbuilder (4.1.0-1) unstable; urgency=low
+
+  * New upstream release 
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Mon, 16 Aug 2010 20:08:21 +0200
+
+fwbuilder (4.0.2-2) unstable; urgency=low
+
+  * Install some missing files (Closes: #591769)
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sat, 07 Aug 2010 00:18:05 +0200
+
+fwbuilder (4.0.2-1) unstable; urgency=low
+
+  * New upstream release (Closes: #580760)
+  * Standards-Version updated to version 3.9.1
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Thu, 29 Jul 2010 13:10:13 +0200
+
+fwbuilder (3.0.7-1) unstable; urgency=high
+
+  * New upstream version
+  * This new version fixes a security issue described in the bug report.
+    This problem is likely to be in the package libfwbuilder but since both
+    packages are tightly connected, need to upload also fwbuilder
+    (Closes: #547390)
+  * fwbuilder-dbg moved to Section: debug
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sat, 19 Sep 2009 02:12:41 +0200
+
+fwbuilder (3.0.6-1) unstable; urgency=low
+
+  * New upstream version
+  * Change of my email address since I am now DD
+  * Removal of Torsten on his request
+  * Standards-Version updated to 3.8.3
+  * DM-Upload-Allowed removed
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Sat, 29 Aug 2009 17:58:32 +0200
+
+fwbuilder (3.0.5-2) unstable; urgency=low
+
+  * One more time, I forgot to update the version of the libfwbuilder-dev dep
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 18 Jun 2009 00:57:05 +0200
+
+fwbuilder (3.0.5-1) unstable; urgency=low
+
+  * Artificial separation of fwbuilder-{linux,bsd,cisco} removed on the 
+    advice of upstream
+  * New upstream version
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 09 Jun 2009 17:33:45 +0200
+
+fwbuilder (3.0.4-2) unstable; urgency=low
+
+  * Increase of the dep on libfwbuilder (3.0.3 => 3.0.4) (Closes: #522038)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 31 Mar 2009 13:33:08 +0200
+
+fwbuilder (3.0.4-1) unstable; urgency=low
+
+  * New upstream version (damn it, I should have waited a few hours)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 30 Mar 2009 10:03:18 +0200
+
+fwbuilder (3.0.3-2) unstable; urgency=low
+
+  * Misc depends added 
+  * Missing files in the doc (LP: #350673)
+  * Standards-Version updated to 3.8.1
+  * fwbuilder-doc added to Recommands of fwbuilder
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Sun, 29 Mar 2009 22:51:38 +0200
+
+fwbuilder (3.0.3-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Torsten Werner <twerner@debian.org>  Sat, 27 Dec 2008 00:56:18 +0100
+
+fwbuilder (3.0.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Remove patch gcc-4.4.diff that has been applied upstream.
+  * Update patch debug.diff.
+
+ -- Torsten Werner <twerner@debian.org>  Sun, 07 Dec 2008 13:11:31 +0100
+
+fwbuilder (3.0.1-2) unstable; urgency=low
+
+  * Add --with-qmake=qmake-qt4 to the configure argument list.
+    (Closes: #505651)
+  * Clean up debian/rules.
+  * Update Build-Depends: libfwbuilder-dev (>= 3.0.1).
+  * Add patch gcc-4.4.diff provided by Martin Michlmayr.
+    (Closes: #505654)
+
+ -- Torsten Werner <twerner@debian.org>  Fri, 14 Nov 2008 10:57:25 +0100
+
+fwbuilder (3.0.1-1) unstable; urgency=low
+
+  * New upstream version (Closes: #501419)
+  * Patch tmpdirsecurity.diff removed (script removed upstream)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 07 Oct 2008 15:11:17 +0200
+
+fwbuilder (3.0.0-1) unstable; urgency=low
+
+  * New upstream version (Closes: #498640, #255071)
+  * Missing (= ${binary:Version}) for fwbuilder-dbg (Closes: #497752)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 09 Sep 2008 01:21:48 +0200
+
+fwbuilder (2.1.19-6) unstable; urgency=low
+
+  * debian/* cleanup
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Wed, 03 Sep 2008 11:22:02 +0200
+
+fwbuilder (2.1.19-5) unstable; urgency=low
+
+  * Fix a security issue. Thanks to Thijs Kinkhorst. (Closes: #496406)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Aug 2008 21:57:00 +0200
+
+fwbuilder (2.1.19-4) unstable; urgency=low
+
+  * Add binary package fwbuilder-dbg that ships debugging symbols.
+  * Add patch debug.diff to avoid stripping the binaries during installation.
+  * Bump up Standards-Version: 3.8.0 (no changes needed).
+
+ -- Torsten Werner <twerner@debian.org>  Sun, 24 Aug 2008 18:03:21 +0200
+
+fwbuilder (2.1.19-3) unstable; urgency=low
+
+  * Still issues with gcc 4.3
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Fri, 30 May 2008 00:06:59 +0200
+
+fwbuilder (2.1.19-2) unstable; urgency=low
+
+  * Remove the dependency to libantlr-dev since the recoginition languages tools are included by fwbuilder and builds now with gcc-4.3. (Closes: #483236)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 29 May 2008 00:35:06 +0200
+
+fwbuilder (2.1.19-1) unstable; urgency=low
+
+  * new upstream release
+  * Remove our patch that has been applied upstream.
+
+ -- Torsten Werner <twerner@debian.org>  Wed, 21 May 2008 22:52:10 +0200
+
+fwbuilder (2.1.18-2) unstable; urgency=low
+
+  * Add DM-Upload-Allowed: yes to enable uploads by Sylvestre.
+  * Install tools fwb_compile_all, fwb_install and its man pages.
+    (Closes: #477074)
+  * Add new package fwbuilder-cisco.
+
+ -- Torsten Werner <twerner@debian.org>  Wed, 07 May 2008 06:53:31 +0200
+
+fwbuilder (2.1.18-1) unstable; urgency=low
+
+  [ Sylvestre Ledru ]
+  * New upstream version (Closes: #438084)
+
+  [ Torsten Werner ]
+  * Switch to cdbs.
+  * Clean up Build-Depends.
+  * Fix manpage fwbedit(1).
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Wed, 16 Apr 2008 19:55:56 +0200
+
+fwbuilder (2.1.17-3) unstable; urgency=low
+
+  * Add Build-Depends: libantlr-dev. (Closes: #474673)
+
+ -- Torsten Werner <twerner@debian.org>  Mon, 07 Apr 2008 20:14:08 +0200
+
+fwbuilder (2.1.17-2) unstable; urgency=low
+
+  * Clean up (Build-)Depends, Conflicts, and Replaces.
+  * Remove all extra arguments when calling dpkg-gencontrol via dh_gencontrol.
+  * Replace some dbs files by plain debhelper.
+  * Update and reformat the README files. (Closes: #347370)
+  * Add a desktop file thanks to Stephan Windmüller. (Closes: #465472)
+  * Disable stripping of binaries in install.sh. (Closes: #436910)
+
+ -- Torsten Werner <twerner@debian.org>  Sat, 29 Mar 2008 13:13:53 +0100
+
+fwbuilder (2.1.17-1) unstable; urgency=low
+
+  [ Sylvestre Ledru ]
+  * New upstream version
+    (Closes: #417685, #376527, #419753, #409262, #470402, #255071)
+  * Update of the watch file (Closes: #449727)
+  * Cleanup lintian warnings
+  * Fields Homepage, Vcs-Svn and Vcs-Browser added
+  * Standards-Version updated to 3.7.3
+  * Torsten and Sylvestre added as (co-)maintainers
+
+  [ Torsten Werner ]
+  * Switch to debhelper 5.
+
+ -- Torsten Werner <twerner@debian.org>  Tue, 18 Mar 2008 21:17:54 +0100
+
+fwbuilder (2.1.8-1) unstable; urgency=low
+
+  * New upstream version (Closes: #3276527, #382596, #275450)
+  * Fix libfwbuilder dependency (Closes: #341803)
+  * Accepting NMUs (Closes: #385831, #376622)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Wed, 31 Jan 2007 18:28:40 -0500
+
+fwbuilder (2.0.9-1.2) unstable; urgency=low
+
+  * NMU.
+  * Drop build dependency on g++-3.4. Closes: #385831.
+
+ -- Matthias Klose <doko@debian.org>  Sun,  3 Sep 2006 18:04:21 +0200
+
+fwbuilder (2.0.9-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Remove the unneccesary Build-Depends on automake. (Closes: #376622)
+
+ -- Eric Dorland <eric@debian.org>  Sat,  2 Sep 2006 19:35:13 -0400
+
+fwbuilder (2.0.9-1) unstable; urgency=low
+
+  * New upstream version released (Closes: #327826).
+  * Clean-up build environment to clear lintian issues
+  * Surprise having fwbuilder-2.0.9 to build with libfwbuilder-2.0.9
+    solves the impatient bug reporting of FTBFS (Closes: #338113).
+  * Rebuilding after libfwbuilder 2.0.9-2 corrects the shlibs to keep
+    incompatible libfwbuilder libs from being installed so fwbuilder
+    doesn't segfault on XSLT transformations it doesn't have 
+    available (Closes: #338293).
+  * Uploading this package early with no real testing to please Steve
+    Langasek and Roland Stigge. I'll fix any issues after my wedding!
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Wed,  9 Nov 2005 09:26:10 -0800
+
+fwbuilder (2.0.7-2) unstable; urgency=high
+
+  * Corrects build issues from C++ ABI transition and Qt/KDE
+    (Closes: #327963, #327365, #324874, #327017).
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Fri, 30 Sep 2005 15:06:42 -0700
+
+fwbuilder (2.0.7-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Rebuild for Qt/KDE and gcc 4.0 transition 
+    (Closes: #327963, #327017, #324874, #327365)
+
+ -- Luk Claes <luk@debian.org>  Tue, 27 Sep 2005 17:48:12 +0200
+
+fwbuilder (2.0.7-1) unstable; urgency=low
+
+  * New upstream release (Closes: #293405)
+  * src/gui/SSHPIX.cpp includes errno.h (Closes: #274817)
+  * Issue of empty example/ directory as mentioned in #257706
+    has been addressed and is correctly included with fwbuilder-common.
+    As the full wishlist has not been completed I'm leaving it open. If 
+    Someone wants to create a userland script that can take the 
+    fwbuiler default file and init.d script from examples/ along with 
+    the generated fwbuilder script and generate a .DEB for install as
+    Goswin has proposed I will evaluate and include in next upload.
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 12 Jun 2005 00:34:45 -0700
+
+fwbuilder (2.0.3-2) unstable; urgency=low
+
+  * Correct libfwbuilder-dev Build-Depend (Closes: #276533)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Thu, 14 Oct 2004 13:41:31 -0700
+
+fwbuilder (2.0.3-1) unstable; urgency=medium
+
+  * New upstream bug fix release
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Fri,  1 Oct 2004 17:06:03 -0700
+
+fwbuilder (2.0.2-2) unstable; urgency=high
+
+  * Rebuild against modified libfwbuilder6 shlibs (Closes: 270293)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue,  7 Sep 2004 02:28:59 -0700
+
+fwbuilder (2.0.2-1) unstable; urgency=high
+
+  * New upstream bug fix release (Closes: 268898)
+  * Removed doc++ Build-Dep (Closes: 270002)
+  * Removed Debian patches
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Fri,  3 Sep 2004 22:33:13 -0700
+
+fwbuilder (2.0.1-2) unstable; urgency=high
+
+  * Added fwbuilder version depend on -common (Closes: 268897)
+  * Urgency set to high to fix RC bug for testing
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue, 31 Aug 2004 00:13:57 -0700
+
+fwbuilder (2.0.1-1) unstable; urgency=high
+
+  * New upstream release (Closes: 261978)
+  * Example files return (Closes: 254908)
+  * Release fixes seg fault crashes (Closes: 266615, 256085)
+  * Updated watch file
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 22 Aug 2004 16:33:54 -0700
+
+fwbuilder (1.1.2-3) unstable; urgency=low
+
+  * This it the Make-James-Troup-Happy upload. You will find that all
+    the policy compiler packaging has changed into 2 packages either
+    fwbuilder-linux or fwbuilder-bsd. These replace all the separate
+    packages for the different policy compilers based on firewall 
+    platform which James considered "bloat" in rejecting the 1.1.2-2
+    upload.
+  * This also corrects the conflict issue in fwbuilder-common when
+    upgrading from an older version (Closes: #248583)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun,  6 Jun 2004 12:02:49 -0700
+
+fwbuilder (1.1.2-2) unstable; urgency=low
+
+  * Added Conflicts in fwbuilder-common against older versions
+    of fwbuilder that contained the arch-indep files (Closes: #248583)
+  * Created fwbuilder-ipfw package for missing policy compiler
+    from build
+  * Created fwbuilder-doc package to include provided documentation
+    from upstream
+  * Renamed fwbuilder-ipf to fwbuilder-ipfilter to remove possible
+    confusion with fwbuilder-ipfw
+  * Removed old fwbuilder-iptables transition package from build
+  * GUI diaglogs for Mac OS X and FreeBSD ipfw not installed properly
+    with fwbuilder causing errors when selecting those options for a
+    given firewall
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Thu, 13 May 2004 23:16:28 -0700
+
+fwbuilder (1.1.2-1) unstable; urgency=low
+
+  * New upstream version (Closes: #229084)
+  * Moved arch-dep modules from /usr/share to /usr/lib via patch
+    01fhs_modules_path.diff (Closes: #234249)
+  * Unable to reproduce the seg fault problem reported and the BTS
+    does not contain enough information after 3 months to track any
+    source down so closing. If more conclusive details can be given
+    I will re-investigate. It may have been fixed along with the NMU
+    that corrected 203776. (Closes: #229774)
+  * Added entry to README.Debian regarding upgrading the data file
+    from earlier versions. (Closes: #228803)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun,  2 May 2004 00:35:37 -0700
+
+fwbuilder (1.1.1-1) unstable; urgency=low
+
+  * Accept NMU done by Brian Bassett (Closes: #223651)
+  * Created fwbuilder-common and moved common arch-indep files
+    to install there rather than arch-dep fwbuilder. This does
+    handle half of 233349 but not the portion covered by 234249
+    so I'm considering this one done and leaving the other open
+    until I can patch the code to move the modules (Closes: #233349)
+  * Suggests for iproute on fwbuilder-ipt (Closes: #219441)
+  * Hope rebuild my fix seg faults reported but not willing to
+    close the bug yet.
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Fri, 30 Apr 2004 19:49:10 -0700
+
+fwbuilder (1.1.1-0.1) unstable; urgency=low
+
+  * NMU.
+  * New upstream version. (Closes: #222025)
+    + Fixes libxml2 2.6.2 breakage. (Closes: #203776, #220830, #222478)
+  * Clean up Build-Depends line; no longer requires any GNOME components.
+
+ -- Brian Bassett <brianb@debian.org>  Wed, 10 Dec 2003 13:07:32 -0800
+
+fwbuilder (1.0.10-2) unstable; urgency=low
+
+  * Patch to fwbuilder-ipt OSConfigurator_linux24.cc to fix bashism in
+		generated script (Closes: #200258, #200259)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue,  8 Jul 2003 23:06:31 -0700
+
+fwbuilder (1.0.10-1) unstable; urgency=low
+
+  * New upstream version
+  * Libtool library linking issues resolved (Closes: #186032)
+  * fwbuilder-doc package removed (Closes: #186245, #157352)
+  * Corrected problem with fwblookup (Closes: #183914)
+  * Patched contributed fwbuilder init.d with provided patch by
+    Robert Lindgren <robert@orcafat.com> see README.Debian
+    for more details
+  * Cleaned up lintian errors
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue, 27 May 2003 11:09:30 -0700
+
+fwbuilder (1.0.9-1) unstable; urgency=low
+
+  * New upstream version
+  * Rebuilt with new libsigc++ (Closes: #176801)
+  * Rebuilt with new libgtkmm (Closes: #180037, #179743)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Fri,  7 Feb 2003 12:23:47 -0800
+
+fwbuilder (1.0.8-1) unstable; urgency=low
+
+  * New upstream version 
+  * Rebuilt with new libxml2 (Closes: #170908, #170918)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 15 Dec 2002 18:33:10 -0800
+
+fwbuilder (1.0.7-1) unstable; urgency=low
+
+  * New upstream version (Closes: #167319)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sat,  2 Nov 2002 16:00:35 -0800
+
+fwbuilder (1.0.5-1) unstable; urgency=low
+
+  * New upstream version 
+  * Fixes build issues on HPPA (Closes: #148701, #133683)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Wed, 11 Sep 2002 09:22:35 -0700
+
+fwbuilder (1.0.4-1) unstable; urgency=low
+
+  * New upstream version (Closes: #155551, #155553)
+  * New build environment
+  * Fixes problem in fwbuilder-ipt (Closes: #151876)
+  * Fixes dependency issue with fwbuilder-ipt (Closes: #154734)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon,  5 Aug 2002 12:52:35 -0700
+
+fwbuilder (1.0.3-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Wed, 19 Jun 2002 21:47:08 -0700
+
+fwbuilder (1.0.2-3) unstable; urgency=low
+
+  * Reworked conflicts with libfwbuilder-dev for fwbuilder-dev
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue,  4 Jun 2002 11:55:27 -0700
+
+fwbuilder (1.0.2-2) unstable; urgency=low
+
+  * Corrected Conflicts with libfwbuilder-dev (Closes: #148730)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sat,  1 Jun 2002 09:23:41 -0700
+
+fwbuilder (1.0.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Wed, 15 May 2002 11:44:19 -0700
+
+fwbuilder (1.0.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Removed fwbuilder-ipfilter from build as requested by upstream as
+    it is not properly maintained at this time 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon, 31 Dec 2001 11:09:36 -0800
+
+fwbuilder (0.9.9-2) unstable; urgency=low
+
+  * Typo/spelling correction in debian/control (Closes: #124655) 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon, 17 Dec 2001 23:53:09 -0800
+
+fwbuilder (0.9.9-1) unstable; urgency=low
+
+  * New upstream bug fix release 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Wed, 12 Dec 2001 15:05:41 -0800
+
+fwbuilder (0.9.8-1) unstable; urgency=low
+
+  * New upstream bug fix release 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon, 10 Dec 2001 08:24:03 -0800
+
+fwbuilder (0.9.7-3) unstable; urgency=low
+
+  * Corrections in dependencies on libfwbuilder and backends 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Thu,  6 Dec 2001 17:37:41 -0800
+
+fwbuilder (0.9.7-2) unstable; urgency=low
+
+  * Corrections to debian/control for Build-Depends 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun,  2 Dec 2001 23:43:55 -0800
+
+fwbuilder (0.9.7-1) unstable; urgency=low
+
+  * New upstream version 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Thu, 29 Nov 2001 08:18:58 -0800
+
+fwbuilder (0.9.6-2) unstable; urgency=low
+
+  * Fixed bug with fwbuilder-doc package not containing any of the
+  documents as the upstream Makefile install installed using versioned
+  doc directory 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sat, 27 Oct 2001 18:47:03 -0700
+
+fwbuilder (0.9.6-1) unstable; urgency=low
+
+  * New upstream release October 16, 2001 (closes: #116605)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon, 22 Oct 2001 10:06:08 -0700
+
+fwbuilder (0.9.5-2) unstable; urgency=low
+
+  * Included upstream patch to correct conflict with BIND9 namespace 
+  conflict with resolv.h
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue, 28 Aug 2001 09:11:07 -0700
+
+fwbuilder (0.9.5-1) unstable; urgency=low
+
+  * New upstream release August 6, 2001 (closes: #107716)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 19 Aug 2001 23:10:46 -0700
+
+fwbuilder (0.9.2-3) unstable; urgency=low
+
+  * Bug fix for dependency (Closes: #109122) 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 19 Aug 2001 22:59:10 -0700
+
+fwbuilder (0.9.2-2) unstable; urgency=low
+
+  * Bug fix for ports (Closes: #105317) 
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 15 Jul 2001 11:45:11 -0700
+
+fwbuilder (0.9.2-1) unstable; urgency=low
+
+  * New upstream release June 30, 2001 (closes: #103640)
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon,  9 Jul 2001 10:41:07 -0700
+
+fwbuilder (0.9.1-3) unstable; urgency=low
+
+  * Corrected build to include bug-buddy support
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Tue, 12 Jun 2001 09:29:24 -0700
+
+fwbuilder (0.9.1-2) unstable; urgency=low
+
+  * Minor change to conflict with obsolete fwbuilder-ipchains package
+  * Added lintian overrides
+  * Added simple manpage for fwbuilder
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon, 11 Jun 2001 10:52:44 -0700
+
+fwbuilder (0.9.1-1) unstable; urgency=low
+
+  * New upstream release May 11, 2001 (closes: #97205) 
+  * Removal of fwbuilder-ipchains as upstream is no longer supporting
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Sun, 13 May 2001 19:35:43 -0700
+
+fwbuilder (0.8.7-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Jeremy T. Bouse <jbouse@debian.org>  Mon,  7 May 2001 20:38:14 -0700
+
+

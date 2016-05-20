@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -54,7 +59,7 @@ class FWBSettings : public QSettings
 {
  public:
 
-    enum LabelColors { RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, GRAY };
+    enum LabelColors { RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, GRAY, ADD_COLOR, EDIT_COLOR, MOVE_COLOR, REMOVE_COLOR };
     enum IconSize{ SIZE25X25, SIZE16X16};
 
  private:
@@ -63,6 +68,7 @@ class FWBSettings : public QSettings
     bool first_run;
     
     QString getLabelColorStr(enum LabelColors c);
+    QString getDiffColorStr(enum LabelColors c);
 
     
  public:
@@ -164,12 +170,17 @@ class FWBSettings : public QSettings
     void    setLabelColor(enum LabelColors c,const QString &s);
     QString getLabelText(enum LabelColors c);
     void    setLabelText(enum LabelColors c, const QString &s);
+    QString getDiffColor(enum LabelColors c);
+    void    setDiffColor(enum LabelColors c,const QString &s);
 
     QString getSSHPath();
     void    setSSHPath(const QString &path);
 
     QString getSCPPath();
     void    setSCPPath(const QString &path);
+
+    QString getDiffPath();
+    void    setDiffPath(const QString &path);
 
     bool    haveSSHTimeout();
     int     getSSHTimeout();
@@ -280,6 +291,9 @@ class FWBSettings : public QSettings
 
     bool customTemplatesEnabled();
     void setCustomTemplatesEnabled(bool f);
+
+    bool getDisplayUnmodifiedRules();
+    void setDisplayUnmodifiedRules(bool);
     
 private:
     QFont getFontByType(const char*type);

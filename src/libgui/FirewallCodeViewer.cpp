@@ -6,6 +6,11 @@
 
   Author:  Roman Bovsunivskiy     a2k0001@gmail.com
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -29,9 +34,22 @@
 #include <QDebug>
 #include <QTextBrowser>
 
-FirewallCodeViewer::FirewallCodeViewer(QStringList files, QString name, QWidget *parent) :
+#include "QFileInfo"
+#include "global.h"
+#include "FWBSettings.h"
+#include "QProcess"
+#include "QMessageBox"
+#include "PrefsDialog.h"
+#include "ProjectPanel.h"
+
+#include <QMenu>
+#include <QDir>
+#include <QFileDialog>
+
+FirewallCodeViewer::FirewallCodeViewer(QStringList files, QString name, ProjectPanel *project, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::FirewallCodeViewer_q)
+    ui(new Ui::FirewallCodeViewer_q),
+    m_project(project)
 {
     ui->setupUi(this);
     this->files = files;
@@ -39,6 +57,17 @@ FirewallCodeViewer::FirewallCodeViewer(QStringList files, QString name, QWidget 
         ui->fileSelector->addItem(file.split("/").last());
     fileSelected(0);
     ui->path->setText(name);
+
+    QMenu *menu = new QMenu();
+    QAction *showDiff = new QAction(tr("Show diff"), this);
+    QAction *showDiffSelectFile = new QAction(tr("Show diff with custom file..."), this);
+    menu->addAction(showDiff);
+    menu->addAction(showDiffSelectFile);
+    ui->diffBtn->setMenu(menu);
+    ui->diffBtn->setDefaultAction(showDiff);
+
+    connect(showDiff, SIGNAL(triggered()), this, SLOT(showDiff()));
+    connect(showDiffSelectFile, SIGNAL(triggered()), this, SLOT(showDiffSelectFile()));
 }
 
 FirewallCodeViewer::~FirewallCodeViewer()
@@ -56,6 +85,49 @@ void FirewallCodeViewer::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void FirewallCodeViewer::showDiff(const QString &sourceFileName, const QString &destinationFileName)
+{
+    if (st->getDiffPath().isEmpty()) {
+        int ret = QMessageBox::warning(this,
+                             tr("Could not start diff program"),
+                             tr("You have not configured an external diff program yet.\n"
+                                "Do you want to do it now?"),
+                             QMessageBox::Yes,
+                             QMessageBox::No
+                             );
+        if (ret == QMessageBox::Yes) {
+            PrefsDialog pd(this);
+            pd.selectTab("Diff");
+            pd.exec();
+        }
+        return;
+    }
+
+    if (!QFileInfo(destinationFileName).isFile()) return;
+
+    QStringList args;
+
+    if (!QFileInfo(sourceFileName).isFile()) {
+        QString newSourceFileName = QFileDialog::getOpenFileName(
+                    this,
+                    tr("Select source file for diff..."),
+                    st->getOpenFileDir());
+
+        if (!QFileInfo(newSourceFileName).isFile()) return;
+
+        args << newSourceFileName;
+    } else {
+        args << sourceFileName;
+    }
+
+    args << destinationFileName;
+
+    QProcess *process = new QProcess();
+    connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+    connect(process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)));
+    process->start(st->getDiffPath(), args);
 }
 
 void FirewallCodeViewer::fileSelected(int idx)
@@ -76,7 +148,43 @@ void FirewallCodeViewer::fileSelected(int idx)
     }
 }
 
+void FirewallCodeViewer::processError(QProcess::ProcessError error)
+{
+    if (error == QProcess::FailedToStart) {
+        int ret = QMessageBox::warning(this,
+                             tr("Could not start diff program"),
+                             tr("Could not start the configured diff program.\n"
+                                "Do you want to check the preferences?"),
+                             QMessageBox::Yes,
+                             QMessageBox::No
+                             );
+        if (ret == QMessageBox::Yes) {
+            PrefsDialog pd(this);
+            pd.selectTab("Diff");
+            pd.exec();
+        }
+    }
+}
+
 void FirewallCodeViewer::hideCloseButton()
 {
     ui->closeButton->hide();
+}
+
+void FirewallCodeViewer::showDiff()
+{
+    QString fileName = this->files.at(ui->fileSelector->currentIndex());
+    QString autoCompiledFileName;
+
+    QDir tempDir(m_project->getTemporaryDirPath());
+
+    if (tempDir.exists())
+        autoCompiledFileName = QString(tempDir.absolutePath()).append("/").append(fileName.split("/").last());
+
+    showDiff(autoCompiledFileName, fileName);
+}
+
+void FirewallCodeViewer::showDiffSelectFile()
+{
+    showDiff(this->files.at(ui->fileSelector->currentIndex()), "");
 }

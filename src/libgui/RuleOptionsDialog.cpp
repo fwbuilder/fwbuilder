@@ -105,12 +105,13 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     PolicyRule *policy_rule = PolicyRule::cast(rule);
 
     int wid=0;
-    if (platform=="iptables") wid=0;
-    if (platform=="ipf")      wid=1;
-    if (platform=="pf")       wid=2;
-    if (platform=="ipfw")     wid=3;
-    if (platform=="pix" || platform=="fwsm")      wid=4;
-    if (platform=="iosacl" || platform=="procurve_acl")   wid=5;
+    if (platform=="iptables") wid=1;
+    if (platform=="ipf")      wid=2;
+    if (platform=="pf")       wid=3;
+    if (platform=="ipfw")     wid=4;
+    if (platform=="pix" || platform=="fwsm")      wid=5;
+    if (platform=="iosacl" || platform=="procurve_acl")   wid=6;
+	if (platform=="junosacl") wid=7;
 
     m_dialog->wStack->widget(wid)->raise();
     m_dialog->wStack->setCurrentWidget(m_dialog->wStack->widget(wid));
@@ -327,9 +328,15 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     if (platform=="pix" || platform=="fwsm")
     {
         string vers = "version_" + version;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         if (Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
               "/FWBuilderResources/Target/options/" +
               vers + "/pix_rule_syslog_settings"))
+#else
+        if (Resources::platform_res[platform.toLatin1().constData()]->getResourceBool(
+              "/FWBuilderResources/Target/options/" +
+              vers + "/pix_rule_syslog_settings"))
+#endif
         {
             m_dialog->pix_disable_rule_log->setEnabled(true);
             m_dialog->pix_logLevel->setEnabled(true);
@@ -348,6 +355,11 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
             m_dialog->pix_log_interval->setEnabled(false);
         }
 
+    }
+
+    if (platform=="junosacl")
+    {
+        data.registerOption(m_dialog->counterLineEdit, ropt, "counter_name");
     }
 
 

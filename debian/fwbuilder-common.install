@@ -1,0 +1,8 @@
+debian/tmp/usr/share/fwbuilder-*/platform/*
+debian/tmp/usr/share/fwbuilder-*/os/*
+debian/tmp/usr/share/fwbuilder-*/resources.xml
+debian/tmp/usr/share/fwbuilder-*/objects_init.xml
+debian/tmp/usr/share/fwbuilder-*/templates.xml
+debian/tmp/usr/share/fwbuilder-*/fwbuilder.dtd
+debian/tmp/usr/share/fwbuilder-*/configlets/*
+debian/tmp/usr/share/fwbuilder-*/migration/*

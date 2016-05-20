@@ -1,19 +1,34 @@
 #-*- mode: shell-script; tab-width: 4; -*-
 
+# Data format version
+FWBUILDER_XML_VERSION=24
+
+# Static version number
 FWB_MAJOR_VERSION=5
-FWB_MINOR_VERSION=1
-FWB_MICRO_VERSION=0
+FWB_MINOR_VERSION=3
+FWB_MICRO_VERSION=6
+FWB_QUALIFIER_VERSION=
 
-# build number is like "nano" version number. I am incrementing build
-# number during development cycle
-#
-BUILD_NUM="3599"
-
-VERSION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION.$BUILD_NUM"
+VERSION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION.$FWB_MICRO_VERSION"
+if [ -n "${FWB_QUALIFIER_VERSION}" ]; then
+    VERSION="$VERSION-$FWB_QUALIFIER_VERSION"
+fi
 
 GENERATION="$FWB_MAJOR_VERSION.$FWB_MINOR_VERSION"
 
-# Data format version
-FWBUILDER_XML_VERSION=22
+# Git may generate version info for us
+# May be overridden by setting NO_GIT_VER environment variable
+if [ ! -n "${NO_GIT_VER}" ]; then
+    GIT_DIRTY_FLAG="--dirty"
+    if [ -n "${NO_GIT_DIRTY}" ]; then
+        GIT_DIRTY_FLAG=""
+    fi
+    GIT_VERSION=`git describe --tags ${GIT_DIRTY_FLAG} --always`
+    if [ -n "${GIT_VERSION}" ]; then
+        VERSION=${GIT_VERSION#v}
+        GENERATION=${VERSION%.*}
+    fi
+fi
+
 
 

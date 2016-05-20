@@ -1,0 +1,120 @@
+* Set up development directory: c:\dev
+
+* Install MinGW-get in c:\dev\mingw
+  + Select C compiler, C++ Compiler, MSYS Basic System and MinGW Developer ToolKit
+
+* Compile Qt OpenSource 4.8.5
+  + Download and unpack into c:\dev\qt\4.8.5
+  + Run cmd.exe
+  + SET PATH=c:\dev\MinGW\bin;%PATH%
+  + cd dev\qt\4.8.5
+  + configure -opensource -confirm-license -platform win32-g++ -release -no-qt3support -no-phonon -no-phonon-backend -no-multimedia -no-audio-backend -no-webkit -no-script -no-scripttools -no-declarative -nomake demos -nomake examples 
+  + mingw32-make
+
+* Open MinGW shell
+  + mingw-get install msys-wget
+  + mingw-get install msys-unzip
+  + mingw-get install libtool
+
+* Compile libiconv
+  + cd /c/dev/libs
+  + wget "http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz"
+  + tar xzf libiconv-1.14.tar.gz
+  + cd libiconv-1.14
+  + ./configure
+  + make
+  + make install-strip
+
+* Compile zlib
+  + cd /c/dev/libs
+  + wget "zlib.net/zlib128.zip"
+  + unzip zlib128.zip
+  + cd zlib-1.2.8
+  + make -f win32/Makefile.gcc
+  + cp zlib1.dll /usr/local/bin
+  + cp zconf.h zlib.h /usr/local/include
+  + cp libz.a libz.dll.a /usr/local/lib
+  + wget www.gaia-gis.it/spatialite-2.5.0/libz.la
+  + cp libz.la /usr/local/lib
+
+* Compile libxml2
+  + cd /c/dev/libs
+  + wget "ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz"
+  + tar xzf libxml2-2.9.1.tar.gz
+  + cd libxml2-2.9.1
+  + export "CFLAGS=-I/usr/local/include"
+  + export "LDFLAGS=-L/usr/local/lib"
+  + ./configure --without-python
+  + make
+  + make install-strip
+
+* Compile libxslt
+  + cd /c/dev/libs
+  + wget "ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz"
+  + tar xzf libxslt-1.1.28.tar.gz
+  + cd libxslt-1.1.28
+  + export "CFLAGS=-I/usr/local/include"
+  + export "LDFLAGS=-L/usr/local/lib"
+  + sed 's/\sdoc\s//' Makefile.am > Makefile.am.new
+  + mv Makefile.am.new Makefile.am
+  + sed 's/\sdoc\s//' Makefile.in > Makefile.in.new
+  + mv Makefile.in.new Makefile.in
+  + ./configure --without-python
+  + make
+  + make install-strip
+
+* Compile net-snmp
+  + cd /c/dev/libs
+  + wget "http://sourceforge.net/projects/net-snmp/files/net-snmp/5.7.2/net-snmp-5.7.2.tar.gz/download"
+  + tar xzf net-snmp-5.7.2.tar.gz
+  + cd net-snmp-5.7.2
+  + ./configure --prefix="/usr/local"  \
+            --disable-embedded-perl \
+            --without-perl-modules  \
+            --disable-agent  \
+            --disable-applications  \
+            --disable-manuals   \
+            --disable-scripts  \
+            --disable-mibs  \
+            --disable-mib-loading  \
+            --disable-des   \
+            --disable-privacy   \
+            --disable-md5   \
+            --disable-set-support    \
+            --disable-snmptrapd-subagent
+  + make
+  + make install
+
+* Compile fwbuilder
+  + cd /c/dev/fwbuilder
+  + export PATH=".:/c/dev/qt/4.8.5/bin:/c/dev/qt/mingw/bin:$PATH"
+  + export QMAKESPEC="win32-g++"
+  + export "CFLAGS=-I/usr/local/include"
+  + export "CPPFLAGS=-I/usr/local/include"
+  + export "LDFLAGS=-L/usr/local/lib"
+  + ./autogen.sh
+  + make
+
+
+* Download and install NSIS from http://nsis.sourceforge.net/Download
+* Download and i
+
+* Make install package
+  + cd /c/dev/fwbuilder
+  + mkdir windows
+  + cd windows
+  + wget "www.cs.purdue.edu/homes/trinkle/RCS/rcs57pc1.zip
+  + unzip rcs57pc1.zip
+  + cp /local/bin/* bin/
+  + cp /c/dev/MinGW/bin/pthreadGC2.dll bin/
+  + cp /c/dev/MinGW/bin/libgcc_s_dw2-1.dll bin/
+  + cp /c/dev/MinGW/bin/libstd++-6.dll bin/
+  + cp /c/dev/qt/4.8.5/lib/QtCore4.dll bin/
+  + cp /c/dev/qt/4.8.5/lib/QtGui4.dll bin/
+  + cp /c/dev/qt/4.8.5/lib/QtNetwork4.dll bin/
+  + cd bin
+  + wget "http://the.earth.li/~sgtatham/putty/latest/x86/plink.exe"
+  + wget "http://the.earth.li/~sgtatham/putty/latest/x86/pcsp.exe"
+  + cd ../..
+  + $PATH/TO/NSIS/makesis.exe -nocd packaging/fwbuilder.nsi
+  + explorer .

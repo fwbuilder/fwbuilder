@@ -29,9 +29,9 @@
 
 #include <ui_printingprogressdialog_q.h>
 
-#include <qwidget.h>
-#include <qdialog.h>
-#include <qprinter.h>
+#include <QWidget>
+#include <QDialog>
+#include <QPrinter>
 
 #include <vector>
 

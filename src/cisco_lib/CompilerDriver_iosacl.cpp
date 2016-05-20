@@ -58,9 +58,9 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 #ifdef _WIN32
-string fs_separator = "\\";
+static string fs_separator = "\\";
 #else
-string fs_separator = "/";
+static string fs_separator = "/";
 #endif
 
 
@@ -116,17 +116,17 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
         // temporary ACL while compiling ipv6 policy. And vice versa.
 
         bool create_temp_acl = false;
-        bool tmp_acl_ipv6 = false;
+        //bool tmp_acl_ipv6 = false; //UNUSED
         if (temp_acl_addr.find(":")!=string::npos)
         {
             //looks like ipv6
             create_temp_acl = true;
-            tmp_acl_ipv6 = true;
+            //tmp_acl_ipv6 = true;
         } else
         {
             // not ipv6, assume ipv4
             create_temp_acl = true;
-            tmp_acl_ipv6 = false;
+            //tmp_acl_ipv6 = false;
         }
 
         if (create_temp_acl)

@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -103,6 +108,8 @@
 
 #include "fwbuilder/FWObject.h"
 
+#include "BackgroundCompileInfoWidget.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -163,7 +170,7 @@
 #include <qtextstream.h>
 #include <qtimer.h>
 #include <qtoolbutton.h>
-
+#include "temporarydir.h"
  
 extern bool regCheck();
 
@@ -301,11 +308,13 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     if (tabbar)
         tabbar->installEventFilter(new MDIEventFilter());
 
+    m_temporaryDir = new TemporaryDir(QDir::tempPath().append("/fwbuilder-tempdir-"));
+
 }
 
 FWWindow::~FWWindow()
 {
-
+    delete m_temporaryDir;
 
     QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
         QMdiArea::StackingOrder);
@@ -769,6 +778,8 @@ bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
 
     proj->readyStatus(true);
     proj->loadState(true);
+    if (st->getBool("/Diff/AutoCompile"))
+        autoCompile();
     return true;
 }
 
@@ -1510,10 +1521,17 @@ void FWWindow::showReleaseNotes()
     h->setName("Firewall Builder Release Notes");
     if (h->findHelpFile(file_name).isEmpty())
     {
-        // the file does not exist
-        h->hide();
+        // the file does not exist - find the latest release note
+        // use release_notes_5.3.0 to find the release notes directory
+        h->showAllReleaseNotes(h->findHelpFile(QString("release_notes_5.3.0.html")));
+        h->raise();
+        h->show();
+
+        // use the generated list of release notes and select the first one
+        h->showReleaseNotesSelected();
     } else
     {
+        h->showAllReleaseNotes(h->findHelpFile(file_name));
         // I do not know why, but url "file://file_name" does not seem to work.
         // But "file:file_name" works.
         h->setSource(QUrl("file:" + file_name));
@@ -1747,6 +1765,16 @@ void FWWindow::inspect()
     }
 }
 
+void FWWindow::autoCompile()
+{
+    if (activeProject() && !activeProject()->db()->isDirty())
+    {
+        instDialog *idlg = new instDialog(this);
+        new BackgroundCompileInfoWidget(this, idlg, this);
+        idlg->autoCompile(this->activeProject());
+    }
+}
+
 void FWWindow::addNewObjectMenu(QMenu *m)
 {
     QMenu *old_menu = m_mainWindow->newObjectAction->menu();
@@ -1757,5 +1785,12 @@ void FWWindow::addNewObjectMenu(QMenu *m)
 void FWWindow::showNewObjectMenu()
 {
     m_mainWindow->newObjectAction->menu()->popup(QCursor::pos());
+}
+
+QString FWWindow::getTemporaryDirPath() const
+{
+    if (m_temporaryDir->isValid())
+        return m_temporaryDir->path();
+    return QString();
 }
 

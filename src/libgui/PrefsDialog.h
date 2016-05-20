@@ -73,6 +73,7 @@ public slots:
     virtual void findDataDir();
     virtual void findSSH();
     virtual void findSCP();
+    virtual void findDiff();
     virtual void changeRedColor();
     virtual void changeOrangeColor();
     virtual void changeYellowColor();
@@ -80,6 +81,10 @@ public slots:
     virtual void changeBlueColor();
     virtual void changePurpleColor();
     virtual void changeGrayColor();
+    virtual void changeAddColor();
+    virtual void changeEditColor();
+    virtual void changeMoveColor();
+    virtual void changeRemoveColor();
     virtual void changeIconSize25();
     virtual void changeIconSize16();
     virtual void changeShowIcons();
@@ -89,6 +94,8 @@ public slots:
     virtual void checkSwUpdates();
     virtual void checkForUpgrade(const QString&);
     virtual void objTooltipsEnabled(bool);
+
+    void selectTab(const QString &name);
 };
 
 #endif // __PREFSDIALOG_H

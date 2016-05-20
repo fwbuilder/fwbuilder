@@ -155,7 +155,11 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     QFileDialog fd(this);
     fd.setFileMode(QFileDialog::AnyFile);
     fd.setDefaultSuffix("fwb");
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     fd.setFilter(tr( "FWB Files (*.fwb);;All Files (*)" ) );
+#else
+    fd.setNameFilter(tr( "FWB Files (*.fwb);;All Files (*)" ) );
+#endif
     fd.setWindowTitle(title);
     fd.setDirectory(st->getOpenFileDir(fname));
     fd.setAcceptMode(QFileDialog::AcceptSave);
@@ -209,10 +213,17 @@ bool ProjectPanel::fileNew()
         QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     if (fwbdebug)
         qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
                rcs, rcs == 0 ? "<null>" :
                rcs->getFileName().toAscii().constData());
+#else
+    if (fwbdebug)
+        qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
+               rcs, rcs == 0 ? "<null>" :
+               rcs->getFileName().toLatin1().constData());
+#endif
 
     return (rcs!=NULL);
 }
@@ -265,6 +276,13 @@ bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
                 unlink(new_rcs->getFileName().toLocal8Bit().constData());
 
             st->setOpenFileDir(getFileDir(fileName));
+
+            // For Diff Viewer
+            if (origObjdb)
+                delete origObjdb;
+            origObjdb = new FWObjectDatabase(*objdb);
+            origObjdb->reIndex();
+
             return true;
         }
 
@@ -973,6 +991,13 @@ void ProjectPanel::loadStandardObjects()
         if (fwbdebug)
             qDebug("ProjectPanel::load(): done  last_modified=%s dirty=%d",
                    ctime(&last_modified), objdb->isDirty());
+
+        // For Diff Viewer
+        if (origObjdb)
+            delete origObjdb;
+        origObjdb = new FWObjectDatabase(*objdb);
+        origObjdb->reIndex();
+
     } catch(FWException &ex)
     {
         QMessageBox::critical(
@@ -1113,12 +1138,22 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         {
             if (fwbdebug)
             {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                 qDebug("Need to rename file:  %s",
                        fn.toAscii().constData());
                 qDebug("             dirPath: %s",
                        ofinfo.dir().absolutePath().toAscii().constData());
                 qDebug("            filePath: %s",
                        ofinfo.absoluteFilePath().toAscii().constData());
+
+#else
+                qDebug("Need to rename file:  %s",
+                       fn.toLatin1().constData());
+                qDebug("             dirPath: %s",
+                       ofinfo.dir().absolutePath().toLatin1().constData());
+                qDebug("            filePath: %s",
+                       ofinfo.absoluteFilePath().toLatin1().constData());
+#endif
             }
             QString newFileName = ofinfo.dir().absolutePath()
                 + "/" + ofinfo.completeBaseName() + ".fwb";
@@ -1288,6 +1323,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         qDebug("ProjectPanel::load(): all done: "
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
+
     return true;
 }
 

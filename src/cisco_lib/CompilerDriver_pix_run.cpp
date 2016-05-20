@@ -225,7 +225,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                     (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
             if (failover_group)
             {
-                FWObject *this_member_interface = NULL;
+                //FWObject *this_member_interface = NULL; //UNUSED
                 list<FWObject*> other_member_interfaces;
                 for (FWObjectTypedChildIterator it =
                          failover_group->findByType(FWObjectReference::TYPENAME);
@@ -233,8 +233,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 {
                     FWObject *intf = FWObjectReference::getObject(*it);
                     assert(intf);
-                    if (intf->isChildOf(fw)) this_member_interface = intf;
-                    else other_member_interfaces.push_back(intf);
+                    //if (intf->isChildOf(fw)) this_member_interface = intf; //UNUSED
+                    //else other_member_interfaces.push_back(intf);
+                    if (!intf->isChildOf(fw)) other_member_interfaces.push_back(intf);
                 }
 
                 if (!other_member_interfaces.empty())
@@ -581,6 +582,10 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             abort(err.arg(fw_file.fileName())
                   .arg(fw_file.error()).arg(QDir::current().path()).toStdString());
         }
+
+        if (!all_errors.isEmpty())
+            status = BaseCompiler::FWCOMPILER_WARNING;
+
     }
     catch (FWException &ex)
     {
@@ -895,7 +900,7 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
 
     pixClusterGroupChecks(state_sync_group);
 
-    bool failover_group_inspected = false;
+    //bool failover_group_inspected = false; //UNUSED
     list<FWObject*> l2 = cluster->getByTypeDeep(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
@@ -916,10 +921,10 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
 
                 pixClusterGroupChecks(failover_group);
 
-                if (member_iface->isDedicatedFailover())
-                {
-                    failover_group_inspected = true;
-                }
+                //if (member_iface->isDedicatedFailover())
+                //{
+                //    failover_group_inspected = true; //UNUSED
+                //}
             }
         }
     }

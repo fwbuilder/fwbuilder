@@ -65,8 +65,8 @@ win32 {
     CONFIG += staticlib
 
     DEFINES += LIBXML_STATIC LIBXSLT_STATIC 
-    INCLUDEPATH += c:/local/include c:/local/include/libxml2 c:/MinGW/include
-    LIBS += -LC:\local\lib
+    INCLUDEPATH += /local/include /local/include/libxml2 /local/include/net-snmp /include
+    LIBS += -L/local/lib -L/local/bin
 #    LIBS += ws2_32.lib pthreadVC.lib 
     LIBS += pthreadVC.lib 
     LIBS += libxml2.lib libxslt_a.lib libz.a  # zlib.lib
@@ -86,7 +86,8 @@ macx {
     migration.path = "$$prefix/migration"
     doc.path = "$$prefix/doc/"
 
-    CONFIG += x86 
+    CONFIG -= x86
+    CONFIG += x86_64
 
 # If I build on 10.6 without these, generated binary depends on
 # /usr/lib/libxml2.2.dynlib that has compatibility version 10.0.0
@@ -94,8 +95,9 @@ macx {
 # 9.0.0. Chances are, the same thing may be happening with other
 # dependency libraries. Building on 10.6 with deployment target 10.5
 # should solve the problem
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.5
-    QMAKE_MAC_SDK = /Developer/SDKs/MacOSX10.5.sdk
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = $$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+    QMAKE_CXXFLAGS += -mmacosx-version-min=$$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+    QMAKE_MAC_SDK = $$(QMAKE_MAC_SDK)
 
     QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
 }

@@ -508,6 +508,7 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
     tmp_queue.push_back(rule);
 
     FWOptions *ropt = rule->getOptionsObject();
+    Q_UNUSED(ropt);
 
     switch (rule->getAction())
     {

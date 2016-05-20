@@ -26,7 +26,9 @@
 #include "interfacePropertiesObjectFactory.h"
 #include "interfaceProperties.h"
 #include "linux24Interfaces.h"
+#include "nxosInterfaces.h"
 #include "iosInterfaces.h"
+#include "junosInterfaces.h"
 #include "procurveInterfaces.h"
 #include "openbsdInterfaces.h"
 #include "freebsdInterfaces.h"
@@ -59,7 +61,11 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
         os_family == "dd-wrt-jffs" ||
         os_family == "secuwall") return new linux24Interfaces();
 
+    if (os_family == "nxos") return new nxosInterfaces();
+
     if (os_family == "ios") return new iosInterfaces();
+
+    if (os_family == "junos") return new junosInterfaces();
 
     if (os_family == "pix_os" || os_family == "ios") return new pixInterfaces();
 

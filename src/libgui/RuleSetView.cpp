@@ -6,6 +6,11 @@
 
   Author:  Illiya Yalovoy <yalovoy@gmail.com>
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -89,8 +94,13 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     setAcceptDrops(true);
     setDragDropMode(QAbstractItemView::DragDrop);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     header()->setResizeMode(QHeaderView::Interactive);
     header()->setMovable(false);
+#else
+    header()->setSectionResizeMode(QHeaderView::Interactive);
+    header()->setSectionsMovable(false);
+#endif
 
     connect (this, SIGNAL (customContextMenuRequested(const QPoint&)),
              this, SLOT (showContextMenu(const QPoint&)));
@@ -757,6 +767,12 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
 
                 menu->addSeparator();
 
+                if (re->isDummy()) {
+                    if (isDummy(re, getObjectNumber(fwosm->selectedObject, index)))
+                        menu->addAction(
+                                tr("Convert to Any"), this, SLOT ( convertToAny() ) );
+                }
+
                 QAction *negID  = menu->addAction(
                     tr("Negate") , this , SLOT( negateRE() ) );
 
@@ -1140,6 +1156,7 @@ void RuleSetView::removeRule()
                 QString groupName = md->nodeFromIndex(group)->name;
 
                 FWCmdRuleRemoveFromGroup* cmd = new FWCmdRuleRemoveFromGroup(project, md->getRuleSet(), first, last, groupName, macro);
+                Q_UNUSED(cmd);
             }
         }
 
@@ -1148,6 +1165,7 @@ void RuleSetView::removeRule()
         if (!rulesToDelete.isEmpty())
         {
             FWCmdRuleDelete* cmd =  new FWCmdRuleDelete(project, md->getRuleSet(), rulesToDelete, macro);
+            Q_UNUSED(cmd);
         }
         project->undoStack->push(macro);
     }
@@ -2135,6 +2153,36 @@ void RuleSetView::pasteObject()
     }
 }
 
+void RuleSetView::convertToAny()
+{
+    RuleSetModel* md = ((RuleSetModel*)model());
+    if (!canChange(md)) return;
+
+    QModelIndex index = currentIndex();
+    if (!index.isValid()) return;
+
+    FWObject *obj = fwosm->selectedObject;
+
+    if (obj!=NULL)
+    {
+        QString text = tr("convert to Any from ")+QString::fromUtf8(fwosm->selectedObject->getName().c_str());
+
+        RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
+
+        int position = Rule::cast(re->getParent())->getPosition();
+        int column = index.column();
+        int number = getObjectNumber(obj, index);
+
+        FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(
+                    project, ((RuleSetModel*)model())->getRuleSet(), re, position, column, number,
+                    text, 0);
+        RuleElement *newRe = RuleElement::cast(cmd->getNewState());
+        newRe->removeRef(obj);
+        if (newRe->isAny()) newRe->setNeg(false);
+        project->undoStack->push(cmd);
+    }
+}
+
 void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 {
     ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
@@ -2216,25 +2264,74 @@ void RuleSetView::dropEvent(QDropEvent *ev)
     ev->accept();
 }
 
+
+
+bool RuleSetView::useDummy(RuleElement *re) const
+{
+    if (re->getTypeName() == "Src")
+        return (st->getInt("Objects/PolicyRule/defaultSource"));
+    if (re->getTypeName() == "Dst")
+        return (st->getInt("Objects/PolicyRule/defaultDestination"));
+    if (re->getTypeName() == "Srv")
+        return (st->getInt("Objects/PolicyRule/defaultService"));
+    if (re->getTypeName() == "Itf")
+        return (st->getInt("Objects/PolicyRule/defaultInterface"));
+    return false;
+}
+
+void RuleSetView::setDummy(RuleElement *re)
+{
+    if (re->getDummyElementId() > 0)
+        re->addRef(re->getRoot()->findInIndex(re->getDummyElementId()));
+}
+
+bool RuleSetView::isDummy(RuleElement *re, int child) const
+{
+    child--; //Convert from 1-index based to 0-index based
+    if (child < 0) return false;
+    if (!re) return false;
+
+    FWObject::const_iterator i1 = re->begin();
+    if (i1 == re->end()) return false;
+
+    while (child--)
+        if (i1++ == re->end())
+            return false;
+
+    if (FWReference *ref = FWReference::cast(*i1))
+        if (ref->getPointerId() == re->getDummyElementId())
+            return true;
+
+    return false;
+}
+
 void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, QString text, QUndoCommand* macro)
 {
 
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-    if (re==NULL || re->isAny()) return;
+
+    //if (re==NULL || re->isAny()) return;
+    if (re==NULL) return;
+    if (re->isAny() && !useDummy(re)) return;
 
     int position = Rule::cast(re->getParent())->getPosition();
     int column = index.column();
     int number = getObjectNumber(obj, index);
 
+    if (isDummy(re, number) && useDummy(re)) return;
     FWCmdRuleChangeRe* cmd = new  FWCmdRuleChangeRe(
         project, ((RuleSetModel*)model())->getRuleSet(), re, position, column, number,
         text, macro);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->removeRef(obj);
     if (newRe->isAny()) newRe->setNeg(false);
+
+    if (newRe->isAny() && useDummy(newRe))
+        setDummy(newRe);
+
     if (macro == 0)
         project->undoStack->push(cmd);
-}
+    }
 
 bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text, QUndoCommand* macro)
 {
@@ -2250,6 +2347,9 @@ bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text, Q
         text, macro);
     RuleElement *newRe = RuleElement::cast(cmd->getNewState());
     newRe->addRef(obj);
+
+    newRe->removeRef(newRe->getRoot()->findInIndex(newRe->getDummyElementId()));
+
     if (macro == 0)
         project->undoStack->push(cmd);
     return true;
@@ -2316,6 +2416,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
     }
 
     if (re->getAnyElementId()==obj->getId()) return false;
+    if (re->getDummyElementId()==obj->getId()) return false;
 
     if ( !re->isAny())
     {
@@ -2376,8 +2477,11 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
 void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QWidget *fromWidget = ev->source();
+#else
+    QWidget *fromWidget = qobject_cast<QWidget*>(ev->source());
+#endif
 
     // The source of DnD object must be the same instance of fwbuilder
     if (fromWidget)

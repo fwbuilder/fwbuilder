@@ -1,0 +1,14 @@
+debian/tmp/usr/bin/fwbuilder
+debian/tmp/usr/bin/fwbedit
+debian/tmp/usr/bin/fwb_ipf
+debian/tmp/usr/bin/fwb_ipfw
+debian/tmp/usr/bin/fwb_pf
+debian/tmp/usr/bin/fwb_ipt
+debian/tmp/usr/bin/fwb_iosacl
+debian/tmp/usr/bin/fwb_nxosacl
+debian/tmp/usr/bin/fwb_pix
+debian/tmp/usr/bin/fwb_procurve_acl
+debian/tmp/usr/bin/fwb_junosacl
+src/libgui/Icons/firewall_64.xpm /usr/share/pixmaps/fwbuilder/
+debian/fwbuilder.desktop      /usr/share/applications/
+src/tools/fwb_compile_all     /usr/bin/

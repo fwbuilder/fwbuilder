@@ -52,7 +52,7 @@ class LibExportDialog : public  QDialog{
 
  public:
     std::map<int, libfwbuilder::FWObject*>   mapOfLibs;
-    LibExportDialog(QWidget* parent=0, const char* name=0, bool modal = FALSE );
+    LibExportDialog(QWidget* parent=0, const char* name=0, bool modal = false );
     ~LibExportDialog();
     
     Ui::LibExport_q *m_dialog;

@@ -29,7 +29,7 @@
 #include <QMetaType>
 
 #include <string>
-
+#include <QString>
 
 class ColDesc
 {

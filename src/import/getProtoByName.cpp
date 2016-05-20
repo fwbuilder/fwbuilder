@@ -118,7 +118,11 @@ int GetProtoByName::getProtocolByName(const QString &name)
 
     if (protocols.contains(name)) return protocols[name];
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     struct protoent *pe = getprotobyname(name.toAscii().constData());
+#else
+    struct protoent *pe = getprotobyname(name.toLatin1().constData());
+#endif
     if (pe!=NULL)
         return pe->p_proto;
 

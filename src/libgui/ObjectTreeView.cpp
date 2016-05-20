@@ -47,6 +47,11 @@
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/Policy.h"
 #include "fwbuilder/Resources.h"
+#include "fwbuilder/TCPUDPService.h"
+#include "fwbuilder/ServiceGroup.h"
+#include "fwbuilder/FWServiceReference.h"
+#include "fwbuilder/AddressRange.h"
+#include "fwbuilder/Network.h"
 
 #include <QAbstractItemView>
 #include <QBitmap>
@@ -81,7 +86,11 @@ using namespace libfwbuilder;
 ObjectTreeView::ObjectTreeView(ProjectPanel* project,
                                QWidget* parent,
                                const char * name,
+                               #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                                Qt::WFlags f) :
+                               #else
+                               Qt::WindowFlags f) :
+                               #endif
     QTreeWidget(parent), 
     m_project(project)
 {
@@ -148,7 +157,11 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
     //header()->hide();
 
     header()->setDefaultAlignment(Qt::AlignLeft);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     header()->setResizeMode(QHeaderView::Interactive);
+#else
+    header()->setSectionResizeMode(QHeaderView::Interactive);
+#endif
 
     showOrHideAttributesColumn();
 
@@ -156,11 +169,11 @@ ObjectTreeView::ObjectTreeView(ProjectPanel* project,
 
     setAutoScroll(true);
     setAutoScrollMargin(50);
-    setAllColumnsShowFocus( TRUE );
+    setAllColumnsShowFocus( true );
     setSelectionMode( ExtendedSelection );
     setAcceptDrops( true );
     setDragDropMode( QAbstractItemView::DragDrop );
-    setRootIsDecorated( TRUE );
+    setRootIsDecorated( true );
 
     setFocusPolicy(Qt::StrongFocus);
 
@@ -223,9 +236,12 @@ bool ObjectTreeView::event( QEvent *event )
 
             if (obj==NULL) return false;
 
-            if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
-                obj->getId() == FWObjectDatabase::ANY_SERVICE_ID ||
-                obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID)
+            if (obj->getId() == FWObjectDatabase::ANY_ADDRESS_ID  ||
+                obj->getId() == FWObjectDatabase::ANY_SERVICE_ID  ||
+                obj->getId() == FWObjectDatabase::ANY_INTERVAL_ID ||
+                obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID ||
+                obj->getId() == FWObjectDatabase::DUMMY_SERVICE_ID ||
+                obj->getId() == FWObjectDatabase::DUMMY_INTERFACE_ID)
                 return false;
 
             cr = visualItemRect(itm);
@@ -373,6 +389,11 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
 
     if (FWBTree().isSystem(obj)) return NULL;
 */
+    if ((current_obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID)   ||
+        (current_obj->getId() == FWObjectDatabase::DUMMY_INTERFACE_ID) ||
+        (current_obj->getId() == FWObjectDatabase::DUMMY_SERVICE_ID))
+        return;
+
     QString icn = (":/Icons/"+current_obj->getTypeName()+"/icon-ref").c_str();
 
     vector<FWObject*> so = getSimplifiedSelection();
@@ -851,11 +872,155 @@ void ObjectTreeView::updateFilter()
     setFilter(filter);
 }
 
+static bool filterMatchesPortRange(const QStringList &args,
+                                   FWObject *obj)
+{
+    if (!obj) return false;
+
+    // We traverse the service group. If the children are references
+    // they may be pointing to ports
+    if (obj->getTypeName() == ServiceGroup::TYPENAME) {
+        for (list<FWObject*>::const_iterator it=obj->begin(); it!=obj->end(); ++it) {
+            FWServiceReference *ref = FWServiceReference::cast(*it);
+            if (ref && filterMatchesPortRange(args, ref->getPointer()))
+                return true;
+        }
+    }
+
+    TCPUDPService *service = dynamic_cast<TCPUDPService*>(obj);
+    if (!service) return false;
+
+    QRegExp rx("\\s*([><]?)\\s*(\\d*)(?:-(\\d*))?");
+
+    foreach (const QString &arg, args) {
+
+        if (!rx.exactMatch(arg)) continue;
+
+        int lowerBound = rx.cap(2).toInt(), upperBound = lowerBound;
+
+        if (rx.pos(3) != -1) {
+            upperBound = rx.cap(3).toInt();
+        }
+
+        if (rx.pos(1) != -1) {
+            if (rx.pos(3) != -1) // [><] cannot be combined with range
+                continue;
+
+            if (rx.cap(1) == ">") {
+                upperBound = 65535;
+                ++lowerBound; // Adjust for using >= below
+            } else {// "<"
+                lowerBound = 1;
+                --upperBound; // Adjust for using <= below
+            }
+        }
+
+        if (lowerBound > upperBound) continue;
+
+        int ds = service->getDstRangeStart(), de = service->getDstRangeEnd(),
+                ss = service->getSrcRangeStart(), se = service->getSrcRangeEnd();
+
+        if (ds && de && (lowerBound <= ds) && (de <= upperBound)) return true;
+        if (ss && se && (lowerBound <= ss) && (se <= upperBound)) return true;
+    } // End foreach
+
+    return false;
+}
+
+static bool filterMatchesIpAddress(const QStringList &args,
+                                   FWObject *obj)
+{
+    if (!obj) return false;
+
+    // We traverse the object group. If the children are references
+    // they may be pointing to adresses
+    if (obj->getTypeName() == ObjectGroup::TYPENAME) {
+        for (list<FWObject*>::const_iterator it=obj->begin(); it!=obj->end(); ++it) {
+            FWObjectReference *ref = FWObjectReference::cast(*it);
+            if (ref && filterMatchesIpAddress(args, ref->getPointer()))
+                return true;
+        }
+    }
+
+    Address *addr = dynamic_cast<Address*>(obj);
+    if (!addr) return false;
+
+    QRegExp rx("\\s*([.:0-9a-fA-F]+)(?:/([.:0-9a-fA-F]+))?");
+
+    InetAddrMask searchAddrAndMask;
+    foreach (const QString &arg, args) {
+
+        if (!rx.exactMatch(arg)) continue;
+
+        try {
+            std::string netmask = rx.cap(2).isEmpty() ? "32" : rx.cap(2).toStdString();
+            InetAddr ipv4addr(rx.cap(1).toStdString());
+            InetAddr ipv4mask(netmask);
+            searchAddrAndMask = InetAddrMask(ipv4addr, ipv4mask);
+        } catch (const FWException) { // Could not create IPv4 object. Trying IPv6.
+            try {
+                int netmask = rx.cap(2).isEmpty() ? 128 : rx.cap(2).toInt();
+                InetAddr ipv6addr(AF_INET6, rx.cap(1).toStdString());
+                InetAddr ipv6mask(AF_INET6, netmask);
+                searchAddrAndMask = InetAddrMask(ipv6addr, ipv6mask);
+            } catch (const FWException) { // Could not create IPv6 object.
+                // User did not submit a valid IP address
+                return false;
+            }
+        }
+
+        const InetAddr *searchAddr = searchAddrAndMask.getAddressPtr();
+
+        if (addr->getTypeName() == AddressRange::TYPENAME) {
+            AddressRange *addrRange = dynamic_cast<AddressRange*>(obj);
+            if (addrRange
+                && (searchAddr->addressFamily() == addrRange->getRangeStart().addressFamily()) ) {
+
+                if ( !(searchAddr->opLT(addrRange->getRangeStart()))
+                     && !(searchAddr->opGT(addrRange->getRangeEnd())) )
+                    return true;
+            }
+            continue; // Next argument
+        }
+
+        const InetAddr *inetAddr = addr->getAddressPtr();
+
+
+        if ( inetAddr && (inetAddr->addressFamily() == searchAddr->addressFamily()) ) {
+            if (addr->getTypeName() == Network::TYPENAME) {
+                if (addr->belongs(*searchAddr))
+                    return true;
+            }
+            if (searchAddrAndMask.belongs(*inetAddr))
+                return true;
+        }
+    } // End foreach
+
+    return false;
+}
+
+static bool filterMatchesCommand(const QString &text,
+                                 ObjectTreeViewItem *item)
+{
+    QRegExp rx("(?:(port)|(ip)):(.*)", Qt::CaseInsensitive);
+    if (!rx.exactMatch(text)) return false;
+
+    QStringList args = rx.cap(3).split(",", QString::SkipEmptyParts);
+
+    if (rx.pos(1) != -1)
+        return (filterMatchesPortRange(args, item->getFWObject()));
+    else
+        return (filterMatchesIpAddress(args, item->getFWObject()));
+}
+
 static bool filterMatches(const QString &text,
                           ObjectTreeViewItem *item)
 {
     if (text.isEmpty()) return true;
     if (item->text(0).contains(text, Qt::CaseInsensitive)) return true;
+
+    // Support for port and ip search
+    if (filterMatchesCommand(text, item)) return true;
 
     if (item->getUserFolderParent() != 0) return false;
     FWObject *obj = item->getFWObject();

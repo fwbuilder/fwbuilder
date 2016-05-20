@@ -374,7 +374,7 @@ void ssh_wrapper( int argc, char *argv[] )
         struct timeval tv;
         int     retval;
 
-        #define BUFFSIZE 512
+        #define BUFFSIZE 1024
 
 #ifdef DEBUG_INSTALLER
         int debug_file = open("installer.dbg",O_CREAT|O_WRONLY);

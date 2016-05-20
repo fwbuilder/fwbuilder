@@ -7,7 +7,13 @@ Vadim Zaliva <lord@crocodile.org>          libfwbuilder API design;
 					   XML data storage implementation;
 					   implementation of printing 
 
-
-
-
-
+UNINETT AS, Sirius Bakke <sirius.bakke@uninett.no>
+		Search for objects by port number or ip address
+		Graphical diff viewer
+		Diff on generated output, autocompiling firewall when loading file
+		Support for Cisco NXOS Access lists
+		Support for dummy objects in rules
+		Port to Qt5
+		New buildscript and instructions for OSX
+		Added build instructions for Windows
+<

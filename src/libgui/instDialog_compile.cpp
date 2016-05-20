@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -42,6 +47,7 @@
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/Management.h"
+#include "fwcompiler/BaseCompiler.h"
 
 #include <errno.h>
 #include <iostream>
@@ -50,6 +56,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QFile>
+#include <QDir>
 #include <QtDebug>
 
 using namespace std;
@@ -97,7 +104,9 @@ bool instDialog::runCompiler(Firewall *fw)
     addToLog( args.join(" ") + "\n" );
 
     // compilers always write file names into manifest in Utf8
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     // Launch compiler in the background
@@ -211,6 +220,14 @@ Can't compile firewall policy."),
     args.push_back("-f");
     args.push_back(project->getRCS()->getFileName());
 
+    // If we are compiling in the background (for diff), set wdir to temp directory
+    if (isAutoCompiling) {
+        QDir tempDir(project->getTemporaryDirPath());
+        if (!tempDir.exists())
+            tempDir.mkdir(project->getTemporaryDirPath());
+        wdir = tempDir.absolutePath();
+    }
+
     if (wdir!="")
     {
         args.push_back("-d");
@@ -276,9 +293,15 @@ void instDialog::compilerFinished(int ret_code, QProcess::ExitStatus status)
         return;
     }
 
-    if (ret_code==0 && status==QProcess::NormalExit)
+//    if (ret_code==0 && status==QProcess::NormalExit)
+    if ((ret_code==fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS
+         || ret_code==fwcompiler::BaseCompiler::FWCOMPILER_WARNING)
+            && status==QProcess::NormalExit && !isAutoCompiling)
     {
-        opSuccess(cnf.fwobj);
+        if (ret_code==fwcompiler::BaseCompiler::FWCOMPILER_WARNING)
+            opWarning(cnf.fwobj);
+        else
+            opSuccess(cnf.fwobj);
 //        mw->updateLastCompiledTimestamp(cnf.fwobj);
 
         QCoreApplication::postEvent(

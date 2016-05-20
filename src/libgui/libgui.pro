@@ -1,7 +1,7 @@
 # -*- mode: makefile; tab-width: 4; -*-
 
 QT += network
-
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 include(../../qmake.inc)
 
 exists(qmake.inc):include( qmake.inc)
@@ -35,6 +35,8 @@ HEADERS += ../../config.h \
     SSHCisco.h \
     SSHPIX.h \
     SSHIOS.h \
+    SSHNXOS.h \
+    SSHJUNOS.h \
     SSHProcurve.h \
     debugDialog.h \
     findDialog.h \
@@ -107,6 +109,10 @@ HEADERS += ../../config.h \
     pixosAdvancedDialog.h \
     iosaclAdvancedDialog.h \
     iosAdvancedDialog.h \
+    nxosaclAdvancedDialog.h \
+    nxosAdvancedDialog.h \
+    junosaclAdvancedDialog.h \
+    junosAdvancedDialog.h \
     ipcoposAdvancedDialog.h \
     linux24AdvancedDialog.h \
     linksysAdvancedDialog.h \
@@ -134,6 +140,7 @@ HEADERS += ../../config.h \
     instDialog.h \
     FirewallInstaller.h \
     FirewallInstallerCisco.h \
+    FirewallInstallerJuniper.h \
     FirewallInstallerProcurve.h \
     FirewallInstallerUnx.h \
     newFirewallDialog.h \
@@ -223,7 +230,11 @@ HEADERS += ../../config.h \
 	importFirewallConfigurationWizard/IC_NetworkZonesPage.h \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.h \
 	importFirewallConfigurationWizard/ImporterThread.h \
-
+    	RuleSetDiffDialog.h \
+	RuleSetDiffDelegate.h \
+    	RuleSetDiffModel.h \
+    	BackgroundCompileInfoWidget.h \
+    	temporarydir.h
 
 
 SOURCES += ProjectPanel.cpp \
@@ -246,6 +257,8 @@ SOURCES += ProjectPanel.cpp \
     SSHCisco.cpp \
     SSHPIX.cpp \
     SSHIOS.cpp \
+    SSHNXOS.cpp \
+    SSHJUNOS.cpp \
     SSHProcurve.cpp \
     debugDialog.cpp \
     findDialog.cpp \
@@ -318,6 +331,10 @@ SOURCES += ProjectPanel.cpp \
     pixosAdvancedDialog.cpp \
     iosaclAdvancedDialog.cpp \
     iosAdvancedDialog.cpp \
+    nxosaclAdvancedDialog.cpp \
+    nxosAdvancedDialog.cpp \
+    junosaclAdvancedDialog.cpp \
+    junosAdvancedDialog.cpp \
     ipcoposAdvancedDialog.cpp \
     linux24AdvancedDialog.cpp \
     linksysAdvancedDialog.cpp \
@@ -348,6 +365,7 @@ SOURCES += ProjectPanel.cpp \
     instDialog_installer.cpp \
     FirewallInstaller.cpp \
     FirewallInstallerCisco.cpp \
+    FirewallInstallerJuniper.cpp \
     FirewallInstallerProcurve.cpp \
     FirewallInstallerUnx.cpp \
     newFirewallDialog.cpp \
@@ -439,8 +457,12 @@ SOURCES += ProjectPanel.cpp \
 	importFirewallConfigurationWizard/IC_ProgressPage.cpp \
 	importFirewallConfigurationWizard/IC_NetworkZonesPage.cpp \
 	importFirewallConfigurationWizard/ImportFirewallConfigurationWizard.cpp \
-	importFirewallConfigurationWizard/ImporterThread.cpp
-
+	importFirewallConfigurationWizard/ImporterThread.cpp \
+    	RuleSetDiffDialog.cpp \
+    	RuleSetDiffDelegate.cpp \
+    	RuleSetDiffModel.cpp \
+    	BackgroundCompileInfoWidget.cpp \
+    	temporarydir.cpp
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
@@ -478,6 +500,10 @@ FORMS = FWBMainWindow_q.ui \
     pixosadvanceddialog_q.ui \
     iosacladvanceddialog_q.ui \
     iosadvanceddialog_q.ui \
+    nxosacladvanceddialog_q.ui \
+    nxosadvanceddialog_q.ui \
+    junosacladvanceddialog_q.ui \
+    junosadvanceddialog_q.ui \
     procurveacladvanceddialog_q.ui \
     simpletexteditor_q.ui \
     simpleinteditor_q.ui \
@@ -573,6 +599,7 @@ FORMS = FWBMainWindow_q.ui \
 	importFirewallConfigurationWizard/ic_platformwarningpage_q.ui \
 	importFirewallConfigurationWizard/ic_progresspage_q.ui \
 	importFirewallConfigurationWizard/ic_networkzonespage_q.ui \
+    rulesetdiffdialog_q.ui
 
 
 # fwtransfer stuff.
@@ -588,6 +615,7 @@ INCLUDEPATH += \
     ../iptlib \
     ../pflib \
     ../cisco_lib \
+    ../juniper_lib \
     ../compiler_lib \
 	../libfwbuilder/src
 
@@ -596,6 +624,7 @@ DEPENDPATH += \
     ../iptlib \
     ../pflib \
     ../cisco_lib/ \
+    ../juniper_lib \
     ../compiler_lib \
 	../libfwbuilder/src
 

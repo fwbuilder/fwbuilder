@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -161,6 +166,9 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     proc.setProcessChannelMode(QProcess::MergedChannels);
 
     m_dialog->fwWorkList->setSortingEnabled(true);
+
+    connect(currentFirewallsBar, SIGNAL(valueChanged(int)), this, SIGNAL(currentFirewallsBarValueChanged(int)));
+    isAutoCompiling = false;
 }
 
 /*
@@ -176,13 +184,14 @@ void instDialog::show(ProjectPanel *proj,
                       std::set<Firewall*> fws)
 {
     canceledAll = false;
-    if (isVisible()) return;
+    if (isVisible() || isAutoCompiling) return;
     lastPage = -1;
     installer = NULL;
     finished = false;
     page_1_op = INST_DLG_COMPILE;
     compile_complete = false;
     rejectDialogFlag = false;
+    isAutoCompiling = false;
 
     m_dialog->selectTable->clear();
     this->project = proj;
@@ -279,6 +288,15 @@ void instDialog::show(ProjectPanel *proj,
     showPage(CHOOSE_OBJECTS);
 }
 
+void instDialog::autoCompile(ProjectPanel *project)
+{
+        show(project, false, false, std::set<Firewall*>());
+        hide();
+        isAutoCompiling = true;
+        selectAllFirewalls();
+        nextButton->click();
+}
+
 instDialog::~instDialog()
 {
     if (inst_opt_dlg != NULL) delete inst_opt_dlg;
@@ -332,6 +350,13 @@ void instDialog::mainLoopCompile()
 //             setNextEnabled(currentPage(), true);
 //             setFinishEnabled(currentPage(), false);
 //             m_dialog->inspectGeneratedFiles->setEnabled(compile_complete);
+        }
+
+        if (isAutoCompiling) {
+            finishButton->click();
+            isAutoCompiling = false;
+            emit autoCompileDone();
+            deleteLater();
         }
     }
 }
@@ -454,7 +479,8 @@ void instDialog::showPage(const int page)
                 {
                     Firewall *fw = *i;
                     if (compile_status[fw] ==
-                        fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS)
+                        fwcompiler::BaseCompiler::FWCOMPILER_SUCCESS
+                            || fwcompiler::BaseCompiler::FWCOMPILER_WARNING)
                     {
                         setNextEnabled(page, true);
                         m_dialog->nextButton->setDefault(true);
@@ -466,10 +492,12 @@ void instDialog::showPage(const int page)
                 setBackEnabled(page, true);
             } else
             {
-                mw->fileSave();
+                if (!isAutoCompiling)
+                    mw->fileSave();
                 currentFirewallsBar->reset();
                 currentFirewallsBar->setFormat("%v/%m");
                 currentFirewallsBar->setMaximum(compile_list_initial_size);
+                emit currentFirewallsBarMaximumValueChanged(currentFirewallsBar->maximum());
                 m_dialog->procLogDisplay->clear();
                 fillCompileUIList();
                 qApp->processEvents();
@@ -514,10 +542,11 @@ void instDialog::showPage(const int page)
                 viewer = new FirewallCodeViewer(
                     files,
                     QString("<b>") + firewalls.front()->getName().c_str() + "</b>",
+                    project,
                     this);
             else
                 viewer = new FirewallCodeViewer(
-                    files, tr("<b>Multiple firewalls</b>"), this);
+                    files, tr("<b>Multiple firewalls</b>"), project, this);
             viewer->hideCloseButton();
 
             viewer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -665,13 +694,19 @@ bool instDialog::checkSSHPathConfiguration(Firewall *fw)
 bool instDialog::isCiscoFamily()
 {
     string platform = cnf.fwobj->getStr("platform");
-    return (platform=="pix" || platform=="fwsm" || platform=="iosacl");
+    return (platform=="pix" || platform=="fwsm" || platform=="iosacl" || platform=="nxosacl");
 }
 
 bool instDialog::isProcurve()
 {
     string platform = cnf.fwobj->getStr("platform");
     return (platform=="procurve_acl");
+}
+
+bool instDialog::isJuniper()
+{
+    string platform = cnf.fwobj->getStr("platform");
+    return (platform=="junosacl");
 }
 
 /*
@@ -734,7 +769,9 @@ void instDialog::setUpProcessToInstall()
 bool instDialog::executeCommand(const QString &path, QStringList &args)
 {
     // set codecs so that command line parameters can be encoded
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
     enableStopButton();
     QTime start_time;

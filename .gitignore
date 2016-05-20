@@ -34,12 +34,14 @@ qtdbus_test
 fwbedit
 qrc_MainRes.cpp
 fwb_iosacl
+fwb_nxosacl
 fwb_ipf
 fwb_ipfw
 fwb_ipt
 fwb_pf
 fwb_pix
 fwb_procurve_acl
+fwb_junosacl
 transfer_secuwall
 .configure_marker
 .build_marker
@@ -50,4 +52,8 @@ src/unit_tests/generatedScriptTests*/generatedScriptTests*
 src/unit_tests/generatedScriptTestsSecuwall/ref.*
 src/unit_tests/generatedScriptTestsSecuwall/secuwall-1/
 src/unit_tests/generatedScriptTestsSecuwall/secuwall-2/
-
+*.pro.user
+src/libfwbuilder/etc/fwbuilder.dtd
+src/res/objects_init.xml
+src/res/templates.xml
+VERSION.h

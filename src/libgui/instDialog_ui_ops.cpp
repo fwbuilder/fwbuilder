@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -317,6 +322,19 @@ void instDialog::setSuccessState(QTreeWidgetItem *item)
     item->setFont(0,f);
 }
 
+void instDialog::setWarningState(QTreeWidgetItem *item)
+{
+    QBrush b = item->foreground(1);
+    b.setColor(QColor("orange"));
+    item->setForeground(1,b);
+    item->setForeground(0,b);
+
+    QFont f = item->font(1);
+    f.setBold(true);
+    item->setFont(1,f);
+    item->setFont(0,f);
+}
+
 void instDialog::setFailureState(QTreeWidgetItem *item)
 {
     QBrush b = item->foreground(1);
@@ -367,6 +385,21 @@ void instDialog::opSuccess(Firewall *fw)
     {
         itm->setText(1,tr("Success"));
         setSuccessState(itm);
+    }
+    currentLabel->setText("");
+}
+
+void instDialog::opWarning(Firewall *fw)
+{
+    if (fwbdebug)
+        qDebug() << "instDialog::opWarning fw=" << fw->getName().c_str();
+
+    compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_WARNING;
+    QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
+    if (itm)
+    {
+        itm->setText(1,tr("Success with warning"));
+        setWarningState(itm);
     }
     currentLabel->setText("");
 }
@@ -721,7 +754,11 @@ void instDialog::saveLog()
 
     if (!s.endsWith(".txt")) s += ".txt";
     if (fwbdebug)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         qDebug( "Saving log to file %s", s.toAscii().constData() );
+#else
+        qDebug( "Saving log to file %s", s.toLatin1().constData() );
+#endif
 
     QFile f(s);
     if (f.open( QIODevice::WriteOnly ))
@@ -796,15 +833,24 @@ void instDialog::addToLog(const QString &buf)
 void instDialog::interpretLogLine(const QString &line)
 {
     if (fwbdebug)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         qDebug("instDialog::interpretLogLine %s", line.toAscii().constData() );
+#else
+        qDebug("instDialog::interpretLogLine %s", line.toLatin1().constData() );
+#endif
 
     QStringList words = line.trimmed().split(" ");
 
     if (fwbdebug)
     {
         for (int i=0; i<words.size(); ++i)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             qDebug("instDialog::interpretLogLine words[%d]='%s'",
                    i, words[i].toAscii().constData());
+#else
+            qDebug("instDialog::interpretLogLine words[%d]='%s'",
+                   i, words[i].toLatin1().constData());
+#endif
     }
 
     if (words.first().indexOf("rule")>=0)
@@ -1231,14 +1277,21 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
         cnf.diff_file = QString(cnf.fwobj->getName().c_str())+".diff";
         cnf.diff_pgm = Resources::platform_res[platform]->
             getResourceStr("/FWBuilderResources/Target/diff").c_str();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         cnf.diff_pgm = getPathToBinary(
             cnf.diff_pgm.toAscii().constData()).c_str();
+#else
+        cnf.diff_pgm = getPathToBinary(
+            cnf.diff_pgm.toLatin1().constData()).c_str();
+#endif
 #ifdef _WIN32
         cnf.diff_pgm = cnf.diff_pgm + ".exe";
 #endif
         cnf.sshArgs = fwopt->getStr("sshArgs").c_str();
         cnf.scpArgs = fwopt->getStr("scpArgs").c_str();
         cnf.useSCPForRouter = fwopt->getBool("use_scp");
+        cnf.useNXOSSession = fwopt->getBool("use_nxos_session");
+
 
         cnf.activationCmd = fwopt->getStr("activationCmd").c_str();
 
@@ -1248,9 +1301,15 @@ void instDialog::readInstallerOptionsFromFirewallObject(Firewall *fw)
             qDebug("host_OS: %s", host_OS.c_str());
             qDebug("user_can_change_install_dir=%d", uccid);
             qDebug("firewall_dir='%s'", fwopt->getStr("firewall_dir").c_str());
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             qDebug("management address: %s", cnf.maddr.toAscii().constData());
             qDebug("cnf.fwdir='%s'", cnf.fwdir.toAscii().constData());
             qDebug("activationCmd='%s'", cnf.activationCmd.toAscii().constData());
+#else
+            qDebug("management address: %s", cnf.maddr.toLatin1().constData());
+            qDebug("cnf.fwdir='%s'", cnf.fwdir.toLatin1().constData());
+            qDebug("activationCmd='%s'", cnf.activationCmd.toLatin1().constData());
+#endif
         }
 
     }

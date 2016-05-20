@@ -200,7 +200,9 @@ bool NATCompiler_pf::NATRuleType::processNext()
     }
 
     bool osrv_defines_src_port = false;
+    Q_UNUSED(osrv_defines_src_port);
     bool osrv_defines_dst_port = false;
+    Q_UNUSED(osrv_defines_dst_port);
     bool tsrv_translates_src_port = false;
     bool tsrv_translates_dst_port = false;
 

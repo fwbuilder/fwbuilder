@@ -1559,6 +1559,7 @@ void SNMPCrawler::run_impl(Logger *logger,
                     InetAddrMask *net = *n;
                     const InetAddr *addr = net->getAddressPtr();
                     const InetAddr *netm = net->getNetmaskPtr();
+                    (void)netm; //UNUSED
                     if (addr==NULL) continue;
 
                     //InetAddrMask net(*addr, *netm);

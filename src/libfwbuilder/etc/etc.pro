@@ -3,7 +3,7 @@
 
 include(../qmake.inc)
 
-TEMPLATE = lib
+TEMPLATE = app
 
 win32 {
 	CONFIG -= embed_manifest_exe

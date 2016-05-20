@@ -5,7 +5,7 @@ include(../qmake.inc)
 
 TEMPLATE = subdirs
 
-CONFIG  += ordered
+CONFIG  += ordered debug
 
 TARGET   = src
 
@@ -23,9 +23,12 @@ SUBDIRS  =  libfwbuilder \
 			ipf \
 			ipfw \
 			cisco_lib \
+			nxosacl \
 			iosacl \
 			pix \
 			procurve_acl \
+            juniper_lib \
+            junosacl \
 			libgui \
 			fwbedit \
 			gui \

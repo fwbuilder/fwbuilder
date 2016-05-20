@@ -1,0 +1,61 @@
+<h1>Firewall Builder 5.3.6 Release Notes</h1>
+
+
+<p>
+  <a href="https://github.com/UNINETT/fwbuilder/issues">GitHub: Issues</a>
+</p>
+
+<a name="Junos"></a>
+<h2>Changes in support for Junos</h2>
+
+<ul>
+  <li>
+    <p>
+      Bugfix: syntax error for "source-port"; missing colon is added.
+    </p>
+  </li>
+  <li>
+    <p>
+      Bugfix: do a rollback when getting syntax error when installing firewall.
+    </p>
+  </li>
+  <li>
+    <p>
+      Bugfix: set correct ICMP header for IPv6.
+    </p>
+  </li>
+  <li>
+    <p>
+      Bugfix: use /128 netmask on IPv6 host objects.
+    </p>
+  </li>
+  <li>
+    <p>
+      Bugfix: newer versions of Junos include an updated version of OpenSSH, resulting in not
+      outputing a space after asking for password. The installer now handles this space as optional.
+      This prevents installation of firewall from halting, waiting for authentication information.
+  <li>
+    <p>
+      Feature: added IP fragmentation service object in the standard object database.
+    </p>
+  </li>
+
+
+</ul>
+
+<!-- ######################################################################### -->
+<a name="other"></a>
+<h2>Other changes</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Added support for Git version numbering when doing development.
+    </p>
+  </li>
+
+</ul>
+
+
+

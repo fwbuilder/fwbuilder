@@ -40,7 +40,7 @@
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QStringList>
 #include <QTextCodec>
 #include <QTime>
@@ -76,13 +76,15 @@ void usage(const char *name)
 
 int main(int argc, char **argv)
 {   
-    QApplication app(argc, argv, false);
+    QCoreApplication app(argc, argv, false);
 
     QTime total_time_timer;
     total_time_timer.start();
 
     // compilers always write file names into manifest in Utf8
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     QStringList args = app.arguments();
@@ -156,7 +158,8 @@ int main(int argc, char **argv)
             exit(1);
         }
         driver->compile();
-        int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        //int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        int ret = driver->getStatus();
 
 	QTime time_spent = QTime().addMSecs(total_time_timer.elapsed());
 	cerr << "Compile time: "

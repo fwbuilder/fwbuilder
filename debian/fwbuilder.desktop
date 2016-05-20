@@ -1,0 +1,11 @@
+[Desktop Entry]
+# This is the spec version, *not* the application version
+Version=1.0
+Type=Application
+Name=Firewall Builder
+GenericName=Firewall administration tool
+Comment=Firewall administration tool GUI
+Icon=/usr/share/pixmaps/fwbuilder/firewall_64.xpm
+Exec=fwbuilder
+Terminal=false
+Categories=Network

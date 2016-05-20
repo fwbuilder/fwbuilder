@@ -2,7 +2,7 @@
 <!--
      Firewall Builder Document Type Definition
      http://www.fwbuilder.org/
-     Authors:  Friedhelm Duesterhoeft, Vadim Zaliva, Vadim Kurland, Tidei Maurizio
+     Authors:  Friedhelm Duesterhoeft, Vadim Zaliva, Vadim Kurland, Tidei Maurizio, Sirius Bakke
 
 -->
 
@@ -87,7 +87,7 @@
 >
 
 <!ELEMENT Library
-((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|DynamicGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|AttachedNetworks|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService)*)>
+((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|DynamicGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|AttachedNetworks|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService|DummyNetwork|DummyIPService|DummyInterface)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED
@@ -100,6 +100,13 @@
 
 <!ELEMENT AnyIPService EMPTY>
 <!ATTLIST AnyIPService
+ %SYS_ATTRIBUTES;
+ %STD_ATTRIBUTES;
+ protocol_num %NUMBER;  #FIXED     "0"
+>
+
+<!ELEMENT DummyIPService EMPTY>
+<!ATTLIST DummyIPService
  %SYS_ATTRIBUTES;
  %STD_ATTRIBUTES;
  protocol_num %NUMBER;  #FIXED     "0"
@@ -384,6 +391,21 @@ Interface can have the following attributes:
  label          %STRING;    #IMPLIED
 >
 
+<!ELEMENT DummyInterface (InterfaceOptions?)>
+<!ATTLIST DummyInterface
+ %SYS_ATTRIBUTES;
+ %STD_ATTRIBUTES;
+ dyn            %BOOLEAN;   #REQUIRED
+ unnum          %BOOLEAN;   #IMPLIED
+ mgmt           %BOOLEAN;   #IMPLIED
+ bridgeport     %BOOLEAN;   #IMPLIED
+ security_level %NUMBER;    #REQUIRED
+ network_zone   IDREF       #IMPLIED
+ unprotected    %BOOLEAN;   #IMPLIED
+ dedicated_failover %BOOLEAN; #IMPLIED
+ label          %STRING;    #IMPLIED
+>
+
 <!-- Remote management information for Firewall, Host, Gateway  -->
 <!ELEMENT Management (SNMPManagement? , FWBDManagement?, PolicyInstallScript?)>
 <!ATTLIST Management
@@ -429,6 +451,14 @@ Interface can have the following attributes:
  %STD_ATTRIBUTES;
  address              %IPADDRESS; #FIXED    "0.0.0.0"
  netmask              %NETMASK;   #FIXED    "0.0.0.0"
+>
+
+<!ELEMENT DummyNetwork EMPTY>
+<!ATTLIST DummyNetwork
+ %SYS_ATTRIBUTES;
+ %STD_ATTRIBUTES;
+ address              %IPADDRESS; #FIXED    "255.255.255.255"
+ netmask              %NETMASK;   #FIXED    "255.255.255.255"
 >
 
 <!ELEMENT Network EMPTY>

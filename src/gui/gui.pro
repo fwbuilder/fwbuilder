@@ -3,6 +3,7 @@
 TEMPLATE = app
 LANGUAGE = C++
 QT += network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = fwbuilder
 include(../../qmake.inc)
 exists(qmake.inc):include( qmake.inc)
@@ -51,6 +52,7 @@ OTHER_LIBS  = ../common/$$BINARY_SUBDIR/libcommon.a \
       ../iptlib/$$BINARY_SUBDIR/libiptlib.a \
       ../pflib/$$BINARY_SUBDIR/libfwbpf.a \
       ../cisco_lib/$$BINARY_SUBDIR/libfwbcisco.a \
+      ../juniper_lib/$$BINARY_SUBDIR/libfwbjuniper.a \
       ../compiler_lib/$$BINARY_SUBDIR/libcompilerdriver.a \
       ../libfwbuilder/src/fwcompiler/$$BINARY_SUBDIR/libfwcompiler.a \
       ../libfwbuilder/src/fwbuilder/$$BINARY_SUBDIR/libfwbuilder.a

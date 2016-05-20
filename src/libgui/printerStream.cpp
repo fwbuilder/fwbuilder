@@ -366,6 +366,7 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
         int left_hdr_w = 0;
 
         int top_hdr_h = 0;
+        Q_UNUSED(top_hdr_h);
         if (top_margin && tbl->header() != NULL)
             top_hdr_h = tbl->header()->height();
 
@@ -380,7 +381,11 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
 
         tbl->scrollTo(it.index(), QAbstractItemView::PositionAtTop);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         printPixmap(QPixmap::grabWidget(tbl));
+#else
+        printPixmap(tbl->grab());
+#endif
 
         if (bottomIt == end) break;
 
@@ -474,6 +479,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
             left_hdr_w = tbl->verticalHeader()->width();
 
         int top_hdr_h = 0;
+        Q_UNUSED(top_hdr_h);
         if (top_margin && tbl->horizontalHeader() != NULL)
             top_hdr_h = tbl->horizontalHeader()->height();
 
@@ -506,7 +512,11 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         tbl->update();
 
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         printPixmap(QPixmap::grabWidget(tbl));  //,0,0,-1,pixMapHeight));
+#else
+        printPixmap(tbl->grab());  //,0,0,-1,pixMapHeight));
+#endif
 
         if (bottom_row>=(rowCount-1)) break;
 

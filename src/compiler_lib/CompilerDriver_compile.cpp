@@ -102,8 +102,10 @@ void CompilerDriver::compile()
             cl_driver->run(objdb->getStringId(fw->getId()),
                            objdb->getStringId((*it)->getId()),
                            "");
-            if (cl_driver->status == BaseCompiler::FWCOMPILER_ERROR)
-                status = cl_driver->status;
+            // if (cl_driver->status == BaseCompiler::FWCOMPILER_ERROR)
+            // We need to always copy the status to make sure
+            // FWCOMPILER_WARNING is passed through
+            status = cl_driver->status;
             delete cl_driver;
         }
     }

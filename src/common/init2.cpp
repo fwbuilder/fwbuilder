@@ -6,7 +6,7 @@
 #if defined(Q_OS_MACX) || defined(Q_OS_WIN32)
 #  include <qsettings.h>
 #  include <QDir>
-#  include <QApplication>
+#  include <QCoreApplication>
 #  include <assert.h>
 #endif
 
@@ -52,15 +52,19 @@ void init_win()
  */
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
 
-    if (QCoreApplication::instance()==NULL)
-    {
-        int ac = 0;
-        char **av = { NULL };
-        new QApplication( ac, av );
-    }
-    QDir dir(QApplication::applicationDirPath());
+//    if (QCoreApplication::instance()==NULL)
+//    {
+//        int ac = 0;
+//        char **av = { NULL };
+//        new QApplication( ac, av );
+//    }
+    QDir dir(QCoreApplication::applicationDirPath());
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     appRootDir = string(dir.absolutePath().toAscii().constData());
+#else
+    appRootDir = string(dir.absolutePath().toLatin1().constData());
+#endif
 
 /* On windows and mac we install API resources (DTD etc) in the 
  * dir right above the one where we install resources for the GUI and compilers

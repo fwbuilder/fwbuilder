@@ -7,6 +7,11 @@
   Author:  Vadim Zaliva lord@crocodile.org
            Vadim Kurland vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
   This program is free software which we release under the GNU General Public
@@ -301,6 +306,33 @@ FWObject *FWObjectDatabase::create(const string &type_name, int id, bool init)
             nobj = new Interval();
             if (id > -1) nobj->setId(id);
             nobj->setXMLName("AnyInterval");
+            addToIndex(nobj);
+            return nobj;
+        }
+
+        if (strcmp("DummyNetwork", type_name_cptr)==SAME)
+        {
+            nobj = new Network();
+            if (id > -1) nobj->setId(id);
+            nobj->setXMLName("DummyNetwork");
+            addToIndex(nobj);
+            return nobj;
+        }
+
+        if (strcmp("DummyIPService", type_name_cptr)==SAME)
+        {
+            nobj = new IPService();
+            if (id > -1) nobj->setId(id);
+            nobj->setXMLName("DummyIPService");
+            addToIndex(nobj);
+            return nobj;
+        }
+
+        if (strcmp("DummyInterface", type_name_cptr)==SAME)
+        {
+            nobj = new Interface();
+            if (id > -1) nobj->setId(id);
+            nobj->setXMLName("DummyInterface");
             addToIndex(nobj);
             return nobj;
         }

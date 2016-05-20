@@ -1,0 +1,6 @@
+debian/tmp/usr/share/doc/fwbuilder*/ReleaseNotes*.html
+debian/tmp/usr/share/doc/fwbuilder*/ReleaseNotes*.txt
+debian/tmp/usr/share/doc/fwbuilder*/README.*
+debian/tmp/usr/share/doc/fwbuilder*/AUTHORS
+debian/tmp/usr/share/doc/fwbuilder*/Credits
+debian/tmp/usr/share/doc/fwbuilder*/PatchAcceptancePolicy.txt

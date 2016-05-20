@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<FWBuilderResources>
+    <Target name="nxosacl">
+      <description>Cisco Router NX-OS ACL</description>
+      <status>active</status>
+      <group>Cisco</group>
+      <compiler>fwb_nxosacl</compiler>
+      <dialog>nxosacl</dialog>
+      <installer>fwb_inst_nxosacl</installer>
+      <diff>fwb_nxosacl_diff</diff>
+      <supported_os>nxos</supported_os>
+
+      <versions>4.2,5.0,5.1,5.2,6.0,6.1</versions>
+
+      <options>
+        <default>
+          <nxosacl_include_comments>true</nxosacl_include_comments>
+          <nxosacl_add_clear_statements>true</nxosacl_add_clear_statements>
+          <nxosacl_assume_fw_part_of_any>true</nxosacl_assume_fw_part_of_any>
+        </default>
+
+        <version_12.1>
+          <nxosacl_include_comments>true</nxosacl_include_comments>
+          <nxosacl_add_clear_statements>true</nxosacl_add_clear_statements>
+          <nxosacl_assume_fw_part_of_any>true</nxosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
+          <nxosacl_commands>
+            <clear_acl>no access-list</clear_acl>
+            <clear_ip_acl>no ip access-list</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp 
+            </ip_addr_dyn>
+          </nxosacl_commands>
+        </version_12.1>
+
+        <version_12.2>
+          <nxosacl_include_comments>true</nxosacl_include_comments>
+          <nxosacl_add_clear_statements>true</nxosacl_add_clear_statements>
+          <nxosacl_assume_fw_part_of_any>true</nxosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
+          <nxosacl_commands>
+            <clear_acl>no access-list</clear_acl>
+            <clear_ip_acl>no ip access-list</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp 
+            </ip_addr_dyn>
+          </nxosacl_commands>
+        </version_12.2>
+
+        <version_12.3>
+          <nxosacl_include_comments>true</nxosacl_include_comments>
+          <nxosacl_add_clear_statements>true</nxosacl_add_clear_statements>
+          <nxosacl_assume_fw_part_of_any>true</nxosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
+          <nxosacl_commands>
+            <clear_acl>no access-list</clear_acl>
+            <clear_ip_acl>no ip access-list</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp 
+            </ip_addr_dyn>
+          </nxosacl_commands>
+        </version_12.3>
+
+        <version_12.4>
+          <nxosacl_include_comments>true</nxosacl_include_comments>
+          <nxosacl_add_clear_statements>true</nxosacl_add_clear_statements>
+          <nxosacl_assume_fw_part_of_any>true</nxosacl_assume_fw_part_of_any>
+          <supports_mixed_service_groups>False</supports_mixed_service_groups>
+          <nxosacl_commands>
+            <clear_acl>no access-list</clear_acl>
+            <clear_ip_acl>no ip access-list</clear_ip_acl>
+            <clear_ipv6_acl>no ipv6 access-list</clear_ipv6_acl>
+            <ip_addr_static>
+interface %in
+  ip address %a %n
+            </ip_addr_static>
+            <ip_addr_dyn>
+interface %in
+  ip address dhcp 
+            </ip_addr_dyn>
+          </nxosacl_commands>
+        </version_12.4>
+
+      </options>
+
+      <capabilities>
+        <negation_in_interface_policy>False</negation_in_interface_policy>
+        <negation_in_policy>False</negation_in_policy>
+        <negation_in_nat>False</negation_in_nat>
+        <logging_in_policy>True</logging_in_policy>
+        <options_in_policy>True</options_in_policy>
+        <supports_nat>False</supports_nat>
+        <actions_in_nat>False</actions_in_nat>
+        <inbound_interface_in_nat>False</inbound_interface_in_nat>
+        <outbound_interface_in_nat>False</outbound_interface_in_nat>
+        <supports_time>False</supports_time>
+        <supports_accounting>False</supports_accounting>
+        <security_levels>False</security_levels>
+        <network_zones>False</network_zones>
+        <unprotected_interfaces>True</unprotected_interfaces>
+        <supports_prolog_epilog>True</supports_prolog_epilog>
+        <supports_cluster>False</supports_cluster>
+        <install_only_on_primary>False</install_only_on_primary>
+        <actions>
+            <Accept>
+                <supported>True</supported>
+                <description>Accept</description>
+                <dialog_page>None</dialog_page>
+            </Accept>
+            <Deny>
+                <supported>True</supported>
+                <description>Deny</description>
+                <dialog_page>None</dialog_page>
+            </Deny>
+            <Reject>
+                <supported>False</supported>
+                <description>Reject</description>
+                <dialog_page>Reject</dialog_page>
+            </Reject>
+            <Accounting>
+                <supported>False</supported>
+                <description>Accounting</description>
+                <dialog_page>None</dialog_page>
+            </Accounting>
+            <Tag>
+                <supported>False</supported>
+                <description>Tag</description>
+                <dialog_page>None</dialog_page>
+            </Tag>
+            <Pipe>
+                <supported>False</supported>
+                <description>Pipe</description>
+                <dialog_page>None</dialog_page>
+            </Pipe>
+            <Classify>
+                <supported>False</supported>
+                <description>Classify</description>
+                <dialog_page>None</dialog_page>
+            </Classify>
+            <Custom>
+                <supported>False</supported>
+                <description>Custom</description>
+                <dialog_page>None</dialog_page>
+            </Custom>
+            <Branch>
+                <supported>False</supported>
+                <description>Branch</description>
+                <dialog_page>None</dialog_page>
+            </Branch>
+            <Route>
+                <supported>False</supported>
+                <description>Route</description>
+                <dialog_page>None</dialog_page>
+            </Route>
+            <Translate>
+                <supported>False</supported>
+                <description>Translate</description>
+                <dialog_page>None</dialog_page>
+            </Translate>
+            <NATBranch>
+                <supported>False</supported>
+                <description>Branch</description>
+                <dialog_page>None</dialog_page>
+            </NATBranch>
+        </actions>
+      </capabilities>
+
+    </Target>
+
+</FWBuilderResources>

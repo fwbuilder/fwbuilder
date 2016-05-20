@@ -197,7 +197,9 @@ bool NATCompiler::classifyNATRule::processNext()
     }
 
     bool osrv_defines_src_port = false;
+    (void)osrv_defines_src_port; //UNUSED
     bool osrv_defines_dst_port = false;
+    (void)osrv_defines_dst_port; //UNUSED
     bool tsrv_translates_src_port = false;
     bool tsrv_translates_dst_port = false;
 

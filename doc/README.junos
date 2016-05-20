@@ -1,0 +1,12 @@
+Policy compiler for Junos Access lists has been implemented as
+part of the Firewall Builder GUI as of version 5.3.0. 
+
+
+Support for Junos Access lists in Firewall Builder v5.3.0:
+----------------------------------------------------------------
+
+Features implemented in this version:
+
+- The implementation is based on code from Cisco IOS Access lists
+  and shares codebase where applicable. More extended testing is 
+  needed to find bugs and differences.

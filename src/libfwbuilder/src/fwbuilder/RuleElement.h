@@ -6,6 +6,11 @@
 
   Author:  Vadim Kurland     vadim@fwbuilder.org
 
+
+                 Copyright (C) 2013 UNINETT AS
+
+  Author:  Sirius Bakke <sirius.bakke@uninett.no>
+
   $Id$
 
 
@@ -91,6 +96,9 @@ public:
     void setNeg(bool flag) { negation = flag; }
     void toggleNeg() { negation = !negation; }
 
+    virtual int getDummyElementId() const { return -1; }
+    virtual bool isDummy() const { return false; }
+
 };
 
 class RuleElementSrc : public ObjectGroup, public RuleElement {
@@ -103,6 +111,8 @@ class RuleElementSrc : public ObjectGroup, public RuleElement {
     virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
+    virtual int getDummyElementId() const;
+    virtual bool isDummy() const;
 };
 
 class RuleElementDst : public ObjectGroup, public RuleElement {
@@ -115,6 +125,8 @@ class RuleElementDst : public ObjectGroup, public RuleElement {
     virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
+    virtual int getDummyElementId() const;
+    virtual bool isDummy() const;
 };
 
 class RuleElementSrv : public ServiceGroup, public RuleElement {
@@ -127,6 +139,8 @@ class RuleElementSrv : public ServiceGroup, public RuleElement {
     virtual bool validateChild(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
+    virtual int getDummyElementId() const;
+    virtual bool isDummy() const;
 };
 
 class RuleElementItf : public ObjectGroup, public RuleElement {
@@ -140,6 +154,8 @@ class RuleElementItf : public ObjectGroup, public RuleElement {
     bool checkItfChildOfThisFw(FWObject *o);
     virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
     virtual bool isPrimaryObject() const { return false; }
+    virtual int getDummyElementId() const;
+    virtual bool isDummy() const;
 };
 
 class RuleElementItfInb : public RuleElementItf

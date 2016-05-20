@@ -1,0 +1,13 @@
+Policy compiler for Cisco NXOS Access lists has been implemented as
+part of the Firewall Builder GUI as of version 5.2.0. 
+
+
+Support for Cisco NXOS access lists in Firewall Builder v5.2.0, build 3600:
+----------------------------------------------------------------
+
+Features implemented in this version:
+
+- The implementation is based on Cisco IOS Access lists with small modifications.
+  Support or Session Manager is added, and the rest should probably work as NXOS
+  is quite similar to IOS. More extended testing is needed to find bugs and 
+  differences.

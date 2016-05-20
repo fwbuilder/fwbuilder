@@ -1,0 +1,196 @@
+<h1>Firewall Builder 5.2.0 Release Notes</h1>
+
+
+<p>
+  <a href="https://sourceforge.net/tracker/?atid=1129518&group_id=5314">SourceForge: Tickets</a>
+</p>
+
+<!-- Highlights for this release -->
+
+<a name="summary"></a>
+<h2>Summary</h2>
+
+<p>
+  In addition to bug fixes and minor enhancements, v 5.2 includes the
+  following new features:
+</p>
+
+<ul>
+  <li>Search for objects by port number or ip address</li>
+  <li>Graphical diff viewer</li>
+  <li>Diff on generated output, autocompiling firewall when loading file</li>
+  <li>Support for Cisco NXOS Access lists</li>
+  <li>Support for dummy objects in rules</li>
+  <li>Port to Qt5</li>
+  <li>New buildscript and instructions for OSX</li>
+  <li>Added build instructions for Windows</li>
+</ul>
+
+<h3>Search for objects by port number or ip address</h3>
+
+<p>
+  In the library tree viewer it is possible to search for objects by
+  port number or ip address. To search by port number you prefix with
+  keyword 'port:', and to search by ip address, 'ip:'. This will display
+  all matching objects, including groups. Some examples:
+  <pre>
+  Find single service
+port: 80
+
+  Find several services
+port: 110,995
+
+  Range based search
+port: 25-143
+
+  Search with limits
+port: &lt;443
+port: &gt;5900
+
+  Composed search
+port: &lt;24, 53, 80-110
+
+
+  Find a single IPv4 address, and networks it belongs to
+ip: 192.0.2.1
+
+  Search using netmask
+ip: 198.51.100.0/255.255.255.0
+  CIDR notation
+ip: 198.51.100.0/24
+
+  Find a single IPv6 address, and networks it belongs to
+ip: 2001:db8::1
+
+  Search using netmask
+ip: 2001:db8::/64
+
+  Composed search
+ip: 203.0.113.0/24,2001:db8::/32
+  </pre>
+</p>
+
+
+<h3>Graphical diff viewer</h3>
+<p>
+  A new graphical diff viewer will show all the changes done since loading of file.
+  Selection of rules are synced in the side-by-side view and double clicking a rule
+  will center the rule in both the original and curent view. The diff viewer is
+  activated by a new button in the upper right corner of the rule set view.
+</p>
+
+<h3>Diff on generated output, autocompiling firewall when loading file</h3>
+<p>
+  The user may choose an external diff utility to compare generated firewall output
+  with a previously stored version. Optionally Firewall Builder can compile all
+  firewalls in a project when the file is loaded. When modifying and compiling
+  the user may compare newly generated firewall output with output generated from
+  when the file was loaded. This feature is added to the "Inspect generated files"
+  window.
+</p>
+
+<h3>Support for Cisco NXOS Access lists</h3>
+<p>
+  Firewall Builder now supports generating output for the Cisco NXOS platform.
+  This is based on the Cisco IOS code with only minor adjustments and more
+  testing is needed.
+</p>
+
+<h3>Support for dummy objects in rules</h3>
+<p>
+  The dummy object-feature enables the user to choose if newly inserted rules
+  are added with <em>any</em> as the default target for source, destination,
+  service or interface; or now: <em>dummy</em>. A rule with a dummy target will
+  let the firewall compile but will not be evaluated. The user is shown a warning
+  when compiling a firewall that contains one or more <em>dummy rules</em>.
+  The default target is set both when you create a rule and when you delete the
+  last remaining target. A <em>dummy</em> target may be "converted" to an <em>any</em>
+  target. This option becomes available when right clicking on a <em>dummy</em> target.
+</p>
+
+<h3>Port to Qt5</h3>
+<p>
+  Firewall Builder may now be compiled with Qt4 or Qt5, with the same codebase.
+  This is tested on Linux and on OSX. Note: <em>macdeployqt</em> 5.0 and 5.1 is
+   broken on OSX, please see <a href="https://bugreports.qt-project.org/browse/QTBUG-32379">QTBUG-32379</a>.
+</p>
+
+<h3>New buildscript and instructions for OSX</h3>
+<p>
+  A new build script and instructions are added for OSX.
+  See doc/README.osx in the source code.
+</p>
+
+<h3>Added build instructions for Windows</h3>
+<p>
+  Build instructions for Windows are added.
+  See doc/README.windows in the source code.
+</p>
+
+<hr style="display: block">
+
+
+<!-- ######################################################################### -->
+<a name="gui"></a>
+<h2>GUI Updates</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Fixed bug in the undo stack system when adding a new rule, undoing and redoing.
+      The rule is now placed back in the correct group, if any, and is not corrupting
+      the undo stack.
+    </p>
+  </li>
+
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="compilers"></a>
+<h2>Common changes that affect policy compilers for all platforms</h2>
+
+<ul>
+
+  <li>
+    <p>
+      There are now two valid return values for the compilers. In addition to the
+      success return code, the compilers now return a fixed value when compiling
+      a firewall with one or more <em>dummy rules</em>. This value signalizes the
+      result "success with warning".
+    </p>
+
+    <p>
+      The libcommon static library, and all the compiler executables, are not using
+      QApplication but QCoreApplication. This removes their dependency on QtGui and 
+      gives faster startup on some platforms.
+    </p>
+  </li>
+
+</ul>
+
+
+<!-- ######################################################################### -->
+<a name="other"></a>
+<h2>Other changes</h2>
+
+<ul>
+
+  <li>
+    <p>
+      Fixed compile warning on 64 bit arch and some compile errors.
+    </p>
+  </li>
+
+  <li>
+    <p>
+      Fixed libpng warnings: "iCCP: known incorrect sRGB profile".
+    </p>
+  </li>
+
+</ul>
+
+
+

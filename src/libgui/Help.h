@@ -60,6 +60,7 @@ public:
 
     void setSource(const QUrl &url);
     QString findHelpFile(const QString &file_base_name);
+    void showAllReleaseNotes(const QString &path);
 
     void setName(const QString &name);
 
@@ -73,6 +74,7 @@ public:
 public slots:
     void downloadComplete(const QString&);
     void show();
+    void showReleaseNotesSelected();
 
 };
 

@@ -1,0 +1,25 @@
+This version of fwbuilder includes a template init.d script to start
+your firewall script that is generated and the default file. In order to
+use these you will need to install them on your firewall machine. These
+do not need to be installed on your build machine unless it also doubles
+as your firewall. The are included as part of the fwbuilder-common
+package and are located in /usr/share/doc/fwbuilder-common/examples/.
+
+The default file (examples/fwbuilder.default) should be installed as
+/etc/default/fwbuilder and the init.d script (examples/fwbuilder.init.d)
+as /etc/init.d/fwbuilder. Then copy your .fw script to /etc/fwbuilder as
+`hostname -s`.fw.
+
+You can use
+	update-rc.d fwbuilder start 41 S . stop 89 0 6 .
+to install the init.d script to start on boot-up or modify to suit your
+systems boot-up sequence. 
+
+This is a maintainer built script, and therefore not supported by the
+upstream authors of fwbuilder. Please report any problems to the package
+maintainer via the Debian BTS.
+
+The fwbuilder.init.d script patched by submission provided to me by
+Robert Lindgren <robert@orcafat.com> to provide means of flushing rules
+as well as listing active rules.
+

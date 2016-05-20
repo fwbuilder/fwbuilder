@@ -80,7 +80,7 @@ namespace fwcompiler {
                      const std::string &errstr);
         
 public:
-        typedef enum {FWCOMPILER_SUCCESS, FWCOMPILER_ERROR} termination_status;
+        typedef enum {FWCOMPILER_SUCCESS, FWCOMPILER_WARNING, FWCOMPILER_ERROR} termination_status;
 
 protected:
         termination_status status;

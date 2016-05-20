@@ -42,7 +42,7 @@
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QStringList>
 #include <QTextCodec>
 
@@ -74,10 +74,12 @@ void usage(const char *name)
 
 int main(int argc, char **argv)
 {   
-    QApplication app(argc, argv, false);
+    QCoreApplication app(argc, argv, false);
 
     // compilers always write file names into manifest in Utf8
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
+#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
     
     QStringList args = app.arguments();
@@ -154,7 +156,8 @@ int main(int argc, char **argv)
             exit(1);
         }
         driver->compile();
-        int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        //int ret = (driver->getStatus() == BaseCompiler::FWCOMPILER_SUCCESS) ? 0 : 1;
+        int ret = driver->getStatus();
 
         delete driver;
         delete objdb;

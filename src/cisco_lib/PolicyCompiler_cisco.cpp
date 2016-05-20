@@ -497,6 +497,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
     PolicyCompiler_cisco *cisco_comp =
         dynamic_cast<PolicyCompiler_cisco*>(compiler);
+    Q_UNUSED(cisco_comp);
 
     RuleElementSrv *srv = rule->getSrv();
     Address *a = compiler->getFirstDst(rule);
@@ -772,7 +773,7 @@ void PolicyCompiler_cisco::regroup()
         string cmd(buf);
         string::size_type n=cmd.find(' ');
         
-        list<string>::iterator s = ::find(commands.begin(),commands.end(),cmd.substr(0,n+1));
+        list<string>::iterator s = std::find(commands.begin(),commands.end(),cmd.substr(0,n+1));
         if (s!=commands.end()) slot = *s;
 
         script[slot].push_back(buf);

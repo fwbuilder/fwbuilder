@@ -225,17 +225,39 @@ static ObjectTreeViewItem *findUserFolder(ObjectTreeViewItem *parent,
 {
     if (folder.isEmpty()) return parent;
 
-    for (int ii = 0; ii < parent->childCount(); ii++) {
+    ObjectTreeViewItem *otvi = 0;
+
+    int childNo = 0;
+    while(parent->child(childNo) != NULL && otvi == 0) {
         ObjectTreeViewItem *sub =
-            dynamic_cast<ObjectTreeViewItem *>(parent->child(ii));
+            dynamic_cast<ObjectTreeViewItem *>(parent->child(childNo));
         if (sub != 0 &&
             sub->getUserFolderParent() != 0 &&
             sub->getUserFolderName() == folder) {
-            return sub;
+            otvi = sub;
+            return otvi;
+            break;
         }
+        else {
+            otvi = findUserFolder(sub, folder);
+        }
+        childNo++;
     }
 
-    return 0;
+//    for (int ii = 0; ii < parent->childCount(); ii++) {
+//        while(parent->childCount() > 0) {
+//            ObjectTreeViewItem *sub =
+//                dynamic_cast<ObjectTreeViewItem *>(parent->child(ii));
+//            if (sub != 0 &&
+//                sub->getUserFolderParent() != 0 &&
+//                sub->getUserFolderName() == folder) {
+//                return sub;
+//            }
+//            parent = sub;
+//        }
+//    }
+
+    return otvi;
 }
 
 
@@ -250,7 +272,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
             obj->getTypeName() + "/hidden")) return NULL;
 
     ObjectTreeViewItem *item = itm;
-    if (!obj->getStr("folder").empty()) {
+     if (!obj->getStr("folder").empty()) {
         item = findUserFolder(itm, obj->getStr("folder").c_str());
 
         /* If we can't find the user folder, put it under the system
@@ -259,6 +281,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
             item = itm;
             obj->setStr("folder", "");
         }
+
     }
 
     ObjectTreeViewItem *nitm = new ObjectTreeViewItem(item);
@@ -279,6 +302,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     }
 
     nitm->setProperty("type", obj->getTypeName().c_str() );
+
     nitm->setFWObject( obj );
 
     allItems[obj] = nitm;
@@ -310,6 +334,9 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
     for (iter = subfolders.begin(); iter != subfolders.end(); ++iter) {
         ObjectTreeViewItem *sub = new ObjectTreeViewItem(nitm);
         sub->setUserFolderParent(obj);
+//        FWObject* newFolder = obj->getRoot()->create("ObjectGroup");
+//        newFolder->setParent(obj);
+//        sub->setFWObject(newFolder);
         QString name = QString::fromUtf8((*iter).c_str());
         sub->setUserFolderName(name);
         sub->setText(0, name);
@@ -659,7 +686,7 @@ void ObjectManipulator::addLib(FWObject *lib)
     ObjectTreeViewItem *itm1=new ObjectTreeViewItem( objTreeView );
 
     itm1->setLib("");
-    itm1->setExpanded(TRUE);
+    itm1->setExpanded(true);
 
     itm1->setFlags(itm1->flags() & ~Qt::ItemIsDragEnabled);
 
@@ -774,10 +801,23 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
 void ObjectManipulator::addUserFolderToTree(FWObject *obj,
                                             const QString &folder)
 {
+
     ObjectTreeViewItem *item = allItems[obj];
+
     if (item == 0) return;
 
     ObjectTreeViewItem *sub = new ObjectTreeViewItem(item);
+
+
+    FWObject* newFolder = obj->getRoot()->create(ObjectGroup::TYPENAME);
+    newFolder->setParent(obj);
+    newFolder->setName(folder.toUtf8().constData()
+                       );
+    sub->setFWObject(newFolder);
+    allItems[newFolder] = sub;
+    obj->setStr("folder", folder.toUtf8().constData());
+    newFolder->setStr("folder", getFolderNameString(newFolder));
+
     sub->setUserFolderParent(obj);
     sub->setUserFolderName(folder);
     sub->setText(0, folder);
@@ -785,6 +825,21 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
     refreshSubtree(item, sub);
 }
 
+
+std::string ObjectManipulator::getFolderNameString(libfwbuilder::FWObject *obj) {
+    std::string result = "";
+    FWObject *parent = obj->getParent();
+
+
+    while(parent != NULL) {
+        result = parent->getName() + "/" + result;
+        parent = parent->getParent();
+    }
+
+    result = result  + obj->getName();
+
+    return result;
+}
 
 void ObjectManipulator::removeUserFolderFromTree(FWObject *obj,
                                                  const QString &folder)

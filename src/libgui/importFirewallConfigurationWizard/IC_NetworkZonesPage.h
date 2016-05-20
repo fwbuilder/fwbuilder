@@ -25,7 +25,11 @@
 #define NETWORKZONESPAGE_H
 
 #include "ui_ic_networkzonespage_q.h"
-#include <QtGui/QWizardPage>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#   include <QtGui/QWizardPage>
+#else
+#   include <QtWidgets/QWizardPage>
+#endif
 
 namespace Ui {
     class IC_NetworkZonesPage_q;

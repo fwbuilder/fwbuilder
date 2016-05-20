@@ -3,7 +3,7 @@
 
 include(../qmake.inc)
 
-TEMPLATE = lib
+TEMPLATE = app
 
 TARGET = migration
 
@@ -95,5 +95,7 @@ target.files  = FWObjectDatabase_0.9.0.xslt \
                 FWObjectDatabase_19.xslt \
                 FWObjectDatabase_20.xslt \
                 FWObjectDatabase_21.xslt \
+                FWObjectDatabase_22.xslt \
+                FWObjectDatabase_23.xslt \
 
 

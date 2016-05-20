@@ -1,0 +1,12 @@
+!
+!  This is automatically generated file. DO NOT MODIFY !
+!
+!  Firewall Builder  fwb_nxosacl v{{$version}}
+!
+!  Generated {{$timestamp}} {{$tz}} by {{$user}}
+!
+! Compiled for {{$platform}} {{$fw_version}}
+!
+{{$manifest}}
+!
+{{$comment}}

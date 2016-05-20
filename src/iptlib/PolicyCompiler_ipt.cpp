@@ -593,6 +593,7 @@ bool PolicyCompiler_ipt::splitIfTagClassifyOrRoute::processNext()
     FWOptions *ruleopt = rule->getOptionsObject();
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *r;
+    Q_UNUSED(r);
 
     int number_of_options = 0;
     if (rule->getTagging()) number_of_options++;
@@ -606,6 +607,8 @@ bool PolicyCompiler_ipt::splitIfTagClassifyOrRoute::processNext()
         RuleElementSrv *nsrv;
         RuleElementItf *nitfre;
         PolicyRule     *r, *r2;
+        Q_UNUSED(r);
+        Q_UNUSED(r2);
 
         string this_chain = rule->getStr("ipt_chain");
         string new_chain  = this_chain;

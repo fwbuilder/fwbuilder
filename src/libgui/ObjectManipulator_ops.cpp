@@ -498,6 +498,7 @@ void ObjectManipulator::unlockObject()
 void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 {
     bool firstAction = true ;
+    Q_UNUSED(firstAction);
 
     if (fwbdebug)
         qDebug() << "ObjectManipulator::deleteObject"
@@ -506,6 +507,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
 
     FWObject *object_library = obj->getLibrary();
     FWObject *parent = obj->getParent();
+    Q_UNUSED(parent);
     FWObject *deleted_objects_lib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID );
 
@@ -664,9 +666,17 @@ void ObjectManipulator::groupObjects()
                 parent = FWBTree().getStandardSlotForObject(lib,type);
                 if (parent==NULL)
                 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                     if (fwbdebug)
                         qDebug("ObjectManipulator::groupObjects(): could not find standard slot for object of type %s in library %s",
                                type.toAscii().constData(),lib->getName().c_str());
+
+#else
+                    if (fwbdebug)
+                        qDebug("ObjectManipulator::groupObjects(): could not find standard slot for object of type %s in library %s",
+                               type.toLatin1().constData(),lib->getName().c_str());
+
+#endif
                     return;
                 }
                 newgrp = m_project->db()->create(type.toStdString());

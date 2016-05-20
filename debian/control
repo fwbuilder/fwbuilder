@@ -1,0 +1,71 @@
+Source: fwbuilder
+Section: net
+Priority: optional
+Maintainer: Morten Knutsen <morten.knutsen@uninett.no>
+Build-Depends: debhelper (>= 5), cdbs, autotools-dev, zlib1g-dev,
+ libqt4-dev, libxml2-dev, libxslt1-dev, libssl-dev, libsnmp-dev, qt4-dev-tools, 
+ autoconf, automake, libtool
+Standards-Version: 3.9.3
+Homepage: http://www.fwbuilder.org/
+Vcs-Svn: https://bollin.googlecode.com/svn/fwbuilder/trunk
+Vcs-Browser: http://bollin.googlecode.com/svn/fwbuilder/trunk
+
+Package: fwbuilder
+Architecture: any
+Provides: fwbuilder-frontend
+Depends: ${shlibs:Depends}, ${misc:Depends},  
+ fwbuilder-common (= ${source:Version})
+Replaces: fwbuilder-linux, fwbuilder-cisco, fwbuilder-bsd, fwbuilder-backend,
+ libfwbuilder9
+Recommends: fwbuilder-doc
+Description: Firewall administration tool GUI
+ Firewall Builder consists of an object-oriented GUI and a set of policy
+ compilers for various firewall platforms. In Firewall Builder, firewall
+ policy is a set of rules, each rule consists of abstract objects which
+ represent real network objects and services (hosts, routers, firewalls,
+ networks, protocols). Firewall Builder helps the user maintain a database
+ of objects and allows policy editing using simple drag-and-drop operations.
+ .
+ This is the GUI part of fwbuilder
+
+Package: fwbuilder-common
+Depends: ${misc:Depends}
+Architecture: all
+Description: Firewall administration tool GUI (common files)
+ Firewall Builder consists of an object-oriented GUI and a set of policy
+ compilers for various firewall platforms. In Firewall Builder, firewall
+ policy is a set of rules, each rule consists of abstract objects which
+ represent real network objects and services (hosts, routers, firewalls,
+ networks, protocols). Firewall Builder helps the user maintain a database
+ of objects and allows policy editing using simple drag-and-drop operations.
+ .
+ This is the arch independent common parts of fwbuilder
+
+Package: fwbuilder-doc
+Depends: ${misc:Depends}
+Section: doc
+Architecture: all
+Description: Firewall administration tool GUI documentation
+ Firewall Builder consists of an object-oriented GUI and a set of policy
+ compilers for various firewall platforms. In Firewall Builder, firewall
+ policy is a set of rules, each rule consists of abstract objects which
+ represent real network objects and services (hosts, routers, firewalls,
+ networks, protocols). Firewall Builder helps the user maintain a database
+ of objects and allows policy editing using simple drag-and-drop operations.
+ .
+ This is the documentation of fwbuilder
+
+Package: fwbuilder-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: fwbuilder (= ${binary:Version}), ${misc:Depends}
+Description: Firewall administration tool GUI (debugging symbols)
+ Firewall Builder consists of an object-oriented GUI and a set of policy
+ compilers for various firewall platforms. In Firewall Builder, firewall
+ policy is a set of rules, each rule consists of abstract objects which
+ represent real network objects and services (hosts, routers, firewalls,
+ networks, protocols). Firewall Builder helps the user maintain a database
+ of objects and allows policy editing using simple drag-and-drop operations.
+ .
+ This package ships the debugging symbols of fwbuilder.

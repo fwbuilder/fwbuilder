@@ -82,7 +82,12 @@ string OSConfigurator_pix_os::_printMPFPolicyMap()
 
     foreach (QString fixup_xml_element, allowed_fixups)
     {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         string f = options->getStr(fixup_xml_element.toAscii().constData());
+#else
+        string f = options->getStr(fixup_xml_element.toLatin1().constData());
+#endif
+
 
         if (!f.empty())
         {
@@ -110,8 +115,12 @@ string OSConfigurator_pix_os::_printMPFPolicyMap()
             {
                 continue;
             }
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
             InspectionClassMap cm(fixup_name.toAscii().constData(),
+#else
+            InspectionClassMap cm(fixup_name.toLatin1().constData(),
+#endif
+
                                   status, p1, p2, an, av);
             if (cm.isDefault()) defaultClassMaps.push_back(cm);
             else                customClassMaps.push_back(cm);

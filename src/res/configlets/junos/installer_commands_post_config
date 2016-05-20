@@ -1,0 +1,8 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script.
+##
+## These are commands built-in policy installer runs on the firewall
+
+file delete {{$fwdir}}/{{$fwscript}}

@@ -1,0 +1,15 @@
+Requirements:
+ * XCode + Command Line Tools
+ * Qt 4.6+ http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-mac-opensource-4.8.5.dmg
+ * autoconf, automake, libtool, net-snmp
+
+Easy install with Homebrew:
+ $ brew install autoconf automake libtool net-snmp
+
+Fix permissions
+ $ sudo chmod -R u+w /usr/local/Cellar/net-snmp
+
+Clone repository and
+ $ cd fwbuilder && chmod +x build_mac.sh && ./build_mac.sh
+
+ $ open fwbuilder.app/

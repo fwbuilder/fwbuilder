@@ -164,6 +164,7 @@ void ND_ProgressPage::initializePage()
     include_networks.clear();
 
     bool limit_scan = false;
+    Q_UNUSED(limit_scan);
     if ( ! snmpInclAddr.isEmpty() && ! snmpInclMask.isEmpty())
     {
         try
@@ -397,7 +398,11 @@ void ND_ProgressPage::saveLog()
             strm << txt << endl;
             if (fwbdebug)
             {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
                 qDebug("%s",txt.toAscii().constData());
+#else
+                qDebug("%s",txt.toLatin1().constData());
+#endif
                 qDebug("--------------------------------");
             }
             f.close();
