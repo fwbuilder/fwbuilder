@@ -439,7 +439,7 @@ class RoutingRule : public Rule
 
     RoutingRuleTypes rule_type;
     std::string sorted_dst_ids;
-    int ecmp_id;
+    // int ecmp_id; // Unused
     
     public:
                     
@@ -460,7 +460,7 @@ class RoutingRule : public Rule
     
     virtual FWOptions* getOptionsObject() const;
     virtual RuleSet* getBranch();
-    virtual bool isEmpty() const;
+    virtual bool isEmpty();
     
     int  getMetric() const;
     void setMetric(int metric);

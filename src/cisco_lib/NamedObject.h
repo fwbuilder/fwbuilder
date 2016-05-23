@@ -52,6 +52,7 @@ public:
         static std::map<QString,int> name_disambiguation;
 
         NamedObject(const libfwbuilder::FWObject *obj, const QString &platform);
+        virtual ~NamedObject() {}
         virtual QString getCommand();
         virtual QString getCommandWhenObjectGroupMember();
         QString getName() { return name; }

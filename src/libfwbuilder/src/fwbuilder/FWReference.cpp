@@ -109,8 +109,9 @@ bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */) throw(FW
     return true;
 }
 
-void FWReference::add(FWObject*)
+void FWReference::add(FWObject*,bool validate)
 {
+    (void) validate; // Unused
     throw std::string("Can't add to a reference !");
 }
 

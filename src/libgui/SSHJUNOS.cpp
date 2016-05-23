@@ -62,7 +62,16 @@ SSHJunos::SSHJunos(QWidget *_par,
     enable_prompt="> $"; // operational prompt
     config_prompt="# $"; // configuration prompt
     pwd_prompt_1="'s password: $";
+/*
+ * TODO
+ * Do not change pwd_prompt_2 without extensive testing
+ * This must be tested on actual hardware/os
+ * Will prevent login on wrong regex, with silent error - timeout
+ */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-escape-sequence"
     pwd_prompt_2="Password:\w?";
+#pragma clang diagnostic pop
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
     ssoft_config_prompt="> ";

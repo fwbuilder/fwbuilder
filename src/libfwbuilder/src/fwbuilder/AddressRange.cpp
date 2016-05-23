@@ -25,6 +25,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <sstream>
 
 #include "config.h"
 #include "fwbuilder/libfwbuilder-config.h"
@@ -77,10 +78,14 @@ FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
     throw(FWException)
 {
     const AddressRange *n = dynamic_cast<const AddressRange *>(o);
-    if (n==NULL)
-        throw(FWException(
-"Attempt to copy incompatible object to AddressRange: objectID="+o->getId()));
+    if (n==NULL) {
 
+        std::ostringstream s;
+        s << "Attempt to copy incompatible object to AddressRange: objectID=";
+        s << o->getId();
+
+        throw(FWException(s.str()));
+    }
     start_address = n->getRangeStart();
     end_address   = n->getRangeEnd();
 

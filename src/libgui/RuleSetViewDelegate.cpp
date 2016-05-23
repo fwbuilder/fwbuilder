@@ -612,7 +612,7 @@ QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index)
         }
     }
     QSize res = QSize(w+HORIZONTAL_MARGIN*2,h);
-    QModelIndex idx = index;
+    // QModelIndex idx = index; // Unused
     return res;
 }
 

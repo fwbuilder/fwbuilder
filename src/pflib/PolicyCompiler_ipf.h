@@ -235,7 +235,10 @@ namespace fwcompiler {
             virtual std::string _printPort(int rs,int re,bool neg=false);
             virtual void _printWith(libfwbuilder::Service *srv);
             virtual void _printAction(libfwbuilder::PolicyRule *r);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
             virtual void _printAddr(libfwbuilder::Address  *o,bool neg=false);
+#pragma clang diagnostic pop
             virtual void _printDstService(libfwbuilder::RuleElement  *o);
 
             public:

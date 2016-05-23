@@ -1044,7 +1044,7 @@ RuleElementRItf*  RoutingRule::getRItf()  const
 }
 
 
-bool RoutingRule::isEmpty() const
+bool RoutingRule::isEmpty()
 {
     RuleElement *rdst=getRDst();
     RuleElement *rgtw=getRGtw();

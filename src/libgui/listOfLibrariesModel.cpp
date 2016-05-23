@@ -98,6 +98,8 @@ static bool decendingLessThan(const _item_data &s1, const _item_data &s2)
 
 void ListOfLibrariesModel::sort(int column, Qt::SortOrder order)
 {
+    Q_UNUSED(column)
+
     QList<_item_data> list;
     for (int i=0; i<rowCount(); ++i)
     {

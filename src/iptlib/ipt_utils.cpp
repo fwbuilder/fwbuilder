@@ -113,6 +113,8 @@ void expand_interface_with_phys_address(Compiler *compiler,
                                         std::list<FWObject*> &ol1,
                                         std::list<FWObject*> &list_result)
 {
+    (void) rule; // Unused
+
     std::list<FWObject*> lipaddr;
     std::list<FWObject*> lother;
     physAddress *pa = NULL;

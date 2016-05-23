@@ -528,6 +528,8 @@ void PolicyCompiler_junosacl::compile()
 
 string PolicyCompiler_junosacl::printAccessGroupCmd(ciscoACL *acl, bool neg)
 {
+    (void) neg; // Unused
+
     ostringstream str;
 
     string addr_family_prefix = "inet";

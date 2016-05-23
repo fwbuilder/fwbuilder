@@ -1001,7 +1001,11 @@ public:
 	Compiler(libfwbuilder::FWObjectDatabase *_db,
 		 libfwbuilder::Firewall *fw, bool ipv6_policy,
 		 fwcompiler::OSConfigurator *_oscnf);
-
+/*
+ * TODO: Refactor Compiler to not hide BaseCompiler
+ */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
 	Compiler(libfwbuilder::FWObjectDatabase *_db, bool ipv6_policy);
 
         /**
@@ -1016,6 +1020,7 @@ public:
 
         virtual void warning(const std::string &errstr);
         virtual void warning(libfwbuilder::FWObject *rule, const std::string &errstr);
+#pragma clang diagnostic pop
 
 	void setDebugLevel(int dl) { debug=dl;       }
 	void setDebugRule(int dr)  { debug_rule = dr; rule_debug_on = true; }

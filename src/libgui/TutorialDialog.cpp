@@ -38,6 +38,8 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     QDialog(NULL),
     ui(new Ui::TutorialDialog_q)
 {
+    Q_UNUSED(parent)
+
     ui->setupUi(this);
     setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint);
 #if QT_VERSION >= 0x040500

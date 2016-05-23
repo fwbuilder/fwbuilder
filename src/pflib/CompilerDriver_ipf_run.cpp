@@ -96,6 +96,7 @@ QString CompilerDriver_ipf::composeActivationCommand(libfwbuilder::Firewall *fw,
 
 QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 {
+    (void) fw; // Unused
     QString remote_name = remote_file_names[FW_FILE];
     QString remote_ipf_name = remote_file_names[CONF1_FILE];
     QString remote_nat_name = remote_file_names[CONF2_FILE];
