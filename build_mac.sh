@@ -1,5 +1,5 @@
 #!/bin/bash
-export QMAKE_MAC_SDK=$(xcodebuild -sdk macosx -version | grep "^Path" | awk '{ print $2 }')
+export QMAKE_MAC_SDK="macosx"
 export QMAKESPEC="macx-llvm"
 export QMAKE_MACOSX_DEPLOYMENT_TARGET=10.6
 
