@@ -654,7 +654,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     stream << "\"" << endl;
 
     /* Address object contains host, network and broadcast address plus netmask */
-    const Address* ipAddr;
+    const Address* ipAddr = NULL;
     if (ip_address != NULL)
         ipAddr = ip_address->getAddressObject();
 
