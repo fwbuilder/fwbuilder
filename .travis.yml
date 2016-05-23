@@ -1,0 +1,36 @@
+sudo: required
+dist: trusty
+language: c++
+
+os:
+  - osx
+  - linux
+
+compiler:
+  - gcc
+  - clang
+
+addons:
+  apt:
+    packages:
+    - build-essential
+    - autoconf
+    - libxml2-dev
+    - libxslt1-dev
+    - qt5-default
+
+matrix:
+  exclude:
+  - os: osx
+    compiler: gcc
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5 && brew link --force qt5 ; fi
+
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./autogen.sh ; fi
+
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh build_mac.sh ; fi
+
