@@ -72,6 +72,8 @@ PolicyRule* AutomaticRules::addMgmtRule(
     const string &label,
     bool related)
 {
+    (void) related; // Unused
+
     if (ruleset == NULL) return NULL;
 
     /* Insert PolicyRules at top so they do not get shadowed by other

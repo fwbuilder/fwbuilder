@@ -439,7 +439,7 @@ class RoutingRule : public Rule
 
     RoutingRuleTypes rule_type;
     std::string sorted_dst_ids;
-    int ecmp_id;
+    // int ecmp_id; // Unused
     
     public:
                     

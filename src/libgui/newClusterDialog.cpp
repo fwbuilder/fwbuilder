@@ -100,7 +100,7 @@ void newClusterDialog::setFirewallList(std::vector<libfwbuilder::FWObject*> data
 {
     m_dialog->interfaceSelector->clear();
     firewallList.clear();
-    typedef QPair<Firewall*, bool> fwpair;
+    //typedef QPair<Firewall*, bool> fwpair; // Unused
     foreach ( FWObject *fw, data )
         firewallList.push_back(Firewall::cast(fw));
     m_dialog->firewallSelector->setFirewallList(firewallList, select);

@@ -148,6 +148,8 @@ bool DynamicGroup::isCompileTime() const
 void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
     throw (FWException)
 {
+    (void) ipv6; (void) options; (void) test_mode; // Unused
+
     FWObjectDatabase *root = getRoot();
 
     FWObject::tree_iterator tree_iter;

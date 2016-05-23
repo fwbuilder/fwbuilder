@@ -52,6 +52,8 @@ bool junosInterfaces::basicValidateInterfaceName(Interface *,
                                                const QString &obj_name,
                                                QString &err)
 {
+    (void) obj_name; (void) err; // Unused
+
     return true;
 }
     
@@ -59,6 +61,8 @@ bool junosInterfaces::isValidVlanInterfaceName(const QString &subint_name,
                                                    const QString &parent_name,
                                                    QString &err)
 {
+    (void) parent_name; // Unused
+
     if (!looksLikeVlanInterface(subint_name))
     {
         err = QObject::tr("'%1' is not a valid unit name")

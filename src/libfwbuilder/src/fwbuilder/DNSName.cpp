@@ -123,6 +123,8 @@ xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
 void DNSName::loadFromSource(bool ipv6, FWOptions *options,
                              bool test_mode) throw(FWException)
 {
+    (void) options; // Unused
+
     int af_type = (ipv6)?AF_INET6:AF_INET;
     try
     {

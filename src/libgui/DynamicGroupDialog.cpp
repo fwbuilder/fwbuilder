@@ -48,6 +48,8 @@ QWidget *DynamicItemDelegate::createEditor(QWidget *parent,
                                            const QStyleOptionViewItem &option,
                                            const QModelIndex &index) const
 {
+    Q_UNUSED(option)
+
     if (index.column() == 0) {
         QToolButton *button = new QToolButton(parent);
         QPixmap pixmap;
@@ -71,6 +73,8 @@ QWidget *DynamicItemDelegate::createEditor(QWidget *parent,
 
 void DynamicItemDelegate::comboActivated(int abc)
 {
+    Q_UNUSED(abc)
+
     /* Don't wait until we lose focus on the combobox */
     emit commitData(dynamic_cast<QWidget *>(sender()));
 }
@@ -307,6 +311,7 @@ void DynamicGroupDialog::loadFWObject(FWObject *o)
 
 void DynamicGroupDialog::validate(bool *result)
 {
+    Q_UNUSED(result)
 }
 
 

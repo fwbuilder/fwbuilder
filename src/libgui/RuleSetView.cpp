@@ -2861,6 +2861,9 @@ void RuleSetView::updateColumnSizeForIndex(QModelIndex index)
 
 void RuleSetView::updateSectionSizesForIndex(QModelIndex idx1, QModelIndex idx2)
 {
+    Q_UNUSED(idx1)
+    Q_UNUSED(idx2)
+
     updateAllColumnsSize();
 }
 

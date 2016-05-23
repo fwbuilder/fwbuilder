@@ -1271,6 +1271,7 @@ int RuleSetModel::getRulePosition(QModelIndex index)
 
 void RuleSetModel::objectChanged(FWObject* object)
 {
+    Q_UNUSED(object)
 /*
  * See #2373
  *

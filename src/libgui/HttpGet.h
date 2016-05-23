@@ -75,7 +75,7 @@ class HttpGet : public QObject
 
 public:
     HttpGet(QObject *parent = 0);
-    bool get(const QUrl &url) { return false; }
+    bool get(const QUrl &url) { Q_UNUSED(url) return false; }
     QString getLastError() { return QString("HttpGet is disabled when compiled with Qt 5"); }
     bool getStatus() { return false; }
     QString toString() { return QString(); }
@@ -85,7 +85,7 @@ signals:
     void done(const QString &res);
 
 private slots:
-    void httpDone(int id, bool error) {}
+    void httpDone(int id, bool error) { Q_UNUSED(id) Q_UNUSED(error) }
     void fileDone() {}
 };
 

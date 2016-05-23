@@ -65,6 +65,8 @@ bool linux24Interfaces::basicValidateInterfaceName(Interface *intf,
                                                    const QString &obj_name,
                                                    QString &err)
 {
+    (void) intf; // Unused
+
     if (obj_name.indexOf(' ') != -1)
     {
         err = QObject::tr("Bridge interface name '%1' can not contain white space").arg(obj_name);
