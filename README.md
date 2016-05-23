@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fwbuilder/fwbuilder.svg?branch=master)](https://travis-ci.org/fwbuilder/fwbuilder)
+
 fwbuilder
 =========
 
