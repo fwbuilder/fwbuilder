@@ -558,7 +558,7 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
             fwvector.push_back(FWObject::cast(fw));
         ncd->setFirewallList(fwvector);
     }
-    if ( ! ncd->exec() == QDialog::Accepted) return NULL;
+    if ( ncd->exec() != QDialog::Accepted) return NULL;
 
     FWObject *ncl = ncd->getNewCluster();
     delete ncd;
