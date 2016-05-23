@@ -43,6 +43,7 @@
 
 #include <assert.h>
 
+#include <QObject>
 #include <QStringList>
 
 

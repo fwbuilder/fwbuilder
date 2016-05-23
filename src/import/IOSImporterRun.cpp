@@ -29,6 +29,7 @@
 
 #include "IOSImporter.h"
 
+#include <QObject>
 #include <QString>
 #include <QStringList>
 
