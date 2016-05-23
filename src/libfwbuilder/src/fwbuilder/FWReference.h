@@ -63,7 +63,7 @@ public:
 
     virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
 
-    virtual void add(FWObject *obj);
+    virtual void add(FWObject *obj,bool validate=true);
 
     virtual FWObject *getPointer();
     virtual int getPointerId();

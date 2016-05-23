@@ -460,7 +460,7 @@ class RoutingRule : public Rule
     
     virtual FWOptions* getOptionsObject() const;
     virtual RuleSet* getBranch();
-    virtual bool isEmpty() const;
+    virtual bool isEmpty();
     
     int  getMetric() const;
     void setMetric(int metric);
