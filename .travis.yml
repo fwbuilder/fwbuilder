@@ -18,6 +18,7 @@ addons:
     - libxml2-dev
     - libxslt1-dev
     - qt5-default
+    - libsnmp-dev
 
 matrix:
   exclude:
