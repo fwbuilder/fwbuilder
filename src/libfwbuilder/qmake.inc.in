@@ -30,9 +30,13 @@ unix {
 
     QMAKE_CXX = @CCACHE@ @DISTCC@ $$QMAKE_CXX
 
-    # We put /usr/include into INCLUDEPATH to fix a problem compiling
-    # fwbuilder/snmp.cpp on freebsd.
-    INCLUDEPATH += /usr/include @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@
+    freebsd {
+        # We put /usr/include into INCLUDEPATH to fix a problem compiling
+        # fwbuilder/snmp.cpp on freebsd.
+        INCLUDEPATH += /usr/include
+    }
+
+    INCLUDEPATH += @XML_CFLAGS_Q@ @XSLT_CFLAGS_Q@
     LIBS += @PTHREAD_LIBS@ @XML_LIBS@ @XSLT_LIBS@ @LIBSNMP_LIBS@ @LIB_RESOLV@ @LIBS@
 
     QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
