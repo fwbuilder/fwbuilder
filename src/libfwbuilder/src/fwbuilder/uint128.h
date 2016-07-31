@@ -466,9 +466,9 @@ public:
     {
         char buf[33];
         if (hi)
-            sprintf(buf, "%"PRIX64"%08"PRIX64, (uint64_t)hi,(uint64_t)lo);
+            sprintf(buf, "%" PRIX64"%08" PRIX64, (uint64_t)hi,(uint64_t)lo);
         else
-            sprintf(buf,"%"PRIX64,(uint64_t)lo);
+            sprintf(buf,"%" PRIX64,(uint64_t)lo);
         return buf;
     }
 
