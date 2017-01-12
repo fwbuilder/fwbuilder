@@ -82,10 +82,10 @@ void LLkParser::traceOut(const char* rname)
 
 RefToken LLkParser::LT(unsigned int i)
 {
-    assert(this!=NULL);
+    //assert(this!=NULL); //clang error: 'this' pointer cannot be null in well-defined C++ code;
     assert(inputState!=NULL);
     TokenBuffer &tb = inputState->getInput();
-    assert(&tb!=NULL);
+    //assert(&tb!=NULL); //clang error: reference cannot be bound to dereferenced null pointer in well-defined C++ code;
     return tb.LT(i);
 }
 
