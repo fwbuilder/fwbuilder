@@ -2,14 +2,6 @@ sudo: required
 dist: trusty
 language: c++
 
-os:
-  - osx
-  - linux
-
-compiler:
-  - gcc
-  - clang
-
 addons:
   apt:
     packages:
@@ -20,10 +12,20 @@ addons:
     - qt5-default
     - libsnmp-dev
 
+env:
+  global:
+    - MAKEJOBS=-j3
+    - CXXFLAGS="-Wall -Werror -Qunused-arguments"
+
 matrix:
-  exclude:
-  - os: osx
-    compiler: gcc
+  include:
+    - os: linux
+      compiler: clang
+      env: QMAKESPEC=linux-clang
+    - os: linux
+      compiler: gcc
+    - os: osx
+      compiler: clang
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5 && brew link --force qt5 ; fi
@@ -32,6 +34,6 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./autogen.sh ; fi
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make $MAKEJOBS; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh build_mac.sh ; fi
 
