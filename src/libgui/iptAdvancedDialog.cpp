@@ -138,6 +138,8 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
                          fwoptions,"action_on_reject", slm);
 
     data.registerOption(m_dialog->useModuleSet, fwoptions, "use_m_set");
+    data.registerOption(m_dialog->useKernelTz, fwoptions, "use_kerneltz");
+
 
     data.registerOption(m_dialog->mgmt_ssh, fwoptions, "mgmt_ssh");
     data.registerOption(m_dialog->mgmt_addr, fwoptions, "mgmt_addr");
@@ -216,6 +218,11 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     if (!can_use_module_set)
         m_dialog->useModuleSet->setChecked(false);
     m_dialog->useModuleSet->setEnabled(can_use_module_set);
+
+    bool can_use_kerneltz = (XMLTools::version_compare(version, "1.4.11") >= 0);
+    if (!can_use_kerneltz)
+        m_dialog->useKernelTz->setChecked(false);
+    m_dialog->useKernelTz->setEnabled(can_use_kerneltz);
 
     m_dialog->tabWidget->setCurrentIndex(0);
 }

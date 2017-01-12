@@ -1454,6 +1454,10 @@ string PolicyCompiler_ipt::PrintRule::_printTimeInterval(PolicyRule *r)
             }
         }
 
+        if ( (XMLTools::version_compare(version, "1.4.11") >=0 ) && compiler->getCachedFwOpt()->getBool("use_kerneltz")) {
+            ostr << " --kerneltz";
+        }
+
     } else
     {
         /* "old" iptables time module
