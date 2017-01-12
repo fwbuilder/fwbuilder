@@ -68,10 +68,10 @@ SSHJunos::SSHJunos(QWidget *_par,
  * This must be tested on actual hardware/os
  * Will prevent login on wrong regex, with silent error - timeout
  */
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunknown-escape-sequence"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-escape-sequence"
     pwd_prompt_2="Password:\w?";
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
     epwd_prompt="Password: ";
     ssh_pwd_prompt="'s password: ";
     ssoft_config_prompt="> ";

@@ -71,10 +71,10 @@ public:
     libfwbuilder::FWObject* getLibrary(QModelIndex idx);
     libfwbuilder::FWObject* getLibrary(int row);
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
     void setData(QModelIndex idx, const QString &name, libfwbuilder::FWObject *lib, ObjectTreeView *otv);
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
     void setName(QModelIndex idx, const QString &name);
     
     ObjectTreeView* getTreeWidget(QModelIndex idx);

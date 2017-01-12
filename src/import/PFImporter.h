@@ -155,10 +155,10 @@ public:
     // and does final clean up.
     virtual libfwbuilder::Firewall* finalize();
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
     virtual libfwbuilder::FWObject* makeAddressObj(AddressSpec &as);
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
     
     virtual void addSrc();
     virtual void addDst();

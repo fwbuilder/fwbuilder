@@ -510,12 +510,12 @@ public:
                              fwcompiler::OSConfigurator *_oscnf);
         virtual ~PolicyCompiler_cisco() {}
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
         virtual std::string createRuleLabel(const std::string &txt,
                                             libfwbuilder::Interface *iface,
                                             int rule_num);
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
 	virtual int  prolog();
 	virtual void compile();
