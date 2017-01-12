@@ -213,6 +213,14 @@ FWObject* ObjectMaker::createObject(ObjectSignature &)
  */
 void ObjectMaker::prepareForDeduplication(FWObject *root)
 {
+    switch(root->getId()) {
+        // Skip dummy objects
+    case FWObjectDatabase::DUMMY_ADDRESS_ID:
+    case FWObjectDatabase::DUMMY_INTERFACE_ID:
+    case FWObjectDatabase::DUMMY_SERVICE_ID:
+        return;
+    }
+
     if (RuleSet::cast(root) || Rule::cast(root) ||
         FWReference::cast(root) ||
         Host::cast(root) ||
