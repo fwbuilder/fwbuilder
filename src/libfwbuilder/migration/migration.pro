@@ -3,7 +3,7 @@
 
 include(../qmake.inc)
 
-TEMPLATE = app
+TEMPLATE = aux
 
 TARGET = migration
 
