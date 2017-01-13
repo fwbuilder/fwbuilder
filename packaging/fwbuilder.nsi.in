@@ -17,7 +17,7 @@ Var STARTMENU_FOLDER
 
 
 
-!define APPNAME "FirewallBuilder${GENERATION}"
+!define APPNAME "FirewallBuilder-${GENERATION}"
 
 ;------------------------------------------------------------------------------
 ; GetWindowsVersion
@@ -143,7 +143,7 @@ FunctionEnd
   OutFile "fwbuilder-${VERSION}.exe"
 
 ;  Default installation folder
-  InstallDir "C:\FWBuilder${GENERATION_SHORT}"
+  InstallDir "$PROGRAMFILES\FWBuilder-${GENERATION}"
 
 ;****************************************************************************
 ; We need to keep installation data and program settings in
@@ -194,7 +194,7 @@ FunctionEnd
 
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
-  UninstPage custom un.UninstallSurveyPageText
+;  UninstPage custom un.UninstallSurveyPageText
 
 ; Set language
   !insertmacro MUI_LANGUAGE "English"
@@ -242,6 +242,7 @@ Section "FWBuilder (required)"
   File "doc\README.pix_routing"
   File "doc\README.routing"
   File "doc\README.nxosacl"
+  File "doc\README.junos"
 
   File /oname=fwbuilder.ico "src\gui\fwbuilder-windows.ico"
 
@@ -255,40 +256,48 @@ Section "FWBuilder (required)"
   File /a "src\pix\release\fwb_pix.exe"
   File /a "src\procurve_acl\release\fwb_procurve_acl.exe"
   File /a "src\nxosacl\release\fwb_nxosacl.exe"
+  File /a "src\junosacl\release\fwb_junosacl.exe"
 
-  File "windows\bin\libiconv-2.dll"
-  File "windows\bin\pthreadGC2.dll"
-  File "windows\bin\libgcc_s_dw2-1.dll"
-  File "windows\bin\libstdc++-6.dll"
-  File "windows\bin\zlib1.dll"
-  File "windows\bin\libxml2-2.dll"
-  File "windows\bin\libxslt-1.dll"
+; Install Qt and its dependencies
+
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Core.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Gui.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Network.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5PrintSupport.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Widgets.dll"
+  File /r "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libbz2.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libgcc_s_sjlj-1.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libglib-2.0-0.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-0.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libiconv-2.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libintl-8.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre-1.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre16-0.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpng16-16.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libstdc++-6.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libwinpthread-1.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libxml2-2.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libxslt-1.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/ssleay32.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/zlib1.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libeay32.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libfreetype-6.dll"
+  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/liblzma-5.dll"
 
 ; Install RCS for these files
 ;
-  File "windows\bin\win32\ci.exe"
-  File "windows\bin\win32\co.exe"
-  File "windows\bin\win32\rcs.exe"
-  File "windows\bin\win32\rcsdiff.exe"
-  File "windows\bin\win32\rlog.exe"
-  File "windows\bin\win32\diff.exe"
-  File "windows\bin\win32\rcslib.dll"
-
-;  File "c:\local\bin\netsnmp.dll"
-
-  File "windows\bin\QtCore4.dll"
-  File "windows\bin\QtGui4.dll"
-  File "windows\bin\QtNetwork4.dll"
-;  File "c:\local\qt-everywhere-commercial-src-4.7.3\bin\QtTest4.dll"
-
-  File /nonfatal /oname=resources\locale\qt_de.qm "c:\local\qt-everywhere-commercial-src-4.7.3\translations\qt_de.qm"
-  File /nonfatal /oname=resources\locale\qt_fr.qm "c:\local\qt-everywhere-commercial-src-4.7.3\translations\qt_fr.qm"
-  File /nonfatal /oname=resources\locale\qt_ru.qm "c:\local\qt-everywhere-commercial-src-4.7.3\translations\qt_ru.qm"
-
+  File "w32-bin\ci.exe"
+  File "w32-bin\co.exe"
+  File "w32-bin\rcs.exe"
+  File "w32-bin\rcsdiff.exe"
+  File "w32-bin\rlog.exe"
+  File "w32-bin\diff.exe"
+  File "w32-bin\rcslib.dll"
 
 ;; Starting with 4.0.2, we now package putty tools with fwbuilder
-  File "windows\bin\plink.exe"
-  File "windows\bin\pscp.exe"
+  File "w32-bin\plink.exe"
+  File "w32-bin\pscp.exe"
 
 
 ; Write the installation path into the registry
@@ -297,7 +306,7 @@ Section "FWBuilder (required)"
 ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayName"     "Firewall Builder ${GENERATION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "UninstallString" '"$INSTDIR\uninstall.exe"'
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "Publisher"       "NetCitadel LLC"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "Publisher"       "https://github.com/fwbuilder"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayVersion"  "${VERSION}"
 
 
@@ -335,7 +344,6 @@ Section "FWBuilder (required)"
 ;  SetShellVarContext all
 
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder on the Web.lnk" "http://www.fwbuilder.org/" "" "$INSTDIR\fwbuilder.ico"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk" "$INSTDIR\fwbuilder.exe" "" "$INSTDIR\fwbuilder.ico"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
 
@@ -395,7 +403,6 @@ Section "Uninstall"
 
 ;  SetShellVarContext all
 
-  Delete "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder on the Web.lnk"
   Delete "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk"
   Delete "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk"
   RMDir  "$SMPROGRAMS\$STARTMENU_FOLDER"
