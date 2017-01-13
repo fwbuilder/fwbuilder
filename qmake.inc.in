@@ -109,9 +109,9 @@ win32 {
 
     INCLUDEPATH += "../.."
 
-    INCLUDEPATH += /local/include /local/include/libxml2 /local/include/net-snmp /include
+    INCLUDEPATH += $$(TOOLCHAIN_PREFIX)/include $$(TOOLCHAIN_PREFIX)/include/libxml2 $$(TOOLCHAIN_PREFIX)/include/net-snmp /include
 
-   LIBS += -L/local/lib -L/local/bin
+   LIBS += -L$$(TOOLCHAIN_PREFIX)/lib -L$$(TOOLCHAIN_PREFIX)/bin
    # LIBS += -l xslt -l xml2 -l iconv -l pthread -l ws2_32
    #LIBS += -l xslt -l xml2 -l iconv -l pthread -l netsnmp -l ws2_32
    LIBS += -lxslt -lxml2 -liconv -lpthread -lz -lws2_32

@@ -69,8 +69,8 @@ win32 {
     CONFIG += staticlib
 
     DEFINES += LIBXML_STATIC LIBXSLT_STATIC 
-    INCLUDEPATH += /local/include /local/include/libxml2 /local/include/net-snmp /include
-    LIBS += -L/local/lib -L/local/bin
+    INCLUDEPATH += $$(TOOLCHAIN_PREFIX)/include $$(TOOLCHAIN_PREFIX)/include/libxml2 $$(TOOLCHAIN_PREFIX)/include/net-snmp /include
+    LIBS += -L$$(TOOLCHAIN_PREFIX)/lib -L$$(TOOLCHAIN_PREFIX)/bin
 #    LIBS += ws2_32.lib pthreadVC.lib 
     LIBS += pthreadVC.lib 
     LIBS += libxml2.lib libxslt_a.lib libz.a  # zlib.lib
