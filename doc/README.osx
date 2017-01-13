@@ -1,13 +1,18 @@
 Requirements:
  * XCode + Command Line Tools
- * Qt 4.6+ http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-mac-opensource-4.8.5.dmg
+ * Qt5
+ * - Qt4 is deprecated
  * autoconf, automake, libtool, net-snmp
 
 Easy install with Homebrew:
- $ brew install autoconf automake libtool net-snmp
+ $ brew install autoconf automake libtool net-snmp qt5
+ * Beware of buggy macdeployqt in Qt5 > 5.5
 
 Fix permissions
  $ sudo chmod -R u+w /usr/local/Cellar/net-snmp
+
+Add qt to PATH, e.g.
+ $ export PATH=/usr/local/Cellar/qt55/5.5.1/bin:$PATH
 
 Clone repository and
  $ cd fwbuilder && chmod +x build_mac.sh && ./build_mac.sh

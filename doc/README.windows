@@ -1,3 +1,26 @@
+* The current tested way of building Firewall Builder for Windows is by
+  using MXE (M cross environment) in combination with Docker and docker-compose
+
+  The docker image is provided in docker/Dockerfile, and the container is mounting
+  the current git directory
+
+  In most cases, the following command will
+  * Build the Docker image
+  * Start the container
+  * Compile and build installer
+
+  $ docker-machine up
+
+  Note, you'll need some binary utilities for the packaging stage:
+  * GNU RCS
+  * PSCP and Plink
+
+  You may obtain the utilites from the following repo:
+  https://github.com/fwbuilder/w32-bin
+
+
+*** The guide below is deprecated and is neither maintained nor tested ***
+
 * Set up development directory: c:\dev
 
 * Install MinGW-get in c:\dev\mingw
