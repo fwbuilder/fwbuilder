@@ -1,7 +1,7 @@
 #!/bin/bash
 export QMAKE_MAC_SDK="macosx"
-export QMAKESPEC="macx-llvm"
-export QMAKE_MACOSX_DEPLOYMENT_TARGET=10.6
+export QMAKESPEC="macx-clang"
+export QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9
 
 ./autogen.sh
 
