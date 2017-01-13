@@ -57,7 +57,7 @@ if test -n "$with_qtdir"; then
 fi
 
 # TODO: do we need to add $QTDIR/bin to PATH to find qmake?
-EXTENDED_PATH="/usr/local/bin:$PATH"
+EXTENDED_PATH="/usr/local/bin:$QTDIR/bin/:$PATH"
 
 AC_ARG_WITH(qmake, [  --with-qmake=qmake     Specify the qmake to be used (debian qmake-qt4) ])
 if test -n "$with_qmake"; then
@@ -243,10 +243,13 @@ ACX_PTHREAD([
    AC_MSG_ERROR([POSIX threads library not present or not configured])
 ])
 
+
 dnl check for XML library
 
-AC_PATH_PROG(XML2_CONFIG, xml2-config,  ,[$EXTENDED_PATH])
-
+AC_ARG_WITH(xml2-config,
+    [  --with-xml2-config=xml2-config     Specify the xml2-config to be used],
+    [ XML2_CONFIG=$with_xml2_config ],
+    [ AC_PATH_PROG(XML2_CONFIG, xml2-config,  ,[$EXTENDED_PATH]) ])
 if test x$XML2_CONFIG = x ; then
    AC_MSG_ERROR([libxml2 not present or not configured])
 else
@@ -264,8 +267,10 @@ LIBS=${SAVE_LIBS}
 
 dnl check for XSLT library
 
-AC_PATH_PROG(XSLT_CONFIG, xslt-config,  ,[$EXTENDED_PATH])
-
+AC_ARG_WITH(xslt-config,
+    [  --with-xslt-config=xslt-config     Specify the xslt-config to be used],
+    [ XSLT_CONFIG=$with_xslt_config ],
+    [ AC_PATH_PROG(XSLT_CONFIG, xslt-config,  ,[$EXTENDED_PATH]) ])
 if test x$XSLT_CONFIG = x ; then
    AC_MSG_ERROR([libxslt not present or not configured])
 else
