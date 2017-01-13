@@ -37,7 +37,7 @@ cp ${FWBUILDER_ROOT_DIR}/src/libfwbuilder/migration/*.xslt ${TMP_BUNDLE}/Content
 
 echo "==> Copying binaries into bundle"
 cp ${FWBUILDER_ROOT_DIR}/src/fwbedit/fwbedit.app/Contents/MacOS/fwbedit ${TMP_BUNDLE}/Contents/MacOS/
-for binary in ipt pf ipf ipfw iosacl nxosacl pix procurve_acl
+for binary in ipt pf ipf ipfw iosacl nxosacl pix procurve_acl junosacl
 do
   cp ${FWBUILDER_ROOT_DIR}/src/$binary/fwb_$binary.app/Contents/MacOS/fwb_$binary ${TMP_BUNDLE}/Contents/MacOS/
 done
@@ -49,7 +49,7 @@ echo "==> Stripping binaries"
 strip ${BIN}/*
 
 echo "==> Running macdeployqt"
-macdeployqt ${TMP_BUNDLE} -executable=${BIN}/fwbedit -executable=${BIN}/fwb_ipt -executable=${BIN}/fwb_pf -executable=${BIN}/fwb_ipf -executable=${BIN}/fwb_ipfw -executable=${BIN}/fwb_iosacl -executable=${BIN}/fwb_nxosacl -executable=${BIN}/fwb_pix -executable=${BIN}/fwb_procurve_acl 
+macdeployqt ${TMP_BUNDLE} -executable=${BIN}/fwbedit -executable=${BIN}/fwb_ipt -executable=${BIN}/fwb_pf -executable=${BIN}/fwb_ipf -executable=${BIN}/fwb_ipfw -executable=${BIN}/fwb_iosacl -executable=${BIN}/fwb_nxosacl -executable=${BIN}/fwb_pix -executable=${BIN}/fwb_procurve_acl -executable=${BIN}/fwb_junosacl
 
 echo "==> Done"
 echo "# open ${TMP_BUNDLE}/"
