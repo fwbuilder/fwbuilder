@@ -1,0 +1,107 @@
+<h1>Firewall Builder 5.3.7 Release Notes</h1>
+
+<p>
+  <a href="https://github.com/fwbuilder/fwbuilder/issues">GitHub: Issues</a>
+</p>
+
+<p>
+  <ul>
+    <li><a href="#iptables">Changes in support for iptables</a></li>
+    <li><a href="#junos">Changes in support for Junos</a></li>
+    <li><a href="#gui">GUI changes</a></li>
+    <li><a href="#compiler">Compiler and build systems changes</a></li>
+  </ul>
+</p>
+
+<a name="iptables"></a>
+<h2>Changes in support for iptables</h2>
+<ul>
+  <li>
+    <p>
+      Feature: fwbuilder now supports conntrack instead of state module for recent iptables
+    </p>
+  </li>
+  <li>
+    <p>
+      Feature: Add support for the iptables > 1.4.20 "-w" option
+    </p>
+  </li>
+  <li>
+    <p>
+      Bugfix: Fixed (potential) deadlock situation as sugested by https://github.com/antaflos
+    </p>
+  </li>
+  <li>
+    <p>
+      Bugfix: Proper handling of NAT chains
+    </p>
+  </li>
+  <li>
+    <p>
+      Feature: Add support for --kerneltz
+    </p>
+  </li>
+</ul>
+
+<a name="junos"></a>
+<h2>Changes in support for Junos</h2>
+<ul>
+  <li>
+    <p>
+      Bugfix: Generated new ids for the IP fragmentation service objects in the standard object database
+    </p>
+  </li>
+    <li>
+    <p>
+      Bugfix: Use correct comment symbol
+    </p>
+  </li>
+</ul>
+
+<a name="gui"></a>
+<h2>GUI changes</h2>
+<ul>
+  <li>
+    <p>
+      Bugfix: Don't delete object in locked group
+    </p>
+  </li>
+  <li>
+    <p>
+      Feature: Add new objects directly to the subfolder via context menu
+    </p>
+  </li>
+</ul>
+
+<a name="compiler"></a>
+<h2>Compiler and build systems changes</h2>
+<ul>
+  <li>
+    <p>
+      Feature: Add support for MSYS2
+    </p>
+  </li>
+  <li>
+    <p>
+      Update OSX buildscript for newer XCode
+    </p>
+  </li>
+  <li>
+    <p>
+      Feature: Add support for GCC 6.X
+    </p>
+  </li>
+  <li>
+    <p>
+      Refactor: Gain more C++11 compatability
+    </p>
+  </li>
+  <li>
+    <p>
+      Feature: W32: Add support for MXE and provide Docker environment for cross compiling
+    </p>
+  </li>
+</ul>
+
+
+
