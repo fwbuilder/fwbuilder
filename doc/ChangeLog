@@ -1,3 +1,24 @@
+2017-01-14  Sirius Bakke <sirius@bakke.co>
+    * Version 5.3.7
+    * iptables:
+      - Feature: fwbuilder now supports conntrack instead of state module for recent iptables
+      - Feature: Add support for the iptables > 1.4.20 "-w" option
+      - Bugfix: Fixed (potential) deadlock situation as sugested by https://github.com/antaflos
+      - Bugfix: Proper handling of NAT chains
+      - Feature: Add support for --kerneltz
+    * junos:
+      - Bugfix: Generated new ids for the IP fragmentation service objects in the standard object database
+      - Bugfix: Use correct comment symbol
+    * gui:
+      - Bugfix: Don't delete object in locked group
+      - Feature: Add new objects directly to the subfolder via context menu
+    * compiler:
+      - Feature: Add support for MSYS2
+      - Update OSX buildscript for newer XCode
+      - Feature: Add support for GCC 6.X
+      - Refactor: Gain more C++11 compatability
+      - Feature: W32: Add support for MXE and provide Docker environment for cross compiling
+
 2015-03-10  Sirius Bakke <sirius.bakke@uninett.no>
     * Version 5.3.6
     * Several bugfixes for Junos, including rollback on syntax error,
