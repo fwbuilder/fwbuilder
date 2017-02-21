@@ -1,0 +1,27 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using root account for authentication
+##
+##  Variables:
+##
+##  {{$fwbpromp}}   -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}      -- directory on the firewall
+##  {{$fwscript}}   -- script name on the firewall
+##  {{$rbtimeout}}  -- rollback timeout
+##
+##  {{$firewall_name}} -- the name of the firewall object
+##
+
+
+{{if run}}
+echo '{{$fwbprompt}}';
+chmod +x {{$fwdir}}/{{$fwscript}};
+sh {{$fwdir}}/{{$fwscript}} && echo 'Policy activated'
+{{endif}}
+
