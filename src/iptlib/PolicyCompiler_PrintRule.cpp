@@ -708,9 +708,8 @@ string PolicyCompiler_ipt::PrintRule::_printLogParameters(PolicyRule *rule)
     FWOptions *ruleopt = (rule!=NULL) ? 
         rule->getOptionsObject() : compiler->getCachedFwOpt();
 
-    bool use_nflog = (ipt_comp->ipv6 ||
-                     (compiler->getCachedFwOpt()->getBool("use_ULOG") &&
-                      compiler->fw->getStr("host_OS")=="linux317"));
+    bool use_nflog = (compiler->getCachedFwOpt()->getBool("use_ULOG") &&
+                      compiler->fw->getStr("host_OS")=="linux317");
 
     // there is no ULOG for ip6tables yet
     bool use_ulog = (!ipt_comp->ipv6 &&
