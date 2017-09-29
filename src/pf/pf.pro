@@ -9,7 +9,7 @@ SOURCES	 =  pf.cpp
 HEADERS	 = ../../config.h
 
 !win32 {
-	QMAKE_COPY    = ../../install.sh -m 0755 -s
+	QMAKE_COPY    = ../../install.sh -m 0755
 }
 
 win32:CONFIG += console

@@ -20,7 +20,7 @@ win32:INCLUDEPATH += ../libgui/ui
 TARGET = fwbedit
 
 !win32 {
-	QMAKE_COPY    = ../../install.sh -m 0755 -s
+	QMAKE_COPY    = ../../install.sh -m 0755
 }
 
 PRE_TARGETDEPS  = ../common/$$BINARY_SUBDIR/libcommon.a \
