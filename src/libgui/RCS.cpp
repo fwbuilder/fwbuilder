@@ -66,6 +66,14 @@
 
 #include <iostream>
 
+#ifndef PATH_MAX
+#ifdef MAXPATHLEN
+#define	PATH_MAX MAXPATHLEN
+#else
+#define	PATH_MAX 1024
+#endif
+#endif
+
 
 using namespace std;
 using namespace libfwbuilder;
