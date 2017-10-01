@@ -43,7 +43,7 @@ do
 
 shift `expr $OPTIND - 1`
 
-test -n "$all" && LIST=`fwblookup -f $XMLFILE -lN /${LIB}/Firewalls | grep -v Firewalls` || {
+test -n "$all" && LIST=`fwbedit list -f $XMLFILE -c -o /${LIB}/Firewalls -F %name%` || {
     while test -n "$1"; do
         LIST="$LIST $1"
         shift
@@ -51,7 +51,8 @@ test -n "$all" && LIST=`fwblookup -f $XMLFILE -lN /${LIB}/Firewalls | grep -v Fi
 }
 
 for f in `echo $LIST`; do
-    platform=`fwblookup -f $XMLFILE -a platform /${LIB}/Firewalls/$f`
+    platform=`fwbedit list -f $XMLFILE -F %platform% -o /${LIB}/Firewalls/$f`
+    id=`fwbedit list -f $XMLFILE -F %id% -o /${LIB}/Firewalls/$f`
     case "$platform" in
         iptables) comp="fwb_ipt" ;;
         ipf)      comp="fwb_ipf" ;;
@@ -62,6 +63,6 @@ for f in `echo $LIST`; do
     esac
     echo
     echo "################ $f"
-    $comp $V -f $XMLFILE -d $DIR $f;
+    $comp $V -f $XMLFILE -d $DIR -i $id;
   done
 
