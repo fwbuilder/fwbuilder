@@ -1,0 +1,168 @@
+## -*- mode: shell-script; -*- 
+##
+## Double '##' comments are removed when configlet is processed.
+## Single '#' comments stay.
+##
+## Some shells (not bash) do not like empty functions. Placing a comment
+## inside the function does not help. Using dummy ":" as a placeholder.
+##
+{{$top_comment}}
+
+{{$errors_and_warnings}}
+
+{{$shell_debug}}
+FWBDEBUG=""
+
+{{$path}}
+
+{{$constants}}
+
+{{$tools}}
+
+{{$shell_functions}}
+
+{{$run_time_address_tables}}
+
+load_modules() {
+    :
+    {{$load_modules}}
+}
+
+verify_interfaces() {
+    :
+    {{$verify_interfaces}}
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    {{$prolog_script}}
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    {{$epilog_script}}
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    {{$configure_interfaces}}
+}
+
+script_body() {
+    {{$script_body}}
+}
+
+ip_forward() {
+    :
+    {{$ip_forward_commands}}
+}
+
+reset_all() {
+    :
+    {{$reset_all}}
+}
+
+{{$block_action}}
+
+{{$stop_action}}
+
+{{$status_action}}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+cmd=$1
+test -z "$cmd" && {
+    cmd="start"
+}
+
+case "$cmd" in
+    start)
+        log "Activating firewall script generated {{$timestamp}} by {{$user}}"
+        check_tools
+        {{if prolog_top}} prolog_commands {{endif}}
+        check_run_time_address_table_files
+        {{if using_ipset}}
+        check_module_ipset
+        {{endif}}
+        load_modules "{{$load_modules_with_nat}} {{$load_modules_with_ipv6}}"
+        configure_interfaces
+        verify_interfaces
+        {{if prolog_after_interfaces}} prolog_commands {{endif}}
+        {{if not_using_iptables_restore}} reset_all {{endif}}
+        {{if prolog_after_flush}} prolog_commands {{endif}}
+        script_body
+        ip_forward
+        {{if using_ipset}}
+        load_run_time_address_table_files
+        {{endif}}
+        epilog_commands
+        RETVAL=$?
+        ;;
+
+    stop)
+        stop_action
+        RETVAL=$?
+        ;;
+
+    status)
+        status_action
+        RETVAL=$?
+        ;;
+
+    block)
+        block_action
+        RETVAL=$?
+        ;;
+
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
+        ;;
+
+{{if using_ipset}}
+## Usage:  script.fw reload_address_table <address_table_name> <file_name>
+    reload_address_table)
+        reload_address_table $2 $3
+        ;;
+
+## Usage:  script.fw add_to_address_table <address_table_name> <file_name> <address>
+    add_to_address_table)
+        add_to_address_table $2 $3 $4
+        ;;
+
+## Usage:  script.fw remove_from_address_table <address_table_name> <file_name> <address>
+    remove_from_address_table)
+        remove_from_address_table $2 $3 $4
+        ;;
+
+## Usage:  script.fw test_address_table <address_table_name> <address>
+    test_address_table)
+        test_address_table $2 $3
+        ;;
+{{endif}}
+
+    *)
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces{{if using_ipset}}|reload_address_table|add_to_address_table|remove_from_address_table|test_address_table{{endif}}]"
+        ;;
+
+esac
+
+exit $RETVAL

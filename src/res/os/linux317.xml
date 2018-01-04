@@ -1,0 +1,211 @@
+<?xml version="1.0"?> <!-- -*- mode: xml; -*- -->
+<FWBuilderResources>
+    <Target name="linux317">
+      <description>Linux 3.17+/4</description>
+      <status>active</status>
+      <family>linux317</family>
+      <dialog>linux317</dialog>
+      <interface_dialog>linux317</interface_dialog>
+      <cluster_dialog>basic</cluster_dialog>
+
+      <options>
+        <user_can_change_install_dir>true</user_can_change_install_dir>
+        <default>
+          <linux317_ip_forward>1</linux317_ip_forward>
+          <loopback_interface>lo</loopback_interface>
+          <flush_and_set_default_policy>True</flush_and_set_default_policy>
+          <modules_dir>/lib/modules/`uname -r`/kernel/net/</modules_dir>
+        </default>
+
+        <activation>
+          <fwdir>/etc/fw</fwdir>
+          <fwdir_test>{{$fwdir}}/tmp</fwdir_test>
+        </activation>
+
+<!-- set to True if you want to suppress comments in the generated script -->
+        <suppress_comments>False</suppress_comments>
+<!-- set to True if you do not need the script to load kernel modules -->
+        <suppress_modules>False</suppress_modules>
+
+      </options>
+
+      <capabilities>
+        <supports_routing>True</supports_routing>
+        <supports_routing_itf>True</supports_routing_itf>
+        <supports_metric>True</supports_metric>
+        <supports_subinterfaces>True</supports_subinterfaces>
+        <supports_advanced_interface_options>True</supports_advanced_interface_options>
+        <supports_cluster>True</supports_cluster>
+      </capabilities>
+
+      <protocols>
+        <failover>
+          <string>vrrp,VRRP</string>
+          <string>heartbeat,heartbeat</string>
+          <string>openais,OpenAIS</string>
+          <string>none,None</string>
+        </failover>
+
+        <state_sync>
+          <string>conntrack,conntrack</string>
+        </state_sync>
+
+        <heartbeat>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <default_address>224.0.10.100</default_address>
+          <default_port>694</default_port>
+          <manage_addresses>False</manage_addresses>
+          <dialog>heartbeat</dialog>
+        </heartbeat>
+
+        <openais>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <default_address>226.94.1.1</default_address>
+          <default_port>5405</default_port>
+          <manage_addresses>False</manage_addresses>
+          <dialog>openais</dialog>
+        </openais>
+
+        <conntrack>
+          <needs_master>False</needs_master>
+          <default_address>225.0.0.50</default_address>
+          <default_port>3780</default_port>
+          <manage_addresses>False</manage_addresses>
+          <dialog>conntrack</dialog>
+        </conntrack>
+
+        <none>
+          <needs_master>False</needs_master>
+          <no_ip_ok>True</no_ip_ok>
+          <manage_addresses>False</manage_addresses>
+          <dialog></dialog>
+        </none>
+
+        <!-- no parameters for VRRP on regular Linux system since we do not
+             generate configuration (command line) for vrrpd at this time  -->
+        <vrrp>
+          <needs_master>True</needs_master>
+          <no_ip_ok>False</no_ip_ok>
+          <manage_addresses>False</manage_addresses>
+          <dialog></dialog>
+        </vrrp>
+
+      </protocols>
+
+      <interfaces>
+        <cluster>
+          <string>vrrp,VRRP</string>
+          <string>heartbeat,heartbeat</string>
+        </cluster>
+        <firewall>
+          <string>ethernet,Ethernet</string>
+          <string>bridge,Bridge</string>
+          <string>bonding,Bonding</string>
+        </firewall>
+      </interfaces>
+
+      <subinterfaces>
+        <ethernet>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </ethernet>
+        <bridge>
+          <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </bridge>
+        <bonding>
+          <string>ethernet,Ethernet</string>
+          <string>8021q,VLAN</string>
+          <string>unknown,Unknown</string>
+        </bonding>
+      </subinterfaces>
+
+
+      <tools>
+        <RedHat>
+          <path_lsmod>/sbin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/modprobe</path_modprobe>
+          <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/sbin/ip</path_ip>
+          <path_logger>/usr/bin/logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
+        </RedHat>
+        <Mandrake>
+          <path_lsmod>/sbin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/modprobe</path_modprobe>
+          <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/sbin/ip</path_ip>
+          <path_logger>/usr/bin/logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
+        </Mandrake>
+        <SuSE>
+          <path_lsmod>/sbin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/modprobe</path_modprobe>
+          <path_iptables>/usr/sbin/iptables</path_iptables>
+          <path_ip6tables>/usr/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/usr/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/sbin/ip</path_ip>
+          <path_logger>/bin/logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
+        </SuSE>
+        <Debian>
+          <path_lsmod>/sbin/lsmod</path_lsmod>
+          <path_modprobe>/sbin/modprobe</path_modprobe>
+          <path_iptables>/sbin/iptables</path_iptables>
+          <path_ip6tables>/sbin/ip6tables</path_ip6tables>
+          <path_iptables_restore>/sbin/iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>/sbin/ip6tables-restore</path_ip6tables_restore>
+          <path_ip>/sbin/ip</path_ip>
+          <path_logger>/usr/bin/logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>/sbin/ifconfig</path_ifconfig>
+          <path_vconfig>/sbin/vconfig</path_vconfig>
+          <path_brctl>/sbin/brctl</path_brctl>
+          <path_ifenslave>/sbin/ifenslave</path_ifenslave>
+          <path_ipset>/usr/sbin/ipset</path_ipset>
+        </Debian>
+        <Unknown>
+          <path_lsmod>lsmod</path_lsmod>
+          <path_modprobe>modprobe</path_modprobe>
+          <path_iptables>iptables</path_iptables>
+          <path_ip6tables>ip6tables</path_ip6tables>
+          <path_iptables_restore>iptables-restore</path_iptables_restore>
+          <path_ip6tables_restore>ip6tables-restore</path_ip6tables_restore>
+          <path_ip>ip</path_ip>
+          <path_logger>logger</path_logger>
+          <path_expect>/usr/bin/expect</path_expect>
+          <path_ifconfig>ifconfig</path_ifconfig>
+          <path_vconfig>vconfig</path_vconfig>
+          <path_brctl>brctl</path_brctl>
+          <path_ifenslave>ifenslave</path_ifenslave>
+          <path_ipset>ipset</path_ipset>
+        </Unknown>
+      </tools>
+    </Target>
+
+</FWBuilderResources>
