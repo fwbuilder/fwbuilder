@@ -1,0 +1,112 @@
+## -*- mode: shell-script; -*- 
+
+log() {
+    echo "$1"
+    which "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
+}
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+##
+## getaddr6() reimplementation idea courtesy Juergen Kammer
+## <j.kammer@eurodata.de> See ticket #651
+##
+## Can not use awk substr() function as originally suggested by
+## Juergen because of the difference in behavior between GNU awk and
+## mawk (a bug?). GNU awk substr() returns +1 character while mawk
+## returns n characters. Tested with GNU awk v3.1.5 (CentOS 5.2) and
+## mawk v1.3.3 (Ubuntu Jaunty)
+##
+## This sed command has been tested with GNU sed v4.1.5 and busybox v1.00
+##
+## getaddr has been reimplemented to return list of all ipv4 addresses
+## of the interface. This is different from its behavior in fwbuilder
+## v2 and v3 where it returned only the first address.
+##
+getaddr_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP $af addr show dev $dev |  sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}' | sed 's/peer.*//')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default |  sed 's! .*$!!')
+    test -z "$L" && { 
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\"" 
+}
+
+
+##
+## This function reads all ipv4 addresses of interface (arg 1) and
+## assignes the list to the variable which name is given as arg 2.
+##
+getaddr() {
+    getaddr_internal $1 $2 "-4"
+}
+
+##
+## This function reads all ipv6 addresses of interface (arg 1) and
+## assignes the list to the variable which name is given as arg 2.
+##
+getaddr6() {
+    getaddr_internal $1 $2 "-6"
+}
+
+##
+## This function reads all ipv4 addresses of interface (arg 1) and
+## assignes list of addresses of attached networks with their netmasks
+## to the variable which name is given as arg 2.
+##
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+##
+## This function reads all ipv6 addresses of interface (arg 1) and
+## assignes list of addresses of attached networks with their netmasks
+## to the variable which name is given as arg 2.
+##
+getnet6() {
+    getnet_internal $1 $2 "-6"
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1
+    do
+        echo $list2 | grep -q $intf || {
+        # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+

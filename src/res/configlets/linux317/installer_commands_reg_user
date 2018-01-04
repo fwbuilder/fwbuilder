@@ -1,0 +1,26 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+##
+## These are commands built-in policy installer runs on the firewall if
+## installation is performed using regular user account for authentication
+##
+##  Variables:
+##
+##  {{$fwbprompt}} -- "magic" prompt that installer uses to detect when it is logged in
+##  {{$fwdir}}     -- directory on the firewall
+##  {{$fwscript}}  -- script name on the firewall
+##  {{$rbtimeout}} -- rollback timeout
+##
+##  {{$firewall_name}} -- the name of the firewall object
+##
+##  Note: all commands should be on one line to avoid unnecessary linefeeds.
+##  These linefeeds are sent to the server side (to the firewall) and end up
+##  on the input of sudo and other commands. This creates difficult to catch
+##  race condition which breaks installation process.
+
+echo '{{$fwbprompt}}'; chmod +x {{$fwdir}}/{{$fwscript}}; sudo -S {{$fwdir}}/{{$fwscript}} && echo 'Policy activated'
+

@@ -1,0 +1,153 @@
+## -*- mode: shell-script; -*- 
+##
+## Lines that start with "##" will be removed before this code is
+## added to the generated script. Regular shell comments can be added
+## using single "#", these will appear in the script.
+##
+############ add or remove ip addresses of interfaces #######################
+
+P2P_INTERFACE_WARNING=""
+
+missing_address() {
+    address=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+
+## as of v4.0 we do not manage addresses of point-to-point
+## interfaces. The output of "ip addr show" command for these inetrfaces has
+## word "POINTOPOINT".
+
+## Since the user can not define interface address without netmask in
+## fwbuilder GUI, the script always assumes the address of p2p
+## interface has one. It is therefore something like 1.2.3.4/32. The
+## address in the output of "ip addr show" command does not have any
+## netmask, like in 
+##
+## 10: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 500
+##    link/[65534] 
+##    inet 10.0.0.100 peer 10.0.0.200 scope global tun0
+##
+## This means, we always have a discrepancy and the script will always
+## want to update the address, even if the address defined in the GUI
+## matches the one on the interface, the only difference being the
+## missing netmask. This leads to many repetitive warnings. We get two
+## warnings even if there is only one p2p interface. Using global
+## variable to suppress redundant warnings. This means the user will
+## see only one warning, citing the name of the first p2p interface
+## even if they have many.
+
+    $IP addr show dev $interface | grep -q POINTOPOINT && {
+        test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
+        P2P_INTERFACE_WARNING="yes"
+        return
+    }
+
+    test "$cmd" = "add" && {
+      echo "# Adding ip address: $interface $addr"
+## Use "broadcast +" syntax to make ip assign broadcast automatically,
+## but only for ipv4 addresses
+      echo $addr | grep -q ':' && {
+          $FWBDEBUG $IP addr $cmd $addr dev $interface
+      } || {
+          $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
+      }
+    }
+
+    test "$cmd" = "del" && {
+      echo "# Removing ip address: $interface $addr"
+      $FWBDEBUG $IP addr $cmd $addr dev $interface || exit 1
+    }
+
+    $FWBDEBUG $IP link set $interface up
+}
+
+##
+## The list of current addresses is taken using "ip addr show" command.
+## Second argument defines address scrope; it should be in the form
+## of the matching regex such as "scope global" or "scope .*".
+##
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+    $IP addr ls dev $interface | \
+      awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' | \
+        while read addr; do
+          echo "${addr}@$interface"
+	done | sort
+}
+
+## arg 1 is like "eth1 1.1.1.1/24 2.2.2.2/24 fe80::20c:29ff:fef6:bea0/64"
+## arg 2 is "3.3.3.3/24 4.4.4.4/24"  - list of addresses we should ignore
+## Using arg2 to provide list of addresses managed by heartbeat, so that
+## incremental update does not delete them.
+##
+## Only "scope global" addreses are managed because fwbuilder script
+## should not try to delete addresses configured for tunnels and IPv6
+## link scope addresses (fe80::) ("scope link" or "scope host" addresses)
+##
+## Addresses we should ignore are dropped from the list.
+##
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1 
+    interface=$1 
+    shift
+
+    FWB_ADDRS=$(
+      for addr in $*; do
+        echo "${addr}@$interface"
+      done | sort
+    )
+
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+
+    $IP link show dev $interface >/dev/null 2>&1 && {
+      CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface 'scope .*' "$ignore_list")
+      CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scope global' "$ignore_list")
+    } || {
+      echo "# Interface $interface does not exist"
+      # Stop the script if we are not in test mode
+      test -z "$FWBDEBUG" && exit 1
+    }
+
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+## this function removes addresses from interfaces that do not exist in
+## fwbuilder config. 
+##
+## Usage:
+##   remove_unconfigured_addresses lo eth0 eth1 eth2.100 vlan20 br0
+##
+## Arguments are all interfaces that have addresses in
+## fwbuilder. Addresses will be removed from all other interfaces with
+## addresses found on the firewall.
+##
+clear_addresses_except_known_interfaces() {
+    $IP link show | sed 's/://g' | awk -v IGNORED="$*" \
+        'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+         (/state/ && !($2 in ignored_dict)) {print $2;}' | \
+         while read intf; do
+            echo "# Removing addresses not configured in fwbuilder from interface $intf"
+            $FWBDEBUG $IP addr flush dev $intf scope global
+            $FWBDEBUG $IP link set $intf down
+         done
+}

@@ -1,0 +1,13 @@
+## -*- mode: shell-script; -*- 
+##
+## This is the body of the shell function verify_interfaces()
+
+{{if have_interfaces}}
+    echo "Verifying interfaces: {{$interfaces}}"
+    for i in {{$interfaces}} ; do
+        $IP link show "$i" > /dev/null 2>&1 || {
+            log "Interface $i does not exist"
+            exit 1
+        }
+    done
+{{endif}}

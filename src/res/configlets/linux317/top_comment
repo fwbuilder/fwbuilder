@@ -1,0 +1,13 @@
+#!/bin/sh 
+#
+#  This is automatically generated file. DO NOT MODIFY !
+#
+#  Firewall Builder  fwb_ipt v{{$version}}
+#
+#  Generated {{$timestamp}} {{$tz}} by {{$user}}
+#
+{{$manifest}}
+#
+# Compiled for {{$platform}} {{$fw_version}}
+#
+{{$comment}}
