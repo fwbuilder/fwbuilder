@@ -281,6 +281,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
 
 //    string os=o->getStr("host_OS");
     if (dlgname=="linux24")   return new linux24AdvancedDialog(parent, o);
+    if (dlgname=="linux317")  return new linux24AdvancedDialog(parent, o);
     if (dlgname=="sveasoft")  return new linksysAdvancedDialog(parent, o);
     if (dlgname=="freebsd")   return new freebsdAdvancedDialog(parent, o);
     if (dlgname=="openbsd")   return new openbsdAdvancedDialog(parent, o);
