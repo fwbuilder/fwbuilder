@@ -19,3 +19,4 @@ clean_tests.commands = ./unit_tests.sh make clean_tests
 
 QMAKE_EXTRA_TARGETS += build_tests run_tests clean_tests tests 
 
+QT += widgets
