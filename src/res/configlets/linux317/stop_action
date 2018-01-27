@@ -1,0 +1,34 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+## This configlet defines commands executed when iptables script is ran
+## with command line argument "stop". By default it resets iptables 
+## tables and chains using function reset_all and sets all chains
+## default policy to ACCEPT
+
+stop_action() {
+    reset_all
+
+{{if have_ipv4}}
+    $IPTABLES {{$opt_wait}} -P OUTPUT  ACCEPT
+    $IPTABLES {{$opt_wait}} -P INPUT   ACCEPT
+    $IPTABLES {{$opt_wait}} -P FORWARD ACCEPT
+{{endif}}
+
+{{if have_ipv6}}
+    $IP6TABLES {{$opt_wait}} -P OUTPUT  ACCEPT
+    $IP6TABLES {{$opt_wait}} -P INPUT   ACCEPT
+    $IP6TABLES {{$opt_wait}} -P FORWARD ACCEPT
+{{endif}}
+}
+

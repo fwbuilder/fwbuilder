@@ -9,7 +9,7 @@
       <!-- maintian order of supported os names to make them appear in the dialog
         in the right order
         -->
-      <supported_os>linux24,openwrt,sveasoft,ipcop,endian,oneshield,secuwall,dd-wrt-nvram,dd-wrt-jffs</supported_os>
+      <supported_os>linux24,linux317,openwrt,sveasoft,ipcop,endian,oneshield,secuwall,dd-wrt-nvram,dd-wrt-jffs</supported_os>
       <family>iptables</family>
 
       <options>

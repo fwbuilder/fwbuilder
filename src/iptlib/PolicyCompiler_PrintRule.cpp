@@ -435,6 +435,10 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
         return ostr.str();
 
 
+    if (compiler->fw->getStr("host_OS")=="linux317" &&
+         compiler->getCachedFwOpt()->getBool("use_ULOG") &&
+         target=="LOG") target="NFLOG";
+
     // there is no ULOG for ip6tables yet
     if (!ipt_comp->ipv6 && compiler->getCachedFwOpt()->getBool("use_ULOG") &&
          target=="LOG") target="ULOG";
@@ -444,9 +448,9 @@ string PolicyCompiler_ipt::PrintRule::_printTarget(PolicyRule *rule)
     if (target=="REJECT")
       ostr << _printActionOnReject(rule);
 
-    if (target=="LOG" || target=="ULOG")    
+    if (target=="LOG" || target=="ULOG" || target=="NFLOG")
         ostr << _printLogParameters(rule);
-    
+
     if (target=="CONNMARK")
     {
         ostr << ruleopt->getStr("CONNMARK_arg");
@@ -704,11 +708,30 @@ string PolicyCompiler_ipt::PrintRule::_printLogParameters(PolicyRule *rule)
     FWOptions *ruleopt = (rule!=NULL) ? 
         rule->getOptionsObject() : compiler->getCachedFwOpt();
 
+    bool use_nflog = (compiler->getCachedFwOpt()->getBool("use_ULOG") &&
+                      compiler->fw->getStr("host_OS")=="linux317");
+
     // there is no ULOG for ip6tables yet
     bool use_ulog = (!ipt_comp->ipv6 &&
                      compiler->getCachedFwOpt()->getBool("use_ULOG"));
 
-    if (use_ulog)
+    if (use_nflog)
+    {
+        s=ruleopt->getStr("nflog_group");
+        if (s.empty())  s=compiler->getCachedFwOpt()->getStr("ulog_nlgroup");
+        if (!s.empty())
+            str << " --nflog-group " << s;
+
+        s=ruleopt->getStr("log_prefix");
+        if (s.empty())  s=compiler->getCachedFwOpt()->getStr("log_prefix");
+        if (!s.empty())
+            str << " --nflog-prefix " << _printLogPrefix(rule, s);
+
+        int r=compiler->getCachedFwOpt()->getInt("ulog_cprange");
+        if (r!=0)  str << " --nflog-range " << r << " ";
+        r=compiler->getCachedFwOpt()->getInt("ulog_qthreshold");
+        if (r!=0)  str << " --nflog-threshold " << r << " ";
+    } else if (use_ulog)
     {
         s=ruleopt->getStr("ulog_nlgroup");
         if (s.empty())  s=compiler->getCachedFwOpt()->getStr("ulog_nlgroup");

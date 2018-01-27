@@ -1,0 +1,178 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+
+
+## this function checks if ipset actually can work on the system note
+## that we check if it is present separately in check_utilities
+## configlet By this time, it is assumed the utility is installed and
+## is available, but we still need to check if it works properly
+## because it also depends on the kernel module.
+##
+## ipset -V  checks the version of ipset utility and kernel module and
+## is a good way to check if the utility can communicate with the module.
+## Unfortunately "ipset -V" returns 0 return code even in the case of
+## an error. Will use "ipset --list" which fails when it can't talk to
+## the module and then use ipset -V to get diagnostics.
+
+{{if using_ipset}}
+
+check_module_ipset() {
+    $IPSET --list > /dev/null 2>&1 || {
+        echo "Detected an error with ipset utility :"
+        $IPSET -V
+        exit 1
+    }
+}
+
+## reloads ipset from the data file. The file must have one address
+## per line.  The difficulty with ipset is that no set type accepts a
+## mix of individual ip addresses and CIDR blocks. Set type iphash
+## takes only ip addresses and type nethash takes only CIDR blocks
+## with netmask between 1 and 31 bits (no 32 bits). Using a setlist
+## set with two sub-sets, one for addresses and another for subnets.
+##
+reload_address_table() {
+    addrtbl_name=$1
+    data_file=$2
+
+    test -z "$addrtbl_name" -o -z "$data_file" && {
+        echo "Usage: reload_address_table address_table_object_name file_name"
+        exit 1
+    }
+
+    $IPSET -X tmp_fwb_set:ip -q
+    $IPSET -X tmp_fwb_set:net -q
+
+    $IPSET -N tmp_fwb_set:ip  iphash
+    $IPSET -N tmp_fwb_set:net nethash
+
+    DATAFILE_SIZE=`wc -l $data_file|cut -d" " -f 1`
+    echo "Processing $DATAFILE_SIZE items in file: $data_file"
+
+    grep -Ev '^#|^;|^\s*$' $data_file | while read L ; do
+        set $L
+        addr=$1
+        if echo $addr | grep -q "/"
+        then
+            $IPSET -A tmp_fwb_set:net $addr
+        else
+            $IPSET -A tmp_fwb_set:ip $addr
+        fi
+    done
+
+    $IPSET --list ${addrtbl_name}:ip >/dev/null || $IPSET -N ${addrtbl_name}:ip iphash
+    $IPSET --list ${addrtbl_name}:net >/dev/null || $IPSET -N ${addrtbl_name}:net nethash
+
+    $IPSET -W ${addrtbl_name}:ip tmp_fwb_set:ip
+    $IPSET -W ${addrtbl_name}:net tmp_fwb_set:net
+
+    $IPSET --list ${addrtbl_name} >/dev/null || {
+        $IPSET -N ${addrtbl_name} setlist
+    }
+
+    $IPSET --list ${addrtbl_name} | grep -q ${addrtbl_name}:ip || {
+        $IPSET -A ${addrtbl_name} ${addrtbl_name}:ip
+    }
+
+    $IPSET --list ${addrtbl_name} | grep -q ${addrtbl_name}:net || {
+        $IPSET -A ${addrtbl_name} ${addrtbl_name}:net
+    }
+
+    $IPSET -X tmp_fwb_set:ip
+    $IPSET -X tmp_fwb_set:net
+}
+
+add_to_address_table() {
+    addrtbl_name=$1
+    data_file=$2
+    address=$3
+
+    test -z "$addrtbl_name" -o -z "$data_file" -o -z "$address" && {
+        echo "Usage: add_to_address_table address_table_object_name file_name address"
+        exit 1
+    }
+
+    echo $address >> $data_file
+
+    if echo $address | grep -q "/"
+    then
+        $IPSET -A ${addrtbl_name}:net $address
+    else
+        $IPSET -A ${addrtbl_name}:ip $address
+    fi
+}
+
+remove_from_address_table() {
+    addrtbl_name=$1
+    data_file=$2
+    address=$3
+
+    test -z "$addrtbl_name" -o -z "$data_file" -o -z "$address" && {
+        echo "Usage: remove_from_address_table address_table_object_name file_name address"
+        exit 1
+    }
+
+## note that $address may contain "/"
+    escaped_addr=$(echo $address | sed 's!/!\\/!')
+    sed -i "/^ *$escaped_addr *\$/d" $data_file
+
+    if echo $address | grep -q "/"
+    then
+        $IPSET -D ${addrtbl_name}:net $address
+    else
+        $IPSET -D ${addrtbl_name}:ip $address
+    fi
+}
+
+test_address_table() {
+    addrtbl_name=$1
+    address=$2
+
+    test -z "$addrtbl_name" -o -z "$address" && {
+        echo "Usage: test_address_table address_table_object_name address"
+        exit 1
+    }
+
+    if echo $address | grep -q "/"
+    then
+        $IPSET -T ${addrtbl_name}:net $address
+    else
+        $IPSET -T ${addrtbl_name}:ip $address
+    fi
+}
+
+
+load_run_time_address_table_files() {
+    :
+    {{$load_files_commands}}
+}
+
+{{endif}}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by address table object $1"
+        exit 1
+    }
+}
+
+## function to check if the data file is available. This is done
+## regardless of whether we use module ipset or not.
+## Since macro language does not support loops at this time, whole
+## code for the body of this function is generated in 
+## OSConfigurator_linux24::printRunTimeAddressTablesCode()
+check_run_time_address_table_files() {
+    :
+    {{$check_files_commands}}
+}
+

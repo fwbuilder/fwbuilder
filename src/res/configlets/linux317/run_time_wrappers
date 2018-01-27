@@ -1,0 +1,70 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+
+{{if no_wrapper}}
+{{$command}}
+{{endif}}
+
+
+{{if address_table}}
+grep -Ev '^#|^;|^\s*$' {{$address_table_file}} | while read L ; do
+  set $L; at_{{$address_table_var}}=$1; {{$command}} 
+done
+{{endif}}
+
+##
+## Current implementation supports only one wildcard interface per rule.
+## This can be something like "ppp*"
+##
+{{if wildcard_interface}}
+getinterfaces {{$interface_family_name}} | while read I; do
+    ivar=$(getInterfaceVarName $I)
+    getaddr{{if ipv6}}6{{endif}} $I $ivar
+    cmd="$"${ivar}_list
+    eval "addr_list=$cmd"
+    for addr in $addr_list
+    do
+        test -n "$addr" && {{$command}}
+    done
+done
+{{endif}}
+
+## If the rule uses address of dynamic interface, there can be either
+## one such address or two (source and destination). It impossible to
+## have more than two.
+
+##
+## intf_name is the name of the interface plus "_v6" suffix if ipv6
+## such as "ppp0" or "ppp0_v6"
+## This is so because we call getaddr6 function with variable name 
+## constructed with suffix _v6
+##
+{{if one_dyn_addr}}
+for i_{{$intf_1_var_name}} in $i_{{$intf_1_var_name}}_list
+do
+test -n "$i_{{$intf_1_var_name}}" && {{$command}} 
+done
+{{endif}}
+
+
+{{if two_dyn_addr}}
+for i_{{$intf_1_var_name}} in $i_{{$intf_1_var_name}}_list
+do
+for i_{{$intf_2_var_name}} in $i_{{$intf_2_var_name}}_list
+do
+test -n "$i_{{$intf_1_var_name}}" && test -n "$i_{{$intf_2_var_name}}" && {{$command}} 
+done
+done
+{{endif}}
+
+

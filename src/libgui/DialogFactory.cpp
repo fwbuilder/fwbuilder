@@ -281,6 +281,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
 
 //    string os=o->getStr("host_OS");
     if (dlgname=="linux24")   return new linux24AdvancedDialog(parent, o);
+    if (dlgname=="linux317")  return new linux24AdvancedDialog(parent, o);
     if (dlgname=="sveasoft")  return new linksysAdvancedDialog(parent, o);
     if (dlgname=="freebsd")   return new freebsdAdvancedDialog(parent, o);
     if (dlgname=="openbsd")   return new openbsdAdvancedDialog(parent, o);
@@ -319,6 +320,7 @@ QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
 
     if (dlgname=="secuwall")  return new secuwallIfaceOptsDialog(parent, o);
     if (dlgname=="linux24")  return new linux24IfaceOptsDialog(parent, o);
+    if (dlgname=="linux317")  return new linux24IfaceOptsDialog(parent, o);
     if (dlgname=="bsd")  return new bsdIfaceOptsDialog(parent, o);
     if (dlgname=="pix_os")  return new pixosIfaceOptsDialog(parent, o);
     if (dlgname=="vlan_only")  return new vlanOnlyIfaceOptsDialog(parent, o);

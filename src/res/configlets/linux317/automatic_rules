@@ -1,0 +1,129 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+
+## Each rule must start with {{$begin_rule}} and end with
+## {{$end_rule}}.  Variable $begin_rule has value "$IPTABLES -A" if
+## generated script is in the shell script format, or just empty
+## string if it is in iptables-restore format
+##
+## Variables in this configlet:
+##
+## $begin_rule                "$IPTABLES -A" or empty string
+## $end_rule
+## $ssh_management_address    address of the management address used for backup ssh access
+## $management_interface      the name of the management interface
+## $cprange                   (NFLOG --nflog-range)
+## $nlgroup                   (NFLOG --nflog-group)
+## $qthreshold                (NFLOG --nflog-threshold)
+## $invalid_match_log_prefix  (NFLOG --nflog-prefix  or LOG --log-prefix)
+##
+## Conditional statements use the following variables:
+##
+## bridging_firewall          the firewall is a bridge
+## ipforw                     should generate rules in FORWARD chain
+## accept_established         should add rules to match --state ESTABLISHED,RELATED
+## mgmt_access                should add rules for management ssh access
+## drop_new_tcp_with_no_syn   should add rules to drop TCP sessions opened prior firewall restart
+## add_rules_for_ipv6_neighbor_discovery   should add rules to permit IPv6 Neighbor discovery
+## drop_invalid               should add rules to drop packets that match state INVALID
+## drop_invalid_and_log       drop and log packets that match state INVALID
+## not_use_ulog               use LOG for logging
+## use_nflog                  use NFLOG for logging
+## use_nlgroup                for --nflog-group
+## use_cprange                for --nflog-range
+## use_qthreshold             for --nflog-threshold
+
+
+## bug #1092141: "irritating FORWARD rule for established connections"
+## Need rules in FORWARD chain only if ip forwarding is on or set to
+## "no change"
+
+{{if accept_established}}
+# accept established sessions
+{{$begin_rule}} INPUT   -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT  -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{endif}}
+
+
+## it helps to add backup ssh access rule as early as possible so that
+## ssh session opened from the management station won't break after
+## all chains are flushed. The installation process may stall if
+## stdout buffer gets filled with diagnostic or progress output from
+## this script printed after chains are flushed but before a rule
+## permitting ssh is installed. This may happen if script debugging is
+## on or there are many NAT rules (so it prints a lot of "Rule NN
+## (NAT)" lines).
+
+{{if mgmt_access}}
+# backup ssh access
+{{$begin_rule}} INPUT  -p tcp -m tcp  -s {{$ssh_management_address}}  --dport 22  -m {{$state_module_option}} NEW,ESTABLISHED -j  ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT  -p tcp -m tcp  -d {{$ssh_management_address}}  --sport 22  -m {{$state_module_option}} ESTABLISHED,RELATED -j ACCEPT {{$end_rule}}
+{{endif}}
+
+{{if drop_new_tcp_with_no_syn}}
+# drop TCP sessions opened prior firewall restart
+{{$begin_rule}} INPUT   -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m {{$state_module_option}} NEW -j DROP {{$end_rule}}
+{{$begin_rule}} OUTPUT  -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m {{$state_module_option}} NEW -j DROP {{$end_rule}}
+{{if ipforw}}
+{{$begin_rule}} FORWARD -p tcp -m tcp ! --tcp-flags SYN,RST,ACK SYN -m {{$state_module_option}} NEW -j DROP {{$end_rule}}
+{{endif}}
+{{endif}}
+
+{{if add_rules_for_ipv6_neighbor_discovery}}
+# rules to permit IPv6 Neighbor discovery
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} INPUT  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} OUTPUT -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{if bridging_firewall}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-solicitation -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{$begin_rule}} FORWARD  -p ipv6-icmp -m icmp6 --icmpv6-type neighbour-advertisement -m hl --hl-eq 255 -j ACCEPT {{$end_rule}}
+{{endif}}
+{{endif}}
+
+{{if drop_invalid}}
+# drop packets that do not match any valid state 
+{{$begin_rule}} OUTPUT   -m {{$state_module_option}} INVALID  -j DROP {{$end_rule}}
+{{$begin_rule}} INPUT    -m {{$state_module_option}} INVALID  -j DROP {{$end_rule}}
+{{if ipforw}}
+{{$begin_rule}} FORWARD  -m {{$state_module_option}} INVALID  -j DROP {{$end_rule}}
+{{endif}}
+{{endif}}
+
+{{if drop_invalid_and_log}}
+# drop packets that do not match any valid state and log them
+{{$create_drop_invalid_chain}}
+{{$begin_rule}} OUTPUT   -m {{$state_module_option}} INVALID  -j drop_invalid {{$end_rule}}
+{{$begin_rule}} INPUT    -m {{$state_module_option}} INVALID  -j drop_invalid {{$end_rule}}
+{{if ipforw}}
+{{$begin_rule}} FORWARD  -m {{$state_module_option}} INVALID  -j drop_invalid {{$end_rule}}
+{{endif}}
+
+{{if use_nflog}}
+{{$begin_rule}} drop_invalid -j NFLOG {{if use_nlgroup}}--nflog-group {{$nlgroup}}{{endif}} {{if use_cprange}}--nflog-range {{$cprange}}{{endif}} {{if use_qthreshold}}--nflog-threshold {{$qthreshold}}{{endif}} --nflog-prefix {{$invalid_match_log_prefix}}{{$end_rule}}
+{{endif}}
+
+{{if not_use_ulog}}
+{{$begin_rule}} drop_invalid -j LOG --log-level debug --log-prefix {{$invalid_match_log_prefix}}{{$end_rule}}
+{{endif}}
+
+{{$begin_rule}} drop_invalid -j DROP {{$end_rule}}
+{{endif}}
+    

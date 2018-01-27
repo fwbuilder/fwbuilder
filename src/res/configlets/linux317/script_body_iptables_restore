@@ -1,0 +1,42 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+##  iptables-restore method, not single rule compile
+{{if have_script}}
+(
+{{if filter_or_auto}}
+echo '*filter'
+{{$filter_auto_script}}
+{{$filter_script}}
+echo COMMIT
+{{endif}}
+{{if mangle_or_auto}}
+echo '*mangle'
+{{$mangle_auto_script}}
+{{$mangle_script}}
+echo COMMIT
+{{endif}}
+{{if nat}}
+echo '*nat'
+{{$nat_script}}
+echo COMMIT
+{{endif}}
+{{if ipv4}}
+) | $IPTABLES_RESTORE; IPTABLES_RESTORE_RES=$?
+test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
+{{endif}}
+{{if ipv6}}
+) | $IP6TABLES_RESTORE; IPTABLES_RESTORE_RES=$?
+test $IPTABLES_RESTORE_RES != 0 && run_epilog_and_exit $IPTABLES_RESTORE_RES
+{{endif}}
+{{endif}}

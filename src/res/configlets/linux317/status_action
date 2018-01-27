@@ -1,0 +1,44 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+## This configlet defines commands executed when iptables script is ran
+## with command line argument "status". Exit codes are defined in
+## http://refspecs.freestandards.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
+## Script should return with exit code 0 if iptables rules are loaded and 
+## 1 otherwise. We can not verify that the rules running at the moment
+## are those configured in this script so we only check if some rules
+## exist by checking if any tables are defined.
+
+check_iptables() {
+    IP_TABLES="$1"
+    [ ! -e $IP_TABLES ] && return 151
+    NF_TABLES=$(cat $IP_TABLES 2>/dev/null)
+    [ -z "$NF_TABLES" ] && return 152
+    return 0
+}
+
+status_action() {
+    check_iptables "/proc/net/ip_tables_names"
+    ret_ipv4=$?
+    check_iptables "/proc/net/ip6_tables_names"
+    ret_ipv6=$?
+    [ $ret_ipv4 -eq 0 -o $ret_ipv6 -eq 0 ] && return 0
+    [ $ret_ipv4 -eq 151 -o $ret_ipv6 -eq 151 ] && {
+        echo "iptables modules are not loaded"
+    }
+    [ $ret_ipv4 -eq 152 -o $ret_ipv6 -eq 152 ] && {
+        echo "Firewall is not configured"
+    }
+    exit 3
+}
+

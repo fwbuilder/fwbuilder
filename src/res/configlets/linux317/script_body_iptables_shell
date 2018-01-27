@@ -1,0 +1,25 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+## this template is used for single rule compile, both
+## iptables-restore and regular, as well as for the regular
+## (not iptables-restore) script
+{{if auto}}{{$filter_auto_script}}
+{{$mangle_auto_script}}{{endif}}
+
+{{if nat}}{{$nat_script}}{{endif}}
+
+{{if mangle}}{{$mangle_script}}{{endif}}
+
+{{if filter}}{{$filter_script}}{{endif}}
+

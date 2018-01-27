@@ -1,0 +1,51 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+## Known variables:
+##
+## need_iptables_restore
+## need_ip6tables_restore
+## need_modprobe     : set to true if "load modules" option is on, or
+##                     script needs to manage vlan or bonding interfaces.
+##                     See configlets for vlan and bonding interfaces to find
+##                     how modprobe is used to load corresponding modules
+## need_vconfig      : set to true if script manages vlans
+## need_brctl        : set to true if script manages bridge ports
+## need_ifenslave    : set to true if script manages bonding interfaces
+## need_ipset        : set to true if ipset is used for run-time address tables
+## load_modules      : set to true if "load modules" option is on
+##
+## These variables are set in OSConfigurator_linux24::printShellFunctions()
+##
+
+find_program() {
+  PGM=$1
+  which $PGM >/dev/null 2>&1 || {
+    echo "\"$PGM\" not found"
+    exit 1
+  }
+}
+
+check_tools() {
+  find_program which
+  find_program $IPTABLES 
+{{if need_iptables_restore}}  find_program $IPTABLES_RESTORE{{endif}}
+{{if need_ip6tables_restore}}  find_program $IP6TABLES_RESTORE{{endif}}
+{{if need_modprobe}}  find_program $MODPROBE {{endif}}
+  find_program $IP 
+{{if need_vconfig}}  find_program $VCONFIG {{endif}}
+{{if need_brctl}}  find_program $BRCTL {{endif}}
+{{if need_ifenslave}}  find_program $IFENSLAVE {{endif}}
+{{if need_ipset}}  find_program $IPSET {{endif}}
+}
+

@@ -1,0 +1,126 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+############ VLAN ##############################################
+## /proc/net/vlan/config
+##
+## VLAN Dev name  | VLAN ID
+## Name-Type: VLAN_NAME_TYPE_RAW_PLUS_VID_NO_PAD
+## eth1.100       | 100  | eth1
+## eth1.101       | 101  | eth1
+## eth1.102       | 102  | eth1
+##
+## Note about vlans: "ip link show" does not always accurately shows
+## relationship between vlan subinterfaces and their parents. Example of
+## the output where this happens (Sveasoft firmware for Linksys):
+##
+##  ip link show | grep vlan
+##  7: vlan0: <BROADCAST,MULTICAST,PROMISC,UP> mtu 1500 qdisc noqueue
+##  8: vlan1: <BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
+missing_vlan() {
+    vlan=$1
+    cmd=$2
+
+    oldIFS=$IFS
+    IFS="@"
+    set $vlan
+    subint=$1
+    parent=$2
+    IFS=$oldIFS
+
+    vlan_id=$(echo $subint | sed -r 's/(vlan|[^.]*\.)//')
+    test "$cmd" = "add" && {
+        echo $subint | grep -q "vlan" && name_type="VLAN_PLUS_VID" || name_type="DEV_PLUS_VID"
+        test "$vlan_id" \< "1" || name_type="${name_type}_NO_PAD"
+        echo "# Adding VLAN interface $subint (parent: $parent)"
+        $FWBDEBUG $VCONFIG set_name_type $name_type
+        $FWBDEBUG $VCONFIG $cmd $parent $vlan_id
+        $FWBDEBUG $IP link set $subint up
+    }
+    test "$cmd" = "rem" && {
+        echo "# Removing VLAN interface $subint (parent: $parent)"
+        $FWBDEBUG $VCONFIG $cmd $subint
+    }
+}
+
+parse_fwb_vlans() {
+    set $1 
+    vlan_parent_interface=$1 
+    shift
+
+    FWB_VLANS=$(
+      for subint in $*; do
+        echo "${subint}@$vlan_parent_interface"
+      done | sort
+    )
+    echo $FWB_VLANS
+}
+
+parse_current_vlans() {
+    vlan_parent_interface=$1
+    CURRENT_VLANS=""
+    PROC_DIR="/proc/net/vlan/"
+    test -d $PROC_DIR || $MODPROBE 8021q || {
+        echo "$PROC_DIR does not exist. Vlan interfaces are not available."
+        exit 1
+    }
+
+    test -f "/proc/net/vlan/config" && {
+        CURRENT_VLANS=$(
+            cat /proc/net/vlan/config | grep -v 'Dev name' | grep $vlan_parent_interface | \
+                while read subint a vlan_id b parent; do
+                echo "${subint}@$parent"
+            done | sort
+        )
+    }
+    echo $CURRENT_VLANS
+}
+
+update_vlans_of_interface() {
+    args="$1"
+    set $1 
+    vlan_parent_interface=$1 
+
+    FWB_VLANS=$(parse_fwb_vlans "$args")
+    CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
+
+    $IP link set $vlan_parent_interface up
+    diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
+    diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
+}
+
+add_vlans() {
+    args="$1"
+    set $1 
+    vlan_parent_interface=$1 
+
+    FWB_VLANS=$(parse_fwb_vlans $args)
+    CURRENT_VLANS=$(parse_current_vlans $vlan_parent_interface)
+
+    $IP link set $vlan_parent_interface up
+    diff_intf missing_vlan "$FWB_VLANS" "$CURRENT_VLANS" add
+}
+
+## This function removes vlan interfaces not configured in fwbuilder.
+## Missing vlans are added using function update_vlans
+##
+##  clear_vlans_except_known eth1.100@eth1 eth1.101@eth1 vlan200@eth2
+##
+## Call shown above would keep listed vlans but remove eth3.300
+##
+clear_vlans_except_known() {
+    FWB_VLANS=$*
+    CURRENT_VLANS=$(parse_current_vlans '|')
+
+    diff_intf missing_vlan "$CURRENT_VLANS" "$FWB_VLANS" rem
+}

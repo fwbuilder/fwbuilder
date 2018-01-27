@@ -187,6 +187,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         }
 
         if (os_family == "linux24" ||
+            os_family == "linux317" ||
             os_family == "openwrt" ||
             os_family == "dd-wrt-nvram" ||
             os_family == "dd-wrt-jffs" ||

@@ -1,0 +1,29 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+
+{{if if_linux24_ip_dynaddr}} echo {{$linux24_ip_dynaddr}} > /proc/sys/net/ipv4/ip_dynaddr {{endif}}
+{{if if_linux24_rp_filter}} echo {{$linux24_rp_filter}} > /proc/sys/net/ipv4/conf/all/rp_filter {{endif}}
+{{if if_linux24_accept_source_route}} echo {{$linux24_accept_source_route}} > /proc/sys/net/ipv4/conf/all/accept_source_route {{endif}}
+{{if if_linux24_accept_redirects}} echo {{$linux24_accept_redirects}} > /proc/sys/net/ipv4/conf/all/accept_redirects {{endif}}
+{{if if_linux24_log_martians}} echo {{$linux24_log_martians}} > /proc/sys/net/ipv4/conf/all/log_martians {{endif}}
+{{if if_linux24_icmp_echo_ignore_broadcasts}} echo {{$linux24_icmp_echo_ignore_broadcasts}} > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts {{endif}}
+{{if if_linux24_icmp_echo_ignore_all}} echo {{$linux24_icmp_echo_ignore_all}} > /proc/sys/net/ipv4/icmp_echo_ignore_all {{endif}}
+{{if if_linux24_icmp_ignore_bogus_error_responses}} echo {{$linux24_icmp_ignore_bogus_error_responses}} > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses {{endif}}
+{{if if_linux24_tcp_fin_timeout}} echo {{$linux24_tcp_fin_timeout}} > /proc/sys/net/ipv4/tcp_fin_timeout {{endif}}
+{{if if_linux24_tcp_keepalive_interval}} echo {{$linux24_tcp_keepalive_interval}} > /proc/sys/net/ipv4/tcp_keepalive_intvl {{endif}}
+{{if if_linux24_tcp_window_scaling}} echo {{$linux24_tcp_window_scaling}} > /proc/sys/net/ipv4/tcp_window_scaling {{endif}}
+{{if if_linux24_tcp_sack}} echo {{$linux24_tcp_sack}} > /proc/sys/net/ipv4/tcp_sack {{endif}}
+{{if if_linux24_tcp_fack}} echo {{$linux24_tcp_fack}} > /proc/sys/net/ipv4/tcp_fack {{endif}}
+{{if if_linux24_tcp_syncookies}} echo {{$linux24_tcp_syncookies}} > /proc/sys/net/ipv4/tcp_syncookies {{endif}}
+{{if if_linux24_tcp_ecn}} echo {{$linux24_tcp_ecn}} > /proc/sys/net/ipv4/tcp_ecn {{endif}}
+{{if if_linux24_tcp_timestamps}} echo {{$linux24_tcp_timestamps}} > /proc/sys/net/ipv4/tcp_timestamps {{endif}}

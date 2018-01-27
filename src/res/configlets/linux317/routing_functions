@@ -1,0 +1,72 @@
+## -*- mode: shell-script; -*- 
+##
+## To be able to make changes to the part of configuration created
+## from this configlet you need to copy this file to the directory
+## fwbuilder/configlets/linux317/ in your home directory and modify it.
+## Double "##" comments are removed during processing but single "#"
+## comments are be retained and appear in the generated script. Empty
+## lines are removed as well.  
+##
+## Configlets support simple macro language with these constructs:
+## {{$var}} is variable expansion
+## {{if var}} is conditional operator.
+##
+
+# ============== ROUTING RULES ============== 
+
+HAVE_MKTEMP=$(which mktemp)
+
+test -n "$HAVE_MKTEMP" && {
+  TMPDIRNAME=$(mktemp -d)
+  test -z "$TMPDIRNAME" && exit 1
+}
+
+test -z "$HAVE_MKTEMP" && {
+  TMPDIRNAME="/tmp/.fwbuilder.tempdir.$$"
+  (umask 077 && mkdir $TMPDIRNAME) || exit 1
+}
+
+TMPFILENAME="$TMPDIRNAME/.fwbuilder.out"
+OLD_ROUTES="$TMPDIRNAME/.old_routes"
+
+#
+# This function stops stdout redirection
+# and sends previously saved output to terminal
+restore_script_output()
+{
+  exec 1>&3 2>&1
+  cat $TMPFILENAME
+  rm -rf $TMPDIRNAME
+}
+
+# if any routing rule fails we do our best to prevent freezing the firewall
+route_command_error()
+{
+  echo "Error: Routing rule $1 couldn't be activated"
+  echo "Recovering previous routing configuration..."
+  # delete current routing rules
+  $IP route show | while read route ; do $IP route del $route ; done
+  # restore old routing rules
+  sh $OLD_ROUTES
+  echo "...done"
+  restore_script_output
+  epilog_commands
+  exit 1
+}
+
+# redirect output to prevent ssh session from stalling
+exec 3>&1
+exec 1> $TMPFILENAME
+exec 2>&1
+
+# store previous routing configuration (sort: 'via' GW has to be
+# inserted after device routes)
+
+$IP route show | sort -k 2 | awk '{printf "ip route add %s\n",$0;}' > $OLD_ROUTES
+
+echo "Deleting routing rules previously set by user space processes..."
+$IP route show | grep -v {{$proto_filter}} | \
+    while read route ; do $IP route del $route ; done
+    
+echo "Activating non-ecmp routing rules..."
+
