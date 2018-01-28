@@ -66,12 +66,12 @@ map<string,Resources*>  Resources::platform_res;
 map<string,Resources*>  Resources::os_res;
 
 
-Resources::Resources() throw(FWException)
+Resources::Resources()
 {
     doc=NULL;
 }
 
-Resources::Resources(const string &_resF) throw(FWException)
+Resources::Resources(const string &_resF)
 {
     doc = NULL;
     resfile = _resF;
@@ -131,7 +131,7 @@ string Resources::getXmlNodeProp(xmlNodePtr node,string prop)
     return res;
 }
 
-void Resources::loadRes(const std::string &rfile ) throw(FWException)
+void Resources::loadRes(const std::string &rfile )
 {
 
     string buffer = XMLTools::readFile(rfile);
@@ -151,7 +151,7 @@ void Resources::loadRes(const std::string &rfile ) throw(FWException)
     }
 }
 
-void Resources::loadSystemResources() throw(FWException)
+void Resources::loadSystemResources()
 {
 /*
  * Find and open resources for individual firewall platforms and OS.
@@ -487,7 +487,7 @@ void    Resources::setDefaultOptionsAll(FWObject *o,const string &xml_node)
 }
 
 
-void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)  throw (FWException)
+void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)
 {
     FWOptions *opt=fw->getOptionsObject();
     Resources *r=NULL;
@@ -501,7 +501,6 @@ void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)  t
 }
 
 void    Resources::setDefaultIfaceOptions(const string &target,Interface *iface)
-        throw (FWException)
 {
     FWOptions *opt=iface->getOptionsObject();
     /* if InterfaceOptions object does not yet exist -> create one */
@@ -535,7 +534,7 @@ void    Resources::setDefaultProperties(FWObject *obj)
 }
 
 string Resources::getTargetCapabilityStr(const string &target,
-                                         const string &cap_name)  throw (FWException)
+                                         const string &cap_name)
 {
     Resources *r=NULL;
 
@@ -548,7 +547,7 @@ string Resources::getTargetCapabilityStr(const string &target,
 }
 
 bool Resources::getTargetCapabilityBool(const string &target,
-                                        const string &cap_name)  throw (FWException)
+                                        const string &cap_name)
 {
     string s=getTargetCapabilityStr(target,cap_name);
     return (s=="true" || s=="True");
@@ -575,7 +574,7 @@ string Resources::getActionEditor(const string &target, const string &action)
 }
 
 string Resources::getTargetOptionStr(const string &target,
-                                     const string &opt_name)  throw (FWException)
+                                     const string &opt_name)
 {
     Resources *r=NULL;
 
@@ -588,7 +587,7 @@ string Resources::getTargetOptionStr(const string &target,
 }
 
 bool  Resources::getTargetOptionBool(const string &target,
-                                     const string &opt_name)  throw (FWException)
+                                     const string &opt_name)
 {
     string s=getTargetOptionStr(target,opt_name);
     return (s=="true" || s=="True");

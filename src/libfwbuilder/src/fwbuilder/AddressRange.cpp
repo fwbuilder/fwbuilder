@@ -75,7 +75,6 @@ void AddressRange::setAddress(const InetAddr &a)
 void AddressRange::setNetmask(const InetAddr& ) {}
 
 FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
-    throw(FWException)
 {
     const AddressRange *n = dynamic_cast<const AddressRange *>(o);
     if (n==NULL) {
@@ -92,7 +91,7 @@ FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
     return FWObject::shallowDuplicate(o, preserve_id);
 }
 
-bool AddressRange::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool AddressRange::cmp(const FWObject *obj, bool recursive)
 {
     if (AddressRange::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
@@ -111,7 +110,7 @@ bool AddressRange::cmp(const FWObject *obj, bool recursive) throw(FWException)
     return (o1b==o2b && o1e==o2e);
 }
 
-void AddressRange::fromXML(xmlNodePtr root) throw(FWException)
+void AddressRange::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
@@ -126,7 +125,7 @@ void AddressRange::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr AddressRange::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr AddressRange::toXML(xmlNodePtr xml_parent_node)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
 

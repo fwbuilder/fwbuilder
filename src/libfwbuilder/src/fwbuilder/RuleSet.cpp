@@ -57,7 +57,7 @@ void RuleSet::init(FWObjectDatabase *root)
 
 RuleSet::~RuleSet() {}
 
-void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
+void RuleSet::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -90,7 +90,7 @@ void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleSet::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
@@ -124,7 +124,6 @@ FWOptions* RuleSet::getOptionsObject()
 }
 
 FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
-    throw(FWException)
 {
     const RuleSet *other = RuleSet::constcast(o);
 
@@ -137,7 +136,7 @@ FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
     return *this;
 }
 
-bool RuleSet::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool RuleSet::cmp(const FWObject *obj, bool recursive)
 {
     const RuleSet *other = RuleSet::constcast(obj);
     if (other == NULL) return false;

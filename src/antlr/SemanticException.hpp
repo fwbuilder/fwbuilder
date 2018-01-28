@@ -28,7 +28,7 @@ public:
 	{
 	}
 
-	~SemanticException() throw()
+	~SemanticException()
 	{
 	}
 };

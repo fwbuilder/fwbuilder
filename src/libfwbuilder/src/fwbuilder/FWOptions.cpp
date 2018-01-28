@@ -47,7 +47,7 @@ FWOptions::FWOptions()
     remStr("id"     );
 }
 
-void FWOptions::fromXML(xmlNodePtr root) throw(FWException)
+void FWOptions::fromXML(xmlNodePtr root)
 {
     const char *n;
     const char *cont;
@@ -69,7 +69,7 @@ void FWOptions::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr FWOptions::toXML(xmlNodePtr root) throw(FWException)
+xmlNodePtr FWOptions::toXML(xmlNodePtr root)
 {
     xmlNodePtr opt;
 

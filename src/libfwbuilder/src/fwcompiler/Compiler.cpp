@@ -82,12 +82,12 @@ void Compiler::epilog()
 {
 }
 
-void Compiler::abort(const string &errstr) throw(FWException)
+void Compiler::abort(const string &errstr)
 {
     BaseCompiler::abort(fw, source_ruleset, NULL, errstr);
 }
 
-void Compiler::abort(FWObject *rule, const string &errstr) throw(FWException)
+void Compiler::abort(FWObject *rule, const string &errstr)
 {
     BaseCompiler::abort(fw, source_ruleset, rule, errstr);
 }

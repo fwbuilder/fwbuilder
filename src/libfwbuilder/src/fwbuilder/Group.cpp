@@ -95,7 +95,7 @@ bool Group::hasMember(FWObject *o)
  * that is broken when objects are added or removed from groups in the
  * middle of iteration.
  */
-FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& Group::duplicateForUndo(const FWObject *obj)
 {
     setRO(false);
     if ((obj->size() && FWReference::cast(obj->front())!=NULL) ||

@@ -48,8 +48,7 @@ class combinedAddress : public IPv4
     virtual ~combinedAddress();
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                       bool preserve_id = true)
-        throw(FWException);
+                                       bool preserve_id = true);
     
     std::string getPhysAddress() const;
     void setPhysAddress(const std::string &s);

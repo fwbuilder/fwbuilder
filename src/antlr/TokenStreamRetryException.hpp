@@ -18,7 +18,7 @@ namespace antlr {
 class TokenStreamRetryException : public TokenStreamException {
 public:
 	TokenStreamRetryException() {}
-	~TokenStreamRetryException() throw() {}
+	~TokenStreamRetryException() {}
 };
 
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE

@@ -41,8 +41,8 @@ namespace libfwbuilder
 
         DECLARE_DISPATCH_METHODS(FailoverClusterGroup);
         
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
     };
 }
 

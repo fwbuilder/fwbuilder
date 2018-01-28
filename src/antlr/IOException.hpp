@@ -33,7 +33,7 @@ public:
 		: ANTLRException(mesg)
 	{
 	}
-	virtual ~IOException() throw()
+	virtual ~IOException()
 	{
 	}
 };

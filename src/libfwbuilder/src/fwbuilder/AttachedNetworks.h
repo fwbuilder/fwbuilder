@@ -44,10 +44,10 @@ class AttachedNetworks : public MultiAddress
     
     AttachedNetworks();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
     virtual void loadFromSource(bool ipv6, FWOptions *options,
-                                bool test_mode=false) throw(FWException);
+                                bool test_mode=false);
 
     virtual std::string getSourceName();
 };

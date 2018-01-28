@@ -19,7 +19,7 @@ class ANTLR_API CharStreamException : public ANTLRException {
 public:
 	CharStreamException(const ANTLR_USE_NAMESPACE(std)string& s)
 		: ANTLRException(s) {}
-	~CharStreamException() throw() {}
+	~CharStreamException() {}
 };
 
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE

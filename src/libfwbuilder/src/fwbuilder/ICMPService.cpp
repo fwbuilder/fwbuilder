@@ -49,7 +49,7 @@ ICMPService::~ICMPService() {}
 string ICMPService::getProtocolName() const    {    return "icmp";}
 int    ICMPService::getProtocolNumber() const  {    return 1;     }
 
-void ICMPService::fromXML(xmlNodePtr root) throw(FWException)
+void ICMPService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -66,7 +66,7 @@ void ICMPService::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr ICMPService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr ICMPService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 

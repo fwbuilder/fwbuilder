@@ -524,12 +524,12 @@ template<>
 struct numeric_limits<uint128>
 {
     static const bool is_specialized = true;
-//    static uint128 min() throw()
+//    static uint128 min()
 //    {
 //        return 0;
 //    }
 //
-//    static uint128 max() throw()
+//    static uint128 max()
 //    {
 //        return uint128(
 //                   std::numeric_limits<uint64_t>::max(),
@@ -545,12 +545,12 @@ struct numeric_limits<uint128>
     static const int digits10 = 39;
     static const int radix = 2;
 
-    static uint128 epsilon() throw()
+    static uint128 epsilon()
     {
         return 0;
     }
 
-    static uint128 round_error() throw()
+    static uint128 round_error()
     {
         return 0;
     }
@@ -565,22 +565,22 @@ struct numeric_limits<uint128>
     static const float_denorm_style has_denorm = denorm_absent;
     static const bool has_denorm_loss = false;
 
-    static uint128 infinity() throw()
+    static uint128 infinity()
     {
         return static_cast<uint128>(0);
     }
 
-    static uint128 quiet_NaN() throw()
+    static uint128 quiet_NaN()
     {
         return static_cast<uint128>(0);
     }
 
-    static uint128 signaling_NaN() throw()
+    static uint128 signaling_NaN()
     {
         return static_cast<uint128>(0);
     }
 
-    static uint128 denorm_min() throw()
+    static uint128 denorm_min()
     {
         return static_cast<uint128>(0);
     }

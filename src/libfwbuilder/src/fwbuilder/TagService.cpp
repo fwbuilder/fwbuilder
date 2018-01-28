@@ -59,7 +59,7 @@ string TagService::getCode() const
     return getStr("tagcode");
 }
 
-void TagService::fromXML(xmlNodePtr root) throw(FWException)
+void TagService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -71,7 +71,7 @@ void TagService::fromXML(xmlNodePtr root) throw(FWException)
 
 }
 
-xmlNodePtr TagService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr TagService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));

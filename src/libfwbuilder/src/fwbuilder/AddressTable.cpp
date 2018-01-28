@@ -64,7 +64,7 @@ void AddressTable::setSourceName(const std::string& source_name)
     setStr("filename", source_name);
 }
 
-void AddressTable::fromXML(xmlNodePtr root) throw(FWException)
+void AddressTable::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     const char *n;
@@ -80,7 +80,7 @@ void AddressTable::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr AddressTable::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
@@ -92,7 +92,7 @@ xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
 }
 
 
-string AddressTable::getFilename(FWOptions *options) throw (FWException)
+string AddressTable::getFilename(FWOptions *options)
 {
     string path = getStr("filename");
     size_t found = path.find("%DATADIR%");
@@ -127,7 +127,7 @@ string AddressTable::getFilename(FWOptions *options) throw (FWException)
  * the object tree, something with the name "tmp" or similar.
  */
 void AddressTable::loadFromSource(bool ipv6, FWOptions *options,
-                                  bool test_mode) throw(FWException)
+                                  bool test_mode)
 {
     string path = getFilename(options);
     ifstream fs(path.c_str());

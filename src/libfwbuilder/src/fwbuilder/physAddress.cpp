@@ -47,7 +47,7 @@ physAddress::physAddress() :  Address()
     setPhysAddress("00:00:00:00:00:00");
 }
 
-void physAddress::fromXML(xmlNodePtr root) throw(FWException)
+void physAddress::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -57,7 +57,7 @@ void physAddress::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr physAddress::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr physAddress::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));

@@ -90,7 +90,6 @@ void Interface::removeRef(FWObject *obj)
 }
 
 FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id)
-    throw(FWException)
 {
     FWObject::shallowDuplicate(o,preserve_id);
 
@@ -104,7 +103,6 @@ FWObject& Interface::shallowDuplicate(const FWObject *o, bool preserve_id)
 }
 
 FWObject& Interface::duplicate(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
     FWObject::duplicate(x, preserve_id);
 
@@ -141,7 +139,7 @@ void Interface::duplicateWithIdMapping(const FWObject *src,
     setDirty(true);
 }
 
-bool Interface::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool Interface::cmp(const FWObject *obj, bool recursive)
 {
     const Interface *rx = Interface::constcast(obj);
     if (rx == NULL) return false;
@@ -151,7 +149,7 @@ bool Interface::cmp(const FWObject *obj, bool recursive) throw(FWException)
     return FWObject::cmp(obj, recursive);
 }
 
-void Interface::fromXML(xmlNodePtr root) throw(FWException)
+void Interface::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -217,7 +215,7 @@ void Interface::fromXML(xmlNodePtr root) throw(FWException)
 /*
  * <!ELEMENT Interface (IPv4*, IPv6*, physAddress?, InterfaceOptions?, Interface*, FailoverClusterGroup?)>
  */
-xmlNodePtr Interface::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Interface::toXML(xmlNodePtr parent)
 {
     // DTD prohibits empty network_zone attribute
     if (exists("network_zone") && getStr("network_zone").empty())

@@ -87,7 +87,7 @@ public:
 		CharScanner* scanner_
 	);
 
-	~MismatchedCharException() throw() {}
+	~MismatchedCharException() {}
 
 	/**
 	 * Returns a clean error message (no line number/column information)

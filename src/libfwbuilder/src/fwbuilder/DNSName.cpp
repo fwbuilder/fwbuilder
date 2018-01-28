@@ -72,7 +72,7 @@ void DNSName::setDNSRecordType(const string& rectype)
     setStr("dnsrec", rectype);
 }
 
-void DNSName::fromXML(xmlNodePtr root) throw(FWException)
+void DNSName::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     const char *n;
@@ -98,7 +98,7 @@ void DNSName::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr DNSName::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
@@ -121,7 +121,7 @@ xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
  * the object tree, something with the name "tmp" or similar.
  */
 void DNSName::loadFromSource(bool ipv6, FWOptions *options,
-                             bool test_mode) throw(FWException)
+                             bool test_mode)
 {
     (void) options; // Unused
 
