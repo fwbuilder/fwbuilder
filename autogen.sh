@@ -48,4 +48,4 @@ which acinclude >/dev/null 2>&1 && acinclude
 which aclocal >/dev/null 2>&1 && aclocal
 autoconf
 
-./configure ${CFGARGS}  $*
+test -n "$NOCONFIGURE" || ./configure ${CFGARGS}  $*
