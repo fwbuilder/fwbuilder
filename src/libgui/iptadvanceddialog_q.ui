@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>1054</width>
-    <height>628</height>
+    <height>674</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -612,6 +612,9 @@ packets to IPv6 policies</string>
               <height>0</height>
              </size>
             </property>
+            <property name="text">
+             <string>/mnt/flash</string>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -640,6 +643,9 @@ packets to IPv6 policies</string>
               <width>250</width>
               <height>0</height>
              </size>
+            </property>
+            <property name="text">
+             <string>root</string>
             </property>
            </widget>
           </item>
@@ -874,10 +880,10 @@ packets to IPv6 policies</string>
        <string>Prolog/Epilog</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="verticalSpacing">
+       <property name="margin">
         <number>6</number>
        </property>
-       <property name="margin">
+       <property name="verticalSpacing">
         <number>6</number>
        </property>
        <item row="1" column="0">
@@ -913,7 +919,15 @@ packets to IPv6 policies</string>
            </spacer>
           </item>
           <item row="1" column="0" colspan="2">
-           <widget class="QTextEdit" name="epilog_script"/>
+           <widget class="QTextEdit" name="epilog_script">
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;iptables-save  &amp;gt; /mnt/flash/iptables_firewall.conf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
           </item>
           <item row="0" column="0" colspan="2">
            <widget class="QLabel" name="textLabel2_2_2">
@@ -1008,11 +1022,11 @@ packets to IPv6 policies</string>
        <string>Logging</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="verticalSpacing">
-        <number>6</number>
-       </property>
        <property name="margin">
         <number>20</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
        </property>
        <item row="0" column="0" rowspan="5">
         <widget class="QGroupBox" name="buttonGroup1">
