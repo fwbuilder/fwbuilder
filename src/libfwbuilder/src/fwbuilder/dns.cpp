@@ -75,7 +75,7 @@ void DNS::init()
  * Since this is not thread safe, need to use mutex to protect calls to
  * these functions.
  */
-HostEnt DNS::getHostByAddr(const InetAddr &addr, int type) throw(FWException)
+HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
 {
     DNS::init();
 
@@ -115,7 +115,6 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type) throw(FWException)
 }
 
 list<InetAddr> DNS::getHostByName(const string &name, int type)
-    throw(FWException)
 {
     DNS::init();
 

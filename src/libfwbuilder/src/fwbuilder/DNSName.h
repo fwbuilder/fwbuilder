@@ -45,8 +45,8 @@ class DNSName : public MultiAddress
     
     DNSName();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
     
     virtual std::string getSourceName();
     virtual void setSourceName(const std::string& source_name);
@@ -55,7 +55,7 @@ class DNSName : public MultiAddress
     void setDNSRecordType(const std::string& rectype);
     
     virtual void loadFromSource(bool ipv6, FWOptions *options,
-                                bool test_mode=false) throw(FWException);
+                                bool test_mode=false);
 };
 
 }

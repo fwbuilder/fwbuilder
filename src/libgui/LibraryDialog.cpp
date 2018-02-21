@@ -121,7 +121,7 @@ void LibraryDialog::applyChanges()
 {
     if (FWBTree().isSystem(obj)) return;
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     QString oldcolor = new_state->getStr("color").c_str();

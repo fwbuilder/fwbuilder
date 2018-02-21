@@ -62,8 +62,8 @@ public:
      */
     virtual void init(FWObjectDatabase *root);
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML      (xmlNodePtr parent);
     
     
     DECLARE_FWOBJECT_SUBTYPE(Firewall);
@@ -85,14 +85,14 @@ public:
      * rules with references to 'this'
      */
     virtual FWObject& duplicate(const FWObject *obj,
-                                bool preserve_id = true) throw(FWException);
+                                bool preserve_id = true);
 
     /**
      * This method copies all attributes of obj into this, plus
      * FWOptions and Management child objects but no other
      * children.
      */
-    virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+    virtual FWObject& duplicateForUndo(const FWObject *obj);
 
     /*
      * Return id mapping table created during latest run of duplicate()

@@ -43,8 +43,7 @@ public:
         virtual std::string getObjectGroupFooter();
 
         virtual QString groupMemberToString(
-            libfwbuilder::FWObject *obj, NamedObjectsManager *named_obj_manager)
-            throw(libfwbuilder::FWException);
+            libfwbuilder::FWObject *obj, NamedObjectsManager *named_obj_manager);
     
     };
 }

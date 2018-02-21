@@ -302,7 +302,7 @@ void FirewallDialog::applyChanges()
         qDebug() << "Sending FWCmdChange  autorename_chidren="
                  << autorename_chidren;
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));
 
     // new_state  is a copy of the fw object

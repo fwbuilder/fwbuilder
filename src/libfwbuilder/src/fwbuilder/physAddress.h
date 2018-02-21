@@ -46,8 +46,8 @@ class physAddress : public Address
     
     physAddress();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
 
     std::string getPhysAddress() const;
     void setPhysAddress(const std::string &s);

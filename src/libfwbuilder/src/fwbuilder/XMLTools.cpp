@@ -230,7 +230,7 @@ void XMLTools::close()
     xmlCleanupParser();
 }
 
-string XMLTools::readFile(const std::string &rfile) throw(FWException)
+string XMLTools::readFile(const std::string &rfile)
 {
     string buf;
 
@@ -278,7 +278,7 @@ string XMLTools::readFile(const std::string &rfile) throw(FWException)
 xmlDocPtr XMLTools::parseFile(const string &file_name, 
                               const string &buffer,
                               bool use_dtd,
-                              const string &template_dir) throw(FWException)
+                              const string &template_dir)
 {
     xml_parser_mutex.lock();
 
@@ -316,7 +316,7 @@ xmlDocPtr XMLTools::loadFile(const string &data_file ,
                              const UpgradePredicate *upgrade,
                              const string &template_dir,
                              const string &current_version
-                             ) throw(FWException)
+                             )
 {
 #ifdef FW_XMLTOOLS_VERBOSE
     cerr << "Loading file:        " << data_file      << endl
@@ -433,7 +433,7 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
 
 void XMLTools::setDTD(xmlDocPtr doc, 
                       const string &type_name, 
-                      const string &dtd_file) throw(FWException)
+                      const string &dtd_file)
 {
 #ifdef FW_XMLTOOLS_VERBOSE
     cerr << "XMLTools::setDTD: type_name=" << type_name << " dtd_file=" << dtd_file << endl;
@@ -489,7 +489,7 @@ void XMLTools::setDTD(xmlDocPtr doc,
 void XMLTools::saveFile(xmlDocPtr doc, 
                         const string &file_name, 
                         const string &type_name,
-                        const string &dtd_file) throw(FWException)
+                        const string &dtd_file)
 {
     
 #ifdef FW_XMLTOOLS_VERBOSE
@@ -511,7 +511,7 @@ void XMLTools::dumpToMemory(xmlDocPtr doc,
                             xmlChar **buffer,
                             int      *size,
                             const string &type_name,
-                            const string &dtd_file) throw(FWException)
+                            const string &dtd_file)
 {
     setDTD(doc, type_name, dtd_file);
 
@@ -527,7 +527,6 @@ void XMLTools::transformFileToFile(const string &src_file,
 				   const string &stylesheet_file,
 				   const char **params,
 				   const string &dst_file)
-    throw(FWException)
 {
     string xslt_errors;
     xsltStylesheetPtr ss = NULL;
@@ -603,7 +602,7 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
                                        const string &stylesheet_file,
                                        const char **params,
                                        const string &dst_file
-) throw(FWException)
+)
 {
     string xslt_errors;
 
@@ -681,7 +680,6 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
 xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc, 
                                       const string &stylesheet_file,
                                       const char **params)
-    throw(FWException)
 {
     string xslt_errors;
 
@@ -743,7 +741,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
                             const string &file_name, 
                             const string &type_name, 
                             const string &template_dir,
-                            const string &current_version) throw(FWException)
+                            const string &current_version)
 {
     xmlDocPtr  res = NULL;
     

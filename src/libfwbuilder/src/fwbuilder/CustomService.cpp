@@ -51,7 +51,7 @@ int    CustomService::getProtocolNumber() const { return 65000; }
 
 
 FWObject& CustomService::shallowDuplicate(const FWObject *x,
-                                          bool preserve_id) throw(FWException)
+                                          bool preserve_id)
 {
     const CustomService *cs = dynamic_cast<const CustomService *>(x);
     codes = cs->codes;
@@ -61,7 +61,7 @@ FWObject& CustomService::shallowDuplicate(const FWObject *x,
     return FWObject::shallowDuplicate(x, preserve_id);
 }
 
-void CustomService::fromXML(xmlNodePtr root) throw(FWException)
+void CustomService::fromXML(xmlNodePtr root)
 {
     const char *n;
     const char *cont;
@@ -120,7 +120,7 @@ void CustomService::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr CustomService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr CustomService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr opt;
 
@@ -149,7 +149,7 @@ xmlNodePtr CustomService::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool CustomService::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool CustomService::cmp(const FWObject *obj, bool recursive)
 {
     if (CustomService::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj, recursive)) return false;

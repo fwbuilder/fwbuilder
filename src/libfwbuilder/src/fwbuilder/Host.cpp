@@ -56,12 +56,12 @@ void Host::init(FWObjectDatabase *root)
 
 Host::~Host()  {}
 
-void Host::fromXML(xmlNodePtr root) throw(FWException)
+void Host::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 }
 
-xmlNodePtr Host::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Host::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
@@ -133,7 +133,7 @@ Management *Host::getManagementObject()
  * management interface or no address to be found, returns NULL.
  * May throw exception if interface has invalid address.
  */
-const InetAddr* Host::getManagementAddress() throw(FWException)
+const InetAddr* Host::getManagementAddress()
 {
     list<FWObject*> interfaces = getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator i;

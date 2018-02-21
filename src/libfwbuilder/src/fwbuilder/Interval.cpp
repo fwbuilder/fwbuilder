@@ -179,7 +179,7 @@ std::string Interval::getDaysOfWeek()
     return "";
 }
 
-void Interval::fromXML(xmlNodePtr root) throw(FWException)
+void Interval::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -282,7 +282,7 @@ void Interval::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr Interval::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Interval::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 

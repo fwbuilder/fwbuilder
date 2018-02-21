@@ -55,13 +55,13 @@ public:
     
     virtual ~FWReference();
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr parent);
 
     virtual FWObject& shallowDuplicate(
-        const FWObject *obj, bool preserve_id = true) throw(FWException);
+        const FWObject *obj, bool preserve_id = true);
 
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
 
     virtual void add(FWObject *obj,bool validate=true);
 

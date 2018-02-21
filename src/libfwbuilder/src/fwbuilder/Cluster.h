@@ -42,8 +42,8 @@ namespace libfwbuilder
          */
         virtual void init(FWObjectDatabase *root);
     
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
 
         DECLARE_FWOBJECT_SUBTYPE(Cluster);
 
@@ -57,7 +57,7 @@ namespace libfwbuilder
         virtual FWOptions* getOptionsObject();
 
         virtual FWObject& duplicate(const FWObject *obj,
-                                    bool preserve_id = true) throw(FWException);
+                                    bool preserve_id = true);
 
         Policy*  getPolicy();
         NAT*     getNAT();

@@ -234,7 +234,7 @@ void ClusterDialog::applyChanges()
         blockSignals(false);
     }
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));
     FWObject* new_state = cmd->getNewState();
 

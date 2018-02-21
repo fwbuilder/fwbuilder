@@ -99,6 +99,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
 
 #include "fwbuilder/Resources.h"
@@ -661,7 +662,7 @@ void FWWindow::fileNew()
         activeProject()->fileNew();
     } else
     {
-        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+        std::unique_ptr<ProjectPanel> proj(newProjectPanel());
         if (proj->fileNew())
         {
             showSub(proj.get());

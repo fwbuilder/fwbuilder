@@ -39,6 +39,7 @@ namespace libfwbuilder {
 
     class Address;
     class AddressRange;
+    class AddressRangeIPv6;
     class AddressTable;
     class Cluster;
     class ClusterGroup;
@@ -152,6 +153,7 @@ public:
 
         __DECLARE_DISPATCH_METHODS(Address);
         __DECLARE_DISPATCH_METHODS(AddressRange);
+        __DECLARE_DISPATCH_METHODS(AddressRangeIPv6);
         __DECLARE_DISPATCH_METHODS(AddressTable);
         __DECLARE_DISPATCH_METHODS(Cluster);
         __DECLARE_DISPATCH_METHODS(ClusterGroup);

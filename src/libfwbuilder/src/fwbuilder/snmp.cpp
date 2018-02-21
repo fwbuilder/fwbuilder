@@ -172,7 +172,6 @@ SNMPQuery::~SNMPQuery()
 }
 
 void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program)
-    throw(FWException)
 {
     if(community.empty())
         throw FWException("No SNMP community specified");
@@ -198,7 +197,7 @@ void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program)
     CHECK_STOP_AND_THROW_EXCEPTION;
 }
 
-void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection) throw(FWException)
+void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection)
 {
     std::ostringstream str;
     *logger << "ARP table\n"; 
@@ -300,7 +299,7 @@ void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnect
  * it will contain also reference to interface object associated
  * with the route.
  */
-void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection) throw(FWException)
+void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection)
 {
     std::ostringstream str;
     *logger << "Routing table\n"; 
@@ -592,7 +591,7 @@ void SNMPQuery::getAddressAndNetmask(Logger * /* UNUSED logger */,
 }
 
 void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
-                                SNMPConnection *connection) throw(FWException)
+                                SNMPConnection *connection) 
 {
     std::ostringstream str;
 
@@ -796,7 +795,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
 
 void SNMPQuery::fetchSysInfo(Logger *logger,
                              SyncFlag *stop_program,
-                             SNMPConnection *connection) throw(FWException)
+                             SNMPConnection *connection)
 {
     std::ostringstream str;
     descr     = "";
@@ -930,7 +929,7 @@ SNMPConnection::~SNMPConnection()
         disconnect();
 }
 
-void SNMPConnection::connect(int retries, long timeout) throw(FWException)
+void SNMPConnection::connect(int retries, long timeout)
 {
     if(connected)
         throw FWException("SNMPSession: already connected");
@@ -951,7 +950,7 @@ void SNMPConnection::connect(int retries, long timeout) throw(FWException)
     connected=true;
 }
 
-void SNMPConnection::disconnect() throw(FWException)
+void SNMPConnection::disconnect()
 {
     if(!connected)
         throw FWException("SNMPSession: already disconnected");
@@ -965,7 +964,7 @@ void SNMPConnection::disconnect() throw(FWException)
     connected    = false;
 }
 
-multimap<string, SNMPVariable* > SNMPConnection::walk(const string &variable) throw(FWException)
+multimap<string, SNMPVariable* > SNMPConnection::walk(const string &variable)
 {
     multimap<string, SNMPVariable*> res;
 
@@ -1071,7 +1070,6 @@ multimap<string, SNMPVariable* > SNMPConnection::walk(const string &variable) th
 }
 
 vector<SNMPVariable*> SNMPConnection::get(const string &variable)
-    throw(FWException)
 {
     if(!connected)
         throw FWException("SNMPSession: not connected");
@@ -1114,7 +1112,7 @@ vector<SNMPVariable*> SNMPConnection::get(const string &variable)
     } 
 }
 
-SNMPVariable *SNMPVariable::create(struct variable_list *vars) throw(FWException)
+SNMPVariable *SNMPVariable::create(struct variable_list *vars)
 {
     switch(vars->type)
     {
@@ -1177,7 +1175,7 @@ string SNMPVariable_IPaddr::toString()
     return res;
 }
 
-InetAddr SNMPVariable_IPaddr::getInetAddrValue() throw(FWException)
+InetAddr SNMPVariable_IPaddr::getInetAddrValue()
 {
     // value comes from ASN1-encoded snmp reply. I am not sure 100% but
     // I'll assume it consists of 4 bytes that represent ip address in
@@ -1190,7 +1188,7 @@ InetAddr SNMPVariable_IPaddr::getInetAddrValue() throw(FWException)
     return InetAddr(&addr_conversion.ipaddr);
 }
 
-InetAddr SNMPVariable_IPaddr::getNetmaskValue() throw(FWException)
+InetAddr SNMPVariable_IPaddr::getNetmaskValue()
 {
     union {
         struct in_addr ipaddr;
@@ -1253,14 +1251,14 @@ string SNMPVariable::varList2String(vector<SNMPVariable*> &v)
     return res;
 }
 
-long SNMPVariable::var2Int(SNMPVariable *var) throw(FWException)
+long SNMPVariable::var2Int(SNMPVariable *var)
 {
     if(var->type != SNMPVariable::snmp_int)
         throw FWException("Could not extract integer from non-int SNMP variable.");
     return dynamic_cast<SNMPVariable_Int *>(var)->getIntValue();
 }
 
-long SNMPVariable::varList2Int(vector<SNMPVariable*> &v) throw(FWException)
+long SNMPVariable::varList2Int(vector<SNMPVariable*> &v)
 {
     if(v.size()!=1)
         throw FWException("Empty SNMP variable list returned. Could not extract integer");
@@ -1422,7 +1420,7 @@ bool SNMPCrawler::special(const InetAddrMask &n) const
 
 //TODO: multiple threads (via pool).
 void SNMPCrawler::run_impl(Logger *logger,
-                           SyncFlag *stop_program) throw(FWException)
+                           SyncFlag *stop_program)
 {
     if (snmp_tmp_db==NULL)
         snmp_tmp_db = new FWObjectDatabase();
@@ -1808,7 +1806,7 @@ void SNMPCrawler::run_impl(Logger *logger,
 }
 
 void SNMPCrawler::bacresolve_results(Logger *logger,
-                                     SyncFlag *) throw(FWException)
+                                     SyncFlag *)
 {
     *logger << "Resolving names\n";
         
@@ -1849,7 +1847,6 @@ CrawlerFind::~CrawlerFind()
 }
 
 void SNMP_interface_query::run_impl(Logger *logger, SyncFlag *stop_program)
-    throw(FWException)
 {
     fetchSysInfo(logger, stop_program);
     CHECK_STOP_AND_THROW_EXCEPTION;
@@ -1878,12 +1875,12 @@ void SNMP_interface_query::run_impl(Logger *logger, SyncFlag *stop_program)
 #endif
 }
 
-void SNMP_sysdesc_query::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException)
+void SNMP_sysdesc_query::run_impl(Logger *logger,SyncFlag *stop_program)
 {
     fetchSysInfo(logger,stop_program);
 }
 
-void SNMP_discover_query::run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException)
+void SNMP_discover_query::run_impl(Logger *logger,SyncFlag *stop_program)
 {
     fetchArpTable(logger,stop_program);
     if(fetch_inerfaces)

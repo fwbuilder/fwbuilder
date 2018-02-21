@@ -672,7 +672,7 @@ void FindObjectWidget::_replaceCurrent()
 
     FWObject *replace_object = m_widget->replaceDropArea->getObject();
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(project_panel, p, QObject::tr("Replace object")));
     FWObject *new_state = cmd->getNewState();
 

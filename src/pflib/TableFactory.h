@@ -77,7 +77,7 @@ public:
 
         void registerTable(const std::string& tblname,
                            const std::string& tblid,
-                           libfwbuilder::FWObject *tbl) throw(libfwbuilder::FWException);
+                           libfwbuilder::FWObject *tbl);
         void createTablesForRE(libfwbuilder::RuleElement *re,
                                libfwbuilder::Rule        *rule);
         void addObjectToTable(libfwbuilder::FWObject *tblgrp,

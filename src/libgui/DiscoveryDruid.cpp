@@ -2309,7 +2309,7 @@ FWObject* DiscoveryDruid::addInterface(FWObject *parent, InterfaceData *in,
             itf->getOptionsObject()->setInt("vlan_id", in->vlan_id);
     } else
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent));
         if (int_prop->looksLikeVlanInterface(obj_name))
         {
@@ -2508,7 +2508,7 @@ void DiscoveryDruid::createRealObjects()
                     }
 
                     list<InterfaceData*> interface_tree;
-                    std::auto_ptr<interfaceProperties> int_prop(
+                    std::unique_ptr<interfaceProperties> int_prop(
                         interfacePropertiesObjectFactory::getInterfacePropertiesObject(o));
                     int_prop->rearrangeInterfaces(od.interfaces, interface_tree);
 

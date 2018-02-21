@@ -412,7 +412,7 @@ void RuleOptionsDialog::validate(bool *res)
 void RuleOptionsDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();

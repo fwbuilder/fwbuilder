@@ -91,7 +91,7 @@ int IPService::getProtocolNumber() const
 }
 
 
-void IPService::fromXML(xmlNodePtr root) throw(FWException)
+void IPService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -179,7 +179,7 @@ void IPService::fromXML(xmlNodePtr root) throw(FWException)
 
 }
 
-xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr IPService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 

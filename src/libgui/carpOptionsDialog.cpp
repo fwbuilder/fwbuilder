@@ -92,7 +92,7 @@ void carpOptionsDialog::accept()
 
     // the parent of this dialog is InterfaceDialog, not ProjectPanel
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     data.saveAll(new_state);

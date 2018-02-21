@@ -68,7 +68,7 @@ IPv6::~IPv6()
 }
 
 FWObject& IPv6::shallowDuplicate(const FWObject *other,
-                                 bool preserve_id) throw(FWException)
+                                 bool preserve_id)
 {
     const IPv6* a_other = IPv6::constcast(other);
     assert(a_other);
@@ -78,7 +78,7 @@ FWObject& IPv6::shallowDuplicate(const FWObject *other,
     return FWObject::shallowDuplicate(other, preserve_id);
 }
 
-void IPv6::fromXML(xmlNodePtr root) throw(FWException)
+void IPv6::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -105,7 +105,7 @@ void IPv6::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node)
 {
     if (getName().empty()) setName(getTypeName());
 

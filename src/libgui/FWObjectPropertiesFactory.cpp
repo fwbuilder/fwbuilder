@@ -41,6 +41,7 @@
 #include "FWBTree.h"
 
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
@@ -127,6 +128,12 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
         } else if (AddressRange::isA(obj))
         {
             AddressRange *ar=AddressRange::cast(obj);
+            str << ar->getRangeStart().toString().c_str();
+            str << " - ";
+            str << ar->getRangeEnd().toString().c_str();
+        } else if (AddressRangeIPv6::isA(obj))
+        {
+            AddressRangeIPv6 *ar=AddressRangeIPv6::cast(obj);
             str << ar->getRangeStart().toString().c_str();
             str << " - ";
             str << ar->getRangeEnd().toString().c_str();
@@ -324,6 +331,12 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
         } else if (AddressRange::isA(obj))
         {
             AddressRange *ar=AddressRange::cast(obj);
+            str << ar->getRangeStart().toString().c_str();
+            str << " - ";
+            str << ar->getRangeEnd().toString().c_str();
+        } else if (AddressRangeIPv6::isA(obj))
+        {
+            AddressRangeIPv6 *ar=AddressRangeIPv6::cast(obj);
             str << ar->getRangeStart().toString().c_str();
             str << " - ";
             str << ar->getRangeEnd().toString().c_str();
@@ -666,6 +679,13 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             AddressRange *ar=AddressRange::cast(obj);
+            str += ar->getRangeStart().toString().c_str();
+            str += " - ";
+            str += ar->getRangeEnd().toString().c_str();
+        } else if (AddressRangeIPv6::isA(obj))
+        {
+            if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
+            AddressRangeIPv6 *ar=AddressRangeIPv6::cast(obj);
             str += ar->getRangeStart().toString().c_str();
             str += " - ";
             str += ar->getRangeEnd().toString().c_str();

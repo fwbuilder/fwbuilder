@@ -40,8 +40,8 @@ class DynamicGroup : public MultiAddress
     DECLARE_FWOBJECT_SUBTYPE(DynamicGroup);
     DECLARE_DISPATCH_METHODS(DynamicGroup);
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
 
     /* Each list entry is comma-separated list of matching criteria */
     const std::list<std::string> &getFilter() { return m_filter; }
@@ -52,14 +52,12 @@ class DynamicGroup : public MultiAddress
     static bool makeFilter(std::string &filter, const std::string &type,
                            const std::string &keyword);
 
-    virtual bool cmp(const FWObject *obj, bool recursive=false)
-        throw (FWException);
-    virtual FWObject& shallowDuplicate(const FWObject *other, bool preserve_id)
-        throw (FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
+    virtual FWObject& shallowDuplicate(const FWObject *other, bool preserve_id);
 
     virtual bool isCompileTime() const;
     virtual void loadFromSource(bool ipv6, FWOptions *options,
-                                bool test_mode=false) throw (FWException);
+                                bool test_mode=false);
 
     /*
      * verify whether given object type is approppriate as a child

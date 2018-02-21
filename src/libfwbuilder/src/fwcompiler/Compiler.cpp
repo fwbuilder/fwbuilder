@@ -29,6 +29,7 @@
 #include "Compiler.h"
 
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
@@ -82,12 +83,12 @@ void Compiler::epilog()
 {
 }
 
-void Compiler::abort(const string &errstr) throw(FWException)
+void Compiler::abort(const string &errstr)
 {
     BaseCompiler::abort(fw, source_ruleset, NULL, errstr);
 }
 
-void Compiler::abort(FWObject *rule, const string &errstr) throw(FWException)
+void Compiler::abort(FWObject *rule, const string &errstr)
 {
     BaseCompiler::abort(fw, source_ruleset, rule, errstr);
 }
@@ -602,8 +603,56 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
         // family. If it is not address range, put it back into the rule element
         // If it is address range but it does not match address family,
         // throw it away.
-        AddressRange *aro = AddressRange::cast(o);
-	if (aro)
+        if (MatchesAddressFamily(o))
+        {
+            AddressRange *aro = AddressRange::cast(o);
+            AddressRangeIPv6 *aro6 = NULL;
+            InetAddr a1;
+            InetAddr a2;
+            if(aro) {
+                a1 = aro->getRangeStart();
+                a2 = aro->getRangeEnd();
+            } else {
+                 aro6 = AddressRangeIPv6::cast(o);
+                if(aro6) {
+                    a1 = aro6->getRangeStart();
+                    a2 = aro6->getRangeEnd();
+                }
+            }
+            if(aro != NULL && aro6 != NULL){
+                vector<InetAddrMask> vn =
+                    libfwbuilder::convertAddressRange(a1,a2);
+
+                if (vn.size() == 0)
+                {
+                    abort(rule,
+                        "Address Range object '" + aro->getName() +
+                        "' can not be converted to set of addresses");
+                }
+
+                for (vector<InetAddrMask>::iterator i=vn.begin();
+                     i!=vn.end(); i++)
+                {
+                    Network *h = dbcopy->createNetwork();
+                    h->setName(string("%n-")+(*i).toString()+string("%") );
+                    h->setNetmask(*(i->getNetmaskPtr()));
+                    h->setAddress(*(i->getAddressPtr()));
+                    persistent_objects->add(h, false);
+                    cl.push_back(h);
+
+                    // see GroupRegistry::registerGroupObject()
+                    if (group_registry != NULL)
+                    {
+                        group_registry->setGroupRegistryKey(
+                            h, group_registry->getGroupRegistryKey(aro));
+                    }
+               }
+            } else {
+                 cl.push_back(o);
+            }
+
+        }
+    /*if (aro)
         {
             if (MatchesAddressFamily(o))
             {
@@ -641,8 +690,8 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
         {
             cl.push_back(o);
         }
+    }*/
     }
-
     re->clearChildren();
     for (FWObject::iterator i1=cl.begin(); i1!=cl.end(); ++i1)
         re->addRef( *i1 );

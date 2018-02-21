@@ -276,7 +276,7 @@ void ClusterGroupDialog::validate(bool *res)
 
 void ClusterGroupDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     ClusterGroup *g = dynamic_cast<ClusterGroup*>(new_state);

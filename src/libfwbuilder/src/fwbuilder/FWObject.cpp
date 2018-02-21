@@ -67,7 +67,7 @@ string FWObject::dataDir;
 //#define TI_DEBUG
 
 
-void FWObject::fromXML(xmlNodePtr root) throw(FWException)
+void FWObject::fromXML(xmlNodePtr root)
 {
     assert(root!=NULL);
     const char *n;
@@ -148,13 +148,12 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
     setDirty(false);
 }
 
-xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node)
 {
     return toXML(xml_parent_node, true);
 }
 
 xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
-    throw(FWException)
 {
     string s_id = FWObjectDatabase::getStringId(getId());
 
@@ -313,7 +312,7 @@ list<FWObject*> FWObject::findIf(FWObjectFindPredicate *pred)
 }
 
 FWObject* FWObject::findObjectByName(const string &type,
-                                     const string &name) throw(FWException)
+                                     const string &name)
 {
     if (getTypeName()==type && getName()==name) return this;
 
@@ -331,7 +330,6 @@ FWObject* FWObject::findObjectByName(const string &type,
 
 FWObject* FWObject::findObjectByAttribute(const std::string &attr,
                                           const std::string &val)
-    throw(FWException)
 {
     if (getStr(attr)==val) return this;
 
@@ -348,7 +346,7 @@ FWObject* FWObject::findObjectByAttribute(const std::string &attr,
 }
 
 
-bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool FWObject::cmp(const FWObject *obj, bool recursive)
 {
     if (getTypeName() != obj->getTypeName() || name != obj->name || comment != obj->comment || ro != obj->ro)
         return false;
@@ -399,13 +397,12 @@ bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
     return true;
 }
 
-FWObject& FWObject::operator=(const FWObject &x)  throw(FWException)
+FWObject& FWObject::operator=(const FWObject &x)
 {
     return duplicate(&x, false);
 }
 
 FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
     checkReadOnly();
     bool xro = x->ro;
@@ -429,7 +426,6 @@ FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
 }
 
 FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
     if (x==NULL) return NULL;
     FWObject *o1;
@@ -459,7 +455,6 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
  * attribute.  Clear it in the caller if neccessary.
  */
 FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
     checkReadOnly();
 
@@ -510,7 +505,7 @@ class InheritsFWOptions: public std::unary_function<FWObject*, bool>
     }
 };
 
-FWObject& FWObject::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& FWObject::duplicateForUndo(const FWObject *obj)
 {
     setRO(false);
     InheritsFWOptions pred;
@@ -1393,7 +1388,7 @@ bool FWObject::isReadOnly()
     return false;
 }
 
-void FWObject::checkReadOnly() throw(FWException)
+void FWObject::checkReadOnly()
 {
     if (isReadOnly() && ! getRoot()->getIgnoreReadOnlyFlag())
         throw FWException(string("Attempt to modify read-only object ")+getName());

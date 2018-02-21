@@ -88,8 +88,8 @@ public:
          */
         virtual void addRef(FWObject *obj);
     
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
 
         virtual bool  validateChild(FWObject *o);
 
@@ -189,11 +189,11 @@ public:
 
 
         virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                           bool preserve_id = true) throw(FWException);
+                                           bool preserve_id = true);
         virtual FWObject& duplicate(const FWObject *obj,
-                                    bool preserve_id = true) throw(FWException);
+                                    bool preserve_id = true);
 
-        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+        virtual bool cmp(const FWObject *obj, bool recursive=false);
 
         void duplicateWithIdMapping(const FWObject *src,
                                     std::map<int,int> &id_mapping, bool preserve_id);

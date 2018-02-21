@@ -68,7 +68,7 @@ class Group : virtual public FWObject
      * simply calls duplicate() if this is user-defined group. For system
      * grops that hold actual objects, it calls shallowDuplicate()
      */
-    virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+    virtual FWObject& duplicateForUndo(const FWObject *obj);
 
     /**
      * get the list of object type names that can be inserted into

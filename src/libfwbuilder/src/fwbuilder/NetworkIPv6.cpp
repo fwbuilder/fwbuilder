@@ -66,7 +66,7 @@ NetworkIPv6::NetworkIPv6 (const string &s) : Address()
 NetworkIPv6::~NetworkIPv6() {}
 
 FWObject& NetworkIPv6::shallowDuplicate(const FWObject *other,
-                                        bool preserve_id) throw(FWException)
+                                        bool preserve_id)
 {
     const NetworkIPv6* a_other = NetworkIPv6::constcast(other);
     delete inet_addr_mask;
@@ -75,7 +75,7 @@ FWObject& NetworkIPv6::shallowDuplicate(const FWObject *other,
     return FWObject::shallowDuplicate(other, preserve_id);
 }
 
-void NetworkIPv6::fromXML(xmlNodePtr root) throw(FWException)
+void NetworkIPv6::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
@@ -102,7 +102,7 @@ void NetworkIPv6::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr NetworkIPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr NetworkIPv6::toXML(xmlNodePtr xml_parent_node)
 {
     if (getName().empty()) setName(getTypeName());
 

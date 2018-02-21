@@ -200,7 +200,7 @@ void IPv4Dialog::validate(bool *result)
 
 void IPv4Dialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     IPv4 *s = dynamic_cast<IPv4*>(new_state);

@@ -117,7 +117,7 @@ void RoutingRuleOptionsDialog::validate(bool *res)
 void RoutingRuleOptionsDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
+    std::unique_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();

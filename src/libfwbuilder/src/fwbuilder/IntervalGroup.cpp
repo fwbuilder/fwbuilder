@@ -63,7 +63,7 @@ FWReference* IntervalGroup::createRef()
     return ref;
 }
 
-xmlNodePtr IntervalGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr IntervalGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));

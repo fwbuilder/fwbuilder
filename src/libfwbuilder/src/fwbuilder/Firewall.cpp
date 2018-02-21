@@ -86,7 +86,7 @@ void Firewall::init(FWObjectDatabase *root)
 
 Firewall::~Firewall()  {}
 
-void Firewall::fromXML(xmlNodePtr root) throw(FWException)
+void Firewall::fromXML(xmlNodePtr root)
 {
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("platform")));
     assert(n!=NULL);
@@ -137,7 +137,7 @@ void Firewall::fromXML(xmlNodePtr root) throw(FWException)
 
 }
 
-xmlNodePtr Firewall::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Firewall::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
@@ -270,7 +270,7 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
 }
 
 FWObject& Firewall::duplicate(const FWObject *obj,
-                              bool preserve_id) throw(FWException)
+                              bool preserve_id)
 {
     string err="Error creating object with type: ";
 
@@ -331,7 +331,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
     return *this;
 }
 
-FWObject& Firewall::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& Firewall::duplicateForUndo(const FWObject *obj)
 {
     setRO(false);
     FWObject *their_mgmt = obj->getFirstByType(Management::TYPENAME);

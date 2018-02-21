@@ -102,7 +102,7 @@ void PhysicalAddressDialog::validate(bool *res)
 
 void PhysicalAddressDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     physAddress *s = dynamic_cast<physAddress*>(new_state);

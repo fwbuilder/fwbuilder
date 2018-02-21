@@ -72,7 +72,7 @@ void ClusterGroup::replaceReferenceInternal(int old_id, int new_id, int &counter
     }
 }
 
-void ClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
+void ClusterGroup::fromXML(xmlNodePtr parent)
 {
     FWObject::fromXML(parent);
 
@@ -91,7 +91,7 @@ void ClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
     }
 }
 
-xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
@@ -127,7 +127,7 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
     return gopt;
 }
 
-FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj)
 {
     if (ClusterGroup::constcast(obj)==NULL) return *this;
 

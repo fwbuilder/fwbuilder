@@ -208,7 +208,7 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     return res.str();
 }
 
-std::auto_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
+std::unique_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
     Firewall *fw,
     bool ipv6_policy,
     OSConfigurator *oscnf,
@@ -218,14 +218,14 @@ std::auto_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
     string platform_family = Resources::platform_res[platform]->
         getResourceStr("/FWBuilderResources/Target/family");
 
-    std::auto_ptr<PolicyCompiler_ipt> policy_compiler;
+    std::unique_ptr<PolicyCompiler_ipt> policy_compiler;
 
     if (fw->getStr("host_OS") == "secuwall") {
-        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
+        policy_compiler = std::unique_ptr<PolicyCompiler_ipt>(
             new PolicyCompiler_secuwall(objdb,fw, ipv6_policy, oscnf,
                                         minus_n_commands_filter));
     } else {
-        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
+        policy_compiler = std::unique_ptr<PolicyCompiler_ipt>(
             new PolicyCompiler_ipt(objdb,fw, ipv6_policy, oscnf,
                                    minus_n_commands_filter));
     }

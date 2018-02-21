@@ -43,17 +43,12 @@ class DialogFactory {
 
     static BaseObjectDialog *createDialog(QWidget *parent,const QString &objType);
 
-    static QWidget *createFWDialog(QWidget *parent,libfwbuilder::FWObject *o)
-        throw(libfwbuilder::FWException);
-    static QWidget *createOSDialog(QWidget *parent,libfwbuilder::FWObject *o)
-        throw(libfwbuilder::FWException);
-    static QWidget *createIfaceDialog(QWidget *parent,libfwbuilder::FWObject *o)
-        throw(libfwbuilder::FWException);
-    static QWidget *createClusterConfDialog(QWidget *parent, libfwbuilder::FWObject *o)
-        throw(libfwbuilder::FWException);
+    static QWidget *createFWDialog(QWidget *parent,libfwbuilder::FWObject *o);
+    static QWidget *createOSDialog(QWidget *parent,libfwbuilder::FWObject *o);
+    static QWidget *createIfaceDialog(QWidget *parent,libfwbuilder::FWObject *o);
+    static QWidget *createClusterConfDialog(QWidget *parent, libfwbuilder::FWObject *o);
     static QString getClusterGroupOptionsDialogName(libfwbuilder::FWObject *o);
-    static QWidget *createClusterGroupOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o)
-        throw(libfwbuilder::FWException);
+    static QWidget *createClusterGroupOptionsDialog(QWidget *parent, libfwbuilder::FWObject *o);
 
     static std::string getActionDialogPageName(libfwbuilder::Firewall *fw,
                                                libfwbuilder::Rule *rule);

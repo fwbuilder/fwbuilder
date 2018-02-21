@@ -61,7 +61,7 @@ Network::Network (const string &s) : Address()
                                      
 Network::~Network() {}
 
-void Network::fromXML(xmlNodePtr root) throw(FWException)
+void Network::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
@@ -76,7 +76,7 @@ void Network::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node)
 {
     if (getName().empty()) setName(getTypeName());
 

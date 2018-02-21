@@ -97,14 +97,13 @@ class DNS
      * Returned list is sorted.
      */
     static std::list<InetAddr> getHostByName(const std::string &name,
-                                             int type=AF_INET) throw(FWException);
+                                             int type=AF_INET);
 
     /**
      * Find all host names of host with given IP.
      * This operation does not run in backgound.
      */
-    static HostEnt getHostByAddr(const InetAddr &addr, int type=AF_INET)
-        throw(FWException);
+    static HostEnt getHostByAddr(const InetAddr &addr, int type=AF_INET);
 
     private:
 

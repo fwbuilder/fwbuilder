@@ -212,7 +212,6 @@ int  Helper::findInterfaceByNetzone(Address *obj)
  *
  */
 int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
-    throw(FWException)
 {
 #if DEBUG_NETZONE_OPS
     cerr << "Helper::findInterfaceByNetzone";

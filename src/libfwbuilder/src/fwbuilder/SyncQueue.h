@@ -69,7 +69,7 @@ template <class _Tp>  class SyncQueue: protected queue<_Tp>
      *
      * @exception SyncQueueDoneException if queue have been already shut down
      */
-    bool empty() const throw (SyncQueueDoneException)
+    bool empty() const 
     { 
         mutex.lock();
         if(down)
@@ -87,7 +87,7 @@ template <class _Tp>  class SyncQueue: protected queue<_Tp>
      *
      * @exception SyncQueueDoneException if queue have been already shut down
      */
-    size_type size() const throw (SyncQueueDoneException)
+    size_type size() const
     { 
         mutex.lock();
         if(down)
@@ -105,7 +105,7 @@ template <class _Tp>  class SyncQueue: protected queue<_Tp>
      *
      * @exception SyncQueueDoneException if queue have been already shut down
      */
-    void push(const queue<_Tp>::value_type& __x) throw (SyncQueueDoneException)
+    void push(const queue<_Tp>::value_type& __x)
     { 
         mutex.lock();
         if(down)
@@ -126,7 +126,7 @@ template <class _Tp>  class SyncQueue: protected queue<_Tp>
      * @exception FWException if timeout occured
      * @exception SyncQueueDoneException if shutdown() was called 
      */
-    const queue<_Tp>::value_type pop(long timeout_ms=-1) throw(SyncQueueDoneException, FWException)
+    const queue<_Tp>::value_type pop(long timeout_ms=-1)
     { 
         mutex.lock();
         if(down)

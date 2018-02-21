@@ -63,14 +63,14 @@ Inet6AddrMask::Inet6AddrMask() : InetAddrMask()
     setNetworkAndBroadcastAddress();
 }
 
-Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) :
+Inet6AddrMask::Inet6AddrMask(const string &s) :
     InetAddrMask(true)
 {
     struct in6_addr a_ipv6;
     int nbits;
     nbits = inet_net_pton(AF_INET6, s.c_str(), &a_ipv6, sizeof(a_ipv6));
     if (nbits < 0)
-        throw FWException(string("Invalid IP address: '") + s + "'");
+        throw FWException(string("Invalid IPv6 address: '") + s + "'");
 
     address = new InetAddr(&a_ipv6);
     netmask = new InetAddr(AF_INET6, nbits);
