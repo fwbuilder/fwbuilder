@@ -100,11 +100,11 @@ public:
          * in testing mode (flag test_mode==true), then just prints
          * the error message and returns.
          */
-	virtual void abort(const std::string &errstr) throw(libfwbuilder::FWException);
+	virtual void abort(const std::string &errstr);
 	virtual void abort(libfwbuilder::FWObject *fw,
                            libfwbuilder::FWObject *ruleset,
                            libfwbuilder::FWObject *rule,
-                           const std::string &errstr) throw(libfwbuilder::FWException);
+                           const std::string &errstr);
 
         /**
          * prints an error message and returns

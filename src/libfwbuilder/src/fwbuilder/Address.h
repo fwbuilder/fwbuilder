@@ -62,8 +62,7 @@ public:
 //    Address(const std::string &s) throw(FWException);
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                       bool preserve_id = true)
-        throw(FWException);
+                                       bool preserve_id = true);
 
     const InetAddrMask* getInetAddrMaskObjectPtr() const;
 
@@ -105,7 +104,7 @@ public:
     bool belongs(const InetAddr &) const;
     
     virtual FWReference* createRef();
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
 
     bool isAny() const;
 

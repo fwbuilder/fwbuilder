@@ -46,14 +46,14 @@ string UserService::getProtocolName() const     {    return "user_service";}
 int    UserService::getProtocolNumber() const   {    return 65002; }
 
 FWObject& UserService::shallowDuplicate(const FWObject *x,
-                                        bool preserve_id) throw(FWException)
+                                        bool preserve_id)
 {
     const UserService *cs = dynamic_cast<const UserService *>(x);
     userid = cs->userid;
     return FWObject::shallowDuplicate(x, preserve_id);
 }
 
-void UserService::fromXML(xmlNodePtr root) throw(FWException)
+void UserService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -65,7 +65,7 @@ void UserService::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr UserService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr UserService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
@@ -76,7 +76,7 @@ xmlNodePtr UserService::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool UserService::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool UserService::cmp(const FWObject *obj, bool recursive)
 {
     if (UserService::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj, recursive)) return false;

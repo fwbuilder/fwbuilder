@@ -40,8 +40,8 @@ class FWOptions : public FWObject
 
     DECLARE_FWOBJECT_SUBTYPE(FWOptions);
     DECLARE_DISPATCH_METHODS(FWOptions);
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr parent);
     virtual bool isPrimaryObject() const { return false; }
 };
 

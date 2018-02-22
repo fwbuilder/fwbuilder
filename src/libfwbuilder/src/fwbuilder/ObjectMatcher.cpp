@@ -49,6 +49,7 @@
 #include "fwbuilder/InetAddr.h"
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Cluster.h"
@@ -436,6 +437,92 @@ void* ObjectMatcher::dispatch(AddressRange *obj1, void *_obj2)
     if (address_range_match_mode == PARTIAL && (f_b || f_e)) return obj1;
     return NULL;
 }
+
+
+void* ObjectMatcher::dispatch(AddressRangeIPv6 *obj1, void *_obj2)
+{
+    FWObject *obj2 = (FWObject*)(_obj2);
+    const InetAddr &range_start = obj1->getRangeStart();
+    const InetAddr &range_end = obj1->getRangeEnd();
+
+    if (!range_start.isAny() &&
+        ( (recognize_broadcasts && range_start.isBroadcast()) ||
+          (recognize_multicasts && range_start.isMulticast()) )
+    ) return obj1;
+
+    if (!range_end.isAny() &&
+        ( (recognize_broadcasts && range_end.isBroadcast()) ||
+          (recognize_multicasts && range_end.isMulticast()) )
+    ) return obj1;
+
+    // case of "old boradcast"
+    if (recognize_broadcasts && range_start == range_end && range_start.isAny())
+        return obj1;
+
+    string addr_type = (ipv6) ? IPv6::TYPENAME : IPv4::TYPENAME;
+    list<FWObject*> all_addresses = obj2->getByTypeDeep(addr_type);
+    for (list<FWObject*>::iterator it = all_addresses.begin();
+         it != all_addresses.end(); ++it)
+    {
+        Address *rhs_addr = Address::cast(*it);
+        const InetAddr *addr = rhs_addr->getAddressPtr();
+
+        if (match_subnets)
+        {
+            const InetAddr *netm = rhs_addr->getNetmaskPtr();
+            int f_b = matchSubnetRHS(&range_start, addr, netm);
+            int f_e = matchSubnetRHS(&range_end, addr, netm);
+#if 0
+            cerr << "Address Range " << range_start.toString()
+                 << ":" << range_end.toString()
+                 << " rhs_addr " << rhs_addr->getName()
+                 << " " << addr->toString() << "/" << netm->toString()
+                 << " f_b=" << f_b
+                 << " f_e=" << f_e
+                 << " match_mode=" << address_range_match_mode
+                 << endl;
+#endif
+            if (address_range_match_mode == EXACT)
+            {
+                if (f_b == 0  && f_e == 0) return obj1;
+            }
+            // PARTIAL match only makes sense when match_subnets is true
+            if (address_range_match_mode == PARTIAL)
+            {
+                if (f_b == 0 || f_e == 0) return obj1; // one end of the range is inside subnet
+                if (f_b == -1 && f_e == 1) return obj1; // range is wider than subnet, subnet fits inside the range completely
+            }
+        } else
+        {
+            // If we do not need to match subnets, we just look if address
+            // @addr is inside the range
+            int f_b = matchInetAddrRHS(&range_start, addr);
+            int f_e = matchInetAddrRHS(&range_end, addr);
+
+#if 0
+            cerr << "Address Range " << range_start.toString()
+                 << ":" << range_end.toString()
+                 << " rhs_addr " << rhs_addr->getName()
+                 << " " << addr->toString()
+                 << " f_b=" << f_b
+                 << " f_e=" << f_e
+                 << " match_mode=" << address_range_match_mode
+                 << endl;
+#endif
+
+            if (f_b <= 0  && f_e >= 0) return obj1;
+        }
+    }
+    return NULL;
+
+    bool f_b = checkComplexMatchForSingleAddress(&range_start, obj2);
+    bool f_e = checkComplexMatchForSingleAddress(&range_end, obj2);
+
+    if (address_range_match_mode == EXACT && f_b && f_e) return obj1;
+    if (address_range_match_mode == PARTIAL && (f_b || f_e)) return obj1;
+    return NULL;
+}
+
 
 /*
  * Special case: run-time DNSName object with source name "self"

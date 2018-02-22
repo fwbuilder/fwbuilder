@@ -35,7 +35,7 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-void HostsFile::parse() throw(FWException)
+void HostsFile::parse()
 {
     QFile file(file_name);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

@@ -704,7 +704,7 @@ FWObject* FWObjectDatabase::reproduceRelativePath(FWObject *lib,
 }
 
 FWObject& FWObjectDatabase::duplicate(const FWObject *obj,
-                                      bool preserve_id) throw(FWException)
+                                      bool preserve_id)
 {
     setIgnoreReadOnlyFlag(true);
     FWObject &o = FWObject::duplicate(obj, preserve_id);

@@ -35,6 +35,7 @@
 #include "LibraryDialog.h"
 #include "RuleSetDialog.h"
 #include "AddressRangeDialog.h"
+#include "AddressRangeIPv6Dialog.h"
 #include "IPv4Dialog.h"
 #include "IPv6Dialog.h"
 #include "PhysicalAddressDialog.h"
@@ -118,6 +119,7 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/Interface.h"
@@ -167,6 +169,8 @@ BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &ob
     if (objType==AddressTable::TYPENAME)  return new AddressTableDialog(parent);
 
     if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(parent);
+
+    if (objType==AddressRangeIPv6::TYPENAME)  return new AddressRangeIPv6Dialog(parent);
 
     if (objType==Firewall::TYPENAME)      return new FirewallDialog(parent);
 
@@ -220,7 +224,6 @@ BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &ob
 
 
 QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
-    throw(FWException)
 {
     string platform = o->getStr("platform");
     string host_os = o->getStr("host_OS");
@@ -266,7 +269,6 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
 
 
 QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
-    throw(FWException)
 {
     string host_os = o->getStr("host_OS");
 
@@ -301,7 +303,6 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
 }
 
 QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
-    throw(FWException)
 {
     FWObject *h = Host::getParentHost(o);
     //FWObject *h = Interface::cast(o)->getParentHost();
@@ -332,7 +333,6 @@ QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
 }
 
 QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
-    throw(FWException)
 {
     FWObject *objparent = o->getParent();
     while (objparent && objparent->getTypeName()!="Cluster")
@@ -378,7 +378,7 @@ QString DialogFactory::getClusterGroupOptionsDialogName(FWObject *o)
 }
 
 QWidget *DialogFactory::createClusterGroupOptionsDialog(
-    QWidget *parent, FWObject *o) throw(libfwbuilder::FWException)
+    QWidget *parent, FWObject *o) 
 {
     QString dlgname = getClusterGroupOptionsDialogName(o);
 

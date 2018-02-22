@@ -400,7 +400,7 @@ void clusterMembersDialog::invalidate()
 void clusterMembersDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     bool master_found = false;

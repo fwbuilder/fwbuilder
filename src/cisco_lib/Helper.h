@@ -59,8 +59,7 @@ namespace fwcompiler {
          * that object 'obj' belongs to.  Returns interface ID
          */
         int findInterfaceByNetzone(const libfwbuilder::InetAddr *a,
-                                   const libfwbuilder::InetAddr *nm=NULL)
-            throw(libfwbuilder::FWException);
+                                   const libfwbuilder::InetAddr *nm=NULL);
         int findInterfaceByNetzone(libfwbuilder::Address *obj);
         std::list<int> findInterfaceByNetzoneOrAll(
             libfwbuilder::RuleElement *re);

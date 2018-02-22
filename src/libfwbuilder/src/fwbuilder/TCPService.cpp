@@ -76,7 +76,7 @@ void TCPService::_init_flags()
     }
 }
 
-void TCPService::fromXML(xmlNodePtr root) throw(FWException)
+void TCPService::fromXML(xmlNodePtr root)
 {
     TCPUDPService::fromXML(root);
 
@@ -112,7 +112,7 @@ void TCPService::fromXML(xmlNodePtr root) throw(FWException)
 
 }
 
-xmlNodePtr TCPService::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr TCPService::toXML(xmlNodePtr xml_parent_node)
 {
     xmlNodePtr me = TCPUDPService::toXML(xml_parent_node);
    

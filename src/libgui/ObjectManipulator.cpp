@@ -51,6 +51,7 @@
 #include "FWWindow.h"
 
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Cluster.h"
@@ -285,7 +286,7 @@ void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
         FWObject *fw = target;
         while (fw && !Firewall::cast(fw)) fw = fw->getParent();
 
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(fw));
 
         if (int_prop->looksLikeVlanInterface(obj_name)) return;
@@ -423,6 +424,7 @@ void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, F
                       &&!DNSName::isA(currentObj)
                       &&!AddressTable::isA(currentObj)
                       &&!AddressRange::isA(currentObj)
+                      &&!AddressRangeIPv6::isA(currentObj)
                       &&!Host::isA(currentObj)
                       &&!Network::isA(currentObj)
                       &&!NetworkIPv6::isA(currentObj)
@@ -474,7 +476,10 @@ void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, F
     if (path.find("Objects/Address Ranges") == 0) {
         AddObjectActions.append(
             addNewObjectMenuItem(popup_menu, AddressRange::TYPENAME));
+        AddObjectActions.append(
+            addNewObjectMenuItem(popup_menu, AddressRangeIPv6::TYPENAME));
     }
+
 
     if (path.find("Objects/Hosts") == 0) {
         AddObjectActions.append(
@@ -974,7 +979,7 @@ void ObjectManipulator::addSubinterfaceSubmenu(
         QString itf_name = QString::fromUtf8(intf->getName().c_str());
         FWObject *parent_fw = Host::getParentHost(intf);
 
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                 parent_fw));
         if (int_prop->looksLikeVlanInterface(itf_name)) continue;

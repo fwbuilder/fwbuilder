@@ -197,7 +197,7 @@ QString CompilerDriver_nxosacl::run(const std::string &cluster_id,
             else options->setBool("nxos_acl_no_clear",true);
         }
 
-        std::auto_ptr<OSConfigurator_nxos> oscnf(new OSConfigurator_nxos(objdb, fw, false));
+        std::unique_ptr<OSConfigurator_nxos> oscnf(new OSConfigurator_nxos(objdb, fw, false));
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
@@ -265,7 +265,7 @@ QString CompilerDriver_nxosacl::run(const std::string &cluster_id,
             }
             if (policy_count)
             {
-                std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
+                std::unique_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
                 if (inTestMode()) prep->setTestMode();
                 if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();

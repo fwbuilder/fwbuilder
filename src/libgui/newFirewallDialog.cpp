@@ -1233,7 +1233,7 @@ void newFirewallDialog::finishClicked()
             if (!network_zone_str_id.empty())
                 oi->setStr("network_zone", network_zone_str_id);
 
-            std::auto_ptr<interfaceProperties> int_prop(
+            std::unique_ptr<interfaceProperties> int_prop(
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(nfw));
             if (int_prop->looksLikeVlanInterface(name))
             {

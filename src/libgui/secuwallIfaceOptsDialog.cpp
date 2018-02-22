@@ -95,7 +95,7 @@ secuwallIfaceOptsDialog::~secuwallIfaceOptsDialog()
 void secuwallIfaceOptsDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the interface object
     FWObject* new_state = cmd->getNewState();

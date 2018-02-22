@@ -11,6 +11,9 @@ addons:
     - libxslt1-dev
     - qt5-default
     - libsnmp-dev
+    - zlib1g-dev
+    - zlib1g
+    - libxslt1-dev
 
 env:
   global:
@@ -21,7 +24,9 @@ matrix:
   include:
     - os: linux
       compiler: clang
-      env: QMAKESPEC=linux-clang
+      env: 
+        - QMAKESPEC=linux-clang
+        - CXXFLAGS="-std=gnu++14 $CXXFLAGS"
     - os: linux
       compiler: gcc
     - os: osx

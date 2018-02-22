@@ -25,6 +25,7 @@
 #include "objectSignature.h"
 
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/CustomService.h"
@@ -745,6 +746,9 @@ QString ObjectSignature::toString() const
     if (type_name == AddressRange::TYPENAME)
         sig << address_range_start << address_range_end;
 
+    if (type_name == AddressRangeIPv6::TYPENAME)
+        sig << address_range_start << address_range_end;
+
     if (type_name == AttachedNetworks::TYPENAME)
         sig << parent_interface_name;
 
@@ -841,6 +845,17 @@ void* ObjectSignature::dispatch(AddressRange *obj, void*)
     address_range_end = obj->getRangeEnd().toString().c_str();
     return this;
 }
+
+void* ObjectSignature::dispatch(AddressRangeIPv6 *obj, void*)
+{
+    object_name = QString::fromUtf8(obj->getName().c_str());
+    type_name = obj->getTypeName().c_str();
+    address_range_start = obj->getRangeStart().toString().c_str();
+    address_range_end = obj->getRangeEnd().toString().c_str();
+    return this;
+}
+
+
 
 /*
  * Note that we do not track "compile time" / "run time" attribute of

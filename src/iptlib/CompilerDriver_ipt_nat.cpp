@@ -72,7 +72,7 @@ bool CompilerDriver_ipt::processNatRuleSet(
     // compile NAT rules before policy rules because policy
     // compiler needs to know the number of virtual addresses
     // being created for NAT
-    std::auto_ptr<NATCompiler_ipt> nat_compiler(
+    std::unique_ptr<NATCompiler_ipt> nat_compiler(
         new NATCompiler_ipt(objdb, fw, ipv6_policy,
                             oscnf, &minus_n_commands_nat));
 

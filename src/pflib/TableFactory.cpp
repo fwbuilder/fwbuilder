@@ -103,7 +103,7 @@ string TableFactory::generateTblID(RuleElement *re)
 }
 
 void TableFactory::registerTable(const string& tblname, const string& tblid,
-                                 FWObject* tbl) throw(FWException)
+                                 FWObject* tbl)
 {
 // two different table objects should have different names
 // 

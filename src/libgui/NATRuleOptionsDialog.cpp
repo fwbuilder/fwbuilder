@@ -187,7 +187,7 @@ void NATRuleOptionsDialog::validate(bool *res)
 
 void NATRuleOptionsDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdRuleChange> cmd(
+    std::unique_ptr<FWCmdRuleChange> cmd(
         new FWCmdRuleChangeOptions(m_project, obj));
 
     // new_state  is a copy of the rule object

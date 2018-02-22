@@ -186,7 +186,7 @@ void IPv6Dialog::validate(bool *res)
 
 void IPv6Dialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     IPv6 *s = dynamic_cast<IPv6*>(new_state);

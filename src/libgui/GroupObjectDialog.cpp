@@ -51,6 +51,7 @@
 #include "fwbuilder/Service.h"
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 
@@ -155,6 +156,13 @@ public:
             return compare_addrs(&AddressRange::cast(thisobj)->getRangeStart(),
                                  &AddressRange::cast(otherobj)->getRangeStart());
         }
+        if(AddressRangeIPv6::isA(thisobj))
+        {
+            return compare_addrs(&AddressRangeIPv6::cast(thisobj)->getRangeStart(),
+                                 &AddressRangeIPv6::cast(otherobj)->getRangeStart());
+        }
+
+
 
         if (Host::isA(thisobj))
         {
@@ -513,7 +521,7 @@ void GroupObjectDialog::validate(bool *res)
 
 void GroupObjectDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();

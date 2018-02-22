@@ -267,9 +267,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
     QString script_buffer;
 
-    std::auto_ptr<NATCompiler_pix> n;
-    std::auto_ptr<PolicyCompiler_pix> c;
-    std::auto_ptr<RoutingCompiler_pix> r;
+    std::unique_ptr<NATCompiler_pix> n;
+    std::unique_ptr<PolicyCompiler_pix> c;
+    std::unique_ptr<RoutingCompiler_pix> r;
 
 
     try
@@ -391,13 +391,13 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             abort(ex.toString());
         }
 
-        std::auto_ptr<Preprocessor> prep(
+        std::unique_ptr<Preprocessor> prep(
             new Preprocessor(objdb , fw, false));
         if (inTestMode()) prep->setTestMode();
         if (inEmbeddedMode()) prep->setEmbeddedMode();
         prep->compile();
 
-        std::auto_ptr<OSConfigurator> oscnf(
+        std::unique_ptr<OSConfigurator> oscnf(
             new OSConfigurator_pix_os(objdb , fw, false));
         if (inTestMode()) oscnf->setTestMode();
         if (inEmbeddedMode()) oscnf->setEmbeddedMode();
@@ -412,10 +412,10 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         string version = fw->getStr("version");
 
         if (XMLTools::version_compare(version, "8.3")>=0)
-            n = std::auto_ptr<NATCompiler_pix>(
+            n = std::unique_ptr<NATCompiler_pix>(
                 new NATCompiler_asa8(objdb, fw, false, oscnf.get()));
         else
-            n = std::auto_ptr<NATCompiler_pix>(
+            n = std::unique_ptr<NATCompiler_pix>(
                 new NATCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
@@ -451,7 +451,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in NAT");
         }
 
-        c = std::auto_ptr<PolicyCompiler_pix>(
+        c = std::unique_ptr<PolicyCompiler_pix>(
             new PolicyCompiler_pix(objdb, fw, false, oscnf.get() , n.get()));
 
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
@@ -487,7 +487,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in Policy");
         }
 
-        r = std::auto_ptr<RoutingCompiler_pix>(
+        r = std::unique_ptr<RoutingCompiler_pix>(
             new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));

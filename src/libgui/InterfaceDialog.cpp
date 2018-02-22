@@ -431,7 +431,7 @@ void InterfaceDialog::applyChanges()
         blockSignals(false);
     }
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_children));
     FWObject* new_state = cmd->getNewState();
 

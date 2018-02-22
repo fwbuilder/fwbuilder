@@ -80,7 +80,7 @@ void PrototypeDialog::validate(bool *res)
 void PrototypeDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     new_state->setName( string(obj_name->text().utf8()) );

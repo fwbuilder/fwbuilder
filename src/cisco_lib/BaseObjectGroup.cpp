@@ -54,7 +54,7 @@ map<QString,int>  BaseObjectGroup::name_disambiguation;
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
 
 FWObject& BaseObjectGroup::shallowDuplicate(const FWObject *other,
-                                            bool preserve_id) throw(FWException)
+                                            bool preserve_id)
 {
     gt = BaseObjectGroup::constcast(other)->gt;
     return FWObject::shallowDuplicate(other, preserve_id);
@@ -223,12 +223,11 @@ string BaseObjectGroup::getObjectGroupClass()
 }
 
 QString BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectsManager*)
-    throw(libfwbuilder::FWException)
 {
     return "";
 }
 
-QString BaseObjectGroup::toString(NamedObjectsManager *nm)  throw(FWException)
+QString BaseObjectGroup::toString(NamedObjectsManager *nm) 
 {
     QStringList res;
     if (this->size()==0) return "";

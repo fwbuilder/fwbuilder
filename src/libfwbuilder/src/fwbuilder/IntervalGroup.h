@@ -45,7 +45,7 @@ class IntervalGroup : public Group
 
     DECLARE_DISPATCH_METHODS(IntervalGroup);
     
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
 
     /*
      * verify whether given object type is approppriate as a child

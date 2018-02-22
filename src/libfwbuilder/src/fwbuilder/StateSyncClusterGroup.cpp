@@ -41,13 +41,13 @@ StateSyncClusterGroup::StateSyncClusterGroup() : ClusterGroup()
     setStr("type", "");
 }
 
-void StateSyncClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
+void StateSyncClusterGroup::fromXML(xmlNodePtr parent)
 {
     ClusterGroup::fromXML(parent);
     // Read additional attributes here
 }
 
-xmlNodePtr StateSyncClusterGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr StateSyncClusterGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = ClusterGroup::toXML(parent);
 

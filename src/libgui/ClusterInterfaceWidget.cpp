@@ -198,7 +198,7 @@ bool ClusterInterfaceWidget::interfaceSelectable(Interface* iface)
     if (os_res!=NULL)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
-    auto_ptr<interfaceProperties> int_prop(
+    unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             os_family));
     QString err;

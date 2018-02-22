@@ -59,7 +59,7 @@ protected:
 public:
 
     Inet6AddrMask();
-    Inet6AddrMask(const std::string &s) throw(FWException);
+    Inet6AddrMask(const std::string &s);
     Inet6AddrMask(const InetAddr&, const InetAddr&);
     virtual ~Inet6AddrMask();
 

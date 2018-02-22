@@ -79,7 +79,7 @@ FWReference* ServiceGroup::createRef()
     return ref;
 }
 
-xmlNodePtr ServiceGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr ServiceGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));

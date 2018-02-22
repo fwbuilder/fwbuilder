@@ -58,7 +58,7 @@ Address::~Address()
 }
 
 FWObject& Address::shallowDuplicate(const FWObject *other,
-                                    bool preserve_id) throw(FWException)
+                                    bool preserve_id)
 {
     const Address* a_other = Address::constcast(other);
     delete inet_addr_mask;
@@ -160,7 +160,7 @@ bool Address::belongs(const InetAddr &other) const
     return false;
 }
 
-bool Address::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool Address::cmp(const FWObject *obj, bool recursive)
 {
     if (Address::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj, recursive)) return false;

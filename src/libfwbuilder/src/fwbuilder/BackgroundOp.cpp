@@ -98,7 +98,7 @@ void BackgroundOp::disconnect()    { connected=false;  }
 
 
 
-Logger* BackgroundOp::start_operation() throw(FWException)
+Logger* BackgroundOp::start_operation()
 {
     /*
      * Suppose calling program wants to stop background operation. It

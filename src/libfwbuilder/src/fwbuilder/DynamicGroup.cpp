@@ -52,7 +52,7 @@ bool DynamicGroup::validateChild(FWObject *o)
     return FWObject::validateChild(o);
 }
 
-void DynamicGroup::fromXML(xmlNodePtr root) throw(FWException)
+void DynamicGroup::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -75,7 +75,7 @@ void DynamicGroup::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlRemoveProp(xmlHasProp(me, TOXMLCAST("run_time")));
@@ -121,7 +121,7 @@ bool DynamicGroup::makeFilter(string &filter, const string &type,
 
 
 bool DynamicGroup::cmp(const FWObject *obj,
-                      bool recursive) throw(FWException)
+                      bool recursive)
 {
     if (!FWObject::cmp(obj, recursive)) return false;
 
@@ -131,7 +131,7 @@ bool DynamicGroup::cmp(const FWObject *obj,
 
 
 FWObject& DynamicGroup::shallowDuplicate(const FWObject *other,
-                                        bool preserve_id) throw (FWException)
+                                        bool preserve_id)
 {
     const DynamicGroup *otherObj = DynamicGroup::constcast(other);
     m_filter = otherObj->m_filter;
@@ -146,7 +146,6 @@ bool DynamicGroup::isCompileTime() const
 
 
 void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
-    throw (FWException)
 {
     (void) ipv6; (void) options; (void) test_mode; // Unused
 

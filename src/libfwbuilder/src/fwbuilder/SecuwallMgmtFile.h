@@ -34,8 +34,8 @@ namespace libfwbuilder
     {
     public:
 
-        void parse(const std::string &filename) throw(FWException);
-        void parse(std::istream &from) throw(FWException);
+        void parse(const std::string &filename);
+        void parse(std::istream &from);
 
         /* Return data */
         std::map<std::string, std::string> getData() { return data; }

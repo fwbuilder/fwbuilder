@@ -194,7 +194,7 @@ string OSConfigurator_bsd::configureInterfaces()
 
     if ( options->getBool("configure_interfaces") ) 
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                 fw->getStr("host_OS")));
 

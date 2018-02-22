@@ -774,10 +774,14 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
                                   const list<FWObject *> &items)
 {
     string folder;
-    if (dest->getUserFolderParent() != 0) {
-        folder = dest->getUserFolderName().toUtf8().constData();
-    } else {
-        folder = dest->getFWObject()->getStr("folder");
+
+    if(dest != NULL)
+    {
+        if (dest->getUserFolderParent() != 0) {
+            folder = dest->getUserFolderName().toUtf8().constData();
+        } else {
+            folder = dest->getFWObject()->getStr("folder");
+        }
     }
 
     FWCmdMacro *macro = new FWCmdMacro(tr("Move objects"));
@@ -785,11 +789,9 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
     list<FWObject *>::const_iterator iter;
     for (iter = items.begin(); iter != items.end(); ++iter) {
         FWObject *obj = *iter;
-
         FWCmdMoveToFromUserFolder *cmd = new FWCmdMoveToFromUserFolder
             (m_project, obj->getParent(), obj,
              obj->getStr("folder").c_str(), folder.c_str(), "", macro);
-
         FWObject *newObj = cmd->getNewState();
         newObj->setStr("folder", folder);
     }

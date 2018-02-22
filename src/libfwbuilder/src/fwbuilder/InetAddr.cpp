@@ -79,6 +79,11 @@ using namespace libfwbuilder;
  */
 void InetAddr::init_from_string(const char* data)
 {
+    init_from_string(data,false);
+}
+
+void InetAddr::init_from_string(const char* data, bool autoinet)
+{
     if(!data) throw FWException("NULL IP address data..");
     if (strchr(data, '.')==NULL && strchr(data, ':')==NULL)
     {
@@ -87,14 +92,29 @@ void InetAddr::init_from_string(const char* data)
         if (invalid_chars && *invalid_chars == '\0')
             init_from_int(r);
         else
-            throw FWException(string("Invalid IP address: '") + string(data) + "'");
+            throw FWException(string("Invalid IP or IPv6 address: '") + string(data) + "'");
 
     } else
     {
+        if(autoinet)
+        {
+
+            if(strchr(data, '.'))
+            {
+                address_family = AF_INET;
+            } else if(strchr(data, ':'))
+            {
+                address_family = AF_INET6;
+            }
+            else
+            {
+                throw FWException(string("AF INET Autodetection not possible for '") + string(data) + "'");
+            }
+        }
         if (address_family == AF_INET)
         {
             if (inet_net_pton(AF_INET, data, &ipv4, sizeof(ipv4)) < 0)
-                throw FWException(string("Invalid IP address: '") +
+                throw FWException(string("Invalid IPv4 address: '") +
                                   string(data)+"'");
         } else
         {
@@ -211,51 +231,49 @@ InetAddr::InetAddr(const InetAddr &o)
 }
 
 InetAddr::InetAddr(const string &s)
-    throw(FWException, FWNotSupportedException)
 {
     address_family = AF_INET;
-    init_from_string(s.c_str());
+    init_from_string(s.c_str(),true);
 }
 
 InetAddr::InetAddr(int af, const string &s)
-    throw(FWException, FWNotSupportedException)
 {
     address_family = af;
     init_from_string(s.c_str());
 }
 
-InetAddr::InetAddr(const char *data) throw(FWException)
+InetAddr::InetAddr(const char *data)
 {
     address_family = AF_INET;
-    init_from_string(data);
+    init_from_string(data,true);
 }
 
-InetAddr::InetAddr(int af, const char *data) throw(FWException)
+InetAddr::InetAddr(int af, const char *data) 
 {
     address_family = af;
     init_from_string(data);
 }
 
-InetAddr::InetAddr(const struct in_addr *na) throw(FWException)
+InetAddr::InetAddr(const struct in_addr *na)
 {
     address_family = AF_INET;
     ipv4.s_addr = na->s_addr;
 }
 
-InetAddr::InetAddr(const struct in6_addr *na) throw(FWException)
+InetAddr::InetAddr(const struct in6_addr *na)
 {
     address_family = AF_INET6;
     _copy_in6_addr(&ipv6, na);
 }
 
 // Set netmask to 'n' bits
-InetAddr::InetAddr(int n)  throw(FWException)
+InetAddr::InetAddr(int n)
 {
     address_family = AF_INET;
     init_from_int(n);
 }
 
-InetAddr::InetAddr(int af, int n)  throw(FWException)
+InetAddr::InetAddr(int af, int n)
 {
     address_family = af;
     init_from_int(n);

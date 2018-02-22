@@ -153,7 +153,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         bool debug=options->getBool("debug");
         QString shell_dbg = (debug)?"set -x":"" ;
 
-        std::auto_ptr<OSConfigurator_linux24> oscnf;
+        std::unique_ptr<OSConfigurator_linux24> oscnf;
 
         string platform_family = Resources::platform_res[platform]->
             getResourceStr("/FWBuilderResources/Target/family");
@@ -182,7 +182,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             // in states ESTABLISHED,RELATED
             fw->getOptionsObject()->setBool("accept_established", false);
 
-            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+            oscnf = std::unique_ptr<OSConfigurator_linux24>(
                 new OSConfigurator_ipcop(objdb , fw, false));
         }
 
@@ -192,11 +192,11 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             os_family == "dd-wrt-nvram" ||
             os_family == "dd-wrt-jffs" ||
             os_family == "sveasoft")
-            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+            oscnf = std::unique_ptr<OSConfigurator_linux24>(
                 new OSConfigurator_linux24(objdb , fw, false));
 
         if (os_family == "secuwall")
-            oscnf = std::auto_ptr<OSConfigurator_linux24>(
+            oscnf = std::unique_ptr<OSConfigurator_linux24>(
                 new OSConfigurator_secuwall(objdb , fw, false));
 
         if (oscnf.get()==NULL)
@@ -416,7 +416,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                 generated_script += "\n\n";
         }
 
-        std::auto_ptr<RoutingCompiler_ipt> routing_compiler(
+        std::unique_ptr<RoutingCompiler_ipt> routing_compiler(
             new RoutingCompiler_ipt(objdb, fw, false, oscnf.get()));
 
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
@@ -689,7 +689,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         // the name of the option is historical (including the typo)
         if (fw->getOptionsObject()->getBool("add_mgmt_ssh_rule_when_stoped"))
         {
-            std::auto_ptr<PolicyCompiler_ipt> policy_compiler =
+            std::unique_ptr<PolicyCompiler_ipt> policy_compiler =
                 createPolicyCompiler(fw, false, NULL,  NULL);
             PolicyCompiler_ipt::PrintRule* print_rule =
                 policy_compiler->createPrintRuleProcessor();

@@ -140,14 +140,14 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
 /*
  * Process firewall options, build OS network configuration script
  */
-        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        std::unique_ptr<OSConfigurator_bsd> oscnf;
         string host_os = fw->getStr("host_OS");
         string family = Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
         if ( host_os == "macosx")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_macosx(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_macosx(objdb , fw, false));
 
         if ( host_os == "freebsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
         if (oscnf.get()==NULL)
         {
@@ -228,7 +228,7 @@ QString CompilerDriver_ipfw::run(const std::string &cluster_id,
 
             if (policy_count)
             {
-                std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, ipv6_policy));
+                std::unique_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, ipv6_policy));
                 if (inTestMode()) prep->setTestMode();
                 if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();

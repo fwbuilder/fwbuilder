@@ -170,7 +170,7 @@ bool TimeoutCounter::isExpired() const
     return time(&tres) > finish ;
 }
 
-void TimeoutCounter::check() const throw(FWException) 
+void TimeoutCounter::check() const 
 {
     if(isExpired())
     {
@@ -179,7 +179,7 @@ void TimeoutCounter::check() const throw(FWException)
     }
 }
 
-ssize_t TimeoutCounter::read(int fd, void *buf, size_t n) const throw(FWException)
+ssize_t TimeoutCounter::read(int fd, void *buf, size_t n) const
 {
     struct pollfd ufds[1];
 
