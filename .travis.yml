@@ -11,6 +11,7 @@ addons:
     - libxslt1-dev
     - qt5-default
     - libsnmp-dev
+    - zlib1g-dev
 
 env:
   global:
