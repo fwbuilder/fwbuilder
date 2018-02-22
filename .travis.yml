@@ -12,6 +12,7 @@ addons:
     - qt5-default
     - libsnmp-dev
     - zlib1g-dev
+    - zlib1g
 
 env:
   global:
