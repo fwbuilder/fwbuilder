@@ -24,7 +24,9 @@ matrix:
   include:
     - os: linux
       compiler: clang
-      env: QMAKESPEC=linux-clang
+      env: 
+        - QMAKESPEC=linux-clang
+        - CXXFLAGS="-std=gnu++14 $CXXFLAGS"
     - os: linux
       compiler: gcc
     - os: osx
