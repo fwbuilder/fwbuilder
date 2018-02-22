@@ -55,6 +55,7 @@ namespace libfwbuilder
 
     // forward declarations for specialized create() methods
     class AddressRange;
+    class AddressRangeIPv6;
     class AddressTable;
     class AttachedNetworks;
     class Cluster;
@@ -124,6 +125,7 @@ namespace libfwbuilder
 
     
     DECLARE_CREATE_OBJ_METHOD(AddressRange);
+    DECLARE_CREATE_OBJ_METHOD(AddressRangeIPv6);
     DECLARE_CREATE_OBJ_METHOD(AddressTable);
     DECLARE_CREATE_OBJ_METHOD(AttachedNetworks);
     DECLARE_CREATE_OBJ_METHOD(Cluster);
@@ -500,6 +502,7 @@ public:
          */
 
     DECLARE_CREATE_OBJ_CLASS_METHOD(AddressRange);
+    DECLARE_CREATE_OBJ_CLASS_METHOD(AddressRangeIPv6);
     DECLARE_CREATE_OBJ_CLASS_METHOD(AddressTable);
     DECLARE_CREATE_OBJ_CLASS_METHOD(AttachedNetworks);
     DECLARE_CREATE_OBJ_CLASS_METHOD(Cluster);

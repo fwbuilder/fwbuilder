@@ -14,6 +14,7 @@ SOURCES  = 	InetAddr.cpp \
 			IPRoute.cpp \
 			Address.cpp \
 			AddressRange.cpp \
+			AddressRangeIPv6.cpp \
 			BackgroundOp.cpp \
 			Constants.cpp \
 			CustomService.cpp \
@@ -80,7 +81,7 @@ SOURCES  = 	InetAddr.cpp \
 			ObjectMirror.cpp \
 			inet_net_ntop.c \
 			inet_net_pton.c \
-			uint128.cpp
+			uint128.cpp 
 
 HEADERS  = 	inet_net.h \
 			uint128.h \
@@ -91,6 +92,7 @@ HEADERS  = 	inet_net.h \
 			IPRoute.h \
 			Address.h \
 			AddressRange.h \
+			AddressRangeIPv6.h \
 			BackgroundOp.h \
 			Constants.h \
 			CustomService.h \
@@ -155,7 +157,7 @@ HEADERS  = 	inet_net.h \
             TagService.h \
 			ObjectMatcher.h \
 			ObjectMirror.h \
-			XMLTools.h
+			XMLTools.h 
 
 TARGET    = fwbuilder
 
