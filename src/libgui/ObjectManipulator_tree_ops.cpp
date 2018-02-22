@@ -774,10 +774,14 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
                                   const list<FWObject *> &items)
 {
     string folder;
-    if (dest->getUserFolderParent() != 0) {
-        folder = dest->getUserFolderName().toUtf8().constData();
-    } else {
-        folder = dest->getFWObject()->getStr("folder");
+
+    if(dest != NULL)
+    {
+        if (dest->getUserFolderParent() != 0) {
+            folder = dest->getUserFolderName().toUtf8().constData();
+        } else {
+            folder = dest->getFWObject()->getStr("folder");
+        }
     }
 
     FWCmdMacro *macro = new FWCmdMacro(tr("Move objects"));
