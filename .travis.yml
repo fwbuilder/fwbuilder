@@ -14,7 +14,6 @@ addons:
     - zlib1g-dev
     - zlib1g
     - libxslt1-dev
-    - libxslt1
 
 env:
   global:
