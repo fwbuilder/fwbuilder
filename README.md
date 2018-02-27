@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/fwbuilder/fwbuilder.svg?branch=master)](https://travis-ci.org/fwbuilder/fwbuilder)
 
+**Note**: This is the 5.3 branch of Firewall Builder. This branch will keep C++98 compatibility, while the master branch will require newer C++ standards. All development is done on the master branch, and deprecated language and library features are removed to clean up code. Fixes and new features may be backported to this branch when possible. Testing, however, will mainly be done on the master branch.
+
 fwbuilder
 =========
 
