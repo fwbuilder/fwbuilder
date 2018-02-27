@@ -18,6 +18,7 @@ CPPUNIT_LIBS = @CPPUNIT_LIBS@
 # CONFIG -= nostrip
 # CONFIG += release
 CONFIG += debug
+CONFIG += c++14
 
 unix {
     PREFIX = @PREFIX@
@@ -34,11 +35,6 @@ unix {
     UI_DIR = .ui
     MOC_DIR = .moc
     OBJECTS_DIR = .obj
-
-    QMAKE_CFLAGS_DEBUG += -Wno-unused-parameter
-    QMAKE_CFLAGS_RELEASE += -Wno-unused-parameter
-    QMAKE_CXXFLAGS_DEBUG += -Wno-unused-parameter
-    QMAKE_CXXFLAGS_RELEASE += -Wno-unused-parameter
 
     !macx {
 
@@ -201,8 +197,8 @@ FWB_SIG = $$(FWB_SIG)
 if (isEmpty(FWB_SIG)) { FWB_SIG=26932 }
 DEFINES += FWB_SIG=$$FWB_SIG
 
-QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS
-QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror
 
 exists(qmake2.inc) {
   include(qmake2.inc)
