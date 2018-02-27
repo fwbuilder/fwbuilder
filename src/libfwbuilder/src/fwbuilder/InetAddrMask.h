@@ -65,6 +65,9 @@ namespace libfwbuilder
                                     const InetAddr &end,
                                     std::vector<InetAddrMask> &res);
 
+    bool operator==(const InetAddrMask &a, const InetAddrMask &b);
+    bool operator<(const InetAddrMask &a, const InetAddrMask &b);
+
 class InetAddrMask
 {
     
