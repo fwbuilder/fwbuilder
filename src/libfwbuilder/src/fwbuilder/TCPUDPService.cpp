@@ -51,7 +51,7 @@ TCPUDPService::~TCPUDPService() {}
 string TCPUDPService::getProtocolName() const   {    return ""; }
 int    TCPUDPService::getProtocolNumber() const {    return -1;    }
 
-void TCPUDPService::fromXML(xmlNodePtr root) throw(FWException)
+void TCPUDPService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -87,7 +87,7 @@ void TCPUDPService::fromXML(xmlNodePtr root) throw(FWException)
 
 }
 
-xmlNodePtr TCPUDPService::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr TCPUDPService::toXML(xmlNodePtr xml_parent_node)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
@@ -111,7 +111,6 @@ xmlNodePtr TCPUDPService::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 
 FWObject& TCPUDPService::shallowDuplicate(const FWObject *obj,
                                           bool preserve_id)
-    throw(FWException)
 {
     const TCPUDPService *other = TCPUDPService::constcast(obj);
     src_range_start = other->src_range_start;
@@ -121,7 +120,7 @@ FWObject& TCPUDPService::shallowDuplicate(const FWObject *obj,
     return FWObject::shallowDuplicate(obj, preserve_id);
 }
 
-bool TCPUDPService::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool TCPUDPService::cmp(const FWObject *obj, bool recursive)
 {
     const TCPUDPService *other = TCPUDPService::constcast(obj);
     if (other == NULL) return false;

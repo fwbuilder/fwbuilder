@@ -47,7 +47,6 @@ const char *NXOSObjectGroup::TYPENAME={"NXOSObjectGroup"};
 
 QString NXOSObjectGroup::groupMemberToString(FWObject *obj,
                                            NamedObjectsManager*)
-    throw(libfwbuilder::FWException)
 {
     ostringstream ostr;
 

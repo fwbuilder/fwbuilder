@@ -48,8 +48,8 @@ public:
 
         DECLARE_DISPATCH_METHODS(ClusterGroup);
 
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
 
         /*
          * verify whether given object type is approppriate as a child
@@ -63,7 +63,7 @@ public:
          * child objects and the options object to reproduce accurate
          * state of this.
          */
-        virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+        virtual FWObject& duplicateForUndo(const FWObject *obj);
 
         /**
          * If @this is cluster interface and it is correctly

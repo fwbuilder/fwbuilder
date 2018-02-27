@@ -70,7 +70,7 @@ bool ObjectGroup::validateChild(FWObject *o)
             RuleSet::cast(o)==NULL);
 }
 
-xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));

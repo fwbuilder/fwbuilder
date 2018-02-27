@@ -53,12 +53,12 @@ AttachedNetworks::AttachedNetworks() : MultiAddress()
 {
 }
 
-void AttachedNetworks::fromXML(xmlNodePtr root) throw(FWException)
+void AttachedNetworks::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 }
 
-xmlNodePtr AttachedNetworks::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr AttachedNetworks::toXML(xmlNodePtr parent)
 {
     remStr("run_time");
 
@@ -113,7 +113,6 @@ void AttachedNetworks::addNetworkObject(const InetAddrMask &addr_mask)
  * corresponding networks.
  */
 void AttachedNetworks::loadFromSource(bool ipv6, FWOptions*, bool)
-    throw(FWException)
 {
     Interface *parent_intf = Interface::cast(getParent());
     assert(parent_intf);

@@ -47,16 +47,15 @@ public:
 
     bool isValidRoutingNet() const;
 
-    virtual void       fromXML (xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void       fromXML (xmlNodePtr parent);
+    virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node);
     
     DECLARE_FWOBJECT_SUBTYPE(NetworkIPv6);
 
     DECLARE_DISPATCH_METHODS(NetworkIPv6);
     
     virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                       bool preserve_id = true)
-        throw(FWException);
+                                       bool preserve_id = true);
 
     virtual bool hasInetAddress() const { return true; }
 

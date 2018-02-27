@@ -36,7 +36,7 @@ class AddressTable : public MultiAddress
 {
     private:
 
-    std::string getFilename(FWOptions *options) throw(FWException);
+    std::string getFilename(FWOptions *options);
         
     public:
 
@@ -46,13 +46,13 @@ class AddressTable : public MultiAddress
     
     AddressTable();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
     
     virtual std::string getSourceName();
     virtual void setSourceName(const std::string& source_name);
     virtual void loadFromSource(bool ipv6, FWOptions *options,
-                                bool test_mode=false) throw(FWException);
+                                bool test_mode=false);
 };
 
 }

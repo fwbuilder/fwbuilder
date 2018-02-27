@@ -48,7 +48,7 @@ bool  Library::validateChild(FWObject*)
     return true;   // anything goes
 }
 
-void Library::fromXML(xmlNodePtr root) throw(FWException)
+void Library::fromXML(xmlNodePtr root)
 {
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("color")));
     if(n!=NULL)  // color is not a mandatory attribute
@@ -59,7 +59,7 @@ void Library::fromXML(xmlNodePtr root) throw(FWException)
     FWObject::fromXML(root);
 }
 
-xmlNodePtr Library::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Library::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
     xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));

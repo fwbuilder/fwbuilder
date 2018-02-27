@@ -56,7 +56,7 @@ FWReference::FWReference()
 FWReference::~FWReference()  {}
 
 
-void FWReference::fromXML(xmlNodePtr root)  throw(FWException)
+void FWReference::fromXML(xmlNodePtr root)
 {
     assert(root!=NULL);
     FWObject::fromXML(root);
@@ -73,7 +73,7 @@ void FWReference::fromXML(xmlNodePtr root)  throw(FWException)
 
 // Note that XML elements represented by FWReference have only one
 // attribute "ref" and no value
-xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr FWReference::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = xmlNewChild(
         parent,
@@ -93,7 +93,7 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
 }
 
 FWObject& FWReference::shallowDuplicate(const FWObject *_other,
-                                        bool) throw(FWException)
+                                        bool)
 {
     const FWReference *other = FWReference::constcast(_other);
     int_ref = other->int_ref;
@@ -101,7 +101,7 @@ FWObject& FWReference::shallowDuplicate(const FWObject *_other,
     return *this;
 }
 
-bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */) throw(FWException)
+bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */)
 {
     const FWReference *rx = FWReference::constcast(obj);
     if (rx == NULL) return false;

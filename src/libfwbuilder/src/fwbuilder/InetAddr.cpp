@@ -211,51 +211,49 @@ InetAddr::InetAddr(const InetAddr &o)
 }
 
 InetAddr::InetAddr(const string &s)
-    throw(FWException, FWNotSupportedException)
 {
     address_family = AF_INET;
     init_from_string(s.c_str());
 }
 
 InetAddr::InetAddr(int af, const string &s)
-    throw(FWException, FWNotSupportedException)
 {
     address_family = af;
     init_from_string(s.c_str());
 }
 
-InetAddr::InetAddr(const char *data) throw(FWException)
+InetAddr::InetAddr(const char *data)
 {
     address_family = AF_INET;
     init_from_string(data);
 }
 
-InetAddr::InetAddr(int af, const char *data) throw(FWException)
+InetAddr::InetAddr(int af, const char *data)
 {
     address_family = af;
     init_from_string(data);
 }
 
-InetAddr::InetAddr(const struct in_addr *na) throw(FWException)
+InetAddr::InetAddr(const struct in_addr *na)
 {
     address_family = AF_INET;
     ipv4.s_addr = na->s_addr;
 }
 
-InetAddr::InetAddr(const struct in6_addr *na) throw(FWException)
+InetAddr::InetAddr(const struct in6_addr *na)
 {
     address_family = AF_INET6;
     _copy_in6_addr(&ipv6, na);
 }
 
 // Set netmask to 'n' bits
-InetAddr::InetAddr(int n)  throw(FWException)
+InetAddr::InetAddr(int n)
 {
     address_family = AF_INET;
     init_from_int(n);
 }
 
-InetAddr::InetAddr(int af, int n)  throw(FWException)
+InetAddr::InetAddr(int af, int n)
 {
     address_family = af;
     init_from_int(n);

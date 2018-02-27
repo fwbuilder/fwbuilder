@@ -107,7 +107,7 @@ InetAddrMask::InetAddrMask(const InetAddrMask& other)
     setNetworkAndBroadcastAddress();
 }
 
-InetAddrMask::InetAddrMask(const string &s) throw(FWException)
+InetAddrMask::InetAddrMask(const string &s)
 {
     address = new InetAddr();
     netmask = new InetAddr();

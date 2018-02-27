@@ -63,7 +63,7 @@ IPv4::~IPv4()
 {
 }
 
-void IPv4::fromXML(xmlNodePtr root) throw(FWException)
+void IPv4::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -103,7 +103,7 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node)
 {
     if (getName().empty()) setName(getTypeName());
 

@@ -71,12 +71,12 @@ void Cluster::init(FWObjectDatabase *root)
     }
 }
 
-void Cluster::fromXML(xmlNodePtr root) throw(FWException)
+void Cluster::fromXML(xmlNodePtr root)
 {
     Firewall::fromXML(root);
 }
 
-xmlNodePtr Cluster::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Cluster::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = Firewall::toXML(parent);
     FWObject *o;
@@ -142,7 +142,7 @@ bool Cluster::validateChild(FWObject *o)
 }
 
 FWObject& Cluster::duplicate(const FWObject *obj,
-                             bool preserve_id) throw(FWException)
+                             bool preserve_id)
 {
     Firewall::duplicate(obj, preserve_id);
 

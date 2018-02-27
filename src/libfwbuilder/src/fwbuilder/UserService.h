@@ -48,11 +48,11 @@ class UserService : public Service
     UserService();
     virtual ~UserService();
     
-    virtual void       fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual void       fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr parent);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
     
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true);
     
     DECLARE_FWOBJECT_SUBTYPE(UserService);
 

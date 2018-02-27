@@ -170,7 +170,7 @@ void BaseCompiler::printError(const string &errstr)
  * the process but just returns. In embedded mode it always throws
  * exception to stop compiling
  */
-void BaseCompiler::abort(const string &errstr) throw(FWException)
+void BaseCompiler::abort(const string &errstr)
 {
     printError(errstr);
     if (inEmbeddedMode())
@@ -183,7 +183,7 @@ void BaseCompiler::abort(const string &errstr) throw(FWException)
 void BaseCompiler::abort(FWObject *fw,
                          FWObject *ruleset,
                          FWObject *rule,
-                         const string &errstr) throw(FWException)
+                         const string &errstr)
 {
     message("error", fw, ruleset, rule, errstr);
     if (inEmbeddedMode())

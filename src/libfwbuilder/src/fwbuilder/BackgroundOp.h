@@ -85,7 +85,7 @@ class BackgroundOp
      * or methods, we create this flag as a dynamic variable and pass
      * pointer to run_impl, which should destroy it when it finishes.
      */
-    virtual void  run_impl(Logger *,SyncFlag *) throw(FWException) = 0;
+    virtual void  run_impl(Logger *,SyncFlag *) = 0;
 
     /**
      * sets flag "running"
@@ -128,7 +128,7 @@ class BackgroundOp
     /**
      * Initiates background operation
      */
-    virtual Logger* start_operation()  throw(FWException);
+    virtual Logger* start_operation();
 
     /**
      * Stops background operation

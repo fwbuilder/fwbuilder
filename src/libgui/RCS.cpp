@@ -567,7 +567,7 @@ void RCS::abandon()
 /**
  *  initial RCS checkin
  */
-void RCS::add() throw(libfwbuilder::FWException)
+void RCS::add()
 {
     int i = filename.lastIndexOf("/");
     QString rcspath = filename.left(i);
@@ -669,7 +669,7 @@ bool RCS::isInRCS()
     return true;
 }
 
-bool RCS::co(bool force) throw(libfwbuilder::FWException)
+bool RCS::co(bool force)
 {
     return co(selectedRev,force);
 }
@@ -702,7 +702,7 @@ bool RCS::co(bool force) throw(libfwbuilder::FWException)
  * lock
  *
  */
-bool RCS::co(const QString &rev,bool force) throw(libfwbuilder::FWException)
+bool RCS::co(const QString &rev,bool force)
 {
 /* first check if filename is already in RCS */
 
@@ -909,7 +909,7 @@ after the program crashed.").arg(locked_rev),
 
 
 bool RCS::ci( const QString &_lm,
-              bool unlock) throw(libfwbuilder::FWException)
+              bool unlock)
 {
 /* first check if filename is already in RCS */
     if (!rcs_available || !isInRCS()) return false;
@@ -1026,7 +1026,7 @@ bool RCS::ci( const QString &_lm,
  * "-z+09:00" works properly
  *
  */
-QString RCS::rlog() throw(libfwbuilder::FWException)
+QString RCS::rlog()
 {
     if (!rcs_available)
         throw(FWException(QObject::tr("RCS tools are unavailable").toStdString()));
@@ -1074,14 +1074,14 @@ QString RCS::rlog() throw(libfwbuilder::FWException)
     throw( FWException( msg.toLatin1().constData() ) );
 }
 
-QStringList RCS::rcsdiff(const QString&) throw(libfwbuilder::FWException)
+QStringList RCS::rcsdiff(const QString&)
 {
     isDiff();
     QString temp = stdoutBuffer;
     return temp.split("\n");
 }
 
-bool RCS::isDiff(const QString &rev) throw(libfwbuilder::FWException)
+bool RCS::isDiff(const QString &rev)
 {
     if (!rcs_available)
         throw(FWException(QObject::tr("RCS tools are unavailable").toStdString()));

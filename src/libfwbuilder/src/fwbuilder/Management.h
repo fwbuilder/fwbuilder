@@ -44,11 +44,11 @@ namespace libfwbuilder
 
         DECLARE_DISPATCH_METHODS(PolicyInstallScript);
         
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
         virtual FWObject& shallowDuplicate(
-            const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+            const FWObject *obj, bool preserve_id = true);
+        virtual bool cmp(const FWObject *obj, bool recursive=false);
 
         const std::string& getCommand () const;
         void          setCommand (const std::string& );
@@ -78,11 +78,11 @@ namespace libfwbuilder
 
         DECLARE_DISPATCH_METHODS(SNMPManagement);
         
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
         virtual FWObject& shallowDuplicate(
-            const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+            const FWObject *obj, bool preserve_id = true);
+        virtual bool cmp(const FWObject *obj, bool recursive=false);
 
         const std::string& getReadCommunity () const;
         void          setReadCommunity (const std::string& );
@@ -114,11 +114,11 @@ namespace libfwbuilder
         DECLARE_DISPATCH_METHODS(FWBDManagement);
         
         virtual FWObject& shallowDuplicate(
-            const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+            const FWObject *obj, bool preserve_id = true);
+        virtual bool cmp(const FWObject *obj, bool recursive=false);
 
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
 
         int           getPort()       const;
         void          setPort(int);
@@ -148,11 +148,11 @@ namespace libfwbuilder
 
         DECLARE_DISPATCH_METHODS(Management);
         
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
         virtual FWObject& shallowDuplicate(
-            const FWObject *obj, bool preserve_id = true) throw(FWException);
-        virtual bool  cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+            const FWObject *obj, bool preserve_id = true);
+        virtual bool  cmp(const FWObject *obj, bool recursive=false);
 	virtual bool  validateChild(FWObject *o);
 
         const InetAddr& getAddress() const { return addr; }

@@ -24,7 +24,7 @@ public:
 	NoViableAltForCharException(int c, const ANTLR_USE_NAMESPACE(std)string& fileName_,
 										 int line_, int column_);
 
-	virtual ~NoViableAltForCharException() throw()
+	virtual ~NoViableAltForCharException()
 	{
 	}
 

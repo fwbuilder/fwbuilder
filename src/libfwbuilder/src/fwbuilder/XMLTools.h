@@ -79,7 +79,7 @@ class XMLTools
         }
     };
 
-    static std::string readFile(const std::string &file_name) throw(FWException);
+    static std::string readFile(const std::string &file_name);
     
     /**
      * Loads given file, performing version conversion
@@ -91,11 +91,11 @@ class XMLTools
                               const UpgradePredicate *upgrade,
                               const std::string &template_dir,
                               const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
-    ) throw(FWException);
+    );
 
     static void setDTD(xmlDocPtr doc, 
                        const std::string &type_name, 
-                       const std::string &dtd_file) throw(FWException);
+                       const std::string &dtd_file);
     
     /**
      * Saves to file with setting DTD.
@@ -103,7 +103,7 @@ class XMLTools
     static void saveFile(xmlDocPtr doc, 
                          const std::string &file_name, 
                          const std::string &type_name,
-                         const std::string &dtd_file) throw(FWException);
+                         const std::string &dtd_file);
 
     /**
      * Saves XML document to the memory buffer
@@ -112,7 +112,7 @@ class XMLTools
                              xmlChar **buffer,
                              int      *size,
                              const std::string &type_name,
-                             const std::string &dtd_file) throw(FWException);
+                             const std::string &dtd_file);
         
     static xmlExternalEntityLoader defaultLoader;
 
@@ -126,7 +126,7 @@ class XMLTools
     static xmlDocPtr parseFile(const std::string &file_name,
                                const std::string &buffer, 
                                bool use_dtd, const std::string &template_dir
-    ) throw(FWException);
+    );
     
     /**
      * Performs XSLT transformation of the document in memory
@@ -135,7 +135,7 @@ class XMLTools
     static xmlDocPtr transformDocument(xmlDocPtr doc, 
                                        const std::string &stylesheet_file,
                                        const char **params
-    ) throw(FWException);
+    );
 
     /**
      * Performs XSLT transformation of the document. Results are
@@ -145,7 +145,7 @@ class XMLTools
                                         const std::string &stylesheet_file,
                                         const char **params,
                                         const std::string &dst_file
-    ) throw(FWException);
+    );
 
     /**
      * Performs XSLT transformation of the src file. Results are
@@ -155,7 +155,7 @@ class XMLTools
 				    const std::string &stylesheet_file,
 				    const char **params,
 				    const std::string &dst_file
-    ) throw(FWException);
+    );
 
 
     static std::string quote_linefeeds  (const std::string &s);
@@ -194,7 +194,7 @@ class XMLTools
                              const std::string &type_name,
                              const std::string &template_dir,
                              const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
-    ) throw(FWException);
+    );
 
     /**
      * returns first component of dotted notation.
