@@ -227,7 +227,10 @@ inet_cidr_ntop_ipv6(const u_char *src, int bits, char *dst, size_t size)
         b = bits % 8;
         if (b != 0)
         {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wshift-negative-value"
             m = ~0 << (8 - b);
+#pragma GCC diagnostic pop
             inbuf[p - 1] &= m;
         }
 
