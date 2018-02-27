@@ -661,7 +661,7 @@ void FWWindow::fileNew()
         activeProject()->fileNew();
     } else
     {
-        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+        std::unique_ptr<ProjectPanel> proj(newProjectPanel());
         if (proj->fileNew())
         {
             showSub(proj.get());

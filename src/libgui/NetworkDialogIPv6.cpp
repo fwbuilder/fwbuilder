@@ -158,7 +158,7 @@ void NetworkDialogIPv6::validate(bool *res)
 
 void NetworkDialogIPv6::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(new_state);

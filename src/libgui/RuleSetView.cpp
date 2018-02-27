@@ -1903,7 +1903,7 @@ void RuleSetView::changeAction(int act)
 
     if (node->type != RuleNode::Rule) return;
 
-    std::auto_ptr<FWCmdRuleChange> cmd(
+    std::unique_ptr<FWCmdRuleChange> cmd(
         new FWCmdRuleChange(project,
                             md->getRuleSet(), node->rule, tr("Change action")));
     

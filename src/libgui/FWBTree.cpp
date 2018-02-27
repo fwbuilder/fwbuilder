@@ -449,7 +449,7 @@ bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj, QString &err
 
     if (parent_fw && Interface::isA(obj))
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent_fw));
 
         return int_prop->validateInterface(ta, obj, false, err);

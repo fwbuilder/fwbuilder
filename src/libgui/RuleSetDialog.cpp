@@ -213,7 +213,7 @@ void RuleSetDialog::validate(bool *res)
 
 void RuleSetDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     RuleSet *s = dynamic_cast<RuleSet*>(new_state);

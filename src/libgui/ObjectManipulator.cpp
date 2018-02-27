@@ -285,7 +285,7 @@ void ObjectManipulator::makeNameUnique(FWObject *target, FWObject *obj)
         FWObject *fw = target;
         while (fw && !Firewall::cast(fw)) fw = fw->getParent();
 
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(fw));
 
         if (int_prop->looksLikeVlanInterface(obj_name)) return;
@@ -974,7 +974,7 @@ void ObjectManipulator::addSubinterfaceSubmenu(
         QString itf_name = QString::fromUtf8(intf->getName().c_str());
         FWObject *parent_fw = Host::getParentHost(intf);
 
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                 parent_fw));
         if (int_prop->looksLikeVlanInterface(itf_name)) continue;

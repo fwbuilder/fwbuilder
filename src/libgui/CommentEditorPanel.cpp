@@ -76,7 +76,7 @@ void CommentEditorPanel::changed()
 
 void CommentEditorPanel::applyChanges()
 {
-    std::auto_ptr<FWCmdRuleChange> cmd(
+    std::unique_ptr<FWCmdRuleChange> cmd(
         new FWCmdRuleChangeComment(m_project, rule));
 
     // new_state  is a copy of the rule object

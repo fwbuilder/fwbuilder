@@ -975,7 +975,7 @@ FWObject* Importer::commitObject(FWObject *obj)
  */
 void Importer::rearrangeVlanInterfaces()
 {
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             getFirewallObject()));
 

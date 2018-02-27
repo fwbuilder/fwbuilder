@@ -243,7 +243,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 /*
  * Process firewall options, build OS network configuration script
  */
-        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        std::unique_ptr<OSConfigurator_bsd> oscnf;
         string platform = fw->getStr("platform");
         string fw_version = fw->getStr("version");
         string host_os = fw->getStr("host_OS");
@@ -251,15 +251,15 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             Resources::getResourceStr("/FWBuilderResources/Target/family");
 
         if (host_os == "solaris")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(
                                                           objdb , fw, false));
 
         if (host_os == "openbsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(
                                                           objdb , fw, false));
     
         if (host_os == "freebsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(
                                                           objdb , fw, false));
 
         if (oscnf.get()==NULL)
@@ -610,14 +610,14 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         }
 
-        std::auto_ptr<RoutingCompiler> routing_compiler;
+        std::unique_ptr<RoutingCompiler> routing_compiler;
 
         if (host_os == "openbsd")
-            routing_compiler = std::auto_ptr<RoutingCompiler>(
+            routing_compiler = std::unique_ptr<RoutingCompiler>(
                 new RoutingCompiler_openbsd(objdb, fw, false, oscnf.get()));
 
         if (host_os == "freebsd")
-            routing_compiler = std::auto_ptr<RoutingCompiler>(
+            routing_compiler = std::unique_ptr<RoutingCompiler>(
                 new RoutingCompiler_freebsd(objdb, fw, false, oscnf.get()));
 
         if (routing_compiler.get() == NULL)

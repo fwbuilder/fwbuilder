@@ -123,7 +123,7 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 {
     FWOptions* options = fw->getOptionsObject();
 
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 
@@ -185,7 +185,7 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 string OSConfigurator_linux24::printVirtualAddressesForNatCommands()
 {
     QStringList gencmd;
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 

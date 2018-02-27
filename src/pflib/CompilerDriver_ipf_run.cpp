@@ -186,23 +186,23 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         bool debug = options->getBool("debug");
         string ipf_dbg = (debug)?"-v":"";
 
-        std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
+        std::unique_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
         prep->compile();
 
 /*
  * Process firewall options, build OS network configuration script
  */
-        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        std::unique_ptr<OSConfigurator_bsd> oscnf;
         string host_os = fw->getStr("host_OS");
         string family=Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
         if ( host_os == "solaris" )
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(objdb , fw, false));
 
         if ( host_os == "openbsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(objdb , fw, false));
 
         if ( host_os == "freebsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
         if (oscnf.get()==NULL)
         {

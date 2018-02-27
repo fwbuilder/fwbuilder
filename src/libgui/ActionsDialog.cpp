@@ -129,7 +129,7 @@ void ActionsDialog::validate(bool *res)
 
 void ActionsDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeAction(m_project, obj));
+    std::unique_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeAction(m_project, obj));
 
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
