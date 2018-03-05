@@ -100,6 +100,8 @@ void NATRuleOptionsDialog::loadFWObject(FWObject *o)
     {
         data.registerOption(m_dialog->ipt_use_snat_instead_of_masq, ropt,
                             "ipt_use_snat_instead_of_masq");
+        data.registerOption(m_dialog->ipt_use_masq, ropt,
+                            "ipt_use_masq");
         data.registerOption(m_dialog->ipt_nat_random, ropt,
                             "ipt_nat_random");
         data.registerOption(m_dialog->ipt_nat_persistent, ropt,

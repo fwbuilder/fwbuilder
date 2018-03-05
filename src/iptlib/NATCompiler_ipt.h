@@ -285,6 +285,11 @@ namespace fwcompiler
         DECLARE_NAT_RULE_PROCESSOR(dynamicInterfaceInTSrc);
 
 	/**
+         *  forces use of masquerading instead of SNAT in all cases.
+         */
+        DECLARE_NAT_RULE_PROCESSOR(alwaysUseMasquerading);
+
+	/**
 	 *  takes care of dynamic interfaces in ODst  (if ODst contains
 	 *  interface and its address is dynamic, replace it with any)
 	 */

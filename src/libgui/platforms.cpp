@@ -365,6 +365,7 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
 	if (platform=="iptables")
         {
             res = !opt->getBool("ipt_use_snat_instead_of_masq") &&
+                !opt->getBool("ipt_use_masq") &&
                 !opt->getBool("ipt_nat_random") &&
                 !opt->getBool("ipt_nat_persistent");
         }
