@@ -98,7 +98,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="ipt_use_masq">
+         <property name="text">
+          <string>Always use MASQUERADE target instead of SNAT</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -114,21 +121,21 @@
          </property>
         </spacer>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <widget class="QCheckBox" name="ipt_nat_random">
          <property name="text">
           <string>Randomize port mapping (translates to --random)</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="5" column="0" colspan="2">
         <widget class="QCheckBox" name="ipt_nat_persistent">
          <property name="text">
           <string>Give a client the same source-/destination-address for each connection (translates to --persistent, requires iptables 1.4.3 or later).</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -564,6 +571,22 @@
     <hint type="sourcelabel">
      <x>470</x>
      <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ipt_use_masq</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>NATRuleOptionsDialog_q</receiver>
+   <slot>changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>58</x>
+     <y>23</y>
     </hint>
     <hint type="destinationlabel">
      <x>470</x>
