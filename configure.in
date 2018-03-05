@@ -68,9 +68,12 @@ if test -n "$with_qmake"; then
 else
     AC_PATH_PROG(QMAKE,  qmake,      ,[$EXTENDED_PATH])
     if test -z "$QMAKE"; then
-        AC_PATH_PROG(QMAKE,  qmake-qt4,      ,[$EXTENDED_PATH])
+        AC_PATH_PROG(QMAKE,  qmake-qt5,      ,[$EXTENDED_PATH])
         if test -z "$QMAKE"; then
-            AC_MSG_ERROR("Could not find qmake")
+            AC_PATH_PROG(QMAKE,  qmake-qt4,      ,[$EXTENDED_PATH])
+            if test -z "$QMAKE"; then
+                AC_MSG_ERROR("Could not find qmake")
+            fi
         fi
     fi
 fi
