@@ -782,7 +782,7 @@ string PolicyCompiler_pix::printPreambleCommands()
 
         try
         {
-            InetAddr(addr);
+            (void) InetAddr(addr);
         } catch(FWException &ex)
         {
             abort("Invalid address for management subnet: '"+addr+"'");

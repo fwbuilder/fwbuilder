@@ -179,7 +179,7 @@ int main(int argc, char **argv)
     {
         cerr << s << endl;
         return 1;
-    } catch (std::exception ex)
+    } catch (std::exception &ex)
     {
         cerr << "exception: " << ex.what() << endl;
         return 1;
