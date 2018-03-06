@@ -957,13 +957,13 @@ static bool filterMatchesIpAddress(const QStringList &args,
             InetAddr ipv4addr(rx.cap(1).toStdString());
             InetAddr ipv4mask(netmask);
             searchAddrAndMask = InetAddrMask(ipv4addr, ipv4mask);
-        } catch (const FWException) { // Could not create IPv4 object. Trying IPv6.
+        } catch (const FWException &) { // Could not create IPv4 object. Trying IPv6.
             try {
                 int netmask = rx.cap(2).isEmpty() ? 128 : rx.cap(2).toInt();
                 InetAddr ipv6addr(AF_INET6, rx.cap(1).toStdString());
                 InetAddr ipv6mask(AF_INET6, netmask);
                 searchAddrAndMask = InetAddrMask(ipv6addr, ipv6mask);
-            } catch (const FWException) { // Could not create IPv6 object.
+            } catch (const FWException &) { // Could not create IPv6 object.
                 // User did not submit a valid IP address
                 return false;
             }

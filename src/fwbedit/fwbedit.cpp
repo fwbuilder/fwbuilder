@@ -888,7 +888,7 @@ int main(int argc, char * const *argv)
     } catch (std::string s) {
         cerr << s;
         exit(1);
-    } catch (std::exception ex) {
+    } catch (std::exception &ex) {
         cerr << ex.what();
         exit(1);
     } catch (...) {

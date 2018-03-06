@@ -567,7 +567,7 @@ PolicyCompiler::find_more_specific_rule(
 		    return j;
 		}
 
-	    } catch (FWException ex) {
+	    } catch (FWException &ex) {
 		cerr << " *** Exception: " << ex.toString() << endl;
 	    }  
 	}

@@ -104,7 +104,7 @@ void AutomaticRules_ipt::addConntrackRule()
 
     try
     {
-        InetAddr(addr);
+        (void) InetAddr(addr);
     } catch (FWException &ex)
     {
         try
