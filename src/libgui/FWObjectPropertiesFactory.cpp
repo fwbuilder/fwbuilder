@@ -1335,6 +1335,8 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
         {
             if (ropt->getBool("ipt_use_snat_instead_of_masq"))
                 res += QObject::tr("use SNAT instead of MASQ<br>");
+            if (ropt->getBool("ipt_use_masq"))
+                res += QObject::tr("always use MASQUERADE<br>");
             if (ropt->getBool("ipt_nat_random"))      res += QObject::tr("random<br>");
             if (ropt->getBool("ipt_nat_persistent"))  res += QObject::tr("persistent<br>");
         }

@@ -1324,6 +1324,23 @@ bool NATCompiler_ipt::dynamicInterfaceInTSrc::processNext()
     return true;
 }
 
+bool NATCompiler_ipt::alwaysUseMasquerading::processNext()
+{
+    NATRule *rule=getNext(); if (rule==NULL) return false;
+    FWOptions  *ruleopt =rule->getOptionsObject();
+    bool use_masq = ruleopt->getBool("ipt_use_masq");
+
+    tmp_queue.push_back(rule);
+
+    if (use_masq && rule->getRuleType()==NATRule::SNAT)
+    {
+        rule->setRuleType(NATRule::Masq);
+        if (rule->getStr("ipt_target")=="" || rule->getStr("ipt_target")=="SNAT")
+            rule->setStr("ipt_target", "MASQUERADE");
+    }
+    return true;
+}
+
 /**
  * unlike standard inspector addressRanges in the base class NATCompiler,
  * this one does not expand address ranges in TSrc and TDst because
@@ -2590,6 +2607,8 @@ void NATCompiler_ipt::compile()
     add( new dynamicInterfaceInODst("split if dynamic interface in ODst") );
     add( new dynamicInterfaceInTSrc(
              "set target if dynamic interface in TSrc" ) );
+    add( new alwaysUseMasquerading(
+             "always use masquerading target instead of SNAT" ) );
 
     add( new ConvertToAtomicForItfInb("convert to atomic for inbound interface") );
     add( new ConvertToAtomicForItfOutb("convert to atomic for outbound interface"));
