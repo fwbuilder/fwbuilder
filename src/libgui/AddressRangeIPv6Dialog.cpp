@@ -136,8 +136,8 @@ void AddressRangeIPv6Dialog::applyChanges()
 
     try
     {
-        InetAddr addr_start(m_dialog->rangeStart->text().toStdString());
-        InetAddr addr_end(m_dialog->rangeEnd->text().toStdString());
+        InetAddr addr_start(AF_INET6,m_dialog->rangeStart->text().toStdString());
+        InetAddr addr_end(AF_INET6,m_dialog->rangeEnd->text().toStdString());
         if (addr_end < addr_start)
         {
             addr_end = addr_start;
