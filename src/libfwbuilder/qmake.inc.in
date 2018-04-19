@@ -16,8 +16,8 @@ CPPUNIT_LIBS = @CPPUNIT_LIBS@
 CONFIG -= qt
 CONFIG += c++14
 
-QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror
-QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror $$(CXXFLAGS)
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror $$(CXXFLAGS)
 
 
 unix {
@@ -96,7 +96,7 @@ macx {
 # dependency libraries. Building on 10.6 with deployment target 10.5
 # should solve the problem
     QMAKE_MACOSX_DEPLOYMENT_TARGET = $$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
-    QMAKE_CXXFLAGS += -mmacosx-version-min=$$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+    QMAKE_CXXFLAGS += -mmacosx-version-min=$$(QMAKE_MACOSX_DEPLOYMENT_TARGET) $$(CXXFLAGS)
     QMAKE_MAC_SDK = $$(QMAKE_MAC_SDK)
 
     QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
