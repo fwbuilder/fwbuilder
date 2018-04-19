@@ -1,6 +1,6 @@
 include(../tests_common.pri)
 
-QT += testlib network gui
+QT += testlib network gui widgets printsupport
 TARGET = instDialogObjectListTest
 SOURCES += main_instDialogObjectListTest.cpp \
     instDialogObjectListTest.cpp

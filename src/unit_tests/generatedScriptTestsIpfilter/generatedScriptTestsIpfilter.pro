@@ -1,5 +1,5 @@
 include(../tests_common.pri)
-QT += gui network
+QT += gui widgets printsupport network
 
 HEADERS = generatedScriptTestsIpfilter.h
 

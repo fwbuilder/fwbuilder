@@ -25,12 +25,12 @@
 
 #include "ICMP6ServiceDialogTest.h"
 
-#include "../../../../config.h"
+#include "../../../config.h"
 //#include "../../global.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTest>
 #include <iostream>
 
