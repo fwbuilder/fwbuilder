@@ -26,7 +26,7 @@ DEPENDPATH += ../../.. \
 	../../compiler_lib \
 	../../common
 
-QT += testlib network gui
+QT += testlib network gui widgets printsupport
 
 TEMPLATE = lib
 

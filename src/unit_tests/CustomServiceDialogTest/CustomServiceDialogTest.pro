@@ -1,6 +1,6 @@
 include(../tests_common.pri)
 
-QT += testlib network gui
+QT += testlib network gui widgets printsupport
 TARGET = CustomServiceDialogTest
 CONFIG += console
 CONFIG -= app_bundle
