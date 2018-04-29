@@ -186,6 +186,7 @@ macx {
 
 	INCLUDEPATH += $(INSTALL_ROOT)/$$PREFIX/include/
 	INCLUDEPATH += /usr/include/libxml2 /usr/include
+	INCLUDEPATH += /usr/local/opt/openssl/include
 
 	QMAKE_LIBS_QT =
 	QMAKE_LIBS_QT_THREAD =
@@ -193,6 +194,7 @@ macx {
     # LIBS += $$LIBS_FWBUILDER
     LIBS += -lxml2 -lz
     LIBS += -lpthread
+    LIBS += -L/usr/local/opt/openssl/lib
 
 }
 
