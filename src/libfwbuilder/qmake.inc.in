@@ -69,6 +69,7 @@ win32 {
     CONFIG += staticlib
 
     DEFINES += LIBXML_STATIC LIBXSLT_STATIC 
+    DEFINES += WIN32_LEAN_AND_MEAN
     INCLUDEPATH += $$(TOOLCHAIN_PREFIX)/include $$(TOOLCHAIN_PREFIX)/include/libxml2 $$(TOOLCHAIN_PREFIX)/include/net-snmp /include
     LIBS += -L$$(TOOLCHAIN_PREFIX)/lib -L$$(TOOLCHAIN_PREFIX)/bin
 #    LIBS += ws2_32.lib pthreadVC.lib 

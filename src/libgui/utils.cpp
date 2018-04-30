@@ -546,7 +546,7 @@ QString _parseTokens(QStringList &args, const QChar closing_quote='\0')
     QString a = _getNextToken(args);
     if (args.size() == 0) return a;
 
-    if (closing_quote != '\0' && a.endsWith(closing_quote))
+    if (closing_quote != QChar('\0') && a.endsWith(closing_quote))
         return a;
 
     if (a.startsWith("\"") || a.startsWith("'"))
