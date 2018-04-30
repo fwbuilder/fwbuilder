@@ -290,6 +290,8 @@ int main( int argc, char *argv[] )
 
     // We need to call FWWindow::~FWWindow() to remove temporary directory
     delete mw;
+
+    return 0;
 }
 
 

@@ -463,6 +463,8 @@ void ssh_wrapper( int argc, char *argv[] )
 
 void ssh_wrapper( int argc, char *argv[] )
 {
+	(void) argc;
+	(void) argv;
 }
 
 #endif

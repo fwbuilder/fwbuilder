@@ -23,10 +23,6 @@
 
 #ifdef _WIN32
 #  include <winsock2.h>
-// missing errno definitions:
-#define EMSGSIZE     40 /* Message too long */
-#define EAFNOSUPPORT 47 /* Address family not supported by protocol family */
-
 #else
 
 #  include <sys/types.h>
