@@ -1,9 +1,0 @@
-version: '2'
-services:
-    mxe-w32:
-        build: docker/.
-        command: ./build_mxe-w32.sh
-        volumes:
-            - .:/fwbuilder
-        working_dir: /fwbuilder
-
