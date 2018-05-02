@@ -80,6 +80,7 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/NetworkIPv6.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/Management.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/TagService.h"

@@ -44,6 +44,7 @@
 #include "ProjectPanel.h"
 
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Cluster.h"

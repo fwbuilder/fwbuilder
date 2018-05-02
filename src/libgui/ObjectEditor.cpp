@@ -71,6 +71,7 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
+#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/Policy.h"
@@ -135,6 +136,7 @@ ObjectEditor::ObjectEditor( QWidget *parent):
     registerObjectDialog(editorStack, IPv6::TYPENAME, "w_IPv6Dialog");
     registerObjectDialog(editorStack, physAddress::TYPENAME, "w_PhysicalAddressDialog");
     registerObjectDialog(editorStack, AddressRange::TYPENAME, "w_AddressRangeDialog");
+    registerObjectDialog(editorStack, AddressRangeIPv6::TYPENAME, "w_AddressRangeIPv6Dialog");
     registerObjectDialog(editorStack, Cluster::TYPENAME, "w_ClusterDialog");
     registerObjectDialog(editorStack, FailoverClusterGroup::TYPENAME,
                          "w_FailoverClusterGroupDialog");
