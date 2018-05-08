@@ -87,7 +87,7 @@
 >
 
 <!ELEMENT Library
-((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|DynamicGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|AttachedNetworks|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|AddressRangeIPv6|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService|DummyNetwork|DummyIPService|DummyInterface)*)>
+((AnyNetwork|AnyIPService|AnyInterval|ObjectGroup|DynamicGroup|StateSyncClusterGroup|FailoverClusterGroup|Host|Firewall|Cluster|Network|NetworkIPv6|AttachedNetworks|IPv4|IPv6|DNSName|AddressTable|physAddress|AddressRange|ObjectRef|ServiceGroup|IPService|ICMPService|ICMP6Service|TCPService|UDPService|CustomService|ServiceRef|IntervalGroup|Interval|IntervalRef|Interface|Policy|NAT|PolicyRule|NATRule|Library|TagService|UserService|DummyNetwork|DummyIPService|DummyInterface)*)>
 <!ATTLIST Library
  %STD_ATTRIBUTES;
  color   %STRING;  #IMPLIED
@@ -134,7 +134,7 @@
        ref IDREF #REQUIRED
 >
 
-<!ELEMENT ObjectGroup ((ObjectGroup|DynamicGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|AddressRange|AddressRangeIPv6|ObjectRef)*)>
+<!ELEMENT ObjectGroup ((ObjectGroup|DynamicGroup|Host|Firewall|Cluster|Network|NetworkIPv6|IPv4|IPv6|DNSName|AddressTable|AddressRange|ObjectRef)*)>
 <!ATTLIST ObjectGroup
         %STD_ATTRIBUTES;
         subfolders %STRING; #IMPLIED
@@ -486,15 +486,6 @@ Interface can have the following attributes:
  start_address %IPADDRESS; #REQUIRED
  end_address   %IPADDRESS; #REQUIRED
 >
-
-<!ELEMENT AddressRangeIPv6 EMPTY>
-<!ATTLIST AddressRangeIPv6
- %STD_ATTRIBUTES;
- start_address %IPADDRESS; #REQUIRED
- end_address   %IPADDRESS; #REQUIRED
->
-
-
 
 <!ELEMENT ICMPService EMPTY>
 <!ATTLIST ICMPService

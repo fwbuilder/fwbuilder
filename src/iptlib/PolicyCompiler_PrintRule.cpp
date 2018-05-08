@@ -38,7 +38,6 @@
 #include "fwbuilder/Network.h"
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AttachedNetworks.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -1229,23 +1228,6 @@ string PolicyCompiler_ipt::PrintRule::_printSrcAddr(RuleElement *rel, Address  *
     if (AddressRange::cast(o)!=NULL)
     {
         AddressRange *ar = AddressRange::cast(o);
-        const InetAddr &range_start = ar->getRangeStart();
-        const InetAddr &range_end = ar->getRangeEnd();
-
-        if (range_start != range_end)
-        {
-            if (!have_m_iprange) { res = "-m iprange "; have_m_iprange = true; }
-            res += _printSingleObjectNegation(rel) + "--src-range ";
-            res += range_start.toString() + "-" + range_end.toString() + " ";
-        } else
-            res += "-s " + range_start.toString() + " ";
-
-        return res;
-    }
-
-    if (AddressRangeIPv6::cast(o)!=NULL)
-    {
-        AddressRangeIPv6 *ar = AddressRangeIPv6::cast(o);
         const InetAddr &range_start = ar->getRangeStart();
         const InetAddr &range_end = ar->getRangeEnd();
 

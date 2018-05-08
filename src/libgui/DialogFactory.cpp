@@ -35,7 +35,6 @@
 #include "LibraryDialog.h"
 #include "RuleSetDialog.h"
 #include "AddressRangeDialog.h"
-#include "AddressRangeIPv6Dialog.h"
 #include "IPv4Dialog.h"
 #include "IPv6Dialog.h"
 #include "PhysicalAddressDialog.h"
@@ -119,7 +118,6 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/Interface.h"
@@ -169,8 +167,6 @@ BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &ob
     if (objType==AddressTable::TYPENAME)  return new AddressTableDialog(parent);
 
     if (objType==AddressRange::TYPENAME)  return new AddressRangeDialog(parent);
-
-    if (objType==AddressRangeIPv6::TYPENAME)  return new AddressRangeIPv6Dialog(parent);
 
     if (objType==Firewall::TYPENAME)      return new FirewallDialog(parent);
 

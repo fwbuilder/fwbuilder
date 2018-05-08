@@ -32,7 +32,6 @@
 #include "fwcompiler/OSConfigurator.h"
 
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
@@ -286,7 +285,6 @@ bool NATCompiler_ipt::ConvertLoadBalancingRules::processNext()
 /* I use temporary AddressRange object here because it takes care of
  * big endian/little endian conversion for me 
  */
-            //FIXME: May require AddressRangeIPv6 as well
             AddressRange tar;
             tar.setRangeStart( *a1 );
             tar.setRangeEnd( *(*j) );
@@ -902,14 +900,6 @@ bool NATCompiler_ipt::addVirtualAddress::processNext()
                         string("Adding of virtual address for address range "
                                "is not implemented (object ") +
                         a->getName() + ")" );
-            } else if (AddressRangeIPv6::cast(a) != NULL)
-            {
-                compiler->warning(
-                        rule,
-                        string("Adding of virtual address for ipv6 address range "
-                               "is not implemented (object ") +
-                        a->getName() + ")" );
-
             } else
                 compiler->osconfigurator->addVirtualAddressForNAT( a );
         }

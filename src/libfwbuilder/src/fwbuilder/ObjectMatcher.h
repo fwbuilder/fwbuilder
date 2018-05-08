@@ -110,7 +110,6 @@ public:
         virtual void* dispatch(Firewall*, void*);
         virtual void* dispatch(Cluster*, void*);
         virtual void* dispatch(AddressRange*, void*);
-        virtual void* dispatch(AddressRangeIPv6*, void*);
         virtual void* dispatch(physAddress*, void*);
         virtual void* dispatch(MultiAddressRunTime*, void*);
 

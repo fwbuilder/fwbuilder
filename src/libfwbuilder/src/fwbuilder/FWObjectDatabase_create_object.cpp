@@ -47,7 +47,6 @@
 #include "fwbuilder/FWObjectDatabase.h"
 
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/CustomService.h"
 #include "fwbuilder/DNSName.h"
@@ -134,8 +133,7 @@ void FWObjectDatabase::init_create_methods_table()
     {
         registerObjectType("AddressRange",
                            &create_AddressRange);
-        registerObjectType("AddressRangeIPv6",
-                           &create_AddressRangeIPv6);
+
         registerObjectType("AddressTable",
                            &create_AddressTable);
         registerObjectType("AttachedNetworks",
@@ -374,7 +372,6 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
 }
 
 CREATE_OBJ_METHOD(AddressRange);
-CREATE_OBJ_METHOD(AddressRangeIPv6);
 CREATE_OBJ_METHOD(AddressTable);
 CREATE_OBJ_METHOD(AttachedNetworks);
 CREATE_OBJ_METHOD(Cluster);

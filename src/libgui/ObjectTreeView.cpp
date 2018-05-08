@@ -51,7 +51,6 @@
 #include "fwbuilder/ServiceGroup.h"
 #include "fwbuilder/FWServiceReference.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/Network.h"
 
 #include <QAbstractItemView>
@@ -974,18 +973,6 @@ static bool filterMatchesIpAddress(const QStringList &args,
 
         if (addr->getTypeName() == AddressRange::TYPENAME) {
             AddressRange *addrRange = dynamic_cast<AddressRange*>(obj);
-            if (addrRange
-                && (searchAddr->addressFamily() == addrRange->getRangeStart().addressFamily()) ) {
-
-                if ( !(searchAddr->opLT(addrRange->getRangeStart()))
-                     && !(searchAddr->opGT(addrRange->getRangeEnd())) )
-                    return true;
-            }
-            continue; // Next argument
-        }
-
-        if (addr->getTypeName() == AddressRangeIPv6::TYPENAME) {
-            AddressRangeIPv6 *addrRange = dynamic_cast<AddressRangeIPv6*>(obj);
             if (addrRange
                 && (searchAddr->addressFamily() == addrRange->getRangeStart().addressFamily()) ) {
 
