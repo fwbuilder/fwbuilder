@@ -96,11 +96,29 @@ void InetAddr::init_from_string(const char* data)
             if (inet_net_pton(AF_INET, data, &ipv4, sizeof(ipv4)) < 0)
                 throw FWException(string("Invalid IP address: '") +
                                   string(data)+"'");
-        } else
+        } else if (address_family == AF_INET6)
         {
             if (inet_net_pton(AF_INET6, data, &ipv6, sizeof(ipv6)) < 0)
                 throw FWException(string("Invalid IPv6 address: '") +
                                   string(data)+"'");
+        } else if (address_family == AF_UNSPEC)
+        {
+            if (inet_net_pton(AF_INET, data, &ipv4, sizeof(ipv4)) >= 0) {
+                address_family = AF_INET;
+                return;
+            }
+
+            if (inet_net_pton(AF_INET6, data, &ipv6, sizeof(ipv6)) >= 0) {
+                address_family = AF_INET6;
+                return;
+            }
+
+            throw FWException(string("Invalid IP address: '") + string(data)+"'");
+        } else
+        {
+            std::ostringstream s;
+            s << "Invalid IP address family: '" << addressFamily() << "'";
+            throw FWException(s.str());
         }
     }
 }
@@ -123,7 +141,7 @@ void InetAddr::init_from_int(unsigned int len)
            i--;
        }
        ipv4.s_addr = htonl(nm_bits);
-   } else
+   } else if (address_family == AF_INET6)
    {
        if (len > addressLengthBits())
        {
@@ -154,6 +172,11 @@ void InetAddr::init_from_int(unsigned int len)
            ((uint32_t*)(&ipv6))[i] = htonl(t);
            break;
        }
+   } else
+   {
+       std::ostringstream s;
+       s << "Invalid IP address family: '" << addressFamily() << "'";
+       throw FWException(s.str());
    }
 }
 
@@ -264,9 +287,14 @@ InetAddr& InetAddr::operator=(const InetAddr &addr)
     if ((address_family = addr.address_family)==AF_INET)
     {
         ipv4.s_addr = addr.ipv4.s_addr;
-    } else
+    } else if ((address_family = addr.address_family)==AF_INET6)
     {
         InetAddr::_copy_in6_addr(&ipv6, &(addr.ipv6) );
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
     return *this;
 }
@@ -288,7 +316,7 @@ int InetAddr::getLength() const
         }
 
         return i;
-    } else
+    } else if (address_family==AF_INET6)
     {
         int bits = 0;
         for (int i=3; i>=0; --i)
@@ -308,6 +336,11 @@ int InetAddr::getLength() const
             break;
         }
         return bits;
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -316,7 +349,7 @@ string InetAddr::toString() const
     if (address_family==AF_INET)
     {
         return std::string(inet_ntoa(ipv4));
-    } else
+    } else if (address_family==AF_INET6)
     {
         char ntop_buf[sizeof
                       "ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255/128"];
@@ -358,6 +391,11 @@ string InetAddr::toString() const
         char *slash_p = strchr(ntop_buf, '/');
         if (slash_p!=NULL) *slash_p = '\0';
         return std::string(ntop_buf);
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -371,13 +409,18 @@ InetAddr InetAddr::opAnd(const InetAddr &mask) const
         struct in_addr res;
         res.s_addr = htonl(ntohl(ipv4.s_addr) & ntohl(mask.ipv4.s_addr));
         return InetAddr(&res);
-    } else {
+    } else if (address_family==AF_INET6) {
         struct in6_addr res;
         for (int i=0; i<4; ++i)
             ((uint32_t*)(&res))[i] = 
                 htonl(ntohl(((uint32_t*)(&(ipv6)))[i]) &
                       ntohl(((uint32_t*)(&(mask.ipv6)))[i]));
         return InetAddr(&res);
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -389,7 +432,7 @@ InetAddr InetAddr::opOr(const InetAddr &mask) const
         struct in_addr res;
         res.s_addr = htonl(ntohl(ipv4.s_addr) | ntohl(mask.ipv4.s_addr));
         return InetAddr(&res);
-    } else
+    } else if (address_family==AF_INET6)
     {
         struct in6_addr res;
         for (int i=0; i<4; ++i)
@@ -397,6 +440,11 @@ InetAddr InetAddr::opOr(const InetAddr &mask) const
                 htonl(ntohl(((uint32_t*)(&(ipv6)))[i]) |
                       ntohl(((uint32_t*)(&(mask.ipv6)))[i]));
         return InetAddr(&res);
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -407,7 +455,7 @@ InetAddr InetAddr::opPlus(int increment) const
         struct in_addr res;
         res.s_addr = htonl(ntohl(ipv4.s_addr) + increment);
         return InetAddr(&res);
-    } else
+    } else if (address_family==AF_INET6)
     {
         uint128 x = to_uint128();
         x += increment;
@@ -420,6 +468,11 @@ InetAddr InetAddr::opPlus(int increment) const
 //         ((uint32_t*)(&res))[3] =
 //             htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) + increment);
 //         return InetAddr(&res);
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -430,7 +483,7 @@ InetAddr InetAddr::opMinus(int decrement) const
         struct in_addr res;
         res.s_addr = htonl(ntohl(ipv4.s_addr) - decrement);
         return InetAddr(&res);
-    } else
+    } else if (address_family==AF_INET6)
     {
         uint128 x = to_uint128();
         x -= decrement;
@@ -443,6 +496,11 @@ InetAddr InetAddr::opMinus(int decrement) const
 //         ((uint32_t*)(&res))[3] =
 //             htonl(ntohl( ((uint32_t*)(&(ipv6)))[3]) - decrement);
 //         return InetAddr(&res);
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -452,7 +510,7 @@ bool InetAddr::opLT(const InetAddr &other) const
     if (address_family==AF_INET)
     {
         return (ntohl( ipv4.s_addr ) < ntohl( other.ipv4.s_addr ));
-    } else
+    } else if (address_family==AF_INET6)
     {
         uint128 a = to_uint128();
         uint128 b = other.to_uint128();
@@ -460,6 +518,11 @@ bool InetAddr::opLT(const InetAddr &other) const
 
 //         return (ntohl(((uint32_t*)(&(ipv6)))[3]) <
 //                 ntohl(((uint32_t*)(&(other.ipv6)))[3]));
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -469,7 +532,7 @@ bool InetAddr::opGT(const InetAddr &other) const
     if (address_family==AF_INET)
     {
         return (ntohl( ipv4.s_addr ) > ntohl( other.ipv4.s_addr ));
-    } else
+    } else if (address_family==AF_INET6)
     {
         uint128 a = to_uint128();
         uint128 b = other.to_uint128();
@@ -477,6 +540,11 @@ bool InetAddr::opGT(const InetAddr &other) const
 
 //         return (ntohl(((uint32_t*)(&(ipv6)))[3]) >
 //                 ntohl(((uint32_t*)(&(other.ipv6)))[3]));
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -486,9 +554,14 @@ bool InetAddr::opEQ(const InetAddr &other) const
     if (address_family==AF_INET)
     {
         return ipv4.s_addr == other.ipv4.s_addr;
-    } else
+    } else if (address_family==AF_INET6)
     {
         return (IN6_ARE_ADDR_EQUAL(&(ipv6), &(other.ipv6)));
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 
@@ -498,9 +571,14 @@ bool InetAddr::opNEQ(const InetAddr &other) const
     if (address_family==AF_INET)
     {
         return ipv4.s_addr != other.ipv4.s_addr;
-    } else
+    } else if (address_family==AF_INET6)
     {
         return (!(IN6_ARE_ADDR_EQUAL(&(ipv6), &(other.ipv6))));
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
     
@@ -511,7 +589,7 @@ InetAddr InetAddr::opCompl() const
         struct in_addr res;
         res.s_addr = htonl(~(ntohl(ipv4.s_addr)));
         return InetAddr(&res);
-    } else
+    } else if (address_family==AF_INET6)
     {
         struct in6_addr res;
         ((uint32_t *) (&res))[0] = htonl(~(ntohl(((uint32_t *) (&ipv6))[0])));
@@ -519,6 +597,11 @@ InetAddr InetAddr::opCompl() const
         ((uint32_t *) (&res))[2] = htonl(~(ntohl(((uint32_t *) (&ipv6))[2])));
         ((uint32_t *) (&res))[3] = htonl(~(ntohl(((uint32_t *) (&ipv6))[3])));
         return InetAddr(&res);
+    } else
+    {
+        std::ostringstream s;
+        s << "Invalid IP address family: '" << addressFamily() << "'";
+        throw FWException(s.str());
     }
 }
 

@@ -116,13 +116,23 @@ void AddressRange::fromXML(xmlNodePtr root)
     
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("start_address")));
     assert(n!=NULL);
-    start_address = InetAddr(n);
+    start_address = InetAddr(AF_UNSPEC, n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("end_address")));
     assert(n!=NULL);
-    end_address = InetAddr(n);
+    end_address = InetAddr(AF_UNSPEC, n);
     FREEXMLBUFF(n);
+
+    if (start_address.addressFamily() != end_address.addressFamily()) {
+
+        std::ostringstream s;
+        s << "AddressRange start and end address must be of same IP address family: ";
+        s << "start_address: " << start_address.toString() << ", ";
+        s << "end_address: " << end_address.toString();
+
+        throw(FWException(s.str()));
+    }
 }
 
 xmlNodePtr AddressRange::toXML(xmlNodePtr xml_parent_node)

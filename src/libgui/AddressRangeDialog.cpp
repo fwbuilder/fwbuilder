@@ -47,6 +47,7 @@
 #include <QUndoStack>
 
 #include <memory>
+#include <sstream>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -102,8 +103,18 @@ void AddressRangeDialog::validate(bool *res)
     assert(s!=NULL);
     try
     {
-        InetAddr(m_dialog->rangeStart->text().toLatin1().constData());
-        InetAddr(m_dialog->rangeEnd->text().toLatin1().constData());
+        InetAddr range_start(AF_UNSPEC, m_dialog->rangeStart->text().toLatin1().constData());
+        InetAddr range_end(AF_UNSPEC, m_dialog->rangeEnd->text().toLatin1().constData());
+
+        if (range_start.addressFamily() != range_end.addressFamily()) {
+
+            std::ostringstream s;
+            s << "AddressRange start and end address must be of same IP address family: ";
+            s << "start_address: " << m_dialog->rangeStart->text().toStdString() << ", ";
+            s << "end_address: " << m_dialog->rangeEnd->text().toStdString();
+
+            throw(FWException(s.str()));
+        }
     } catch (FWException &ex)
     {
         *res = false;
@@ -136,8 +147,8 @@ void AddressRangeDialog::applyChanges()
 
     try
     {
-        InetAddr addr_start(m_dialog->rangeStart->text().toStdString());
-        InetAddr addr_end(m_dialog->rangeEnd->text().toStdString());
+        InetAddr addr_start(AF_UNSPEC, m_dialog->rangeStart->text().toStdString());
+        InetAddr addr_end(AF_UNSPEC, m_dialog->rangeEnd->text().toStdString());
         if (addr_end < addr_start)
         {
             addr_end = addr_start;
