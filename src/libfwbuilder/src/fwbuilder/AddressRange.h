@@ -52,6 +52,16 @@ class AddressRange : public Address
     void setRangeStart(const InetAddr &o) { start_address = o; }
     void setRangeEnd(const InetAddr &o)   { end_address = o;   }
 
+    bool isV4() const {
+        return start_address.addressFamily() == AF_INET
+                && end_address.addressFamily() == AF_INET;
+    }
+
+    bool isV6() const {
+        return start_address.addressFamily() == AF_INET6
+                && end_address.addressFamily() == AF_INET6;
+    }
+
     /**
      * virtual methods inherited from Address
      */
