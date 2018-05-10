@@ -46,7 +46,6 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/FWObjectReference.h"
 #include "fwbuilder/RuleSet.h"
 
@@ -97,7 +96,6 @@ void ObjectGroup::getAllowedTypesOfChildren(std::list<std::string> &types_list)
     types_list.push_back(DNSName::TYPENAME);
     types_list.push_back(AddressTable::TYPENAME);
     types_list.push_back(AddressRange::TYPENAME);
-    types_list.push_back(AddressRangeIPv6::TYPENAME);
     types_list.push_back(FWObjectReference::TYPENAME);
 }
 

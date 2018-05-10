@@ -76,7 +76,6 @@ HEADERS += ../../config.h \
     ClusterGroupDialog.h \
     InterfaceDialog.h \
     AddressRangeDialog.h \
-    AddressRangeIPv6Dialog.h \
     AddressTableDialog.h \
     IPv4Dialog.h \
     IPv6Dialog.h \
@@ -235,7 +234,7 @@ HEADERS += ../../config.h \
 	RuleSetDiffDelegate.h \
     	RuleSetDiffModel.h \
     	BackgroundCompileInfoWidget.h \
-    	temporarydir.h 
+    	temporarydir.h
 
 
 SOURCES += ProjectPanel.cpp \
@@ -300,12 +299,11 @@ SOURCES += ProjectPanel.cpp \
     ClusterGroupDialog.cpp \
     InterfaceDialog.cpp \
     AddressRangeDialog.cpp \
-    AddressRangeIPv6Dialog.cpp \
     AddressTableDialog.cpp \
     IPv4Dialog.cpp \
     IPv6Dialog.cpp \
     PhysicalAddressDialog.cpp \
-AttachedNetworksDialog.cpp \
+	AttachedNetworksDialog.cpp \
     NetworkDialog.cpp \
     NetworkDialogIPv6.cpp \
     UserDialog.cpp \
@@ -464,7 +462,7 @@ AttachedNetworksDialog.cpp \
     	RuleSetDiffDelegate.cpp \
     	RuleSetDiffModel.cpp \
     	BackgroundCompileInfoWidget.cpp \
-    	temporarydir.cpp  
+    	temporarydir.cpp
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \
@@ -479,7 +477,6 @@ FORMS = FWBMainWindow_q.ui \
     ipv6dialog_q.ui \
     rulesetdialog_q.ui \
     addressrangedialog_q.ui \
-    addressrangeipv6dialog_q.ui \
     addresstabledialog_q.ui \
 	attachednetworksdialog_q.ui \
     networkdialog_q.ui \
@@ -602,7 +599,7 @@ FORMS = FWBMainWindow_q.ui \
 	importFirewallConfigurationWizard/ic_platformwarningpage_q.ui \
 	importFirewallConfigurationWizard/ic_progresspage_q.ui \
 	importFirewallConfigurationWizard/ic_networkzonespage_q.ui \
-    rulesetdiffdialog_q.ui 
+    rulesetdiffdialog_q.ui
 
 
 # fwtransfer stuff.

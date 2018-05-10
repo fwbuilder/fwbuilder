@@ -33,10 +33,6 @@
       <description>Address Range</description>
     </AddressRange>
 
-    <AddressRangeIPv6>
-      <description>Address Range IPv6</description>
-    </AddressRangeIPv6>
-
     <Firewall>
       <description>Firewall</description>
     </Firewall>

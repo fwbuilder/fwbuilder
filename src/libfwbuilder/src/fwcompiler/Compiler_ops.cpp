@@ -33,7 +33,6 @@
 #include "fwbuilder/Host.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
 #include "fwbuilder/TCPUDPService.h"
@@ -279,12 +278,8 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
     {
         o1b = &(AddressRange::constcast(&o1)->getRangeStart());  
         o1e = &(AddressRange::constcast(&o1)->getRangeEnd());
-    } else{
-        if(AddressRangeIPv6::isA(&o1))
-        {
-            o1b = &(AddressRangeIPv6::constcast(&o1)->getRangeStart());
-            o1e = &(AddressRangeIPv6::constcast(&o1)->getRangeEnd());
-        } else if (Network::isA(&o1))
+    } else
+        if (Network::isA(&o1))
         {
             o1b = o1.getAddressPtr();
             o1e = o1.getBroadcastAddressPtr();
@@ -292,19 +287,14 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
         {
             o1b = o1.getAddressPtr();
             o1e = o1.getAddressPtr();
-        }}
-
+        }
 
     if (AddressRange::isA(&o2))
     {
         o2b = &(AddressRange::constcast(&o2)->getRangeStart());  
         o2e = &(AddressRange::constcast(&o2)->getRangeEnd());
-    } else {
-        if(AddressRangeIPv6::isA(&o2))
-        {
-            o2b = &(AddressRangeIPv6::constcast(&o2)->getRangeStart());
-            o2e = &(AddressRangeIPv6::constcast(&o2)->getRangeEnd());
-        } else if (Network::isA(&o2))
+    } else
+        if (Network::isA(&o2))
         {
             o2b = o2.getAddressPtr();
             o2e = o2.getBroadcastAddressPtr();
@@ -313,7 +303,6 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
             o2b = o2.getAddressPtr();
             o2e = o2.getAddressPtr();
         }
-    }
 
     if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) return false;
     return ((*o1b) == (*o2b) && (*o1e) == (*o2e));
@@ -527,10 +516,7 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
         o1e = &(AddressRange::constcast(&o1)->getRangeEnd());
     } else
     {
-        if(AddressRangeIPv6::isA(&o1)){
-            o1b = &(AddressRangeIPv6::constcast(&o1)->getRangeStart());
-            o1e = &(AddressRangeIPv6::constcast(&o1)->getRangeEnd());
-        } else if (Network::isA(&o1))
+        if (Network::isA(&o1))
         {
             o1b = static_cast<const Network*>(&o1)->getFirstHostPtr();
             o1e = static_cast<const Network*>(&o1)->getLastHostPtr();
@@ -547,10 +533,6 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
         o2e = &(AddressRange::constcast(&o2)->getRangeEnd());
     } else
     {
-        if(AddressRangeIPv6::isA(&o1)){
-            o2b = &(AddressRangeIPv6::constcast(&o2)->getRangeStart());
-            o2e = &(AddressRangeIPv6::constcast(&o2)->getRangeEnd());
-        } else
         if (Network::isA(&o2))
         {
             o2b = static_cast<const Network*>(&o2)->getFirstHostPtr();

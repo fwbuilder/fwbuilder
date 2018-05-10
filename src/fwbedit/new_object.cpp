@@ -82,7 +82,6 @@
 #include "fwbuilder/DNSName.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/ServiceGroup.h"
@@ -118,7 +117,6 @@ void initConstants()
     systemGroupPaths[DNSName::TYPENAME] = "Objects/DNS Names";
     systemGroupPaths[AddressTable::TYPENAME] = "Objects/Address Tables";
     systemGroupPaths[AddressRange::TYPENAME] = "Objects/Address Ranges";
-    systemGroupPaths[AddressRangeIPv6::TYPENAME] = "Objects/Address Ranges";
     systemGroupPaths[ObjectGroup::TYPENAME] = "Objects/Groups";
     systemGroupPaths[Host::TYPENAME] = "Objects/Hosts";
     systemGroupPaths[Network::TYPENAME] = "Objects/Networks";
@@ -397,24 +395,6 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
         AddressRange *o=AddressRange::cast(nobj);
         o->setRangeStart(InetAddr(addr1));
         o->setRangeEnd(InetAddr(addr2));
-    }
-    else if (objtype==AddressRangeIPv6::TYPENAME)
-    {
-        try
-        {
-            addr1 = getNextOpt(ops); invalidIPv6(addr1);
-            addr2 = getNextOpt(ops); invalidIPv6(addr2);
-        } catch (OperandsError &e)
-        {
-            notEnoughAttributesError();
-        }
-
-        cout   << "Range start: " << addr1 << endl
-               << "Range end: " << addr2 << endl;
-
-        AddressRangeIPv6 *o=AddressRangeIPv6::cast(nobj);
-        o->setRangeStart(InetAddr(AF_INET6,addr1));
-        o->setRangeEnd(InetAddr(AF_INET6,addr2));
     }
     else if (objtype==ObjectGroup::TYPENAME)
     {

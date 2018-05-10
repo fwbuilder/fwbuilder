@@ -34,7 +34,6 @@
 
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/Network.h"
 #include "fwbuilder/IPService.h"

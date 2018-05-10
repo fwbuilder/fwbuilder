@@ -27,7 +27,6 @@
 #include "OSConfigurator_linux24.h"
 
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/RuleElement.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/ICMPService.h"
@@ -569,10 +568,6 @@ string NATCompiler_ipt::PrintRule::_printAddr(Address  *o,
 	InetAddr a1 = AddressRange::cast(o)->getRangeStart();
 	InetAddr a2 = AddressRange::cast(o)->getRangeEnd();
 	ostr << a1.toString() << "-" << a2.toString();
-    } else if (print_range && AddressRangeIPv6::cast(o)!= NULL){
-        InetAddr a1 = AddressRangeIPv6::cast(o)->getRangeStart();
-        InetAddr a2 = AddressRangeIPv6::cast(o)->getRangeEnd();
-        ostr << a1.toString() << "-" << a2.toString();
     } else
     {
         Interface *iface = Interface::cast(o);

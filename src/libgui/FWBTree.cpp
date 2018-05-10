@@ -33,7 +33,6 @@
 #include "interfacePropertiesObjectFactory.h"
 
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/CustomService.h"
@@ -131,7 +130,6 @@ void FWBTree::init_statics()
         systemGroupPaths[DNSName::TYPENAME]       = "Objects/DNS Names";
         systemGroupPaths[AddressTable::TYPENAME]  = "Objects/Address Tables";
         systemGroupPaths[AddressRange::TYPENAME]  = "Objects/Address Ranges";
-        systemGroupPaths[AddressRangeIPv6::TYPENAME]  = "Objects/Address Ranges";
         systemGroupPaths[ObjectGroup::TYPENAME]   = "Objects/Groups";
         systemGroupPaths[DynamicGroup::TYPENAME]  = "Objects/Groups";
         systemGroupPaths[Host::TYPENAME]          = "Objects/Hosts";
@@ -185,9 +183,6 @@ void FWBTree::init_statics()
 
         systemGroupTypes[AddressRange::TYPENAME]=  ObjectGroup::TYPENAME;
         systemGroupNames[AddressRange::TYPENAME]=  "Address Ranges" ;
-
-        systemGroupTypes[AddressRangeIPv6::TYPENAME]=  ObjectGroup::TYPENAME;
-        systemGroupNames[AddressRangeIPv6::TYPENAME]=  "Address Ranges" ;
 
         systemGroupTypes[ObjectGroup::TYPENAME]=   ObjectGroup::TYPENAME;
         systemGroupNames[ObjectGroup::TYPENAME]=   "Groups"         ;
@@ -634,7 +629,6 @@ QString FWBTree::getTranslatableObjectTypeName(const QString &type_name)
     if (type_name == DNSName::TYPENAME) return QObject::tr("DNS Name");
     if (type_name == AddressTable::TYPENAME) return QObject::tr("Address Table");
     if (type_name == AddressRange::TYPENAME) return QObject::tr("Address Range");
-    if (type_name == AddressRangeIPv6::TYPENAME) return QObject::tr("Address Range IPv6");
     if (type_name == ObjectGroup::TYPENAME) return QObject::tr("Object Group");
     if (type_name == DynamicGroup::TYPENAME) return QObject::tr("Dynamic Group");
     if (type_name == CustomService::TYPENAME) return QObject::tr("Custom Service");
@@ -674,7 +668,6 @@ QString FWBTree::getTranslatableNewObjectMenuText(const QString &type_name)
     if (type_name == DNSName::TYPENAME) return QObject::tr("New DNS Name");
     if (type_name == AddressTable::TYPENAME) return QObject::tr("New Address Table");
     if (type_name == AddressRange::TYPENAME) return QObject::tr("New Address Range");
-    if (type_name == AddressRangeIPv6::TYPENAME) return QObject::tr("New Address Range IPv6");
     if (type_name == ObjectGroup::TYPENAME) return QObject::tr("New Object Group");
     if (type_name == DynamicGroup::TYPENAME) return QObject::tr("New Dynamic Group");
     if (type_name == CustomService::TYPENAME) return QObject::tr("New Custom Service");
@@ -713,7 +706,6 @@ QList<const char *> FWBTree::getObjectTypes()
     ret.append(DNSName::TYPENAME);
     ret.append(AddressTable::TYPENAME);
     ret.append(AddressRange::TYPENAME);
-    ret.append(AddressRangeIPv6::TYPENAME);
     ret.append(ObjectGroup::TYPENAME);
     ret.append(DynamicGroup::TYPENAME);
 

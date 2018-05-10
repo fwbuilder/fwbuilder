@@ -48,7 +48,6 @@
 #include "fwbuilder/IPv4.h"
 #include "fwbuilder/IPv6.h"
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/ObjectGroup.h"
 
 #include "fwbuilder/Resources.h"
@@ -81,8 +80,7 @@ QString legendList[] = {
     Host::TYPENAME, QObject::tr("Host"),
     IPv4::TYPENAME, QObject::tr("Address"),
     IPv6::TYPENAME, QObject::tr("Address"),
-    AddressRange::TYPENAME, QObject::tr("Address Range"),
-    AddressRangeIPv6::TYPENAME, QObject::tr("Address Range IPv6"),
+    AddressRange::TYPENAME, QObject::tr("Addres Range"),
     Interface::TYPENAME, QObject::tr("Interface"),
     Network::TYPENAME, QObject::tr("Network"),
     ObjectGroup::TYPENAME, QObject::tr("Group of objects"),

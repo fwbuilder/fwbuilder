@@ -51,7 +51,6 @@
 #include "FWWindow.h"
 
 #include "fwbuilder/AddressRange.h"
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/AttachedNetworks.h"
 #include "fwbuilder/Cluster.h"
@@ -424,7 +423,6 @@ void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, F
                       &&!DNSName::isA(currentObj)
                       &&!AddressTable::isA(currentObj)
                       &&!AddressRange::isA(currentObj)
-                      &&!AddressRangeIPv6::isA(currentObj)
                       &&!Host::isA(currentObj)
                       &&!Network::isA(currentObj)
                       &&!NetworkIPv6::isA(currentObj)
@@ -476,10 +474,7 @@ void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, F
     if (path.find("Objects/Address Ranges") == 0) {
         AddObjectActions.append(
             addNewObjectMenuItem(popup_menu, AddressRange::TYPENAME));
-        AddObjectActions.append(
-            addNewObjectMenuItem(popup_menu, AddressRangeIPv6::TYPENAME));
     }
-
 
     if (path.find("Objects/Hosts") == 0) {
         AddObjectActions.append(

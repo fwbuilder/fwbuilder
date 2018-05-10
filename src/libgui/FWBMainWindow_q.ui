@@ -685,13 +685,6 @@
                 </item>
                </layout>
               </widget>
-              <widget class="QWidget" name="page_40">
-               <layout class="QGridLayout" name="gridLayout_47">
-                <item row="0" column="0">
-                 <widget class="AddressRangeIPv6Dialog" name="w_AddressRangeIPv6Dialog" native="true"/>
-                </item>
-               </layout>
-              </widget>
              </widget>
             </item>
            </layout>
@@ -1601,11 +1594,6 @@
    <extends>QWidget</extends>
    <header>DynamicGroupDialog.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>AddressRangeIPv6Dialog</class>
-   <extends>QWidget</extends>
-   <header>AddressRangeIPv6Dialog.h</header>
   </customwidget>
  </customwidgets>
  <resources>

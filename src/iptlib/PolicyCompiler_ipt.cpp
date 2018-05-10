@@ -27,7 +27,6 @@
 #include "OSConfigurator_linux24.h"
 #include "ipt_utils.h"
 
-#include "fwbuilder/AddressRangeIPv6.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/AddressTable.h"
 #include "fwbuilder/Cluster.h"
@@ -2341,19 +2340,13 @@ bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
  *        Address *addr_obj = compiler->correctForCluster(Address::cast(obj));
  */
 
-        if (addr_obj && !addr_obj->isAny() && (AddressRange::isA(addr_obj)||AddressRangeIPv6::isA(addr_obj)) &&
+        if (addr_obj && !addr_obj->isAny() && AddressRange::isA(addr_obj) &&
             addr_obj->dimension() == 1)
         {
             Address *new_addr = compiler->dbcopy->createIPv4();
             new_addr->setName(addr_obj->getName() + "_addr");
-            if(AddressRange::isA(addr_obj)){
-                new_addr->setAddress(AddressRange::cast(addr_obj)->getRangeStart());
-                new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
-            } else {
-                new_addr->setAddress(AddressRangeIPv6::cast(addr_obj)->getRangeStart());
-                new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
-
-            }
+            new_addr->setAddress(AddressRange::cast(addr_obj)->getRangeStart());
+            new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
             compiler->persistent_objects->add(new_addr);
             new_children.push_back(new_addr);
         } else
@@ -2398,7 +2391,7 @@ bool PolicyCompiler_ipt::splitIfSrcMatchingAddressRange::processNext()
      * in OUTPUT and FORWARD
      */
     if ( rule->getDirection() != PolicyRule::Inbound && 
-         src && !src->isAny() && (AddressRange::isA(src)||AddressRangeIPv6::isA(src)) &&
+         src && !src->isAny() && AddressRange::isA(src) &&
          ipt_comp->complexMatch(src, ipt_comp->fw, b, m))
     {
         PolicyRule *r= compiler->dbcopy->createPolicyRule();
@@ -2439,7 +2432,7 @@ bool PolicyCompiler_ipt::splitIfDstMatchingAddressRange::processNext()
      * in INPUT and FORWARD
      */
     if ( rule->getDirection() != PolicyRule::Outbound && 
-         dst && !dst->isAny() && (AddressRange::isA(dst)||AddressRangeIPv6::isA(dst)) &&
+         dst && !dst->isAny() && AddressRange::isA(dst) &&
          ipt_comp->complexMatch(dst, ipt_comp->fw, b, m))
     {
         PolicyRule *r= compiler->dbcopy->createPolicyRule();
@@ -3150,7 +3143,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
     case PolicyRule::Outbound:
 /* if direction is "Outbound", chain can never be INPUT, but could be FORWARD */
         if (! src->isAny() &&
-            ! (AddressRange::isA(src)||AddressRangeIPv6::isA(src)) &&   // #2650
+            ! AddressRange::isA(src) &&   // #2650
             compiler->complexMatch(src, compiler->fw, b, m))
             ipt_comp->setChain(rule,"OUTPUT");
         break;
@@ -3159,7 +3152,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
 /* direction == Both
  */
         if (! src->isAny() &&
-            ! (AddressRange::isA(src)||AddressRangeIPv6::isA(src)) &&   // #2650
+            ! AddressRange::isA(src) &&   // #2650
             compiler->complexMatch(src, compiler->fw, b, m))
         {
             ipt_comp->setChain(rule,"OUTPUT");
@@ -3252,7 +3245,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
     case PolicyRule::Inbound:
 /* if direction is "Inbound", chain can never be OUTPUT, but could be FORWARD */
         if (! dst->isAny() &&
-            ! (AddressRange::isA(dst)||AddressRangeIPv6::isA(dst)) &&   // #2650
+            ! AddressRange::isA(dst) &&   // #2650
             (compiler->complexMatch(dst,compiler->fw,b,m) ||
              std::find(cluster_members.begin(),
                        cluster_members.end(),
@@ -3265,7 +3258,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
 /* direction == Both
  */
         if (! dst->isAny() && 
-            ! (AddressRange::isA(dst)||AddressRangeIPv6::isA(dst)) &&   // #2650
+            ! AddressRange::isA(dst) &&   // #2650
             (compiler->complexMatch(dst,compiler->fw,b,m) ||
              std::find(cluster_members.begin(),
                        cluster_members.end(),

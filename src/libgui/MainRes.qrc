@@ -24,12 +24,6 @@
     <file alias="Icons/AddressRange/icon-neg-tree">Icons/rangeaddress-neg_16.png</file>
     <file alias="Icons/AddressRange/icon-ref">Icons/rangeaddress-ref_25.png</file>
     <file alias="Icons/AddressRange/icon-tree">Icons/rangeaddress_16.png</file>
-    <file alias="Icons/AddressRangeIPv6/icon">Icons/rangeaddress_25.png</file>
-    <file alias="Icons/AddressRangeIPv6/icon-big">Icons/rangeaddress_64.png</file>
-    <file alias="Icons/AddressRangeIPv6/icon-neg">Icons/rangeaddress-neg_25.png</file>
-    <file alias="Icons/AddressRangeIPv6/icon-neg-tree">Icons/rangeaddress-neg_16.png</file>
-    <file alias="Icons/AddressRangeIPv6/icon-ref">Icons/rangeaddress-ref_25.png</file>
-    <file alias="Icons/AddressRangeIPv6/icon-tree">Icons/rangeaddress_16.png</file>
     <file alias="Icons/AddressTable/icon">Icons/addresstable_25.png</file>
     <file alias="Icons/AddressTable/icon-big">Icons/addresstable_64.png</file>
     <file alias="Icons/AddressTable/icon-neg">Icons/addresstable-neg_25.png</file>

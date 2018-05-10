@@ -233,7 +233,9 @@
   <tabstop>obj_name</tabstop>
   <tabstop>address</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="MainRes.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>address</sender>
