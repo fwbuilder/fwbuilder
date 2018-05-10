@@ -302,7 +302,8 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         qDebug("libs->count()=%d", m_objectManipulator->libs->count() );
     }
 
-    while ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+    while ( lib == NULL ||
+            lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
             lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
             lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
             lib->isReadOnly() )
@@ -367,7 +368,8 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
                objType.toLatin1().constData(), objName.toLatin1().constData());
     }
 
-    while ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+    while ( lib == NULL ||
+            lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
             lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
             lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
             lib->isReadOnly() )
