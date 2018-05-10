@@ -76,7 +76,7 @@ void AddressRangeIPv6::setAddress(const InetAddr &a)
 
 void AddressRangeIPv6::setNetmask(const InetAddr& ) {}
 
-FWObject& AddressRangeIPv6::shallowDuplicate(const FWObject *o, bool preserve_id)
+FWObject& AddressRangeIPv6::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
 {
     const AddressRangeIPv6 *n = dynamic_cast<const AddressRangeIPv6 *>(o);
     if (n==NULL) {
@@ -93,7 +93,7 @@ FWObject& AddressRangeIPv6::shallowDuplicate(const FWObject *o, bool preserve_id
     return FWObject::shallowDuplicate(o, preserve_id);
 }
 
-bool AddressRangeIPv6::cmp(const FWObject *obj, bool recursive)
+bool AddressRangeIPv6::cmp(const FWObject *obj, bool recursive) throw(FWException)
 {
     if (AddressRangeIPv6::constcast(obj)==NULL) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
@@ -112,7 +112,7 @@ bool AddressRangeIPv6::cmp(const FWObject *obj, bool recursive)
     return (o1b==o2b && o1e==o2e);
 }
 
-void AddressRangeIPv6::fromXML(xmlNodePtr root)
+void AddressRangeIPv6::fromXML(xmlNodePtr root) throw(FWException)
 {
     FWObject::fromXML(root);
     
@@ -127,7 +127,7 @@ void AddressRangeIPv6::fromXML(xmlNodePtr root)
     FREEXMLBUFF(n);
 }
 
-xmlNodePtr AddressRangeIPv6::toXML(xmlNodePtr xml_parent_node)
+xmlNodePtr AddressRangeIPv6::toXML(xmlNodePtr xml_parent_node) throw(FWException)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
 
