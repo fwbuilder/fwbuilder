@@ -218,6 +218,12 @@ class RCS : public QObject {
     static QStringList* getEnv();
     static RCSEnvFix*   getRCSEnvFix();
 
+    static const QString & getRcsFileName() { return rcs_file_name; }
+    static const QString & getRcsdiffFileName() { return rcsdiff_file_name; }
+    static const QString & getRlogFileName() { return rlog_file_name; }
+    static const QString & getCiFileName() { return ci_file_name; }
+    static const QString & getCoFileName() { return co_file_name; }
+
  public slots:
 
      virtual void readFromStdout();

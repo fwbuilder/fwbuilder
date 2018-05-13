@@ -258,28 +258,18 @@ void RCS::init()
 {
     if (rcs_file_name=="")
     {
+        rcs_file_name = "rcs";
+        rlog_file_name = "rlog";
+        rcsdiff_file_name = "rcsdiff";
+        ci_file_name = "ci";
+        co_file_name = "co";
+
 #ifdef _WIN32
-        string ts;
-        ts = getPathToBinary(RCS_FILE_NAME);
-        rcs_file_name     = ts.c_str();
-
-        ts = getPathToBinary(RLOG_FILE_NAME);
-        rlog_file_name    = ts.c_str();
-
-        ts = getPathToBinary(RCSDIFF_FILE_NAME);
-        rcsdiff_file_name = ts.c_str();
-
-        ts = getPathToBinary(CI_FILE_NAME);
-        ci_file_name      = ts.c_str();
-
-        ts = getPathToBinary(CO_FILE_NAME);
-        co_file_name      = ts.c_str();
-#else
-        rcs_file_name     = RCS_FILE_NAME      ;
-        rlog_file_name    = RLOG_FILE_NAME     ;
-        rcsdiff_file_name = RCSDIFF_FILE_NAME  ;
-        ci_file_name      = CI_FILE_NAME       ;
-        co_file_name      = CO_FILE_NAME       ;
+        rcs_file_name = getPathToBinary(rcs_file_name.append(".exe"));
+        rlog_file_name = getPathToBinary(rlog_file_name.append(".exe"));
+        rcsdiff_file_name = getPathToBinary(rcsdiff_file_name.append(".exe"));
+        ci_file_name = getPathToBinary(ci_file_name.append(".exe"));
+        co_file_name = getPathToBinary(co_file_name.append(".exe"));
 #endif
     }
 
