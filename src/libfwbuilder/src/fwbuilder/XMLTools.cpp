@@ -104,7 +104,13 @@ static void xslt_error_handler(void *ctx, const char *msg, ...)
 
     assert(ctx!=NULL);
     va_start(args, msg);
-    VSNPRINTF(buf, sizeof(buf)-1, msg, args);
+
+#ifdef _WIN32
+    _vsnprintf(buf, sizeof(buf)-1, msg, args);
+#else
+    vsnprintf(buf, sizeof(buf)-1, msg, args);
+#endif
+
     va_end(args);
     
 #ifdef FW_XMLTOOLS_VERBOSE
