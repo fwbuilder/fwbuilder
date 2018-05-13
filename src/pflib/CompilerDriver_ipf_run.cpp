@@ -104,7 +104,7 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER
+    script << manifestMarker()
            << "* "
            << this->escapeFileName(file_names[FW_FILE]);
 
@@ -114,7 +114,7 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 
     if (have_filter) 
     {
-        script << MANIFEST_MARKER
+        script << manifestMarker()
                << "  "
                << this->escapeFileName(file_names[CONF1_FILE]);
 
@@ -125,7 +125,7 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 
     if (have_nat) 
     {
-        script << MANIFEST_MARKER
+        script << manifestMarker()
                << "  "
                << this->escapeFileName(file_names[CONF2_FILE]);
 
