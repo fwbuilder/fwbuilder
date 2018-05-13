@@ -163,7 +163,7 @@ RCSEnvFix::RCSEnvFix()
     time(&clock);
     ltm = (struct tm *) localtime(&clock);
 
-#if defined(HAVE_STRUCT_TM_TM_ZONE)
+#ifndef _WIN32
 /*
  * struct tm has member tm_zone and should have member tm_gmtoff
  * autoconf checks only for tm_zone, but these two member fields come
