@@ -41,10 +41,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
     Q_UNUSED(parent)
 
     ui->setupUi(this);
-    setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint);
-#if QT_VERSION >= 0x040500
-    setWindowFlags(windowFlags() | Qt::WindowCloseButtonHint);
-#endif
+    setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     ui->contents->setOpenExternalLinks(true);
 
     dialog = this;

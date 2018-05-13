@@ -43,11 +43,7 @@
 #include <string>
 
 #include <QtDebug>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QtGui>
-#else
-#   include <QtWidgets>
-#endif
+#include <QtWidgets>
 #include<QStringList>
 
 

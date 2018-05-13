@@ -117,11 +117,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                         "rules go into user-defined chain \n"
                                         "with the name the same as the name of \n"
                                         "the rule set.",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                        0, QApplication::UnicodeUTF8));
-#else
                                         0));
-#endif
 
             if (Policy::isA(obj))
             {
@@ -147,11 +143,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                         "If this flag is unchecked, rules go \n"
                                         "into anchor with the name the same as\n"
                                         "the name of the rule set.",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                        0, QApplication::UnicodeUTF8));
-#else
                                         0));
-#endif
 
         if (platform == "iosacl" || platform == "pix" || platform=="fwsm")
             m_dialog->top_rule_set->setToolTip(
@@ -162,11 +154,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                         "command. The name of the rule set will\n"
                                         "be used as a prefix for names of\n"
                                         "access access lists generated for it.",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                        0, QApplication::UnicodeUTF8));
-#else
                                         0));
-#endif
 
         if (platform == "ipf" || platform == "ipfw")
             m_dialog->top_rule_set->hide();

@@ -27,15 +27,10 @@
 #define CLUSTERINTERFACEWIDGET_H
 
 #include <qglobal.h>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QtGui/QWidget>
-#   include <QtGui/QLabel>
-#   include <QtGui/QTreeWidget>
-#else
-#   include <QtWidgets/QWidget>
-#   include <QtWidgets/QLabel>
-#   include <QtWidgets/QTreeWidget>
-#endif
+
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QTreeWidget>
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QHeaderView>

@@ -313,17 +313,10 @@ void ProjectPanel::loadLastOpenedLib()
     if (filename!="" && sid!="")
     {
         if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("ProjectPanel::loadLastOpenedLib(): filename=%s "
-                   "opening lib id=%s",
-                   filename.toAscii().constData(),
-                   sid.toAscii().constData());
-#else
             qDebug("ProjectPanel::loadLastOpenedLib(): filename=%s "
                    "opening lib id=%s",
                    filename.toLatin1().constData(),
                    sid.toLatin1().constData());
-#endif
 
         int last_lib_id = FWObjectDatabase::getIntId(sid.toStdString());
 

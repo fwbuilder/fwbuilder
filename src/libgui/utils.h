@@ -33,11 +33,7 @@
 #include <functional>
 
 #include <qglobal.h>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QMenu>
-#else
-#   include <QtWidgets/QMenu>
-#endif
+#include <QtWidgets/QMenu>
 
 class QObject;
 class QWidget;

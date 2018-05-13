@@ -166,15 +166,9 @@ void RuleSetViewTest::actuallyClickMenuItem()
 
     // need to hide the menu, otherwise test just hangs
     menu->hide();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
-          .arg(itemToClick)
-          .arg(items.join(" ")).toAscii().constData());
-#else
     QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
           .arg(itemToClick)
           .arg(items.join(" ")).toLatin1().constData());
-#endif
 }
 
 /*

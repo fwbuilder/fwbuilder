@@ -58,7 +58,7 @@
 #include "FirewallCodeViewer.h"
 
 #include "RuleSetDiffDialog.h"
-#include "temporarydir.h"
+#include <QTemporaryDir>
 
 #include <QtDebug>
 #include <QMdiSubWindow>

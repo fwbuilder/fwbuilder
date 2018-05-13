@@ -66,11 +66,7 @@ bool FirewallInstallerJuniper::packInstallJobsList(Firewall*)
 {
     if (fwbdebug)
         qDebug("FirewallInstallerJuniper::packInstallJobList  script=%s",
-       #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-               cnf->script.toAscii().constData());
-       #else
                cnf->script.toLatin1().constData());
-       #endif
     job_list.clear();
 
     Management *mgmt = cnf->fwobj->getManagementObject();

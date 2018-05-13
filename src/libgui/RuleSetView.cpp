@@ -94,13 +94,8 @@ RuleSetView::RuleSetView(ProjectPanel *project, QWidget *parent):QTreeView(paren
     setAcceptDrops(true);
     setDragDropMode(QAbstractItemView::DragDrop);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    header()->setResizeMode(QHeaderView::Interactive);
-    header()->setMovable(false);
-#else
     header()->setSectionResizeMode(QHeaderView::Interactive);
     header()->setSectionsMovable(false);
-#endif
 
     connect (this, SIGNAL (customContextMenuRequested(const QPoint&)),
              this, SLOT (showContextMenu(const QPoint&)));
@@ -2477,11 +2472,7 @@ void RuleSetView::copyAndInsertObject(QModelIndex &index, FWObject *object)
 void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QWidget *fromWidget = ev->source();
-#else
     QWidget *fromWidget = qobject_cast<QWidget*>(ev->source());
-#endif
 
     // The source of DnD object must be the same instance of fwbuilder
     if (fromWidget)

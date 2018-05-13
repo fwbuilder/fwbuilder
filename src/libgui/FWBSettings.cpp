@@ -713,13 +713,8 @@ void FWBSettings::restoreGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
-                   name.toAscii().constData(), w->isVisible(), x,y);
-#else
         qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
                    name.toLatin1().constData(), w->isVisible(), x,y);
-#endif
     }
 
     w->resize( QSize(width,height) );
@@ -754,13 +749,8 @@ void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
-                   name.toAscii().constData(), w->isVisible(), x,y);
-#else
         qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
                    name.toLatin1().constData(), w->isVisible(), x,y);
-#endif
     }
 
     w->resize( QSize(width,height) );
@@ -787,13 +777,8 @@ void FWBSettings::saveGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
-                   name.toAscii().constData(), w->isVisible(), val.toAscii().constData());
-#else
         qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
                    name.toLatin1().constData(), w->isVisible(), val.toLatin1().constData());
-#endif
     }
 
     setValue(QString(WindowGeometrySetpath)+name, val);
@@ -1087,26 +1072,15 @@ void FWBSettings::setTimeOfLastUpdateAvailableWarning(uint v)
 
 uint FWBSettings::getTimeOfLastAnnouncement(const QString &announcement)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
-                                            QCryptographicHash::Md5).toHex();
-#else
     QByteArray h = QCryptographicHash::hash(announcement.toLatin1().constData(),
                                             QCryptographicHash::Md5).toHex();
-#endif
     return value(QString(announcementLastTime).arg(h.constData())).toUInt();
 }
 
 void FWBSettings::setTimeOfLastAnnouncement(const QString &announcement, uint v)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
-                                            QCryptographicHash::Md5).toHex();
-#else
     QByteArray h = QCryptographicHash::hash(announcement.toLatin1().constData(),
                                             QCryptographicHash::Md5).toHex();
-#endif
-
     setValue(QString(announcementLastTime).arg(h.constData()), v);
 }
 

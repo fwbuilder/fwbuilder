@@ -93,11 +93,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
 
     if (fwbdebug)
         qDebug("FirewallInstaller::packInstallJobsList read manifest from %s",
-       #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-               cnf->script.toAscii().constData());
-       #else
                cnf->script.toLatin1().constData());
-       #endif
 
 /*
  * Note that if output file is specified in firewall settings dialog,
@@ -109,9 +105,6 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
  * other files are located there as well.
  */
     // compilers always write file names into manifest in Utf8
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
-#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     //key: local_file_name  val: remote_file_name
@@ -129,11 +122,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
             job_list.push_back(instJob(COPY_FILE, local_name, remote_name));
             inst_dlg->addToLog(QString("Copy file: %1 --> %2\n")
                                .arg(local_name)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                .arg(remote_name).toAscii().constData());
-#else
-                                .arg(remote_name).toLatin1().constData());
-#endif
+                               .arg(remote_name).toLatin1().constData());
         }
     } else
     {
@@ -163,11 +152,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
                                dest_dir));
         inst_dlg->addToLog(QString("Copy data file: %1 --> %2\n")
                            .arg(fwbfile_base.fileName())
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                           .arg(dest_dir).toAscii().constData());
-#else
                            .arg(dest_dir).toLatin1().constData());
-#endif
     }
 
     QString cmd = getActivationCmd();

@@ -169,7 +169,7 @@
 #include <qtextstream.h>
 #include <qtimer.h>
 #include <qtoolbutton.h>
-#include "temporarydir.h"
+#include <QTemporaryDir>
  
 extern bool regCheck();
 
@@ -303,7 +303,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     if (tabbar)
         tabbar->installEventFilter(new MDIEventFilter());
 
-    m_temporaryDir = new TemporaryDir(QDir::tempPath().append("/fwbuilder-tempdir-"));
+    m_temporaryDir = new QTemporaryDir(QDir::tempPath().append("/fwbuilder-tempdir-"));
 
 }
 
@@ -554,20 +554,12 @@ void FWWindow::showIntroDialog()
 
         msg_box.setWindowModality(Qt::ApplicationModal);
 
-#if QT_VERSION >= 0x040500
         msg_box.setWindowFlags(
             Qt::Window |
             Qt::WindowTitleHint |
             Qt::CustomizeWindowHint |
             Qt::WindowCloseButtonHint |
             Qt::WindowSystemMenuHint);
-#else
-        msg_box.setWindowFlags(
-            Qt::Window |
-            Qt::WindowTitleHint |
-            Qt::CustomizeWindowHint |
-            Qt::WindowSystemMenuHint);
-#endif
 
         msg_box.setWindowTitle(tr("Welcome to Firewall Builder"));
         msg_box.setIconPixmap(pm);

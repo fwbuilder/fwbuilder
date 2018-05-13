@@ -84,10 +84,7 @@ Help* Help::getHelpWindow(QWidget* w)
     if (help_window == NULL)
     {
         help_window = new Help(w, "Firewall Builder");
-        help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint);
-#if QT_VERSION >= 0x040500
-        help_window->setWindowFlags(help_window->windowFlags() | Qt::WindowCloseButtonHint);
-#endif
+        help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     }
 
     return help_window;

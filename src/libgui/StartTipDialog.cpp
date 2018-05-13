@@ -82,11 +82,7 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
         tip_file.sprintf("tip%02d.html", tip_no);
         QString contents;
         if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("Trying tip file %s", tip_file.toAscii().constData());
-#else
             qDebug("Trying tip file %s", tip_file.toLatin1().constData());
-#endif
 
         QString help_file = h->findHelpFile(tip_file);
         if (!help_file.isEmpty())

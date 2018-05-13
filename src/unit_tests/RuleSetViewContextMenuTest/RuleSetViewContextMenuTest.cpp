@@ -161,15 +161,9 @@ void RuleSetViewContextMenuTest::actuallyClickMenuItem()
 
     // need to hide the menu, otherwise test just hangs
     menu->hide();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
-          .arg(itemToClick)
-          .arg(items.join(" ")).toAscii().constData());
-#else
     QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
           .arg(itemToClick)
           .arg(items.join(" ")).toLatin1().constData());
-#endif
 }
 
 /*
@@ -364,11 +358,7 @@ void RuleSetViewContextMenuTest::test_menus()
         qDebug() << "Verifying context menu for column" << i;
         verifyMenu(i);
         showContextMenu(findCell(rule, i));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        QVERIFY2(!failed, QString("Failed for column %1").arg(i).toAscii().constData());
-#else
         QVERIFY2(!failed, QString("Failed for column %1").arg(i).toLatin1().constData());
-#endif
     }
 
     // Remove created rule
@@ -416,11 +406,7 @@ void RuleSetViewContextMenuTest::test_group_menus()
             qDebug() << "Verifying context menu for column" << i;
             verifyMenu(i);
             showContextMenu(findCell(getRuleForPosition(j), i));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            QVERIFY2(!failed, QString("Failed for column %1").arg(i).toAscii().constData());
-#else
             QVERIFY2(!failed, QString("Failed for column %1").arg(i).toLatin1().constData());
-#endif
         }
     }
 
@@ -432,11 +418,7 @@ void RuleSetViewContextMenuTest::test_group_menus()
         view->selectRE(getRuleForPosition(i),0);
     //    QTest::qWait(1000);
         showContextMenu(findCell(getRuleForPosition(i), 0));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        QVERIFY2(!failed, QString("Failed for rule #%1 of 5").arg(i+1).toAscii().constData());
-#else
         QVERIFY2(!failed, QString("Failed for rule #%1 of 5").arg(i+1).toLatin1().constData());
-#endif
     }
 
     // remove created rules
@@ -471,11 +453,7 @@ void RuleSetViewContextMenuTest::test_platforms()
         firewall->setStr("platform", platform.toStdString());
         verifyMenu(6);
         showContextMenu(findCell(rule, 6));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        QVERIFY2(!failed, QString("Failed for paltform %1").arg(platform).toAscii().constData());
-#else
         QVERIFY2(!failed, QString("Failed for paltform %1").arg(platform).toLatin1().constData());
-#endif
     }
 
     // Verify that column count changes depending of firewall platform

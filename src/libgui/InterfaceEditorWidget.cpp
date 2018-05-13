@@ -505,10 +505,8 @@ void InterfaceEditorWidget::setHostOS(const QString &s)
     if (fwbdebug)
         qDebug() << "Interface name prompt:" << name_prompt;
 
-#if (QT_VERSION >= 0x040700)
     this->m_ui->name->setPlaceholderText(name_prompt);
     this->m_ui->label->setPlaceholderText("outside, inside, etc (optional)");
-#endif
 
     this->m_ui->name->setToolTip(name_prompt);
     this->m_ui->label->setToolTip("outside, inside, etc (optional)");

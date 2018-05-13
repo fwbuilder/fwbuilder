@@ -231,8 +231,7 @@ HEADERS += ../../config.h \
     	RuleSetDiffDialog.h \
 	RuleSetDiffDelegate.h \
     	RuleSetDiffModel.h \
-    	BackgroundCompileInfoWidget.h \
-    	temporarydir.h
+    	BackgroundCompileInfoWidget.h
 
 
 SOURCES += ProjectPanel.cpp \
@@ -458,8 +457,7 @@ SOURCES += ProjectPanel.cpp \
     	RuleSetDiffDialog.cpp \
     	RuleSetDiffDelegate.cpp \
     	RuleSetDiffModel.cpp \
-    	BackgroundCompileInfoWidget.cpp \
-    	temporarydir.cpp
+    	BackgroundCompileInfoWidget.cpp
 
 FORMS = FWBMainWindow_q.ui \
     compileroutputpanel_q.ui \

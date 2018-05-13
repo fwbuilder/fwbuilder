@@ -155,11 +155,7 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
     QFileDialog fd(this);
     fd.setFileMode(QFileDialog::AnyFile);
     fd.setDefaultSuffix("fwb");
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    fd.setFilter(tr( "FWB Files (*.fwb);;All Files (*)" ) );
-#else
     fd.setNameFilter(tr( "FWB Files (*.fwb);;All Files (*)" ) );
-#endif
     fd.setWindowTitle(title);
     fd.setDirectory(st->getOpenFileDir(fname));
     fd.setAcceptMode(QFileDialog::AcceptSave);
@@ -213,17 +209,10 @@ bool ProjectPanel::fileNew()
         QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    if (fwbdebug)
-        qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
-               rcs, rcs == 0 ? "<null>" :
-               rcs->getFileName().toAscii().constData());
-#else
     if (fwbdebug)
         qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
                rcs, rcs == 0 ? "<null>" :
                rcs->getFileName().toLatin1().constData());
-#endif
 
     return (rcs!=NULL);
 }
@@ -1138,22 +1127,12 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         {
             if (fwbdebug)
             {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                qDebug("Need to rename file:  %s",
-                       fn.toAscii().constData());
-                qDebug("             dirPath: %s",
-                       ofinfo.dir().absolutePath().toAscii().constData());
-                qDebug("            filePath: %s",
-                       ofinfo.absoluteFilePath().toAscii().constData());
-
-#else
                 qDebug("Need to rename file:  %s",
                        fn.toLatin1().constData());
                 qDebug("             dirPath: %s",
                        ofinfo.dir().absolutePath().toLatin1().constData());
                 qDebug("            filePath: %s",
                        ofinfo.absoluteFilePath().toLatin1().constData());
-#endif
             }
             QString newFileName = ofinfo.dir().absolutePath()
                 + "/" + ofinfo.completeBaseName() + ".fwb";

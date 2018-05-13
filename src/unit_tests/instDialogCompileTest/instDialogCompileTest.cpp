@@ -127,13 +127,8 @@ void instDialogCompileTest::openContextMenu(ObjectManipulator *om,
             break;
         }
     }
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QVERIFY2(found_menu_item == true,
-             QString("Item %1 not found in the context menu").arg(actionText).toAscii().constData());
-#else
     QVERIFY2(found_menu_item == true,
              QString("Item %1 not found in the context menu").arg(actionText).toLatin1().constData());
-#endif
 }
 
 

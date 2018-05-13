@@ -127,25 +127,13 @@ SSHCisco::~SSHCisco()
 
 QString SSHCisco::cmd(QProcess*, const QString &cmd)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    if (fwbdebug) qDebug("Command '%s'", cmd.toAscii().constData());
-#else
     if (fwbdebug) qDebug("Command '%s'", cmd.toLatin1().constData());
-#endif
     sendCommand(cmd);
     //stdoutBuffer = "";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    //proc->write( (cmd + "\n").toAscii() );
-#else
     //proc->write( (cmd + "\n").toLatin1() );
-#endif
     state = EXECUTING_COMMAND;
     local_event_loop->exec();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    if (fwbdebug) qDebug("Command '%s' completed", cmd.toAscii().constData());
-#else
     if (fwbdebug) qDebug("Command '%s' completed", cmd.toLatin1().constData());
-#endif
     return stdoutBuffer;
 }
 
@@ -208,11 +196,7 @@ void SSHCisco::stateMachine()
              cmpPrompt(stdoutBuffer,QRegExp(pwd_prompt_2)) )
         {
             stdoutBuffer="";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            proc->write( (pwd + "\n").toAscii() );
-#else
             proc->write( (pwd + "\n").toLatin1() );
-#endif
             break;
         }
 
@@ -288,11 +272,7 @@ void SSHCisco::stateMachine()
         if ( cmpPrompt(stdoutBuffer,QRegExp(epwd_prompt)) )
         {
             stdoutBuffer="";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            if (!epwd.isEmpty()) proc->write( (epwd + "\n").toAscii() );
-#else
             if (!epwd.isEmpty()) proc->write( (epwd + "\n").toLatin1() );
-#endif
             else                 proc->write( "\n" );
             state=WAITING_FOR_ENABLE;
         }
@@ -302,11 +282,7 @@ void SSHCisco::stateMachine()
         if ( cmpPrompt(stdoutBuffer,QRegExp(epwd_prompt)) )
         {
             stdoutBuffer="";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            if (!epwd.isEmpty()) proc->write( (epwd + "\n").toAscii() );
-#else
             if (!epwd.isEmpty()) proc->write( (epwd + "\n").toLatin1() );
-#endif
             else                 proc->write( "\n" );
             state=WAITING_FOR_ENABLE;
             break;
@@ -346,11 +322,7 @@ void SSHCisco::stateMachine()
                 pre_config_commands.pop_front();
                 if (cmd.indexOf("reload in")!=-1) state = SCHEDULE_RELOAD_DIALOG;
                 sendCommand(cmd);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                //proc->write( (cmd + "\n").toAscii() );
-#else
                 //proc->write( (cmd + "\n").toLatin1() );
-#endif
                 break;
             }
 

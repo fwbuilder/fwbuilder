@@ -115,11 +115,7 @@ void PFImporterTest::compareResults(QueueLogger* logger,
 
     QFile rw(obtained_result_file_name);
     rw.open(QFile::WriteOnly);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    rw.write(result.toAscii());
-#else
     rw.write(result.toLatin1());
-#endif
     rw.close();
 
     QFile rr(expected_result_file_name);

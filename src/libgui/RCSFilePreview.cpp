@@ -117,13 +117,8 @@ void RCSFilePreview::selectedRevision(QTreeWidgetItem *itm)
     rcs->setSelectedRev(rev);
     m_widget->comment->setText( rcsComments[rev] );
     if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("RCSFilePreview::selectedRevision : %s",
-               rev.toAscii().constData());
-#else
         qDebug("RCSFilePreview::selectedRevision : %s",
                rev.toLatin1().constData());
-#endif
 }
 
 bool RCSFilePreview::showFileRLog( const QString &filename )

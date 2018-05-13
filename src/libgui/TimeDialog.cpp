@@ -259,11 +259,7 @@ void TimeDialog::applyChanges()
     if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
         weekDays.append("6");
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    interval->setDaysOfWeek(weekDays.join(",").toAscii().data());
-#else
     interval->setDaysOfWeek(weekDays.join(",").toLatin1().data());
-#endif
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {

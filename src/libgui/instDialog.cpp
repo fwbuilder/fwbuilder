@@ -769,9 +769,6 @@ void instDialog::setUpProcessToInstall()
 bool instDialog::executeCommand(const QString &path, QStringList &args)
 {
     // set codecs so that command line parameters can be encoded
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
-#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
     enableStopButton();
     QTime start_time;

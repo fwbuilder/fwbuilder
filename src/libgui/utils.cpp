@@ -326,11 +326,7 @@ QString getAddrByName(const QString &name, int af_type)
     list<InetAddr> results;
     try
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        results = DNS::getHostByName(name.toAscii().constData(), af_type);
-#else
         results = DNS::getHostByName(name.toLatin1().constData(), af_type);
-#endif
     } catch (FWException &e)
     {
         if (fwbdebug) qDebug("utils::getAddrByName: DNS lookup error: %s",
@@ -462,11 +458,7 @@ void LoadPixmap(const QString &path, QPixmap &pm)
     {
         pm.load( path );
         if (pm.width() == 0)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("pixmap load failed: %s", path.toAscii().constData());
-#else
             qDebug("pixmap load failed: %s", path.toLatin1().constData());
-#endif
         QPixmapCache::insert( path, pm );
     }
 }

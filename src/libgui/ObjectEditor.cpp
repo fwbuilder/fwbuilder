@@ -180,11 +180,7 @@ void ObjectEditor::registerObjectDialog(QStackedWidget *stack,
                                         const QString &obj_type,
                                         const QString &dialog_name)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    BaseObjectDialog *w = qFindChild<BaseObjectDialog*>(stack, dialog_name);
-#else
     BaseObjectDialog *w = stack->findChild<BaseObjectDialog*>(dialog_name);
-#endif
     if (w==NULL)
     {
         qDebug() << "Dialog widget missing for the object type "
@@ -202,11 +198,7 @@ void ObjectEditor::registerOptDialog(QStackedWidget *stack,
                                      ObjectEditor::OptType opt_type,
                                      const QString &dialog_name)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    BaseObjectDialog *w = qFindChild<BaseObjectDialog*>(stack, dialog_name);
-#else
     BaseObjectDialog *w = stack->findChild<BaseObjectDialog*>(dialog_name);
-#endif
     if (w==NULL)
     {
         qDebug() << "Dialog widget missing for the option "

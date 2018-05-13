@@ -88,11 +88,7 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
     m_dialog->debugText->append( RCS::getRCSEnvFix()->getTZOffset() );
     m_dialog->debugText->append( "\n" );
     m_dialog->debugText->append( "RCS environment:" );
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    m_dialog->debugText->append( RCS::getEnv()->join("\n").toAscii() );
-#else
     m_dialog->debugText->append( RCS::getEnv()->join("\n").toLatin1() );
-#endif
     m_dialog->debugText->append( "\n" );
 
     m_dialog->debugText->append( QString("Current locale: %1")

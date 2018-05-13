@@ -328,15 +328,9 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     if (platform=="pix" || platform=="fwsm")
     {
         string vers = "version_" + version;
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
-              "/FWBuilderResources/Target/options/" +
-              vers + "/pix_rule_syslog_settings"))
-#else
         if (Resources::platform_res[platform.toLatin1().constData()]->getResourceBool(
               "/FWBuilderResources/Target/options/" +
               vers + "/pix_rule_syslog_settings"))
-#endif
         {
             m_dialog->pix_disable_rule_log->setEnabled(true);
             m_dialog->pix_logLevel->setEnabled(true);

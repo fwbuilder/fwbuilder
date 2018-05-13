@@ -163,10 +163,7 @@ static void doReminderAboutDataDir()
     msgBox.setWindowFlags(Qt::Window |
                           Qt::WindowTitleHint |
                           Qt::CustomizeWindowHint |
-#if QT_VERSION >= 0x040500
-                          Qt::WindowCloseButtonHint |
-#endif
-                          Qt::WindowSystemMenuHint);
+                          Qt::WindowCloseButtonHint);
 
     msgBox.setWindowTitle("Data directory conversion");
 

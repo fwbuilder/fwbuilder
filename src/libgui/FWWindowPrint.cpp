@@ -289,13 +289,8 @@ void FWWindow::printFirewallFromFile(QString fileName,
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,
-                                            firewallName.toAscii().data());
-#else
     FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,
                                             firewallName.toLatin1().data());
-#endif
     if (obj!=NULL)
     {
         int pageWidth = 0;

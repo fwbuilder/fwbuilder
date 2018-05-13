@@ -78,13 +78,8 @@ void newFirewallDialog::createFirewallFromTemplate()
     FWObject *template_fw = templates[itm];
     assert (template_fw!=NULL);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    string platform = readPlatform(m_dialog->platform).toAscii().constData();
-    string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
-#else
     string platform = readPlatform(m_dialog->platform).toLatin1().constData();
     string host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
-#endif
 
     map<int, int> map_ids;
     FWObject *no = db_copy->recursivelyCopySubtree(parent, template_fw, map_ids);

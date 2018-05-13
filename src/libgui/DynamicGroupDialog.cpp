@@ -248,15 +248,8 @@ void DynamicGroupDialog::loadObjFilter()
        ResizeToContents doesn't always seem to work */
     header->resizeSection(0, 35);
     header->setStretchLastSection(true);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    header->setResizeMode(0, QHeaderView::ResizeToContents);
-    header->setResizeMode(1, QHeaderView::ResizeToContents);
-#else
     header->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     header->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-#endif
-
     m_reloadObjFilter = false;
     m_loadedObjFilter = filter;
     m_loadedAllKeywords = obj->getAllKeywords();

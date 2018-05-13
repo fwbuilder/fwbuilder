@@ -66,13 +66,8 @@ ObjectListView::ObjectListView(QWidget* parent, const char*, Qt::WindowFlags f) 
     setItemMargin( 2 );*/
     setFocusPolicy( Qt::StrongFocus  );
     setFocus();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    header()->setClickable(true);
-    header()->setMovable(false);
-#else
     header()->setSectionsClickable(true);
     header()->setSectionsMovable(false);
-#endif
     setSortingEnabled(true);
     sortByColumn ( 0, Qt::AscendingOrder );
     connect(header(), SIGNAL(sectionClicked (int)),
@@ -168,11 +163,7 @@ void ObjectListView::dragEnterEvent( QDragEnterEvent *ev)
         qDebug("ObjectListView::dragEnterEvent");
     //ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QWidget *fromWidget = ev->source();
-#else
     QWidget *fromWidget = qobject_cast<QWidget*>(ev->source());
-#endif
 
     // The source of DnD object must be the same instance of fwbuilder
     if (!fromWidget)

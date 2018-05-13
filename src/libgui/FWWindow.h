@@ -63,7 +63,7 @@ class findDialog;
 class FindObjectWidget;
 class FindWhereUsedWidget;
 class CompilerOutputPanel;
-class TemporaryDir;
+class QTemporaryDir;
 
 namespace Ui {
     class FWBMainWindow_q;
@@ -119,7 +119,7 @@ class FWWindow : public QMainWindow {
 
     QList<QAction*> ruleStaticActions;
 
-    TemporaryDir *m_temporaryDir;
+    QTemporaryDir *m_temporaryDir;
 
 public:
     QVector <QString> windowsTitles;

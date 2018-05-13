@@ -29,13 +29,9 @@
 
 #include <qstring.h>
 #include <qpainter.h>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QTreeView>
-#   include <QTableView>
-#else
-#   include <QtWidgets/QTreeView>
-#   include <QtWidgets/QTableView>
-#endif
+
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QTableView>
 
 #include <vector>
 
