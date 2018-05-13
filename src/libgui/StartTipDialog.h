@@ -30,28 +30,22 @@
 #include "config.h"
 
 #include "ui_starttipdialog_q.h"
-#include "HttpGet.h"
 
 #include <QStringList>
 #include <QString>
 #include <QDialog>
 
-#include <time.h>
-
 class StartTipDialog : public QDialog
 {
     Q_OBJECT;
 
-    HttpGet *http_getter;
     QStringList tips;
     int current_tip;
-    time_t start_time;
     bool first_run;
     
     void showTip(const QString &txt, bool new_tip=true);
     void showTip(int tip_idx);
     QString getRandomTip();
-    virtual void closeEvent(QCloseEvent *event);
     
 public:
     Ui::StartTipDialog_q *m_dialog;
@@ -63,10 +57,8 @@ public:
     void run();
 
 public slots:
-    void downloadComplete(const QString&);
     void nextTip();
     void prevTip();
-    void showGettingStartedTutorial();
 
     virtual void close();
 };

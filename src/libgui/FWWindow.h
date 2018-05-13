@@ -31,7 +31,6 @@
 //#include <ui_pagesetupdialog_q.h>
 
 #include "RCS.h"
-#include "HttpGet.h"
 #include "printerStream.h"
 #include "ObjectEditor.h"
 #include "instDialog.h"
@@ -97,7 +96,6 @@ class FWWindow : public QMainWindow {
     QMdiArea *m_space;
     QMdiSubWindow *previous_subwindow;
     instDialog *instd;
-    HttpGet *current_version_http_getter;
 
     QString noFirewalls;
 
@@ -235,8 +233,6 @@ public slots:
 
     virtual void toolsImportAddressesFromFile();
     virtual void toolsSNMPDiscovery();
-    
-    virtual void checkForUpgrade(const QString&);
 
     virtual void projectWindowClosed();
 

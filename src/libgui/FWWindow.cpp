@@ -70,7 +70,6 @@
 
 #include "instConf.h"
 #include "instDialog.h"
-#include "HttpGet.h"
 #include "StartTipDialog.h"
 
 #include "events.h"
@@ -260,10 +259,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow->editMenu->insertAction(undoAction, redoAction);
 
     printer = new QPrinter(QPrinter::HighResolution);
-
-    current_version_http_getter = new HttpGet();
-    connect(current_version_http_getter, SIGNAL(done(const QString&)),
-            this, SLOT(checkForUpgrade(const QString&)));
 
     connect( m_mainWindow->findAction, SIGNAL( triggered() ),
              this, SLOT(search()) );
@@ -504,28 +499,6 @@ void FWWindow::updateWindowTitle()
 
 void FWWindow::startupLoad()
 {
-    if (st->getCheckUpdates())
-    {
-        QString update_url = CHECK_UPDATE_URL;
-
-        // Use env variable FWBUILDER_CHECK_UPDATE_URL to override url to test
-        // e.g. export FWBUILDER_CHECK_UPDATE_URL="file://$(pwd)/update_%1"
-        //
-        char* update_check_override_url = getenv("FWBUILDER_CHECK_UPDATE_URL");
-        if (update_check_override_url != NULL)
-            update_url = QString(update_check_override_url);
-
-        // start http query to get latest version from the web site
-        QString url = QString(update_url).arg(VERSION).arg(st->getAppGUID());
-
-        if (!current_version_http_getter->get(QUrl(url)) && fwbdebug)
-        {
-            qDebug() << "HttpGet error: "
-                     << current_version_http_getter->getLastError();
-            qDebug() << "Url: " << url;
-        }
-    }
-
     if (activeProject())
     {
         activeProject()->loadStandardObjects();
@@ -1405,80 +1378,6 @@ void FWWindow::updateTreeFont ()
                 trees[o]->setFont(font);
             }
         }
-    }
-}
-
-void FWWindow::checkForUpgrade(const QString& server_response)
-{
-    if (fwbdebug) qDebug() << "FWWindow::checkForUpgrade  server_response: "
-                           << server_response
-                           << " http_getter_status: " 
-                           << current_version_http_getter->getStatus();
-
-    disconnect(current_version_http_getter, SIGNAL(done(const QString&)),
-               this, SLOT(checkForUpgrade(const QString&)));
-
-    /*
-     * getStatus() returns error status if server esponded with 302 or
-     * 301 redirect. Only "200" is considered success.
-     */
-    if (current_version_http_getter->getStatus())
-    {
-        /*
-         * server response may be some html or other data in case
-         * connection goes via proxy, esp. with captive portals. We
-         * should not interpret that as "new version is available"
-         */
-        uint now = QDateTime::currentDateTime().toTime_t();
-        uint last_update_available_warning_time =
-            st->getTimeOfLastUpdateAvailableWarning();
-        bool update_available = (server_response.trimmed() == "update = 1");
-
-        if (update_available
-            && (now - last_update_available_warning_time > 24*3600)
-        )
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("A new version of Firewall Builder is available at"
-                   " http://www.fwbuilder.org"));
-            st->setTimeOfLastUpdateAvailableWarning(now);
-        } else
-        {
-            // format of the announcement string is very simple: it is just
-            // announcement = URL
-            // All on one line.
-            QRegExp announcement_re = QRegExp("announcement\\s*=\\s*(\\S+)");
-            if (announcement_re.indexIn(server_response.trimmed()) != -1)
-            {
-                QStringList list = announcement_re.capturedTexts();
-                if (list.size() > 1)
-                {
-                    QString announcement_url = list[1];
-                    uint last_annluncement_time = st->getTimeOfLastAnnouncement(
-                        announcement_url);
-
-                    if (fwbdebug)
-                        qDebug() << "announcement_url=" << announcement_url
-                                 << "last_annluncement_time=" << last_annluncement_time;
-
-                    if (last_annluncement_time == 0)
-                    {
-                        // We have an announcement to make and this user has not
-                        // seen it yet.
-                        st->setTimeOfLastAnnouncement(announcement_url, now);
-                        Help *h = Help::getHelpWindow(this);
-                        h->setSource(QUrl(announcement_url));
-                    }
-                }
-            }
-        }
-    } else
-    {
-        if (fwbdebug)
-            qDebug("Update check error:  %s",
-                   current_version_http_getter->getLastError().
-                   toLatin1().constData());
     }
 }
 
