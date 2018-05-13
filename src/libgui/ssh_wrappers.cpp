@@ -40,10 +40,7 @@
 #include <termios.h>
 #include <time.h>
 #include <sys/select.h>
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#endif
 
 #ifdef HAVE_PTY_H
 #include <pty.h>
