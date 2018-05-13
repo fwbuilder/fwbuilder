@@ -54,16 +54,6 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
-
 #include "fwbuilder/Resources.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
