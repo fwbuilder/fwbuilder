@@ -152,7 +152,7 @@ QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* , bool )
         QString master_file_marker = (idx==0) ? "* " : "  ";
         QString local_file_name = file_names[idx];
         QString remote_file_name = remote_file_names[idx];
-        script << MANIFEST_MARKER << master_file_marker
+        script << manifestMarker() << master_file_marker
                << escapeFileName(local_file_name);
         if (!remote_file_name.isEmpty() && remote_file_name != local_file_name)
             script << " " << escapeFileName(remote_file_name);

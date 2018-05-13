@@ -74,11 +74,11 @@ bool FirewallInstaller::parseManifestLine(const QString &line,
     // generated IOS and PIX scripts use '!' as a comment which places
     // manifest marker at offset of 1 char from the beginning of the
     // line
-    if (line.indexOf(MANIFEST_MARKER) == -1) return false;
+    if (line.indexOf(QString::fromStdString(fwcompiler::BaseCompiler::manifestMarker())) == -1) return false;
 
     if (fwbdebug)
         qDebug("Manifest line: '%s'", line.toLatin1().constData());
-    QString workline = line.split(MANIFEST_MARKER)[1].trimmed();
+    QString workline = line.split(QString::fromStdString(fwcompiler::BaseCompiler::manifestMarker()))[1].trimmed();
     if (workline.startsWith("*"))
     {
         *main_script = true;

@@ -159,6 +159,10 @@ public:
          */
         static void warningRegExp(std::list<std::string> *warn_regexp);
 
+        static const std::string manifestMarker() {
+            return "# files: ";
+        }
+
     };
 }
 
