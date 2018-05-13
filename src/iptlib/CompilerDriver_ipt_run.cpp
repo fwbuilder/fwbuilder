@@ -69,6 +69,7 @@
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Library.h"
+#include "fwbuilder/Constants.h"
 
 #include <QString>
 #include <QStringList>
@@ -169,7 +170,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             epilog_done = true;
         }
 
-        string os_variant = DISTRO;
+        string os_variant = Constants::getDistro();
 
 /* minimal sanity checking */
         if (os_family == "ipcop")
