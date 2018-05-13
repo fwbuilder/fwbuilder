@@ -30,15 +30,7 @@
 #include "VERSION.h"
 #include "../common/commoninit.h"
 
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
+#include <getopt.h>
 
 #include <QString>
 #include <QtWidgets/QApplication>
