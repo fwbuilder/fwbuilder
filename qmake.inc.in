@@ -199,8 +199,8 @@ FWB_SIG = $$(FWB_SIG)
 if (isEmpty(FWB_SIG)) { FWB_SIG=26932 }
 DEFINES += FWB_SIG=$$FWB_SIG
 
-QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror $$(CXXFLAGS)
-QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror $$(CXXFLAGS)
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror -Wno-error=maybe-uninitialized $$(CXXFLAGS)
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror -Wno-error=maybe-uninitialized $$(CXXFLAGS)
 
 exists(qmake2.inc) {
   include(qmake2.inc)

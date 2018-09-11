@@ -16,8 +16,8 @@ CPPUNIT_LIBS = @CPPUNIT_LIBS@
 CONFIG -= qt
 CONFIG += c++14
 
-QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror $$(CXXFLAGS)
-QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror $$(CXXFLAGS)
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror -Wno-error=maybe-uninitialized $$(CXXFLAGS)
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS -Wall -Wextra -Werror -Wno-error=maybe-uninitialized $$(CXXFLAGS)
 
 
 unix {
