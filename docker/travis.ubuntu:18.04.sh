@@ -2,5 +2,6 @@
 
 set -e -x
 
-./autogen.sh
-make -j$(nproc)
+qbs setup-toolchains --detect
+qbs setup-qt $(which qmake) qt
+qbs debug profile:qt

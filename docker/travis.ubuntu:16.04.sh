@@ -1,6 +1,1 @@
-#!/bin/bash
-
-set -e -x
-
-CXXFLAGS=-Wno-error=attributes ./autogen.sh
-make -j$(nproc)
+travis.ubuntu:18.04.sh
