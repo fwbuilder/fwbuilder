@@ -89,7 +89,6 @@ int fwbdebug = 0;
 bool safemode = false;
 bool cli_print = false;
 QString cli_print_fwname = "";
-int sig = FWB_SIG;
 
 void usage()
 {

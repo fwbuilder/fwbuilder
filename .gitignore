@@ -57,3 +57,7 @@ src/libfwbuilder/etc/fwbuilder.dtd
 src/res/objects_init.xml
 src/res/templates.xml
 VERSION.h
+default/
+debug/
+release/
+*.qbs.user

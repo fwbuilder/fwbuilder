@@ -258,18 +258,18 @@ void RCS::init()
 {
     if (rcs_file_name=="")
     {
-        rcs_file_name = "rcs";
-        rlog_file_name = "rlog";
-        rcsdiff_file_name = "rcsdiff";
-        ci_file_name = "ci";
-        co_file_name = "co";
+        rcs_file_name = QStringLiteral("rcs");
+        rlog_file_name = QStringLiteral("rlog");
+        rcsdiff_file_name = QStringLiteral("rcsdiff");
+        ci_file_name = QStringLiteral("ci");
+        co_file_name = QStringLiteral("co");
 
 #ifdef _WIN32
-        rcs_file_name = getPathToBinary(rcs_file_name.append(".exe"));
-        rlog_file_name = getPathToBinary(rlog_file_name.append(".exe"));
-        rcsdiff_file_name = getPathToBinary(rcsdiff_file_name.append(".exe"));
-        ci_file_name = getPathToBinary(ci_file_name.append(".exe"));
-        co_file_name = getPathToBinary(co_file_name.append(".exe"));
+        rcs_file_name = QStringLiteral("rcs.exe");
+        rlog_file_name = QStringLiteral("rlog.exe");
+        rcsdiff_file_name = QStringLiteral("rcsdiff.exe");
+        ci_file_name = QStringLiteral("ci.exe");
+        co_file_name = QStringLiteral("co.exe");
 #endif
     }
 

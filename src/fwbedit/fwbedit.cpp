@@ -108,7 +108,6 @@ using namespace std;
 FWWindow *mw = NULL; 
 FWBSettings *st = NULL; 
 FWBApplication *app = NULL; 
-int sig = FWB_SIG; 
 
 string cmd_str = "";
 command cmd = NONE;

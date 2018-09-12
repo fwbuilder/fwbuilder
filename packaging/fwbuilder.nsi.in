@@ -12,7 +12,6 @@ Var STARTMENU_FOLDER
 ; with the path defined in FWBSettings class
 ;
 !define GENERATION "@GENERATION@"
-!define GENERATION_SHORT "@GENERATION_SHORT@"
 !define VERSION "@VERSION@"
 
 
@@ -178,8 +177,8 @@ FunctionEnd
   LicenseData "doc\COPYING"
 
   !define MUI_HEADERIMAGE
-  !define MUI_HEADERIMAGE_BITMAP       packaging\fwbuilder-160x60.bmp
-  !define MUI_WELCOMEFINISHPAGE_BITMAP packaging\fwbuilder-164x314.bmp
+  !define MUI_HEADERIMAGE_BITMAP       fwbuilder-160x60.bmp
+  !define MUI_WELCOMEFINISHPAGE_BITMAP fwbuilder-164x314.bmp
 
 ;****************************************************************************
 ; The following macros add PageEx statements
@@ -213,16 +212,16 @@ Section "FWBuilder (required)"
 
   SetOutPath $INSTDIR\resources
 
-  File src\res\resources.xml
-  File src\res\templates.xml
-  File src\res\objects_init.xml
-  File src\libfwbuilder\etc\fwbuilder.dtd
+  File resources\resources.xml
+  File resources\templates.xml
+  File resources\objects_init.xml
+  File resources\fwbuilder.dtd
 
-  File /r src\res\configlets
-  File /r src\res\help
-  File /r src\res\os
-  File /r src\res\platform
-  File /r src\libfwbuilder\migration
+  File /r resources\configlets
+  File /r resources\help
+  File /r resources\os
+  File /r resources\platform
+  File /r resources\migration
 
   SetOutPath $INSTDIR\resources\locale
 
@@ -244,19 +243,19 @@ Section "FWBuilder (required)"
   File "doc\README.nxosacl"
   File "doc\README.junos"
 
-  File /oname=fwbuilder.ico "src\gui\fwbuilder-windows.ico"
+  File /oname=fwbuilder.ico "fwbuilder-windows.ico"
 
-  File /a "src\gui\release\fwbuilder.exe"
-  File /a "src\fwbedit\release\fwbedit.exe"
-  File /a "src\iosacl\release\fwb_iosacl.exe"
-  File /a "src\ipt\release\fwb_ipt.exe"
-  File /a "src\ipf\release\fwb_ipf.exe"
-  File /a "src\ipfw\release\fwb_ipfw.exe"
-  File /a "src\pf\release\fwb_pf.exe"
-  File /a "src\pix\release\fwb_pix.exe"
-  File /a "src\procurve_acl\release\fwb_procurve_acl.exe"
-  File /a "src\nxosacl\release\fwb_nxosacl.exe"
-  File /a "src\junosacl\release\fwb_junosacl.exe"
+  File /a "fwbuilder.exe"
+  File /a "fwbedit.exe"
+  File /a "fwb_iosacl.exe"
+  File /a "fwb_ipt.exe"
+  File /a "fwb_ipf.exe"
+  File /a "fwb_ipfw.exe"
+  File /a "fwb_pf.exe"
+  File /a "fwb_pix.exe"
+  File /a "fwb_procurve_acl.exe"
+  File /a "fwb_nxosacl.exe"
+  File /a "fwb_junosacl.exe"
 
 ; Install Qt and its dependencies
 
