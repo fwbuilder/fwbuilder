@@ -17,7 +17,7 @@ FWBProduct {
             "README.*"
             ]
         qbs.install: qbs.targetOS.contains("linux") || qbs.targetOS.contains("windows")
-        qbs.installDir: qbs.targetOS.contains("unix") ? "share/doc/fwbuilder-"+versionStr : "doc"
+        qbs.installDir: qbs.targetOS.contains("unix") ? "share/doc/fwbuilder-"+project.version : "doc"
     }
 
     Group {

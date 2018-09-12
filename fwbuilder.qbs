@@ -7,7 +7,7 @@ Project {
 
     Git { id: git }
 
-    property string version: git.version || "5.99.1"
+    property string version: git.version || "6.0.0-beta"
     property string xmlVersion: "24"
     property string installPrefix: (qbs.installPrefix ? qbs.installPrefix : '/usr')
     property string resourcesDir: {

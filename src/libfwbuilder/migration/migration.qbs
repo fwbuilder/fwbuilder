@@ -18,7 +18,7 @@ FWBProduct {
             else if (qbs.targetOS.contains("windows"))
                 return "resources"
             else
-                return "share/fwbuilder-"+versionStr
+                return "share/fwbuilder-"+project.version
         }
         qbs.installSourceBase: ".."
     }
