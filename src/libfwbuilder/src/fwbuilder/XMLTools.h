@@ -54,6 +54,7 @@ namespace libfwbuilder
 #define FROMXMLCAST(x) ((const char *)x)
 #define STRTOXMLCAST(x) ((xmlChar *)x.c_str())
 #define TOXMLCAST(x) ((xmlChar *)x)
+#define FREEXMLBUFF(x) xmlFree((void*)(x))
 
 class XMLTools
 {
