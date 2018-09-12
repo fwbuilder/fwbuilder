@@ -51,9 +51,7 @@
 #endif
 
 
-#ifdef HAVE_LIBXSLT_XSLTCONFIG_H
-# include <libxslt/xsltconfig.h>
-#endif 
+#include <libxslt/xsltconfig.h>
 
 #include <libxslt/xslt.h>
 #include <libxslt/xsltInternals.h>
@@ -504,11 +502,7 @@ void XMLTools::saveFile(xmlDocPtr doc,
     
     setDTD(doc, type_name, dtd_file);
 
-#ifdef HAVE_XMLSAVEFORMATFILEENC
     if(xmlSaveFormatFileEnc(file_name.c_str(), doc, "utf-8", 1)==-1)
-#else
-    if(xmlSaveFileEnc(file_name.c_str(), doc, "utf-8")==-1)
-#endif
         throw FWException("Error saving XML file: "+file_name);
 }
 

@@ -1010,11 +1010,7 @@ multimap<string, SNMPVariable* > SNMPConnection::walk(const string &variable)
                         continue;
                     }
                     char n[MAX_NAME_LEN];
-#ifdef HAVE_SNPRINT_OBJID
                     snprint_objid (n, sizeof(n), vars->name, vars->name_length);
-#else
-                    sprint_objid (n, vars->name, vars->name_length);
-#endif
                     res.insert(make_pair(string(n),SNMPVariable::create(vars)));
                     if ((vars->type != SNMP_ENDOFMIBVIEW) &&
                         (vars->type != SNMP_NOSUCHOBJECT) &&
