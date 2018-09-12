@@ -70,10 +70,10 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     setWindowTitle(QObject::tr("%1 advanced settings").arg(description.c_str()));
 
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     if (fwbdebug)
         qDebug("%s",Resources::getTargetOptionStr(
@@ -246,10 +246,10 @@ void iptAdvancedDialog::accept()
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.saveAll(fwoptions);
 

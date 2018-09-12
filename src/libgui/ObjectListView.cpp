@@ -58,7 +58,7 @@ using namespace libfwbuilder;
 ObjectListView::ObjectListView(QWidget* parent, const char*, Qt::WindowFlags f) :
     QTreeWidget(parent)
 {
-    db = NULL;
+    db = nullptr;
     setWindowFlags(f);
     /*setColumnWidthMode(0, QTreeWidget::Maximum);
     setColumnWidthMode(1, QTreeWidget::Maximum);
@@ -86,14 +86,14 @@ bool ObjectListView::event(QEvent *event)
 
             //viewportToContents(pos.x(),pos.y(),cx,cy);
 
-            FWObject  *obj=NULL;
+            FWObject  *obj=nullptr;
             QRect      cr;
 
             QTreeWidgetItem *itm = itemAt(QPoint(cx,cy - header()->height()));
-            if (itm==NULL) return false;
+            if (itm==nullptr) return false;
             int obj_id = itm->data(0, Qt::UserRole).toInt();
             obj = db->findInIndex(obj_id);
-            if (obj==NULL) return false;
+            if (obj==nullptr) return false;
 
             cr = visualItemRect(itm);
 
@@ -122,7 +122,7 @@ QDrag* ObjectListView::dragObject()
 {
     QTreeWidgetItem *ovi = currentItem();
     // currentItem returns NULL if the list is empty
-    if (ovi==NULL) return NULL;
+    if (ovi==nullptr) return nullptr;
 
     int obj_id = ovi->data(0, Qt::UserRole).toInt();
     FWObject *obj = db->findInIndex(obj_id);
@@ -183,7 +183,7 @@ void ObjectListView::dragEnterEvent( QDragEnterEvent *ev)
     for (list<FWObject*>::iterator i=dragol.begin();i!=dragol.end(); ++i)
     {
         FWObject *dragobj = *i;
-        assert(dragobj!=NULL);
+        assert(dragobj!=nullptr);
 
         if (FWBTree().isSystem(dragobj))
         {

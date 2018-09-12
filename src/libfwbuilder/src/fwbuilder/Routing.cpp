@@ -50,7 +50,7 @@ Routing::~Routing()  {}
 Rule* Routing::createRule()
 {
     FWObjectDatabase* db=getRoot();
-    assert(db!=NULL);
+    assert(db!=nullptr);
     return db->createRoutingRule();
 }
 

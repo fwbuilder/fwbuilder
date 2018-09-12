@@ -80,12 +80,12 @@ void MetricEditorPanel::applyChanges()
 void MetricEditorPanel::loadFWObject(libfwbuilder::FWObject *obj)
 {
     RoutingRule *r=RoutingRule::cast(obj);
-    if (r==NULL) return;
+    if (r==nullptr) return;
     rule=r;
 
     FWObject *o = r;
-    while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
-    assert(o!=NULL);
+    while (o!=nullptr && Firewall::cast(o)==nullptr) o=o->getParent();
+    assert(o!=nullptr);
 
     m_widget->spin_box->setMinimum( 0);
     m_widget->spin_box->setMaximum( 255);

@@ -55,7 +55,7 @@ using namespace std;
 
 
 newClusterDialog::newClusterDialog(QWidget *parentw, FWObject *_p)
-    : QDialog(parentw), ncl(NULL), fwlist(NULL), tmpldb(NULL)
+    : QDialog(parentw), ncl(nullptr), fwlist(nullptr), tmpldb(nullptr)
 {
     parent = _p;
     db = parent->getRoot();
@@ -307,7 +307,7 @@ void newClusterDialog::finishClicked()
     if (unloadTemplatesLib)
     {
         delete tmpldb;
-        tmpldb = NULL;
+        tmpldb = nullptr;
 
         unloadTemplatesLib = false;
     }

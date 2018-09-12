@@ -68,12 +68,12 @@ void AddressTable::fromXML(xmlNodePtr root)
     const char *n;
     
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("filename")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("filename", n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("run_time")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("run_time", n);
     FREEXMLBUFF(n);
 }
@@ -156,7 +156,7 @@ void AddressTable::loadFromSource(bool ipv6, FWOptions *options,
             }
             if (!buf.empty())
             {
-                new_addr = NULL;
+                new_addr = nullptr;
                 if (ipv6 && buf.find(":")!=string::npos)
                 {
                     try

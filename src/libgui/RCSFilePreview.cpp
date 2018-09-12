@@ -83,7 +83,7 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 
     if (fwbdebug) qDebug("RCSFilePreview: constructor done");
 
-    rcs = NULL;
+    rcs = nullptr;
     RO = false;
 }
 
@@ -96,7 +96,7 @@ RCSFilePreview::~RCSFilePreview()
 
 void RCSFilePreview::openReadOnly()
 {
-    if (rcs!=NULL) rcs->setRO(true);
+    if (rcs!=nullptr) rcs->setRO(true);
     RO = true;
     accept();
 }
@@ -111,7 +111,7 @@ void RCSFilePreview::selectedRevision(QTreeWidgetItem *itm)
     if (itm == m_widget->RCSTreeView->topLevelItem(0)) return;
 
     QString rev = itm->text(0);
-    assert(rcs!=NULL);
+    assert(rcs!=nullptr);
     rcs->setSelectedRev(rev);
     m_widget->comment->setText( rcsComments[rev] );
     if (fwbdebug)
@@ -131,7 +131,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
 
     m_widget->RCSTreeView->clear();
 
-    if (rcs!=NULL) delete rcs;
+    if (rcs!=nullptr) delete rcs;
     rcs = new RCS(filename);
 
     if (rcs->revisions.size()==0)
@@ -155,8 +155,8 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
     QList<Revision>::iterator i;
     QList<RCSViewItem*> itemList;
     QList<RCSViewItem*>::iterator ili;
-    RCSViewItem* latest_revision_item = NULL;
-    RCSViewItem* latest_date_item = NULL;
+    RCSViewItem* latest_revision_item = nullptr;
+    RCSViewItem* latest_date_item = nullptr;
     string latest_revision = "1.0";
     QString latest_date = "";
 
@@ -164,7 +164,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
     {
         rcsComments[(*i).rev] = (*i).log;
 
-        RCSViewItem *itm = NULL;
+        RCSViewItem *itm = nullptr;
         if (st->getRCSFilePreviewStyle()==1)
         {
             // List style
@@ -187,7 +187,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
                     if ((*ili)->text(0) == branch_root)
                     {
                         QTreeWidgetItem *br = *ili;
-                        if (br!=NULL)  itm = addRevision((*i), br);
+                        if (br!=nullptr)  itm = addRevision((*i), br);
                     }
                 }
             }
@@ -222,7 +222,7 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
              SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
              this, SLOT(selectedRevision(QTreeWidgetItem*)));
 
-    RCSViewItem* show_item = NULL;
+    RCSViewItem* show_item = nullptr;
 
     if (m_widget->RCSTreeView->sortColumn()==0 && latest_revision_item)
         show_item = latest_revision_item;

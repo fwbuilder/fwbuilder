@@ -63,7 +63,7 @@ void CreateObjectsPage::initializePage()
     m_dialog->progressBar->setFormat("%v / %m");
     m_dialog->progressBar->setMaximum(objects.size() / 2);
 
-    FWObject *last_object = NULL;
+    FWObject *last_object = nullptr;
     QString name;
     QString addr;
     int counter = 1;
@@ -95,7 +95,7 @@ void CreateObjectsPage::initializePage()
         if (! type.isEmpty())
         {
             Address *obj = Address::cast(mw->createObject(type, name));
-            assert(obj!=NULL);
+            assert(obj!=nullptr);
             obj->setName(name.toUtf8().constData());
             obj->setAddress(InetAddr(addr.toStdString()));
             obj->setNetmask(InetAddr(InetAddr::getAllOnes()));

@@ -68,7 +68,7 @@ void Mutex::unlock() const
 
 Cond::Cond()
 {
-    pthread_cond_init( &cond, NULL );
+    pthread_cond_init( &cond, nullptr );
 }
 
 Cond::~Cond()

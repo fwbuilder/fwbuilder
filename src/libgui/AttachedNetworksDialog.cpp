@@ -59,7 +59,7 @@ AttachedNetworksDialog::AttachedNetworksDialog(QWidget *parent) : BaseObjectDial
 {
     m_dialog = new Ui::AttachedNetworksDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -70,7 +70,7 @@ void AttachedNetworksDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     
     init=true;
 
@@ -129,7 +129,7 @@ void AttachedNetworksDialog::validate(bool *result)
 
     *result = true;
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     if (!validateName(this, obj, m_dialog->obj_name->text()))
     {
@@ -144,7 +144,7 @@ void AttachedNetworksDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));

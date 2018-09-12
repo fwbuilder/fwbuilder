@@ -183,7 +183,7 @@ void ObjectManipulator::expandObjectInTree(FWObject *obj)
     //if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
 
     QTreeWidgetItem *it = allItems[o];
-    if (it==NULL)
+    if (it==nullptr)
     {
         if (fwbdebug) qDebug() << "####  Tree node not found";
         return;
@@ -196,7 +196,7 @@ void ObjectManipulator::expandOrCollapseCurrentTreeNode(QTreeWidgetItem *item,
                                                         bool expand)
 {
     QTreeWidgetItem *parent = item->parent();
-    if (expand && parent != NULL && ! parent->isExpanded())
+    if (expand && parent != nullptr && ! parent->isExpanded())
         parent->setExpanded(true);
 
     item->setExpanded(expand);
@@ -224,14 +224,14 @@ static ObjectTreeViewItem *findUserFolder(ObjectTreeViewItem *parent,
 {
     if (folder.isEmpty()) return parent;
 
-    ObjectTreeViewItem *otvi = 0;
+    ObjectTreeViewItem *otvi = nullptr;
 
     int childNo = 0;
-    while(parent->child(childNo) != NULL && otvi == 0) {
+    while(parent->child(childNo) != nullptr && otvi == nullptr) {
         ObjectTreeViewItem *sub =
             dynamic_cast<ObjectTreeViewItem *>(parent->child(childNo));
-        if (sub != 0 &&
-            sub->getUserFolderParent() != 0 &&
+        if (sub != nullptr &&
+            sub->getUserFolderParent() != nullptr &&
             sub->getUserFolderName() == folder) {
             otvi = sub;
             return otvi;
@@ -263,12 +263,12 @@ static ObjectTreeViewItem *findUserFolder(ObjectTreeViewItem *parent,
 ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
                                                     FWObject *obj)
 {
-    if (FWReference::cast(obj)!=NULL) return NULL;
-    if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return NULL;
+    if (FWReference::cast(obj)!=nullptr) return nullptr;
+    if (Resources::global_res->getObjResourceBool(obj,"hidden") ) return nullptr;
 
     if (Resources::global_res->getResourceBool(
             string("/FWBuilderResources/Type/") +
-            obj->getTypeName() + "/hidden")) return NULL;
+            obj->getTypeName() + "/hidden")) return nullptr;
 
     ObjectTreeViewItem *item = itm;
      if (!obj->getStr("folder").empty()) {
@@ -276,7 +276,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
 
         /* If we can't find the user folder, put it under the system
            folder and get rid of the folder attribute */
-        if (item == 0) {
+        if (item == nullptr) {
             item = itm;
             obj->setStr("folder", "");
         }
@@ -316,15 +316,15 @@ void ObjectManipulator::insertSubtree(FWObject *parent, FWObject *obj)
     ObjectTreeViewItem* parent_item = allItems[parent];
     insertSubtree(parent_item, obj);
     QTreeWidgetItem *itm = allItems[parent];
-    if (itm==NULL) return;
-    refreshSubtree(itm, NULL);
+    if (itm==nullptr) return;
+    refreshSubtree(itm, nullptr);
 }
 
 void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
 {
     this->m_objectManipulator->filter->clear();
     ObjectTreeViewItem *nitm = insertObject(itm, obj);
-    if (nitm==NULL) return;
+    if (nitm==nullptr) return;
 
     if (FWBTree().isStandardFolder(obj)) nitm->setExpanded( st->getExpandTree());
 
@@ -387,7 +387,7 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
     for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
     {
         FWObject *o1=*m;
-        if (FWReference::cast(o1)!=NULL) continue;
+        if (FWReference::cast(o1)!=nullptr) continue;
 
         insertSubtree(nitm, o1);
     }
@@ -404,7 +404,7 @@ void ObjectManipulator::removeObjectFromTreeView(FWObject *obj)
     objTreeView->clearLastSelected();
 
     ObjectTreeViewItem *itm = allItems[obj];
-    allItems[obj] = NULL;
+    allItems[obj] = nullptr;
     if (itm && itm->parent())
     {
         itm->parent()->takeChild(itm->parent()->indexOfChild(itm));
@@ -431,11 +431,11 @@ FWObject* ObjectManipulator::findRuleSetInHistoryByParentFw(FWObject* parent)
         if (RuleSet::cast(obj))
         {
             FWObject *parent_fw = Host::getParentHost(obj);
-            if (parent_fw != NULL && parent_fw == parent) return obj;
+            if (parent_fw != nullptr && parent_fw == parent) return obj;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ObjectManipulator::removeObjectFromHistory(FWObject *obj)
@@ -509,7 +509,7 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
                  << "subtree=" << subtree;
 
     QTreeWidgetItem *itm = allItems[obj];
-    if (itm==NULL) return;
+    if (itm==nullptr) return;
 
     // first, update tree item that represents @obj. Its name or label
     // (second column) might have changed
@@ -528,7 +528,7 @@ void ObjectManipulator::updateObjectInTree(FWObject *obj, bool subtree)
 
     // now if we need to update subtree, call refreshSubtree()
     if (subtree)
-        refreshSubtree(itm, NULL);
+        refreshSubtree(itm, nullptr);
 }
 
 void ObjectManipulator::clearObjects()
@@ -543,7 +543,7 @@ void ObjectManipulator::clearObjects()
     {
 
         QTreeWidget *objTreeView = libs_model->getTreeWidget(i);
-        if (objTreeView == NULL) continue;
+        if (objTreeView == nullptr) continue;
         m_objectManipulator->widgetStack->removeWidget(objTreeView);
        // delete otv;
 
@@ -554,7 +554,7 @@ void ObjectManipulator::clearObjects()
 
     libs_model->addStaticItems();
     
-    current_tree_view = NULL;
+    current_tree_view = nullptr;
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects done");
 }
@@ -580,7 +580,7 @@ void ObjectManipulator::loadObjects()
 
     clearObjects();
 
-    FWObject *firstUserLib = NULL;
+    FWObject *firstUserLib = nullptr;
     list<FWObject*> ll = m_project->db()->getByType( Library::TYPENAME );
 
     for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
@@ -599,7 +599,7 @@ void ObjectManipulator::loadObjects()
 
         if ( lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
              lib->getId()!=FWObjectDatabase::TEMPLATE_LIB_ID &&
-             firstUserLib==NULL) firstUserLib = *i;
+             firstUserLib==nullptr) firstUserLib = *i;
 
         addLib( lib );
 
@@ -609,7 +609,7 @@ void ObjectManipulator::loadObjects()
 
     }
 
-    if (firstUserLib==NULL) firstUserLib = ll.front();
+    if (firstUserLib==nullptr) firstUserLib = ll.front();
     openLib( firstUserLib );
 
     if (fwbdebug)
@@ -774,9 +774,9 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
 {
     string folder;
 
-    if(dest != NULL)
+    if(dest != nullptr)
     {
-        if (dest->getUserFolderParent() != 0) {
+        if (dest->getUserFolderParent() != nullptr) {
             folder = dest->getUserFolderName().toUtf8().constData();
         } else {
             folder = dest->getFWObject()->getStr("folder");
@@ -807,7 +807,7 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
 
     ObjectTreeViewItem *item = allItems[obj];
 
-    if (item == 0) return;
+    if (item == nullptr) return;
 
     ObjectTreeViewItem *sub = new ObjectTreeViewItem(item);
 
@@ -834,7 +834,7 @@ std::string ObjectManipulator::getFolderNameString(libfwbuilder::FWObject *obj) 
     FWObject *parent = obj->getParent();
 
 
-    while(parent != NULL) {
+    while(parent != nullptr) {
         result = parent->getName() + "/" + result;
         parent = parent->getParent();
     }
@@ -848,16 +848,16 @@ void ObjectManipulator::removeUserFolderFromTree(FWObject *obj,
                                                  const QString &folder)
 {
     ObjectTreeViewItem *item = allItems[obj];
-    if (item == 0) return;
+    if (item == nullptr) return;
 
     ObjectTreeViewItem *sub = findUserFolder(item, folder);
-    if (sub == 0) return;
+    if (sub == nullptr) return;
 
     QList<QTreeWidgetItem *> children = sub->takeChildren();
     while (!children.isEmpty()) {
         ObjectTreeViewItem *child = dynamic_cast<ObjectTreeViewItem *>
             (children.takeFirst());
-        assert(child != 0);
+        assert(child != nullptr);
 
         FWObject *obj = child->getFWObject();
         if (mw->isEditorVisible() && mw->getOpenedEditor() == obj) {
@@ -870,7 +870,7 @@ void ObjectManipulator::removeUserFolderFromTree(FWObject *obj,
     item->removeChild(sub);
     delete sub;
 
-    refreshSubtree(item, 0);
+    refreshSubtree(item, nullptr);
 }
 
 
@@ -881,7 +881,7 @@ void ObjectManipulator::moveToFromUserFolderInTree(FWObject *obj,
 {
     ObjectTreeViewItem *parent = allItems[obj];
     ObjectTreeViewItem *toMove = allItems[objToMove];
-    if (parent == 0 || toMove == 0) return;
+    if (parent == nullptr || toMove == nullptr) return;
 
     ObjectTreeViewItem *oldItem = findUserFolder(parent, oldFolder);
     ObjectTreeViewItem *newItem = findUserFolder(parent, newFolder);
@@ -889,7 +889,7 @@ void ObjectManipulator::moveToFromUserFolderInTree(FWObject *obj,
     oldItem->removeChild(toMove);
     newItem->addChild(toMove);
 
-    refreshSubtree(newItem, 0);
+    refreshSubtree(newItem, nullptr);
 }
 
                                                    

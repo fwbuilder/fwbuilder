@@ -82,7 +82,7 @@ void Compiler::epilog()
 
 void Compiler::abort(const string &errstr)
 {
-    BaseCompiler::abort(fw, source_ruleset, NULL, errstr);
+    BaseCompiler::abort(fw, source_ruleset, nullptr, errstr);
 }
 
 void Compiler::abort(FWObject *rule, const string &errstr)
@@ -92,7 +92,7 @@ void Compiler::abort(FWObject *rule, const string &errstr)
 
 void Compiler::error(const string &errstr)
 {
-    BaseCompiler::error(fw, source_ruleset, NULL, errstr);
+    BaseCompiler::error(fw, source_ruleset, nullptr, errstr);
 }
 
 void Compiler::error(FWObject *rule, const string &errstr)
@@ -102,7 +102,7 @@ void Compiler::error(FWObject *rule, const string &errstr)
 
 void Compiler::warning(const string &errstr)
 {
-    BaseCompiler::warning(fw, source_ruleset, NULL, errstr);
+    BaseCompiler::warning(fw, source_ruleset, nullptr, errstr);
 }
 
 void Compiler::warning(FWObject *rule, const string &errstr)
@@ -136,9 +136,9 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
 { 
     initialized = false;
     _cntr_ = 1; 
-    group_registry = NULL;
+    group_registry = nullptr;
 
-    temp_ruleset = NULL; 
+    temp_ruleset = nullptr; 
 
     debug = 0;
     debug_rule = -1;
@@ -148,13 +148,13 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
     single_rule_ruleset_name = "";
     single_rule_position = -1;
 
-    dbcopy = NULL;
-    persistent_objects = NULL;
-    fw = NULL;
-    fwopt = NULL;
+    dbcopy = nullptr;
+    persistent_objects = nullptr;
+    fw = nullptr;
+    fwopt = nullptr;
     fw_id = -1;
 
-    if (_db != NULL && _fw != NULL)
+    if (_db != nullptr && _fw != nullptr)
     {
         assert(_fw->getRoot() == _db);
 
@@ -174,40 +174,40 @@ void Compiler::_init(FWObjectDatabase *_db, Firewall *_fw)
 
 Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy)
 {
-    source_ruleset = NULL;
+    source_ruleset = nullptr;
     ruleSetName = "";
-    osconfigurator = NULL;
+    osconfigurator = nullptr;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
-    persistent_objects = NULL;
+    persistent_objects = nullptr;
     _init(_db, fw);
 }
 
 Compiler::Compiler(FWObjectDatabase *_db, Firewall *fw, bool ipv6_policy,
 		   OSConfigurator *_oscnf)
 {
-    source_ruleset = NULL;
+    source_ruleset = nullptr;
     ruleSetName = "";
     osconfigurator = _oscnf;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
-    persistent_objects = NULL;
+    persistent_objects = nullptr;
     _init(_db, fw);
 }
 
 // this constructor is used by class Preprocessor, it does not call _init
 Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 {
-    source_ruleset = NULL;
+    source_ruleset = nullptr;
     ruleSetName = "";
-    osconfigurator = NULL;
+    osconfigurator = nullptr;
     countIPv6Rules = 0;
     ipv6 = ipv6_policy;
     initialized = false;
     _cntr_ = 1; 
-    persistent_objects = NULL;
-    fw = NULL; 
-    temp_ruleset = NULL; 
+    persistent_objects = nullptr;
+    fw = nullptr; 
+    temp_ruleset = nullptr; 
     debug = 0;
     debug_rule = -1;
     rule_debug_on = false;
@@ -218,7 +218,7 @@ Compiler::Compiler(FWObjectDatabase*, bool ipv6_policy)
 Compiler::~Compiler()
 {
     deleteRuleProcessors();
-    dbcopy = NULL;
+    dbcopy = nullptr;
 }
 
 void Compiler::setPersistentObjects(Library* po)
@@ -291,8 +291,8 @@ void Compiler::_expand_group_recursive(FWObject *o, list<FWObject*> &ol)
  */
     MultiAddress *adt = MultiAddress::cast(o);
 
-    if ((Group::cast(o)!=NULL && adt==NULL) ||
-        (adt!=NULL && adt->isCompileTime()))
+    if ((Group::cast(o)!=nullptr && adt==nullptr) ||
+        (adt!=nullptr && adt->isCompileTime()))
     {
 	for (FWObject::iterator i2=o->begin(); i2!=o->end(); ++i2)
         {
@@ -406,7 +406,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
         }
 
         if (o->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
-            MultiAddress::cast(o)!=NULL ||
+            MultiAddress::cast(o)!=nullptr ||
             Interface::cast(o) ||
             physAddress::cast(o))
         {
@@ -417,7 +417,7 @@ void Compiler::_expand_addr_recursive(Rule *rule, FWObject *s,
  
     if (addrlist.empty())
     {
-        if (RuleElement::cast(s)==NULL) ol.push_back(s);
+        if (RuleElement::cast(s)==nullptr) ol.push_back(s);
     }
     else
     {
@@ -480,15 +480,15 @@ void Compiler::_expand_interface(Rule *rule,
     FWObject *p = Host::getParentHost(iface);
     //FWObject *p = iface->getParentHost();
     Host *hp = Host::cast(p);
-    if (hp==NULL) return;  // something is very broken
+    if (hp==nullptr) return;  // something is very broken
     FWOptions *hopt = hp->getOptionsObject();
-    bool use_mac = (hopt!=NULL && hopt->getBool("use_mac_addr_filter")); 
+    bool use_mac = (hopt!=nullptr && hopt->getBool("use_mac_addr_filter")); 
 
     for (FWObject::iterator i1=iface->begin(); i1!=iface->end(); ++i1) 
     {
 	FWObject *o= *i1;
 
-        if (physAddress::cast(o)!=NULL)
+        if (physAddress::cast(o)!=nullptr)
         {
             if (use_mac) ol.push_back(o);
             continue;
@@ -504,7 +504,7 @@ void Compiler::_expand_interface(Rule *rule,
         }
 
         if ( ! iface->isUnnumbered() &&
-             Address::cast(o)!=NULL &&
+             Address::cast(o)!=nullptr &&
              MatchesAddressFamily(o)) ol.push_back(o);
     }
 
@@ -540,7 +540,7 @@ bool compare_addresses(FWObject *o1, FWObject *o2)
 {
     Address *a1 = Address::cast(o1);
     Address *a2 = Address::cast(o2);
-    if (a1 == NULL || a2 == NULL)
+    if (a1 == nullptr || a2 == nullptr)
     {
         // one or both could be MultiAddress objects (e.g. DNSName)
         return o1->getName() < o2->getName();
@@ -548,8 +548,8 @@ bool compare_addresses(FWObject *o1, FWObject *o2)
 
     const InetAddr *addr1 = a1->getAddressPtr();
     const InetAddr *addr2 = a2->getAddressPtr();
-    if (addr1 == NULL) return true;
-    if (addr2 == NULL) return false;
+    if (addr1 == nullptr) return true;
+    if (addr2 == nullptr) return false;
     return *addr1 < *addr2;
 }
 
@@ -594,7 +594,7 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
         FWObject *o = FWReference::getObject(*i1);
-	assert(o!=NULL);
+	assert(o!=nullptr);
 
         // if this is address range, check if it matches current address
         // family. If it is not address range, put it back into the rule element
@@ -628,7 +628,7 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
                     cl.push_back(h);
 
                     // see GroupRegistry::registerGroupObject()
-                    if (group_registry != NULL)
+                    if (group_registry != nullptr)
                     {
                         group_registry->setGroupRegistryKey(
                             h, group_registry->getGroupRegistryKey(aro));
@@ -659,7 +659,7 @@ void Compiler::debugRule()
          i!=source_ruleset->end(); i++)
     {
 	Rule *rule = Rule::cast( *i );
-        if (rule == NULL) continue;
+        if (rule == nullptr) continue;
         if (rule_debug_on && rule->getPosition()==debug_rule )
         {
             info(debugPrintRule(rule));
@@ -687,7 +687,7 @@ string Compiler::debugPrintRule(libfwbuilder::Rule *rule)
 void Compiler::add(BasicRuleProcessor* rp) 
 { 
     rule_processors.push_back(rp); 
-    if (rule_debug_on && dynamic_cast<simplePrintProgress*>(rp)==NULL) 
+    if (rule_debug_on && dynamic_cast<simplePrintProgress*>(rp)==nullptr) 
         rule_processors.push_back(new Debug());
 }
 
@@ -728,14 +728,14 @@ Compiler::Begin::Begin(const std::string &n) : BasicRuleProcessor(n)
 
 bool Compiler::Begin::processNext()
 {
-    assert(compiler!=NULL);
+    assert(compiler!=nullptr);
     if (!init)
     {
         for (FWObject::iterator i=compiler->source_ruleset->begin();
              i!=compiler->source_ruleset->end(); ++i)
         {
             Rule *rule = Rule::cast(*i);
-            if (rule == NULL) continue;
+            if (rule == nullptr) continue;
             if (rule->isDisabled()) continue;
             if (rule->isDummyRule()) {
                 compiler->warning(rule, "Rule contains dummy object and is not parsed.");
@@ -759,8 +759,8 @@ bool Compiler::Begin::processNext()
 
 bool Compiler::printTotalNumberOfRules::processNext()
 {
-    assert(compiler!=NULL);
-    assert(prev_processor!=NULL);
+    assert(compiler!=nullptr);
+    assert(prev_processor!=nullptr);
 
     slurp();
     if (tmp_queue.size()==0) return false;
@@ -775,8 +775,8 @@ bool Compiler::printTotalNumberOfRules::processNext()
 
 bool Compiler::createNewCompilerPass::processNext()
 {
-    assert(compiler!=NULL);
-    assert(prev_processor!=NULL);
+    assert(compiler!=nullptr);
+    assert(prev_processor!=nullptr);
 
     slurp();
     if (tmp_queue.size()==0) return false;
@@ -786,8 +786,8 @@ bool Compiler::createNewCompilerPass::processNext()
 
 bool Compiler::Debug::processNext()
 {
-    assert(compiler!=NULL);
-    assert(prev_processor!=NULL);
+    assert(compiler!=nullptr);
+    assert(prev_processor!=nullptr);
 
     slurp();
     if (tmp_queue.size()==0) return false;
@@ -813,10 +813,10 @@ bool Compiler::Debug::processNext()
 
 bool Compiler::singleRuleFilter::processNext()
 {
-    assert(compiler!=NULL);
-    assert(prev_processor!=NULL);
+    assert(compiler!=nullptr);
+    assert(prev_processor!=nullptr);
 
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     if (!compiler->single_rule_mode)
     {
@@ -833,7 +833,7 @@ bool Compiler::singleRuleFilter::processNext()
 
 bool Compiler::simplePrintProgress::processNext()
 {
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     std::string rl=rule->getLabel();
     if (rl!=current_rule_label) {
@@ -856,7 +856,7 @@ bool Compiler::simplePrintProgress::processNext()
  */
 bool Compiler::splitIfRuleElementMatchesFW::processNext()
 {
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
     int nre = re->size();
@@ -867,7 +867,7 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
     {
         FWObject *obj = FWReference::getObject(*i1);
         Address *a = Address::cast(obj);
-        assert(a!=NULL);
+        assert(a!=nullptr);
 
         if (a->getId() == compiler->fw->getId() ||
             a->getInt("parent_cluster_id") == compiler->fw->getId() ||
@@ -911,7 +911,7 @@ bool Compiler::splitIfRuleElementMatchesFW::processNext()
 bool Compiler::ReplaceFirewallObjectWithSelfInRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule();
-    if (rule==NULL) return false;
+    if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1)
@@ -922,7 +922,7 @@ bool Compiler::ReplaceFirewallObjectWithSelfInRE::processNext()
             DNSName *self = DNSName::cast(
                 compiler->persistent_objects->findObjectByName(
                     DNSName::TYPENAME, "self"));
-            if (self == NULL)
+            if (self == nullptr)
             {
                 self = compiler->dbcopy->createDNSName();
                 self->setName("self");
@@ -944,16 +944,16 @@ bool Compiler::ReplaceFirewallObjectWithSelfInRE::processNext()
 bool Compiler::RegisterGroupsAndTablesInRE::processNext()
 {
     Rule *rule = prev_processor->getNextRule();
-    if (rule==NULL) return false;
+    if (rule==nullptr) return false;
 
-    if (compiler->group_registry != NULL)
+    if (compiler->group_registry != nullptr)
     {
         RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
         for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
         {
             FWObject *obj = FWReference::getObject(*i);
-            if (ObjectGroup::cast(obj)!=NULL && obj->size() > 0)
+            if (ObjectGroup::cast(obj)!=nullptr && obj->size() > 0)
             {
                 compiler->registerGroupObject(re, ObjectGroup::cast(obj));
             }
@@ -966,7 +966,7 @@ bool Compiler::RegisterGroupsAndTablesInRE::processNext()
 
 void Compiler::registerGroupObject(RuleElement *re, ObjectGroup *grp)
 {
-    assert(group_registry!=NULL);
+    assert(group_registry!=nullptr);
     list<FWObject*> objects;
     expandGroup(grp, objects);
     group_registry->registerGroup(grp, objects);
@@ -980,7 +980,7 @@ bool Compiler::equalObj::operator()(FWObject *o)
 
 bool Compiler::singleObjectNegation::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     RuleElement *rel = RuleElement::cast(rule->getFirstByType(re_type));
     assert(rel);
@@ -996,7 +996,7 @@ bool Compiler::singleObjectNegation::processNext()
         } else
         {
             FWObject *o = rel->front();
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
             Address *reladdr = Address::cast(o);
             if ( reladdr && reladdr->countInetAddresses(true)==1 &&
                  !compiler->complexMatch(reladdr, compiler->fw)) 
@@ -1031,10 +1031,10 @@ bool Compiler::singleObjectNegation::processNext()
  */
 bool Compiler::fullInterfaceNegationInRE::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *itfre = RuleElement::cast(rule->getFirstByType(re_type));
 
-    if (itfre==NULL)
+    if (itfre==nullptr)
         compiler->abort(rule, "Missing interface rule element");
 
     FWOptions *fwopt = compiler->getCachedFwOpt();
@@ -1051,7 +1051,7 @@ bool Compiler::fullInterfaceNegationInRE::processNext()
         for (FWObject::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
         {
             Interface *intf = Interface::cast(*i);
-            if (intf == NULL) continue;
+            if (intf == nullptr) continue;
             if (intf->isUnprotected()) continue;
             if (intf->isLoopback()) continue;
 
@@ -1066,7 +1066,7 @@ bool Compiler::fullInterfaceNegationInRE::processNext()
         {
             // Only interface objects are allowed in the "Interface" rule element
             Interface *rule_iface = Interface::cast(FWReference::getObject(*i));
-            if (rule_iface == NULL) continue;
+            if (rule_iface == nullptr) continue;
             // If this interface belongs to a cluster (which can only happen
             // if the rule set belongs to  a cluster), then replace it with
             // corresponding interface of the member
@@ -1097,21 +1097,21 @@ bool Compiler::fullInterfaceNegationInRE::processNext()
  */
 bool Compiler::replaceClusterInterfaceInItfRE::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *itfre = RuleElement::cast(rule->getFirstByType(re_type));
-    if (itfre==NULL)
+    if (itfre==nullptr)
         compiler->abort(rule, "Missing interface rule element");
 
     map<FWObject*, FWObject*> interface_replacement;
 
     for (FWObject::iterator i=itfre->begin(); i!=itfre->end(); ++i)
     {
-        Interface *member_iface = NULL;
+        Interface *member_iface = nullptr;
 
         // Only interface objects are allowed in the "Interface" rule element
         FWObject *o = FWReference::getObject(*i);
         Interface *rule_iface = Interface::cast(o);
-        if (rule_iface == NULL) continue;
+        if (rule_iface == nullptr) continue;
         // If this interface belongs to a cluster (which can only happen
         // if the rule set belongs to  a cluster), then replace it with
         // corresponding interface of the member
@@ -1143,9 +1143,9 @@ bool Compiler::replaceClusterInterfaceInItfRE::processNext()
 
 bool Compiler::eliminateDuplicatesInRE::processNext()
 {
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
     
-    if (comparator==NULL) comparator = new equalObj();
+    if (comparator==nullptr) comparator = new equalObj();
 
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
@@ -1154,7 +1154,7 @@ bool Compiler::eliminateDuplicatesInRE::processNext()
     for(list<FWObject*>::iterator i=re->begin(); i!=re->end(); ++i)
     {
         FWObject *obj = FWReference::getObject(*i);
-        if (obj == NULL) continue;
+        if (obj == nullptr) continue;
 
         comparator->set(obj);
 
@@ -1183,7 +1183,7 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
     for (FWObject::iterator i=obj->begin(); i!=obj->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
-        if (Group::cast(o)!=NULL)
+        if (Group::cast(o)!=nullptr)
         {
             if (o->getId()==grid || obj->getId()==o->getId())
             {
@@ -1199,10 +1199,10 @@ void  Compiler::recursiveGroupsInRE::isRecursiveGroup(int grid, FWObject *obj)
 
 bool Compiler::recursiveGroupsInRE::processNext()
 {
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
-    if (re == NULL || re->isAny())
+    if (re == nullptr || re->isAny())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -1212,7 +1212,7 @@ bool Compiler::recursiveGroupsInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
-        if (Group::cast(o)!=NULL)  isRecursiveGroup(o->getId(),o);
+        if (Group::cast(o)!=nullptr)  isRecursiveGroup(o->getId(),o);
     }
 
     tmp_queue.push_back(rule);
@@ -1240,11 +1240,11 @@ int  Compiler::emptyGroupsInRE::countChildren(FWObject *obj)
         // have some addresses at run time. So we just count it as a
         // regular object.
 
-        if (MultiAddress::cast(o)!=NULL && MultiAddress::cast(o)->isRunTime())
+        if (MultiAddress::cast(o)!=nullptr && MultiAddress::cast(o)->isRunTime())
             n++;
         else
         {
-            if (Group::cast(o)!=NULL)  n += countChildren(o);
+            if (Group::cast(o)!=nullptr)  n += countChildren(o);
             else n++;   // but if it is not a group, then we count it.
         }
     }
@@ -1253,10 +1253,10 @@ int  Compiler::emptyGroupsInRE::countChildren(FWObject *obj)
 
 bool Compiler::emptyGroupsInRE::processNext()
 {
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
-    if (re == NULL || re->isAny())
+    if (re == nullptr || re->isAny())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -1267,10 +1267,10 @@ bool Compiler::emptyGroupsInRE::processNext()
     {
         FWObject *o = FWReference::getObject(*i);
  
-        if ( MultiAddress::cast(o)!=NULL && MultiAddress::cast(o)->isRunTime())
+        if ( MultiAddress::cast(o)!=nullptr && MultiAddress::cast(o)->isRunTime())
             continue;
 
-        if (Group::cast(o)!=NULL && countChildren(o)==0)
+        if (Group::cast(o)!=nullptr && countChildren(o)==0)
             cl.push_back(o);
     }
 
@@ -1335,10 +1335,10 @@ bool Compiler::emptyGroupsInRE::processNext()
  */
 bool Compiler::swapMultiAddressObjectsInRE::processNext()
 {
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
-    if (re == NULL || re->isAny())
+    if (re == nullptr || re->isAny())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -1348,7 +1348,7 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o = FWReference::getObject(*i);
-        if (MultiAddress::cast(o)!=NULL && MultiAddress::cast(o)->isRunTime())
+        if (MultiAddress::cast(o)!=nullptr && MultiAddress::cast(o)->isRunTime())
             cl.push_back(MultiAddress::cast(o));
     }
 
@@ -1369,7 +1369,7 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
             int mart_id = FWObjectDatabase::registerStringId(mart_id_str);
             MultiAddressRunTime *mart = MultiAddressRunTime::cast(
                 compiler->dbcopy->findInIndex(mart_id));
-            if (mart==NULL)
+            if (mart==nullptr)
             {
                 mart = new MultiAddressRunTime(ma);
 
@@ -1396,7 +1396,7 @@ bool Compiler::swapMultiAddressObjectsInRE::processNext()
 
 bool Compiler::expandMultipleAddressesInRE::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
     if (re) compiler->_expand_addr(rule, re, true);
     tmp_queue.push_back(rule);
@@ -1406,12 +1406,12 @@ bool Compiler::expandMultipleAddressesInRE::processNext()
 
 bool Compiler::checkForObjectsWithErrors::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     
     for (FWObject::iterator it1=rule->begin(); it1!=rule->end(); it1++)
     {
         RuleElement *re = RuleElement::cast(*it1);
-        if (re == NULL || re->isAny()) continue;
+        if (re == nullptr || re->isAny()) continue;
         for (FWObject::iterator it2=re->begin(); it2!=re->end(); it2++)
         {
             FWObject *obj = FWReference::getObject(*it2);
@@ -1435,10 +1435,10 @@ bool Compiler::checkForObjectsWithErrors::processNext()
 
 bool Compiler::replaceFailoverInterfaceInRE::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
 
-    if (re == NULL || re->isAny())
+    if (re == nullptr || re->isAny())
     {
         tmp_queue.push_back(rule);
         return true;
@@ -1449,7 +1449,7 @@ bool Compiler::replaceFailoverInterfaceInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         Interface *intf = Interface::cast(FWReference::getObject(*i));
-        if (intf==NULL) continue;
+        if (intf==nullptr) continue;
 
         if (intf->isFailoverInterface()) cl.push_back(intf);
         else
@@ -1500,7 +1500,7 @@ bool Compiler::replaceFailoverInterfaceInRE::processNext()
 bool Compiler::FindAddressFamilyInRE(FWObject *parent, bool ipv6)
 {
     Address *addr = Address::cast(parent);
-    if (addr!=NULL)
+    if (addr!=nullptr)
     {
         const  InetAddr *inet_addr = addr->getAddressPtr();
         if (ipv6)
@@ -1559,7 +1559,7 @@ bool Compiler::dropRuleWithEmptyRE::isREEmpty(Rule *rule,
  */
 bool Compiler::dropRuleWithEmptyRE::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     if (PolicyRule::cast(rule) &&
         (isREEmpty(rule, RuleElementSrc::TYPENAME) ||
@@ -1607,7 +1607,7 @@ void Compiler::DropByServiceTypeInRE(RuleElement *rel, bool drop_ipv6)
 
         Service *svc = Service::cast(o);
 
-        if (svc == NULL)
+        if (svc == nullptr)
         {
             cerr << endl;
             cerr << "Rule " << Rule::cast(rel->getParent())->getLabel()
@@ -1641,7 +1641,7 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
-        if (o==NULL)
+        if (o==nullptr)
         {
             //Rule *rule = Rule::cast(re->getParent());
             FWReference *refo = FWReference::cast(*i);
@@ -1651,7 +1651,7 @@ bool Compiler::catchUnnumberedIfaceInRE(RuleElement *re)
                 FWObjectDatabase::getStringId(refo->getPointerId());
             abort(re->getParent(), errmsg);
         }
-        err |= ((iface=Interface::cast(o))!=NULL &&
+        err |= ((iface=Interface::cast(o))!=nullptr &&
                 (iface->isUnnumbered() || iface->isBridgePort())
         );
     }
@@ -1682,7 +1682,7 @@ Service* Compiler::getFirstSrv(PolicyRule *rule)
 Interval* Compiler::getFirstWhen(PolicyRule *rule)
 {
     RuleElementInterval *when = rule->getWhen();
-    if (when==NULL) return NULL;  // when is optional element
+    if (when==nullptr) return nullptr;  // when is optional element
     FWObject *o = FWReference::getObject(when->front());
     return Interval::cast(o);
 }
@@ -1690,7 +1690,7 @@ Interval* Compiler::getFirstWhen(PolicyRule *rule)
 Interface* Compiler::getFirstItf(PolicyRule *rule)
 {
     RuleElementItf *itf = rule->getItf();
-    if (itf==NULL || itf->size()==0) return NULL;  // itf is optional element
+    if (itf==nullptr || itf->size()==0) return nullptr;  // itf is optional element
     FWObject *o = FWReference::getObject(itf->front());
     return Interface::cast(o);
 }
@@ -1698,7 +1698,7 @@ Interface* Compiler::getFirstItf(PolicyRule *rule)
 Address* Compiler::getFirstOSrc(NATRule *rule)
 {
     RuleElementOSrc *osrc = rule->getOSrc();
-    assert(osrc!=NULL);
+    assert(osrc!=nullptr);
     FWObject *o = FWReference::getObject(osrc->front());
     return Address::cast(o);
 }
@@ -1706,7 +1706,7 @@ Address* Compiler::getFirstOSrc(NATRule *rule)
 Address* Compiler::getFirstODst(NATRule *rule)
 {
     RuleElementODst *odst = rule->getODst();
-    assert(odst!=NULL);
+    assert(odst!=nullptr);
     FWObject *o = FWReference::getObject(odst->front());
     return Address::cast(o);
 }
@@ -1714,7 +1714,7 @@ Address* Compiler::getFirstODst(NATRule *rule)
 Service* Compiler::getFirstOSrv(NATRule *rule)
 {
     RuleElementOSrv *osrv = rule->getOSrv();
-    assert(osrv!=NULL);
+    assert(osrv!=nullptr);
     FWObject *o = FWReference::getObject(osrv->front());
     return Service::cast(o);
 }
@@ -1722,7 +1722,7 @@ Service* Compiler::getFirstOSrv(NATRule *rule)
 Address* Compiler::getFirstTSrc(NATRule *rule)
 {
     RuleElementTSrc *tsrc = rule->getTSrc();
-    assert(tsrc!=NULL);
+    assert(tsrc!=nullptr);
     FWObject *o = FWReference::getObject(tsrc->front());
     return Address::cast(o);
 }
@@ -1730,7 +1730,7 @@ Address* Compiler::getFirstTSrc(NATRule *rule)
 Address* Compiler::getFirstTDst(NATRule *rule)
 {
     RuleElementTDst *tdst = rule->getTDst();
-    assert(tdst!=NULL);
+    assert(tdst!=nullptr);
     FWObject *o = FWReference::getObject(tdst->front());
     return Address::cast(o);
 }
@@ -1738,7 +1738,7 @@ Address* Compiler::getFirstTDst(NATRule *rule)
 Service* Compiler::getFirstTSrv(NATRule *rule)
 {
     RuleElementTSrv *tsrv = rule->getTSrv();
-    assert(tsrv!=NULL);
+    assert(tsrv!=nullptr);
     FWObject *o = FWReference::getObject(tsrv->front());
     return Service::cast(o);
 }
@@ -1842,21 +1842,21 @@ Address* Compiler::correctForCluster(Address *addr)
  */
 bool Compiler::DropRulesByAddressFamilyAndServiceType::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     for(FWObject::iterator it=rule->begin(); it!=rule->end(); ++it)
     {
         RuleElement *re = RuleElement::cast(*it);
-        if (re == NULL) continue;  // probably RuleOptions object
+        if (re == nullptr) continue;  // probably RuleOptions object
 
         bool orig_any = re->isAny();
         if (orig_any) continue;
 
         FWObject *first_object = FWReference::getObject(re->front());
-        if (Address::cast(first_object) != NULL)
+        if (Address::cast(first_object) != nullptr)
             compiler->DropAddressFamilyInRE(re, drop_ipv6);
 
-        if (Service::cast(first_object) != NULL)
+        if (Service::cast(first_object) != nullptr)
             compiler->DropByServiceTypeInRE(re, drop_ipv6);
 
         if (!orig_any && re->isAny())

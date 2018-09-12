@@ -16,7 +16,7 @@ ANTLR_USING_NAMESPACE(std)
 
 NoViableAltException::NoViableAltException(RefAST t)
   : RecognitionException("NoViableAlt","<AST>",-1,-1),
-    token(0), node(t)
+    token(nullptr), node(t)
 {
 }
 

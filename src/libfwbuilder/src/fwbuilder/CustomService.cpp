@@ -106,7 +106,7 @@ void CustomService::fromXML(xmlNodePtr root)
         if (cur && !xmlIsBlankNode(cur))
         {
     	    n = FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("platform")));
-            assert(n!=NULL);
+            assert(n!=nullptr);
             cont = FROMXMLCAST( xmlNodeGetContent(cur) );
             if (cont)
             {
@@ -138,8 +138,8 @@ xmlNodePtr CustomService::toXML(xmlNodePtr parent)
     {
         const string &platform  = (*i).first;
         const string &code      = (*i).second;
-        xmlChar *codebuf = xmlEncodeSpecialChars(NULL, STRTOXMLCAST(code) );
-        opt=xmlNewChild(me,NULL,TOXMLCAST("CustomServiceCommand"), codebuf);
+        xmlChar *codebuf = xmlEncodeSpecialChars(nullptr, STRTOXMLCAST(code) );
+        opt=xmlNewChild(me,nullptr,TOXMLCAST("CustomServiceCommand"), codebuf);
         FREEXMLBUFF(codebuf);
 
         xmlNewProp(opt, TOXMLCAST("platform") , STRTOXMLCAST(platform));
@@ -149,7 +149,7 @@ xmlNodePtr CustomService::toXML(xmlNodePtr parent)
 
 bool CustomService::cmp(const FWObject *obj, bool recursive)
 {
-    if (CustomService::constcast(obj)==NULL) return false;
+    if (CustomService::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
     
     const CustomService *o2 = CustomService::constcast(obj);

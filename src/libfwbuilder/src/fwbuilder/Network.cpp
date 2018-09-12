@@ -64,12 +64,12 @@ void Network::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
     
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setAddress(InetAddr(n));
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setNetmask(InetAddr(n));
     FREEXMLBUFF(n);
 }
@@ -120,12 +120,12 @@ const InetAddr* Network::getFirstHostPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getFirstHostPtr();
-    return NULL;
+    return nullptr;
 }
 
 const InetAddr* Network::getLastHostPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getLastHostPtr();
-    return NULL;
+    return nullptr;
 }

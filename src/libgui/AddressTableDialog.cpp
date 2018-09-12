@@ -66,7 +66,7 @@ AddressTableDialog::AddressTableDialog(QWidget *parent) : BaseObjectDialog(paren
 {
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -80,7 +80,7 @@ void AddressTableDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
 
     init = true;
@@ -116,7 +116,7 @@ void AddressTableDialog::validate(bool *res)
 {
     *res=true;
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
@@ -127,7 +127,7 @@ void AddressTableDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     AddressTable *s = dynamic_cast<AddressTable*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

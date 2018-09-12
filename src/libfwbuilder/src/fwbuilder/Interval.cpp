@@ -184,42 +184,42 @@ void Interval::fromXML(xmlNodePtr root)
     const char *n;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_minute")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("from_minute", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_hour")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("from_hour", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_day")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("from_day", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_month")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("from_month", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_year")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("from_year", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_weekday")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("from_weekday", n);
         FREEXMLBUFF(n);
@@ -227,49 +227,49 @@ void Interval::fromXML(xmlNodePtr root)
 
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_minute")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("to_minute", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_hour")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("to_hour", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_day")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("to_day", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_month")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("to_month", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_year")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("to_year", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_weekday")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("to_weekday", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("days_of_week")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("days_of_week", n);
         FREEXMLBUFF(n);

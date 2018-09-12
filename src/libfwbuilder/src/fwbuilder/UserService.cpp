@@ -76,7 +76,7 @@ xmlNodePtr UserService::toXML(xmlNodePtr parent)
 
 bool UserService::cmp(const FWObject *obj, bool recursive)
 {
-    if (UserService::constcast(obj)==NULL) return false;
+    if (UserService::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
     
     const UserService *user_serv = UserService::constcast(obj);

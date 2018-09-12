@@ -76,7 +76,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
     inst_dlg->addToLog(QString("Installation plan:\n"));
 
     Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
     if (pis->getCommand()!="")
     {

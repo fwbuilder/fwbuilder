@@ -147,7 +147,7 @@ string getAttributeValue(FWObject *obj, const string &attr_name)
         return DNSName::cast(obj)->getSourceName();
     }
 
-    if (TCPUDPService::cast(obj)!=NULL)
+    if (TCPUDPService::cast(obj)!=nullptr)
     {
         ostringstream str;
         if (attr_name=="src_range_start") 
@@ -161,7 +161,7 @@ string getAttributeValue(FWObject *obj, const string &attr_name)
         if (str.tellp()>0) return str.str();
     }
 
-    if (ICMPService::cast(obj)!=NULL)
+    if (ICMPService::cast(obj)!=nullptr)
     {
         if (attr_name=="icmp_type") return obj->getStr("type");
         if (attr_name=="icmp_code") return obj->getStr("code");

@@ -60,10 +60,10 @@ freebsdAdvancedDialog::freebsdAdvancedDialog(QWidget *parent,FWObject *o)
     obj=o;
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     QStringList threeStateMapping;
 
@@ -117,7 +117,7 @@ void freebsdAdvancedDialog::accept()
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions *fwopt=(Firewall::cast(new_state))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     data.saveAll(fwopt);
 

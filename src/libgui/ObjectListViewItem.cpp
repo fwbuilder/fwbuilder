@@ -38,7 +38,7 @@ using namespace libfwbuilder;
 bool ObjectListViewItem::operator< ( const QTreeWidgetItem & other ) const
 {
     QTreeWidget * widget = treeWidget() ;
-    if (widget==NULL) return false;
+    if (widget==nullptr) return false;
 
     int col = widget->sortColumn ();
     if (col==1)
@@ -53,7 +53,7 @@ bool ObjectListViewItem::operator< ( const QTreeWidgetItem & other ) const
 
         ICMPService * ricmp = ICMPService::cast(right);
         ICMPService * licmp = ICMPService::cast(left);
-        if (rtcpudp != NULL && ltcpudp != NULL)
+        if (rtcpudp != nullptr && ltcpudp != nullptr)
         {
             int ls = ltcpudp->getDstRangeStart();
             int rs = rtcpudp->getDstRangeStart();
@@ -73,13 +73,13 @@ bool ObjectListViewItem::operator< ( const QTreeWidgetItem & other ) const
                 return false ;
             }
         }
-        if (rip != NULL && lip != NULL)
+        if (rip != nullptr && lip != nullptr)
         {
             int lpn = lip->getProtocolNumber();
             int rpn = rip->getProtocolNumber();
             return (lpn < rpn);
         }
-        if (ricmp != NULL && licmp != NULL)
+        if (ricmp != nullptr && licmp != nullptr)
         {
             int lpn = licmp->getInt("code");
             int rpn = ricmp->getInt("code");

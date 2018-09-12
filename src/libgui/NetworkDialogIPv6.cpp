@@ -59,7 +59,7 @@ NetworkDialogIPv6::NetworkDialogIPv6(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::NetworkDialogIPv6_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -70,7 +70,7 @@ void NetworkDialogIPv6::loadFWObject(FWObject *o)
 {
     obj=o;
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -111,20 +111,20 @@ void NetworkDialogIPv6::validate(bool *res)
     }
 
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
-    assert(s != NULL);
+    assert(s != nullptr);
     try
     {
         InetAddr(AF_INET6, m_dialog->address->text().toStdString() );
     } catch (FWException &ex)
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
                                   tr("Illegal IPv6 address '%1'").arg(
                                       m_dialog->address->text()),
-                                  tr("&Continue"), 0, 0,
+                                  tr("&Continue"), nullptr, nullptr,
                                   0 );
             blockSignals(false);
         }
@@ -140,13 +140,13 @@ void NetworkDialogIPv6::validate(bool *res)
     else
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
                                   tr("Illegal netmask '%1'").arg(
                                       m_dialog->netmask->text() ),
-                                  tr("&Continue"), 0, 0,
+                                  tr("&Continue"), nullptr, nullptr,
                                   0 );
             blockSignals(false);
         }
@@ -161,7 +161,7 @@ void NetworkDialogIPv6::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

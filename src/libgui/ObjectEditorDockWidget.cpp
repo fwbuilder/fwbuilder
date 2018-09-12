@@ -36,7 +36,7 @@ ObjectEditorDockWidget::ObjectEditorDockWidget(const QString &title,
                                                Qt::WindowFlags flags) :
     QDockWidget(title, parent, flags)
 {
-    editor = NULL;
+    editor = nullptr;
     connect(this, SIGNAL(topLevelChanged(bool)),
             this, SLOT(topLevelChanged(bool)));
 }
@@ -45,7 +45,7 @@ ObjectEditorDockWidget::ObjectEditorDockWidget(QWidget *parent,
                                                Qt::WindowFlags flags) :
     QDockWidget(parent, flags)
 {
-    editor = NULL;
+    editor = nullptr;
     connect(this, SIGNAL(topLevelChanged(bool)),
             this, SLOT(topLevelChanged(bool)));
 }

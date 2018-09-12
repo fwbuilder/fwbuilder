@@ -52,7 +52,7 @@ bsdIfaceOptsDialog::bsdIfaceOptsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
-    cluster_interface = (Cluster::cast(obj->getParent()) != NULL);
+    cluster_interface = (Cluster::cast(obj->getParent()) != nullptr);
 
     setInterfaceTypes(m_dialog->iface_type, Interface::cast(obj),
                       ifopt->getStr("type").c_str());
@@ -108,7 +108,7 @@ void bsdIfaceOptsDialog::accept()
     // new_state  is a copy of the interface object
     FWObject* new_state = cmd->getNewState();
     FWOptions* ifopt = Interface::cast(new_state)->getOptionsObject();
-    assert(ifopt!=NULL);
+    assert(ifopt!=nullptr);
 
     if (cluster_interface)
     {

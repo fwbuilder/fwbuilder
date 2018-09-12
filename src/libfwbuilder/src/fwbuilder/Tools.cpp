@@ -68,7 +68,7 @@ char *cxx_strdup(const string &x)
 char *cxx_strdup(const char *x)
 {
     if(!x)
-        return (char*)NULL;
+        return (char*)nullptr;
 
     char *res=new char[strlen(x)+1];
     strcpy(res,x);
@@ -130,10 +130,10 @@ list<string> getDirList(const std::string &dir,
 
 #ifndef _WIN32
     DIR *d=opendir(dir.c_str());
-    if (d!=NULL)
+    if (d!=nullptr)
     {
         struct dirent *de;
-        while ( (de=readdir(d))!=NULL ) 
+        while ( (de=readdir(d))!=nullptr ) 
         {
             if (strcmp(de->d_name,".")==SAME || strcmp(de->d_name,"..")==SAME)
                 continue;

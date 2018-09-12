@@ -66,7 +66,7 @@ Firewall::Firewall()
 void Firewall::init(FWObjectDatabase *root)
 {
     FWObject *opt = getFirstByType(FirewallOptions::TYPENAME);
-    if (opt == NULL)
+    if (opt == nullptr)
     {
         add( root->createFirewallOptions() );
         RuleSet *p;
@@ -87,45 +87,45 @@ Firewall::~Firewall()  {}
 void Firewall::fromXML(xmlNodePtr root)
 {
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("platform")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("platform", n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("version", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("host_OS")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("host_OS", n);
         FREEXMLBUFF(n);
     }
     
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastModified")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("lastModified", n);
         FREEXMLBUFF(n);
     }
     
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastInstalled")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("lastInstalled", n);
         FREEXMLBUFF(n);
     }
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastCompiled")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("lastCompiled", n);
         FREEXMLBUFF(n);
     }
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("inactive")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("inactive", n);
         FREEXMLBUFF(n);
@@ -344,12 +344,12 @@ FWObject& Firewall::duplicateForUndo(const FWObject *obj)
 
 void  Firewall::updateLastInstalledTimestamp()
 {
-    setInt("lastInstalled",time(NULL));
+    setInt("lastInstalled",time(nullptr));
 }
 
 void Firewall::updateLastModifiedTimestamp()
 {
-    setInt("lastModified",time(NULL));
+    setInt("lastModified",time(nullptr));
 }
 
 bool Firewall::needsInstall()
@@ -382,7 +382,7 @@ time_t Firewall::getLastCompiled()
 }
 void   Firewall::updateLastCompiledTimestamp()
 {
-    setInt("lastCompiled",time(NULL));
+    setInt("lastCompiled",time(nullptr));
 }
 
 bool   Firewall::getInactive()

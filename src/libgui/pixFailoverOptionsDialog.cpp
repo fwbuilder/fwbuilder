@@ -50,7 +50,7 @@ pixFailoverOptionsDialog::pixFailoverOptionsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *gropt = FWOptions::cast(obj);
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
     
     data.registerOption(m_dialog->pix_failover_key,
                         gropt,
@@ -90,7 +90,7 @@ void pixFailoverOptionsDialog::reject()
 bool pixFailoverOptionsDialog::validate()
 {
     bool valid = true;
-    QWidget *focus = NULL;
+    QWidget *focus = nullptr;
     QString message;
 
     // key must be set

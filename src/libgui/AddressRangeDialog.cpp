@@ -56,7 +56,7 @@ AddressRangeDialog::AddressRangeDialog(QWidget *parent):
 {
     m_dialog = new Ui::AddressRangeDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -70,7 +70,7 @@ void AddressRangeDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     AddressRange *s = dynamic_cast<AddressRange*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -99,7 +99,7 @@ void AddressRangeDialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
     AddressRange *s = dynamic_cast<AddressRange*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     try
     {
         InetAddr range_start(AF_UNSPEC, m_dialog->rangeStart->text().toLatin1().constData());
@@ -118,13 +118,13 @@ void AddressRangeDialog::validate(bool *res)
     {
         *res = false;
         // show warning dialog only if app has focus
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
                 this, "Firewall Builder",
                 QString::fromUtf8(ex.toString().c_str()),
-                tr("&Continue"), 0, 0,
+                tr("&Continue"), nullptr, nullptr,
                 0 );
             blockSignals(false);
         }
@@ -138,7 +138,7 @@ void AddressRangeDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     AddressRange *s = dynamic_cast<AddressRange*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

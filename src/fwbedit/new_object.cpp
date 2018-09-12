@@ -248,7 +248,7 @@ bool testPlatform(const string &pl, const string &os)
 FWObject* createObject(FWObjectDatabase *objdb,
                        const string &type, const string &parent)
 {
-    FWObject* obj = NULL;
+    FWObject* obj = nullptr;
     string path;
 
     obj = objdb->create(type);

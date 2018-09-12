@@ -196,15 +196,15 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
 {
     bool res = true;
     FWObject *p;
-    PolicyRule *rule = NULL;
+    PolicyRule *rule = nullptr;
 
     p = opt;
     do {
         p = p->getParent();
-        if (PolicyRule::cast(p)!=NULL) rule = PolicyRule::cast(p);
-    } while ( p!=NULL && Firewall::cast(p)==NULL );
+        if (PolicyRule::cast(p)!=nullptr) rule = PolicyRule::cast(p);
+    } while ( p!=nullptr && Firewall::cast(p)==nullptr );
 
-    if (p==NULL)
+    if (p==nullptr)
     {
         qDebug() << "isDefaultPolicyRuleOptions()"
                  << "Can not locate parent Firewall object for the options object";
@@ -315,7 +315,7 @@ bool isDefaultPolicyRuleOptions(FWOptions *opt)
             res = true;
 	}
 
-        if (rule!=NULL)
+        if (rule!=nullptr)
         {
             PolicyRule::Action act = rule->getAction();
 
@@ -348,9 +348,9 @@ bool isDefaultNATRuleOptions(FWOptions *opt)
 
     p=opt;
     do {  p=p->getParent();
-    } while ( p!=NULL && Firewall::cast(p)==NULL );
+    } while ( p!=nullptr && Firewall::cast(p)==nullptr );
 
-    assert(p!=NULL);
+    assert(p!=nullptr);
 
     QString platform = p->getStr("platform").c_str();
 
@@ -496,7 +496,7 @@ void getVersionsForPlatform(const QString &platform, std::list<QStringPair> &res
 void getStateSyncTypesForOS(const QString &host_os, std::list<QStringPair> &res)
 {
     Resources* os_res = Resources::os_res[host_os.toStdString()];
-    if (os_res==NULL) return;
+    if (os_res==nullptr) return;
     list<string> protocols;
     os_res->getResourceStrList("/FWBuilderResources/Target/protocols/state_sync",
                                protocols);
@@ -506,7 +506,7 @@ void getStateSyncTypesForOS(const QString &host_os, std::list<QStringPair> &res)
 void getFailoverTypesForOS(const QString &host_os, std::list<QStringPair> &res)
 {
     Resources* os_res = Resources::os_res[host_os.toStdString()];
-    if (os_res==NULL) return;
+    if (os_res==nullptr) return;
     list<string> protocols;
     os_res->getResourceStrList("/FWBuilderResources/Target/protocols/failover",
                                protocols);
@@ -518,7 +518,7 @@ void getInterfaceTypes(Interface *iface, list<QStringPair> &res)
     FWObject *fw = iface->getParent();
     string host_os = fw->getStr("host_OS");
     Resources* os_res = Resources::os_res[host_os];
-    if (os_res==NULL) return;
+    if (os_res==nullptr) return;
     list<string> interface_types;
 
     if (Cluster::isA(fw))
@@ -546,11 +546,11 @@ void getSubInterfaceTypes(Interface *iface, list<QStringPair> &res)
 {
     FWObject *p = Host::getParentHost(iface);
     //FWObject *p = iface->getParentHost();
-    assert(p!=NULL);
+    assert(p!=nullptr);
 
     QString host_os = p->getStr("host_OS").c_str();
     Resources* os_res = Resources::os_res[host_os.toStdString()];
-    if (os_res==NULL) return;
+    if (os_res==nullptr) return;
 
     FWOptions *ifopt;
     ifopt = Interface::cast(iface)->getOptionsObject();
@@ -589,13 +589,13 @@ void setInterfaceTypes(QComboBox *iface_type,
         // it could be one.
         FWObject *p = Host::getParentHost(iface);
         //FWObject *p = iface->getParentHost();
-        assert(p!=NULL);
+        assert(p!=nullptr);
         QString host_os = p->getStr("host_OS").c_str();
         QString obj_name = iface->getName().c_str();
 
         Resources* os_res = Resources::os_res[p->getStr("host_OS")];
         string os_family = p->getStr("host_OS");
-        if (os_res!=NULL)
+        if (os_res!=nullptr)
             os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
         std::unique_ptr<interfaceProperties> int_prop(
@@ -746,7 +746,7 @@ QString getRuleAction(Rule *rule)
 
 QString getActionNameForPlatform(Firewall *fw, Rule *rule)
 {
-    if (fw==NULL) return "";
+    if (fw==nullptr) return "";
     PolicyRule *policy_rule = PolicyRule::cast(rule);
     NATRule *nat_rule = NATRule::cast(rule);
     string act;
@@ -757,7 +757,7 @@ QString getActionNameForPlatform(Firewall *fw, Rule *rule)
 
 QString getActionNameForPlatform(Firewall *fw, const std::string &action)
 {
-    if (fw==NULL) return "";
+    if (fw==nullptr) return "";
     string platform = fw->getStr("platform");
     string name;
     try  
@@ -1052,11 +1052,11 @@ void _repackStringList(list<string> &list1, list<QStringPair> &list2)
 void setDefaultStateSyncGroupAttributes(StateSyncClusterGroup *grp)
 {
     FWObject *p = grp;
-    while (p && Cluster::cast(p)==NULL) p = p->getParent();
-    assert(p != NULL);
+    while (p && Cluster::cast(p)==nullptr) p = p->getParent();
+    assert(p != nullptr);
     Cluster *cluster = Cluster::cast(p);
     Resources *os_res = Resources::os_res[cluster->getStr("host_OS")];
-    assert(os_res != NULL);
+    assert(os_res != nullptr);
 
     list<string> protocols;
     os_res->getResourceStrList("/FWBuilderResources/Target/protocols/state_sync",
@@ -1071,14 +1071,14 @@ void setDefaultStateSyncGroupAttributes(StateSyncClusterGroup *grp)
 void setDefaultFailoverGroupAttributes(FailoverClusterGroup *grp)
 {
     FWObject *p = grp;
-    while (p && Cluster::cast(p)==NULL) p = p->getParent();
-    assert(p != NULL);
+    while (p && Cluster::cast(p)==nullptr) p = p->getParent();
+    assert(p != nullptr);
     Cluster *cluster = Cluster::cast(p);
     Resources *os_res = Resources::os_res[cluster->getStr("host_OS")];
-    assert(os_res != NULL);
+    assert(os_res != nullptr);
 
     FWOptions *gropt = grp-> getOptionsObject();
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
     
     string failover_protocol = grp->getStr("type");
 

@@ -20,7 +20,7 @@ namespace antlr {
  */
 
 TokenStreamSelector::TokenStreamSelector()
-: input(0)
+: input(nullptr)
 {
 }
 

@@ -32,7 +32,7 @@ ASTRef* ASTRef::getRef(const AST* p)
 		else
 			return new ASTRef(pp);
 	} else
-		return 0;
+		return nullptr;
 }
 
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE

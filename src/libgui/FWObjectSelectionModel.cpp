@@ -30,8 +30,8 @@ using namespace libfwbuilder;
 
 FWObjectSelectionModel::FWObjectSelectionModel()
 {
-    selectedObject = 0;
-    selectedObjectOld = 0;
+    selectedObject = nullptr;
+    selectedObjectOld = nullptr;
 }
 
 void FWObjectSelectionModel::setSelected(FWObject * so, const QModelIndex &index)
@@ -56,5 +56,5 @@ void FWObjectSelectionModel::restore()
 void FWObjectSelectionModel::reset()
 {
     QModelIndex index;
-    setSelected(NULL, index);
+    setSelected(nullptr, index);
 }

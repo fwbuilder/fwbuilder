@@ -52,7 +52,7 @@ vlanOnlyIfaceOptsDialog::vlanOnlyIfaceOptsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
-    cluster_interface = (Cluster::cast(obj->getParent()) != NULL);
+    cluster_interface = (Cluster::cast(obj->getParent()) != nullptr);
 
     setInterfaceTypes(m_dialog->iface_type, Interface::cast(obj),
                       ifopt->getStr("type").c_str());
@@ -95,7 +95,7 @@ void vlanOnlyIfaceOptsDialog::accept()
     // new_state  is a copy of the interface object
     FWObject* new_state = cmd->getNewState();
     FWOptions* ifopt = Interface::cast(new_state)->getOptionsObject();
-    assert(ifopt!=NULL);
+    assert(ifopt!=nullptr);
 
     if (cluster_interface)
     {
@@ -150,7 +150,7 @@ bool vlanOnlyIfaceOptsDialog::validate()
     QString combobox = m_dialog->iface_type->currentText();
     QString type = m_dialog->iface_type->itemData(
         m_dialog->iface_type->currentIndex()).toString();
-    QWidget *focus = NULL;
+    QWidget *focus = nullptr;
     QString message;
 
     if (type == "vrrp")

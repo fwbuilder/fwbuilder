@@ -132,7 +132,7 @@ void CompilerOutputPanel::loadFWObject(FWObject *obj)
 
     //m_widget->compiler_output_panel->clear();
 
-    if (dr == NULL)
+    if (dr == nullptr)
     {
         // we have no compiler for this platform or unknown platform
         format = error_format;

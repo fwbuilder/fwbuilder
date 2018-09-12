@@ -48,7 +48,7 @@ FWReference::FWReference(FWObject *p)
 
 FWReference::FWReference()
 {
-    setPointer(NULL);
+    setPointer(nullptr);
 }
 
 FWReference::~FWReference()  {}
@@ -56,11 +56,11 @@ FWReference::~FWReference()  {}
 
 void FWReference::fromXML(xmlNodePtr root)
 {
-    assert(root!=NULL);
+    assert(root!=nullptr);
     FWObject::fromXML(root);
 
     const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ref")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     str_ref = n;
     //setInt("ref", n);
     // if object with id str_ref has not been loaded yet, 
@@ -75,9 +75,9 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = xmlNewChild(
         parent,
-        NULL,
+        nullptr,
         xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
-        NULL);
+        nullptr);
 
     if (int_ref == -1 && !str_ref.empty())
         int_ref = FWObjectDatabase::getIntId(str_ref);
@@ -102,7 +102,7 @@ FWObject& FWReference::shallowDuplicate(const FWObject *_other,
 bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */)
 {
     const FWReference *rx = FWReference::constcast(obj);
-    if (rx == NULL) return false;
+    if (rx == nullptr) return false;
     if (int_ref != rx->int_ref || str_ref != rx->str_ref) return false;
     return true;
 }
@@ -167,7 +167,7 @@ void FWReference::dump(std::ostream &f, bool recursive, bool brief, int offset) 
 
 FWObject* FWReference::getObject(FWObject* o)
 {
-    if (o==NULL) return NULL;
-    if (FWReference::cast(o)!=NULL) return FWReference::cast(o)->getPointer();
+    if (o==nullptr) return nullptr;
+    if (FWReference::cast(o)!=nullptr) return FWReference::cast(o)->getPointer();
     return o;
 }

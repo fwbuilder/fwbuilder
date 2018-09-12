@@ -115,28 +115,28 @@ list<FWObject*> PrintingController::findAllUsedByType(list<FWObject*> &result,
                                                       FWObject *obj,
                                                       const string &type_name)
 {
-    if (RuleElement::cast(obj)!=NULL)
+    if (RuleElement::cast(obj)!=nullptr)
     {
         for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
         {
             FWObject *o=*m;
-            if (FWReference::cast(o)!=NULL)
+            if (FWReference::cast(o)!=nullptr)
                 o=FWReference::cast(o)->getPointer();
             if (o->getTypeName()==type_name)
                 result.push_back(o);
         }
     }
 
-    if (RuleSet::cast(obj)!=NULL)
+    if (RuleSet::cast(obj)!=nullptr)
     {
         for (list<FWObject*>::iterator m=obj->begin(); m!=obj->end(); m++)
         {
-            if (Rule::cast(*m)!=NULL)
+            if (Rule::cast(*m)!=nullptr)
             {
                 for (list<FWObject*>::iterator n=(*m)->begin();
                      n!=(*m)->end(); n++)
                 {
-                    if (RuleElement::cast(*n)!=NULL)
+                    if (RuleElement::cast(*n)!=nullptr)
                     {
                         findAllUsedByType(result,*n,type_name);
                     }
@@ -149,7 +149,7 @@ list<FWObject*> PrintingController::findAllUsedByType(list<FWObject*> &result,
     {
         FWObject *ruleSet;
         const char* const child_types[] =
-            {Policy::TYPENAME, NAT::TYPENAME, Routing::TYPENAME, NULL};
+            {Policy::TYPENAME, NAT::TYPENAME, Routing::TYPENAME, nullptr};
         for (const char* const *cptr = child_types; *cptr; ++cptr)
         {
             for (FWObjectTypedChildIterator it = obj->findByType(*cptr);
@@ -179,9 +179,9 @@ int PrintingController::addObjectsToTable(list<FWObject*> &objects,
 
     for (list<FWObject*>::iterator i=objects.begin(); i!=objects.end(); ++i)
     {
-        if (Address::cast(*i)!=NULL && Address::cast(*i)->isAny()) continue;
-        if (Service::cast(*i)!=NULL && Service::cast(*i)->isAny()) continue;
-        if (Interval::cast(*i)!=NULL && Interval::cast(*i)->isAny()) continue;
+        if (Address::cast(*i)!=nullptr && Address::cast(*i)->isAny()) continue;
+        if (Service::cast(*i)!=nullptr && Service::cast(*i)->isAny()) continue;
+        if (Interval::cast(*i)!=nullptr && Interval::cast(*i)->isAny()) continue;
 
         if (col>=tbl->columnCount())
         {
@@ -261,8 +261,8 @@ void PrintingController::findAllGroups(list<FWObject*> &objects,
     {
         if (fwbdebug) qDebug("   %s",(*obj)->getName().c_str());
         FWObject *o = *obj;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        if (Group::cast(o)!=NULL &&
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
+        if (Group::cast(o)!=nullptr &&
             std::find(groups.begin(),groups.end(),o)==groups.end())
         {
             groups.push_back(o);
@@ -287,7 +287,7 @@ void PrintingController::printRuleSet(FWObject *fw,
         pr->printText(name);
 
         RuleSetView *ruleView = RuleSetView::getRuleSetViewByType(
-            project, ruleset, NULL);
+            project, ruleset, nullptr);
         ruleView->setSizePolicy( QSizePolicy( (QSizePolicy::Policy)7,
                                               (QSizePolicy::Policy)7) );
         ruleView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -311,7 +311,7 @@ void PrintingController::printRuleSet(FWObject *fw,
 
 void PrintingController::printFirewall(FWObject *fw, ProjectPanel *project)
 {
-    if (Firewall::cast(fw)==NULL) return ;
+    if (Firewall::cast(fw)==nullptr) return ;
 
     string platform = fw->getStr("platform");
     string version  = fw->getStr("version");
@@ -328,7 +328,7 @@ void PrintingController::printFirewall(FWObject *fw, ProjectPanel *project)
     pr->printText(QObject::tr("Host OS: ")  + hostOS.c_str());
 
     const char* const child_types[] =
-        {Policy::TYPENAME, NAT::TYPENAME, Routing::TYPENAME, NULL};
+        {Policy::TYPENAME, NAT::TYPENAME, Routing::TYPENAME, nullptr};
 
     for (const char* const *cptr = child_types; *cptr; ++cptr)
     {
@@ -543,7 +543,7 @@ void PrintingController::printObjects(FWObject *firewall_to_print,
                  j!=(*obj)->end(); ++j)
             {
                 FWObject *o = *j;
-                if (FWReference::cast(o)!=NULL)
+                if (FWReference::cast(o)!=nullptr)
                     o=FWReference::cast(o)->getPointer();
                 groupMembers.push_back(o);
             }

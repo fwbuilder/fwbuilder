@@ -52,12 +52,12 @@ void ICMPService::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
 
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("type")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("type", n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("code")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("code", n);
         FREEXMLBUFF(n);

@@ -103,9 +103,9 @@ using namespace libfwbuilder;
 using namespace std;
 
 
-FWWindow *mw = NULL; 
-FWBSettings *st = NULL; 
-FWBApplication *app = NULL; 
+FWWindow *mw = nullptr; 
+FWBSettings *st = nullptr; 
+FWBApplication *app = nullptr; 
 
 string cmd_str = "";
 command cmd = NONE;
@@ -117,7 +117,7 @@ int conflict_res = 1;
 
 vector<string> platforms;
 
-FWObjectDatabase *objdb = NULL;
+FWObjectDatabase *objdb = nullptr;
 
 int fwbdebug = 0;
 
@@ -493,7 +493,7 @@ int main(int argc, char * const *argv)
             case 'a':
                 int num=0;
                 Q_UNUSED(num);
-                if (optarg!=NULL)
+                if (optarg!=nullptr)
                 {
                     string str = optarg;
                     num = splitStr(',', str, &ops);
@@ -544,7 +544,7 @@ int main(int argc, char * const *argv)
             case 'a':
                 int num=0;
                 Q_UNUSED(num);
-                if (optarg!=NULL)
+                if (optarg!=nullptr)
                 {
                     string str = optarg;
                     num = splitStr(',', str, &ops);
@@ -738,8 +738,8 @@ int main(int argc, char * const *argv)
                 .split("/", QString::SkipEmptyParts);
             string fw_name = components.last().toUtf8().constData();
             
-            Library *library = NULL;
-            while (library == NULL)
+            Library *library = nullptr;
+            while (library == nullptr)
             {
                 components.pop_back();
                 string library_path = components.join("/").toUtf8().constData();

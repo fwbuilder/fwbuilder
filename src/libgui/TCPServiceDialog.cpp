@@ -56,7 +56,7 @@ TCPServiceDialog::TCPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::TCPServiceDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -70,7 +70,7 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     TCPService *s = dynamic_cast<TCPService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 

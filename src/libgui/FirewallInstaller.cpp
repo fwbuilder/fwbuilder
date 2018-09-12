@@ -850,7 +850,7 @@ QString FirewallInstaller::getGeneratedFileName(Firewall *fw)
  
 void FirewallInstaller::terminate()
 {
-    if (session != NULL)
+    if (session != nullptr)
     {
         session->terminate();
     }

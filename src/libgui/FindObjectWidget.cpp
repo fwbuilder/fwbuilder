@@ -140,7 +140,7 @@ void FindObjectWidget::disableAll()
 void FindObjectWidget::objectInserted()
 {
     FWObject *o = m_widget->findDropArea->getObject();
-    if (o == NULL) return;
+    if (o == nullptr) return;
 
 //    disableAll();  // see #1757
 
@@ -160,7 +160,7 @@ void FindObjectWidget::objectInserted()
 
 void FindObjectWidget::reset()
 {
-    lastFound = NULL;
+    lastFound = nullptr;
     lastAttrSearch = "";
     found_objects.clear();
 }
@@ -169,7 +169,7 @@ void FindObjectWidget::clear()
 {
     m_widget->findDropArea->deleteObject();
     m_widget->replaceDropArea->deleteObject();
-    lastFound = NULL;
+    lastFound = nullptr;
     lastAttrSearch = "";
     found_objects.clear();
 }
@@ -283,7 +283,7 @@ bool FindObjectWidget::matchAttr(FWObject *obj)
         }
 
         Address *a = Address::cast(obj);
-        if (a!=NULL)
+        if (a!=nullptr)
         {
             const InetAddr *inet_addr = a->getAddressPtr();
             if (inet_addr)
@@ -301,7 +301,7 @@ bool FindObjectWidget::matchAttr(FWObject *obj)
     }
 
     case 2:   // port
-        if (TCPService::cast(obj)!=NULL || UDPService::cast(obj)!=NULL)
+        if (TCPService::cast(obj)!=nullptr || UDPService::cast(obj)!=nullptr)
         {
             if (m_widget->useRegexp->isChecked())
             {
@@ -332,7 +332,7 @@ bool FindObjectWidget::matchAttr(FWObject *obj)
         break;
 
     case 3:   // protocol num.
-        if (IPService::cast(obj)!=NULL)
+        if (IPService::cast(obj)!=nullptr)
         {
             if (m_widget->useRegexp->isChecked())
             {
@@ -350,7 +350,7 @@ bool FindObjectWidget::matchAttr(FWObject *obj)
         break;
 
     case 4:   // icmp type
-        if (ICMPService::cast(obj)!=NULL)
+        if (ICMPService::cast(obj)!=nullptr)
         {
             if (m_widget->useRegexp->isChecked())
             {
@@ -381,7 +381,7 @@ void FindObjectWidget::_findAll()
     {
         FWObject *o = *treeSeeker;
 
-        if( RuleElement::cast(o->getParent())!=NULL)
+        if( RuleElement::cast(o->getParent())!=nullptr)
         {
             if (m_widget->srScope->currentIndex()==3) // scope == selected firewalls
             {
@@ -398,7 +398,7 @@ void FindObjectWidget::_findAll()
         }
 
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL)
+        if (FWReference::cast(o)!=nullptr)
         {
             FWReference *r = FWReference::cast(o);
             obj = r->getPointer();
@@ -435,7 +435,7 @@ void FindObjectWidget::findNext()
     if (m_widget->findAttr->count()>MAX_SEARCH_ITEMS_COUNT)
         m_widget->findAttr->removeItem(0);
 
-    FWObject *o = NULL;
+    FWObject *o = nullptr;
 
     // if scope is "policies of opened firewall" then we need to get 
     // pointer to the currently opened firewall object
@@ -443,7 +443,7 @@ void FindObjectWidget::findNext()
     if (current_rule_set)
         selectedFirewall = Firewall::cast(current_rule_set->getParent());
     else
-        selectedFirewall = NULL;
+        selectedFirewall = nullptr;
 
     if (fwbdebug) qDebug() << "selectedFirewall: " << selectedFirewall;
 
@@ -485,7 +485,7 @@ loop:
     o = *found_objects_iter;
     ++found_objects_iter;
 
-    assert(o!=NULL);
+    assert(o!=nullptr);
     lastFound = o;
 
     if (fwbdebug)
@@ -526,19 +526,19 @@ bool FindObjectWidget::validateReplaceObject()
     }
 
     bool obj_1_address = 
-        Address::cast(findObj)!=NULL ||
-        MultiAddress::cast(findObj)!=NULL ||
-        ObjectGroup::cast(findObj)!=NULL;
+        Address::cast(findObj)!=nullptr ||
+        MultiAddress::cast(findObj)!=nullptr ||
+        ObjectGroup::cast(findObj)!=nullptr;
 
     bool obj_2_address =
-        Address::cast(replObj)!=NULL ||
-        MultiAddress::cast(replObj)!=NULL ||
-        ObjectGroup::cast(replObj)!=NULL;
+        Address::cast(replObj)!=nullptr ||
+        MultiAddress::cast(replObj)!=nullptr ||
+        ObjectGroup::cast(replObj)!=nullptr;
 
     bool obj_1_service =
-        Service::cast(findObj)!=NULL || ServiceGroup::cast(findObj);
+        Service::cast(findObj)!=nullptr || ServiceGroup::cast(findObj);
     bool obj_2_service =
-        Service::cast(replObj)!=NULL || ServiceGroup::cast(replObj);
+        Service::cast(replObj)!=nullptr || ServiceGroup::cast(replObj);
 
     if ((obj_1_address && obj_2_address) || (obj_1_service && obj_2_service))
         return true;
@@ -554,7 +554,7 @@ void FindObjectWidget::replace()
 {
     if (!validateReplaceObject()) return;
 
-    if (lastFound==NULL)
+    if (lastFound==nullptr)
     {
         find();
         return;
@@ -587,9 +587,9 @@ void FindObjectWidget::replaceAll()
         if (current_rule_set)
             selectedFirewall = Firewall::cast(current_rule_set->getParent());
         else
-            selectedFirewall = NULL;
+            selectedFirewall = nullptr;
 
-        if (selectedFirewall == NULL)
+        if (selectedFirewall == nullptr)
         {
             QMessageBox::critical(this,
                                   "Firewall Builder",
@@ -633,8 +633,8 @@ void FindObjectWidget::_replaceCurrent()
     FWObject *o = lastFound;
     FWObject *p = lastFound->getParent();
 
-    if (p==NULL || o==NULL) return;
-    if (FWReference::cast(o)==NULL) return;
+    if (p==nullptr || o==nullptr) return;
+    if (FWReference::cast(o)==nullptr) return;
 
     if (p->isReadOnly())
     {
@@ -679,7 +679,7 @@ void FindObjectWidget::_replaceCurrent()
 
     // check for duplicates --------
 
-    if (RuleElement::cast(new_state)==NULL ||
+    if (RuleElement::cast(new_state)==nullptr ||
         !RuleElement::cast(new_state)->isAny())
     {
         // avoid duplicates
@@ -692,7 +692,7 @@ void FindObjectWidget::_replaceCurrent()
         {
             oo = *j;
             if (cp_id==oo->getId() ||
-                ((ref=FWReference::cast(oo))!=NULL &&
+                ((ref=FWReference::cast(oo))!=nullptr &&
                  cp_id==ref->getPointerId()))
             {
                 // replacement object is already a member of this
@@ -718,8 +718,8 @@ void FindObjectWidget::_replaceCurrent()
 bool FindObjectWidget::inSelectedFirewall( RuleElement* r)
 {
     FWObject *f=r;
-    while (f!=NULL && Firewall::cast(f)==NULL) f=f->getParent();
-    if (f==NULL) return false;
+    while (f!=nullptr && Firewall::cast(f)==nullptr) f=f->getParent();
+    if (f==nullptr) return false;
 
     return selectedFirewall==(Firewall::cast(f));
 }
@@ -750,7 +750,7 @@ void FindObjectWidget::showObject(FWObject* o)
                o->getName().c_str(), o->getParent()->getName().c_str());
 
     FWReference* ref = FWReference::cast(o);
-    if (ref!=NULL && RuleElement::cast(o->getParent())!=NULL)
+    if (ref!=nullptr && RuleElement::cast(o->getParent())!=nullptr)
     {
         // found object in rules
         QCoreApplication::sendEvent(
@@ -760,7 +760,7 @@ void FindObjectWidget::showObject(FWObject* o)
     }
 
     if (!FWBTree().isStandardFolder(o) &&
-        Group::cast(o->getParent())!=NULL &&
+        Group::cast(o->getParent())!=nullptr &&
         !FWBTree().isStandardFolder(o->getParent()))
     {
         QCoreApplication::sendEvent(
@@ -781,7 +781,7 @@ void FindObjectWidget::init()
 
 void FindObjectWidget::firewallOpened(Firewall *f)
 {
-    if (f==NULL) return;
+    if (f==nullptr) return;
     selectedFirewall = f;
     m_widget->srScope->setItemText(
         3, tr("Policy of firewall '")+f->getName().c_str()+"'" );

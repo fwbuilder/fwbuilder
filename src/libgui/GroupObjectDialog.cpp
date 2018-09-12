@@ -177,9 +177,9 @@ GroupObjectDialog::GroupObjectDialog(QWidget *parent) :
     m_dialog = new Ui::GroupObjectDialog_q;
     m_dialog->setupUi(this);
 
-    obj = NULL;
-    selectedObject = NULL;
-    new_object_menu = NULL;
+    obj = nullptr;
+    selectedObject = nullptr;
+    new_object_menu = nullptr;
 
     listView = new ObjectListView( m_dialog->objectViewsStack, "listView" );
     QStringList sl;
@@ -307,9 +307,9 @@ void GroupObjectDialog::listViewSelectionChanged()
 
 void GroupObjectDialog::iconViewCurrentChanged(QListWidgetItem *itm)
 {
-    if (itm==NULL)
+    if (itm==nullptr)
     {
-        selectedObject=NULL;
+        selectedObject=nullptr;
         return;
     }
     int obj_id = itm->data(Qt::UserRole).toInt();
@@ -320,9 +320,9 @@ void GroupObjectDialog::iconViewCurrentChanged(QListWidgetItem *itm)
 
 void GroupObjectDialog::listViewCurrentChanged(QTreeWidgetItem *itm)
 {
-    if (itm==NULL)
+    if (itm==nullptr)
     {
-        selectedObject=NULL;
+        selectedObject=nullptr;
         return;
     }
     int obj_id = itm->data(0, Qt::UserRole).toInt();
@@ -335,9 +335,9 @@ void GroupObjectDialog::listViewCurrentChanged(QTreeWidgetItem *itm)
  */
 void GroupObjectDialog::insertObject(FWObject *o)
 {
-    assert(o!=NULL);
+    assert(o!=nullptr);
     Group *g = dynamic_cast<Group*>(obj);
-    assert(g!=NULL);
+    assert(g!=nullptr);
 
     if ( ! g->validateChild(o) || g->isReadOnly() ) return;
     // see #1976 do not allow pasting object that has been deleted
@@ -368,7 +368,7 @@ void GroupObjectDialog::addIcon(FWObject *fwo)
 {
     FWObject *o=fwo;
     bool      ref=false;
-    if (FWReference::cast(o)!=NULL)
+    if (FWReference::cast(o)!=nullptr)
     {
         o=FWReference::cast(o)->getPointer();
         ref=true;
@@ -412,7 +412,7 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
 {
     obj = o;
     Group *g = Group::cast(obj);
-    assert(g!=NULL);
+    assert(g!=nullptr);
 
     init=true;
 
@@ -472,7 +472,7 @@ void GroupObjectDialog::loadFWObject(FWObject *o)
     if (new_object_menu)
     {
         new_object_menu->clear();
-        m_dialog->newButton->setMenu(NULL);
+        m_dialog->newButton->setMenu(nullptr);
         delete new_object_menu;
     }
 
@@ -540,7 +540,7 @@ void GroupObjectDialog::applyChanges()
     for (FWObject::iterator j=obj->begin(); j!=obj->end(); ++j)
     {
         FWObject *o = *j;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         oldobj.insert(o->getId());
     }
 
@@ -622,7 +622,7 @@ void GroupObjectDialog::switchToListView()
 // This method is attached to the context menu item "Edit"
 void GroupObjectDialog::openObject()
 {
-    if (selectedObject!=NULL)
+    if (selectedObject!=nullptr)
     {
         QCoreApplication::postEvent(
             m_project, new showObjectInTreeEvent(selectedObject->getRoot()->getFileName().c_str(),
@@ -657,7 +657,7 @@ void GroupObjectDialog::dropped(QDropEvent *ev)
 
 void GroupObjectDialog::iconContextMenu(const QPoint & pos)
 {
-    FWObject *o = NULL;
+    FWObject *o = nullptr;
     QListWidgetItem *itm = iconView->itemAt(pos);
     if (itm)
     {
@@ -671,7 +671,7 @@ void GroupObjectDialog::iconContextMenu(const QPoint & pos)
 
 void GroupObjectDialog::listContextMenu(const QPoint & pos)
 {
-    FWObject *o=NULL;
+    FWObject *o=nullptr;
     QTreeWidgetItem *itm = listView->itemAt(pos);
     if (itm)
     {
@@ -686,7 +686,7 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
 {
     QMenu *popup = new QMenu(this);
 
-    if (selectedObject!=NULL)
+    if (selectedObject!=nullptr)
     {
         if (selectedObject->isReadOnly() )
             popup->addAction(tr("Open"), this, SLOT(openObject()));
@@ -699,9 +699,9 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
     QAction *pasteID = popup->addAction(tr("Paste"), this, SLOT(pasteObj()));
     QAction *delID = popup->addAction(tr("Delete"),this, SLOT(deleteObj()));
 
-    copyID->setEnabled(selectedObject!=NULL &&
+    copyID->setEnabled(selectedObject!=nullptr &&
                           ! FWBTree().isSystem(selectedObject) );
-    cutID->setEnabled(selectedObject!=NULL &&
+    cutID->setEnabled(selectedObject!=nullptr &&
                           ! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
 
@@ -714,7 +714,7 @@ void GroupObjectDialog::setupPopupMenu(const QPoint &pos)
     pasteID->setEnabled(! FWBTree().isSystem(obj) &&
                         ! obj->isReadOnly() && ! obj_deleted);
 
-    delID->setEnabled(selectedObject!=NULL &&
+    delID->setEnabled(selectedObject!=nullptr &&
                           ! FWBTree().isSystem(obj) &&
                           ! obj->isReadOnly() );
 
@@ -729,7 +729,7 @@ void GroupObjectDialog::copyObj()
     {
         FWObject* selectedObject = m_project->db()->findInIndex(*it);
 
-        if (selectedObject!=NULL && ! FWBTree().isSystem(selectedObject) )
+        if (selectedObject!=nullptr && ! FWBTree().isSystem(selectedObject) )
         {
             FWObjectClipboard::obj_clipboard->add(selectedObject,
                                                   this->m_project );

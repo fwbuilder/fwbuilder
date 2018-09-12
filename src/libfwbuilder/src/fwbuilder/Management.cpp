@@ -105,7 +105,7 @@ xmlNodePtr Management::toXML(xmlNodePtr parent)
 
 bool Management::cmp(const FWObject *obj, bool recursive)
 {
-    if (Management::constcast(obj)==NULL) return false;
+    if (Management::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const Management *o2=Management::constcast(obj);
@@ -242,7 +242,7 @@ xmlNodePtr PolicyInstallScript::toXML(xmlNodePtr parent)
 
 bool PolicyInstallScript::cmp(const FWObject *obj, bool recursive)
 {
-    if (PolicyInstallScript::constcast(obj)==NULL) return false;
+    if (PolicyInstallScript::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const PolicyInstallScript *o2=PolicyInstallScript::constcast(obj);
@@ -348,7 +348,7 @@ xmlNodePtr SNMPManagement::toXML(xmlNodePtr parent)
 
 bool SNMPManagement::cmp(const FWObject *obj, bool recursive)
 {
-    if (SNMPManagement::constcast(obj)==NULL) return false;
+    if (SNMPManagement::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const SNMPManagement *o2=SNMPManagement::constcast(obj);
@@ -424,12 +424,12 @@ void FWBDManagement::setEnabled(bool v)
 void FWBDManagement::fromXML(xmlNodePtr parent)
 {
     const char *n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("identity")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     identity_id = n;
     FREEXMLBUFF(n);
     
     n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("port")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     port = atoi(n);
     FREEXMLBUFF(n);
 
@@ -456,7 +456,7 @@ xmlNodePtr FWBDManagement::toXML(xmlNodePtr parent)
 
 bool FWBDManagement::cmp(const FWObject *obj, bool recursive)
 {
-    if (FWBDManagement::constcast(obj)==NULL) return false;
+    if (FWBDManagement::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const FWBDManagement *o2=FWBDManagement::constcast(obj);

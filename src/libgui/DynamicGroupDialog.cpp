@@ -349,7 +349,7 @@ void DynamicGroupDialog::gotItemDoubleClicked(QTreeWidgetItem *item, int)
 {
     int objId = item->data(0, Qt::UserRole).toInt();
     FWObject *o = m_project->db()->findInIndex(objId);
-    if (o == 0) return;
+    if (o == nullptr) return;
 
     QCoreApplication::postEvent(m_project, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(), objId));
     QCoreApplication::postEvent(mw, new openObjectInEditorEvent(o->getRoot()->getFileName().c_str(), objId));

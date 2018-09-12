@@ -46,7 +46,7 @@ using namespace libfwbuilder;
 
 BackgroundOp::BackgroundOp():running(false),connected(true)
 {
-    error        = NULL;
+    error        = nullptr;
     stop_program = new SyncFlag(false);
     iamdead      = new SyncFlag(false);
     pthread_attr_init(&tattr);
@@ -167,7 +167,7 @@ void *background_thread(void *args)
             delete logger;
             delete isdead; 
             delete void_pair;
-            return(NULL); 
+            return(nullptr); 
         }
         *logger << "Exception: " << ex.toString().c_str() << '\n';
         bop->error=new FWException(ex);
@@ -183,7 +183,7 @@ void *background_thread(void *args)
         delete logger;
         delete isdead; 
         delete void_pair;
-        return(NULL); 
+        return(nullptr); 
     }
 
 /* operation completed - clear "running" flag */
@@ -213,7 +213,7 @@ void *background_thread(void *args)
     delete logger;
     delete void_pair;
 
-    return(NULL);
+    return(nullptr);
 }
 
 }

@@ -51,10 +51,10 @@ QString PIXObjectGroup::groupMemberToString(FWObject *obj,
     if (this->getObjectGroupType() == NETWORK)
     {
         Address *a = Address::cast(obj);
-        assert(a!=NULL);
+        assert(a!=nullptr);
         const InetAddr *addr = a->getAddressPtr();
         ostr << "network-object ";
-        if (Network::cast(obj)!=NULL)
+        if (Network::cast(obj)!=nullptr)
         {
             const InetAddr *mask = a->getNetmaskPtr();
             ostr << addr->toString() << " ";
@@ -72,7 +72,7 @@ QString PIXObjectGroup::groupMemberToString(FWObject *obj,
         {
             ostr << "protocol-object ";
             Service *s=Service::cast(obj);
-            assert(s!=NULL);
+            assert(s!=nullptr);
             ostr << s->getProtocolName();
             return ostr.str().c_str();
         }
@@ -81,7 +81,7 @@ QString PIXObjectGroup::groupMemberToString(FWObject *obj,
         {
             ostr << "icmp-object ";
             ICMPService *s=ICMPService::cast(obj);
-            assert(s!=NULL);
+            assert(s!=nullptr);
             if ( s->getInt("type")== -1)
                 ostr << "any";
             else
@@ -93,7 +93,7 @@ QString PIXObjectGroup::groupMemberToString(FWObject *obj,
         {
             ostr << "port-object ";
             Service *s=Service::cast(obj);
-            assert(s!=NULL);
+            assert(s!=nullptr);
 
             int rs=TCPUDPService::cast(s)->getDstRangeStart();
             int re=TCPUDPService::cast(s)->getDstRangeEnd();

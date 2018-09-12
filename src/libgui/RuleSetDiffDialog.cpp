@@ -91,7 +91,7 @@ RuleSetDiffDialog::RuleSetDiffDialog(ProjectPanel *project, QWidget *parent) :
 
 Library* RuleSetDiffDialog::findUserLibrary(FWObjectDatabase *db)
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, db->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")

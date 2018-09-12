@@ -55,7 +55,7 @@ void FWOptions::fromXML(xmlNodePtr root)
         if (cur && !xmlIsBlankNode(cur))    
         {
             n = FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("name")));
-            assert(n!=NULL);
+            assert(n!=nullptr);
             cont = FROMXMLCAST( xmlNodeGetContent(cur) );
             if (cont)
             {
@@ -72,9 +72,9 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root)
     xmlNodePtr opt;
 
     xmlNodePtr me = xmlNewChild(
-        root, NULL, 
+        root, nullptr, 
         xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
-        NULL);
+        nullptr);
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i)
     {
@@ -87,7 +87,7 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root)
                                                 STRTOXMLCAST(value) );
 //        xmlChar *valbuf = xmlEncodeEntitiesReentrant(root->doc,
 //                                                     STRTOXMLCAST(value) );
-        opt = xmlNewChild(me, NULL, TOXMLCAST("Option"), valbuf);
+        opt = xmlNewChild(me, nullptr, TOXMLCAST("Option"), valbuf);
         FREEXMLBUFF(valbuf);
 
         xmlNewProp(opt, TOXMLCAST("name") , STRTOXMLCAST(name));

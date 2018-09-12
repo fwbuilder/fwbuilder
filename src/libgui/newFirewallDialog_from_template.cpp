@@ -75,7 +75,7 @@ void newFirewallDialog::createFirewallFromTemplate()
 {
     QListWidgetItem *itm = m_dialog->templateList->currentItem();
     FWObject *template_fw = templates[itm];
-    assert (template_fw!=NULL);
+    assert (template_fw!=nullptr);
 
     string platform = readPlatform(m_dialog->platform).toLatin1().constData();
     string host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();

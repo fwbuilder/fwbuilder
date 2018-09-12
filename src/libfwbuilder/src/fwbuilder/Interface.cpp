@@ -105,7 +105,7 @@ FWObject& Interface::duplicate(const FWObject *x, bool preserve_id)
     FWObject::duplicate(x, preserve_id);
 
     const Interface *rx = Interface::constcast(x);
-    if (rx!=NULL)
+    if (rx!=nullptr)
     {
         bcast_bits = rx->bcast_bits;
         ostatus    = rx->ostatus;
@@ -130,7 +130,7 @@ void Interface::duplicateWithIdMapping(const FWObject *src,
     {
         FWObject *src_obj = *m;
         FWObject *dst_obj_copy = addCopyOf(src_obj, preserve_id);
-        if (src_obj!=NULL && dst_obj_copy!=NULL)
+        if (src_obj!=nullptr && dst_obj_copy!=nullptr)
             id_mapping[src_obj->getId()] = dst_obj_copy->getId();
     }
 
@@ -140,7 +140,7 @@ void Interface::duplicateWithIdMapping(const FWObject *src,
 bool Interface::cmp(const FWObject *obj, bool recursive)
 {
     const Interface *rx = Interface::constcast(obj);
-    if (rx == NULL) return false;
+    if (rx == nullptr) return false;
     if (bcast_bits != rx->bcast_bits ||
         ostatus != rx->ostatus ||
         snmp_type != rx->snmp_type) return false;
@@ -154,56 +154,56 @@ void Interface::fromXML(xmlNodePtr root)
     const char *n;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("security_level")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("security_level",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dyn")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("dyn",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("unnum")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("unnum",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("unprotected")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("unprotected",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dedicated_failover")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("dedicated_failover",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("mgmt")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("mgmt",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("label")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("label",n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("network_zone")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("network_zone", n);
         FREEXMLBUFF(n);
@@ -230,19 +230,19 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent)
     for(FWObjectTypedChildIterator j1=findByType(IPv4::TYPENAME);
         j1!=j1.end(); ++j1)
     {
-        if ((o=(*j1))!=NULL )
+        if ((o=(*j1))!=nullptr )
             o->toXML(me);
     }
     for(FWObjectTypedChildIterator j1=findByType(IPv6::TYPENAME);
         j1!=j1.end(); ++j1)
     {
-        if ((o=(*j1))!=NULL )
+        if ((o=(*j1))!=nullptr )
             o->toXML(me);
     }
     for(FWObjectTypedChildIterator j2=findByType(physAddress::TYPENAME);
         j2!=j2.end(); ++j2)
     {
-        if ((o=(*j2))!=NULL )
+        if ((o=(*j2))!=nullptr )
             o->toXML(me);
     }
 
@@ -256,7 +256,7 @@ xmlNodePtr Interface::toXML(xmlNodePtr parent)
     for(FWObjectTypedChildIterator j1=findByType(Interface::TYPENAME);
         j1!=j1.end(); ++j1)
     {
-        if((o=(*j1))!=NULL)
+        if((o=(*j1))!=nullptr)
             o->toXML(me);
     }
 
@@ -276,14 +276,14 @@ FWOptions* Interface::getOptionsObject()
 {
     FWOptions *iface_opt = FWOptions::cast(getFirstByType(InterfaceOptions::TYPENAME));
 
-    if (iface_opt == NULL)
+    if (iface_opt == nullptr)
     {
         iface_opt = FWOptions::cast(getRoot()->create(InterfaceOptions::TYPENAME));
         add(iface_opt);
 
         // set default interface options
         const FWObject *parent_host = Host::getParentHost(this);
-        if (parent_host != NULL)
+        if (parent_host != nullptr)
         {
             const string host_OS = parent_host->getStr("host_OS");
             try
@@ -303,7 +303,7 @@ FWOptions* Interface::getOptionsObject()
 FWOptions* Interface::getOptionsObjectConst() const
 {
     FWOptions *iface_opt = FWOptions::cast(getFirstByType(InterfaceOptions::TYPENAME));
-    if (iface_opt == NULL)
+    if (iface_opt == nullptr)
         cerr << "Interface "
              << getName()
              << " ("
@@ -437,7 +437,7 @@ physAddress*  Interface::getPhysicalAddress () const
 void  Interface::setPhysicalAddress(const std::string &paddr)
 {
     physAddress *pa=getPhysicalAddress();
-    if (pa!=NULL) 
+    if (pa!=nullptr) 
     {
         pa->setPhysAddress(paddr);
     } else
@@ -461,7 +461,7 @@ void Interface::setLabel(const string& n)
 const Address* Interface::getAddressObject() const
 {
     Address *res = Address::cast(getFirstByType(IPv4::TYPENAME));
-    if (res==NULL)
+    if (res==nullptr)
         res = Address::cast(getFirstByType(IPv6::TYPENAME));
     return res;
 }
@@ -493,7 +493,7 @@ int Interface::countInetAddresses(bool skip_loopback) const
 
 bool Interface::isFailoverInterface() const
 {
-    return getFirstByType(FailoverClusterGroup::TYPENAME) != NULL;
+    return getFirstByType(FailoverClusterGroup::TYPENAME) != nullptr;
 }
 
 void Interface::replaceReferenceInternal(int old_id, int new_id, int &counter)

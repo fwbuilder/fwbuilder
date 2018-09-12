@@ -50,7 +50,7 @@ Policy::~Policy() {}
 Rule* Policy::createRule()
 {
     FWObjectDatabase* db=getRoot();
-    assert(db!=NULL);
+    assert(db!=nullptr);
     return db->createPolicyRule();
 }
 

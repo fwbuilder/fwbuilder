@@ -118,7 +118,7 @@ int GetProtoByName::getProtocolByName(const QString &name)
     if (protocols.contains(name)) return protocols[name];
     struct protoent *pe = getprotobyname(name.toLatin1().constData());
 
-    if (pe!=NULL)
+    if (pe!=nullptr)
         return pe->p_proto;
 
     return -1;

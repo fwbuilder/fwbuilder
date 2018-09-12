@@ -41,7 +41,7 @@ FWObject *AskLibForCopyDialog::askLibForCopyDialog( QWidget *parent,
     AskLibForCopyDialog dlg(parent, db, curr);
     if ( dlg.exec() == QDialog::Accepted )
         return dlg.getChoosenLib();
-    return 0;
+    return nullptr;
 }
 
 AskLibForCopyDialog::~AskLibForCopyDialog()
@@ -110,5 +110,5 @@ FWObject *AskLibForCopyDialog::getChoosenLib()
     int ind = m_dialog->libs->currentIndex();
     if (0 <= ind)
         return idxToLibs[ind];
-    return 0;
+    return nullptr;
 }

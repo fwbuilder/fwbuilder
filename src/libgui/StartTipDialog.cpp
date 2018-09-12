@@ -73,7 +73,7 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
     
     // we use separate Help() object for the tip of the day becayse it should
     // have different size and should not be persistent
-    Help *h = new Help(NULL, "");
+    Help *h = new Help(nullptr, "");
     int tip_no = 1;
     while (true)
     {

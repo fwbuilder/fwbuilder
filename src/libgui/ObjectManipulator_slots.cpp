@@ -73,7 +73,7 @@ void ObjectManipulator::undeleteLibrary()
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
+    if (obj==nullptr) return;
 
     // check that obj is in Deleted objects library. We do not show menu item
     // "Undelete" if it isnt, but will double check anyway
@@ -88,7 +88,7 @@ void ObjectManipulator::undeleteLibrary()
             obj,
             reference_holders,
             QString("Undelete library object"),
-            0);
+            nullptr);
         m_project->undoStack->push(cmd);
     }
 }
@@ -185,11 +185,11 @@ void ObjectManipulator::pasteObj()
 {
     if (getCurrentObjectTree()->getNumSelected()==0) return;
     FWObject *target_object = getCurrentObjectTree()->getSelectedObjects().front();
-    if (target_object==NULL) return;
+    if (target_object==nullptr) return;
 
     vector<std::pair<int,ProjectPanel*> >::iterator i;
     int idx = 0;
-    FWObject *last_object = NULL;
+    FWObject *last_object = nullptr;
     Q_UNUSED(last_object);
     map<int,int> map_ids;
     if (fwbdebug)
@@ -254,7 +254,7 @@ void ObjectManipulator::duplicateObj(QAction *action)
     ObjectTreeView* ot=getCurrentObjectTree();
     ot->freezeSelection(true);
     FWObject *obj;
-    FWObject *nobj = NULL;
+    FWObject *nobj = nullptr;
     vector<FWObject*> so = getCurrentObjectTree()->getSimplifiedSelection();
     for (vector<FWObject*>::iterator i=so.begin();  i!=so.end(); ++i)
     {
@@ -356,7 +356,7 @@ void ObjectManipulator::dumpObj()
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
+    if (obj==nullptr) return;
     obj->dump(true,false);
 }
 
@@ -416,7 +416,7 @@ void ObjectManipulator::find()
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
+    if (obj==nullptr) return;
     m_project->setFDObject(obj);
 }
 
@@ -425,7 +425,7 @@ void ObjectManipulator::findObject()
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *obj=getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
+    if (obj==nullptr) return;
     mw->findObject( obj );
 }
 
@@ -434,7 +434,7 @@ void ObjectManipulator::findWhereUsedSlot()
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
     FWObject *obj = getCurrentObjectTree()->getSelectedObjects().front();
-    if (obj==NULL) return;
+    if (obj==nullptr) return;
     mw->findWhereUsed(obj, m_project);
 
 }
@@ -443,7 +443,7 @@ void ObjectManipulator::makeSubinterface(QAction *act)
 {
     int intf_id = act->data().toInt();
     FWObject *new_parent_interface = m_project->db()->findInIndex(intf_id);
-    assert(new_parent_interface!=NULL);
+    assert(new_parent_interface!=nullptr);
 
     if (getCurrentObjectTree()->getNumSelected()==0) return;
 
@@ -474,7 +474,7 @@ void ObjectManipulator::makeSubinterface(QAction *act)
             obj,
             reference_holders,
             QString("Make an interface a subinterface"),
-            0);
+            nullptr);
         m_project->undoStack->push(cmd);
     }
 

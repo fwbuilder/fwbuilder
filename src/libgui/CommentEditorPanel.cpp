@@ -55,7 +55,7 @@ CommentEditorPanel::CommentEditorPanel(QWidget *p) : BaseObjectDialog(p)
 {
     m_widget = new Ui::CommentEditorPanel_q;
     m_widget->setupUi(this);
-    rule=NULL;
+    rule=nullptr;
 }
 
 QString CommentEditorPanel::text()

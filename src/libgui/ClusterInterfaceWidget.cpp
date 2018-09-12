@@ -145,7 +145,7 @@ bool ClusterInterfaceWidget::setCurrentInterface(const QString& name)
         foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
         {
             Interface *iface = item->data(0, Qt::UserRole).value<Interface*>();
-            if (iface == NULL) continue;
+            if (iface == nullptr) continue;
             if ( item == roots[list.list] ) continue; // skip firewall object
             if ( interfaceSelectable(iface) ) // interface is good for use in cluster
             {
@@ -195,7 +195,7 @@ bool ClusterInterfaceWidget::interfaceSelectable(Interface* iface)
 
     Resources* os_res = Resources::os_res[os.toStdString()];
     string os_family = os.toStdString();
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     unique_ptr<interfaceProperties> int_prop(

@@ -55,7 +55,7 @@ UDPServiceDialog::UDPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::UDPServiceDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -69,7 +69,7 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     UDPService *s = dynamic_cast<UDPService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 

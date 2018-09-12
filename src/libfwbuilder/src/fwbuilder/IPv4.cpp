@@ -66,7 +66,7 @@ void IPv4::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
 
     const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
 
     // strip whitespace and other non-numeric characters at the beginng and end
     string addr(n);
@@ -83,7 +83,7 @@ void IPv4::fromXML(xmlNodePtr root)
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
 
     string netm(n);
     first = netm.find_first_of("0123456789");

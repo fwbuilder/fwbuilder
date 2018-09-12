@@ -75,7 +75,7 @@ FWCmdMoveObject::FWCmdMoveObject(
 {
     old_parent = old_p;
     new_parent = new_p;
-    current_parent = NULL;
+    current_parent = nullptr;
     obj = o;
 
     if (text.isEmpty())
@@ -258,7 +258,7 @@ void FWCmdMoveObject::notify()
     QCoreApplication::postEvent(
         mw, new dataModifiedEvent(filename, new_parent->getId()));
 
-    FWObject *new_obj = NULL;
+    FWObject *new_obj = nullptr;
     if (current_parent->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)
     {
         if (Library::isA(obj))
@@ -277,13 +277,13 @@ void FWCmdMoveObject::notify()
             {
 //                new_obj = old_parent;  // this does not work!
                 new_obj = project->m_panel->om->getNextUserLib(obj);
-                if (new_obj == NULL)
+                if (new_obj == nullptr)
                 {
                     // no user libraries left, show "Standard"
                     new_obj = old_parent->getRoot()->findInIndex(
                         FWObjectDatabase::getIntId("syslib000"));
                 }
-                if (new_obj == NULL)
+                if (new_obj == nullptr)
                     new_obj = old_parent->getRoot()->front();
                 if (fwbdebug) qDebug() << "FWCmdMoveObject::notify() new_obj="
                                        << new_obj;

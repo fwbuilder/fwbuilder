@@ -48,7 +48,7 @@ using namespace std;
 
 Service* ObjectMirror::getMirroredService(Service *obj)
 {
-    void* res = obj->dispatch(this, (void*)NULL);
+    void* res = obj->dispatch(this, (void*)nullptr);
     return Service::cast((FWObject*)(res));
 }
 

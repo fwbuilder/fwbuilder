@@ -69,7 +69,7 @@ bool FirewallInstallerJuniper::packInstallJobsList(Firewall*)
     job_list.clear();
 
     Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
     if (pis->getCommand()!="")
     {

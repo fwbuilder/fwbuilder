@@ -14,9 +14,9 @@ namespace antlr {
 
 MismatchedTokenException::MismatchedTokenException()
   : RecognitionException("Mismatched Token: expecting any AST node","<AST>",-1,-1)
-  , token(0)
+  , token(nullptr)
   , node(nullASTptr)
-  , tokenNames(0)
+  , tokenNames(nullptr)
   , numTokens(0)
 {
 }
@@ -30,7 +30,7 @@ MismatchedTokenException::MismatchedTokenException(
 	int upper_,
 	bool matchNot
 ) : RecognitionException("Mismatched Token","<AST>",-1,-1)
-  , token(0)
+  , token(nullptr)
   , node(node_)
   , tokenText( (node_ ? node_->toString(): ANTLR_USE_NAMESPACE(std)string("<empty tree>")) )
   , mismatchType(matchNot ? NOT_RANGE : RANGE)
@@ -49,7 +49,7 @@ MismatchedTokenException::MismatchedTokenException(
 	int expecting_,
 	bool matchNot
 ) : RecognitionException("Mismatched Token","<AST>",-1,-1)
-  , token(0)
+  , token(nullptr)
   , node(node_)
   , tokenText( (node_ ? node_->toString(): ANTLR_USE_NAMESPACE(std)string("<empty tree>")) )
   , mismatchType(matchNot ? NOT_TOKEN : TOKEN)
@@ -67,7 +67,7 @@ MismatchedTokenException::MismatchedTokenException(
 	BitSet set_,
 	bool matchNot
 ) : RecognitionException("Mismatched Token","<AST>",-1,-1)
-  , token(0)
+  , token(nullptr)
   , node(node_)
   , tokenText( (node_ ? node_->toString(): ANTLR_USE_NAMESPACE(std)string("<empty tree>")) )
   , mismatchType(matchNot ? NOT_SET : SET)

@@ -118,7 +118,7 @@ void FWCmdAddObject::prepareStatesForRedo()
     // remove it but increment reference counter.
     FWObject* grp = getObject();
     FWObject *new_grp = getNewState();
-    if (member == NULL)
+    if (member == nullptr)
     {
         // Find new object among children of newState.  member can be
         // NULL if FWCmdAddObject object is created before the new
@@ -272,7 +272,7 @@ FWCmdAddLibrary::FWCmdAddLibrary(ProjectPanel *project,
                                  QUndoCommand* macro):
     FWCmdAddObject(project, root, lib, text, macro)
 {
-    assert(FWObjectDatabase::cast(root)!=NULL);
+    assert(FWObjectDatabase::cast(root)!=nullptr);
 
     if (text.isEmpty())
     {

@@ -58,14 +58,14 @@ using namespace libfwbuilder;
 
 #undef DEBUG_DNS
 
-Mutex *DNS::gethostbyname_mutex = NULL;
-Mutex *DNS::gethostbyaddr_mutex = NULL;
+Mutex *DNS::gethostbyname_mutex = nullptr;
+Mutex *DNS::gethostbyaddr_mutex = nullptr;
 
 // use this function for delayed initialization
 void DNS::init()
 {
-    if (gethostbyname_mutex==NULL) gethostbyname_mutex = new Mutex();
-    if (gethostbyaddr_mutex==NULL) gethostbyaddr_mutex = new Mutex();
+    if (gethostbyname_mutex==nullptr) gethostbyname_mutex = new Mutex();
+    if (gethostbyaddr_mutex==nullptr) gethostbyaddr_mutex = new Mutex();
 }
 
 /*
@@ -94,7 +94,7 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
                            type);
     }
 
-    if(hp==NULL)
+    if(hp==nullptr)
     {
         gethostbyaddr_mutex->unlock();
         free(tmphstbuf);
@@ -118,14 +118,14 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
 
     list<InetAddr> v;
     
-    struct addrinfo *aiList = NULL;
+    struct addrinfo *aiList = nullptr;
     int retVal;
 
 #ifdef DEBUG_DNS
     cerr << "DNS::getHostByName " << name << "  type=" << type << endl;
 #endif
 
-    if ((retVal = getaddrinfo(name.c_str(), NULL, NULL, &aiList)) != 0)
+    if ((retVal = getaddrinfo(name.c_str(), nullptr, nullptr, &aiList)) != 0)
     {
         std::ostringstream strerr;
         strerr << "Host or network '" + name + "' not found; last error: ";
@@ -140,7 +140,7 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     struct addrinfo *ai;
     try
     {
-        for (ai=aiList; ai!=NULL; ai=ai->ai_next)
+        for (ai=aiList; ai!=nullptr; ai=ai->ai_next)
         {
 #ifdef DEBUG_DNS
             cerr << "DNS::getHostByName " << name

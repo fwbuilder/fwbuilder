@@ -56,7 +56,7 @@ IPServiceDialog::IPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPServiceDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -84,7 +84,7 @@ void IPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     IPService *s = dynamic_cast<IPService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 

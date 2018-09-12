@@ -62,7 +62,7 @@ void TagService::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
 
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("tagcode")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("tagcode", n);
     FREEXMLBUFF(n);
     

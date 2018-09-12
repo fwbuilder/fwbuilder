@@ -56,28 +56,28 @@ void TCPUDPService::fromXML(xmlNodePtr root)
     const char *n;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_start")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         src_range_start = atol(n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_end")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         src_range_end = atol(n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_start")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         dst_range_start = atol(n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_end")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         dst_range_end = atol(n);
         FREEXMLBUFF(n);
@@ -121,7 +121,7 @@ FWObject& TCPUDPService::shallowDuplicate(const FWObject *obj,
 bool TCPUDPService::cmp(const FWObject *obj, bool recursive)
 {
     const TCPUDPService *other = TCPUDPService::constcast(obj);
-    if (other == NULL) return false;
+    if (other == nullptr) return false;
     if (src_range_start != other->src_range_start ||
         src_range_end != other->src_range_end ||
         dst_range_start != other->dst_range_start ||

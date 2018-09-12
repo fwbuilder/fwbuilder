@@ -35,7 +35,7 @@ ClusterGroup::ClusterGroup() : ObjectGroup()
 void ClusterGroup::init(FWObjectDatabase *root)
 {
     FWObject *gopt = getFirstByType(ClusterGroupOptions::TYPENAME);
-    if (gopt == NULL)
+    if (gopt == nullptr)
     {
         gopt = root->create(ClusterGroupOptions::TYPENAME);
         add(gopt);
@@ -76,13 +76,13 @@ void ClusterGroup::fromXML(xmlNodePtr parent)
 
     const char *n;
     n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("type")));
-    if (n != NULL)
+    if (n != nullptr)
     {
         setStr("type", n);
         FREEXMLBUFF(n);
     }
     n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("master_iface")));
-    if (n != NULL)
+    if (n != nullptr)
     {
         setStr("master_iface", n);
         FREEXMLBUFF(n);
@@ -116,7 +116,7 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
     ClusterGroupOptions *gopt = ClusterGroupOptions::cast(
         getFirstByType(ClusterGroupOptions::TYPENAME));
 
-    if (gopt == NULL)
+    if (gopt == nullptr)
     {
         gopt = ClusterGroupOptions::cast(
             getRoot()->create(ClusterGroupOptions::TYPENAME));
@@ -127,7 +127,7 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
 
 FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj)
 {
-    if (ClusterGroup::constcast(obj)==NULL) return *this;
+    if (ClusterGroup::constcast(obj)==nullptr) return *this;
 
     setRO(false);
 
@@ -152,7 +152,7 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj)
         }
     }
     if (their_opts && mine_opts) mine_opts->duplicate(their_opts);
-    if (their_opts && mine_opts==NULL) addCopyOf(their_opts);
+    if (their_opts && mine_opts==nullptr) addCopyOf(their_opts);
 
     shallowDuplicate(obj);
     return *this;
@@ -182,6 +182,6 @@ Interface* ClusterGroup::getInterfaceForMemberFirewall(Firewall *fw)
 
         if (other_iface->isChildOf(fw)) return other_iface;
     }
-    return NULL;
+    return nullptr;
 }
 

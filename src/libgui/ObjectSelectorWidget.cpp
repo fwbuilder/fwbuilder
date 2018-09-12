@@ -63,7 +63,7 @@ void ObjectSelectorWidget::updateObjectsToUse()
 {
     objects_to_use.clear();
     QListWidgetItem* item = m_dialog->objectList->item(0);
-    while (item != NULL)
+    while (item != nullptr)
     {
         QString name = item->text().split(" ")[0];
         QString addr = item->data(Qt::UserRole).toString();
@@ -154,7 +154,7 @@ void ObjectSelectorWidget::removeObject()
     QListWidgetItem* item1 = m_dialog->objectList->item(0);
     QListWidgetItem* item2;
 
-    while (item1!=0)
+    while (item1!=nullptr)
     {
         item2 = m_dialog->objectList->item(m_dialog->objectList->row(item1)+1);
         if (item1->isSelected())

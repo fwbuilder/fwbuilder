@@ -273,7 +273,7 @@ ANTLR_API RefAST nullAST;
 #if defined(_MSC_VER) && !defined(__ICL) // Microsoft Visual C++
 extern ANTLR_API AST* const nullASTptr = 0;
 #else
-ANTLR_API AST* const nullASTptr = 0;
+ANTLR_API AST* const nullASTptr = nullptr;
 #endif
 
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE

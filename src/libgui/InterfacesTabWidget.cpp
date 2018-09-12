@@ -72,11 +72,11 @@ QMap<Interface*, EditedInterfaceData> InterfacesTabWidget::getData()
     {
         InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if (w == NULL || w->getInterface() == NULL)
+        if (w == nullptr || w->getInterface() == nullptr)
             continue;
         InterfaceEditorWidget *intEditor = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if (intEditor != NULL)
+        if (intEditor != nullptr)
             res[intEditor->getInterface()] = intEditor->getInterfaceData();
     }
     return res;
@@ -89,7 +89,7 @@ QList<EditedInterfaceData> InterfacesTabWidget::getNewData()
     {
         InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if ( w != NULL && w->getInterface() == NULL)
+        if ( w != nullptr && w->getInterface() == nullptr)
             res.append(w->getInterfaceData());
     }
     return res;
@@ -145,7 +145,7 @@ void InterfacesTabWidget::closeTab()
     int idx = this->currentIndex();
     QWidget *w = this->widget(idx);
     Interface *iface = dynamic_cast<InterfaceEditorWidget*>(w)->getInterface() ;
-    if ( iface != NULL ) deleted.append( iface );
+    if ( iface != nullptr ) deleted.append( iface );
     this->removeTab(idx);
     delete w;
     if (this->count() == 0)
@@ -169,7 +169,7 @@ bool InterfacesTabWidget::isValid()
     {
         InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if (w == NULL) continue;
+        if (w == nullptr) continue;
         if (!w->isValid())
         {
             this->setCurrentWidget(w);
@@ -195,8 +195,8 @@ void InterfacesTabWidget::addInterfaceFromData(InterfaceData* idata)
 
 void InterfacesTabWidget::addTab(QWidget* widget, const QString& title)
 {
-    if ( dynamic_cast<InterfaceEditorWidget*>(widget) != NULL ||
-         (noTabs && dynamic_cast<QLabel*>(widget) != NULL))
+    if ( dynamic_cast<InterfaceEditorWidget*>(widget) != nullptr ||
+         (noTabs && dynamic_cast<QLabel*>(widget) != nullptr))
     {
         widget->setObjectName(title+"_widget");
         if (!noTabs)
@@ -212,7 +212,7 @@ void InterfacesTabWidget::setClusterMode(bool st)
     {
         InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if (w!=NULL) w->setClusterMode(st);
+        if (w!=nullptr) w->setClusterMode(st);
     }
     newInterface.setVisible(!st);
     delInterface.setVisible(!st);
@@ -232,7 +232,7 @@ void InterfacesTabWidget::setExplanation(const QString& text)
     {
         InterfaceEditorWidget* w = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if (w!=NULL) w->setExplanation(text);
+        if (w!=nullptr) w->setExplanation(text);
     }
 }
 
@@ -243,6 +243,6 @@ void InterfacesTabWidget::setHostOS(const QString &s)
     {
         InterfaceEditorWidget *w = dynamic_cast<InterfaceEditorWidget*>(
             this->widget(i));
-        if (w != NULL) w->setHostOS(host_OS);
+        if (w != nullptr) w->setHostOS(host_OS);
     }
 }

@@ -71,7 +71,7 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
     job_list.clear();
 
     Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
     if (pis->getCommand()!="")
     {
@@ -163,7 +163,7 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     packSSHArgs(args);
     if (cnf->verbose) inst_dlg->displayCommand(args);
 
-    SSHCisco *ssh_object = NULL;
+    SSHCisco *ssh_object = nullptr;
     if (cnf->fwobj->getStr("platform")=="pix" ||
         cnf->fwobj->getStr("platform")=="fwsm")
     {

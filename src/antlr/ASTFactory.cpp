@@ -71,7 +71,7 @@ void ASTFactory::registerFactory( int type, const char* ast_name, factory_type f
 	// check validity of arguments...
 	if( type < Token::MIN_USER_TYPE )
 		throw ANTLRException("Internal parser error invalid type passed to RegisterFactory");
-	if( factory == 0 )
+	if( factory == nullptr )
 		throw ANTLRException("Internal parser error 0 factory passed to RegisterFactory");
 
 	// resize up to and including 'type' and initalize any gaps to default
@@ -243,12 +243,12 @@ RefAST ASTFactory::make(ANTLR_USE_NAMESPACE(std)vector<RefAST>& nodes)
 	// link in children;
 	for( unsigned int i = 1; i < nodes.size(); i++ )
 	{
-		if ( nodes[i] == 0 )		// ignore null nodes
+		if ( nodes[i] == nullptr )		// ignore null nodes
 			continue;
 
-		if ( root == 0 )			// Set the root and set it up for a flat list
+		if ( root == nullptr )			// Set the root and set it up for a flat list
 			root = tail = nodes[i];
-		else if ( tail == 0 )
+		else if ( tail == nullptr )
 		{
 			root->setFirstChild(nodes[i]);
 			tail = root->getFirstChild();

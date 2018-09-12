@@ -60,6 +60,6 @@ CompilerDriver* CompilerDriverFactory::createCompilerDriver(Firewall *fw)
         return new CompilerDriver_pix(fw->getRoot());
     if (platform == "procurve_acl")
         return new CompilerDriver_procurve_acl(fw->getRoot());
-    return NULL;
+    return nullptr;
 }
 

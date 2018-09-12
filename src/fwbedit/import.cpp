@@ -59,7 +59,7 @@ void importConfig(const string &import_config,
     std::istringstream instream(buffer);
     QueueLogger *logger = new QueueLogger();
     logger->copyToStderr();
-    Importer* imp = NULL;
+    Importer* imp = nullptr;
 
     QStringList sl_buf = QString::fromUtf8(buffer.c_str()).split("\n");
     PreImport pi(&sl_buf);

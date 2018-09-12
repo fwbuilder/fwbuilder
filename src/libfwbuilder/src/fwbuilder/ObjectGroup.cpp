@@ -58,14 +58,14 @@ ObjectGroup::~ObjectGroup() {}
 
 bool ObjectGroup::validateChild(FWObject *o)
 { 
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
 
     return (FWObject::validateChild(o) && 
-            Service::cast(o)==NULL &&
-            ServiceGroup::cast(o)==NULL &&
-            Interval::cast(o)==NULL &&
-            FWServiceReference::cast(o)==NULL &&
-            RuleSet::cast(o)==NULL);
+            Service::cast(o)==nullptr &&
+            ServiceGroup::cast(o)==nullptr &&
+            Interval::cast(o)==nullptr &&
+            FWServiceReference::cast(o)==nullptr &&
+            RuleSet::cast(o)==nullptr);
 }
 
 xmlNodePtr ObjectGroup::toXML(xmlNodePtr parent)

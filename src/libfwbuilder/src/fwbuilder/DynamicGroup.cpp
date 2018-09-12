@@ -45,7 +45,7 @@ DynamicGroup::~DynamicGroup() {}
 
 bool DynamicGroup::validateChild(FWObject *o)
 { 
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
 
     return FWObject::validateChild(o);
 }
@@ -55,7 +55,7 @@ void DynamicGroup::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
 
     for (xmlNodePtr child = root->xmlChildrenNode;
-         child != 0; child = child->next) {
+         child != nullptr; child = child->next) {
         if (child->type != XML_ELEMENT_NODE) continue;
         assert(strcmp(FROMXMLCAST(child->name), "SelectionCriteria") == 0);
 
@@ -87,8 +87,8 @@ xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent)
         if (!splitFilter(*iter, type, keyword)) continue;
         if (!makeFilter(filter, type, keyword)) continue;
 
-        xmlNodePtr item = xmlNewChild(me, NULL,
-                                      TOXMLCAST("SelectionCriteria"), NULL);
+        xmlNodePtr item = xmlNewChild(me, nullptr,
+                                      TOXMLCAST("SelectionCriteria"), nullptr);
         xmlNewProp(item, TOXMLCAST("type"), STRTOXMLCAST(type));
         xmlNewProp(item, TOXMLCAST("keyword"), STRTOXMLCAST(keyword));
     }
@@ -164,22 +164,22 @@ void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
 static bool isInDeletedObjs(FWObject *obj)
 {
     FWObject *lib = obj->getLibrary();
-    return lib == 0 || lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID;
+    return lib == nullptr || lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID;
 }
 
 
 bool DynamicGroup::isMemberOfGroup(FWObject *obj)
 {
     if (obj == this) return false;
-    if (ObjectGroup::cast(obj) == 0 && Address::cast(obj) == 0) return false;
-    if (RuleElement::cast(obj) != 0) return false;
+    if (ObjectGroup::cast(obj) == nullptr && Address::cast(obj) == nullptr) return false;
+    if (RuleElement::cast(obj) != nullptr) return false;
     if (isInDeletedObjs(obj)) return false;
 
     /* There's no way to figure out what are the "standard" object
        groups (like "address tables") from within the fwbuilder
        library, so we rely on counting how deep we are in the tree
        instead. */
-    if (ObjectGroup::cast(obj) != 0 &&
+    if (ObjectGroup::cast(obj) != nullptr &&
         obj->getDistanceFromRoot() <= 3) return false;
 
     const set<string> &keywords = obj->getKeywords();

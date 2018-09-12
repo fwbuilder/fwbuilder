@@ -63,7 +63,7 @@ using namespace libfwbuilder;
  */
 bool FWWindow::isEditorVisible()
 {
-    return oe != NULL && m_mainWindow->editorDockWidget->isVisible() &&
+    return oe != nullptr && m_mainWindow->editorDockWidget->isVisible() &&
         m_mainWindow->editorPanelTabWidget->currentIndex() == EDITOR_PANEL_EDITOR_TAB;
 }
 
@@ -109,7 +109,7 @@ void FWWindow::clearEditorAndSearchPanels()
 {
     findWhereUsedWidget->clear();
     findObjectWidget->clear();
-    if (oe != NULL) oe->blank();
+    if (oe != nullptr) oe->blank();
 }
 
 void FWWindow::openEditorPanel()
@@ -146,7 +146,7 @@ void FWWindow::openEditor(FWObject *obj)
          current_focus_widget &&
          m_mainWindow->editorDockWidget->isAncestorOf(current_focus_widget));
     QLineEdit *line_edit = dynamic_cast<QLineEdit*>(current_focus_widget);
-    bool restore_line_edit_selection = line_edit != NULL && line_edit->hasSelectedText();
+    bool restore_line_edit_selection = line_edit != nullptr && line_edit->hasSelectedText();
 
     if (fwbdebug)
     {
@@ -184,13 +184,13 @@ void FWWindow::openEditor(FWObject *obj)
         qDebug() << "parent firewall:" << parent_fw
                  << QString((parent_fw)? parent_fw->getName().c_str() : "");
 
-    if (parent_fw != NULL)  // this includes Cluster
+    if (parent_fw != nullptr)  // this includes Cluster
     {
         RuleSetView* rsv = activeProject()->getCurrentRuleSetView();
         if (rsv)
         {
-            RuleSet* current_ruleset = NULL;
-            RuleSetModel* md = NULL;
+            RuleSet* current_ruleset = nullptr;
+            RuleSetModel* md = nullptr;
             if (rsv)
             {
                 md = (RuleSetModel*)rsv->model();
@@ -202,10 +202,10 @@ void FWWindow::openEditor(FWObject *obj)
                     activeProject()->m_panel->om->findRuleSetInHistoryByParentFw(
                         parent_fw);
 
-                if (old_rs == NULL)
+                if (old_rs == nullptr)
                     old_rs = parent_fw->getFirstByType(Policy::TYPENAME);
 
-                if (old_rs != NULL)
+                if (old_rs != nullptr)
                     QCoreApplication::postEvent(
                         activeProject(), new openRulesetImmediatelyEvent(
                             activeProject()->getFileName(), old_rs->getId()));
@@ -273,8 +273,8 @@ void FWWindow::buildEditorTitleAndIcon(libfwbuilder::FWObject *obj,
 
     QStringList editor_title;
     FWObject *o = obj;
-    Rule *rule = NULL;
-    FWObject *ruleset = NULL;
+    Rule *rule = nullptr;
+    FWObject *ruleset = nullptr;
     while (o)
     {
         if (Rule::cast(o))

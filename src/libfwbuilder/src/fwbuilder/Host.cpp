@@ -48,7 +48,7 @@ Host::Host()
 void Host::init(FWObjectDatabase *root)
 {
     FWObject *opt = getFirstByType(HostOptions::TYPENAME);
-    if (opt == NULL)
+    if (opt == nullptr)
         add( root->createHostOptions() );
 }
 
@@ -69,7 +69,7 @@ xmlNodePtr Host::toXML(xmlNodePtr parent)
     FWObject *o;
 
     for(FWObjectTypedChildIterator j=findByType(Interface::TYPENAME); j!=j.end(); ++j)
- 	if((o=(*j))!=NULL )
+ 	if((o=(*j))!=nullptr )
  	    o->toXML(me);
     
     o=getFirstByType( Management::TYPENAME );
@@ -146,13 +146,13 @@ const InetAddr* Host::getManagementAddress()
 
         }
     }    
-    return NULL;
+    return nullptr;
 }
 
 const Address* Host::getAddressObject() const
 {
     FWObjectTypedChildIterator j = findByType(Interface::TYPENAME);
-    if (j == j.end()) return NULL;
+    if (j == j.end()) return nullptr;
     return Interface::cast(*j)->getAddressObject();
 }
 
@@ -176,7 +176,7 @@ int Host::countInetAddresses(bool skip_loopback) const
 FWObject* Host::getParentHost(FWObject *obj)
 {
     FWObject *parent_h = obj;
-    while (parent_h != NULL && Host::cast(parent_h) == NULL)
+    while (parent_h != nullptr && Host::cast(parent_h) == nullptr)
         parent_h = parent_h->getParent();
     return parent_h;
 }

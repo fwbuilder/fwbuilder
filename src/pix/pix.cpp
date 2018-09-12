@@ -65,7 +65,7 @@ using namespace libfwbuilder;
 using namespace fwcompiler;
 
 
-FWObjectDatabase *objdb = NULL;
+FWObjectDatabase *objdb = nullptr;
 
 
 class UpgradePredicate: public XMLTools::UpgradePredicate

@@ -60,7 +60,7 @@ void Cluster::init(FWObjectDatabase *root)
     Firewall::init(root);
     // create one conntrack member group
     FWObject *state_sync_members = getFirstByType(StateSyncClusterGroup::TYPENAME);
-    if (state_sync_members == NULL)
+    if (state_sync_members == nullptr)
     {
         state_sync_members = root->create(StateSyncClusterGroup::TYPENAME);
         state_sync_members->setName("State Sync Group");
@@ -115,7 +115,7 @@ ClusterGroup* Cluster::getStateSyncGroupObject()
     StateSyncClusterGroup *group = StateSyncClusterGroup::cast(
         getFirstByType(StateSyncClusterGroup::TYPENAME));
 
-    if (group == NULL)
+    if (group == nullptr)
     {
         // create a new ClusterGroup object
         group = StateSyncClusterGroup::cast(getRoot()->create(
@@ -159,12 +159,12 @@ FWObject& Cluster::duplicate(const FWObject *obj,
 
 void Cluster::updateLastInstalledTimestamp()
 {
-    setInt("lastInstalled", time(NULL));
+    setInt("lastInstalled", time(nullptr));
 }
 
 void Cluster::updateLastModifiedTimestamp()
 {
-    setInt("lastModified", time(NULL));
+    setInt("lastModified", time(nullptr));
 }
 
 bool Cluster::needsInstall()
@@ -199,7 +199,7 @@ time_t Cluster::getLastCompiled()
 
 void Cluster::updateLastCompiledTimestamp()
 {
-    setInt("lastCompiled", time(NULL));
+    setInt("lastCompiled", time(nullptr));
 }
 
 bool Cluster::getInactive()
@@ -250,7 +250,7 @@ void Cluster::getMembersList(list<libfwbuilder::Firewall*> &members)
         {
             FWObject *member = FWReference::getObject(*j);
             if (ClusterGroupOptions::isA(member)) continue;
-            Firewall *fw = NULL;
+            Firewall *fw = nullptr;
             // as of 05/04 members of StateSyncClusterGroup are interfaces. See
             // tickets #10 and #11
             if (Interface::cast(member))
@@ -284,7 +284,7 @@ bool Cluster::hasMember(Firewall *fw)
         {
             FWObject *member = FWReference::getObject(*j);
             if (ClusterGroupOptions::isA(member)) continue;
-            Firewall *member_fw = NULL;
+            Firewall *member_fw = nullptr;
             // as of 05/04/2009 members of StateSyncClusterGroup are
             // interfaces. See tickets #10 and #11
             if (Interface::cast(member))

@@ -81,7 +81,7 @@ void TCPService::fromXML(xmlNodePtr root)
     const char *n;
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("established")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("established", n);
         FREEXMLBUFF(n);
@@ -91,7 +91,7 @@ void TCPService::fromXML(xmlNodePtr root)
     for (i=flags.begin(); i!=flags.end(); ++i)
     {
         n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST( (i->second).c_str() )));
-        if(n!=NULL)
+        if(n!=nullptr)
         {
             setStr( i->second , n);
             FREEXMLBUFF(n);
@@ -101,7 +101,7 @@ void TCPService::fromXML(xmlNodePtr root)
     for (i=flags_masks.begin(); i!=flags_masks.end(); ++i)
     {
         n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST( (i->second).c_str() )));
-        if(n!=NULL)
+        if(n!=nullptr)
         {
             setStr( i->second , n);
             FREEXMLBUFF(n);

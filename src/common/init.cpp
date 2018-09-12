@@ -57,7 +57,7 @@ void init(char * const*)
     userDataDir = string(getenv("HOME"));
 
     char *lname = getenv("LOGNAME");
-    if (lname!=NULL)
+    if (lname!=nullptr)
         user_name = QString(lname);
     else
     {

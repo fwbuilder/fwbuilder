@@ -76,12 +76,12 @@ void DNSName::fromXML(xmlNodePtr root)
     const char *n;
     
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dnsrec")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("dnsrec", n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dnsrectype")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {
         setStr("dnsrectype", n);
         FREEXMLBUFF(n);
@@ -91,7 +91,7 @@ void DNSName::fromXML(xmlNodePtr root)
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("run_time")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("run_time", n);
     FREEXMLBUFF(n);
 }
@@ -132,7 +132,7 @@ void DNSName::loadFromSource(bool ipv6, FWOptions *options,
             //Address *a = Address::cast(
             //    getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
             int af = AF_INET;
-            Address *a = NULL;
+            Address *a = nullptr;
             if (ipv6) { a = getRoot()->createIPv6(); af = AF_INET6; }
             else a = getRoot()->createIPv4();
             getRoot()->add(a);
@@ -161,7 +161,7 @@ void DNSName::loadFromSource(bool ipv6, FWOptions *options,
         {
             err << " Using dummy address in test mode";
             int af = AF_INET;
-            Address *a = NULL;
+            Address *a = nullptr;
             if (ipv6)
             {
                 a = getRoot()->createIPv6();

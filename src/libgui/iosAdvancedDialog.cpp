@@ -62,10 +62,10 @@ iosAdvancedDialog::iosAdvancedDialog(QWidget *parent,FWObject *o)
     obj=o;
 
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
 /* Page "General" */
     data.registerOption( m_dialog->ios_set_host_name  , fwoptions,  "ios_set_host_name" );
@@ -87,7 +87,7 @@ void iosAdvancedDialog::accept()
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     data.saveAll(fwoptions);
 

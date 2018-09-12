@@ -67,7 +67,7 @@ bool FirewallInstallerProcurve::packInstallJobsList(Firewall*)
     job_list.clear();
 
     Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
     if (pis->getCommand()!="")
     {
@@ -146,7 +146,7 @@ void FirewallInstallerProcurve::activatePolicy(const QString&, const QString&)
     packSSHArgs(args);
     if (cnf->verbose) inst_dlg->displayCommand(args);
 
-    SSHProcurve *ssh_object = NULL;
+    SSHProcurve *ssh_object = nullptr;
     ssh_object = new SSHProcurve(inst_dlg,
                                  cnf->fwobj->getName().c_str(),
                                  args,

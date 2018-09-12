@@ -81,7 +81,7 @@ InterfaceDialog::InterfaceDialog(QWidget *parent) :
     seclevel->hide();    seclevelLabel->hide();
     netzone->hide();     netzoneLabel->hide();
 */
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -96,7 +96,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Interface *s = dynamic_cast<Interface*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
@@ -345,7 +345,7 @@ void InterfaceDialog::validate(bool *res)
              Interface::cast(obj), obj_name, err))
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -379,7 +379,7 @@ void InterfaceDialog::validate(bool *res)
          */
         *res = false;
         // show warning dialog only if app has focus
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -435,7 +435,7 @@ void InterfaceDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     Interface *intf = Interface::cast(new_state);
-    assert(intf!=NULL);
+    assert(intf!=nullptr);
 
     string oldname = obj->getName();
     string oldlabel = intf->getLabel();
@@ -526,9 +526,9 @@ void InterfaceDialog::openIfaceDialog()
     try
     {
         QWidget *w = DialogFactory::createIfaceDialog(this, obj);
-        if (w==NULL)   return;   // some dialogs may not be implemented yet
+        if (w==nullptr)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
-        assert(d!=NULL);
+        assert(d!=nullptr);
         d->exec();
         delete w;
     }

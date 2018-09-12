@@ -684,7 +684,7 @@ int GetServByName::getPortByName(const QString &name, const QString &proto)
     struct servent *se = getservbyname(name.toLatin1().constData(),
                                        proto.toLatin1().constData());
 
-    if (se!=NULL)
+    if (se!=nullptr)
     {
         int port = ntohs(se->s_port);
         //free(se);

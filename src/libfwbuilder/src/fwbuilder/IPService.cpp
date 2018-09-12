@@ -94,82 +94,82 @@ void IPService::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
 
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("protocol_num")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     setStr("protocol_num", n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("fragm")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("fragm", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("short_fragm")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("short_fragm", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("any_opt")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("any_opt", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lsrr")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("lsrr", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ssrr")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("ssrr", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rr")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("rr", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ts")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("ts", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("tos")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("tos", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dscp")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("dscp", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rtralt")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("rtralt", n);
         FREEXMLBUFF(n);
     }
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rtralt_value")));
-    if(n!=NULL)
+    if(n!=nullptr)
     {
         setStr("rtralt_value", n);
         FREEXMLBUFF(n);

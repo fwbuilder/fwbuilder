@@ -140,7 +140,7 @@ QAction* ObjectManipulator::addNewObjectMenuItem(QMenu *menu,
 void ObjectManipulator::createNewObject()
 {
     const QAction *action = dynamic_cast<const QAction*>(sender());
-    assert(action!=NULL);
+    assert(action!=nullptr);
     QVariant v = action->data();
     if (!v.isValid()) return;
 
@@ -156,13 +156,13 @@ void ObjectManipulator::createNewObject()
         qDebug() << "ObjectManipulator::createNewObject()"
                  << "type:" << type_name
                  << "add_to_group_id:" << add_to_group_id;
-    FWObject *new_obj = NULL;
+    FWObject *new_obj = nullptr;
 
     if (!isObjectAllowed(type_name)) return;
 
     QString descr = FWBTree().getTranslatableObjectTypeName(type_name);
     // FWCmdMacro should be used for commands grouping
-    FWCmdMacro* macro = 0;
+    FWCmdMacro* macro = nullptr;
     if (add_to_group_id == -1)
         macro = new FWCmdMacro(
             FWBTree().getTranslatableNewObjectMenuText(type_name));
@@ -179,7 +179,7 @@ void ObjectManipulator::createNewObject()
         if (type_name ==  Firewall::TYPENAME) new_obj = newFirewall(macro);
         if (type_name ==  Cluster::TYPENAME) new_obj = newCluster(macro);
         if (type_name ==  Host::TYPENAME) new_obj = newHost(macro);
-        if (new_obj == NULL)
+        if (new_obj == nullptr)
         {
             delete macro;
             return;
@@ -198,9 +198,9 @@ void ObjectManipulator::createNewObject()
     //if (type_name ==  Routing::TYPENAME) new_obj = newRoutingRuleSet();
     if (type_name ==  AttachedNetworks::TYPENAME) new_obj = newAttachedNetworks(macro);
 
-    if (new_obj == NULL) new_obj = createObject(type_name, descr, NULL, macro);
+    if (new_obj == nullptr) new_obj = createObject(type_name, descr, nullptr, macro);
 
-    if (new_obj == NULL)
+    if (new_obj == nullptr)
     {
         delete macro;
         return;
@@ -236,7 +236,7 @@ void ObjectManipulator::createNewObject()
         m_project, new expandObjectInTreeEvent(
             m_project->getFileName(), new_obj->getId()));
 
-    if (Firewall::cast(new_obj)!=NULL)  // Cluster too
+    if (Firewall::cast(new_obj)!=nullptr)  // Cluster too
     {
         FWObject *ruleset = new_obj->getFirstByType(Policy::TYPENAME);
         if (ruleset)
@@ -249,7 +249,7 @@ void ObjectManipulator::createNewObject()
     list<FWObject*> newObjs;
     newObjs.push_back(new_obj);
     moveItems(lastClickedItem, newObjs);
-    lastClickedItem = NULL;
+    lastClickedItem = nullptr;
 
     m_project->undoStack->push(macro);
 }
@@ -258,13 +258,13 @@ void ObjectManipulator::newFirewallSlot()
 {
     QString descr = FWBTree().getTranslatableObjectTypeName(Firewall::TYPENAME);
     // FWCmdMacro should be used for commands grouping
-    FWCmdMacro* macro = 0;
+    FWCmdMacro* macro = nullptr;
     macro = new FWCmdMacro(
         FWBTree().getTranslatableNewObjectMenuText(Firewall::TYPENAME));
 
     FWObject *new_obj = newFirewall(macro);
 
-    if (new_obj == NULL)
+    if (new_obj == nullptr)
     {
         delete macro;
         return;
@@ -332,7 +332,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
 
     FWObject *parent = FWBTree().getStandardSlotForObject(lib, objType);
 
-    if (parent==NULL)
+    if (parent==nullptr)
     {
       QMessageBox::warning(this,"Firewall Builder",
                            QObject::tr(
@@ -342,7 +342,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
                            .arg(objType),
                            "&Continue", QString::null, QString::null,
                            0, 1 );
-      return NULL;
+      return nullptr;
     }
 
     return actuallyCreateObject(parent, objType, objName, copyFrom, macro);
@@ -357,7 +357,7 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
     FWObject *lib  = getCurrentLib();
     int       i = 0;
 
-    assert(parent!=NULL);
+    assert(parent!=nullptr);
 
     if (fwbdebug)
     {
@@ -385,7 +385,7 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
         i++;
     }
 
-    if (parent==NULL) parent=lib;
+    if (parent==nullptr) parent=lib;
 
     return actuallyCreateObject(parent, objType, objName, copyFrom, macro);
 }
@@ -396,11 +396,11 @@ FWObject* ObjectManipulator::actuallyCreateObject(FWObject *parent,
                                                   FWObject *copyFrom,
                                                   QUndoCommand* macro)
 {
-    FWObject *nobj=NULL;
-    if (!isTreeReadWrite(this, parent)) return NULL;
+    FWObject *nobj=nullptr;
+    if (!isTreeReadWrite(this, parent)) return nullptr;
     nobj = m_project->db()->create(objType.toLatin1().constData());
-    assert(nobj!=NULL);
-    if (copyFrom!=NULL) nobj->duplicate(copyFrom, true);
+    assert(nobj!=nullptr);
+    if (copyFrom!=nullptr) nobj->duplicate(copyFrom, true);
     if (nobj->isReadOnly()) nobj->setReadOnly(false);
 
     QString new_name = makeNameUnique(parent, objName, objType);
@@ -448,7 +448,7 @@ FWObject* ObjectManipulator::newLibrary(QUndoCommand* macro)
     // At this point new library is already inserted into the object tree
     // but it has not been added to the QTreeWidget yet.
     FWCmdAddLibrary *cmd = new FWCmdAddLibrary(
-        m_project, m_project->db(), NULL, QObject::tr("Create library"), macro);
+        m_project, m_project->db(), nullptr, QObject::tr("Create library"), macro);
     FWObject *new_state = cmd->getNewState();
     m_project->db()->remove(nlib, false);
     new_state->add(nlib);
@@ -463,10 +463,10 @@ FWObject* ObjectManipulator::newLibrary(QUndoCommand* macro)
 FWObject* ObjectManipulator::newPolicyRuleSet(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
     QString name = "Policy";
     Firewall * fw = Firewall::cast(currentObj);
-    if (fw!=NULL)
+    if (fw!=nullptr)
     {
         int count = 0;
         for (FWObjectTypedChildIterator it = fw->findByType(Policy::TYPENAME);it != it.end(); ++it)
@@ -477,7 +477,7 @@ FWObject* ObjectManipulator::newPolicyRuleSet(QUndoCommand* macro)
             name+=QString().setNum(count);
         }
     }
-    FWObject *o = createObject(currentObj, Policy::TYPENAME, name, NULL, macro);
+    FWObject *o = createObject(currentObj, Policy::TYPENAME, name, nullptr, macro);
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
     return o;
 }
@@ -485,10 +485,10 @@ FWObject* ObjectManipulator::newPolicyRuleSet(QUndoCommand* macro)
 FWObject* ObjectManipulator::newNATRuleSet(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
     QString name = "NAT";
     Firewall * fw = Firewall::cast(currentObj);
-    if (fw!=NULL)
+    if (fw!=nullptr)
     {
         int count = 0;
         for (FWObjectTypedChildIterator it = fw->findByType(NAT::TYPENAME);
@@ -500,7 +500,7 @@ FWObject* ObjectManipulator::newNATRuleSet(QUndoCommand* macro)
             name += QString().setNum(count);
         }
     }
-    FWObject *o = createObject(currentObj, NAT::TYPENAME, name, NULL, macro);
+    FWObject *o = createObject(currentObj, NAT::TYPENAME, name, nullptr, macro);
     this->getCurrentObjectTree()->sortItems(0, Qt::AscendingOrder);
     return o;
 }
@@ -521,10 +521,10 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
     FWObject *nfw = nfd->getNewFirewall();
     delete nfd;
 
-    if (nfw!=NULL)
+    if (nfw!=nullptr)
     {
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, NULL, QObject::tr("Create new Firewall"), macro);
+            m_project, parent, nullptr, QObject::tr("Create new Firewall"), macro);
         FWObject *new_state = cmd->getNewState();
 
         parent->remove(nfw, false);
@@ -559,7 +559,7 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
             fwvector.push_back(FWObject::cast(fw));
         ncd->setFirewallList(fwvector);
     }
-    if ( ncd->exec() != QDialog::Accepted) return NULL;
+    if ( ncd->exec() != QDialog::Accepted) return nullptr;
 
     FWObject *ncl = ncd->getNewCluster();
     delete ncd;
@@ -570,7 +570,7 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
             qDebug() << "ObjectManipulator::newCluster checkpoint 1";
 
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, NULL, QObject::tr("Create new Cluster"), macro);
+            m_project, parent, nullptr, QObject::tr("Create new Cluster"), macro);
         // newCluster dialog may create backup copies of member firewalls,
         // to see them in the tree need to reload it.
         cmd->setNeedTreeReload(true);
@@ -591,7 +591,7 @@ void ObjectManipulator::newClusterFromSelected()
     FWCmdMacro* macro = new FWCmdMacro(
         FWBTree().getTranslatableNewObjectMenuText(Cluster::TYPENAME));
     FWObject *ncl = newCluster(macro, true);
-    if (ncl == NULL)
+    if (ncl == nullptr)
     {
         delete macro;
         return;
@@ -602,11 +602,11 @@ void ObjectManipulator::newClusterFromSelected()
 FWObject* ObjectManipulator::newClusterIface(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
     QString new_name = makeNameUnique(currentObj,
                                       findNewestInterfaceName(currentObj),
                                       Interface::TYPENAME);
-    return createObject(currentObj, Interface::TYPENAME, new_name, NULL, macro);
+    return createObject(currentObj, Interface::TYPENAME, new_name, nullptr, macro);
 }
 
 /*
@@ -617,13 +617,13 @@ FWObject* ObjectManipulator::newClusterIface(QUndoCommand* macro)
 FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
-    FWObject *o = NULL;
+    FWObject *o = nullptr;
 
     FWObject *cluster = currentObj;
     while (cluster && !Cluster::isA(cluster)) cluster = cluster->getParent();
-    assert(cluster != NULL);
+    assert(cluster != nullptr);
     QString host_os = cluster->getStr("host_OS").c_str();
 
     list<QStringPair> lst;
@@ -635,13 +635,13 @@ FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
             this,"Firewall Builder",
             tr("Cluster host OS %1 does not support state synchronization").arg(host_os),
             "&Continue", QString::null, QString::null, 0, 1 );
-        return NULL;
+        return nullptr;
     }
 
     QString group_type = lst.front().first;
 
     o = createObject(currentObj, StateSyncClusterGroup::TYPENAME,
-                     tr("State Sync Group"), NULL, macro);
+                     tr("State Sync Group"), nullptr, macro);
     o->setStr("type", group_type.toStdString());
     return o;
 }
@@ -654,9 +654,9 @@ FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
 FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
-    FWObject *o = NULL;
+    FWObject *o = nullptr;
 
     QString group_type;
     if (Interface::isA(currentObj))
@@ -665,11 +665,11 @@ FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
     } else
     {
         qWarning("newClusterGroup: invalid currentObj");
-        return NULL;
+        return nullptr;
     }
 
     o = createObject(currentObj, FailoverClusterGroup::TYPENAME,
-                     tr("Failover group"), NULL, macro);
+                     tr("Failover group"), nullptr, macro);
     o->setStr("type", group_type.toStdString());
     return o;
 }
@@ -681,12 +681,12 @@ FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
 FWObject* ObjectManipulator::newAttachedNetworks(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
     if (Interface::isA(currentObj))
     {
         FWObject *no = createObject(currentObj, AttachedNetworks::TYPENAME,
-                                    tr("Attached Networks"), NULL, macro);
+                                    tr("Attached Networks"), nullptr, macro);
         FWObject *parent_host = Host::getParentHost(currentObj);
         string name = parent_host->getName() +
             ":" + currentObj->getName() + ":attached";
@@ -695,7 +695,7 @@ FWObject* ObjectManipulator::newAttachedNetworks(QUndoCommand* macro)
     } else
     {
         qWarning("newAttachedNetworks: invalid currentObj");
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -710,10 +710,10 @@ FWObject* ObjectManipulator::newHost(QUndoCommand* macro)
     FWObject *o = nhd->getNewHost();
     delete nhd;
 
-    if (o!=NULL)
+    if (o!=nullptr)
     {
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            m_project, parent, NULL, QObject::tr("Create new Host"), macro);
+            m_project, parent, nullptr, QObject::tr("Create new Host"), macro);
         FWObject *new_state = cmd->getNewState();
         parent->remove(o, false);
         new_state->add(o);
@@ -743,10 +743,10 @@ QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
 FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
-    Interface *new_interface = NULL;
-    FWObject *parent = NULL;
+    Interface *new_interface = nullptr;
+    FWObject *parent = nullptr;
 
     // Note that Firewall::cast matches Firewall and Cluster
     if (Host::isA(currentObj) || Firewall::cast(currentObj))
@@ -769,19 +769,19 @@ FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
         }
     }
 
-    if (parent == NULL)
+    if (parent == nullptr)
     {
         // since we can;t find quitable parent for the new interface,
         // we can't create it.
-        return NULL;
+        return nullptr;
     }
 
     QString new_name = makeNameUnique(parent, findNewestInterfaceName(parent),
                                       Interface::TYPENAME);
     new_interface = Interface::cast(
-        createObject(parent, Interface::TYPENAME, new_name, NULL, macro));
+        createObject(parent, Interface::TYPENAME, new_name, nullptr, macro));
 
-    if (new_interface == NULL) return NULL;
+    if (new_interface == nullptr) return nullptr;
 
     if (Interface::isA(parent))
     {
@@ -801,49 +801,49 @@ FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 FWObject* ObjectManipulator::newInterfaceAddress(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
     if (Interface::isA(currentObj))
     {
         Interface *intf = Interface::cast(currentObj);
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
-        ) return NULL;
+        ) return nullptr;
         QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ip");
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
-        return createObject(currentObj, IPv4::TYPENAME, iname, NULL, macro);
+        return createObject(currentObj, IPv4::TYPENAME, iname, nullptr, macro);
     }
     // if current object is not interface, create address in the standard folder
     return createObject(IPv4::TYPENAME,
                         FWBTree().getTranslatableObjectTypeName(IPv4::TYPENAME),
-                        NULL, macro);
+                        nullptr, macro);
 }
 
 FWObject* ObjectManipulator::newInterfaceAddressIPv6(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
     if (Interface::isA(currentObj))
     {
         Interface *intf = Interface::cast(currentObj);
         if (intf &&
             (intf->isDyn() || intf->isUnnumbered() || intf->isBridgePort())
-        ) return NULL;
+        ) return nullptr;
         QString iname = getStandardName(currentObj, IPv4::TYPENAME, "ipv6");
         iname = makeNameUnique(currentObj, iname, IPv4::TYPENAME);
-        return createObject(currentObj, IPv6::TYPENAME, iname, NULL, macro);
+        return createObject(currentObj, IPv6::TYPENAME, iname, nullptr, macro);
     }
     // if current object is not interface, create address in the standard folder
     return createObject(IPv6::TYPENAME,
                         FWBTree().getTranslatableObjectTypeName(IPv6::TYPENAME),
-                        NULL, macro);
+                        nullptr, macro);
 }
 
 FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( currentObj->isReadOnly() ) return nullptr;
 
     if (Interface::isA(currentObj))
     {
@@ -854,10 +854,10 @@ FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
                 .arg(QString::fromUtf8(currentObj->getParent()->getName().c_str()))
                 .arg(QString::fromUtf8(currentObj->getName().c_str()));
             return createObject(currentObj, physAddress::TYPENAME, iname,
-                                NULL, macro);
+                                nullptr, macro);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void ObjectManipulator::reminderAboutStandardLib()

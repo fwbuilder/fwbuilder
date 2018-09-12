@@ -75,7 +75,7 @@ void AddressRange::setNetmask(const InetAddr& ) {}
 FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
 {
     const AddressRange *n = dynamic_cast<const AddressRange *>(o);
-    if (n==NULL) {
+    if (n==nullptr) {
 
         std::ostringstream s;
         s << "Attempt to copy incompatible object to AddressRange: objectID=";
@@ -91,7 +91,7 @@ FWObject& AddressRange::shallowDuplicate(const FWObject *o, bool preserve_id)
 
 bool AddressRange::cmp(const FWObject *obj, bool recursive)
 {
-    if (AddressRange::constcast(obj)==NULL) return false;
+    if (AddressRange::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     InetAddr o1b;
@@ -113,12 +113,12 @@ void AddressRange::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
     
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("start_address")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     start_address = InetAddr(AF_UNSPEC, n);
     FREEXMLBUFF(n);
 
     n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("end_address")));
-    assert(n!=NULL);
+    assert(n!=nullptr);
     end_address = InetAddr(AF_UNSPEC, n);
     FREEXMLBUFF(n);
 

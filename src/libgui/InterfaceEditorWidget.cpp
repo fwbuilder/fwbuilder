@@ -43,7 +43,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     m_ui(new Ui::InterfaceEditorWidget)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interfacep = NULL;
+    this->interfacep = nullptr;
     m_ui->setupUi(this);
     setClusterMode(false);
     this->m_ui->name->setText(""); // blank interface name
@@ -101,7 +101,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent,
     clusterMode = true;
     tabw = dynamic_cast<QTabWidget*>(parent);
     m_ui->setupUi(this);
-    this->interfacep = NULL;
+    this->interfacep = nullptr;
     this->m_ui->name->setText(data.name);
     this->m_ui->label->setText(data.label);
 

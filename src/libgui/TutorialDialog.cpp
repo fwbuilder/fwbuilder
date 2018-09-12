@@ -32,10 +32,10 @@
 #include <QFile>
 #include "FWBApplication.h"
 
-TutorialDialog * TutorialDialog::dialog = NULL;
+TutorialDialog * TutorialDialog::dialog = nullptr;
 
 TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
-    QDialog(NULL),
+    QDialog(nullptr),
     ui(new Ui::TutorialDialog_q)
 {
     Q_UNUSED(parent)
@@ -50,7 +50,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
 
 void TutorialDialog::showTutorial(QString tutorial)
 {
-    if (dialog != NULL)
+    if (dialog != nullptr)
     {
         dialog->initializeTutorial(tutorial);
         dialog->showNormal();

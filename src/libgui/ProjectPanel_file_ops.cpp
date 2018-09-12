@@ -116,7 +116,7 @@ bool ProjectPanel::saveIfModified(bool include_discard_button)
             switch (QMessageBox::information(this, "Firewall Builder",
                                              message,
                                              tr("&Save"),tr("&Cancel"),
-                                             0,      // Enter = button 0
+                                             nullptr,      // Enter = button 0
                                              1 ) )   // Escape == button 1
             {
             case 0:
@@ -175,7 +175,7 @@ QString ProjectPanel::chooseNewFileName(const QString &fname,
 
 void ProjectPanel::fileProp()
 {
-    if (rcs!=NULL)
+    if (rcs!=nullptr)
     {
         filePropDialog fpd(this,rcs);
         fpd.setPrinter(mainW->getPrinter());
@@ -193,12 +193,12 @@ bool ProjectPanel::fileNew()
     if ( !nfn.isEmpty() )
     {
         //if (!saveIfModified() || !checkin(true)) return;
-        if (!systemFile && rcs!=NULL) 
+        if (!systemFile && rcs!=nullptr) 
             fileClose();       // fileClose calls load(this)
         else  
             loadStandardObjects();
 
-        visibleFirewall = NULL;
+        visibleFirewall = nullptr;
         setFileName(nfn);
         save();
         setupAutoSave();
@@ -210,10 +210,10 @@ bool ProjectPanel::fileNew()
 
     if (fwbdebug)
         qDebug("ProjectPanel::fileNew()  rcs=%p  rcs->getFileName()='%s'",
-               rcs, rcs == 0 ? "<null>" :
+               rcs, rcs == nullptr ? "<null>" :
                rcs->getFileName().toLatin1().constData());
 
-    return (rcs!=NULL);
+    return (rcs!=nullptr);
 }
 
 bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
@@ -241,7 +241,7 @@ bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
 
     if (!saveIfModified() || !checkin(true)) return false;
 
-    if (!systemFile && rcs!=NULL)
+    if (!systemFile && rcs!=nullptr)
     {
         if (mw->isEditorVisible()) mw->hideEditor();
         reset();
@@ -252,8 +252,8 @@ bool ProjectPanel::loadFile(const QString &fileName, bool load_rcs_head)
 
     //if preview cannot give RCS,
     //get a new RCS from file dialog
-    if (new_rcs==NULL) new_rcs = new RCS(fileName);
-    if (new_rcs==NULL) return false;
+    if (new_rcs==nullptr) new_rcs = new RCS(fileName);
+    if (new_rcs==nullptr) return false;
 
     try
     {
@@ -334,7 +334,7 @@ void ProjectPanel::fileSaveAs()
     {
         db()->setDirty(false);  // so it wont ask if user wants to save
         rcs->abandon();
-        if (rcs!=NULL) delete rcs;
+        if (rcs!=nullptr) delete rcs;
         rcs = new RCS("");
         setFileName(newFileName);
         save();
@@ -381,13 +381,13 @@ void ProjectPanel::fileDiscard()
         if (mw->isEditorVisible()) mw->hideEditor();
 
         if (rcs) delete rcs;
-        rcs=NULL;
+        rcs=nullptr;
 
         FWObjectClipboard::obj_clipboard->clear();
 
         firewalls.clear();
-        visibleFirewall = NULL;
-        visibleRuleSet = NULL;
+        visibleFirewall = nullptr;
+        visibleRuleSet = nullptr;
         clearFirewallTabs();
         clearObjects();
 
@@ -715,20 +715,20 @@ bool ProjectPanel::exportLibraryTest(list<FWObject*> &selectedLibs)
 
             if (std::find(selectedLibs.begin(),selectedLibs.end(),tgtlib)!=selectedLibs.end()) continue;
 
-            if (RuleElement::cast(pp)!=NULL)
+            if (RuleElement::cast(pp)!=nullptr)
             {
                 FWObject *fw       = pp;
                 FWObject *rule     = pp;
                 FWObject *ruleset  = pp;
                 FWObject *iface    = pp;
 
-                while (rule!=NULL && Rule::cast(rule)==NULL)
+                while (rule!=nullptr && Rule::cast(rule)==nullptr)
                     rule=rule->getParent();
-                while (ruleset!=NULL && RuleSet::cast(ruleset)==NULL)
+                while (ruleset!=nullptr && RuleSet::cast(ruleset)==nullptr)
                     ruleset=ruleset->getParent();
-                while (iface!=NULL && Interface::cast(iface)==NULL)
+                while (iface!=nullptr && Interface::cast(iface)==nullptr)
                     iface=iface->getParent();
-                while (fw!=NULL && Firewall::cast(fw)==NULL)
+                while (fw!=nullptr && Firewall::cast(fw)==nullptr)
                     fw=fw->getParent();
 
                 s = QObject::tr("Library %1: Firewall '%2' (%3 rule #%4) uses "
@@ -814,7 +814,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
 void ProjectPanel::setupAutoSave()
 {
     if ( st->getBool("Environment/autoSaveFile") &&
-         rcs!=NULL && rcs->getFileName()!="")
+         rcs!=nullptr && rcs->getFileName()!="")
     {
         int p = st->getInt("Environment/autoSaveFilePeriod");
         autosaveTimer->start( p*1000*60 );
@@ -828,7 +828,7 @@ void ProjectPanel::findExternalRefs(FWObject *lib,
                                        list<FWReference*> &extRefs)
 {
     FWReference *ref=FWReference::cast(root);
-    if (ref!=NULL)
+    if (ref!=nullptr)
     {
         FWObject *plib = ref->getPointer()->getLibrary();
         if ( plib->getId()!=FWObjectDatabase::STANDARD_LIB_ID &&
@@ -851,7 +851,7 @@ void ProjectPanel::findExternalRefs(FWObject *lib,
 FWObject* ProjectPanel::loadLibrary(const string &libfpath)
 {
     MessageBoxUpgradePredicate upgrade_predicate(mainW);
-    FWObject *last_new_lib = NULL;
+    FWObject *last_new_lib = nullptr;
 
     try
     {
@@ -869,7 +869,7 @@ FWObject* ProjectPanel::loadLibrary(const string &libfpath)
              ++it)
         {
             FWObject *obj = ndb->findInIndex(*it);
-            assert(obj!=NULL);
+            assert(obj!=nullptr);
             int new_id = FWObjectDatabase::generateUniqueId();
             obj->setId(new_id);
             id_mapping[*it] = new_id;
@@ -1007,7 +1007,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 
     MessageBoxUpgradePredicate upgrade_predicate(mainW);
 
-    assert(_rcs!=NULL);
+    assert(_rcs!=nullptr);
 
     rcs = _rcs;
     try
@@ -1106,7 +1106,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
          * read-only.
          */
         FWObject *slib = objdb->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
-        if (slib!=NULL )
+        if (slib!=nullptr )
         {
             if (fwbdebug)
                 qDebug("standard library read-only status: %d, "
@@ -1310,7 +1310,7 @@ bool ProjectPanel::checkin(bool unlock)
 /* doing checkin only if we did checkout so rcs!=NULL */
     QString rlog="";
 
-    if (systemFile || rcs==NULL || !rcs->isCheckedOut() || rcs->isTemp())
+    if (systemFile || rcs==nullptr || !rcs->isCheckedOut() || rcs->isTemp())
         return true;
 
     if (rcs->isDiff())

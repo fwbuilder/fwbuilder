@@ -92,7 +92,7 @@ void CompilerDriver::assembleFwScriptInternal(Cluster *cluster,
     time_t tm;
     struct tm *stm;
 
-    tm = time(NULL);
+    tm = time(nullptr);
     stm = localtime(&tm);
     timestr = strdup(ctime(&tm));
     timestr[strlen(timestr)-1] = '\0';

@@ -49,7 +49,7 @@ bool  Library::validateChild(FWObject*)
 void Library::fromXML(xmlNodePtr root)
 {
     const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("color")));
-    if(n!=NULL)  // color is not a mandatory attribute
+    if(n!=nullptr)  // color is not a mandatory attribute
     {
         setStr("color", n);
         FREEXMLBUFF(n);

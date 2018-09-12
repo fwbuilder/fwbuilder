@@ -81,7 +81,7 @@ RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) :
 
     connectSignalsOfAllWidgetsToSlotChange();
 
-    firewall = NULL;
+    firewall = nullptr;
     init=false;
 }
 
@@ -425,7 +425,7 @@ void RuleOptionsDialog::applyChanges()
         {
             FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
             // if tag_object==NULL, setTagObject clears setting in the rule
-            policy_rule->setTagging(tag_object != NULL);
+            policy_rule->setTagging(tag_object != nullptr);
             policy_rule->setTagObject(tag_object);
 
             policy_rule->setClassification(
@@ -440,7 +440,7 @@ void RuleOptionsDialog::applyChanges()
         {
             FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
             // if tag_object==NULL, setTagObject clears setting in the rule
-            policy_rule->setTagging(tag_object != NULL);
+            policy_rule->setTagging(tag_object != nullptr);
             policy_rule->setTagObject(tag_object);
 
             policy_rule->setClassification(

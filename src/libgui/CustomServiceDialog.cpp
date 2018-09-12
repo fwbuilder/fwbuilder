@@ -57,7 +57,7 @@ CustomServiceDialog::CustomServiceDialog(QWidget *parent) : BaseObjectDialog(par
 {
     m_dialog = new Ui::CustomServiceDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -71,7 +71,7 @@ void CustomServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     CustomService *s = dynamic_cast<CustomService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -202,7 +202,7 @@ void CustomServiceDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     CustomService *s = dynamic_cast<CustomService*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

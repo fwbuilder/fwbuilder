@@ -50,7 +50,7 @@ vrrpOptionsDialog::vrrpOptionsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *gropt = FWOptions::cast(obj);
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
 
     data.registerOption(m_dialog->vrrp_secret,
                         gropt,
@@ -99,7 +99,7 @@ void vrrpOptionsDialog::reject()
 bool vrrpOptionsDialog::validate()
 {
     bool valid = true;
-    QWidget *focus = NULL;
+    QWidget *focus = nullptr;
     QString message;
 
     // vrrp secret must be set

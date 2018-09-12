@@ -64,7 +64,7 @@ TagServiceDialog::TagServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::TagServiceDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -73,7 +73,7 @@ void TagServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     TagService *s = dynamic_cast<TagService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
 
     init=true;
@@ -98,7 +98,7 @@ void TagServiceDialog::validate(bool *res)
 {
     *res=true;
     TagService *s = dynamic_cast<TagService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
@@ -111,7 +111,7 @@ void TagServiceDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     TagService *s = dynamic_cast<TagService*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

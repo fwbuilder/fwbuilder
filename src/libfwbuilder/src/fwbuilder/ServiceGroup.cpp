@@ -59,14 +59,14 @@ ServiceGroup::~ServiceGroup() {}
 
 bool  ServiceGroup::validateChild(FWObject *o)
 { 
-    if (FWServiceReference::cast(o)!=NULL) return true;
+    if (FWServiceReference::cast(o)!=nullptr) return true;
 
     return (FWObject::validateChild(o) && 
-            Address::cast(o)==NULL &&
-            ObjectGroup::cast(o)==NULL &&
-            Interval::cast(o)==NULL &&
-            FWObjectReference::cast(o)==NULL &&
-            RuleSet::cast(o)==NULL);
+            Address::cast(o)==nullptr &&
+            ObjectGroup::cast(o)==nullptr &&
+            Interval::cast(o)==nullptr &&
+            FWObjectReference::cast(o)==nullptr &&
+            RuleSet::cast(o)==nullptr);
 }
 
 FWReference* ServiceGroup::createRef()

@@ -81,7 +81,7 @@ bool instDialog::runCompiler(Firewall *fw)
     currentProgressBar->setFormat("%v/%m");
 
     QTreeWidgetItem* item = opListMapping[fw->getId()];
-    assert(item!=NULL);
+    assert(item!=nullptr);
 
     currentFWLabel->setText(QString::fromUtf8(fw->getName().c_str()));
     m_dialog->fwWorkList->scrollToItem(item);
