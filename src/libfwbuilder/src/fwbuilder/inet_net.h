@@ -19,7 +19,6 @@
 #ifndef INET_NET_H
 #define INET_NET_H
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #ifdef _WIN32
 #  include <winsock2.h>

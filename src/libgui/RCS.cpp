@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -32,7 +31,6 @@
 #include "RCS.h"
 
 // need this for FS_SEPARATOR
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 
 //#include "FWWindow.h"

@@ -27,7 +27,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_PROCURVE_HH
 #define _OSNETWORKCONFIGURATOR_PROCURVE_HH
 
-#include "config.h"
 
 #include "OSConfigurator_ios.h"
 

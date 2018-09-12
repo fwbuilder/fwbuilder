@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "Configlet.h"
 #include "CompilerDriver_ipt.h"

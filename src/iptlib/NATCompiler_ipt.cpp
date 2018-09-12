@@ -54,7 +54,6 @@
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UDPService.h"
 
-#include "config.h"
 
 #include <QString>
 #include <QRegExp>

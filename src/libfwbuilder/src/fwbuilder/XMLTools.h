@@ -31,8 +31,6 @@
 #ifndef __XML_TOOLS_HH_FLAG__
 #define __XML_TOOLS_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/FWException.h"

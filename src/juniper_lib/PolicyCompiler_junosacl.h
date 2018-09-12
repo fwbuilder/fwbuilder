@@ -26,7 +26,6 @@
 #ifndef __POLICYCOMPILER_JUNOSACL_HH
 #define __POLICYCOMPILER_JUNOSACL_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/PolicyCompiler.h"
 #include "fwbuilder/RuleElement.h"

@@ -24,7 +24,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_cisco.h"
 #include "NamedObjectsManager.h"

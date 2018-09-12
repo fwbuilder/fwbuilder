@@ -25,9 +25,7 @@
 */
 
 
-#include "../../config.h"
 #include "global.h"
-#include "VERSION.h"
 
 #include <QDir>
 #include <QString>

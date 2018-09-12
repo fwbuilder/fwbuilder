@@ -26,7 +26,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_IPCOP_HH
 #define _OSNETWORKCONFIGURATOR_IPCOP_HH
 
-#include "config.h"
 
 #include "OSConfigurator_linux24.h"
 

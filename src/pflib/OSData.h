@@ -26,7 +26,6 @@
 #ifndef __OSDATA_HH
 #define __OSDATA_HH
 
-#include "config.h"
 
 #include <string>
 #include <map>

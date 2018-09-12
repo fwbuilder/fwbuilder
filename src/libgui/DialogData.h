@@ -27,7 +27,6 @@
 #ifndef __DIALOGOPTIONS_H_
 #define __DIALOGOPTIONS_H_
 
-#include "config.h"
 
 #include <list>
 

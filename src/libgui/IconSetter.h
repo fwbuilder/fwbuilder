@@ -26,7 +26,6 @@
 #ifndef ICONSETTER_H
 #define ICONSETTER_H
 
-#include "config.h"
 #include "global.h"
 #include "fwbuilder/FWObject.h"
 #include <QPixmap>

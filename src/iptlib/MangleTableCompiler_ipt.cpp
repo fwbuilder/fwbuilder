@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "MangleTableCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"

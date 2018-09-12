@@ -29,7 +29,6 @@
 
 #include "fwbuilder/Constants.h"
 
-#include "../../VERSION.h"
 
 FWBAboutDialog::FWBAboutDialog(QWidget *parent): QDialog(parent)
 {

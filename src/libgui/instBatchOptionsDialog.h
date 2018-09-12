@@ -27,7 +27,6 @@
 #ifndef __INSTBATCHOPTIONSDIALOG_H_
 #define __INSTBATCHOPTIONSDIALOG_H_
 
-#include "config.h"
 
 #include "instOptionsDialog.h"
 

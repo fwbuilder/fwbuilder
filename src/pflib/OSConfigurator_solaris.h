@@ -26,7 +26,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_SOLARIS_HH
 #define _OSNETWORKCONFIGURATOR_SOLARIS_HH
 
-#include "config.h"
 
 #include "fwbuilder/InetAddr.h"
 

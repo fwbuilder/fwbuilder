@@ -1,5 +1,4 @@
 
-#include "../../config.h"
 
 #include <qglobal.h>
 
@@ -25,7 +24,6 @@
 
 #include <string>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"

@@ -25,7 +25,6 @@
 
 #include "parseCommandLineTest.h"
 
-#include "config.h"
 #include "utils.h"
 
 #include <QApplication>

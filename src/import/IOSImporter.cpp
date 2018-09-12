@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 // #include "global.h"
 // #include "utils_no_qt.h"

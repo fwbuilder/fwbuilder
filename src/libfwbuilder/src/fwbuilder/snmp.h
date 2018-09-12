@@ -25,8 +25,6 @@
 #ifndef __SNMP_HH_FLAG__
 #define __SNMP_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #ifdef HAVE_LIBSNMP
 

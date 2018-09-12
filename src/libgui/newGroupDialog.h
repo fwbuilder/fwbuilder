@@ -27,7 +27,6 @@
 #ifndef __NEWGROUPDIALOG_H_
 #define __NEWGROUPDIALOG_H_
 
-#include "config.h"
 #include <ui_newgroupdialog_q.h>
 #include <QDialog>
 

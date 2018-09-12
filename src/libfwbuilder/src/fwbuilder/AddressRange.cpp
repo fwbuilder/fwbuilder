@@ -27,8 +27,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/AddressRange.h"

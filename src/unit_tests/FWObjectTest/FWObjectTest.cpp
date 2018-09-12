@@ -27,7 +27,6 @@
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/XMLTools.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/ObjectMatcher.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Interface.h"

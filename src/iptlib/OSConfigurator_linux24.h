@@ -26,7 +26,6 @@
 #ifndef _OSCONFIGURATOR_LINUX24_HH
 #define _OSCONFIGURATOR_LINUX24_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 

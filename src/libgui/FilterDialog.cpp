@@ -23,11 +23,9 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
-#include "VERSION.h"
 
 #include "FilterDialog.h"
 #include "ObjectManipulator.h"

@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObjectsManagerIOS.h"
 #include "NamedObject.h"

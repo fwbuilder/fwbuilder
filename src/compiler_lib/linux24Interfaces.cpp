@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "interfaceProperties.h"
 #include "linux24Interfaces.h"

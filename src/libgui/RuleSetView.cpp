@@ -31,7 +31,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 

@@ -23,8 +23,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/AttachedNetworks.h"

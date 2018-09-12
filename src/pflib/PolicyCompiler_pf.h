@@ -26,7 +26,6 @@
 #ifndef __POLICYCOMPILER_PF_HH
 #define __POLICYCOMPILER_PF_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "fwcompiler/PolicyCompiler.h"
 
 #include "NATCompiler_pf.h"

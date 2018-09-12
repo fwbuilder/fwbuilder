@@ -26,7 +26,6 @@
 #ifndef __POLICYCOMPILER_CISCO_HH
 #define __POLICYCOMPILER_CISCO_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/PolicyCompiler.h"
 #include "fwbuilder/RuleElement.h"

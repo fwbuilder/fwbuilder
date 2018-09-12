@@ -27,7 +27,6 @@
 #ifndef __CONFIRMDELETEOBJECTDIALOG_H_
 #define __CONFIRMDELETEOBJECTDIALOG_H_
 
-#include "config.h"
 #include <ui_confirmdeleteobjectdialog_q.h>
 
 #include "FindWhereUsedWidget.h"

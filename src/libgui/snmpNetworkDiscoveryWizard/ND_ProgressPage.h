@@ -25,7 +25,6 @@
 #define __ND_PROGRESSPAGE_H_
 
 // for HAVE_LIBSNMP
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/InetAddrMask.h"
 
 #include "ui_nd_progresspage_q.h"

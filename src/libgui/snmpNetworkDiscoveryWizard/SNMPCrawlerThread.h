@@ -24,7 +24,6 @@
 #ifndef _SNMPCRAWLERTHREAD_H_
 #define _SNMPCRAWLERTHREAD_H_
 
-#include "../../config.h"
 
 #include <QWidget>
 #include <QThread>
@@ -32,7 +31,6 @@
 #include <map>
 #include <set>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/InetAddrMask.h"
 #include "fwbuilder/ThreadTools.h"

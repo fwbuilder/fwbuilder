@@ -27,7 +27,6 @@
 #ifndef  __OBJECTEDITORDOCKWIDGET_H_
 #define  __OBJECTEDITORDOCKWIDGET_H_
 
-#include "config.h"
 
 #include <QDockWidget>
 #include <QCloseEvent>

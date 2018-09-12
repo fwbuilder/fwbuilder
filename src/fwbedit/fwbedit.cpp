@@ -21,9 +21,7 @@
 
 */
 
-#include "../../config.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
 
 #include <qsettings.h>

@@ -14,8 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/ClusterGroup.h"

@@ -25,8 +25,6 @@
 */
 
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "InterfaceData.h"

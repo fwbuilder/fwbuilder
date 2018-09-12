@@ -31,7 +31,6 @@
 #include <qstringlist.h>
 #include <QDialog>
 
-#include "config.h"
 #include <ui_filepropdialog_q.h>
 
 class RCS;

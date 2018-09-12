@@ -28,7 +28,6 @@
 #ifndef __DNS_HH_FLAG__
 #define __DNS_HH_FLAG__
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #ifndef _WIN32
 

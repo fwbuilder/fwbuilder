@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include <ui_FWBMainWindow_q.h>

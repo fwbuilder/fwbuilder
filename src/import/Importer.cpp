@@ -26,7 +26,6 @@
  * will be refactored into some other common module in the future).
  */
 
-#include "../../config.h"
 
 #include "Importer.h"
 

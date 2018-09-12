@@ -27,7 +27,6 @@
 #ifndef __NEWFIREWALLDIALOG_H_
 #define __NEWFIREWALLDIALOG_H_
 
-#include "config.h"
 #include <ui_newfirewalldialog_q.h>
 
 #include "fwbuilder/InterfaceData.h"

@@ -27,7 +27,6 @@
 #ifndef  __ASKLIBFORCOPYDIALOG_H_
 #define  __ASKLIBFORCOPYDIALOG_H_
 
-#include "config.h"
 #include "global.h"
 
 #include <ui_asklibforcopydialog_q.h>

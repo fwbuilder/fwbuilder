@@ -27,7 +27,6 @@
 #ifndef  __SSHSESSION_H_
 #define  __SSHSESSION_H_
 
-#include "config.h"
 #include "global.h"
 
 #include <qstring.h>

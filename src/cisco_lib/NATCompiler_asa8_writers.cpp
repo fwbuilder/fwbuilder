@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_asa8.h"
 #include "NamedObject.h"

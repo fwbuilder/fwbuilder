@@ -27,8 +27,6 @@
 #ifndef  __FWOBJECT_HH_FLAG__
 #define  __FWOBJECT_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <time.h>
 #include <string>

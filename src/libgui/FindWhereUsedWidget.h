@@ -27,7 +27,6 @@
 #ifndef __FINDWHEREUSEDWIDGET_H_
 #define __FINDWHEREUSEDWIDGET_H_
 
-#include "config.h"
 #include <ui_findwhereusedwidget_q.h>
 #include "ProjectPanel.h"
 

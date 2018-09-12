@@ -27,7 +27,6 @@
 #ifndef  __SSHPIX_H_
 #define  __SSHPIX_H_
 
-#include "config.h"
 #include "global.h"
 
 #include "SSHCisco.h"

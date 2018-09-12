@@ -26,7 +26,6 @@
 #ifndef __NATCOMPILER_IPT_HH__
 #define __NATCOMPILER_IPT_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/NATCompiler.h"
 #include "fwbuilder/RuleElement.h"

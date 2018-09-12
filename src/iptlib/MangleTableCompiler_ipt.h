@@ -26,7 +26,6 @@
 #ifndef __MANGLETABLECOMPILER_IPT_HH
 #define __MANGLETABLECOMPILER_IPT_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "PolicyCompiler_ipt.h"
 
 namespace fwcompiler {

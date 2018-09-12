@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_pix.h"
 #include "NamedObjectsAndGroupsSupport.h"

@@ -25,7 +25,6 @@
 
 #include "ICMPServiceDialogTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 
 #include <QApplication>

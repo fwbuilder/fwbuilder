@@ -28,7 +28,6 @@
 #ifndef _RESOURCES_HH
 #define _RESOURCES_HH
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <map>
 #include <string>

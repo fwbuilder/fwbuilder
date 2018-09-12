@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "common/init.cpp"
 #include "interfacePropertiesTest.h"

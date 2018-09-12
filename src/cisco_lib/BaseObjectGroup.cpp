@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "BaseObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"

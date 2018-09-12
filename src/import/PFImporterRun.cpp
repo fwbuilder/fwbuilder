@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "fwbuilder/InetAddr.h"
 

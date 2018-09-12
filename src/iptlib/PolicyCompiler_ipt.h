@@ -26,11 +26,9 @@
 #ifndef __POLICYCOMPILER_IPT_HH__
 #define __POLICYCOMPILER_IPT_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/PolicyCompiler.h"
 #include "fwbuilder/RuleElement.h"
-#include "config.h"
 #include "Configlet.h"
 
 #include <QMap>

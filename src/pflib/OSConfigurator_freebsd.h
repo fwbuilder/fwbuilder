@@ -26,7 +26,6 @@
 #ifndef _OSCONFIGURATOR_FREEBSD_HH
 #define _OSCONFIGURATOR_FREEBSD_HH
 
-#include "config.h"
 
 #include "OSConfigurator_bsd.h"
 #include "OSData.h"

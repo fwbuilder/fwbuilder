@@ -24,11 +24,9 @@
 */
 
 
-#include "config.h"
 
 #include "global.h"
 #include "utils.h"
-#include "VERSION.h"
 
 #include "debugDialog.h"
 #include "RCS.h"

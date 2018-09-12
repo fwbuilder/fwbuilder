@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "ASA8ObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"

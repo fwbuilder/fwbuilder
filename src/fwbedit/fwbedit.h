@@ -23,8 +23,6 @@
 
 */
 
-#include "../../config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"

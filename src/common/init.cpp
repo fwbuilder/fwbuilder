@@ -1,6 +1,5 @@
 
 
-#include "../../config.h"
 
 #include <string>
 #include <assert.h>
@@ -9,7 +8,6 @@
 #include <QString>
 #include <QtDebug>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"

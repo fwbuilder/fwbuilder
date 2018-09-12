@@ -25,7 +25,6 @@
 
 #include "genericDialogTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 
 #include <QApplication>

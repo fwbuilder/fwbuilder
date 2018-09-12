@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_pf.h"
 #include "NATCompiler_pf.h"

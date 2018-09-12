@@ -23,7 +23,6 @@
 
 #include "ImporterTest.h"
 
-#include "config.h"
 #include "global.h"
 
 #include <fstream>

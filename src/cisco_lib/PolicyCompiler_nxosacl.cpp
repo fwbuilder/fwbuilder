@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_nxosacl.h"
 #include "NamedObjectsAndGroupsSupport.h"

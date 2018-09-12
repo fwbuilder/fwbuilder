@@ -31,7 +31,6 @@
 #include <list>
 #include <assert.h>
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 namespace libfwbuilder {
     class InetAddr;

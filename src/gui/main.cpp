@@ -25,9 +25,7 @@
 */
 
 
-#include "../../config.h"
 #include "global.h"
-#include "VERSION.h"
 #include "../common/commoninit.h"
 
 #include <getopt.h>

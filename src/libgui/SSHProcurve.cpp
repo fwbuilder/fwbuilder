@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 
 #include "SSHProcurve.h"

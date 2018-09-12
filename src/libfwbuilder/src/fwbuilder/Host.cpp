@@ -27,8 +27,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"

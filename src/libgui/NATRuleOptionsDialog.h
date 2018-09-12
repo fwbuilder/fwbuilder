@@ -25,7 +25,6 @@
 #ifndef __NATRULEOPTIONSDIALOG_H_
 #define __NATRULEOPTIONSDIALOG_H_
 
-#include "config.h"
 #include <ui_natruleoptionsdialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

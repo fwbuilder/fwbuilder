@@ -31,11 +31,9 @@
 #ifndef __ROUTINGCOMPILER_IPT_HH__
 #define __ROUTINGCOMPILER_IPT_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/RoutingCompiler.h"
 #include "fwbuilder/RuleElement.h"
-#include "config.h"
 
 namespace libfwbuilder {
     class RuleElementRDst;

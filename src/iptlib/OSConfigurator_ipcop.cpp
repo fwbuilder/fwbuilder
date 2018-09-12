@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 
 #include "OSConfigurator_ipcop.h"
 

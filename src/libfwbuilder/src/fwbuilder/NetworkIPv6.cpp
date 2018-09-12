@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Inet6AddrMask.h"
 #include "fwbuilder/NetworkIPv6.h"

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "RoutingCompiler_procurve_acl.h"
 

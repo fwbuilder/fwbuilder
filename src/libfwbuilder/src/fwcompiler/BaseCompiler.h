@@ -26,7 +26,6 @@
 #ifndef __BASE_COMPILER_HH__
 #define __BASE_COMPILER_HH__
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Rule.h"
 

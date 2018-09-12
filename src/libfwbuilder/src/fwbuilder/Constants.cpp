@@ -21,12 +21,10 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Constants.h"
 
-#if defined (__linux__) || defined (__FreeBSD_kernel__) || defined (__MINGW64__) || defined (__MINGW32__)
+#if defined (__linux__) || defined (__FreeBSD_kernel__) || defined (__MINGW64__) || defined (__MINGW32__) || defined (__APPLE__)
 #   include <sys/stat.h>
 #endif
 

@@ -26,7 +26,6 @@
 #ifndef __TABLEFACTORY_HH
 #define __TABLEFACTORY_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include <fwbuilder/Firewall.h>
 #include <fwbuilder/FWException.h>
 #include <fwbuilder/RuleElement.h>

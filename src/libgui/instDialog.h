@@ -28,7 +28,6 @@
 #define __INSTDIALOG_H_
 
 
-#include "config.h"
 
 #include <ui_instdialog_q.h>
 #include "instConf.h"

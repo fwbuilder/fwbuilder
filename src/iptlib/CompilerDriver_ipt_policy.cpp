@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "CompilerDriver_ipt.h"
 #include "MangleTableCompiler_ipt.h"

@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "CompilerDriver_ipt.h"
 #include "NATCompiler_ipt.h"

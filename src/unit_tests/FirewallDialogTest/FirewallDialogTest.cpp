@@ -25,7 +25,6 @@
 
 #include "FirewallDialogTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 
 #include <QApplication>

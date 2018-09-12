@@ -26,7 +26,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "combinedAddress.h"
 

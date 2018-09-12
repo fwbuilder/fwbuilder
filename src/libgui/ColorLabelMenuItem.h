@@ -27,7 +27,6 @@
 #ifndef __COLORLABELMENUITEM_H_
 #define __COLORLABELMENUITEM_H_
 
-#include "config.h"
 #include <ui_colorlabelmenuitem_q.h>
 
 class QToolButton;

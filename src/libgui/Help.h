@@ -27,7 +27,6 @@
 #ifndef __HELP_H_
 #define __HELP_H_
 
-#include "config.h"
 #include "ui_helpview_q.h"
 
 #include "global.h"

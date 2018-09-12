@@ -28,7 +28,6 @@
 #define __FIREWALLINSTALLERPROCURVE_H_
 
 
-#include "config.h"
 
 #include "FirewallInstallerCisco.h"
 

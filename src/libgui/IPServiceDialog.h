@@ -27,7 +27,6 @@
 #ifndef __IPSERVICEDIALOG_H_
 #define __IPSERVICEDIALOG_H_
 
-#include "config.h"
 
 #include <ui_ipservicedialog_q.h>
 #include "BaseObjectDialog.h"

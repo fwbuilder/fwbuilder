@@ -27,7 +27,6 @@
 #ifndef __ACTIONSDIALOG_H_
 #define __ACTIONSDIALOG_H_
 
-#include "config.h"
 #include <ui_actionsdialog_q.h>
 #include "BaseObjectDialog.h"
 #include "DialogData.h"

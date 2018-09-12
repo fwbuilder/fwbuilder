@@ -1,4 +1,3 @@
-#include "../../config.h"
 
 #include "CompilerDriver_junosacl.h"
 #include "OSConfigurator_junos.h"

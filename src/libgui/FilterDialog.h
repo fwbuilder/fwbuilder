@@ -27,7 +27,6 @@
 #ifndef __FILTERDIALOG_H_
 #define __FILTERDIALOG_H_
 
-#include "config.h"
 #include <ui_filterdialog_q.h>
 
 #include "fwbuilder/FWObject.h"

@@ -25,7 +25,6 @@
 
 #include "RCSTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 #include "../../libgui/RCS.h"
 

@@ -27,7 +27,6 @@
 #ifndef __IPV6DIALOG_H_
 #define __IPV6DIALOG_H_
 
-#include "config.h"
 #include <ui_ipv6dialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

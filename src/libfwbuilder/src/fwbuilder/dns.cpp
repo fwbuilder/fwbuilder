@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #ifndef _WIN32

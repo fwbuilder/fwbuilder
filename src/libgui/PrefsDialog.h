@@ -27,7 +27,6 @@
 #ifndef __PREFSDIALOG_H_
 #define __PREFSDIALOG_H_
 
-#include "config.h"
 #include <ui_prefsdialog_q.h>
 
 #include "FWBSettings.h"

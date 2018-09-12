@@ -14,7 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "../../config.h"
 
 #include "generatedScriptTestsSecuwall.h"
 

@@ -26,7 +26,6 @@
 #ifndef __POLICYCOMPILER_IPF_HH
 #define __POLICYCOMPILER_IPF_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "PolicyCompiler_pf.h"
 
 

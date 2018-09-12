@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "IPTImporter.h"
 #include "getProtoByName.h"

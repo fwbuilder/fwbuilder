@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_junosacl.h"
 // #include "NamedObjectsAndGroupsSupport.h"

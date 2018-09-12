@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManager.h"

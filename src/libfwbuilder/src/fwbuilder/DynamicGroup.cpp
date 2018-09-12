@@ -21,8 +21,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/XMLTools.h"

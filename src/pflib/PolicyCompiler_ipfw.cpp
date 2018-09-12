@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_ipfw.h"
 #include "fwcompiler/Compiler.h"

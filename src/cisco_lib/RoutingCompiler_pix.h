@@ -17,11 +17,9 @@
 #ifndef __ROUTINGCOMPILER_PIX_HH__
 #define __ROUTINGCOMPILER_PIX_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/RoutingCompiler.h"
 #include "fwbuilder/RuleElement.h"
-#include "config.h"
 
 #include "RoutingCompiler_cisco.h"
 

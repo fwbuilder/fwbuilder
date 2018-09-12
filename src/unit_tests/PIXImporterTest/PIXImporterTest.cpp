@@ -23,7 +23,6 @@
 
 #include "PIXImporterTest.h"
 
-#include "config.h"
 #include "global.h"
 
 #include <fstream>

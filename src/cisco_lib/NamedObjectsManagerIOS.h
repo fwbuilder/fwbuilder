@@ -24,7 +24,6 @@
 #ifndef _NAMED_OBJECTS_MANAGER_IOS_HH
 #define _NAMED_OBJECTS_MANAGER_IOS_HH
 
-#include "config.h"
 
 #include "NamedObjectsManager.h"
 

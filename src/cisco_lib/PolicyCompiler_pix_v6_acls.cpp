@@ -27,7 +27,6 @@
   they employ number of assumptions that are only valid for PIX <7.0
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_pix.h"
 #include "NATCompiler_pix.h"

@@ -27,7 +27,6 @@
 #ifndef __FWOBJECTDROPAREA_H_
 #define __FWOBJECTDROPAREA_H_
 
-#include "config.h"
 #include <ui_fwobjectdroparea_q.h>
 
 #include "fwbuilder/FWObject.h"

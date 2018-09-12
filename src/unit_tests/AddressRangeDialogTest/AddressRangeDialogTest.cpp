@@ -25,7 +25,6 @@
 
 #include "AddressRangeDialogTest.h"
 
-#include "../../../config.h"
 //#include "../../global.h"
 
 #include <QApplication>

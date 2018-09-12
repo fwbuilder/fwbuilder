@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"

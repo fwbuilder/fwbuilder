@@ -28,7 +28,6 @@
 #define __FIREWALLINSTALLER_H_
 
 
-#include "config.h"
 
 #include "instConf.h"
 #include "instDialog.h"

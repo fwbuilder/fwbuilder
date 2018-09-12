@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"

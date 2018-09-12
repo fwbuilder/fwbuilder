@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "getServByName.h"
 

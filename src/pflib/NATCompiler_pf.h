@@ -26,7 +26,6 @@
 #ifndef __NATCOMPILER_PF_HH
 #define __NATCOMPILER_PF_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "fwcompiler/NATCompiler.h"
 
 #include "TableFactory.h"

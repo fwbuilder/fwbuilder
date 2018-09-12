@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObjectsManagerPIX.h"
 #include "PIXObjectGroup.h"

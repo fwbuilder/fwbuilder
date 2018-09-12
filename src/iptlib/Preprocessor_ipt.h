@@ -24,7 +24,6 @@
 #ifndef __PREPROCESSOR_IPT_HH
 #define __PREPROCESSOR_IPT_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "fwcompiler/Preprocessor.h"
 
 namespace libfwbuilder {

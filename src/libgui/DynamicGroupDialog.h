@@ -25,7 +25,6 @@
 #ifndef __DynamicGroupDialog_h__
 #define __DynamicGroupDialog_h__
 
-#include "config.h"
 #include <ui_dynamicgroupdialog_q.h>
 
 #include <qtooltip.h>

@@ -25,7 +25,6 @@
 
 #include "AddressTableTest.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Resources.h"
 

@@ -25,7 +25,6 @@
 
 #include <string>
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "FWBSettings.h"

@@ -23,14 +23,12 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "RCS.h"
 #include "RCSFilePreview.h"
 #include "FWBSettings.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/XMLTools.h"
 

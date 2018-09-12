@@ -26,7 +26,6 @@
 #ifndef __GLOBAL_DEFS_
 #define __GLOBAL_DEFS_
 
-#include "../../VERSION.h"
 #include <string>
 
 #include <QEvent>

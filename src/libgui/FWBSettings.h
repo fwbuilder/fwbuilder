@@ -31,8 +31,6 @@
 #ifndef __FWBSETTINGS_H_
 #define __FWBSETTINGS_H_
 
-#include "../../VERSION.h"
-
 #include <qsettings.h>
 #include <qrect.h>
 #include <qprinter.h>

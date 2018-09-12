@@ -29,10 +29,8 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "check_update_url.h"
-#include "../../VERSION.h"
 
 #include "utils.h"
 #include "platforms.h"

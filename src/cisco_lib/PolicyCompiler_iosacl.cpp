@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_iosacl.h"
 #include "NamedObjectsAndGroupsSupport.h"
