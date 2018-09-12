@@ -18,11 +18,10 @@ matrix:
       env: VM=mxe-w32-ubuntu:18.04
     - os: osx
       compiler: clang
-      env: CXXFLAGS="-Wno-nullability-completeness"
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew install qt5 net-snmp ;
+      brew install qt5 qbs net-snmp ;
     fi
 
 before_script:

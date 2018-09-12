@@ -44,6 +44,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     xz-utils \
     nsis \
+    qbs \
     mxe-i686-w64-mingw32.shared-qtbase \
     mxe-i686-w64-mingw32.shared-libxml2 \
     mxe-i686-w64-mingw32.shared-libxslt

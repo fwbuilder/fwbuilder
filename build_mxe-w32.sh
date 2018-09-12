@@ -1,7 +1,5 @@
 #!/bin/bash
-JOBS=$(nproc --all)
 export PATH=/usr/lib/mxe/usr/bin:$PATH
-export TOOLCHAIN_PREFIX=/usr/lib/mxe/usr/i686-w64-mingw32.shared
 export CXXFLAGS="-Wno-maybe-uninitialized -Wno-attributes"
 
 main()
@@ -49,11 +47,8 @@ usage()
 configure()
 {
     echo "==> Configuring"
-    ./autogen.sh \
-      --with-xml2-config=/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/xml2-config \
-      --with-xslt-config=/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/xslt-config \
-      --with-qtdir=/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5 \
-      --host=i686-w64-mingw32.shared
+    qbs setup-toolchains /usr/lib/mxe/usr/bin/i686-w64-mingw32.shared-g++ mingw32
+    qbs setup-qt /usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qt
     if [ $? -eq 0 ]; then
         echo "==> Done configuring"
     fi
@@ -62,7 +57,7 @@ configure()
 compile()
 {
     echo "==> Compiling"
-    make -j${JOBS}
+    qbs release profile:qt
     if [ $? -eq 0 ]; then
         echo "==> Done compiling"
     fi
@@ -71,7 +66,7 @@ compile()
 package()
 {
     echo "==> Packaging"
-    makensis -nocd packaging/fwbuilder.nsi
+    makensis release/install-root/fwbuilder.nsi
     if [ $? -eq 0 ]; then
         echo "==> Done packaging"
     fi
