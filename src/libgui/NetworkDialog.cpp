@@ -127,8 +127,11 @@ void NetworkDialog::validate(bool *result)
         return;
     }
 
+#ifndef NDEBUG
     Network *s = dynamic_cast<Network*>(obj);
     assert(s!=nullptr);
+#endif
+
     try
     {
         InetAddr( m_dialog->address->text().toStdString() );

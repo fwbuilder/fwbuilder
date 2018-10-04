@@ -63,8 +63,10 @@ openbsdAdvancedDialog::openbsdAdvancedDialog(QWidget *parent,FWObject *o)
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=nullptr);
+#endif
 
     QStringList threeStateMapping;
 
@@ -119,8 +121,10 @@ void openbsdAdvancedDialog::accept()
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
     assert(fwoptions!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
     assert(mgmt!=nullptr);
+#endif
 
     data.saveAll(fwoptions);
 

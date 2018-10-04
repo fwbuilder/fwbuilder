@@ -90,9 +90,11 @@ void ObjectManipulator::autoRenameChildren(FWObject *obj,
     
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
+#ifndef NDEBUG
     QTreeWidgetItem *itm = allItems[obj];
     assert(itm!=nullptr);
-    
+#endif
+
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
         (Host::isA(obj) || Firewall::cast(obj)!=nullptr || Interface::isA(obj)))
     {

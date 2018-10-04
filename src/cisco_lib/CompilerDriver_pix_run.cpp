@@ -915,8 +915,10 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
                      failover_group->findByType(FWObjectReference::TYPENAME);
                  it != it.end(); ++it)
             {
+#ifndef NDEBUG
                 Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
                 assert(member_iface);
+#endif
 
                 pixClusterGroupChecks(failover_group);
 

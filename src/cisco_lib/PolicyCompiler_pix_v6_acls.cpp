@@ -172,7 +172,9 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
         if ( compiler->fw->getOptionsObject()->getBool("pix_emulate_out_acl") )
         {
             RuleElementSrc *src = rule->getSrc();    assert(src);
+#ifndef NDEBUG
             RuleElementDst *dst = rule->getDst();    assert(dst);
+#endif
 
             try
             {

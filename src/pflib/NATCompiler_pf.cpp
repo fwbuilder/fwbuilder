@@ -384,8 +384,10 @@ bool NATCompiler_pf::VerifyRules::processNext()
 
     string version = compiler->fw->getStr("version");
 
+#ifndef NDEBUG
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
+#endif
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
 
     RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);

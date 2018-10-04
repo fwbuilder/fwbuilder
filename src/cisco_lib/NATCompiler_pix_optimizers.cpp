@@ -430,7 +430,9 @@ bool  NATCompiler_pix::DetectOverlappingGlobalPoolsAndStaticRules::processNext()
     if (rule->getRuleType()== NATRule::DNAT )
     {
         Address  *outa=compiler->getFirstODst(rule);  assert(outa);
+#ifndef NDEBUG
         Address  *insa=compiler->getFirstTDst(rule);  assert(insa);
+#endif
 
         for (map<int,NATCmd*>::iterator i=pix_comp->nat_commands.begin(); 
              i!=pix_comp->nat_commands.end(); ++i)

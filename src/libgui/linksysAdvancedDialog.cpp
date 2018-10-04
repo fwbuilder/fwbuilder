@@ -63,8 +63,11 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=nullptr);
+#endif
+
 /*
  * since v2.0.3 we do not need to know shell prompt on linksys. Will
  * remove the page completely when code becomes stable.
@@ -156,8 +159,10 @@ void linksysAdvancedDialog::reject()
 
 void linksysAdvancedDialog::setDefaultPrompts()
 {
+#ifndef NDEBUG
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=nullptr);
+#endif
     m_dialog->linksys_prompt1->setText(
         Resources::getTargetOptionStr("sveasoft","default/prompt1").c_str() );
     m_dialog->linksys_prompt2->setText(

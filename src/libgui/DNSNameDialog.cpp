@@ -104,9 +104,10 @@ void DNSNameDialog::loadFWObject(FWObject *o)
 void DNSNameDialog::validate(bool *res)
 {
     *res=true;
+#ifndef NDEBUG
     DNSName *s = dynamic_cast<DNSName*>(obj);
     assert(s!=nullptr);
-
+#endif
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 

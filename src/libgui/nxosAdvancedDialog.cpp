@@ -64,8 +64,10 @@ nxosAdvancedDialog::nxosAdvancedDialog(QWidget *parent,FWObject *o)
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=nullptr);
+#endif
 
 /* Page "General" */
     data.registerOption( m_dialog->nxos_set_host_name  , fwoptions,  "nxos_set_host_name" );

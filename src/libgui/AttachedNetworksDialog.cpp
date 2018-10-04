@@ -128,8 +128,11 @@ void AttachedNetworksDialog::validate(bool *result)
     if (fwbdebug) qDebug() << "AttachedNetworksDialog::validate";
 
     *result = true;
+
+#ifndef NDEBUG
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(obj);
     assert(s!=nullptr);
+#endif
 
     if (!validateName(this, obj, m_dialog->obj_name->text()))
     {
@@ -143,8 +146,10 @@ void AttachedNetworksDialog::applyChanges()
     std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
+#ifndef NDEBUG
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(new_state);
     assert(s!=nullptr);
+#endif
 
     string oldname = obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));

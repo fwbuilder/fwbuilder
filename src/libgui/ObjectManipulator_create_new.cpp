@@ -510,8 +510,11 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Firewall::TYPENAME);
     assert(parent);
+
+#ifndef NDEBUG
     ObjectTreeViewItem* parent_item = allItems[parent];
     assert(parent_item);
+#endif
 
     newFirewallDialog *nfd = new newFirewallDialog(this, parent);
     if (mw->isEditorVisible()) mw->hideEditor();
@@ -539,8 +542,11 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
     assert(parent);
+
+#ifndef NDEBUG
     ObjectTreeViewItem* parent_item = allItems[parent];
     assert(parent_item);
+#endif
 
     newClusterDialog *ncd = new newClusterDialog(this, parent);
     if (mw->isEditorVisible())  mw->hideEditor();

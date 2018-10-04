@@ -139,8 +139,11 @@ void IPv6Dialog::validate(bool *res)
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
+#ifndef NDEBUG
     IPv6 *s = dynamic_cast<IPv6*>(obj);
     assert(s!=nullptr);
+#endif
+
     try
     {
         InetAddr(AF_INET6, m_dialog->address->text().trimmed().toLatin1().constData() );

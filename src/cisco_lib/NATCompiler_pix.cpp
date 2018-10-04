@@ -240,8 +240,10 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
 {
     NATRule *rule=NATRule::cast(r);
 
+#ifndef NDEBUG
     RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
     RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
+#endif
 
     ostringstream os;
 
@@ -567,11 +569,15 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 {
     NATRule *rule=getNext(); if (rule==nullptr) return false;
 
+#ifndef NDEBUG
     Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
+#endif
     Address  *odst=compiler->getFirstODst(rule);  assert(odst);
     Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
 
+#ifndef NDEBUG
     Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
+#endif
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
 

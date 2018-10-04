@@ -105,8 +105,10 @@ void FirewallDialog::loadFWObject(FWObject *o)
 /* ---------------- */
         updateTimeStamps();
 
+#ifndef NDEBUG
         Management *mgmt=s->getManagementObject();
         assert(mgmt!=nullptr);
+#endif
 
 //    FWOptions  *opt =s->getOptionsObject();
 
@@ -308,8 +310,11 @@ void FirewallDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     Firewall *s = dynamic_cast<Firewall*>(new_state);
+
+#ifndef NDEBUG
     Management *mgmt = s->getManagementObject();
     assert(mgmt!=nullptr);
+#endif
 
     string old_name = obj->getName();
     string new_name = string(m_dialog->obj_name->text().toUtf8().constData());

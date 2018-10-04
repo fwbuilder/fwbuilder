@@ -62,8 +62,10 @@ macosxAdvancedDialog::macosxAdvancedDialog(QWidget *parent,FWObject *o)
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=nullptr);
+#endif
 
     QStringList threeStateMapping;
 

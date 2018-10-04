@@ -558,8 +558,10 @@ string PolicyCompiler_ipt::PrintRule::_printActionOnReject(PolicyRule *rule)
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
 //    RuleElementSrv *srvrel=rule->getSrv();
+#ifndef NDEBUG
     Service *srv = compiler->getFirstSrv(rule);
     assert(srv);
+#endif
 
     string s = ipt_comp->getActionOnReject(rule);
     if (!s.empty()) 

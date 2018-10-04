@@ -98,8 +98,10 @@ void AddressRangeDialog::validate(bool *res)
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
+#ifndef NDEBUG
     AddressRange *s = dynamic_cast<AddressRange*>(obj);
     assert(s!=nullptr);
+#endif
     try
     {
         InetAddr range_start(AF_UNSPEC, m_dialog->rangeStart->text().toLatin1().constData());

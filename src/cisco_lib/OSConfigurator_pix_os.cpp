@@ -659,8 +659,10 @@ string OSConfigurator_pix_os::_printSysopt()
     string platform = fw->getStr("platform");
     string version = fw->getStr("version");
 
+#ifndef NDEBUG
     FWOptions *options=fw->getOptionsObject();
     assert(options!=nullptr);
+#endif
 
     bool tcpmss = fw->getOptionsObject()->getBool("pix_tcpmss");
     int  tcpmss_val = fw->getOptionsObject()->getInt("pix_tcpmss_value");

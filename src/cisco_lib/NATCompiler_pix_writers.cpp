@@ -162,13 +162,15 @@ void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
         string("/FWBuilderResources/Target/options/")+
         "version_"+version+"/pix_commands/clear_acl");
 
-    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst=compiler->getFirstODst(rule);  assert(odst);
+#ifndef NDEBUG
+    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
                                       
     Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
+#endif
 
     RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
     RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
@@ -260,10 +262,12 @@ void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
     Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst = compiler->getFirstODst(rule);  assert(odst);
     Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
-                                      
+
+#ifndef NDEBUG
     Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
+#endif
 
     RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
     RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
@@ -391,13 +395,16 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
         string("/FWBuilderResources/Target/options/") +
         "version_" + version+"/pix_commands/clear_acl");
 
+    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
+
+#ifndef NDEBUG
     Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst = compiler->getFirstODst(rule);  assert(odst);
-    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
                                       
     Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
+#endif
 
     RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
     RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);

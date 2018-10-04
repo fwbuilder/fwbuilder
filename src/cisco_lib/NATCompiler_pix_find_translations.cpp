@@ -100,7 +100,9 @@ list<NATRule*> NATCompiler_pix::findMatchingDNATRules(
             Address  *odst = getFirstODst(rule);  assert(odst);
             Service  *osrv = getFirstOSrv(rule);  assert(osrv);
 
+#ifndef NDEBUG
             Address  *tsrc = getFirstTSrc(rule);  assert(tsrc);
+#endif
             // Address  *tdst = getFirstTDst(rule);  assert(tdst);
             Service  *tsrv = getFirstTSrv(rule);  assert(tsrv);
 

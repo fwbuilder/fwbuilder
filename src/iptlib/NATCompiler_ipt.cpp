@@ -477,9 +477,11 @@ bool NATCompiler_ipt::VerifyRules::processNext()
 {
     NATRule *rule=getNext(); if (rule==nullptr) return false;
 
+#ifndef NDEBUG
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
     RuleElementODst  *odst=rule->getODst();  assert(odst);
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
+#endif
 
     RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);
     RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
