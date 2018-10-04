@@ -52,6 +52,8 @@ configure()
     qbs setup-qt $(which qmake) qt
     if [ $? -eq 0 ]; then
         echo "==> Done configuring"
+    else
+        exit 1
     fi
 }
 
@@ -61,6 +63,8 @@ compile()
     qbs config:release profile:qt
     if [ $? -eq 0 ]; then
         echo "==> Done compiling"
+    else
+        exit 1
     fi
 }
 
@@ -82,6 +86,8 @@ bundle()
         echo "==> Done bundling"
         echo "    To open bundle:"
         echo "    # open ${BUNDLE}/"
+    else
+        exit 1
     fi
 }
 

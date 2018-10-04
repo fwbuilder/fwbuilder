@@ -50,6 +50,8 @@ configure()
     qbs setup-qt /usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/qmake qt
     if [ $? -eq 0 ]; then
         echo "==> Done configuring"
+    else
+        exit 1
     fi
 }
 
@@ -59,6 +61,8 @@ compile()
     qbs release profile:qt
     if [ $? -eq 0 ]; then
         echo "==> Done compiling"
+    else
+        exit 1
     fi
 }
 
@@ -68,6 +72,8 @@ package()
     makensis release/install-root/fwbuilder.nsi
     if [ $? -eq 0 ]; then
         echo "==> Done packaging"
+    else
+        exit 1
     fi
 }
 
