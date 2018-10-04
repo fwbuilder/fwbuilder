@@ -910,9 +910,10 @@ void pixAdvancedDialog::editEpilog()
 void pixAdvancedDialog::setDefaultTimeoutValue(const QString &option)
 {
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
+#ifndef NDEBUG
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
-
+#endif
     string vers="version_"+obj->getStr("version");
 
     if (option=="uauth_abs" || option=="uauth_inact")
@@ -937,9 +938,10 @@ void pixAdvancedDialog::setDefaultTimeoutValue(const QString &option)
 
 void pixAdvancedDialog::defaultTimeouts()
 {
+#ifndef NDEBUG
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
-
+#endif
     string vers="version_"+obj->getStr("version");
 
     setDefaultTimeoutValue("xlate_hh"       );

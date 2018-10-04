@@ -511,11 +511,15 @@ bool NATCompiler::ConvertToAtomicForAddresses::processNext()
 
     RuleElementOSrc *osrc=rule->getOSrc();    assert(osrc);
     RuleElementODst *odst=rule->getODst();    assert(odst);
+#ifndef NDEBUG
     RuleElementOSrv *osrv=rule->getOSrv();    assert(osrv);
+#endif
 
     RuleElementTSrc *tsrc=rule->getTSrc();    assert(tsrc);
     RuleElementTDst *tdst=rule->getTDst();    assert(tdst);
+#ifndef NDEBUG
     RuleElementTSrv *tsrv=rule->getTSrv();    assert(tsrv);
+#endif
 
     for (FWObject::iterator i1=osrc->begin(); i1!=osrc->end(); ++i1) 
     {

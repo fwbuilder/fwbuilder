@@ -397,6 +397,7 @@ void IPTImporter::addSrv()
 void IPTImporter::processModuleMatches()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
+#ifndef NDEBUG
     RuleElementSrv* srv = rule->getSrv();
     assert(srv!=NULL);
 
@@ -405,6 +406,7 @@ void IPTImporter::processModuleMatches()
 
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
+#endif
 
     addAllModuleMatches(rule);
 
@@ -1251,11 +1253,13 @@ void IPTImporter::pushNATRule()
 
     NATRule *rule = NATRule::cast(current_rule);
 
+#ifndef NDEBUG
     FWOptions  *fwopt = getFirewallObject()->getOptionsObject();
     assert(fwopt!=NULL);
 
     FWOptions  *ropt = current_rule->getOptionsObject();
     assert(ropt!=NULL);
+#endif
 
     addOSrc();
     addODst();

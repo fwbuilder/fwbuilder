@@ -135,8 +135,11 @@ void PolicyCompiler_pix::replaceTranslatedAddresses::action(
     FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
 
     RuleElement *re = nat_rule->getOSrc();
+
     FWObject *o = FWReference::getObject(re->front());
+#ifndef NDEBUG
     Address  *osrc = Address::cast(o); assert(osrc);
+#endif
 
     re = nat_rule->getODst();
     o = FWReference::getObject(re->front());
@@ -146,6 +149,7 @@ void PolicyCompiler_pix::replaceTranslatedAddresses::action(
     o = FWReference::getObject(re->front());
     Service  *osrv = Service::cast(o); assert(osrv);
 
+#ifndef NDEBUG
     re = nat_rule->getTSrc();
     o = FWReference::getObject(re->front());
     Address  *tsrc = Address::cast(o); assert(tsrc);
@@ -157,7 +161,7 @@ void PolicyCompiler_pix::replaceTranslatedAddresses::action(
     re = nat_rule->getTSrv();
     o = FWReference::getObject(re->front());
     Service  *tsrv = Service::cast(o); assert(tsrv);
-
+#endif
 
     FWObject *p = odst->getParent();
 

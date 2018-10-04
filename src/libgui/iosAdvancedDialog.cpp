@@ -65,8 +65,10 @@ iosAdvancedDialog::iosAdvancedDialog(QWidget *parent,FWObject *o)
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
     assert(fwoptions!=NULL);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=NULL);
+#endif
 
 /* Page "General" */
     data.registerOption( m_dialog->ios_set_host_name  , fwoptions,  "ios_set_host_name" );

@@ -73,7 +73,9 @@ bool NATCompiler_ipf::VerifyRules::processNext()
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
 
     RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);
+#ifndef NDEBUG
     RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
+#endif
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)

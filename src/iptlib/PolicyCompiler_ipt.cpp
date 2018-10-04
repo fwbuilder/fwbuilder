@@ -916,7 +916,9 @@ bool PolicyCompiler_ipt::Logging2::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
+#ifndef NDEBUG
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+#endif
 
     RuleElementSrc      *nsrc;
     RuleElementDst      *ndst;
@@ -1976,8 +1978,11 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
  * this only if the rule is not associated with any bridging
  * interfaces
  */
+
+#ifndef NDEBUG
             RuleElementItf *itfre = rule->getItf();
             assert(itfre);
+#endif
 
             RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
             Interface *rule_iface = 
@@ -2190,7 +2195,9 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
     /* See #2008. It appears "--physdev-out" is not allowed in OUTPUT
      * chain.
      */
+#ifndef NDEBUG
     RuleElementItf *itfre = rule->getItf(); assert(itfre);
+#endif
     Interface *itf = compiler->getFirstItf(rule);
 
     if (fwopt->getBool("bridging_fw") && itf && itf->isBridgePort())

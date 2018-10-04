@@ -71,8 +71,10 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
     assert(fwopt!=NULL);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
     assert(mgmt!=NULL);
+#endif
 
     QStringList threeStateMapping;
 
@@ -208,8 +210,10 @@ void linux24AdvancedDialog::accept()
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
     assert(fwoptions!=NULL);
 
+#ifndef NDEBUG
     Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
     assert(mgmt!=NULL);
+#endif
 
     data.saveAll(fwoptions);
 

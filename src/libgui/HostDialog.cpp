@@ -76,8 +76,10 @@ void HostDialog::loadFWObject(FWObject *o)
 
     init = true;
 
+#ifndef NDEBUG
     Management *mgmt=s->getManagementObject();
     assert(mgmt!=NULL);
+#endif
 
     FWOptions  *opt =s->getOptionsObject();
 
@@ -148,8 +150,10 @@ void HostDialog::applyChanges()
     Host *s = dynamic_cast<Host*>(new_state);
     assert(s!=NULL);
 
+#ifndef NDEBUG
     Management *mgmt = s->getManagementObject();
     assert(mgmt!=NULL);
+#endif
 
     FWOptions  *opt =s->getOptionsObject();
 

@@ -116,8 +116,11 @@ void AddressTableDialog::updateButtons()
 void AddressTableDialog::validate(bool *res)
 {
     *res=true;
+
+#ifndef NDEBUG
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
     assert(s!=NULL);
+#endif
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }

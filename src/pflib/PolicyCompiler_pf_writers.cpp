@@ -70,7 +70,9 @@ using namespace std;
 void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 {
     FWOptions *ruleopt = rule->getOptionsObject();
+#ifndef NDEBUG
     Service *srv = compiler->getFirstSrv(rule);    assert(srv);
+#endif
     string version = compiler->fw->getStr("version");
 
     switch (rule->getAction())
