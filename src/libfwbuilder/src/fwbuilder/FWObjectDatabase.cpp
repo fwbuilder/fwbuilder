@@ -317,7 +317,7 @@ void FWObjectDatabase::load(const string &f,
     
     xmlNodePtr root = xmlDocGetRootElement(doc);
     
-    if(!root || !root->name || strcmp(FROMXMLCAST(root->name),
+    if(!root || !root->name || strcmp(XMLTools::FromXmlCast(root->name),
                                       FWObjectDatabase::TYPENAME)!=SAME)
     {
 	xmlFreeDoc(doc);
@@ -355,10 +355,10 @@ void FWObjectDatabase::saveFile(const string &filename)
  */
     busy = true;
 
-    xmlDocPtr doc = xmlNewDoc(TOXMLCAST("1.0"));
-    xmlNodePtr node = xmlNewNode(NULL, STRTOXMLCAST(getName()));
+    xmlDocPtr doc = xmlNewDoc(XMLTools::ToXmlCast("1.0"));
+    xmlNodePtr node = xmlNewNode(NULL, XMLTools::StrToXmlCast(getName()));
     xmlDocSetRootElement(doc, node);
-    xmlNewNs(node, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
+    xmlNewNs(node, XMLTools::ToXmlCast("http://www.fwbuilder.org/1.0/"), NULL);
 
     toXML(xmlDocGetRootElement(doc));
     
@@ -382,10 +382,10 @@ void FWObjectDatabase::saveToBuffer(xmlChar **buffer, int *size)
  */
     busy = true;
 
-    xmlDocPtr doc = xmlNewDoc(TOXMLCAST("1.0"));
-    xmlNodePtr node = xmlNewDocNode(doc, NULL, STRTOXMLCAST(getName()), NULL);
+    xmlDocPtr doc = xmlNewDoc(XMLTools::ToXmlCast("1.0"));
+    xmlNodePtr node = xmlNewDocNode(doc, NULL, XMLTools::StrToXmlCast(getName()), NULL);
     xmlDocSetRootElement(doc, node);
-    xmlNewNs(node, TOXMLCAST("http://www.fwbuilder.org/1.0/"), NULL);
+    xmlNewNs(node, XMLTools::ToXmlCast("http://www.fwbuilder.org/1.0/"), NULL);
 
     toXML(xmlDocGetRootElement(doc));
 
@@ -405,14 +405,14 @@ void FWObjectDatabase::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
-    const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("lastModified")));
+    const char *n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("lastModified")));
     if (n!=NULL)
     {        
         int i = 0;
         istringstream str(n);
         str >> i;
         lastModified = i;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
         //xmlFree((void*)n);
     }
 }
@@ -424,26 +424,26 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent)
     //xmlNewProp(parent, NULL, NULL);
 
     xmlNewProp(parent, 
-               TOXMLCAST("version") , 
-               TOXMLCAST(FWBUILDER_XML_VERSION));
+               XMLTools::ToXmlCast("version") ,
+               XMLTools::ToXmlCast(FWBUILDER_XML_VERSION));
 
     if (lastModified!=0)
     {
         ostringstream str;
         str << lastModified;
         xmlNewProp(parent, 
-                   TOXMLCAST("lastModified"),
-                   TOXMLCAST(str.str().c_str()));
+                   XMLTools::ToXmlCast("lastModified"),
+                   XMLTools::ToXmlCast(str.str().c_str()));
     }
 
     int rootid = getId();
 
     //NOTUSED xmlAttrPtr pr =
     xmlNewProp(parent,
-               TOXMLCAST("id") , 
-               STRTOXMLCAST(id_dict[rootid]));
+               XMLTools::ToXmlCast("id") ,
+               XMLTools::StrToXmlCast(id_dict[rootid]));
 
-    //xmlAddID(NULL, parent->doc, STRTOXMLCAST(id_dict[rootid]), pr);
+    //xmlAddID(NULL, parent->doc, XMLTools::StrToXmlCast(id_dict[rootid]), pr);
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
     {

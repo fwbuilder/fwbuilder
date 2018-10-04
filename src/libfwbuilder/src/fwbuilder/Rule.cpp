@@ -370,54 +370,54 @@ void PolicyRule::fromXML(xmlNodePtr root)
 
     FWObject::fromXML(root);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("position")));
     if(n)
     {
         setInt("position",atoi(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("disabled")));
     if(n)
     {
         setStr("disabled",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("action")));
     if(n)
     {
         setAction(string(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("log")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("log")));
     if(n)
     {
         setStr("log",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("interface")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("interface")));
     if(n)
     {
         setStr("interface",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("direction")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("direction")));
     if(n)
     {
         setDirection(string(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("group")));
     if(n)
     {
         setStr("group",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
@@ -425,9 +425,9 @@ void PolicyRule::fromXML(xmlNodePtr root)
 xmlNodePtr PolicyRule::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
-    xmlNewProp(me, TOXMLCAST("direction"),STRTOXMLCAST(getDirectionAsString()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("action"), XMLTools::StrToXmlCast(getActionAsString()));
+    xmlNewProp(me, XMLTools::ToXmlCast("direction"),XMLTools::StrToXmlCast(getDirectionAsString()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
 
@@ -839,32 +839,32 @@ void NATRule::fromXML(xmlNodePtr root)
 
     FWObject::fromXML(root);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("action")));
     if(n)
     {
         setAction(string(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("disabled")));
     if(n)
     {
         setStr("disabled",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("position")));
     if(n)
     {
         setStr("position",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("group")));
     if(n)
     {
         setStr("group",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
@@ -872,9 +872,9 @@ void NATRule::fromXML(xmlNodePtr root)
 xmlNodePtr NATRule::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+//    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("action"), XMLTools::StrToXmlCast(getActionAsString()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
 
@@ -1081,32 +1081,32 @@ void RoutingRule::fromXML(xmlNodePtr root)
 
     FWObject::fromXML(root);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("disabled")));
     if(n)
     {
         setStr("disabled",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("metric")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("metric")));
     if(n)
     {
         setStr("metric",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("position")));
     if(n)
     {
         setStr("position",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("group")));
     if(n)
     {
         setStr("group",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
@@ -1114,8 +1114,8 @@ void RoutingRule::fromXML(xmlNodePtr root)
 xmlNodePtr RoutingRule::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+//    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
 

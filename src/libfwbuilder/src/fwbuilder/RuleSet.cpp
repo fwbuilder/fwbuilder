@@ -68,42 +68,42 @@ void RuleSet::fromXML(xmlNodePtr root)
     // this is ipv4-only rule set (for backwards compatibility and to
     // avoid having to increment DTD version number)
 
-    n=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ipv4_rule_set")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("ipv4_rule_set")));
     if (n!=NULL)
     {
         ipv4 = (string(n)=="True" || string(n)=="true");
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ipv6_rule_set")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("ipv6_rule_set")));
     if (n!=NULL)
     {
         ipv6 = (string(n)=="True" || string(n)=="true");
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("top_rule_set")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("top_rule_set")));
     if (n!=NULL)
     {
         top = (string(n)=="True" || string(n)=="true");
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
 xmlNodePtr RuleSet::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
-    xmlNewProp(me, TOXMLCAST("ipv4_rule_set"),
-               TOXMLCAST(((ipv4) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("ipv4_rule_set"),
+               XMLTools::ToXmlCast(((ipv4) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("ipv6_rule_set"),
-               TOXMLCAST(((ipv6) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("ipv6_rule_set"),
+               XMLTools::ToXmlCast(((ipv6) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("top_rule_set"), 
-               TOXMLCAST(((top) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("top_rule_set"), 
+               XMLTools::ToXmlCast(((top) ? "True" : "False")));
 
     // First all rules, skip options
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)

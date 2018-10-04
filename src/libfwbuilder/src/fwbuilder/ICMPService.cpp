@@ -53,16 +53,16 @@ void ICMPService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("type")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("type")));
     assert(n!=NULL);
     setStr("type", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("code")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("code")));
     if(n!=NULL)
     {
         setStr("code", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
@@ -70,9 +70,9 @@ xmlNodePtr ICMPService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }

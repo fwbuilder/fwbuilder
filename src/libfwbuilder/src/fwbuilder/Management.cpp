@@ -55,7 +55,7 @@ Management::Management()
 void Management::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address")));
     if (!n)
     {
         throw FWException(
@@ -64,17 +64,17 @@ void Management::fromXML(xmlNodePtr root)
     try
     {
         addr = InetAddr(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } catch(FWException &ex)
     {
         // try ipv6
         try
         {
             addr = InetAddr(AF_INET6, n);
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         } catch(FWException &ex)
         {
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
             throw FWException(
                 string("Invalid address attribute in Management element: ") +
                 ex.toString());
@@ -210,25 +210,25 @@ void PolicyInstallScript::fromXML(xmlNodePtr root)
     
     const char *n;
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("command")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("command")));
     if(n)
     {
         command=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("arguments")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("arguments")));
     if(n)
     {
         arguments=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("enabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("enabled")));
     if(n)
     {
         enabled=(cxx_strcasecmp(n,"True")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } else enabled = false;
     
 }
@@ -316,25 +316,25 @@ void SNMPManagement::fromXML(xmlNodePtr root)
     
     const char *n;
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("snmp_read_community")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("snmp_read_community")));
     if(n)
     {
         read_community=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("snmp_write_community")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("snmp_write_community")));
     if(n)
     {
         write_community=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("enabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("enabled")));
     if(n)
     {
         enabled=(cxx_strcasecmp(n,"True")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } else enabled = false;
     
 }
@@ -425,22 +425,22 @@ void FWBDManagement::setEnabled(bool v)
 
 void FWBDManagement::fromXML(xmlNodePtr parent)
 {
-    const char *n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("identity")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(parent,XMLTools::ToXmlCast("identity")));
     assert(n!=NULL);
     identity_id = n;
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
     
-    n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("port")));
+    n=XMLTools::FromXmlCast(xmlGetProp(parent,XMLTools::ToXmlCast("port")));
     assert(n!=NULL);
     port = atoi(n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
     enabled=false;
-    n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("enabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(parent,XMLTools::ToXmlCast("enabled")));
     if(n)
     {
         enabled=(cxx_strcasecmp(n,"True")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 

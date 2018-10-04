@@ -82,31 +82,31 @@ void TCPService::fromXML(xmlNodePtr root)
 
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("established")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("established")));
     if(n!=NULL)
     {
         setStr("established", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     std::map<TCPFlag,std::string>::iterator i;
     for (i=flags.begin(); i!=flags.end(); ++i)
     {
-        n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST( (i->second).c_str() )));
+        n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast( (i->second).c_str() )));
         if(n!=NULL)
         {
             setStr( i->second , n);
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         }
     }
 
     for (i=flags_masks.begin(); i!=flags_masks.end(); ++i)
     {
-        n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST( (i->second).c_str() )));
+        n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast( (i->second).c_str() )));
         if(n!=NULL)
         {
             setStr( i->second , n);
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         }
     }
 
