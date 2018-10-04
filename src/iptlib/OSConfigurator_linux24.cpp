@@ -421,7 +421,7 @@ string OSConfigurator_linux24::printRunTimeAddressTablesCode()
     return conf.expand().toStdString();
 }
 
-string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData::tools tool_name)
+string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData_ipt::tools tool_name)
 {
     FWOptions* options = fw->getOptionsObject();
     string attr = os_data.getAttributeNameForTool(tool_name);
@@ -444,9 +444,9 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     list<int>::const_iterator i;
     const list<int> &all_tools = os_data.getAllTools(); 
     for (i=all_tools.begin(); i!=all_tools.end(); ++i)
-        res << os_data.getVariableName(OSData::tools(*i))
+        res << os_data.getVariableName(OSData_ipt::tools(*i))
             << "=\""
-            << getPathForATool(os, OSData::tools(*i))
+            << getPathForATool(os, OSData_ipt::tools(*i))
             << "\""
             << endl;
     return res.str();

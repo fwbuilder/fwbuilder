@@ -28,7 +28,7 @@
 
 
 #include "OSConfigurator_bsd.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 
 #include <QMap>
 #include <QStringList>

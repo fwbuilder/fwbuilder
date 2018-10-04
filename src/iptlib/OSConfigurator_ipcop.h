@@ -29,7 +29,7 @@
 
 #include "OSConfigurator_linux24.h"
 
-#include "OSData.h"
+#include "OSData_ipt.h"
 
 namespace fwcompiler {
 

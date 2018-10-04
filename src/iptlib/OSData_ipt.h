@@ -23,15 +23,15 @@
 
 */
 
-#ifndef __OSDATA_HH
-#define __OSDATA_HH
+#ifndef __OSDATA_IPT_HH
+#define __OSDATA_IPT_HH
 
 
 #include <string>
 #include <map>
 #include <list>
 
-class OSData {
+class OSData_ipt {
 
     std::string host_os;
     std::map<int, std::string> variable_names;
@@ -40,7 +40,7 @@ class OSData {
     
  public:
 
-    OSData(const std::string &ho);
+    OSData_ipt(const std::string &ho);
     
     typedef enum { LSMOD,
                    MODPROBE,

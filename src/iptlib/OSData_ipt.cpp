@@ -23,11 +23,11 @@
 
 */
 
-#include "OSData.h"
+#include "OSData_ipt.h"
 
 using namespace std;
 
-OSData::OSData(const std::string &ho)
+OSData_ipt::OSData_ipt(const std::string &ho)
 {
     host_os = ho;
 

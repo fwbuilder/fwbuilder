@@ -30,7 +30,7 @@ FWBProduct {
         "OSConfigurator_linux24.cpp",
         "OSConfigurator_linux24_interfaces.cpp",
         "OSConfigurator_secuwall.cpp",
-        "OSData.cpp",
+        "OSData_ipt.cpp",
         "PolicyCompiler_PrintRule.cpp",
         "PolicyCompiler_PrintRuleIptRst.cpp",
         "PolicyCompiler_PrintRuleIptRstEcho.cpp",

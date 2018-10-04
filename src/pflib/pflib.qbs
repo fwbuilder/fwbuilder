@@ -33,7 +33,7 @@ FWBProduct {
         "OSConfigurator_macosx.cpp",
         "OSConfigurator_openbsd.cpp",
         "OSConfigurator_solaris.cpp",
-        "OSData.cpp",
+        "OSData_pf.cpp",
         "PolicyCompiler_ipf.cpp",
         "PolicyCompiler_ipf_optimizer.cpp",
         "PolicyCompiler_ipfw.cpp",
