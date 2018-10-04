@@ -48,11 +48,11 @@ bool  Library::validateChild(FWObject*)
 
 void Library::fromXML(xmlNodePtr root)
 {
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("color")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("color")));
     if(n!=nullptr)  // color is not a mandatory attribute
     {
         setStr("color", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     FWObject::fromXML(root);
 }
@@ -60,9 +60,9 @@ void Library::fromXML(xmlNodePtr root)
 xmlNodePtr Library::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
         (*j)->toXML(me);

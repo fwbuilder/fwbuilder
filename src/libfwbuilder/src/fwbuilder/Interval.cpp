@@ -183,96 +183,96 @@ void Interval::fromXML(xmlNodePtr root)
 
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_minute")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("from_minute")));
     if (n!=nullptr)
     {
         setStr("from_minute", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_hour")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("from_hour")));
     if (n!=nullptr)
     {
         setStr("from_hour", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_day")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("from_day")));
     if (n!=nullptr)
     {
         setStr("from_day", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_month")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("from_month")));
     if (n!=nullptr)
     {
         setStr("from_month", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_year")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("from_year")));
     if (n!=nullptr)
     {
         setStr("from_year", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("from_weekday")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("from_weekday")));
     if (n!=nullptr)
     {
         setStr("from_weekday", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_minute")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("to_minute")));
     if (n!=nullptr)
     {
         setStr("to_minute", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_hour")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("to_hour")));
     if (n!=nullptr)
     {
         setStr("to_hour", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_day")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("to_day")));
     if (n!=nullptr)
     {
         setStr("to_day", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_month")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("to_month")));
     if (n!=nullptr)
     {
         setStr("to_month", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_year")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("to_year")));
     if (n!=nullptr)
     {
         setStr("to_year", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("to_weekday")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("to_weekday")));
     if (n!=nullptr)
     {
         setStr("to_weekday", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("days_of_week")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("days_of_week")));
     if (n!=nullptr)
     {
         setStr("days_of_week", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } else
     {
         setStr("days_of_week", 
@@ -284,9 +284,9 @@ xmlNodePtr Interval::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }

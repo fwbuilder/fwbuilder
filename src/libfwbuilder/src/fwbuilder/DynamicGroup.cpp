@@ -57,29 +57,29 @@ void DynamicGroup::fromXML(xmlNodePtr root)
     for (xmlNodePtr child = root->xmlChildrenNode;
          child != nullptr; child = child->next) {
         if (child->type != XML_ELEMENT_NODE) continue;
-        assert(strcmp(FROMXMLCAST(child->name), "SelectionCriteria") == 0);
+        assert(strcmp(XMLTools::FromXmlCast(child->name), "SelectionCriteria") == 0);
 
-        const char *type = FROMXMLCAST(xmlGetProp(child, TOXMLCAST("type")));
+        const char *type = XMLTools::FromXmlCast(xmlGetProp(child, XMLTools::ToXmlCast("type")));
         const char *keyword =
-            FROMXMLCAST(xmlGetProp(child, TOXMLCAST("keyword")));
+            XMLTools::FromXmlCast(xmlGetProp(child, XMLTools::ToXmlCast("keyword")));
         
         string filter;
         if (makeFilter(filter, type, keyword)) {
             m_filter.push_back(filter);
         }
 
-        FREEXMLBUFF(type);
-        FREEXMLBUFF(keyword);
+        XMLTools::FreeXmlBuff(type);
+        XMLTools::FreeXmlBuff(keyword);
     }
 }
 
 xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlRemoveProp(xmlHasProp(me, TOXMLCAST("run_time")));
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlRemoveProp(xmlHasProp(me, XMLTools::ToXmlCast("run_time")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     list<string>::const_iterator iter;
     for (iter = m_filter.begin(); iter != m_filter.end(); ++iter) {
@@ -88,9 +88,9 @@ xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent)
         if (!makeFilter(filter, type, keyword)) continue;
 
         xmlNodePtr item = xmlNewChild(me, nullptr,
-                                      TOXMLCAST("SelectionCriteria"), nullptr);
-        xmlNewProp(item, TOXMLCAST("type"), STRTOXMLCAST(type));
-        xmlNewProp(item, TOXMLCAST("keyword"), STRTOXMLCAST(keyword));
+                                      XMLTools::ToXmlCast("SelectionCriteria"), nullptr);
+        xmlNewProp(item, XMLTools::ToXmlCast("type"), XMLTools::StrToXmlCast(type));
+        xmlNewProp(item, XMLTools::ToXmlCast("keyword"), XMLTools::StrToXmlCast(keyword));
     }
 
     return me;

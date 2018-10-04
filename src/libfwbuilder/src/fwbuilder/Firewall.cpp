@@ -86,49 +86,49 @@ Firewall::~Firewall()  {}
 
 void Firewall::fromXML(xmlNodePtr root)
 {
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("platform")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("platform")));
     assert(n!=nullptr);
     setStr("platform", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("version")));
     if (n!=nullptr)
     {
         setStr("version", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("host_OS")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("host_OS")));
     if (n!=nullptr)
     {
         setStr("host_OS", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastModified")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lastModified")));
     if(n!=nullptr)
     {
         setStr("lastModified", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastInstalled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lastInstalled")));
     if(n!=nullptr)
     {
         setStr("lastInstalled", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastCompiled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lastCompiled")));
     if(n!=nullptr)
     {
         setStr("lastCompiled", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("inactive")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("inactive")));
     if(n!=nullptr)
     {
         setStr("inactive", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     
     Host::fromXML(root);
@@ -138,9 +138,9 @@ void Firewall::fromXML(xmlNodePtr root)
 xmlNodePtr Firewall::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     FWObject *o;
 

@@ -123,7 +123,7 @@ xmlNodePtr XMLTools::getXmlChildNode(xmlNodePtr r,const char *child_name)
 
     for(cur=r->xmlChildrenNode; cur; cur=cur->next) {
 	if ( xmlIsBlankNode(cur) ) continue;
-	if (strcmp(child_name,FROMXMLCAST(cur->name))==SAME)
+	if (strcmp(child_name,XMLTools::FromXmlCast(cur->name))==SAME)
 	    return cur;
     }
     return nullptr;
@@ -160,7 +160,7 @@ xmlNodePtr XMLTools::getXmlNodeByPath(xmlNodePtr r, const char *path)
 	*cptr='\0';
 	cptr++;
     }
-    if (strcmp(FROMXMLCAST(r->name), s1)==0) {
+    if (strcmp(XMLTools::FromXmlCast(r->name), s1)==0) {
 	if (cptr) {
 	    for(cur=r->xmlChildrenNode; cur; cur=cur->next) {
 		if ( xmlIsBlankNode(cur) ) continue;
@@ -443,9 +443,9 @@ void XMLTools::setDTD(xmlDocPtr doc,
 #endif
   
 
-    xmlCreateIntSubset(doc, STRTOXMLCAST(type_name), 
+    xmlCreateIntSubset(doc, XMLTools::StrToXmlCast(type_name), 
                        nullptr, 
-                       STRTOXMLCAST(dtd_file)
+                       XMLTools::StrToXmlCast(dtd_file)
     );
     
 
@@ -544,7 +544,7 @@ void XMLTools::transformFileToFile(const string &src_file,
 
     xmlSubstituteEntitiesDefault(1);
     xmlLoadExtDtdDefaultValue = DTD_LOAD_BITS;
-    ss = xsltParseStylesheetFile(STRTOXMLCAST(stylesheet_file));
+    ss = xsltParseStylesheetFile(XMLTools::StrToXmlCast(stylesheet_file));
 
     if(!ss)
     {
@@ -623,7 +623,7 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
     xmlDoValidityCheckingDefaultValue = 0;
     xmlLoadExtDtdDefaultValue = 0;
     xsltStylesheetPtr ss = xsltParseStylesheetFile(
-        STRTOXMLCAST(stylesheet_file));
+        XMLTools::StrToXmlCast(stylesheet_file));
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue = DTD_LOAD_BITS;
 
@@ -695,7 +695,7 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
     xmlDoValidityCheckingDefaultValue = 0;
     xmlLoadExtDtdDefaultValue         = 0;
     xsltStylesheetPtr ss = xsltParseStylesheetFile(
-        STRTOXMLCAST(stylesheet_file));
+        XMLTools::StrToXmlCast(stylesheet_file));
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue         = DTD_LOAD_BITS;
 
@@ -745,7 +745,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
     xmlDocPtr  res = nullptr;
     
     xmlNodePtr root = xmlDocGetRootElement(doc);
-    if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
+    if (!root || !root->name || type_name!=XMLTools::FromXmlCast(root->name))
     {
         xmlFreeDoc(doc);
         //xmlCleanupParser();
@@ -753,20 +753,20 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
     }
 
     string vers;
-    const char *v = FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
+    const char *v = XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("version")));
     if (v==nullptr)
     {
         // no version.
         v="0.8.7"; // at this version attribute has been introduced
         xmlNewProp(root, 
-                   TOXMLCAST("version") , 
-                   TOXMLCAST(v));
+                   XMLTools::ToXmlCast("version") , 
+                   XMLTools::ToXmlCast(v));
         res=doc; // changed
         vers=v;
     } else
     {
         vers=v;
-        FREEXMLBUFF(v);
+        XMLTools::FreeXmlBuff(v);
     }
 
 #ifdef FW_XMLTOOLS_VERBOSE
@@ -831,7 +831,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         doc = res;
         
         root = xmlDocGetRootElement(doc);
-        if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
+        if (!root || !root->name || type_name!=XMLTools::FromXmlCast(root->name))
         {
             xmlFreeDoc(doc);
             //xmlCleanupParser();
@@ -839,7 +839,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
                               "' conversion Error: conversion produced file with invalid structure.");
         }
 
-        v = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("version")));
+        v = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("version")));
         if (v==nullptr)
         {
             xmlFreeDoc(doc);
@@ -849,7 +849,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         } 
 
         vers=v;
-        FREEXMLBUFF(v);
+        XMLTools::FreeXmlBuff(v);
         
         if (version_compare(vers, oldversion) <= 0)
         {
@@ -938,14 +938,14 @@ string XMLTools::cleanForUTF8(const string &str)
 {
     string res;
     
-    if ( xmlCheckUTF8(TOXMLCAST(str.c_str()))==0 )
+    if ( xmlCheckUTF8(XMLTools::ToXmlCast(str.c_str()))==0 )
     {
         for (string::size_type i=0; i<str.size(); ++i)
         {
             char c[2];
             c[1]='\0';
             c[0]=str[i];
-            if ( xmlCheckUTF8(TOXMLCAST(c))==0 )
+            if ( xmlCheckUTF8(XMLTools::ToXmlCast(c))==0 )
             {
                 res += "?";
             } else  res += c;

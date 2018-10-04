@@ -55,22 +55,22 @@ void UserService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char *n = FROMXMLCAST(xmlGetProp(root,TOXMLCAST("userid")));
+    const char *n = XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("userid")));
     if(n)
     {
         userid = string(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
 xmlNodePtr UserService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("userid"), STRTOXMLCAST(userid));
+    xmlNewProp(me, XMLTools::ToXmlCast("userid"), XMLTools::StrToXmlCast(userid));
     return me;
 }
 

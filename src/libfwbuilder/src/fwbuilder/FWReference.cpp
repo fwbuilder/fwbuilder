@@ -59,14 +59,14 @@ void FWReference::fromXML(xmlNodePtr root)
     assert(root!=nullptr);
     FWObject::fromXML(root);
 
-    const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ref")));
+    const char *n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("ref")));
     assert(n!=nullptr);
     str_ref = n;
     //setInt("ref", n);
     // if object with id str_ref has not been loaded yet, 
     // FWObjectDatabase::getIntId returns -1.
     int_ref = FWObjectDatabase::getIntId(str_ref);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
 // Note that XML elements represented by FWReference have only one
@@ -76,7 +76,7 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent)
     xmlNodePtr me = xmlNewChild(
         parent,
         nullptr,
-        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
+        xml_name.empty() ? XMLTools::StrToXmlCast(getTypeName()) : XMLTools::StrToXmlCast(xml_name),
         nullptr);
 
     if (int_ref == -1 && !str_ref.empty())
@@ -84,8 +84,8 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent)
 
     str_ref = FWObjectDatabase::getStringId(int_ref);
 
-    xmlNewProp(me, TOXMLCAST("ref"), STRTOXMLCAST(str_ref));
-    //xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
+    xmlNewProp(me, XMLTools::ToXmlCast("ref"), XMLTools::StrToXmlCast(str_ref));
+    //xmlAddRef(NULL, parent->doc, XMLTools::StrToXmlCast(str_ref), pr);
 
     return me;
 }

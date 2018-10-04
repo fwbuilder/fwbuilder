@@ -75,25 +75,25 @@ void ClusterGroup::fromXML(xmlNodePtr parent)
     FWObject::fromXML(parent);
 
     const char *n;
-    n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("type")));
+    n = XMLTools::FromXmlCast(xmlGetProp(parent, XMLTools::ToXmlCast("type")));
     if (n != nullptr)
     {
         setStr("type", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
-    n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("master_iface")));
+    n = XMLTools::FromXmlCast(xmlGetProp(parent, XMLTools::ToXmlCast("master_iface")));
     if (n != nullptr)
     {
         setStr("master_iface", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
 xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
     for (FWObjectTypedChildIterator it = findByType(FWObjectReference::TYPENAME);

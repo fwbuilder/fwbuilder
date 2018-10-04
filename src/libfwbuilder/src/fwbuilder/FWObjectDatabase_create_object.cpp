@@ -353,15 +353,15 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
     string typen;
     int id = -1;
 
-    n = FROMXMLCAST(data->name);
+    n = XMLTools::FromXmlCast(data->name);
     if (!n) return NULL;
     typen = n;
 
-    n = FROMXMLCAST(xmlGetProp(data, TOXMLCAST("id")));
+    n = XMLTools::FromXmlCast(xmlGetProp(data, XMLTools::ToXmlCast("id")));
     if (n)
     {
         id = registerStringId(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 // create new object but do not prepopulate objects that

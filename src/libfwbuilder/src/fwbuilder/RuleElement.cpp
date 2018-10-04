@@ -84,11 +84,11 @@ void RuleElement::fromXML(xmlNodePtr root)
 {
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("neg")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("neg")));
     if (n)
     {
         negation = (cxx_strcasecmp(n, "1")==0 || cxx_strcasecmp(n , "true")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     FWObject::fromXML(root);
@@ -101,8 +101,8 @@ xmlNodePtr RuleElement::toXML(xmlNodePtr xml_parent_node)
     // FWObject::toXML() skips id if it is == -1. RuleElement objects
     // have no ID as per DTD (why?)
     xmlNodePtr me = FWObject::toXML(xml_parent_node, false);
-    xmlNewProp(me, TOXMLCAST("neg"),
-               TOXMLCAST(((getNeg()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("neg"),
+               XMLTools::ToXmlCast(((getNeg()) ? "True" : "False")));
     setId(my_id);
     return me;
 }

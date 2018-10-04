@@ -55,32 +55,32 @@ void TCPUDPService::fromXML(xmlNodePtr root)
 
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_start")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("src_range_start")));
     if(n!=nullptr)
     {
         src_range_start = atol(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("src_range_end")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("src_range_end")));
     if(n!=nullptr)
     {
         src_range_end = atol(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_start")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("dst_range_start")));
     if(n!=nullptr)
     {
         dst_range_start = atol(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dst_range_end")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("dst_range_end")));
     if(n!=nullptr)
     {
         dst_range_end = atol(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
@@ -88,21 +88,21 @@ void TCPUDPService::fromXML(xmlNodePtr root)
 xmlNodePtr TCPUDPService::toXML(xmlNodePtr xml_parent_node)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     char str[128];
 
     snprintf(str, sizeof(str), "%d", src_range_start);
-    xmlNewProp(me, TOXMLCAST("src_range_start"), TOXMLCAST(str));
+    xmlNewProp(me, XMLTools::ToXmlCast("src_range_start"), XMLTools::ToXmlCast(str));
     snprintf(str, sizeof(str), "%d", src_range_end);
-    xmlNewProp(me, TOXMLCAST("src_range_end"), TOXMLCAST(str));
+    xmlNewProp(me, XMLTools::ToXmlCast("src_range_end"), XMLTools::ToXmlCast(str));
 
     snprintf(str, sizeof(str), "%d", dst_range_start);
-    xmlNewProp(me, TOXMLCAST("dst_range_start"), TOXMLCAST(str));
+    xmlNewProp(me, XMLTools::ToXmlCast("dst_range_start"), XMLTools::ToXmlCast(str));
     snprintf(str, sizeof(str), "%d", dst_range_end);
-    xmlNewProp(me, TOXMLCAST("dst_range_end"), TOXMLCAST(str));
+    xmlNewProp(me, XMLTools::ToXmlCast("dst_range_end"), XMLTools::ToXmlCast(str));
    
     return me;
 }

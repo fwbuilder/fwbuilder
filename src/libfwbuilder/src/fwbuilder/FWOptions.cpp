@@ -54,15 +54,15 @@ void FWOptions::fromXML(xmlNodePtr root)
     {
         if (cur && !xmlIsBlankNode(cur))    
         {
-            n = FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("name")));
+            n = XMLTools::FromXmlCast(xmlGetProp(cur,XMLTools::ToXmlCast("name")));
             assert(n!=nullptr);
-            cont = FROMXMLCAST( xmlNodeGetContent(cur) );
+            cont = XMLTools::FromXmlCast( xmlNodeGetContent(cur) );
             if (cont)
             {
                 setStr(n, cont );
-                FREEXMLBUFF(cont);
+                XMLTools::FreeXmlBuff(cont);
             }
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         }
     }
 }
@@ -73,7 +73,7 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root)
 
     xmlNodePtr me = xmlNewChild(
         root, nullptr, 
-        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
+        xml_name.empty() ? XMLTools::StrToXmlCast(getTypeName()) : XMLTools::StrToXmlCast(xml_name),
         nullptr);
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i)
@@ -84,13 +84,13 @@ xmlNodePtr FWOptions::toXML(xmlNodePtr root)
         if (name[0]=='.') continue;
         
         xmlChar *valbuf = xmlEncodeSpecialChars(root->doc,
-                                                STRTOXMLCAST(value) );
+                                                XMLTools::StrToXmlCast(value) );
 //        xmlChar *valbuf = xmlEncodeEntitiesReentrant(root->doc,
-//                                                     STRTOXMLCAST(value) );
-        opt = xmlNewChild(me, nullptr, TOXMLCAST("Option"), valbuf);
-        FREEXMLBUFF(valbuf);
+//                                                     XMLTools::StrToXmlCast(value) );
+        opt = xmlNewChild(me, nullptr, XMLTools::ToXmlCast("Option"), valbuf);
+        XMLTools::FreeXmlBuff(valbuf);
 
-        xmlNewProp(opt, TOXMLCAST("name") , STRTOXMLCAST(name));
+        xmlNewProp(opt, XMLTools::ToXmlCast("name") , XMLTools::StrToXmlCast(name));
     }
 
     return me;
