@@ -17,6 +17,7 @@ FWBProduct {
 
     cpp.includePaths: base.concat(['..'])
     cpp.cxxFlags: base.concat(["-Wno-parentheses"])
+    cpp.cFlags: base.concat(["-Wno-shift-negative-value"])
 
     files: [
         "InetAddr.cpp",
