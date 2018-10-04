@@ -16,6 +16,7 @@ FWBProduct {
     }
 
     cpp.includePaths: base.concat(['..'])
+    cpp.cxxFlags: base.concat(["-Wno-parentheses"])
 
     files: [
         "InetAddr.cpp",
