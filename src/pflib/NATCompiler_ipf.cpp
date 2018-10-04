@@ -213,17 +213,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
         }
 /* slip into Redirect case to assign rule to all interfaces */
     }
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#else
-    __attribute__ ((fallthrough));
-#endif
+    /* FALLTHRU */
     case NATRule::Redirect: 
     case NATRule::DNAT:
     case NATRule::DNetnat:

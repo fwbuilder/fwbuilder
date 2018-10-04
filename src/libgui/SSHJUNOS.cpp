@@ -302,18 +302,7 @@ void SSHJunos::stateMachine()
             stdoutBuffer="";
             break;
         }
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#else
-    __attribute__ ((fallthrough));
-#endif
-
+    /* FALLTHRU */
     case WAITING_FOR_ENABLE:
         if (cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)))
         {
@@ -323,18 +312,7 @@ void SSHJunos::stateMachine()
             stateMachine();
             break;
         }
-
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#else
-    __attribute__ ((fallthrough));
-#endif
+    /* FALLTHRU */
     case ENABLE:
         if (cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)))
         {
