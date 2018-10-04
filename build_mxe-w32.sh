@@ -56,6 +56,8 @@ configure()
       --host=i686-w64-mingw32.shared
     if [ $? -eq 0 ]; then
         echo "==> Done configuring"
+    else
+        exit 1
     fi
 }
 
@@ -65,6 +67,8 @@ compile()
     make -j${JOBS}
     if [ $? -eq 0 ]; then
         echo "==> Done compiling"
+    else
+        exit 1
     fi
 }
 
@@ -74,6 +78,8 @@ package()
     makensis -nocd packaging/fwbuilder.nsi
     if [ $? -eq 0 ]; then
         echo "==> Done packaging"
+    else
+        exit 1
     fi
 }
 
