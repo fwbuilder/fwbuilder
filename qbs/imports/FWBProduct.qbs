@@ -31,7 +31,7 @@ Product {
         'FWBUILDER_XML_VERSION="' + project.xmlVersion + '"'
     ]
 
-    cpp.cxxFlags: []
+    cpp.cxxFlags: ["-Wno-overloaded-virtual"]
     cpp.linkerFlags: []
 
     Properties {
