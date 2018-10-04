@@ -14,19 +14,14 @@ Product {
     }
 
     qbs.optimization: "fast"
-    cpp.discardUnusedData: true
     cpp.cxxLanguageVersion: "c++14"
+    cpp.discardUnusedData: qbs.buildVariant == "release"
+    cpp.warningLevel: "all"
+    cpp.treatWarningsAsErrors: true
     cpp.includePaths: [product.sourceDirectory]
-
-    cpp.dynamicLibraries: {
-        if (qbs.targetOS.contains("windows"))
-            return ["pthread"];
-        else
-            return [];
-    }
+    cpp.dynamicLibraries: []
 
     cpp.defines: [
-        'WIN32_LEAN_AND_MEAN',
         '__STDC_FORMAT_MACROS',
         'GENERATION="' + project.version.slice(0,project.version.lastIndexOf('.')) + '"',
         'VERSION="' + project.version + '"',
@@ -36,7 +31,58 @@ Product {
         'FWBUILDER_XML_VERSION="' + project.xmlVersion + '"'
     ]
 
-    cpp.cxxFlags: {
-        return base.concat(["-Wall", "-Wextra"]);
+    cpp.cxxFlags: []
+    cpp.linkerFlags: []
+
+    Properties {
+        condition: project.lto
+        cpp.cxxFlags: outer.concat([ "-flto" ])
+        cpp.linkerFlags: outer.concat([ "-flto" ])
     }
+
+    Properties {
+        condition: qbs.toolchain.contains("mingw")
+        cpp.defines: outer.concat(["WIN32_LEAN_AND_MEAN"])
+        cpp.dynamicLibraries: outer.concat(["pthread"])
+    }
+
+    Properties {
+        condition: qbs.toolchain.contains("gcc")
+        cpp.cxxFlags: outer.concat([
+            "-pipe",
+            "-fPIE",
+            "-D_FORTIFY_SOURCE=2",
+            "-fstack-protector-strong",
+            "-fasynchronous-unwind-tables"
+        ])
+        cpp.linkerFlags: outer.concat([
+            "-pie",
+            "-zdefs",
+            "-znow",
+            "-zrelro"
+        ])
+    }
+
+    Properties {
+        condition: qbs.toolchain.contains("clang")
+        cpp.cxxFlags: outer.concat([
+            "-pipe",
+            "-fPIE",
+            "-D_FORTIFY_SOURCE=2",
+            "-fasynchronous-unwind-tables"
+        ])
+        cpp.linkerFlags: outer.concat([
+            "-pie"
+        ])
+    }
+
+    Properties {
+        condition: qbs.toolchain.contains("xcode")
+        cpp.cxxFlags: outer.concat([
+            "-pipe",
+            "-fPIE",
+            "-fstack-protector-strong"
+        ])
+    }
+
 }

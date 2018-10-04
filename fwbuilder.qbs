@@ -18,6 +18,7 @@ Project {
         else
             return "share"
     }
+    property bool lto
 
     references: [
         "src/libfwbuilder/src/fwbuilder/fwbuilder.qbs",

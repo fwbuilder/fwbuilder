@@ -1,6 +1,5 @@
 #!/bin/bash
 export PATH=/usr/lib/mxe/usr/bin:$PATH
-export CXXFLAGS="-Wno-maybe-uninitialized -Wno-attributes"
 
 main()
 {
