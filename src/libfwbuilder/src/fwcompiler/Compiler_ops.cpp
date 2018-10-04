@@ -155,7 +155,7 @@ vector<FWObject*> fwcompiler::_find_srv_intersection(Service *op1, Service *op2)
 	    if ( ! _find_portrange_intersection(srs1,sre1,srs2,sre2,srsR,sreR) ) return res;
 	    if ( ! _find_portrange_intersection(drs1,dre1,drs2,dre2,drsR,dreR) ) return res;
 		    
-	    FWObject *nserv;
+        FWObject *nserv = NULL;
 	    if ( TCPService::cast(op1) ) 
             {
 		nserv=new TCPService();
