@@ -35,8 +35,6 @@
 #include <cstring>
 #include <signal.h>
 
-#include "fwbuilder/memcheck.h"
-
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
 

@@ -73,9 +73,6 @@
 
 #include <libxml/tree.h>
 
-#include "memcheck.h"
-
-
 #define LONG_ERROR_CUTOFF 1024
 
 using namespace Ui;
