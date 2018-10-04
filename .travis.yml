@@ -11,9 +11,13 @@ cache:
 matrix:
   include:
     - os: linux
-      env: VM=ubuntu:18.04
+      env:
+        - VM=ubuntu
+        - TAG=18.04
     - os: linux
-      env: VM=mxe-w32-ubuntu:18.04
+      env: 
+        - VM=mxe-w32-ubuntu
+        - TAG=18.04
     - os: osx
       compiler: clang
 
@@ -24,12 +28,12 @@ install:
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      docker pull fwbuilder/$VM ;
+      docker pull fwbuilder/$VM:$TAG ;
     fi
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      docker run -v $(pwd):/root -it fwbuilder/$VM "docker/travis.$VM.sh" ;
+      docker run -v $(pwd):/root -it fwbuilder/$VM:$TAG "docker/travis.$VM_$TAG.sh" ;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export PATH="/usr/local/opt/qt/bin:/usr/local/opt/net-snmp/bin:$PATH" ;
