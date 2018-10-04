@@ -23,27 +23,24 @@
 
 */
 
-#include "OSData.h"
-#include "fwbuilder/Resources.h"
+#ifndef __OSDATA_PF_HH
+#define __OSDATA_PF_HH
 
-using namespace std;
-using namespace libfwbuilder;
+#include "config.h"
 
-OSData::OSData() {}
+#include <string>
+#include <map>
 
-string  OSData::getPathForTool(const string &os,tools t)
-{
-    string r = "/FWBuilderResources/Target/tools/";
-    switch (t)
-    {
-    case IFCONFIG: r += "path_ifconfig"; break;
-    case SYSCTL:   r += "path_sysctl";   break;
-    case PFCTL:    r += "path_pfctl";    break;
-    case IPFW:     r += "path_ipfw";     break;
-    case IPF:      r += "path_ipf";      break;
-    case IPNAT:    r += "path_ipnat";    break;
-    case LOGGER:   r += "path_logger";   break;
-    }
-    return Resources::os_res[os]->getResourceStr(r);
-}
 
+class OSData_pf {
+
+    public:
+
+    OSData_pf();
+    
+    typedef enum { IFCONFIG, SYSCTL, PFCTL, IPFW, IPF, IPNAT, LOGGER } tools;
+
+    std::string  getPathForTool(const std::string &os,tools t);
+};
+
+#endif

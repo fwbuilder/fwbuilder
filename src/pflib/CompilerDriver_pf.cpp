@@ -391,10 +391,10 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 void CompilerDriver_pf::setToolPathVar(Firewall* fw,
                                        const string &os,
                                        const string &var_path_suffix,
-                                       OSData::tools osdata_tool_type,
+                                       OSData_pf::tools osdata_tool_type,
                                        Configlet *configlet)
 {
-    OSData os_data;
+    OSData_pf os_data;
     FWOptions* options = fw->getOptionsObject();
     string s;
     string path;
@@ -409,13 +409,13 @@ QString CompilerDriver_pf::printPathForAllTools(Firewall* fw, const string &os)
     Configlet tools = Configlet(fw, "bsd", "tools");
     tools.removeComments();
 
-    setToolPathVar(fw, os, "path_ifconfig", OSData::IFCONFIG, &tools);
-    setToolPathVar(fw, os, "path_ipf", OSData::IPF, &tools);
-    setToolPathVar(fw, os, "path_ipnat", OSData::IPNAT, &tools);
-    setToolPathVar(fw, os, "path_ipfw", OSData::IPFW, &tools);
-    setToolPathVar(fw, os, "path_pfctl", OSData::PFCTL, &tools);
-    setToolPathVar(fw, os, "path_sysctl", OSData::SYSCTL, &tools);
-    setToolPathVar(fw, os, "path_logger", OSData::LOGGER, &tools);
+    setToolPathVar(fw, os, "path_ifconfig", OSData_pf::IFCONFIG, &tools);
+    setToolPathVar(fw, os, "path_ipf", OSData_pf::IPF, &tools);
+    setToolPathVar(fw, os, "path_ipnat", OSData_pf::IPNAT, &tools);
+    setToolPathVar(fw, os, "path_ipfw", OSData_pf::IPFW, &tools);
+    setToolPathVar(fw, os, "path_pfctl", OSData_pf::PFCTL, &tools);
+    setToolPathVar(fw, os, "path_sysctl", OSData_pf::SYSCTL, &tools);
+    setToolPathVar(fw, os, "path_logger", OSData_pf::LOGGER, &tools);
     return tools.expand();
 }
 

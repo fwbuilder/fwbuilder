@@ -29,7 +29,7 @@
 #include "CompilerDriver.h"
 #include "OSConfigurator_bsd.h"
 #include "TableFactory.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 #include "Configlet.h"
 
 #include <string>
@@ -98,7 +98,7 @@ namespace fwcompiler
         void setToolPathVar(libfwbuilder::Firewall* fw,
                             const std::string &os,
                             const std::string &var_path_suffix,
-                            OSData::tools osdata_tool_type,
+                            OSData_pf::tools osdata_tool_type,
                             Configlet *configlet);
 
         QString composeActivationCommand(libfwbuilder::Firewall *fw,

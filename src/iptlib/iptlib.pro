@@ -18,7 +18,7 @@ SOURCES	 =  CompilerDriver_ipt.cpp \
 		    OSConfigurator_linux24.cpp \
 		    OSConfigurator_linux24_interfaces.cpp \
 		    OSConfigurator_secuwall.cpp \
-			OSData.cpp \
+			OSData_ipt.cpp \
 			PolicyCompiler_PrintRule.cpp \
 			PolicyCompiler_PrintRuleIptRst.cpp \
 			PolicyCompiler_PrintRuleIptRstEcho.cpp \
@@ -39,7 +39,7 @@ HEADERS	 = ../../config.h \
 			OSConfigurator_ipcop.h \
 			OSConfigurator_linux24.h \
 			OSConfigurator_secuwall.h \
-			OSData.h \
+			OSData_ipt.h \
 			PolicyCompiler_ipt.h \
 			PolicyCompiler_secuwall.h \
 			RoutingCompiler_ipt.h \

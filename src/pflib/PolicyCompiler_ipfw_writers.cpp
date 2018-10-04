@@ -26,7 +26,7 @@
 #include "definitions.h"
 
 #include "PolicyCompiler_ipfw.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
