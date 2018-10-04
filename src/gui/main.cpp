@@ -28,7 +28,7 @@
 #include "global.h"
 #include "../common/commoninit.h"
 
-#include <getopt.h>
+#include <QCommandLineParser>
 
 #include <QString>
 #include <QtWidgets/QApplication>
@@ -118,47 +118,73 @@ int main( int argc, char *argv[] )
     // Mac OS X supplies switch "-psnXXXXX" when program is
     // started via Finder.
 
-    int c;
-    while ((c = getopt (argc , argv , "1hvf:o:P:dxgr")) != EOF )
-	switch (c) {
-	case 'h':
-	    usage();
-	    exit(0);
+    QCommandLineParser parser;
+    parser.addOption({"h", "help"});
+    parser.addOption({"v", "version"});
+    parser.addOption({"f", "filename"});
 
-	case 'f':
-	    filename = optarg;
-	    break;
+    QCommandLineOption fileNameOption("f", "file_name", "file_name");
+    parser.addOption(fileNameOption);
 
-	case 'o':
-	    print_output_file_name=optarg;
-	    break;
+    QCommandLineOption outputFileNameOption("o", "file_name", "output_file_name");
+    parser.addOption(outputFileNameOption);
 
-        case 'r':
-            auto_load_from_rcs_head_revision = true;
-            break;
+    QCommandLineOption autoLoadFromRcsHeadRevisionOption("r");
+    parser.addOption(autoLoadFromRcsHeadRevisionOption);
 
-        case 'd':
-            fwbdebug++;
-            break;
+    QCommandLineOption debugOption("d");
+    parser.addOption(debugOption);
 
-	case 'v':
-	    cout << VERSION << endl;
-	    exit(0);
+    QCommandLineOption objectNameOption("P", "object_name", "object_name");
+    parser.addOption(objectNameOption);
 
-        case 'P':
-            cli_print = true ;
-            cli_print_fwname = optarg;
-            break;
+    QCommandLineOption forceFirstRunFlagOption("1");
+    parser.addOption(forceFirstRunFlagOption);
 
-        case '1':
-            force_first_time_run_flag = true;
-            break;
-	}
+    parser.process(*app);
 
-    if ( (argc-1)==optind)
-        filename = strdup( argv[optind++] );
+    if (parser.isSet("h")) {
+        usage();
+        exit(0);
+    }
+
+    if (parser.isSet("v")) {
+        cout << VERSION << "\n";
+        exit(0);
+    }
+
+    if (parser.isSet(fileNameOption)) {
+        filename = parser.value(fileNameOption);
+    }
+
+    if (parser.isSet(objectNameOption)) {
+        cli_print = true;
+        cli_print_fwname = parser.value(objectNameOption);
+    }
+
+    if (parser.isSet(outputFileNameOption)) {
+        print_output_file_name = parser.value(outputFileNameOption);
+    }
+
+    if (parser.isSet(autoLoadFromRcsHeadRevisionOption)) {
+        auto_load_from_rcs_head_revision = true;
+    }
+
+    if (parser.isSet(debugOption)) {
+        fwbdebug++;
+    }
+
+    if (parser.isSet(forceFirstRunFlagOption)) {
+        force_first_time_run_flag = true;
+    }
+
+    auto positionalArguments = parser.positionalArguments();
+    if (positionalArguments.size()) {
+        filename = positionalArguments.at(0);
+    }
 
     if (fwbdebug) qDebug("Initializing ...");
+
 
 /* need to initialize in order to be able to use FWBSettings */
     init(argv);
