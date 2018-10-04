@@ -62,6 +62,10 @@
 #  endif
 #endif
 
+#ifdef _WIN64
+#define timezone _timezone
+#endif
+
 #include <iostream>
 
 #ifndef PATH_MAX

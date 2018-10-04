@@ -34,15 +34,15 @@ Module {
             var p = new Process()
             try {
                 if (p.exec(executable, ['--version']) === 0) {
-                    modversion = p.readStdOut().trim();
+                    modversion = p.readStdOut().trim()
                     if (p.exec(executable, ['--netsnmp-libs']) === 0) {
                         libs = p.readStdOut().trim()
-                        libs = libs ? libs.split(/\s/) : [];
-                        libraries = [];
-                        libraryPaths = [];
-                        linkerFlags = [];
+                        libs = libs ? libs.split(/\s/) : []
+                        libraries = []
+                        libraryPaths = []
+                        linkerFlags = []
                         for (var i = 0; i < libs.length; ++i) {
-                            var flag = libs[i];
+                            var flag = libs[i]
                             if (flag.startsWith("-l"))
                                 libraries.push(flag.slice(2))
                             else if (flag.startsWith("-L"))
@@ -52,13 +52,13 @@ Module {
                         }
                     }
                     defines = ['HAVE_LIBSNMP=1', 'NET_SNMP=1']
-                    console.debug("Found net-snmp " + modversion);
+                    console.debug("Found net-snmp " + modversion)
                     found = true
                 } else {
                     found: false
                 }
             } finally {
-                p.close();
+                p.close()
             }
         }
     }

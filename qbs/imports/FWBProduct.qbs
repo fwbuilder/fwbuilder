@@ -16,7 +16,7 @@ Product {
     qbs.optimization: "fast"
     cpp.cxxLanguageVersion: "c++14"
     cpp.discardUnusedData: qbs.buildVariant == "release"
-    cpp.warningLevel: "all"
+    cpp.warningLevel: qbs.toolchain.contains("msvc") ? "" : "all"
     cpp.treatWarningsAsErrors: true
     cpp.includePaths: [product.sourceDirectory]
     cpp.dynamicLibraries: []
@@ -50,7 +50,7 @@ Product {
     }
 
     Properties {
-        condition: qbs.toolchain.contains("gcc")
+        condition: qbs.toolchain.contains("gcc") && !qbs.toolchain.contains("mingw")
         cpp.cxxFlags: outer.concat([
             "-pipe",
             "-fPIE",
@@ -86,6 +86,12 @@ Product {
             "-fPIE",
             "-fstack-protector-strong"
         ])
+    }
+
+    Properties {
+        condition: qbs.toolchain.contains("msvc")
+        cpp.dynamicLibraries: outer.concat(["ws2_32", "advapi32"])
+        cpp.defines: outer.concat(["WIN32_LEAN_AND_MEAN"])
     }
 
 }

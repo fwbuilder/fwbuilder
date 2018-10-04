@@ -38,6 +38,7 @@
 #include <functional>
 #include <iostream>
 #include <iomanip>
+#include <iterator>
 
 #include <assert.h>
 #include <sstream>

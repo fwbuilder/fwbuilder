@@ -79,6 +79,9 @@
 #include <QtDebug>
 #include <QTime>
 
+#ifdef _WIN64
+#define tzname _tzname
+#endif
 
 using namespace std;
 using namespace libfwbuilder;

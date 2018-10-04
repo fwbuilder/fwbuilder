@@ -7,7 +7,7 @@ FWBProduct {
 
     Depends { name: "cpp" }
     Depends { name: "Qt.core" }
-    Depends { name: "libxml2" }
+    Depends { name: "libxslt" }
     Depends { name: "libsnmp" }
 
     Export {
@@ -16,8 +16,8 @@ FWBProduct {
     }
 
     cpp.includePaths: base.concat(['..'])
-    cpp.cxxFlags: base.concat(["-Wno-parentheses"])
-    cpp.cFlags: base.concat(["-Wno-shift-negative-value"])
+    cpp.cxxFlags: qbs.targetOS.contains("windows") ? base : base.concat(["-Wno-parentheses"])
+    cpp.cFlags: qbs.targetOS.contains("windows") ? base : base.concat(["-Wno-shift-negative-value"])
 
     files: [
         "InetAddr.cpp",

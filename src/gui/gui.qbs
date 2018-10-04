@@ -5,6 +5,7 @@ FWBProduct {
     name: "gui"
     targetName: "fwbuilder"
     bundle.isBundle: qbs.targetOS.contains("macos")
+    consoleApplication: false
 
     Depends {
         name: "Qt"

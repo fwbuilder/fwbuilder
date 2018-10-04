@@ -148,7 +148,7 @@ list<string> getDirList(const std::string &dir,
 #else
 
     struct _finddata_t c_file;
-    long hFile;
+    intptr_t hFile;
     string filepath=dir + FS_SEPARATOR + "*." + ext;
     /* Find first file in current directory */
     if( (hFile = _findfirst( filepath.c_str(), &c_file )) != -1L )

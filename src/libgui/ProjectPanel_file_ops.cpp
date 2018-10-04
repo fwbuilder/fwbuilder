@@ -128,6 +128,11 @@ bool ProjectPanel::saveIfModified(bool include_discard_button)
     return true;
 }
 
+#ifdef _WIN32
+#  include <io.h>       // for access
+#  define W_OK 2        // for access
+#endif
+
 
 QString ProjectPanel::chooseNewFileName(const QString &fname,
                                         const QString &title)

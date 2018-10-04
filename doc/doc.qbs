@@ -33,6 +33,7 @@ FWBProduct {
             "fwb_pix.1"
         ]
         fileTags: "source_man_pages"
+        condition: !qbs.targetOS.contains("windows")
     }
 
     Rule {
