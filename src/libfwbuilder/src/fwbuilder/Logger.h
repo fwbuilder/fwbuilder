@@ -29,10 +29,10 @@
 #define __LOGGER_HH_FLAG__
 
 #include <sstream>
-
+#include <queue>
+#include "fwbuilder/ThreadTools.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Tools.h"
-#include "fwbuilder/ThreadTools.h"
 
 namespace libfwbuilder
 {

@@ -169,7 +169,7 @@ SNMPQuery::~SNMPQuery()
 {
 }
 
-void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program)
+void SNMPQuery::fetchAll(Logger *logger,std::atomic<bool> *stop_program)
 {
     if(community.empty())
         throw FWException("No SNMP community specified");
@@ -195,7 +195,7 @@ void SNMPQuery::fetchAll(Logger *logger,SyncFlag *stop_program)
     CHECK_STOP_AND_THROW_EXCEPTION;
 }
 
-void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection)
+void SNMPQuery::fetchArpTable(Logger *logger,std::atomic<bool> *stop_program, SNMPConnection *connection)
 {
     std::ostringstream str;
     *logger << "ARP table\n"; 
@@ -297,7 +297,7 @@ void SNMPQuery::fetchArpTable(Logger *logger,SyncFlag *stop_program, SNMPConnect
  * it will contain also reference to interface object associated
  * with the route.
  */
-void SNMPQuery::fetchRoutingTable(Logger *logger,SyncFlag *stop_program, SNMPConnection *connection)
+void SNMPQuery::fetchRoutingTable(Logger *logger,std::atomic<bool> *stop_program, SNMPConnection *connection)
 {
     std::ostringstream str;
     *logger << "Routing table\n"; 
@@ -588,7 +588,7 @@ void SNMPQuery::getAddressAndNetmask(Logger * /* UNUSED logger */,
     }
 }
 
-void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
+void SNMPQuery::fetchInterfaces(Logger *logger, std::atomic<bool> *stop_program,
                                 SNMPConnection *connection)
 {
     std::ostringstream str;
@@ -792,7 +792,7 @@ void SNMPQuery::fetchInterfaces(Logger *logger, SyncFlag *stop_program,
 }
 
 void SNMPQuery::fetchSysInfo(Logger *logger,
-                             SyncFlag *stop_program,
+                             std::atomic<bool> *stop_program,
                              SNMPConnection *connection)
 {
     std::ostringstream str;
@@ -1414,7 +1414,7 @@ bool SNMPCrawler::special(const InetAddrMask &n) const
 
 //TODO: multiple threads (via pool).
 void SNMPCrawler::run_impl(Logger *logger,
-                           SyncFlag *stop_program)
+                           std::atomic<bool> *stop_program)
 {
     if (snmp_tmp_db==nullptr)
         snmp_tmp_db = new FWObjectDatabase();
@@ -1800,7 +1800,7 @@ void SNMPCrawler::run_impl(Logger *logger,
 }
 
 void SNMPCrawler::bacresolve_results(Logger *logger,
-                                     SyncFlag *)
+                                     std::atomic<bool> *)
 {
     *logger << "Resolving names\n";
         
@@ -1840,7 +1840,7 @@ CrawlerFind::~CrawlerFind()
 {
 }
 
-void SNMP_interface_query::run_impl(Logger *logger, SyncFlag *stop_program)
+void SNMP_interface_query::run_impl(Logger *logger, std::atomic<bool> *stop_program)
 {
     fetchSysInfo(logger, stop_program);
     CHECK_STOP_AND_THROW_EXCEPTION;
@@ -1869,12 +1869,12 @@ void SNMP_interface_query::run_impl(Logger *logger, SyncFlag *stop_program)
 #endif
 }
 
-void SNMP_sysdesc_query::run_impl(Logger *logger,SyncFlag *stop_program)
+void SNMP_sysdesc_query::run_impl(Logger *logger,std::atomic<bool> *stop_program)
 {
     fetchSysInfo(logger,stop_program);
 }
 
-void SNMP_discover_query::run_impl(Logger *logger,SyncFlag *stop_program)
+void SNMP_discover_query::run_impl(Logger *logger,std::atomic<bool> *stop_program)
 {
     fetchArpTable(logger,stop_program);
     if(fetch_inerfaces)

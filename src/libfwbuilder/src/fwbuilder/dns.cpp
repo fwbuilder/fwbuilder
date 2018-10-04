@@ -43,30 +43,21 @@
 #  include <windows.h>
 #endif
 
-#include <pthread.h>
-
+#include "fwbuilder/ThreadTools.h"
 #include <memory>
 #include <sstream>
 #include <cstdlib>
 #include <cstring>
 
 #include "fwbuilder/dns.h"
-#include "fwbuilder/ThreadTools.h"
 
 using namespace std;
 using namespace libfwbuilder;
 
 #undef DEBUG_DNS
 
-Mutex *DNS::gethostbyname_mutex = nullptr;
-Mutex *DNS::gethostbyaddr_mutex = nullptr;
-
-// use this function for delayed initialization
-void DNS::init()
-{
-    if (gethostbyname_mutex==nullptr) gethostbyname_mutex = new Mutex();
-    if (gethostbyaddr_mutex==nullptr) gethostbyaddr_mutex = new Mutex();
-}
+Mutex DNS::gethostbyaddr_mutex;
+Mutex DNS::gethostbyname_mutex;
 
 /*
  * gethostbyaddr and gethostbyname return pointers to a static structure.
@@ -75,10 +66,9 @@ void DNS::init()
  */
 HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
 {
-    DNS::init();
-
     struct hostent *hp;
-    gethostbyaddr_mutex->lock();
+    LockGuard lock(gethostbyaddr_mutex);
+
     if (type==AF_INET)
     {
         hp = gethostbyaddr((const char *)addr.getV4(),
@@ -93,7 +83,6 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
 
     if(hp==nullptr)
     {
-        gethostbyaddr_mutex->unlock();
         throw FWException(string("Hostname of address: '") + 
                           addr.toString() + "' not found");
     } 
@@ -102,14 +91,11 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
     if (hp->h_aliases)
         for(char **p = hp->h_aliases; *p; p++) v.aliases.insert(string(*p));
 
-    gethostbyaddr_mutex->unlock();
     return v;
 }
 
 list<InetAddr> DNS::getHostByName(const string &name, int type)
 {
-    DNS::init();
-
     list<InetAddr> v;
     
     struct addrinfo *aiList = nullptr;
@@ -118,6 +104,8 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
 #ifdef DEBUG_DNS
     cerr << "DNS::getHostByName " << name << "  type=" << type << endl;
 #endif
+
+    LockGuard lock(gethostbyname_mutex);
 
     if ((retVal = getaddrinfo(name.c_str(), nullptr, nullptr, &aiList)) != 0)
     {

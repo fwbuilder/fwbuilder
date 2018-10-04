@@ -31,9 +31,7 @@
 #include "fwbuilder/ThreadTools.h"
 
 #include <zlib.h>
-
 #include <string.h>
-
 #include <stdio.h>
 #include <stdarg.h>     // for va_start and friends
 #include <sys/stat.h>
@@ -219,8 +217,6 @@ xmlParserInputPtr fwbExternalEntityLoader(const char *URL,
 
 void XMLTools::initXMLTools()
 {
-//    xml_parser_mutex     = PTHREAD_MUTEX_INITIALIZER;
-//    xslt_processor_mutex = PTHREAD_MUTEX_INITIALIZER;
     xmlInitMemory();
     xmlInitParser();
     defaultLoader = xmlGetExternalEntityLoader();
@@ -283,7 +279,7 @@ xmlDocPtr XMLTools::parseFile(const string &file_name,
                               bool use_dtd,
                               const string &template_dir)
 {
-    xml_parser_mutex.lock();
+    LockGuard lock(xml_parser_mutex);
 
     if (current_template_dir!=nullptr) delete[] current_template_dir;
     current_template_dir = cxx_strdup(template_dir.c_str());
@@ -299,7 +295,6 @@ xmlDocPtr XMLTools::parseFile(const string &file_name,
 
     xmlSetGenericErrorFunc(nullptr, nullptr);
 
-    xml_parser_mutex.unlock();
     if (!doc || errors.length())
     {
         throw FWException(
@@ -448,8 +443,7 @@ void XMLTools::setDTD(xmlDocPtr doc,
                        XMLTools::StrToXmlCast(dtd_file)
     );
     
-
-    xml_parser_mutex.lock();    
+    LockGuard lock(xml_parser_mutex);
 
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue         = DTD_LOAD_BITS;
@@ -479,12 +473,9 @@ void XMLTools::setDTD(xmlDocPtr doc,
             throw FWException(string("DTD validation stage 2 failed with following errors:\n")+errors);
 */
         xmlSetGenericErrorFunc (nullptr, nullptr);
-        xml_parser_mutex.unlock();    
-
     } catch(...)
     {
-        xmlSetGenericErrorFunc (nullptr, nullptr);
-        xml_parser_mutex.unlock();    
+        xmlSetGenericErrorFunc (nullptr, nullptr);  
         throw;
     }
 }
@@ -531,9 +522,8 @@ void XMLTools::transformFileToFile(const string &src_file,
     xsltStylesheetPtr ss = nullptr;
     xmlDocPtr doc, res;
 
-
-    xslt_processor_mutex.lock();
-    xml_parser_mutex.lock();    
+    LockGuard xslt_processor_mutex_lock(xslt_processor_mutex);
+    LockGuard xml_parser_mutex_lock(xml_parser_mutex);
     
     xsltSetGenericErrorFunc(&xslt_errors, xslt_error_handler);
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
@@ -554,8 +544,6 @@ void XMLTools::transformFileToFile(const string &src_file,
         // Following line is workaround for bug #73088 in Gnome
         // bugzilla. To be removed than it will be fixed.
         xsltSetGenericDebugFunc (nullptr, nullptr);
-        xml_parser_mutex.unlock();    
-        xslt_processor_mutex.unlock();
         throw FWException("File conversion error: Error loading stylesheet: " + 
                           stylesheet_file+
                           (xslt_errors.length()?(string("\nXSLT reports: \n") +
@@ -575,9 +563,6 @@ void XMLTools::transformFileToFile(const string &src_file,
     // Following line is workaround for bug #73088 in Gnome
     // bugzilla. To be removed than it will be fixed.
     xsltSetGenericDebugFunc (nullptr, nullptr);
-
-    xml_parser_mutex.unlock();    
-    xslt_processor_mutex.unlock();    
     
     if(!res)
     {
@@ -605,8 +590,8 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
 {
     string xslt_errors;
 
-    xslt_processor_mutex.lock();    
-    xml_parser_mutex.lock();    
+    LockGuard xslt_processor_mutex_lock(xslt_processor_mutex);
+    LockGuard xml_parser_mutex_lock(xml_parser_mutex);
     
     xsltSetGenericErrorFunc(&xslt_errors, xslt_error_handler);
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
@@ -634,9 +619,7 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
 
         // Following line is workaround for bug #73088 in Gnome
         // bugzilla. To be removed than it will be fixed.
-        xsltSetGenericDebugFunc (nullptr, nullptr);
-        xml_parser_mutex.unlock();    
-        xslt_processor_mutex.unlock();    
+        xsltSetGenericDebugFunc (nullptr, nullptr);  
         throw FWException("File conversion error: Error loading stylesheet: " + 
                           stylesheet_file+
                           (xslt_errors.length()?(string("\nXSLT reports: \n") +
@@ -651,11 +634,8 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
 
     // Following line is workaround for bug #73088 in Gnome
     // bugzilla. To be removed than it will be fixed.
-    xsltSetGenericDebugFunc (nullptr, nullptr);
+    xsltSetGenericDebugFunc (nullptr, nullptr);  
 
-    xml_parser_mutex.unlock();    
-    xslt_processor_mutex.unlock();    
-    
     if (!res)
     {
         xsltFreeStylesheet(ss);
@@ -682,8 +662,8 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
 {
     string xslt_errors;
 
-    xslt_processor_mutex.lock();   
-    xml_parser_mutex.lock();    
+    LockGuard xslt_processor_mutex_lock(xslt_processor_mutex);
+    LockGuard xml_parser_mutex_lock(xml_parser_mutex);
         
     xsltSetGenericErrorFunc(&xslt_errors, xslt_error_handler);
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
@@ -705,10 +685,7 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
         xmlSetGenericErrorFunc (nullptr, nullptr);
         // Following line is workaround for bug #73088 in Gnome
         // bugzilla. To be removed than it will be fixed.
-        xsltSetGenericDebugFunc (nullptr, nullptr);
-    
-        xml_parser_mutex.unlock();    
-        xslt_processor_mutex.unlock();    
+        xsltSetGenericDebugFunc (nullptr, nullptr);  
         throw FWException("File conversion error: Error loading stylesheet: "+stylesheet_file+
                           (xslt_errors.length()?(string("\nXSLT reports: \n")+xslt_errors):string(""))
         );
@@ -721,11 +698,8 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
     xmlSetGenericErrorFunc (nullptr, nullptr);
     // Following line is workaround for bug #73088 in Gnome
     // bugzilla. To be removed than it will be fixed.
-    xsltSetGenericDebugFunc (nullptr, nullptr);
-    
-    xml_parser_mutex.unlock();    
-    xslt_processor_mutex.unlock();    
-    
+    xsltSetGenericDebugFunc (nullptr, nullptr);   
+
     if (!res)
     {
         throw FWException("File conversion Error: Error during conversion: "+stylesheet_file+

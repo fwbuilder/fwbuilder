@@ -51,7 +51,7 @@ SNMPCrawlerThread::SNMPCrawlerThread(QWidget *ui,
 {
     this->ui = ui;
 
-    stop_flag = new SyncFlag();
+    stop_flag = new std::atomic<bool>();
 
     QString seedHostAddress = getAddrByName(seedHostName, AF_INET);
     InetAddr seedHostInetAddr = InetAddr( seedHostAddress.toLatin1().constData());
@@ -93,7 +93,7 @@ void SNMPCrawlerThread::run()
 
 void SNMPCrawlerThread::stop()
 {
-    stop_flag->set(true);
+    stop_flag->store(true);
 }
 
 map<InetAddr, CrawlerFind>  SNMPCrawlerThread::getAllIPs()

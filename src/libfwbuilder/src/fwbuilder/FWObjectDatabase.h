@@ -29,7 +29,6 @@
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWException.h"
-#include "fwbuilder/ThreadTools.h"
 #include "fwbuilder/XMLTools.h"
 
 #ifdef _WIN32

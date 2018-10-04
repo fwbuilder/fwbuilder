@@ -30,10 +30,10 @@
 
 #include <map>
 #include <set>
+#include <atomic>
 
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/InetAddrMask.h"
-#include "fwbuilder/ThreadTools.h"
 
 #ifdef HAVE_LIBSNMP
 
@@ -41,7 +41,6 @@
 namespace libfwbuilder
 {
     class SNMPCrawler;
-    class SyncFlag;
     class CrawlerFind;
 };
 
@@ -51,7 +50,7 @@ class SNMPCrawlerThread : public QThread
     Q_OBJECT;
     
     libfwbuilder::SNMPCrawler *q;
-    libfwbuilder::SyncFlag *stop_flag;
+    std::atomic<bool> *stop_flag;
 
     QWidget *ui;
     

@@ -27,12 +27,23 @@
 #ifndef __THREAD_TOOLS_H_FLAG__
 #define __THREAD_TOOLS_H_FLAG__
 
+#ifndef USE_PTHREADS
+
+#include <mutex>
+#include <condition_variable>
+using Mutex = std::mutex;
+using Cond = std::condition_variable;
+using LockGuard = std::lock_guard<std::mutex>;
+using UniqueLock = std::unique_lock<std::mutex>;
+
+#else
 
 #include <time.h> //for time_t definition
 #include <pthread.h>
 #include <unistd.h>
 #include <string>
 #include <queue>
+#include <atomic>
 
 #include "fwbuilder/FWException.h"
 
@@ -71,6 +82,62 @@ class Mutex
 
 };
 
+class LockGuard
+{
+    LockGuard(const LockGuard&) = delete;
+    Mutex &m_mutex;
+
+public:
+    LockGuard(Mutex &m) : m_mutex(m)
+    {
+        m_mutex.lock();
+    }
+
+    ~LockGuard()
+    {
+        m_mutex.unlock();
+    }
+
+};
+
+class UniqueLock
+{
+    UniqueLock(const UniqueLock&) = delete;
+    Mutex &m_mutex;
+    std::atomic<bool> m_owns;
+
+public:
+    UniqueLock(Mutex &m) : m_mutex(m)
+    {
+        m_owns.store(false);
+        lock();
+    }
+
+    ~UniqueLock()
+    {
+        if(m_owns.load()) {
+            m_mutex.unlock();
+        }
+    }
+
+    void lock()
+    {
+        m_mutex.lock();
+        m_owns.store(true);
+    }
+
+    void unlock()
+    {
+        m_mutex.unlock();
+        m_owns.store(false);
+    }
+
+    Mutex get_mutex() const
+    {
+        return m_mutex;
+    }
+};
+
 /**
  * POSIX Mutex wrapper class.
  */
@@ -85,9 +152,11 @@ class Cond
     Cond();
     virtual ~Cond();
 
-    bool wait(const Mutex &mutex) const;
+    bool wait(UniqueLock &lock) const;
     void signal   () const;
     void broadcast() const;
+    void notify_one() const;
+    void notify_all() const;
 
 };
 
@@ -180,10 +249,9 @@ class TimeoutCounter
 };
 #endif
 
-
-
-
 }
+
+#endif // USE_PTHREADS
 
 #endif //__THREAD_TOOLS_H_FLAG__
 

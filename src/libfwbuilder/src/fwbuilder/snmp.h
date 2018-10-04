@@ -50,6 +50,8 @@
 #include <net-snmp/net-snmp-includes.h>
 #endif
 
+#include <atomic>
+
 namespace libfwbuilder
 {
 
@@ -339,14 +341,14 @@ public:
 	      int retries_=SNMP_DEFAULT_RETRIES, 
 	      long timeout_=SNMP_DEFAULT_TIMEOUT);
 
-    void fetchArpTable(Logger *,SyncFlag *stop_program,
+    void fetchArpTable(Logger *,std::atomic<bool> *stop_program,
                        SNMPConnection *connection=nullptr);
-    void fetchInterfaces(Logger *,SyncFlag *stop_program,
+    void fetchInterfaces(Logger *,std::atomic<bool> *stop_program,
                          SNMPConnection *connection=nullptr);
-    void fetchSysInfo(Logger *,SyncFlag *stop_program,
+    void fetchSysInfo(Logger *,std::atomic<bool> *stop_program,
                       SNMPConnection *connection=nullptr);
-    void fetchAll(Logger *,SyncFlag *stop_program);
-    void fetchRoutingTable(Logger *,SyncFlag *stop_program,
+    void fetchAll(Logger *,std::atomic<bool> *stop_program);
+    void fetchRoutingTable(Logger *,std::atomic<bool> *stop_program,
                            SNMPConnection *connection=nullptr);
     
     std::map<int, InterfaceData>* getInterfaces();
@@ -383,7 +385,7 @@ class SNMP_interface_query : public SNMPQuery
 	SNMPQuery::init(hostname, community, retries_, timeout_);
     }
     
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
 
 };
 
@@ -406,7 +408,7 @@ class SNMP_sysdesc_query : public SNMPQuery
 	SNMPQuery::init(hostname, community, retries_, timeout_);
     }
 
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
 };
 
 class SNMP_discover_query : public SNMPQuery
@@ -420,7 +422,7 @@ class SNMP_discover_query : public SNMPQuery
     SNMP_discover_query() : SNMPQuery() {}
     SNMP_discover_query(std::string hostname, std::string community, int retries_=SNMP_DEFAULT_RETRIES, long timeout_=SNMP_DEFAULT_TIMEOUT, bool _f=true):SNMPQuery(hostname, community, retries_, timeout_) { fetch_inerfaces=_f; }
     
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
 };
 
 class CrawlerFind: public HostEnt
@@ -511,8 +513,8 @@ class SNMPCrawler : public BackgroundOp
     std::map<InetAddr, CrawlerFind>  getAllIPs();
     std::set<InetAddrMask> getNetworks();
         
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program);
-    void bacresolve_results(Logger *logger,SyncFlag *stop_program);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
+    void bacresolve_results(Logger *logger,std::atomic<bool> *stop_program);
 
 };
 

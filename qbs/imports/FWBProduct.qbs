@@ -42,7 +42,10 @@ Product {
 
     Properties {
         condition: qbs.toolchain.contains("mingw")
-        cpp.defines: outer.concat(["WIN32_LEAN_AND_MEAN"])
+        cpp.defines: outer.concat([
+            "WIN32_LEAN_AND_MEAN",
+            "USE_PTHREADS"
+        ])
         cpp.dynamicLibraries: outer.concat(["pthread"])
     }
 
