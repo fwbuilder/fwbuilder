@@ -50,7 +50,7 @@ Product {
     }
 
     Properties {
-        condition: qbs.toolchain.contains("gcc") && !qbs.toolchain.contains("mingw")
+        condition: (qbs.toolchainType === "gcc")
         cpp.cxxFlags: outer.concat([
             "-pipe",
             "-fPIE",
@@ -67,7 +67,7 @@ Product {
     }
 
     Properties {
-        condition: qbs.toolchain.contains("clang")
+        condition: (qbs.toolchainType === "clang")
         cpp.cxxFlags: outer.concat([
             "-pipe",
             "-fPIE",
@@ -80,7 +80,7 @@ Product {
     }
 
     Properties {
-        condition: qbs.toolchain.contains("xcode")
+        condition: (qbs.toolchainType === "xcode")
         cpp.cxxFlags: outer.concat([
             "-pipe",
             "-fPIE",
@@ -89,7 +89,7 @@ Product {
     }
 
     Properties {
-        condition: qbs.toolchain.contains("msvc")
+        condition: (qbs.toolchainType === "msvc")
         cpp.dynamicLibraries: outer.concat(["ws2_32", "advapi32"])
         cpp.defines: outer.concat(["WIN32_LEAN_AND_MEAN"])
     }
