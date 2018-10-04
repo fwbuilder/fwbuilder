@@ -114,8 +114,8 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                                          const std::string &firewall_id,
                                          const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 

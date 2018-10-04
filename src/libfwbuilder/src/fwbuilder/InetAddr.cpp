@@ -78,7 +78,7 @@ using namespace libfwbuilder;
 void InetAddr::init_from_string(const char* data)
 {
     if(!data) throw FWException("NULL IP address data..");
-    if (strchr(data, '.')==NULL && strchr(data, ':')==NULL)
+    if (strchr(data, '.')==nullptr && strchr(data, ':')==nullptr)
     {
         char *invalid_chars;
         long r = strtol(data, &invalid_chars, 10);
@@ -363,7 +363,7 @@ string InetAddr::toString() const
         char *cp;
         cp = inet_net_ntop(AF_INET6, (const void*)(&ipv6),
                            128, ntop_buf, sizeof(ntop_buf));
-        if (cp==NULL)
+        if (cp==nullptr)
         {
             ostringstream err;
             switch (errno)
@@ -387,7 +387,7 @@ string InetAddr::toString() const
             }
         }
         char *slash_p = strchr(ntop_buf, '/');
-        if (slash_p!=NULL) *slash_p = '\0';
+        if (slash_p!=nullptr) *slash_p = '\0';
         return std::string(ntop_buf);
     } else
     {

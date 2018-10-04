@@ -180,7 +180,7 @@ void ObjectManipulator::expandObjectInTree(FWObject *obj)
         qDebug() << "ObjectManipulator::expandObjectInTree"
                  << "o=" << QString::fromUtf8(o->getName().c_str());
 
-    //if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+    //if (FWReference::cast(o)!=nullptr) o = FWReference::cast(o)->getPointer();
 
     QTreeWidgetItem *it = allItems[o];
     if (it==nullptr)

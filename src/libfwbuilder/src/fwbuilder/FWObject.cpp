@@ -293,7 +293,7 @@ void FWObject::setXMLName(const string &n)
 FWObject* FWObject::_find(const string& name) const
 {
     const_iterator i = std::find_if(begin(),end(), FWObjectNameEQPredicate(name));
-    return i==end()?NULL:(*i);
+    return i==end()?nullptr:(*i);
 }
 
 list<FWObject*> FWObject::findIf(FWObjectFindPredicate *pred)
@@ -1157,7 +1157,7 @@ bool FWObject::verifyTree()
                 cerr << "WARNING: Object " << o << " (name: '" << o->getName()
                      << "' type: " << o->getTypeName() << ")"
                      << " was not correctly added to its parent "
-                     << "(getParent()==NULL):" << endl;
+                     << "(getParent()==nullptr):" << endl;
                 cerr << "    " << getPath(false, true) << endl;
             }
 
@@ -1297,7 +1297,7 @@ FWObject* FWObject::getById  (int id, bool recursive)
 FWObject* FWObject::getFirstByType(const string &type_name) const
 {
     const_iterator i=find_if(begin(),end(), FWObjectTypeNameEQPredicate(type_name));
-    return i==end()?NULL:(*i);
+    return i==end()?nullptr:(*i);
 }
 
 list<FWObject*> FWObject::getByType(const string &type_name) const

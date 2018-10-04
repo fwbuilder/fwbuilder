@@ -103,7 +103,7 @@ std::string Inet6AddrMask::toString() const
     cp = inet_net_ntop(AF_INET6, (const void*)(&(address->ipv6)),
                        netmask->getLength(),
                        ntop_buf, sizeof(ntop_buf));
-    if (cp==NULL)
+    if (cp==nullptr)
     {
         ostringstream err;
         switch (errno)

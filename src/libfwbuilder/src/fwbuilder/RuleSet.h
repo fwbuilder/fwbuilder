@@ -132,7 +132,7 @@ class RuleSet : public FWObject
         void operator()(FWObject *o)
         {
             RuleSet *rs = RuleSet::cast(o);
-            if (rs != NULL) rs->assignUniqueRuleIds();
+            if (rs != nullptr) rs->assignUniqueRuleIds();
         }
     };
 

@@ -128,7 +128,7 @@ Management *Host::getManagementObject()
 
 /**
  * returns address from management interface. If there is no
- * management interface or no address to be found, returns NULL.
+ * management interface or no address to be found, returns nullptr.
  * May throw exception if interface has invalid address.
  */
 const InetAddr* Host::getManagementAddress()
@@ -171,7 +171,7 @@ int Host::countInetAddresses(bool skip_loopback) const
 /*
  * This function will find parent host, firewall or cluster object of
  * a given object. If object is not a child of host, firewall or
- * cluster, it returns NULL
+ * cluster, it returns nullptr
  */
 FWObject* Host::getParentHost(FWObject *obj)
 {

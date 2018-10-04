@@ -301,12 +301,12 @@ public slots:
 
     libfwbuilder::FWObject* createObject(const QString &objType,
                                           const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom=NULL);
+                                          libfwbuilder::FWObject *copyFrom=nullptr);
 
     libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                           const QString &objType,
                                           const QString &objName,
-                                          libfwbuilder::FWObject *copyFrom=NULL);
+                                          libfwbuilder::FWObject *copyFrom=nullptr);
 
     void moveObject(libfwbuilder::FWObject *target,
                     libfwbuilder::FWObject *obj);

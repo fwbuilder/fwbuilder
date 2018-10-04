@@ -85,7 +85,7 @@ xmlNodePtr FWReference::toXML(xmlNodePtr parent)
     str_ref = FWObjectDatabase::getStringId(int_ref);
 
     xmlNewProp(me, XMLTools::ToXmlCast("ref"), XMLTools::StrToXmlCast(str_ref));
-    //xmlAddRef(NULL, parent->doc, XMLTools::StrToXmlCast(str_ref), pr);
+    //xmlAddRef(nullptr, parent->doc, XMLTools::StrToXmlCast(str_ref), pr);
 
     return me;
 }

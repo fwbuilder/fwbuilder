@@ -45,7 +45,7 @@ int ASA8TwiceNatStaticLogic::countAddresses(FWObject *re)
     for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
         FWObject *o = FWReference::getObject(*i1);
-        if (Group::cast(o) != NULL) res += countAddresses(o);
+        if (Group::cast(o) != nullptr) res += countAddresses(o);
         else
         {
             Address *addr = Address::cast(o);
@@ -59,11 +59,11 @@ int ASA8TwiceNatStaticLogic::countAddresses(FWObject *re)
 ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticType()
 {
     RuleElementOSrc *osrc_re = rule->getOSrc();
-    assert(osrc_re!=NULL);
+    assert(osrc_re!=nullptr);
     //Address  *osrc = Address::cast(FWReference::getObject(osrc_re->front()));
 
     RuleElementTSrc *tsrc_re = rule->getTSrc();
-    assert(tsrc_re!=NULL);
+    assert(tsrc_re!=nullptr);
     //Address  *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
 
     if (tsrc_re->isAny()) return STATIC;
@@ -77,7 +77,7 @@ ASA8TwiceNatStaticLogic::TwiceNatRuleType ASA8TwiceNatStaticLogic::getAutomaticT
          * back to dynamic
          */
         if (tsrc_re->size() > 1) return DYNAMIC;
-        //if (tsrc == NULL) return DYNAMIC;
+        //if (tsrc == nullptr) return DYNAMIC;
 
         Address *tsrc = Address::cast(FWReference::getObject(tsrc_re->front()));
         // ASA sez: "ERROR: Subnet can not be used as mapped source in

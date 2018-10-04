@@ -150,7 +150,7 @@ void filePropDialog::printRevHistory()
 	QString headerText = "Revision History:";
 
 #if defined(Q_OS_MACX)
-	printerStream pr(printer,1.0,margin,printHeader,headerText,NULL);
+	printerStream pr(printer,1.0,margin,printHeader,headerText,nullptr);
 #else
 	printerStream pr(printer,1.0,margin,printHeader,headerText,ppd);
 	ppd->show();

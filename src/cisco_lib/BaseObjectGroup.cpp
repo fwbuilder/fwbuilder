@@ -96,11 +96,11 @@ QString BaseObjectGroup::registerGroupName(const QString &prefix,
 BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(
     const FWObject *obj)
 {
-    if (Address::constcast(obj)!=NULL)     return NETWORK;
-    if (IPService::constcast(obj)!=NULL)   return PROTO;
-    if (ICMPService::constcast(obj)!=NULL) return ICMP_TYPE;
-    if (TCPService::constcast(obj)!=NULL)  return TCP_SERVICE;
-    if (UDPService::constcast(obj)!=NULL)  return UDP_SERVICE;
+    if (Address::constcast(obj)!=nullptr)     return NETWORK;
+    if (IPService::constcast(obj)!=nullptr)   return PROTO;
+    if (ICMPService::constcast(obj)!=nullptr) return ICMP_TYPE;
+    if (TCPService::constcast(obj)!=nullptr)  return TCP_SERVICE;
+    if (UDPService::constcast(obj)!=nullptr)  return UDP_SERVICE;
     return UNKNOWN;
 }
 

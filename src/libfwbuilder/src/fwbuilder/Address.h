@@ -82,7 +82,7 @@ public:
     
     /**
      * returns const pointer to internal InetAddr object. Some objects
-     * that inherit this class may return NULL if they do not have
+     * that inherit this class may return nullptr if they do not have
      * their own IP address (examples: physAddress or Interface with
      * no child IPv4 object). Using exclusively method that returns
      * pointer rather than reference to the object allows us to

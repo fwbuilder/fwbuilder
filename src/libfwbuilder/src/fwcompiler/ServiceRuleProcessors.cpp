@@ -57,7 +57,7 @@ using namespace std;
 
 bool Compiler::groupServices::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     string re_type = PolicyRule::isA(rule) ?
         RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
     RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
@@ -117,7 +117,7 @@ Compiler::separateServiceObject::separateServiceObject(
 
 bool Compiler::separateServiceObject::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     string re_type = PolicyRule::isA(rule) ?
         RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
     RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
@@ -132,9 +132,9 @@ bool Compiler::separateServiceObject::processNext()
     for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
 	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	Service *s=Service::cast(o);
-	assert(s!=NULL);
+	assert(s!=nullptr);
 
 	if (condition(s))
         {
@@ -268,7 +268,7 @@ bool Compiler::separatePortRanges::condition(const Service *srv)
 
 bool Compiler::verifyCustomServices::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     string re_type = PolicyRule::isA(rule) ?
         RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
     RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
@@ -278,7 +278,7 @@ bool Compiler::verifyCustomServices::processNext()
     for (FWObject::iterator i=re_srv->begin(); i!=re_srv->end(); i++)
     {
         FWObject *o = FWReference::getObject(*i);
-	assert(o!=NULL);
+	assert(o!=nullptr);
 	if (CustomService::isA(o) && 
 	    CustomService::cast(o)->getCodeForPlatform(compiler->myPlatformName()).empty())
 	    throw FWException("Custom service is not configured for the platform '"+compiler->myPlatformName()+"'. Rule "+rule->getLabel());
@@ -289,7 +289,7 @@ bool Compiler::verifyCustomServices::processNext()
 
 bool Compiler::CheckForTCPEstablished::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     string re_type = PolicyRule::isA(rule) ?
         RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
     RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));
@@ -299,7 +299,7 @@ bool Compiler::CheckForTCPEstablished::processNext()
         FWObject *o = FWReference::getObject(*i);
 
         TCPService *s = TCPService::cast( o );
-        if (s==NULL) continue;
+        if (s==nullptr) continue;
 
         if (s->getEstablished())
             compiler->abort(
@@ -316,7 +316,7 @@ bool Compiler::CheckForTCPEstablished::processNext()
 
 bool Compiler::CheckForUnsupportedUserService::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     string re_type = PolicyRule::isA(rule) ?
         RuleElementSrv::TYPENAME : RuleElementOSrv::TYPENAME;
     RuleElement *re_srv = RuleElement::cast(rule->getFirstByType(re_type));

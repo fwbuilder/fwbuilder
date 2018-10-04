@@ -82,14 +82,14 @@ void AddressTableTest::positiveTest()
     addrset.insert("192.168.100.0/255.255.255.0");
     addrset.insert("192.168.11.0/255.255.255.0");
 
-    CPPUNIT_ASSERT(address_tables_group!=NULL);
+    CPPUNIT_ASSERT(address_tables_group!=nullptr);
 
 
     AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
     address_tables_group->add(nobj);
     nobj->setName("TestADT");
     nobj->setSourceName("addresstable-1.txt");
-    nobj->loadFromSource(false, NULL, true);
+    nobj->loadFromSource(false, nullptr, true);
 
     list<FWObject*>::const_iterator t = nobj->begin();
     Network *net;
@@ -98,9 +98,9 @@ void AddressTableTest::positiveTest()
     for ( ; t != nobj->end(); ++t )
     {
         ref = FWReference::cast(*t);
-        CPPUNIT_ASSERT(ref!=NULL);
+        CPPUNIT_ASSERT(ref!=nullptr);
         net = Network::cast(ref->getPointer());
-        CPPUNIT_ASSERT(net!=NULL);
+        CPPUNIT_ASSERT(net!=nullptr);
         addrres.insert(net->getAddressPtr()->toString() + "/" + net->getNetmaskPtr()->toString());
     }
 
@@ -112,27 +112,27 @@ void AddressTableTest::negativeTest1()
 {
     setStrings addrres;
 
-    CPPUNIT_ASSERT(address_tables_group!=NULL);
+    CPPUNIT_ASSERT(address_tables_group!=nullptr);
 
 
     AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
     address_tables_group->add(nobj);
     nobj->setName("TestADT2");
     nobj->setSourceName("addresstable-2.txt");
-    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, NULL, true), FWException);
+    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, nullptr, true), FWException);
 }
 
 void AddressTableTest::negativeTest2()
 {
     setStrings addrres;
 
-    CPPUNIT_ASSERT(address_tables_group!=NULL);
+    CPPUNIT_ASSERT(address_tables_group!=nullptr);
 
 
     AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
     address_tables_group->add(nobj);
     nobj->setName("TestADT3");
     nobj->setSourceName("addresstable-not-found.txt");
-    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, NULL, true), FWException);
+    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, nullptr, true), FWException);
 }
 

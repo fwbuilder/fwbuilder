@@ -127,7 +127,7 @@ class SNMPVariable_Bits : public SNMPVariable
             memcpy((void*)value, v, len);
         } else
         {
-            value = NULL ;
+            value = nullptr ;
             len   = 0    ;
         }
     }
@@ -340,14 +340,14 @@ public:
 	      long timeout_=SNMP_DEFAULT_TIMEOUT);
 
     void fetchArpTable(Logger *,SyncFlag *stop_program,
-                       SNMPConnection *connection=NULL);
+                       SNMPConnection *connection=nullptr);
     void fetchInterfaces(Logger *,SyncFlag *stop_program,
-                         SNMPConnection *connection=NULL);
+                         SNMPConnection *connection=nullptr);
     void fetchSysInfo(Logger *,SyncFlag *stop_program,
-                      SNMPConnection *connection=NULL);
+                      SNMPConnection *connection=nullptr);
     void fetchAll(Logger *,SyncFlag *stop_program);
     void fetchRoutingTable(Logger *,SyncFlag *stop_program,
-                           SNMPConnection *connection=NULL);
+                           SNMPConnection *connection=nullptr);
     
     std::map<int, InterfaceData>* getInterfaces();
     std::map<InetAddr, std::string>* getArpTable();
@@ -493,7 +493,7 @@ class SNMPCrawler : public BackgroundOp
                 long _timeout=SNMP_DEFAULT_TIMEOUT,
 		int  _dns_retries=RES_DFLRETRY,
 		int  _dns_timeout=RES_TIMEOUT,
-                const std::vector<InetAddrMask> *include=NULL);
+                const std::vector<InetAddrMask> *include=nullptr);
     virtual ~SNMPCrawler();
 
     void init(const InetAddr &seed, 
@@ -506,7 +506,7 @@ class SNMPCrawler : public BackgroundOp
 	      long _snmp_timeout=SNMP_DEFAULT_TIMEOUT,
 	      int  _dns_retries=RES_DFLRETRY,
 	      int  _dns_timeout=RES_TIMEOUT,
-	      const std::vector<InetAddrMask> *include=NULL);
+	      const std::vector<InetAddrMask> *include=nullptr);
 
     std::map<InetAddr, CrawlerFind>  getAllIPs();
     std::set<InetAddrMask> getNetworks();

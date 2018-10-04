@@ -121,7 +121,7 @@ void FWCmdAddObject::prepareStatesForRedo()
     if (member == nullptr)
     {
         // Find new object among children of newState.  member can be
-        // NULL if FWCmdAddObject object is created before the new
+        // nullptr if FWCmdAddObject object is created before the new
         // object can be created. This is the case when we copy whole
         // subtree from one data file to another in
         // ObjectManipulator::actuallyPasteTo(). There we call

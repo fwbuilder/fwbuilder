@@ -112,7 +112,7 @@ int forkpty (int *amaster, char *name, void *unused1, void *unused2)
     }
 
     slave_name = ptsname (master);
-    if (slave_name == NULL)
+    if (slave_name == nullptr)
     {
         close (master);
         return -1;
@@ -306,13 +306,13 @@ void ssh_wrapper( int argc, char *argv[] )
         for (i = 0; i < new_args.size() && i < 127; ++i)
             arg[i] = strdup(new_args[i].toLatin1().constData());
 
-        arg[i] = NULL;
+        arg[i] = nullptr;
 
         if (fwbdebug)
         {
             qDebug("cmd: %s", arg[0]);
             qDebug("Arguments:");
-            for (const char **cptr = arg; *cptr!=NULL; cptr++)
+            for (const char **cptr = arg; *cptr!=nullptr; cptr++)
             {
                 qDebug("    %s", *cptr);
             }
@@ -325,7 +325,7 @@ void ssh_wrapper( int argc, char *argv[] )
         char  slave_name[64];
 //        char  *pgm;
 
-        pid = forkpty(&mfd,slave_name,NULL,NULL);
+        pid = forkpty(&mfd,slave_name,nullptr,nullptr);
         if (pid<0)
         {
             qDebug("Fork failed: %s", strerror(errno));
@@ -377,7 +377,7 @@ void ssh_wrapper( int argc, char *argv[] )
             FD_SET(mfd,  &rfds);
             if (!endOfStream)  FD_SET(STDIN_FILENO  , &rfds);
 
-            retval = select( max(STDIN_FILENO,mfd)+1 , &rfds, NULL, NULL, &tv);
+            retval = select( max(STDIN_FILENO,mfd)+1 , &rfds, nullptr, nullptr, &tv);
             if (retval==0)  // timeout
             {
                 if (fwbdebug) qDebug("timeout");

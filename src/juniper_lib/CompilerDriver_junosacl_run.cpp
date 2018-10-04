@@ -80,8 +80,8 @@ QString CompilerDriver_junosacl::run(const string &cluster_id,
                                      const string &firewall_id,
                                      const string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 

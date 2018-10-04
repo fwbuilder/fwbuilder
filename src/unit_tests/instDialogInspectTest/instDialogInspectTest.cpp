@@ -76,7 +76,7 @@ void instDialogInspectTest::cleanupTestCase()
 
 void instDialogInspectTest::closeInstallOptions()
 {
-    QVERIFY(dynamic_cast<instOptionsDialog*>(app->activeModalWidget()) != NULL);
+    QVERIFY(dynamic_cast<instOptionsDialog*>(app->activeModalWidget()) != nullptr);
     dynamic_cast<instOptionsDialog*>(app->activeModalWidget())->cancelAll();
     dialogClosed = true;
 }
@@ -97,7 +97,7 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 
 void instDialogInspectTest::closeContextMenu()
 {
-    QMenu *menu = NULL;
+    QMenu *menu = nullptr;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -121,7 +121,7 @@ void instDialogInspectTest::openContextMenu(ObjectManipulator *om,
     QTimer::singleShot(100, this, SLOT(closeContextMenu()));
     om->contextMenuRequested(findItemPos(item, tree));
     bool found_menu_item = false;
-    QMenu *menu = NULL;
+    QMenu *menu = nullptr;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -130,11 +130,11 @@ void instDialogInspectTest::openContextMenu(ObjectManipulator *om,
             break;
         }
     }
-    QVERIFY(menu != NULL);
+    QVERIFY(menu != nullptr);
     foreach (QObject *act, menu->children())
     {
         QAction *action = dynamic_cast<QAction*>(act);
-        if (action == NULL) continue;
+        if (action == nullptr) continue;
         if (action->text() == actionText)
         {
             QVERIFY(action->isEnabled() == true);

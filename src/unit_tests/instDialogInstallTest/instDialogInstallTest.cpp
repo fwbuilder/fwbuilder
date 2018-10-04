@@ -137,7 +137,7 @@ void instDialogInstallTest::initTestCase()
 
 void instDialogInstallTest::cleanupTestCase()
 {
-    if (ssh_auth_sock != NULL)
+    if (ssh_auth_sock != nullptr)
         setenv("SSH_AUTH_SOCK", ssh_auth_sock, 1);
     else
         unsetenv("SSH_AUTH_SOCK");
@@ -160,7 +160,7 @@ void instDialogInstallTest::fillInstOptionsDialog(const QString &user_name,
                                                   bool verbose_flag)
 {
     instOptionsDialog *optdlg = mw->findChild<instOptionsDialog*>("instOptionsDialog_q");
-    QVERIFY(optdlg != NULL);
+    QVERIFY(optdlg != nullptr);
     QVERIFY(optdlg->isVisible() == true);
 
     QLineEdit *uname = optdlg->findChild<QLineEdit*>("uname");
@@ -263,7 +263,7 @@ void instDialogInstallTest::testInstall2()
     resetDialogs();
 
     removeFiles();
-    Firewall *test1 = NULL;
+    Firewall *test1 = nullptr;
     foreach(FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == "test1")
@@ -272,7 +272,7 @@ void instDialogInstallTest::testInstall2()
             break;
         }
     }
-    QVERIFY(test1 != NULL);
+    QVERIFY(test1 != nullptr);
 
     // reset additional args for scp and ssh
     FWOptions *fwoptions = test1->getOptionsObject();
@@ -359,7 +359,7 @@ void instDialogInstallTest::testInstall2()
     {
         QVERIFY(list->topLevelItem(i)->text(1) == "Failure");
     }
-    if (ssh_auth_sock != NULL)
+    if (ssh_auth_sock != nullptr)
         setenv("SSH_AUTH_SOCK", ssh_auth_sock, 1);
     else
         unsetenv("SSH_AUTH_SOCK");
@@ -400,7 +400,7 @@ void instDialogInstallTest::testInstall3()
     resetDialogs();
 
     removeFiles();
-    Firewall *test1 = NULL;
+    Firewall *test1 = nullptr;
     foreach(FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == "test1")
@@ -409,7 +409,7 @@ void instDialogInstallTest::testInstall3()
             break;
         }
     }
-    QVERIFY(test1 != NULL);
+    QVERIFY(test1 != nullptr);
 
     // reset additional args for scp and ssh
     FWOptions *fwoptions = test1->getOptionsObject();
@@ -527,7 +527,7 @@ void instDialogInstallTest::executeCancelAndStopTests(const QString &button_name
     resetDialogs();
 
     removeFiles();
-    Firewall *test1 = NULL;
+    Firewall *test1 = nullptr;
     foreach(FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == "test1")
@@ -536,7 +536,7 @@ void instDialogInstallTest::executeCancelAndStopTests(const QString &button_name
             break;
         }
     }
-    QVERIFY(test1 != NULL);
+    QVERIFY(test1 != nullptr);
 
     // reset additional args for scp and ssh
     FWOptions *fwoptions = test1->getOptionsObject();

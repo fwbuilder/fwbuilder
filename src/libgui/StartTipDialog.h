@@ -49,7 +49,7 @@ class StartTipDialog : public QDialog
 public:
     Ui::StartTipDialog_q *m_dialog;
 
-    StartTipDialog(QWidget *parent = NULL);
+    StartTipDialog(QWidget *parent = nullptr);
     
     virtual ~StartTipDialog();
 

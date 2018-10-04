@@ -310,7 +310,7 @@ void SSHUnx::stateMachine()
             emit printStdout_sign( "\n");
 
             delete proc;
-            proc=NULL;
+            proc=nullptr;
 
             state=NONE;
 
@@ -323,7 +323,7 @@ void SSHUnx::stateMachine()
 
 //            terminate();
             sessionComplete(true);   // finish with error status
-            proc=NULL;
+            proc=nullptr;
         }
 
         emit sessionFinished_sign();

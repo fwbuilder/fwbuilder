@@ -56,7 +56,7 @@ RoutingCompiler_iosacl::PrintRule::PrintRule(const std::string &name) :
 
 bool RoutingCompiler_iosacl::PrintRule::processNext()
 {
-    RoutingRule *rule = getNext(); if (rule == NULL) return false;
+    RoutingRule *rule = getNext(); if (rule == nullptr) return false;
     tmp_queue.push_back(rule);
     
     string rl = rule->getLabel();
@@ -132,7 +132,7 @@ string RoutingCompiler_iosacl::PrintRule::_printRItf(RoutingRule *rule)
     {
         Interface *itf =
             Interface::cast(FWObjectReference::getObject(itfrel->front()));
-        if (itf != NULL) return itf->getName() + " ";
+        if (itf != nullptr) return itf->getName() + " ";
     }
     return "";
 }
@@ -144,7 +144,7 @@ string RoutingCompiler_iosacl::PrintRule::RoutingRuleToString(RoutingRule *rule)
     RuleElementRDst *dstrel = rule->getRDst();
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
-    if(dst == NULL) compiler->abort(rule, "Broken DST");
+    if(dst == nullptr) compiler->abort(rule, "Broken DST");
 
     std::ostringstream command_line;
 

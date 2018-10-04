@@ -48,7 +48,7 @@ void RoutingCompiler_pix::epilog()
 
 bool RoutingCompiler_pix::emptyRDstOrRItf::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     
     RuleElementRGtw *gtwrel = rule->getRGtw();

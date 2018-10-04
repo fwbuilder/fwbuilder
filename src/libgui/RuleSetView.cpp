@@ -327,7 +327,7 @@ RuleSetView* RuleSetView::getRuleSetViewByType(ProjectPanel *project,
         return new NATView(project, NAT::cast(ruleset), parent);
     if (Routing::isA(ruleset))
         return new RoutingView(project, Routing::cast(ruleset), parent);
-    return NULL;
+    return nullptr;
 }
 
 void RuleSetView::makeCurrentRuleVisible()
@@ -343,7 +343,7 @@ void RuleSetView::selectRE(QModelIndex index)
 
     if (fwosm->index != index)
     {
-        fwosm->selectedObject = NULL;
+        fwosm->selectedObject = nullptr;
         fwosm->index = index;
         setCurrentIndex(index);
 
@@ -384,7 +384,7 @@ void RuleSetView::selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject
         qDebug() << "RuleSetView::selectRE(libfwbuilder::RuleElement *re, libfwbuilder::FWObject *obj)";
 
     Rule *rule = Rule::cast(re->getParent());
-    assert(rule!=NULL);
+    assert(rule!=nullptr);
 
     RuleSetModel* md = ((RuleSetModel*)model());
 
@@ -412,7 +412,7 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
 
     if (index.column() == 0)
     {
-        fwosm->setSelected(NULL, index);
+        fwosm->setSelected(nullptr, index);
         return;
     }
 
@@ -429,7 +429,7 @@ void RuleSetView::mousePressEvent( QMouseEvent* ev )
                         fwosm->index.column()==index.column() &&
                         fwosm->selectedObject==object);
     } else {
-        fwosm->setSelected(NULL, index);
+        fwosm->setSelected(nullptr, index);
     }
 
 }
@@ -532,13 +532,13 @@ QDrag* RuleSetView::dragObject()
 {
     FWObject *obj = fwosm->selectedObject;
 
-    if (obj==NULL) return NULL;
+    if (obj==nullptr) return nullptr;
 
     // TODO: use FWBTree::setObjectIcon()
     QString icn = (":/Icons/" + obj->getTypeName() + "/icon").c_str();
     list<FWObject*> dragobj;
     dragobj.push_back(obj);
-    FWObjectDrag *drag = new FWObjectDrag(dragobj, this, NULL);
+    FWObjectDrag *drag = new FWObjectDrag(dragobj, this, nullptr);
     QPixmap pm = LoadPixmap(icn);
     drag->setPixmap( pm );
     return drag;
@@ -554,7 +554,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
         case ColDesc::Action:
             {
                 Firewall *f = md->getFirewall();
-                if (f == NULL) break;
+                if (f == nullptr) break;
                 string platform = f->getStr("platform");
                 QString action_name;
 
@@ -682,7 +682,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                                             this, SLOT( editSelected() ));
 
                 PolicyRule *rule = PolicyRule::cast( node->rule );
-                if (rule!=NULL)
+                if (rule!=nullptr)
                 {
                     string act = rule->getActionAsString();
                     if (Resources::getActionEditor(platform,act)=="None")
@@ -731,7 +731,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
         case ColDesc::Time:
             {
                 RuleElement *re = getRE(index);
-                if (re==NULL) return;
+                if (re==nullptr) return;
                 FWObject *object = getObject(pos, index);
 
                 QAction *editID = menu->addAction(
@@ -770,7 +770,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 QAction *negID  = menu->addAction(
                     tr("Negate") , this , SLOT( negateRE() ) );
 
-                if (object == NULL || re->isAny()) editID->setEnabled(false);
+                if (object == nullptr || re->isAny()) editID->setEnabled(false);
                 copyID->setEnabled(!re->isAny());
                 cutID->setEnabled(!re->isAny());
                 delID->setEnabled(!re->isAny());
@@ -783,23 +783,23 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
 
                 pasteID->setEnabled(true);
                         
-                if (obj_in_clipboard == NULL) pasteID->setEnabled(false);
+                if (obj_in_clipboard == nullptr) pasteID->setEnabled(false);
                 else
                 {
-                    if (Rule::cast(obj_in_clipboard) != NULL)
+                    if (Rule::cast(obj_in_clipboard) != nullptr)
                         pasteID->setEnabled(false);
 
                     FWObject *lib = obj_in_clipboard->getLibrary();
-                    if (lib != NULL && lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
+                    if (lib != nullptr && lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
                         pasteID->setEnabled(false);
                 }
 
                 string cap_name;
-                if (Policy::cast(md->getRuleSet())!=NULL) cap_name="negation_in_policy";
-                if (NAT::cast(md->getRuleSet())!=NULL) cap_name="negation_in_nat";
+                if (Policy::cast(md->getRuleSet())!=nullptr) cap_name="negation_in_policy";
+                if (NAT::cast(md->getRuleSet())!=nullptr) cap_name="negation_in_nat";
 
                 Firewall *f = md->getFirewall();
-                if (f == NULL) break;
+                if (f == nullptr) break;
 
                 bool supports_neg=false;
                 try  {
@@ -807,7 +807,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                         f->getStr("platform"), cap_name);
                 } catch (FWException &ex)
                 {
-                    QMessageBox::critical( NULL , "Firewall Builder",
+                    QMessageBox::critical( nullptr , "Firewall Builder",
                                            ex.toString().c_str(),
                                            QString::null,QString::null);
                 }
@@ -904,7 +904,7 @@ void RuleSetView::itemDoubleClicked(const QModelIndex& index)
     if (index.column() == 0) return; // double click on rule number does nothing
 
     // ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
-    // if (fwosm->selectedObject!=NULL)
+    // if (fwosm->selectedObject!=nullptr)
     // {
     //     QCoreApplication::postEvent(
     //         mw,
@@ -922,7 +922,7 @@ void RuleSetView::editSelected(const QModelIndex& index)
 
     // see #2454 -- we do not want to switch object tree view to the standard
     // objects library when user double clicks on object "any" 
-    if (obj != NULL &&
+    if (obj != nullptr &&
         (obj->getId() != FWObjectDatabase::ANY_ADDRESS_ID &&
          obj->getId() != FWObjectDatabase::ANY_SERVICE_ID &&
          obj->getId() != FWObjectDatabase::ANY_INTERVAL_ID))
@@ -949,7 +949,7 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 
     if ( index.column()<=0 || index.row()==-1 ) return false;
 
-    FWObject *object = NULL;
+    FWObject *object = nullptr;
     ObjectEditor::OptType operation = ObjectEditor::optNone;
 
     /*
@@ -1010,7 +1010,7 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
 
         default:
         {
-            if ( fwosm->selectedObject!=NULL)
+            if ( fwosm->selectedObject!=nullptr)
             {
                 object = fwosm->selectedObject;
                 break;
@@ -1030,7 +1030,7 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
         return true;
     }
 
-    if (object == NULL)
+    if (object == nullptr)
     {
         QCoreApplication::postEvent(mw, new clearEditorPanelEvent());
         //mw->blankEditor();
@@ -1040,7 +1040,7 @@ bool RuleSetView::switchObjectInEditor(const QModelIndex& index, bool validate)
             mw, new openObjectInEditorEvent(
                 mw->activeProject()->getFileName(), object->getId()));
         //mw->openEditor(object);
-    } else if(Rule::cast(object)!=NULL)
+    } else if(Rule::cast(object)!=nullptr)
     {
         QCoreApplication::postEvent(
             mw, new openOptObjectInEditorEvent(project->getFileName(),
@@ -1599,7 +1599,7 @@ FWObject* RuleSetView::createInsertTemplate(ProjectPanel* proj_p, int id)
 bool RuleSetView::canChange(RuleSetModel* md)
 {
     if(!isTreeReadWrite(this,md->getRuleSet())) return false;
-    if (md->getFirewall()==NULL) return false;
+    if (md->getFirewall()==nullptr) return false;
     return true;
 }
 
@@ -1669,7 +1669,7 @@ void RuleSetView::removeFromGroup()
 {
     RuleSetModel* md = ((RuleSetModel*)model());
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (md->getFirewall()==nullptr) return;
 
     QModelIndexList selection = getSelectedRows();
 
@@ -1732,17 +1732,17 @@ FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
     const int itemHeight = RuleSetViewDelegate::getItemHeight();
 
     RuleElement *re = getRE(index);
-    if (re==NULL) return 0;
+    if (re==nullptr) return 0;
 
     int   oy=0;
 
-    FWObject *o1=NULL;
-    FWObject *obj=NULL;
-    FWObject *prev=NULL;
+    FWObject *o1=nullptr;
+    FWObject *obj=nullptr;
+    FWObject *prev=nullptr;
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         o1= *i;
-        if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
+        if (FWReference::cast(o1)!=nullptr) o1=FWReference::cast(o1)->getPointer();
         if (relativeY>oy && relativeY<oy+itemHeight)
         {
             obj=o1;
@@ -1752,7 +1752,7 @@ FWObject *RuleSetView::getObject(const QPoint &pos, const QModelIndex &index)
 
         prev=o1;
     }
-    if (obj==NULL) obj=prev;
+    if (obj==nullptr) obj=prev;
     return obj;
 }
 
@@ -1764,17 +1764,17 @@ FWObject *RuleSetView::getObject(int number, const QModelIndex &index)
     if (node->type == RuleNode::Group) return 0;
 
     RuleElement *re = getRE(index);
-    if (re==NULL) return 0;
+    if (re==nullptr) return 0;
 
     int n=1;
 
-    FWObject *o1=NULL;
-    FWObject *obj=NULL;
-    FWObject *prev=NULL;
+    FWObject *o1=nullptr;
+    FWObject *obj=nullptr;
+    FWObject *prev=nullptr;
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         o1= *i;
-        if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
+        if (FWReference::cast(o1)!=nullptr) o1=FWReference::cast(o1)->getPointer();
         if (n == number)
         {
             obj=o1;
@@ -1784,7 +1784,7 @@ FWObject *RuleSetView::getObject(int number, const QModelIndex &index)
 
         prev=o1;
     }
-    if (obj==NULL) obj=prev;
+    if (obj==nullptr) obj=prev;
     return obj;
 }
 
@@ -1796,15 +1796,15 @@ int RuleSetView::getObjectNumber(FWObject *object, const QModelIndex &index)
     if (node->type == RuleNode::Group) return 0;
 
     RuleElement *re = getRE(index);
-    if (re==NULL) return 0;
+    if (re==nullptr) return 0;
 
     int   n=1;
 
-    FWObject *o1=NULL;
+    FWObject *o1=nullptr;
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         o1= *i;
-        if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
+        if (FWReference::cast(o1)!=nullptr) o1=FWReference::cast(o1)->getPointer();
         if (object == o1) break;
 
         n++;
@@ -1857,7 +1857,7 @@ void RuleSetView::changeDitection(PolicyRule::Direction dir)
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (md->getFirewall()==nullptr) return;
 
     QModelIndex index = currentIndex();
 
@@ -1887,7 +1887,7 @@ void RuleSetView::changeAction(int act)
     RuleSetModel* md = ((RuleSetModel*)model());
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (md->getFirewall()==nullptr) return;
 
     QModelIndex index = currentIndex();
 
@@ -1940,7 +1940,7 @@ void RuleSetView::changeAction(int act)
     // See #957. It makes sense to open action in the edtor only
     // if this action has some parameters to edit.
     FWObject *fw = node->rule;
-    while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
+    while (fw && Firewall::cast(fw)==nullptr) fw = fw->getParent();
     if (fw)
     {
         QString editor =
@@ -2054,7 +2054,7 @@ void RuleSetView::negateRE()
     if (node->type != RuleNode::Rule) return;
 
     RuleElement *re = getRE(index);
-    if (re==NULL) return;
+    if (re==nullptr) return;
 
     int position = Rule::cast(re->getParent())->getPosition();
     int column = index.column();
@@ -2066,7 +2066,7 @@ void RuleSetView::negateRE()
 void RuleSetView::revealObjectInTree()
 {
     FWObject* selectedObject = fwosm->selectedObject;
-    if (selectedObject!=NULL)
+    if (selectedObject!=nullptr)
         QCoreApplication::postEvent(
             mw, new showObjectInTreeEvent(selectedObject->getRoot()->getFileName().c_str(),
                                           selectedObject->getId()));
@@ -2074,7 +2074,7 @@ void RuleSetView::revealObjectInTree()
 
 void RuleSetView::findWhereUsedSlot()
 {
-    if ( fwosm->selectedObject!=NULL)
+    if ( fwosm->selectedObject!=nullptr)
         mw->findWhereUsed(fwosm->selectedObject, project);
 }
 
@@ -2086,7 +2086,7 @@ void RuleSetView::deleteSelectedObject()
     QModelIndex index = currentIndex();
     if (!index.isValid()) return;
 
-    if ( fwosm->selectedObject!=NULL)
+    if ( fwosm->selectedObject!=nullptr)
     {
         deleteObject(index, fwosm->selectedObject, tr("delete ")+QString::fromUtf8(fwosm->selectedObject->getName().c_str()));
     }
@@ -2094,7 +2094,7 @@ void RuleSetView::deleteSelectedObject()
 
 void RuleSetView::copySelectedObject()
 {
-    if ( fwosm->selectedObject!=NULL)
+    if ( fwosm->selectedObject!=nullptr)
     {
         FWObjectClipboard::obj_clipboard->clear();
         FWObject *obj =  fwosm->selectedObject;
@@ -2111,7 +2111,7 @@ void RuleSetView::cutSelectedObject()
 
     if(!isTreeReadWrite(this,md->getRuleSet())) return;
 
-    if ( fwosm->selectedObject!=NULL)
+    if ( fwosm->selectedObject!=nullptr)
     {
         QModelIndex index = currentIndex();
         FWObjectClipboard::obj_clipboard->clear();
@@ -2132,7 +2132,7 @@ void RuleSetView::pasteObject()
     {
         ProjectPanel *proj_p = i->second;
         FWObject *co= proj_p->db()->findInIndex(i->first);
-        if (Rule::cast(co)!=NULL)  pasteRuleAbove();
+        if (Rule::cast(co)!=nullptr)  pasteRuleAbove();
         else
         {
             // object in the clipboard is not a rule
@@ -2157,7 +2157,7 @@ void RuleSetView::convertToAny()
 
     FWObject *obj = fwosm->selectedObject;
 
-    if (obj!=NULL)
+    if (obj!=nullptr)
     {
         QString text = tr("convert to Any from ")+QString::fromUtf8(fwosm->selectedObject->getName().c_str());
 
@@ -2185,7 +2185,7 @@ void RuleSetView::dragEnterEvent( QDragEnterEvent *ev)
 void RuleSetView::dropEvent(QDropEvent *ev)
 {
     // only accept drops from the same instance of fwbuilder
-    if (ev->source() == NULL) return;
+    if (ev->source() == nullptr) return;
 
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
@@ -2199,7 +2199,7 @@ void RuleSetView::dropEvent(QDropEvent *ev)
     for (list<FWObject*>::iterator i=dragol.begin(); i!=dragol.end(); ++i)
     {
         FWObject *dragobj = *i;
-        assert(dragobj!=NULL);
+        assert(dragobj!=nullptr);
 
         if (fwbdebug) qDebug("RuleSetView::dropEvent dragobj=%s",
                              dragobj->getName().c_str());
@@ -2304,8 +2304,8 @@ void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
 
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
 
-    //if (re==NULL || re->isAny()) return;
-    if (re==NULL) return;
+    //if (re==nullptr || re->isAny()) return;
+    if (re==nullptr) return;
     if (re->isAny() && !useDummy(re)) return;
 
     int position = Rule::cast(re->getParent())->getPosition();
@@ -2330,7 +2330,7 @@ void RuleSetView::deleteObject(QModelIndex index, libfwbuilder::FWObject *obj, Q
 bool RuleSetView::insertObject(QModelIndex index, FWObject *obj, QString text, QUndoCommand* macro)
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-    assert (re!=NULL);
+    assert (re!=nullptr);
 
     int position = Rule::cast(re->getParent())->getPosition();
     int column = index.column();
@@ -2370,13 +2370,13 @@ bool RuleSetView::validateForInsertion(QModelIndex index, FWObject *obj)
         return false;
 
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-    assert (re!=NULL);
+    assert (re!=nullptr);
     return validateForInsertion(re, obj);
 }
 
 bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quiet)
 {
-    if (RuleSet::cast(obj)!=NULL) return false;
+    if (RuleSet::cast(obj)!=nullptr) return false;
 
     // see #1976 do not allow pasting object that has been deleted
     if (obj && obj->getLibrary()->getId() == FWObjectDatabase::DELETED_OBJECTS_ID)
@@ -2389,7 +2389,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
             if (RuleElementRItf::cast(re))
             {
                 QMessageBox::information(
-                    NULL , "Firewall Builder",
+                    nullptr , "Firewall Builder",
                     QObject::tr(
                         "A single interface belonging to this firewall is "
                         "expected in this field."),
@@ -2398,7 +2398,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
             else if (RuleElementRGtw::cast(re))
             {
                 QMessageBox::information(
-                    NULL , "Firewall Builder",
+                    nullptr , "Firewall Builder",
                     QObject::tr(
                         "A single ip adress is expected here. You may also "
                         "insert a host or a network adapter leading to a single "
@@ -2423,7 +2423,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
             if(cp_id==o->getId()) return false;
 
             FWReference *ref;
-            if( (ref=FWReference::cast(o))!=NULL &&
+            if( (ref=FWReference::cast(o))!=nullptr &&
                  cp_id==ref->getPointerId()) return false;
         }
     }
@@ -2493,7 +2493,7 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
             }
 
             RuleElement *re = getRE(index);
-            if (re==NULL)
+            if (re==nullptr)
             {
                 ev->setAccepted(false);
                 return;
@@ -2507,9 +2507,9 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
                 for (list<FWObject*>::iterator i=dragol.begin();
                      i!=dragol.end(); ++i)
                 {
-                    FWObject *dragobj = NULL;
+                    FWObject *dragobj = nullptr;
                     dragobj = dynamic_cast<FWObject*>(*i);
-                    if(dragobj!=NULL)
+                    if(dragobj!=nullptr)
                     {
                         acceptE &= validateForInsertion(re, dragobj, true);
                     }
@@ -2527,7 +2527,7 @@ void RuleSetView::unselect()
 {
     clearSelection();
     setCurrentIndex(QModelIndex());
-    fwosm->setSelected(NULL, QModelIndex());
+    fwosm->setSelected(nullptr, QModelIndex());
 }
 
 FWObject* RuleSetView::getSelectedObject()
@@ -2577,7 +2577,7 @@ void RuleSetView::updateCurrentCell()
 
 /*
  * looks like this method can be called when we print from the command
- * line. Variable project==NULL at that time.
+ * line. Variable project==nullptr at that time.
  */
 void RuleSetView::saveCollapsedGroups()
 {
@@ -2608,7 +2608,7 @@ void RuleSetView::saveCollapsedGroups()
 
 /*
  * looks like this method can be called when we print from the command
- * line. Variable project==NULL at that time.
+ * line. Variable project==nullptr at that time.
  */
 void RuleSetView::restoreCollapsedGroups()
 {
@@ -2733,13 +2733,13 @@ bool RuleSetView::showToolTip(QEvent *event)
             case ColDesc::Options:
             {
                 Rule* rule = node->rule;
-                if (PolicyRule::cast(rule)!=NULL )
+                if (PolicyRule::cast(rule)!=nullptr )
                 {
 //                    if (!isDefaultPolicyRuleOptions(rule->getOptionsObject()))
                         toolTip =
                             FWObjectPropertiesFactory::getPolicyRuleOptions(rule);
                 }
-                if (NATRule::cast(rule)!=NULL )
+                if (NATRule::cast(rule)!=nullptr )
                 {
 //                    if (!isDefaultNATRuleOptions( rule->getOptionsObject()))
                         toolTip =
@@ -2894,7 +2894,7 @@ RuleElement* RuleSetView::getRE(QModelIndex index) {
 void RuleSetView::keyPressEvent( QKeyEvent* ev )
 {
     RuleSetModel* md = ((RuleSetModel*)model());
-    if (md->getFirewall()==NULL) return;
+    if (md->getFirewall()==nullptr) return;
 
     project->selectRules();
 
@@ -2921,9 +2921,9 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 
         re = getRE(newIndex);
 
-        if (re==NULL)
+        if (re==nullptr)
         {
-            fwosm->setSelected(NULL, newIndex);
+            fwosm->setSelected(nullptr, newIndex);
             setCurrentIndex(newIndex);
             return;
         }
@@ -2944,15 +2944,15 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                                          currentIndex().parent());
 
         re = getRE(newIndex);
-        FWObject *object = NULL;
-        if (re != NULL)
+        FWObject *object = nullptr;
+        if (re != nullptr)
         {
             object = FWReference::getObject(re->front());
             selectObject(object, newIndex);
         }
         else
         {
-            fwosm->setSelected(NULL, newIndex);
+            fwosm->setSelected(nullptr, newIndex);
             setCurrentIndex(newIndex);
         }
 
@@ -2966,7 +2966,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         QModelIndex newIndex = oldIndex;
         FWObject::iterator i;
 
-        if (re == NULL && !md->isGroup(oldIndex))
+        if (re == nullptr && !md->isGroup(oldIndex))
         {
             // Non-object column. Just move focus up or down;
             QTreeView::keyPressEvent(ev);
@@ -2981,7 +2981,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
 
                 setCurrentIndex(newIndex);
 
-                fwosm->setSelected(NULL, newIndex);
+                fwosm->setSelected(nullptr, newIndex);
 
                 ev->accept();
             }
@@ -2991,11 +2991,11 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
         {
             if (md->isGroup(oldIndex))
             {
-                object = NULL;
+                object = nullptr;
             }
             else
             {
-                FWObject *prev = NULL;
+                FWObject *prev = nullptr;
                 for (i=re->begin(); i!=re->end(); ++i)
                 {
                     object = FWReference::getObject(*i);
@@ -3006,10 +3006,10 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                     prev = object;
                 }
                 if (ev->key()==Qt::Key_Up) object = prev;
-                if (ev->key()==Qt::Key_Down && i == re->end()) object = NULL;
+                if (ev->key()==Qt::Key_Down && i == re->end()) object = nullptr;
             }
 
-            if (object == NULL)
+            if (object == nullptr)
             {
                 // It needs to move to another row
                 QTreeView::keyPressEvent(ev);
@@ -3028,7 +3028,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                 else
                 {
                     re = getRE(newIndex);
-                    if (re != NULL)
+                    if (re != nullptr)
                     {
                         // NOT a group
                         if (ev->key()==Qt::Key_Up)
@@ -3047,7 +3047,7 @@ void RuleSetView::keyPressEvent( QKeyEvent* ev )
                         if (!md->isGroup(newIndex))
                         {
                             setCurrentIndex(newIndex);
-                            fwosm->setSelected(NULL, newIndex);
+                            fwosm->setSelected(nullptr, newIndex);
 
                             ev->accept();
                             return;
@@ -3087,7 +3087,7 @@ void RuleSetView::compileCurrentRule()
     RuleSetModel* md = ((RuleSetModel*)model());
 
     //if (!isTreeReadWrite(this, md->getRuleSet())) return;
-    if (md->getFirewall()==NULL) return;
+    if (md->getFirewall()==nullptr) return;
 
     QModelIndex index = currentIndex();
     if (!index.isValid()) return;

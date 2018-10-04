@@ -59,7 +59,7 @@ namespace fwcompiler {
 	 *  it returns iterator pointing at rule it has found (so we
 	 *  can continue search later)
 	 *
-	 *  if parameter 'intersection' is not NULL, it is assumed to
+	 *  if parameter 'intersection' is not nullptr, it is assumed to
 	 *  be a pointer to a pointer at the object of class Rule. It
 	 *  is used to return a pointer at intersection of rule 'rule'
 	 *  and rule this function had found
@@ -69,7 +69,7 @@ namespace fwcompiler {
                                 bool check_interface,
                                 const std::list<libfwbuilder::FWObject*>::iterator &start_here,
                                 const std::list<libfwbuilder::FWObject*>::iterator &stop_here,
-                                libfwbuilder::PolicyRule **intersection=NULL);
+                                libfwbuilder::PolicyRule **intersection=nullptr);
 
 
 	public:

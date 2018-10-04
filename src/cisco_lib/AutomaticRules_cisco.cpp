@@ -50,7 +50,7 @@ using namespace std;
 
 void AutomaticRules_cisco::addSshAccessRule()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     FWOptions *fwopt = fw->getOptionsObject();
 
@@ -73,7 +73,7 @@ void AutomaticRules_cisco::addSshAccessRule()
 
         addMgmtRule(
             mgmt_workstation, fw, ssh,
-            NULL, PolicyRule::Inbound, PolicyRule::Accept,
+            nullptr, PolicyRule::Inbound, PolicyRule::Accept,
             "backup ssh access rule");
     }
 }

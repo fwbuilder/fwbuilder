@@ -81,7 +81,7 @@ void BackgroundOp::check_stop()
     if ( stop_program->peek() )
     {
         stop_program->unlock();
-        pthread_exit(NULL);
+        pthread_exit(nullptr);
     }
     stop_program->unlock();
 }

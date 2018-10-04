@@ -60,7 +60,7 @@ string RoutingCompiler_openbsd::PrintRule::_printAddr(Address  *o)
 {
     ostringstream  ostr;
 
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
         Interface *iface = Interface::cast(o);
         if (iface->isDyn())
@@ -73,7 +73,7 @@ string RoutingCompiler_openbsd::PrintRule::_printAddr(Address  *o)
     addr = o->getAddressPtr();
     mask = o->getNetmaskPtr();
 
-    if (addr==NULL)
+    if (addr==nullptr)
     {
         FWObject *obj=o;
 /*
@@ -82,7 +82,7 @@ string RoutingCompiler_openbsd::PrintRule::_printAddr(Address  *o)
  * Interface are inherited from Address, we can't use cast. Use isA
  * instead
  */
-        while (obj!=NULL && 
+        while (obj!=nullptr && 
                !Host::isA(obj) && 
                !Firewall::isA(obj)  && 
                !Network::isA(obj))  obj=obj->getParent();
@@ -100,7 +100,7 @@ string RoutingCompiler_openbsd::PrintRule::_printAddr(Address  *o)
     {
         ostr << addr->toString();
 
-        if (Interface::cast(o)==NULL &&
+        if (Interface::cast(o)==nullptr &&
             Address::cast(o)->dimension() > 1 &&
             !mask->isHostMask())
         {
@@ -218,18 +218,18 @@ string RoutingCompiler_openbsd::PrintRule::RoutingRuleToString(RoutingRule *rule
     RuleElementRGtw *gtwrel = rule->getRGtw();
     Address *gtw = Address::cast(FWReference::getObject(gtwrel->front()));
 
-    if(dst==NULL) compiler->abort(rule, "Broken DST");
+    if(dst==nullptr) compiler->abort(rule, "Broken DST");
         
     ostringstream command_line;
 
     command_line << "route add ";
 
-    if (gtwrel->isAny() && itf != NULL) command_line << "-interface ";
+    if (gtwrel->isAny() && itf != nullptr) command_line << "-interface ";
 
     command_line << _printRDst(rule);
 
-    if (gtw != NULL) command_line << _printRGtw(rule);
-    if (itf != NULL) command_line << _printRItf(rule);
+    if (gtw != nullptr) command_line << _printRGtw(rule);
+    if (itf != nullptr) command_line << _printRItf(rule);
 
     // to make generated script more readable in single rule compile mode,
     // skip the part that rolls back in case of an error
@@ -247,7 +247,7 @@ string RoutingCompiler_openbsd::PrintRule::_printRGtw(RoutingRule *rule)
 {
     RuleElementRGtw *gtwrel = rule->getRGtw();
     Address *gtw = Address::cast(FWReference::getObject(gtwrel->front()));
-    if(gtw==NULL)
+    if(gtw==nullptr)
         compiler->abort(rule, "Broken GTW");
     
     string gateway = _printAddr(gtw);
@@ -260,10 +260,10 @@ string RoutingCompiler_openbsd::PrintRule::_printRItf(RoutingRule *rule)
 {
     RuleElementRItf *itfrel = rule->getRItf();
     Interface *itf = Interface::cast(FWReference::getObject(itfrel->front()));
-    if(itf != NULL)
+    if(itf != nullptr)
     {
         IPv4 *addr = IPv4::cast(itf->getFirstByType(IPv4::TYPENAME));
-        if (addr == NULL)
+        if (addr == nullptr)
         {
             QString err("Can not configure static route via interface %1 "
                         "because its address is unknown");
@@ -279,7 +279,7 @@ string RoutingCompiler_openbsd::PrintRule::_printRDst(RoutingRule *rule)
 {
     RuleElementRDst *dstrel = rule->getRDst();
     Address *dst = Address::cast(FWReference::getObject(dstrel->front()));
-    if(dst==NULL)
+    if(dst==nullptr)
         compiler->abort(rule, "Broken DST");
     
     return _printAddr(dst);

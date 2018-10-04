@@ -262,12 +262,12 @@ void PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
             named_objects_registry.count(dst_port_spec.c_str()) > 0)
             dst_port_obj =  named_objects_registry[dst_port_spec.c_str()];
 
-        // if both src_port_obj and dst_port_obj are NULL, this means
+        // if both src_port_obj and dst_port_obj are nullptr, this means
         // both port operations are in-line port matches that will be
         // taken are of in the base class functions
         if (src_port_obj == nullptr && dst_port_obj == nullptr) return;
 
-        // If only one of the two is NULL, use base class functions to
+        // If only one of the two is nullptr, use base class functions to
         // fill it in from its port_op and port_spec variables
         if (dst_port_obj == nullptr)
         {

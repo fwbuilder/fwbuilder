@@ -424,7 +424,7 @@ void RuleOptionsDialog::applyChanges()
         if (platform=="iptables")
         {
             FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
-            // if tag_object==NULL, setTagObject clears setting in the rule
+            // if tag_object==nullptr, setTagObject clears setting in the rule
             policy_rule->setTagging(tag_object != nullptr);
             policy_rule->setTagObject(tag_object);
 
@@ -439,7 +439,7 @@ void RuleOptionsDialog::applyChanges()
         if (platform=="pf")
         {
             FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
-            // if tag_object==NULL, setTagObject clears setting in the rule
+            // if tag_object==nullptr, setTagObject clears setting in the rule
             policy_rule->setTagging(tag_object != nullptr);
             policy_rule->setTagObject(tag_object);
 

@@ -121,7 +121,7 @@ bool ObjectListView::event(QEvent *event)
 QDrag* ObjectListView::dragObject()
 {
     QTreeWidgetItem *ovi = currentItem();
-    // currentItem returns NULL if the list is empty
+    // currentItem returns nullptr if the list is empty
     if (ovi==nullptr) return nullptr;
 
     int obj_id = ovi->data(0, Qt::UserRole).toInt();

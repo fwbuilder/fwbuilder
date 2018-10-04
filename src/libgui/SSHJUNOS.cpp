@@ -373,8 +373,8 @@ void SSHJunos::stateMachine()
             // see SF bug 2973136 , fwbuilder bug #1347
             // looks like if user hits Cancel to cancel install at just right
             // moment, the process can get killed when control is already
-            // inside this block. Adding test for proc != NULL to be sure.
-            if (activation_commands.size() != 0 && proc != NULL)
+            // inside this block. Adding test for proc != nullptr to be sure.
+            if (activation_commands.size() != 0 && proc != nullptr)
             {
                 QString s;
 

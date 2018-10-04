@@ -59,7 +59,7 @@ using namespace libfwbuilder;
  * we create default ProjectPanel object in the constructor of
  * FWWindow, the first call to ProjectPanel::changeEvent() comes when
  * object editor has not been create yet. This is why we need to check
- * for oe != NULL here and below.
+ * for oe != nullptr here and below.
  */
 bool FWWindow::isEditorVisible()
 {

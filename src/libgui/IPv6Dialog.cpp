@@ -63,7 +63,7 @@ IPv6Dialog::IPv6Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv6Dialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -77,7 +77,7 @@ void IPv6Dialog::loadFWObject(FWObject *o)
 {
     obj=o;
     IPv6 *s = dynamic_cast<IPv6*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     dnsBusy=false;
     init=true;
@@ -140,14 +140,14 @@ void IPv6Dialog::validate(bool *res)
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
     IPv6 *s = dynamic_cast<IPv6*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     try
     {
         InetAddr(AF_INET6, m_dialog->address->text().trimmed().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
@@ -168,7 +168,7 @@ void IPv6Dialog::validate(bool *res)
         } catch (FWException &ex)
         {
             *res = false;
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 blockSignals(true);
                 QMessageBox::critical(this, "Firewall Builder",
@@ -189,7 +189,7 @@ void IPv6Dialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     IPv6 *s = dynamic_cast<IPv6*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
@@ -253,7 +253,7 @@ void IPv6Dialog::DNSlookup()
         if ( Interface::isA(obj->getParent()) )
         {
             FWObject *host = obj->getParent()->getParent();
-            assert(host!=NULL);
+            assert(host!=nullptr);
             name = host->getName().c_str();
 
             if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  name=%s",

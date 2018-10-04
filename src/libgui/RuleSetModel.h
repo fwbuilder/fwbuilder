@@ -128,7 +128,7 @@ public:
     libfwbuilder::Rule* insertRule(libfwbuilder::Rule *rule, QModelIndex &index, bool isAfter = false);
     void insertRule(libfwbuilder::Rule *rule);
 
-    virtual void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL) = 0;
+    virtual void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = nullptr) = 0;
 
     void removeRow(int row,const QModelIndex &parent);
     bool removeRows(int row, int count, const QModelIndex &parent);
@@ -217,7 +217,7 @@ class PolicyModel : public RuleSetModel
 public:
     PolicyModel(libfwbuilder::RuleSet* ruleset, QObject *parent = 0) : RuleSetModel(ruleset, parent) {configure();}
 
-    void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL);
+    void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = nullptr);
     bool checkRuleType(libfwbuilder::Rule *rule);
 
 private:
@@ -241,7 +241,7 @@ class NatModel : public RuleSetModel
 public:
     NatModel(libfwbuilder::RuleSet* ruleset, QObject *parent = 0) : RuleSetModel(ruleset, parent) {configure();}
 
-    void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL);
+    void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = nullptr);
     bool checkRuleType(libfwbuilder::Rule *rule);
 
 private:
@@ -263,7 +263,7 @@ class RoutingModel : public RuleSetModel
 public:
     RoutingModel(libfwbuilder::RuleSet* ruleset, QObject *parent = 0) : RuleSetModel(ruleset, parent) {configure();}
 
-    void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = NULL);
+    void initRule(libfwbuilder::Rule *new_rule, libfwbuilder::Rule *old_rule = nullptr);
     bool checkRuleType(libfwbuilder::Rule *rule);
 
 private:

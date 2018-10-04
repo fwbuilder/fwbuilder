@@ -54,7 +54,7 @@ public:
             _ip_acl = false;
             _name = "";
             _workName = "";
-            _interface = NULL;
+            _interface = nullptr;
             _dir = "in";
             nlines = 0;
             _last_rule_label = "";

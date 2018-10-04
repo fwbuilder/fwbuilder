@@ -66,12 +66,12 @@ void OSConfigurator_solaris::addVirtualAddressForNAT(const Address *addr)
              *(addr->getAddressPtr())) == virtual_addresses.end()) 
     {
         FWObject *iaddr = findAddressFor(addr, fw );
-        if (iaddr!=NULL)
+        if (iaddr!=nullptr)
         {
             Address *iaddr_addr = Address::cast(iaddr);
-            assert(iaddr_addr!=NULL);
+            assert(iaddr_addr!=nullptr);
             Interface *iface=Interface::cast(iaddr->getParent());
-            assert(iface!=NULL);
+            assert(iface!=nullptr);
 
             output << "add_addr " << addr->getAddressPtr()->toString() << " "
                    << iaddr_addr->getNetmaskPtr()->toString() <<  " "

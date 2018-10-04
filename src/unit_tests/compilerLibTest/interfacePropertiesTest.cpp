@@ -53,7 +53,7 @@ interfaceProperties* interfacePropertiesTest::getIntProps(const QString &os)
 {
     Resources* os_res = Resources::os_res[os.toStdString()];
     string os_family = os.toStdString();
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
     return interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 }
@@ -79,7 +79,7 @@ void interfacePropertiesTest::validateInterfaceNameCommon()
 
     interfaceProperties * int_prop = getIntProps("unknown");
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    CPPUNIT_ASSERT(int_prop != nullptr);
 
     CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
                        iface, "eth0", err) == true);
@@ -247,12 +247,12 @@ void interfacePropertiesTest::validateInterface()
 
     Resources* os_res = Resources::os_res[host_OS];
     string os_family = host_OS;
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    CPPUNIT_ASSERT(int_prop != nullptr);
 
     QString err;
 
@@ -358,12 +358,12 @@ void interfacePropertiesTest::isEligibleForCluster()
 {
     Resources* os_res = Resources::os_res["linux24"];
     string os_family = "linux24";
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    CPPUNIT_ASSERT(int_prop != nullptr);
 
     Firewall *fw1 = Firewall::cast(db->create(Firewall::TYPENAME));
     fw1->setName("iface");
@@ -557,12 +557,12 @@ void interfacePropertiesTest::validateInterfaceProCurve()
 
     Resources* os_res = Resources::os_res[host_OS];
     string os_family = host_OS;
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    CPPUNIT_ASSERT(int_prop != nullptr);
 
     QString err;
 
@@ -594,7 +594,7 @@ void interfacePropertiesTest::testManageIpAddresses()
     db->reIndex();
 
     FWObject *fw = db->findObjectByName(Firewall::TYPENAME, "fw1");
-    CPPUNIT_ASSERT(fw != NULL);
+    CPPUNIT_ASSERT(fw != nullptr);
 
     Interface *intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "eth0"));
@@ -664,7 +664,7 @@ void interfacePropertiesTest::testManageIpAddressesCluster()
     db->reIndex();
 
     FWObject *fw = db->findObjectByName(Cluster::TYPENAME, "cluster1");
-    CPPUNIT_ASSERT(fw != NULL);
+    CPPUNIT_ASSERT(fw != nullptr);
 
     Interface *intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "lo"));

@@ -53,9 +53,9 @@ FWObject* dbsearch(FWObject *parent, string name)
         if (obj->getName() == name)
             return obj;
         FWObject *chs = dbsearch(obj, name);
-        if (chs != NULL) return chs;
+        if (chs != nullptr) return chs;
     }
-    return NULL;
+    return nullptr;
 }
 
 void ObjectMatcherTest::matchTest()
@@ -73,46 +73,46 @@ void ObjectMatcherTest::matchTest()
     om.setAddressRangeMatchMode(ObjectMatcher::EXACT);
 
     Firewall *fw1 = Firewall::cast(dbsearch(db, "fw1"));
-    CPPUNIT_ASSERT(fw1 != NULL);
+    CPPUNIT_ASSERT(fw1 != nullptr);
 
     Interface *fw1_eth0 = Interface::cast(dbsearch(fw1, "eth0"));
-    CPPUNIT_ASSERT(fw1_eth0 != NULL);
+    CPPUNIT_ASSERT(fw1_eth0 != nullptr);
 
     Interface *fw1_eth1 = Interface::cast(dbsearch(fw1, "eth1"));
-    CPPUNIT_ASSERT(fw1_eth1 != NULL);
+    CPPUNIT_ASSERT(fw1_eth1 != nullptr);
 
     Interface *fw1_eth2 = Interface::cast(dbsearch(fw1, "eth2"));
-    CPPUNIT_ASSERT(fw1_eth2 != NULL);
+    CPPUNIT_ASSERT(fw1_eth2 != nullptr);
 
     IPv6 *fw1_eth2_ipv6 = IPv6::cast(dbsearch(fw1_eth2, "fw1:eth2:ipv6"));
-    CPPUNIT_ASSERT(fw1_eth2_ipv6 != NULL);
+    CPPUNIT_ASSERT(fw1_eth2_ipv6 != nullptr);
 
     physAddress *fw1_eth2_mac = physAddress::cast(dbsearch(fw1_eth2, "fw1:eth2:mac"));
-    CPPUNIT_ASSERT(fw1_eth2_mac != NULL);
+    CPPUNIT_ASSERT(fw1_eth2_mac != nullptr);
 
     Host *host1 = Host::cast(dbsearch(db, "host1"));
-    CPPUNIT_ASSERT(host1 != NULL);
+    CPPUNIT_ASSERT(host1 != nullptr);
 
     Host *host2 = Host::cast(dbsearch(db, "host2"));
-    CPPUNIT_ASSERT(host2 != NULL);
+    CPPUNIT_ASSERT(host2 != nullptr);
 
     Host *host3 = Host::cast(dbsearch(db, "host3"));
-    CPPUNIT_ASSERT(host3 != NULL);
+    CPPUNIT_ASSERT(host3 != nullptr);
 
     Interface *host1_eth0 = Interface::cast(dbsearch(host1, "eth0"));
-    CPPUNIT_ASSERT(host1_eth0 != NULL);
+    CPPUNIT_ASSERT(host1_eth0 != nullptr);
 
     Interface *host2_eth0 = Interface::cast(dbsearch(host2, "eth0"));
-    CPPUNIT_ASSERT(host2_eth0 != NULL);
+    CPPUNIT_ASSERT(host2_eth0 != nullptr);
 
     IPv4 *host2_eth0_ip = IPv4::cast(dbsearch(host2_eth0, "ip"));
-    CPPUNIT_ASSERT(host2_eth0_ip != NULL);
+    CPPUNIT_ASSERT(host2_eth0_ip != nullptr);
 
     Interface *host3_eth0 = Interface::cast(dbsearch(host3, "eth0"));
-    CPPUNIT_ASSERT(host3_eth0 != NULL);
+    CPPUNIT_ASSERT(host3_eth0 != nullptr);
 
     Interface *host3_eth1 = Interface::cast(dbsearch(host3, "eth1"));
-    CPPUNIT_ASSERT(host3_eth1 != NULL);
+    CPPUNIT_ASSERT(host3_eth1 != nullptr);
 
 
     CPPUNIT_ASSERT(om.dispatch(fw1, fw1));

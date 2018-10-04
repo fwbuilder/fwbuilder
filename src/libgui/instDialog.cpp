@@ -100,7 +100,7 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     m_dialog = new Ui::instDialog_q;
     m_dialog->setupUi(this);
 
-    inst_opt_dlg = NULL;
+    inst_opt_dlg = nullptr;
 
     //project = mw->activeProject();
 
@@ -185,7 +185,7 @@ void instDialog::show(ProjectPanel *proj,
     canceledAll = false;
     if (isVisible() || isAutoCompiling) return;
     lastPage = -1;
-    installer = NULL;
+    installer = nullptr;
     finished = false;
     page_1_op = INST_DLG_COMPILE;
     compile_complete = false;
@@ -298,7 +298,7 @@ void instDialog::autoCompile(ProjectPanel *project)
 
 instDialog::~instDialog()
 {
-    if (inst_opt_dlg != NULL) delete inst_opt_dlg;
+    if (inst_opt_dlg != nullptr) delete inst_opt_dlg;
     delete m_dialog;
 }
 
@@ -627,7 +627,7 @@ int instDialog::findFilesToInspect(QStringList &files)
         cnf.fwobj = f;
         cnf.script = mainFile;
         QMap<QString, QString> res;
-        FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+        FirewallInstaller(nullptr, &cnf, "").readManifest(mainFile, &res);
         foreach(QString item, res.keys())
             if (QFile::exists(item))
                 files.append(item);
@@ -667,7 +667,7 @@ bool instDialog::checkSSHPathConfiguration(Firewall *fw)
     customScriptFlag = false;
 
     Management *mgmt = fw->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
     PolicyInstallScript *pis   = mgmt->getPolicyInstallScript();
 
 /* we don't care about ssh settings if external installer is to be used */

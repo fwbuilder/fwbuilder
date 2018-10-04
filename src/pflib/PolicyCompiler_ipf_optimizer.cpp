@@ -73,7 +73,7 @@ void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule *rule,
 
     for (FWObject::iterator i=r->begin(); i!=r->end(); ++i)
     {
-        if (RuleElement::cast(*i)!=NULL && (*i)->getTypeName()!=re_type)
+        if (RuleElement::cast(*i)!=nullptr && (*i)->getTypeName()!=re_type)
         {
             RuleElement *nre=RuleElement::cast(*i);
             nre->clearChildren();  
@@ -108,7 +108,7 @@ void PolicyCompiler_ipf::optimize1::optimizeForRuleElement(PolicyRule *rule,
 
 bool PolicyCompiler_ipf::optimize1::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();
@@ -160,7 +160,7 @@ bool PolicyCompiler_ipf::optimize1::processNext()
 
 bool PolicyCompiler_ipf::optimizeSrc::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();
@@ -187,7 +187,7 @@ bool PolicyCompiler_ipf::optimizeSrc::processNext()
 
 bool PolicyCompiler_ipf::optimizeDst::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();
@@ -214,7 +214,7 @@ bool PolicyCompiler_ipf::optimizeDst::processNext()
 
 bool PolicyCompiler_ipf::optimizeSrv::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();

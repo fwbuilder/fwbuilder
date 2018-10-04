@@ -98,7 +98,7 @@ class DialogData
  *     "Linux 2.4" , "linux24",
  *     "IPFilter"  , "ipf",
  *     "Cisco PIX" , "pix",
- *     NULL,         NULL
+ *     nullptr,         nullptr
  *
  *  Odd strings correspond to the data in the widget, while even
  *  strings define what is stored in the object (counting strings in
@@ -123,7 +123,7 @@ class DialogData
 /**
  * saves all options from their widgets to object attributes
  */
-    void saveAll(libfwbuilder::FWObject *new_obj=NULL);
+    void saveAll(libfwbuilder::FWObject *new_obj=nullptr);
 };
 
 #endif

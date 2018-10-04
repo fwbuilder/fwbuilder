@@ -188,7 +188,7 @@ string PolicyCompiler_pix::PrintRule::_printDstService(Service *srv)
 
 string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
 {
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
 	Interface *interface_=Interface::cast(o);
 	if (interface_->isDyn())
@@ -204,10 +204,10 @@ string PolicyCompiler_pix::PrintRule::_printAddr(libfwbuilder::Address  *o)
     {
         InetAddr srcmask = *(o->getNetmaskPtr());
 
-        if (Interface::cast(o)!=NULL)
+        if (Interface::cast(o)!=nullptr)
             srcmask = InetAddr(InetAddr::getAllOnes());
 
-        if (IPv4::cast(o)!=NULL) 
+        if (IPv4::cast(o)!=nullptr) 
             srcmask = InetAddr(InetAddr::getAllOnes());
 
 
@@ -253,7 +253,7 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
     Address *src = compiler->getFirstSrc(rule);
     RuleElementSrv *srvrel = rule->getSrv();
     FWObject *srv = srvrel->front();
-    if (FWReference::cast(srv)!=NULL) srv = FWReference::cast(srv)->getPointer();
+    if (FWReference::cast(srv)!=nullptr) srv = FWReference::cast(srv)->getPointer();
 
     // Interface *rule_iface =
     //     Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
@@ -264,12 +264,12 @@ string PolicyCompiler_pix::PrintRule::_printICMPCommand(PolicyRule *rule)
 
     assert(rule_iface);
 
-    if (PIXObjectGroup::cast(srv)!=NULL)
+    if (PIXObjectGroup::cast(srv)!=nullptr)
     {
         for (FWObject::iterator i1=srv->begin(); i1!=srv->end(); ++i1)
         {
             ICMPService *s = ICMPService::cast(FWReference::getObject(*i1));
-            assert(s!=NULL);
+            assert(s!=nullptr);
 
             ostringstream  str1;
             str1 << "icmp ";
@@ -319,18 +319,18 @@ string PolicyCompiler_pix::PrintRule::_printSSHTelnetCommand(PolicyRule *rule)
     {
         FWObject *o = FWReference::getObject(*i);
 
-        if (dynamic_cast<PIXObjectGroup*>(o)!=NULL)
+        if (dynamic_cast<PIXObjectGroup*>(o)!=nullptr)
         {
             for (FWObject::iterator j=o->begin(); j!=o->end(); ++j)
             {
                 Address *a = Address::cast(FWReference::getObject(*j));
-                assert(a!=NULL);
+                assert(a!=nullptr);
                 str << _printSingleSSHTelnetCommand(port, a, rule_iface->getLabel());
             }
         } else
         {
             Address *a = Address::cast(o);
-            assert(a!=NULL);
+            assert(a!=nullptr);
             str << _printSingleSSHTelnetCommand(port, a, rule_iface->getLabel());
         }
     }
@@ -368,7 +368,7 @@ string PolicyCompiler_pix::PrintRule::_printSingleSSHTelnetCommand(
 bool PolicyCompiler_pix::PrintRule::processNext()
 {
     PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -418,7 +418,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
     assert(acl_name!="");
 
     ciscoACL *acl = pix_comp->acls[acl_name];
-    assert(acl!=NULL);
+    assert(acl!=nullptr);
 
     if (compiler->fw->getOptionsObject()->getBool("pix_use_acl_remarks"))
     {
@@ -446,9 +446,9 @@ bool PolicyCompiler_pix::PrintRule::processNext()
     PIXObjectGroup *pgsrc = PIXObjectGroup::cast(srcobj);
     PIXObjectGroup *pgdst = PIXObjectGroup::cast(dstobj);
     Service *srv_s = Service::cast(srvobj);
-    assert(pgsrv!=NULL || srv_s!=NULL);
+    assert(pgsrv!=nullptr || srv_s!=nullptr);
 
-    if ( pgsrv!=NULL && pgsrv->isServiceGroup())
+    if ( pgsrv!=nullptr && pgsrv->isServiceGroup())
     {
         aclstr << pgsrv->getSrvTypeName();
     } else
@@ -464,7 +464,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
         aclstr << "object " << asa8_object->getCommandWord().toStdString() << " ";
     } else
     {
-        if (pgsrc!=NULL)
+        if (pgsrc!=nullptr)
         {
             aclstr << "object-group " << srcobj->getName() << " ";
         } else
@@ -473,7 +473,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
         }
     }
 
-    if ( pgsrv==NULL ) 
+    if ( pgsrv==nullptr ) 
         aclstr << _printSrcService( compiler->getFirstSrv(rule) );
 
     asa8_object = pix_comp->named_objects_manager->getNamedObject(dstobj);
@@ -482,7 +482,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
         aclstr << "object "  << asa8_object->getCommandWord().toStdString() << " ";
     } else
     {
-        if (pgdst!=NULL)
+        if (pgdst!=nullptr)
         {
             aclstr << "object-group " << dstobj->getName() << " ";
         } else
@@ -491,7 +491,7 @@ bool PolicyCompiler_pix::PrintRule::processNext()
         }
     }
 
-    if (pgsrv!=NULL)
+    if (pgsrv!=nullptr)
     {
         aclstr << "object-group " << srvobj->getName() << " ";
     } else

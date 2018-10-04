@@ -91,7 +91,7 @@ QAction* addPopupMenuItem(QObject *res,
     string icn;
     QPixmap pm;
     //int    itmID = -1;
-    QAction *act = NULL;
+    QAction *act = nullptr;
 
     icn = Resources::global_res->getResourceStr(static_cast<const char*>(resourceIconPath.toLatin1()));
     if(icn!="")
@@ -118,7 +118,7 @@ void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj, bool rw)
     if ( ! FWObjectDatabase::isA(obj))
     {
         FWObject *libobj = obj->getLibrary();
-        assert(libobj!=NULL);
+        assert(libobj!=nullptr);
         lib = libobj->getName().c_str();
         standardObj = (libobj->getId()==FWObjectDatabase::STANDARD_LIB_ID);
         templateObj = (libobj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID);
@@ -166,7 +166,7 @@ void fillLibraries(QListWidget *libs, libfwbuilder::FWObject *obj, bool rw)
     if ( ! FWObjectDatabase::isA(obj))
     {
         FWObject *libobj = obj->getLibrary();
-        assert(libobj!=NULL);
+        assert(libobj!=nullptr);
         lib = libobj->getName().c_str();
         standardObj = (libobj->getId()==FWObjectDatabase::STANDARD_LIB_ID);
         templateObj = (libobj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID);
@@ -229,14 +229,14 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
     if (newname.isEmpty())
     {
         // show warning dialog only if app has focus
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             parent->blockSignals(true);
             
             QMessageBox::warning(
                 parent, "Firewall Builder",
                 QObject::tr("Object name should not be blank"),
-                QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+                QObject::tr("&Continue"), nullptr, nullptr, 0, 2 );
                 
             parent->blockSignals(false);
         }
@@ -269,7 +269,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
              */
 
             // show warning dialog only if app has focus
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 parent->blockSignals(true);
             
@@ -278,7 +278,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
                     QObject::tr("Object with name '%1' already exists, "
                                 "please choose different name.").
                     arg(o1->getName().c_str()),
-                    QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+                    QObject::tr("&Continue"), nullptr, nullptr, 0, 2 );
                 
                 parent->blockSignals(false);
             }

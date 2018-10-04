@@ -378,7 +378,7 @@ void ObjectTreeView::startDrag(Qt::DropActions supportedActions)
     the end of void QListView::mouseMoveEvent( QMouseEvent * e)
     (See code after they decided that they do not need to call startDrag())
 
-    if (FWBTree().isSystem(obj)) return NULL;
+    if (FWBTree().isSystem(obj)) return nullptr;
 */
     if ((current_obj->getId() == FWObjectDatabase::DUMMY_ADDRESS_ID)   ||
         (current_obj->getId() == FWObjectDatabase::DUMMY_INTERFACE_ID) ||

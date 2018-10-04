@@ -49,7 +49,7 @@ bool RoutingCompiler_cisco::eliminateDuplicateRules::processNext()
         dynamic_cast<RoutingCompiler_cisco*>(compiler);
 
     RoutingRule *rule = getNext();
-    if (rule == NULL) return false;
+    if (rule == nullptr) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {

@@ -159,8 +159,8 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
@@ -203,7 +203,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         if ( host_os == "freebsd")
             oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
-        if (oscnf.get()==NULL)
+        if (oscnf.get()==nullptr)
         {
             abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
             return "";

@@ -294,7 +294,7 @@ bool RuleSet::moveRule(int src_rule_n, int dst_rule_n)
   		if ( o==dst ) m2=m;
   	    }
   	}
-  	if ( (*m1)!=NULL && (*m2)!=NULL ) {
+  	if ( (*m1)!=nullptr && (*m2)!=nullptr ) {
   	    erase(m1);
   	    insert(m2,src);
   	}

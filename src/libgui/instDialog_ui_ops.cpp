@@ -142,7 +142,7 @@ QTreeWidgetItem* instDialog::createTreeItem(QTreeWidgetItem* parent,
     item->setData(0, Qt::UserRole, QVariant(fw->getId()));
 
     // Mark cluster members
-    // If parent!=NULL, new tree item corresponds to the cluster member
+    // If parent!=nullptr, new tree item corresponds to the cluster member
     item->setData(1, Qt::UserRole, QVariant(parent!=nullptr));
 
     // it is useful to know how many members does this cluster have. If this is
@@ -422,7 +422,7 @@ void instDialog::opCancelled(Firewall *fw)
 {
     compile_status[fw] = fwcompiler::BaseCompiler::FWCOMPILER_ERROR;
     QTreeWidgetItem* itm = opListMapping[(fw)->getId()];
-    // itm can be NULL, for example when we install to PIX cluster
+    // itm can be nullptr, for example when we install to PIX cluster
     // where we skip one of the members
     if (itm)
     {

@@ -158,7 +158,7 @@ protected:
                                      const std::string &netm);
     std::string getBadRuleColor();
 
-    // this method returns fw. It is created if fw==NULL
+    // this method returns fw. It is created if fw==nullptr
     // Using getFirewallObject() instead of accessing fw directly
     // provides a way to create firewall object only when
     // it is really needed.
@@ -171,10 +171,10 @@ protected:
     // However in other cases there could have been an error after
     // the object was created. This method allows us to tell one
     // situation from another.
-    bool haveFirewallObject() { return (fw!=NULL); }
+    bool haveFirewallObject() { return (fw!=nullptr); }
 
     // checks if ruleset "rsname" exists. Returns pointer if yes,
-    // otherwise returns NULL
+    // otherwise returns nullptr
     virtual UnidirectionalRuleSet* checkUnidirRuleSet(const std::string &rsname);
 
     // finds and rturns pointer to ruleset "rsname". If it does not
@@ -316,7 +316,7 @@ public:
     
     virtual void setHostName(const std::string &hn);
     virtual libfwbuilder::Interface* newInterface(const std::string &interface_name);
-    virtual void clearCurrentInterface() { current_interface = NULL; }
+    virtual void clearCurrentInterface() { current_interface = nullptr; }
     virtual void ignoreCurrentInterface();
     virtual void addInterfaceAddress(const std::string &a,
                                      const std::string &nm);

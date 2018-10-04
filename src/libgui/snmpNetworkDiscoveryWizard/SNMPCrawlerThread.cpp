@@ -67,7 +67,7 @@ SNMPCrawlerThread::SNMPCrawlerThread(QWidget *ui,
             1000000L * snmpTimeout,
             0,
             0,
-            (include_net->size() > 0) ? include_net : NULL);
+            (include_net->size() > 0) ? include_net : nullptr);
 
 }
 

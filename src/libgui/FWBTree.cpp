@@ -443,7 +443,7 @@ bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj, QString &err
     Firewall *fw = Firewall::cast(ta);
     Interface *intf = Interface::cast(ta);
     FWObject *parent_fw = ta;
-    while (parent_fw && Firewall::cast(parent_fw)==NULL)
+    while (parent_fw && Firewall::cast(parent_fw)==nullptr)
         parent_fw = parent_fw->getParent();
 
     if (parent_fw && Interface::isA(obj))
@@ -454,23 +454,23 @@ bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj, QString &err
         return int_prop->validateInterface(ta, obj, false, err);
     }
 
-    if (fw!=NULL)
+    if (fw!=nullptr)
     {
         // inserting some object into firewall or cluster
         if (!fw->validateChild(obj)) return false;
         return true;
     }
 
-    if (hst!=NULL)  return (hst->validateChild(obj));
+    if (hst!=nullptr)  return (hst->validateChild(obj));
 
-    if (intf!=NULL)
+    if (intf!=nullptr)
     {
         if (!intf->validateChild(obj)) return false;
         return true;
     }
 
     Group *grp=Group::cast(ta);
-    if (grp!=NULL) return grp->validateChild(obj);
+    if (grp!=nullptr) return grp->validateChild(obj);
 
     return false;
 }
@@ -499,14 +499,14 @@ FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType
 
     FWObject::iterator i=std::find_if(lib->begin(),lib->end(),
         FWObjectNameEQPredicate(static_cast<const char*>(level1.toLatin1())));
-    if (i==lib->end()) return NULL;
+    if (i==lib->end()) return nullptr;
     FWObject *l1obj = *i;
     if (level2.isEmpty()) return l1obj;
 
     i=std::find_if(l1obj->begin(),l1obj->end(),
         FWObjectNameEQPredicate(static_cast<const char*>(level2.toLatin1())));
 
-    if (i==l1obj->end()) return NULL;
+    if (i==l1obj->end()) return nullptr;
     return (*i);
 }
 

@@ -141,7 +141,7 @@ void NATCompiler_pix::_expand_addr_recursive_pix(Rule *rule,
         }
 
         if (o->getId() == FWObjectDatabase::ANY_ADDRESS_ID ||
-            MultiAddress::cast(o)!=NULL ||
+            MultiAddress::cast(o)!=nullptr ||
             Interface::cast(o) ||
             physAddress::cast(o))
         {
@@ -152,7 +152,7 @@ void NATCompiler_pix::_expand_addr_recursive_pix(Rule *rule,
  
     if (addrlist.empty())
     {
-        if (RuleElement::cast(s)==NULL) ol.push_back(s);
+        if (RuleElement::cast(s)==nullptr) ol.push_back(s);
     }
     else
     {
@@ -240,8 +240,8 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
 {
     NATRule *rule=NATRule::cast(r);
 
-    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
-    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
 
     ostringstream os;
 
@@ -255,7 +255,7 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
     {
         if ( ! rule->exists("nat_cmd") ) break;
         NATCmd *natcmd = nat_commands[ rule->getInt("nat_cmd") ];
-        if (natcmd != NULL)
+        if (natcmd != nullptr)
         {
             os <<" NATCmd: ";
             os << " rule=[" << natcmd->rule_label << "]";
@@ -281,7 +281,7 @@ string NATCompiler_pix::debugPrintRule(Rule *r)
     {
         if ( ! rule->exists("sc_cmd") ) break;
         StaticCmd *scmd=static_commands[ rule->getInt("sc_cmd") ];
-        if (scmd!=NULL)
+        if (scmd!=nullptr)
         {
             string iaddr_str = _print_addr(scmd->iaddr->getAddressPtr());
             string oaddr_str = _print_addr(scmd->oaddr->getAddressPtr());
@@ -338,7 +338,7 @@ bool NATCompiler_pix::storeProcessedRules::processNext()
 
 bool NATCompiler_pix::VerifyRules::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     string version = compiler->fw->getStr("version");
 
     if (rule->getRuleType()==NATRule::SDNAT) 
@@ -439,7 +439,7 @@ bool NATCompiler_pix::VerifyRules::processNext()
         return true;
     }
 
-    if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
+    if ( Group::cast( compiler->getFirstTSrv(rule) )!=nullptr)
     {
         compiler->abort(
                 rule, 
@@ -451,7 +451,7 @@ bool NATCompiler_pix::VerifyRules::processNext()
     {
         Network *a1=Network::cast(compiler->getFirstOSrc(rule));
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
-        if ( a1==NULL || a2==NULL ||
+        if ( a1==nullptr || a2==nullptr ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
         {
             compiler->abort(
@@ -465,7 +465,7 @@ bool NATCompiler_pix::VerifyRules::processNext()
     {
         Network *a1=Network::cast(compiler->getFirstODst(rule));
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
-        if ( a1==NULL || a2==NULL ||
+        if ( a1==nullptr || a2==nullptr ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
         {
             compiler->abort(
@@ -487,12 +487,12 @@ bool NATCompiler_pix::VerifyRules::processNext()
 bool NATCompiler_pix::AssignInterface::processNext()
 {
     Helper helper(compiler);
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
 
     RuleElement *itf_re;
 
-    Address  *a1 = NULL;
-    Address  *a2 = NULL;
+    Address  *a1 = nullptr;
+    Address  *a2 = nullptr;
 
     if (rule->getRuleType()==NATRule::SNAT || rule->getRuleType()==NATRule::SDNAT)
     {
@@ -512,7 +512,7 @@ bool NATCompiler_pix::AssignInterface::processNext()
 	a2 = compiler->getFirstODst(rule);
     }
 
-    assert(a1!=NULL && a2!=NULL);
+    assert(a1!=nullptr && a2!=nullptr);
 
     int org_intf_id = helper.findInterfaceByNetzone(a1);
     int trn_intf_id = helper.findInterfaceByNetzone(a2);
@@ -534,10 +534,10 @@ bool NATCompiler_pix::AssignInterface::processNext()
         return true;
     }
 
-    itf_re = rule->getItfInb(); assert(itf_re!=NULL);
+    itf_re = rule->getItfInb(); assert(itf_re!=nullptr);
     if (itf_re->isAny() && ! itf_re->hasRef(iface_org)) itf_re->addRef(iface_org);
 
-    itf_re = rule->getItfOutb(); assert(itf_re!=NULL);
+    itf_re = rule->getItfOutb(); assert(itf_re!=nullptr);
     if (itf_re->isAny() && ! itf_re->hasRef(iface_trn)) itf_re->addRef(iface_trn);
 
     if (org_intf_id == trn_intf_id)
@@ -558,14 +558,14 @@ bool NATCompiler_pix::AssignInterface::processNext()
 
 bool NATCompiler_pix::verifyInterfaces::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     return true;
 }
 
 bool NATCompiler_pix::verifyRuleElements::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst=compiler->getFirstODst(rule);  assert(odst);
@@ -672,7 +672,7 @@ bool NATCompiler_pix::verifyRuleElements::processNext()
 
 bool NATCompiler_pix::fillTranslatedSrv::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -694,7 +694,7 @@ bool NATCompiler_pix::fillTranslatedSrv::processNext()
  */
 bool NATCompiler_pix::ExpandAddressRanges::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -731,13 +731,13 @@ bool NATCompiler_pix::ExpandAddressRanges::processNext()
  */
 bool NATCompiler_pix::ReplaceFirewallObjectsODst::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
     list<FWObject*> cl;
     RuleElementODst *rel;
-    Address     *obj=NULL;
+    Address     *obj=nullptr;
 
     switch (rule->getRuleType()) {
 
@@ -746,7 +746,7 @@ bool NATCompiler_pix::ReplaceFirewallObjectsODst::processNext()
 	return true;
     case NATRule::DNAT:
 	rel=rule->getODst();      assert(rel);
-	obj=compiler->getFirstODst(rule);  assert(obj!=NULL);
+	obj=compiler->getFirstODst(rule);  assert(obj!=nullptr);
 
 	if (obj->getId()==compiler->getFwId() ) 
 	{
@@ -779,11 +779,11 @@ bool NATCompiler_pix::ReplaceFirewallObjectsODst::processNext()
 bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
 {
     Helper helper(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     list<FWObject*> cl;
     RuleElementTSrc *rel;
-    Address     *obj=NULL;
+    Address     *obj=nullptr;
 
     switch (rule->getRuleType()) {
 
@@ -797,12 +797,12 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
     case NATRule::SNAT:
     {
         int        osrc_level=100;
-        Address   *osrc=NULL;
-        Interface *osrc_iface=NULL;
+        Address   *osrc=nullptr;
+        Interface *osrc_iface=nullptr;
 
         if ( ! rule->getOSrc()->isAny())
         {
-            osrc=compiler->getFirstOSrc(rule); assert(osrc!=NULL);
+            osrc=compiler->getFirstOSrc(rule); assert(osrc!=nullptr);
             osrc_iface = Interface::cast(
                 compiler->dbcopy->findInIndex( helper.findInterfaceByNetzone(osrc)));
             osrc_level = osrc_iface->getSecurityLevel();
@@ -818,7 +818,7 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
         }
 
 	obj = compiler->getFirstTSrc(rule);
-        assert(obj!=NULL);
+        assert(obj!=nullptr);
 
 	if (obj->getId()==compiler->getFwId() ) 
 	{
@@ -838,11 +838,11 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
                 }
             } else
             {
-                Address *odst = compiler->getFirstODst(rule); assert(odst!=NULL);
+                Address *odst = compiler->getFirstODst(rule); assert(odst!=nullptr);
                 FWObject *odst_iface =
                     compiler->dbcopy->findInIndex(
                         helper.findInterfaceByNetzone(odst ) );
-                if (odst_iface!=NULL) cl.push_back(odst_iface);
+                if (odst_iface!=nullptr) cl.push_back(odst_iface);
             }
 
 	    if ( ! cl.empty() )
@@ -869,9 +869,9 @@ bool NATCompiler_pix::ReplaceFirewallObjectsTSrc::processNext()
 void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
 {
     FWObject *o= rel->front();
-    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
     Address *obj=Address::cast(o);
-    if(obj==NULL)
+    if(obj==nullptr)
     {
         compiler->abort(rel->getParent(), 
                         "Broken rule element "+
@@ -879,20 +879,20 @@ void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
                         " in rule "+
                         NATRule::cast(rel->getParent())->getLabel()+
                         " ( found object with type "+
-                        string((o!=NULL)?o->getTypeName():"<NULL>") +
+                        string((o!=nullptr)?o->getTypeName():"<nullptr>") +
                         ")");
         return;
     }
 
     const InetAddr *obj_addr = obj->getAddressPtr();
-    if (obj_addr==NULL) return;
+    if (obj_addr==nullptr) return;
 
     list<FWObject*> l2=compiler->fw->getByType(Interface::TYPENAME);
     for (list<FWObject*>::iterator i=l2.begin(); i!=l2.end(); ++i)
     {
         Interface *iface=Interface::cast(*i);
         const InetAddr *iface_addr = iface->getAddressPtr();
-        if (iface_addr == NULL) continue;
+        if (iface_addr == nullptr) continue;
         if (*iface_addr == *obj_addr)
         {
             rel->removeRef(obj);
@@ -904,7 +904,7 @@ void NATCompiler_pix::UseFirewallInterfaces::scanInterfaces(RuleElement *rel)
 
 bool NATCompiler_pix::UseFirewallInterfaces::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -923,7 +923,7 @@ bool NATCompiler_pix::processNONATRules::processNext()
 {
     Helper helper(compiler);
     NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     if (rule->getRuleType()==NATRule::NONAT)
@@ -952,11 +952,11 @@ bool NATCompiler_pix::processNONATRules::processNext()
             // n0.o_iface = odst_iface;
 
             RuleElement *itf_re = rule->getItfInb();
-            assert(itf_re!=NULL);
+            assert(itf_re!=nullptr);
             if ( ! itf_re->hasRef(osrc_iface)) itf_re->addRef(osrc_iface);
 
             itf_re = rule->getItfOutb();
-            assert(itf_re!=NULL);
+            assert(itf_re!=nullptr);
             if ( ! itf_re->hasRef(odst_iface)) itf_re->addRef(odst_iface);
 
             n0.src = osrc;
@@ -980,11 +980,11 @@ bool NATCompiler_pix::processNONATRules::processNext()
                 compiler->dbcopy->findInIndex(helper.findInterfaceByNetzone(odst)));
 
             RuleElement *itf_re = rule->getItfInb();
-            assert(itf_re!=NULL);
+            assert(itf_re!=nullptr);
             if ( ! itf_re->hasRef(osrc_iface)) itf_re->addRef(osrc_iface);
 
             itf_re = rule->getItfOutb();
-            assert(itf_re!=NULL);
+            assert(itf_re!=nullptr);
             if ( ! itf_re->hasRef(odst_iface)) itf_re->addRef(odst_iface);
 
         }
@@ -997,7 +997,7 @@ bool NATCompiler_pix::createNATCmd::processNext()
 {
 //    Helper helper(compiler);
     NATCompiler_pix *pix_comp = dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     string version = compiler->fw->getStr("version");
 
     if (rule->getRuleType()==NATRule::SNAT) 
@@ -1030,7 +1030,7 @@ bool NATCompiler_pix::createNATCmd::processNext()
         natcmd->nat_acl_name = pix_comp->getNATACLname(rule,"");
         pix_comp->registerACL(natcmd->nat_acl_name);
 
-        if (Interface::cast(tsrc)!=NULL || o_iface->isDyn())
+        if (Interface::cast(tsrc)!=nullptr || o_iface->isDyn())
         {
             natcmd->type = INTERFACE;
         } else
@@ -1080,7 +1080,7 @@ bool NATCompiler_pix::createNATCmd::processNext()
 bool NATCompiler_pix::createStaticCmd::processNext()
 {
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     if (rule->getRuleType()==NATRule::DNAT)
@@ -1128,7 +1128,7 @@ bool NATCompiler_pix::createStaticCmd::processNext()
 bool  NATCompiler_pix::clearOSrc::processNext()
 {
 //    NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getBool("clear_osrc"))
     {
@@ -1143,15 +1143,15 @@ bool  NATCompiler_pix::clearOSrc::processNext()
 
 bool NATCompiler_pix::processMultiAddressObjectsInRE::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddress *atrt = MultiAddress::cast(o);
-        if (atrt!=NULL && atrt->isRunTime())
+        if (atrt!=nullptr && atrt->isRunTime())
         {
             compiler->abort(
                     rule, 

@@ -112,8 +112,8 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
     // see #2212 Create temporary copy of the firewall and cluster
     // objects and pass them to the compilers.
 
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
@@ -199,7 +199,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             oscnf = std::unique_ptr<OSConfigurator_linux24>(
                 new OSConfigurator_secuwall(objdb , fw, false));
 
-        if (oscnf.get()==NULL)
+        if (oscnf.get()==nullptr)
         {
             abort("Unrecognized host OS " + fw->getStr("host_OS") +
                   "  (family " + os_family+")");
@@ -330,7 +330,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
             // First, process branch NAT rulesets, then top NAT ruleset
 
-            NAT *top_nat = NULL;
+            NAT *top_nat = nullptr;
             for (list<FWObject*>::iterator p=all_nat.begin();
                  p!=all_nat.end(); ++p)
             {
@@ -475,11 +475,11 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
  * now write generated scripts to files
  */
 
-        char *timestr = NULL;
+        char *timestr = nullptr;
         time_t tm;
         struct tm *stm;
 
-        tm = time(NULL);
+        tm = time(nullptr);
         stm = localtime(&tm);
         timestr = strdup(ctime(&tm));
         timestr[strlen(timestr)-1] = '\0';
@@ -690,7 +690,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
         if (fw->getOptionsObject()->getBool("add_mgmt_ssh_rule_when_stoped"))
         {
             std::unique_ptr<PolicyCompiler_ipt> policy_compiler =
-                createPolicyCompiler(fw, false, NULL,  NULL);
+                createPolicyCompiler(fw, false, nullptr,  nullptr);
             PolicyCompiler_ipt::PrintRule* print_rule =
                 policy_compiler->createPrintRuleProcessor();
             print_rule->setContext(policy_compiler.get());

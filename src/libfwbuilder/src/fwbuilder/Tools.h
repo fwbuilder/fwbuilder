@@ -36,7 +36,7 @@
 #endif
 
 #ifndef nil
-# define nil NULL
+# define nil nullptr
 #endif
 
 

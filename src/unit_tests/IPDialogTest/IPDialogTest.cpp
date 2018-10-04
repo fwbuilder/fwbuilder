@@ -70,7 +70,7 @@ void IPDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     QTest::qWait(1000);
 }
 
@@ -99,7 +99,7 @@ void setLineEditText(QLineEdit *line, QString text)
 void IPDialogTest::testIPv4Dialog()
 {
     ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -185,7 +185,7 @@ void IPDialogTest::testIPv4Dialog()
 void IPDialogTest::testIPv6Dialog()
 {   
     ObjectManipulator *om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")

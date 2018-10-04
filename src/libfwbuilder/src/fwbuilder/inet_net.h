@@ -37,7 +37,7 @@
  *  convert host/network address from network to presentation format.
  *  "src"'s size is determined from its "af".
  * return:
- *  pointer to dst, or NULL if an error occurred (check errno).
+ *  pointer to dst, or nullptr if an error occurred (check errno).
  * note:
  *  192.5.5.1/28 has a nonzero host part, which means it isn't a network
  *  as called for by inet_net_pton() but it can be a host address with

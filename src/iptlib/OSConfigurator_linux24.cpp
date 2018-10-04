@@ -210,7 +210,7 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
                  *(nw->getAddressPtr())) == virtual_addresses.end())
         {
             Interface *iface = findInterfaceFor( nw, fw );
-            if (iface!=NULL)
+            if (iface!=nullptr)
             {
                 const InetAddr *addr = nw->getAddressPtr();
                 InetAddr first, last;
@@ -253,10 +253,10 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                  virtual_addresses.end(), *addr_addr) == virtual_addresses.end())
         {
             FWObject *vaddr = findAddressFor(addr, fw );
-            if (vaddr!=NULL)
+            if (vaddr!=nullptr)
             {
                 Interface *iface = Interface::cast(vaddr->getParent());
-                assert(iface!=NULL);
+                assert(iface!=nullptr);
 
                 QStringList addresses;
                 const InetAddr *vaddr_netm =

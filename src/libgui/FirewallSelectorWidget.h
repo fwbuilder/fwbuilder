@@ -50,7 +50,7 @@ class FirewallSelectorWidget : public QTableWidget
 {
     Q_OBJECT
 public:
-    FirewallSelectorWidget(QWidget *parent = NULL);
+    FirewallSelectorWidget(QWidget *parent = nullptr);
     ~FirewallSelectorWidget();
 
     void setFirewallList(std::list<libfwbuilder::Firewall*>, bool select = false);

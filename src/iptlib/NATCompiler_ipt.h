@@ -575,9 +575,9 @@ namespace fwcompiler
         NATCompiler(_db, fw, ipv6_policy, _oscnf)
         {
             have_dynamic_interfaces=false;
-            printRule=NULL;
+            printRule=nullptr;
             minus_n_commands = m_n_commands_map;
-            branch_ruleset_to_chain_mapping = NULL;
+            branch_ruleset_to_chain_mapping = nullptr;
         }
 
         /**

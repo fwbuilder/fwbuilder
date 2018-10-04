@@ -81,7 +81,7 @@ QString     RCS::rlog_file_name = "";
 QString     RCS::rcsdiff_file_name = "";
 QString     RCS::ci_file_name = "";
 QString     RCS::co_file_name = "";
-RCSEnvFix*  RCS::rcsenvfix = NULL;
+RCSEnvFix*  RCS::rcsenvfix = nullptr;
 bool        RCS::rcs_available = false;
 
 /***********************************************************************
@@ -234,15 +234,15 @@ RCSEnvFix::RCSEnvFix()
 
     env.push_back( QString("USER=") + uname);
     env.push_back( QString("LOGNAME=") + uname);
-    if (getenv("TMP") != NULL)
+    if (getenv("TMP") != nullptr)
         env.push_back( QString("TMP=") + getenv("TMP"));
-    if (getenv("TEMP")!=NULL)
+    if (getenv("TEMP")!=nullptr)
         env.push_back( QString("TEMP=") + getenv("TEMP"));
 }
 
 QStringList* RCSEnvFix::getEnv()
 {
-    if (env.empty()) return NULL;
+    if (env.empty()) return nullptr;
     return &env;
 }
 
@@ -297,7 +297,7 @@ void RCS::init()
 
 RCS::RCS(const QString &file)
 {
-    if (rcsenvfix==NULL) rcsenvfix = new RCSEnvFix();
+    if (rcsenvfix==nullptr) rcsenvfix = new RCSEnvFix();
 
     if (fwbdebug) qDebug() << "RCS::RCS(" << file << ")";
 
@@ -440,13 +440,13 @@ RCS::~RCS()
 
 QStringList* RCS::getEnv()
 {
-    if (rcsenvfix==NULL) rcsenvfix = new RCSEnvFix();
+    if (rcsenvfix==nullptr) rcsenvfix = new RCSEnvFix();
     return rcsenvfix->getEnv();
 }
 
 RCSEnvFix*   RCS::getRCSEnvFix()
 {
-    if (rcsenvfix==NULL) rcsenvfix = new RCSEnvFix();
+    if (rcsenvfix==nullptr) rcsenvfix = new RCSEnvFix();
     return rcsenvfix;
 }
 

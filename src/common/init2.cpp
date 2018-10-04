@@ -50,10 +50,10 @@ void init_win()
  */
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
 
-//    if (QCoreApplication::instance()==NULL)
+//    if (QCoreApplication::instance()==nullptr)
 //    {
 //        int ac = 0;
-//        char **av = { NULL };
+//        char **av = { nullptr };
 //        new QApplication( ac, av );
 //    }
     QDir dir(QCoreApplication::applicationDirPath());
@@ -106,7 +106,7 @@ void init_win()
 #elif defined(Q_OS_MACX)
 
     char *lname = getenv("LOGNAME");
-    if (lname!=NULL)
+    if (lname!=nullptr)
         user_name = QString(lname);
     else
     {

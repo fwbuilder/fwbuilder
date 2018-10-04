@@ -354,9 +354,9 @@ void FWObjectDatabase::saveFile(const string &filename)
     busy = true;
 
     xmlDocPtr doc = xmlNewDoc(XMLTools::ToXmlCast("1.0"));
-    xmlNodePtr node = xmlNewNode(NULL, XMLTools::StrToXmlCast(getName()));
+    xmlNodePtr node = xmlNewNode(nullptr, XMLTools::StrToXmlCast(getName()));
     xmlDocSetRootElement(doc, node);
-    xmlNewNs(node, XMLTools::ToXmlCast("http://www.fwbuilder.org/1.0/"), NULL);
+    xmlNewNs(node, XMLTools::ToXmlCast("http://www.fwbuilder.org/1.0/"), nullptr);
 
     toXML(xmlDocGetRootElement(doc));
     
@@ -381,9 +381,9 @@ void FWObjectDatabase::saveToBuffer(xmlChar **buffer, int *size)
     busy = true;
 
     xmlDocPtr doc = xmlNewDoc(XMLTools::ToXmlCast("1.0"));
-    xmlNodePtr node = xmlNewDocNode(doc, NULL, XMLTools::StrToXmlCast(getName()), NULL);
+    xmlNodePtr node = xmlNewDocNode(doc, nullptr, XMLTools::StrToXmlCast(getName()), nullptr);
     xmlDocSetRootElement(doc, node);
-    xmlNewNs(node, XMLTools::ToXmlCast("http://www.fwbuilder.org/1.0/"), NULL);
+    xmlNewNs(node, XMLTools::ToXmlCast("http://www.fwbuilder.org/1.0/"), nullptr);
 
     toXML(xmlDocGetRootElement(doc));
 
@@ -404,7 +404,7 @@ void FWObjectDatabase::fromXML(xmlNodePtr root)
     FWObject::fromXML(root);
     
     const char *n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("lastModified")));
-    if (n!=NULL)
+    if (n!=nullptr)
     {        
         int i = 0;
         istringstream str(n);
@@ -419,7 +419,7 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent)
 {
     FWObject *o;
 
-    //xmlNewProp(parent, NULL, NULL);
+    //xmlNewProp(parent, nullptr, nullptr);
 
     xmlNewProp(parent, 
                XMLTools::ToXmlCast("version") ,
@@ -441,11 +441,11 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent)
                XMLTools::ToXmlCast("id") ,
                XMLTools::StrToXmlCast(id_dict[rootid]));
 
-    //xmlAddID(NULL, parent->doc, XMLTools::StrToXmlCast(id_dict[rootid]), pr);
+    //xmlAddID(nullptr, parent->doc, XMLTools::StrToXmlCast(id_dict[rootid]), pr);
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
     {
-        if ((o=(*j))!=NULL) o->toXML(parent);
+        if ((o=(*j))!=nullptr) o->toXML(parent);
     }
     return parent;
 }
@@ -453,7 +453,7 @@ xmlNodePtr FWObjectDatabase::toXML(xmlNodePtr parent)
 void  FWObjectDatabase::setDirty(bool f)
 {
     dirty=f;
-    if(!busy && f) lastModified=time(NULL);
+    if(!busy && f) lastModified=time(nullptr);
 }
 
 void FWObjectDatabase::addToIndex(FWObject* o)
@@ -472,15 +472,15 @@ void FWObjectDatabase::removeFromIndex(int id)
 
 FWObject* FWObjectDatabase::checkIndex(int id)
 {
-    if (obj_index.count(id)==0) return NULL;
+    if (obj_index.count(id)==0) return nullptr;
     return obj_index[id];
 }
 
 FWObject* FWObjectDatabase::findInIndex(int id)
 {
-    if (id < 0) return NULL;
+    if (id < 0) return nullptr;
     FWObject *o = checkIndex(id);
-    if (o!=NULL) index_hits++;
+    if (o!=nullptr) index_hits++;
     else
     {
         index_misses++;
@@ -528,7 +528,7 @@ void FWObjectDatabase::_clearReferenceCounters(FWObject *o)
 
 void FWObjectDatabase::_fixReferenceCounters(FWObject *o)
 {
-    if (FWReference::cast(o)!=NULL)
+    if (FWReference::cast(o)!=nullptr)
     {
         FWObject *obj = findInIndex( FWReference::cast(o)->getPointerId() );
         assert(obj);
@@ -590,7 +590,7 @@ void FWObjectDatabase::recursivelyRemoveObjFromTree(FWObject* obj,
 
     for (FWObject::iterator i=obj->begin(); i!=obj->end(); ++i)
     {
-        if (FWReference::cast(*i)!=NULL || RuleSet::cast(*i)!=NULL) continue;
+        if (FWReference::cast(*i)!=nullptr || RuleSet::cast(*i)!=nullptr) continue;
         recursivelyRemoveObjFromTree( *i , true);
     }
 

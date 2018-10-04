@@ -121,7 +121,7 @@ void InterfaceDialog::loadFWObject(FWObject *o)
         FWObject *parent_host = Host::getParentHost(s);
         if (parent_host)
         {
-            // parent_host may be NULL if interface object is located
+            // parent_host may be nullptr if interface object is located
             // in the Deleted Objects library
             interfaceProperties *int_prop =
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(

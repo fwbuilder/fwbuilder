@@ -60,7 +60,7 @@ RuleSetDialog::RuleSetDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
-    obj = NULL;
+    obj = nullptr;
     platform = "";
 
     connectSignalsOfAllWidgetsToSlotChange();
@@ -77,7 +77,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     this->setEnabled(!o->isReadOnly());
 
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
@@ -100,7 +100,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     while (fw && (!Firewall::isA(fw) && !Cluster::isA(fw))) fw = fw->getParent();
     // if rule set object is in DeletedObjects library, it does not have parent
     // firewall
-    if (fw!=NULL)
+    if (fw!=nullptr)
     {
         platform = fw->getStr("platform");
         fwopt = Firewall::cast(fw)->getOptionsObject();
@@ -181,7 +181,7 @@ void RuleSetDialog::validate(bool *res)
     if (!rx.exactMatch(m_dialog->obj_name->text()))
     {
         *res = false ;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -204,7 +204,7 @@ void RuleSetDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     RuleSet *s = dynamic_cast<RuleSet*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     FWOptions *rulesetopt = s->getOptionsObject();
 

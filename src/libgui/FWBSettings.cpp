@@ -215,7 +215,7 @@ void FWBSettings::init(bool force_first_time_run)
                 uuid_settings->remove(appGUID_4_0);
             } else
             {
-                qsrand(time(NULL));
+                qsrand(time(nullptr));
                 uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
                 first_run = true;
             }
@@ -279,7 +279,7 @@ void FWBSettings::init(bool force_first_time_run)
     if (my_uuid == "b7203c47-06bf-4878-9ff5-6afffb2db546" ||
         my_uuid == "46759a87-7956-431f-a171-ccb754ef239e")
     {
-        qsrand(time(NULL));
+        qsrand(time(nullptr));
         uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
     }
 
@@ -315,7 +315,7 @@ void FWBSettings::init(bool force_first_time_run)
         {
             QString err = QString(QObject::tr("Working directory %1 does not exist and could not be created.\nIgnoring this setting.")).arg(wd);;
 
-            if (app != NULL)
+            if (app != nullptr)
             {
                 QMessageBox::critical( 0,"Firewall Builder", err,
                                        "&Continue", 0, 0, 0 );

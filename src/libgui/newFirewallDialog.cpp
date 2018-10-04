@@ -122,10 +122,10 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
                       m_dialog->cancelButton,
                       m_dialog->titleLabel);
 
-    nfw = NULL;
-    tmpldb = NULL;
+    nfw = nullptr;
+    tmpldb = nullptr;
     snmpPollCompleted = false;
-    q = NULL;
+    q = nullptr;
     unloadTemplatesLib = false;
     getInterfacesBusy = false;
 
@@ -163,7 +163,7 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     //m_dialog->iface_sl_list->setAllColumnsShowFocus( true );
     QTimer::singleShot(0, m_dialog->obj_name, SLOT(setFocus()));
 
-    currentTemplate = NULL;
+    currentTemplate = nullptr;
     this->m_dialog->interfaceEditor1->clear();
     this->m_dialog->interfaceEditor2->clear();
     this->m_dialog->interfaceEditor1->closeTab();
@@ -244,9 +244,9 @@ void newFirewallDialog::updateTemplatePanel()
 newFirewallDialog::~newFirewallDialog()
 {
     delete m_dialog;
-    if (timer!=NULL) delete timer;
+    if (timer!=nullptr) delete timer;
 #ifdef HAVE_LIBSNMP
-    if (q!=NULL) delete q;
+    if (q!=nullptr) delete q;
 #endif
     delete db_copy;
 }
@@ -329,7 +329,7 @@ void newFirewallDialog::getIPAddressOfFirewallByName()
 
 void newFirewallDialog::monitor()
 {
-    if (logger==NULL || q==NULL) return;
+    if (logger==nullptr || q==nullptr) return;
 
 #ifdef HAVE_LIBSNMP
 
@@ -417,7 +417,7 @@ void newFirewallDialog::monitor()
         this->m_dialog->interfaceEditor1->addNewInterface();
 
     delete q;
-    q=NULL;
+    q=nullptr;
 
 #endif
 
@@ -430,7 +430,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
 #ifdef HAVE_LIBSNMP
 
 // need to protect from reentry because getAddrByName processes events
-    if (q!=NULL || getInterfacesBusy) return;
+    if (q!=nullptr || getInterfacesBusy) return;
 
     snmpPollCompleted=false;
     m_dialog->interfaceEditor1->clear();
@@ -475,10 +475,10 @@ void newFirewallDialog::getInterfacesViaSNMP()
         }
     }
 
-    logger = NULL;
+    logger = nullptr;
     m_dialog->snmpProgress->clear();
 
-    if (q!=NULL) delete q;
+    if (q!=nullptr) delete q;
 
     q = new SNMP_interface_query();
     q->init(addr.toString(), rcomm, SNMP_DEFAULT_RETRIES, SNMP_DEFAULT_TIMEOUT);
@@ -527,7 +527,7 @@ void newFirewallDialog::nextClicked()
 {
     if ( currentPage() == CHOOSE_FW_TEMPLATE )
     {
-        if (m_dialog->templateList->currentItem() == NULL)
+        if (m_dialog->templateList->currentItem() == nullptr)
         {
             QMessageBox::warning(
                     this,"Firewall Builder",
@@ -571,11 +571,11 @@ void newFirewallDialog::showPage(const int page)
     case NAME_AND_PLATFORM_PAGE:
         // we get here if user hits "Back" on page 4 (where they
         // choose template object)
-        if (tmpldb!=NULL)
+        if (tmpldb!=nullptr)
         {
             m_dialog->templateList->clear();
             delete tmpldb;
-            tmpldb = NULL;
+            tmpldb = nullptr;
         }
         m_dialog->nextButton->setDefault(true);
         m_dialog->obj_name->setFocus();
@@ -648,7 +648,7 @@ void newFirewallDialog::showPage(const int page)
         setNextEnabled( CHOOSE_FW_TEMPLATE, true );
 
         // load templates if not loaded
-        if (tmpldb==NULL)
+        if (tmpldb==nullptr)
         {
 
             MessageBoxUpgradePredicate upgrade_predicate(this);
@@ -671,7 +671,7 @@ void newFirewallDialog::showPage(const int page)
             }
         }
 
-        // nfw != NULL if user clicked Back on one of the subsequent
+        // nfw != nullptr if user clicked Back on one of the subsequent
         // pages because we create firewall object when they click
         // Next on the page where they choose template ( see case
         // CONFIGURE_TEMPLATE_INTERFACES_MANUALLY below)
@@ -679,7 +679,7 @@ void newFirewallDialog::showPage(const int page)
         {
             parent->remove(nfw, false);
             delete nfw;
-            nfw = NULL;
+            nfw = nullptr;
         }
 
         list<FWObject*> fl;
@@ -693,7 +693,7 @@ void newFirewallDialog::showPage(const int page)
         m_dialog->templateList->clear();
 
         int n = 0;
-        QListWidgetItem *first_template = NULL;
+        QListWidgetItem *first_template = nullptr;
         for (list<FWObject*>::iterator m=fl.begin(); m!=fl.end(); m++,n++)
         {
             FWObject *o = *m;
@@ -729,7 +729,7 @@ void newFirewallDialog::showPage(const int page)
             templates[ m_dialog->templateList->item(
                     m_dialog->templateList->count()-1 ) ] = o;
 
-            if (first_template == NULL) first_template = twi;
+            if (first_template == nullptr) first_template = twi;
         }
 
         m_dialog->templateList->setFocus();
@@ -928,7 +928,7 @@ void newFirewallDialog::templateSelected(QListWidgetItem *itm)
 {
     if (templates.size()==0) return;
     FWObject *o = templates[itm];
-    if (o==NULL) return;
+    if (o==nullptr) return;
     this->m_dialog->interfaceEditor2->setTemplate(o);
     currentTemplate = o;
 
@@ -1069,13 +1069,13 @@ void newFirewallDialog::cleanup()
     {
         parent->remove(nfw, false);
         delete nfw;
-        nfw = NULL;
+        nfw = nullptr;
     }
 
     if (tmpldb)
     {
         delete tmpldb;
-        tmpldb = NULL;
+        tmpldb = nullptr;
     }
 }
 
@@ -1117,7 +1117,7 @@ void newFirewallDialog::finishClicked()
         currentPage()==CONFIGURE_TEMPLATE_INTERFACES_MANUALLY)
     {
         // Creating from a template
-        if (nfw==NULL) createFirewallFromTemplate();
+        if (nfw==nullptr) createFirewallFromTemplate();
         else
             changedAddressesInNewFirewall();
 
@@ -1130,7 +1130,7 @@ void newFirewallDialog::finishClicked()
         FWObject *o;
         o = db_copy->create(Firewall::TYPENAME);
 
-        if (o==NULL)
+        if (o==nullptr)
         {
             QDialog::accept();
             return;
@@ -1169,11 +1169,11 @@ void newFirewallDialog::finishClicked()
             if ( ! ltwi.empty())
             {
                 QTableWidgetItem *itm2 = ltwi[0];
-                assert(itm2!=NULL);
+                assert(itm2!=nullptr);
                 int row = itm2->row();
                 QSpinBox *sb = dynamic_cast<QSpinBox*>(
                     m_dialog->iface_sl_list->cellWidget(row, 3));
-                assert(sb!=NULL);
+                assert(sb!=nullptr);
                 sec_level = sb->value();
             }
 
@@ -1181,11 +1181,11 @@ void newFirewallDialog::finishClicked()
             if ( ! ltwi.empty())
             {
                 QTableWidgetItem *itm2 = ltwi[0];
-                assert(itm2!=NULL);
+                assert(itm2!=nullptr);
                 int row = itm2->row();
                 QComboBox *cb = dynamic_cast<QComboBox*>(
                     m_dialog->iface_nz_list->cellWidget(row, 3));
-                assert(cb!=NULL);
+                assert(cb!=nullptr);
                 int network_zone_int_id =
                     cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
                 if (network_zone_int_id != 0)
@@ -1196,7 +1196,7 @@ void newFirewallDialog::finishClicked()
             }
 
             Interface *oi = Interface::cast(db_copy->create(Interface::TYPENAME));
-            assert(oi!=NULL);
+            assert(oi!=nullptr);
 
             nfw->add(oi);
 
@@ -1279,10 +1279,10 @@ void newFirewallDialog::finishClicked()
 
     nfw = Firewall::cast(db_orig->findInIndex(nfw->getId()));
 
-    if (tmpldb!=NULL)
+    if (tmpldb!=nullptr)
     {
         delete tmpldb;
-        tmpldb = NULL;
+        tmpldb = nullptr;
     }
 
     QDialog::accept();

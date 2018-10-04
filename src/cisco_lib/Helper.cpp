@@ -263,7 +263,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
                      << endl;
 #endif
 
-                // if addr==NULL, return id of the interfacce that has
+                // if addr==nullptr, return id of the interfacce that has
                 // net_zone=="any"
                 if (addr==nullptr)
                 {

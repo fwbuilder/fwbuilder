@@ -389,7 +389,7 @@ void ProjectPanel::fileDiscard()
         clearObjects();
 
         /* loadFile calls fileClose, but only if file is currently
-         * open, which it isn't because we reset rcs to NULL
+         * open, which it isn't because we reset rcs to nullptr
          */
         loadFile(fname, false);
     }
@@ -1304,7 +1304,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
 
 bool ProjectPanel::checkin(bool unlock)
 {
-/* doing checkin only if we did checkout so rcs!=NULL */
+/* doing checkin only if we did checkout so rcs!=nullptr */
     QString rlog="";
 
     if (systemFile || rcs==nullptr || !rcs->isCheckedOut() || rcs->isTemp())

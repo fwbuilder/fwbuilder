@@ -78,7 +78,7 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     while (parent && !Cluster::isA(parent)) parent = parent->getParent();
     if (parent == nullptr)
     {
-        throw FWException("ClusterGroupDialog: parent is NULL!");
+        throw FWException("ClusterGroupDialog: parent is nullptr!");
     }
     cluster = Cluster::cast(parent);
     string host_os = cluster->getStr("host_OS");

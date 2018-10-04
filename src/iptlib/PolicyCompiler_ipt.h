@@ -902,7 +902,7 @@ protected:
             public:
             optimize3(const std::string &name) : PolicyRuleProcessor(name)
             {
-                printRule = NULL;
+                printRule = nullptr;
             }
             virtual ~optimize3() { if (printRule) delete printRule; }
             virtual bool processNext();

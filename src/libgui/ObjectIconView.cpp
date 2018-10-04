@@ -118,7 +118,7 @@ bool ObjectIconView::event(QEvent *event)
 QDrag* ObjectIconView::dragObject()
 {
     QListWidgetItem *ivi = currentItem();
-    // currentItem returns NULL if the list is empty
+    // currentItem returns nullptr if the list is empty
     if (ivi==nullptr) return nullptr;
     int obj_id = ivi->data(Qt::UserRole).toInt();
     FWObject *obj = db->findInIndex(obj_id);

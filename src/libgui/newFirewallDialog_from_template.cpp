@@ -144,9 +144,9 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                  * Substitute interface addresses.
                  * 
                  * EditedInterfaceData::addresses uses Address* as a
-                 * key. If it is not NULL, then this points to the
+                 * key. If it is not nullptr, then this points to the
                  * updated information for existing Address object
-                 * which we should modify. If it is NULL, then the
+                 * which we should modify. If it is nullptr, then the
                  * user created new address and we need to create new
                  * IPv4 or IPv6 object.
                  * 

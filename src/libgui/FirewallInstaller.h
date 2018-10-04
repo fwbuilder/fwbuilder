@@ -96,7 +96,7 @@ public:
         inst_dlg = _dlg;
         cnf = _cnf;
         fwb_prompt = prompt;
-        session = NULL;
+        session = nullptr;
     }
 
     void packSSHArgs(QStringList &args);

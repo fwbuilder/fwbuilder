@@ -235,7 +235,7 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(Address *obj1,
                                                       FWObject *obj2)
 {
     const InetAddr *obj1_addr = obj1->getAddressPtr();
-    // obj1_addr may be NULL if obj1 does not have any real address,
+    // obj1_addr may be nullptr if obj1 does not have any real address,
     // one case when this happens is when obj1 is physAddress
     if (obj1_addr)
         return checkComplexMatchForSingleAddress(obj1_addr, obj2);

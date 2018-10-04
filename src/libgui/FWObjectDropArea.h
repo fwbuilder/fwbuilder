@@ -66,7 +66,7 @@ public:
     libfwbuilder::FWObject * getObject(){return object;};
     void setObject(libfwbuilder::FWObject * o){ object = o ;};
     void addAcceptedTypes (QString type){acceptedTypes.push_back(type);};
-    bool isEmpty() {return object==NULL;};
+    bool isEmpty() {return object==nullptr;};
     void setHelperText(const QString &text) { helperText=text; }
     virtual void mouseDoubleClickEvent ( QMouseEvent * event );
     public slots:

@@ -62,7 +62,7 @@ string OSConfigurator_pix_os::_printMPFPolicyMap()
     string version = fw->getStr("version");
     string vers = "version_" + version;
     FWOptions *options = fw->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     std::list<InspectionClassMap> defaultClassMaps;
     std::list<InspectionClassMap> customClassMaps;

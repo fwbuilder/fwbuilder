@@ -69,7 +69,7 @@ RuleSetView* FWCmdRule::getRuleSetView()
 RuleSetModel* FWCmdRule::getRuleSetModel()
 {
     RuleSetView* rsv = getRuleSetView();
-    return (rsv != NULL)?(RuleSetModel*)getRuleSetView()->model():NULL;
+    return (rsv != nullptr)?(RuleSetModel*)getRuleSetView()->model():nullptr;
 }
 
 void FWCmdRule::notify()

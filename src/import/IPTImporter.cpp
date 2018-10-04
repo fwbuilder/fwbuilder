@@ -669,7 +669,7 @@ NATRule* IPTImporter::createNATBranch(
 
 void IPTImporter::pushRule()
 {
-//    assert(current_ruleset!=NULL);
+//    assert(current_ruleset!=nullptr);
     if (current_rule==nullptr) return;
 
     if (current_table=="nat")  pushNATRule();
@@ -1104,12 +1104,12 @@ void IPTImporter::pushPolicyRule()
         // {
         //     ruleset = RuleSet::cast(
         //         getFirewallObject()->getFirstByType(Policy::TYPENAME));
-        //     assert(ruleset!=NULL);
+        //     assert(ruleset!=nullptr);
         // } else
         // {
         //     UnidirectionalRuleSet *rs = getUnidirRuleSet(
         //         current_chain, Policy::TYPENAME);
-        //     assert(rs!=NULL);
+        //     assert(rs!=nullptr);
         //     ruleset = rs->ruleset;
         // }
 
@@ -1502,7 +1502,7 @@ void IPTImporter::pushNATRule()
 
     // RuleSet *nat = RuleSet::cast(
     //     getFirewallObject()->getFirstByType(NAT::TYPENAME));
-    // assert( nat!=NULL );
+    // assert( nat!=nullptr );
     // nat->add(current_rule);
 
     current_rule = nullptr;

@@ -124,7 +124,7 @@ void PolicyCompiler_iosacl::PrintCompleteACLs::printRulesForACL::operator()(
     assert (acl_name!="");
 
     ciscoACL *rule_acl = iosacl_comp->acls[acl_name];
-    assert(rule_acl!=NULL);
+    assert(rule_acl!=nullptr);
 
     if (acl == rule_acl)
     {
@@ -199,17 +199,17 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     assert(dstobj);
     assert(srvobj);
 
-    if (FWReference::cast(srcobj)!=NULL)
+    if (FWReference::cast(srcobj)!=nullptr)
     {
         srcobj=FWReference::cast(srcobj)->getPointer();
         assert(srcobj);
     }
-    if (FWReference::cast(dstobj)!=NULL)
+    if (FWReference::cast(dstobj)!=nullptr)
     {
         dstobj=FWReference::cast(dstobj)->getPointer();
         assert(dstobj);
     }
-    if (FWReference::cast(srvobj)!=NULL)
+    if (FWReference::cast(srvobj)!=nullptr)
     {
         srvobj=FWReference::cast(srvobj)->getPointer();
         assert(srvobj);
@@ -219,7 +219,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
     assert (acl_name!="");
 
     ciscoACL *acl = iosacl_comp->acls[acl_name];
-    assert(acl!=NULL);
+    assert(acl!=nullptr);
 
     /*
      * Assemble ACL command in aclstr
@@ -244,12 +244,12 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
      *
      */
 
-    if ( pgsrv!=NULL && pgsrv->isServiceGroup())
+    if ( pgsrv!=nullptr && pgsrv->isServiceGroup())
     {
         aclstr << "object-group " << pgsrv->getName();
         aclstr << " ";
 
-        if ( pgsrc!=NULL && pgsrc->isObjectGroup())
+        if ( pgsrc!=nullptr && pgsrc->isObjectGroup())
         {
             aclstr << "object-group " << pgsrc->getName();
             aclstr << " ";
@@ -258,7 +258,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
             aclstr << _printAddr( compiler->getFirstSrc(rule) );
         }
 
-        if ( pgdst!=NULL && pgdst->isObjectGroup())
+        if ( pgdst!=nullptr && pgdst->isObjectGroup())
         {
             aclstr << "object-group " << pgdst->getName();
             aclstr << " ";
@@ -272,7 +272,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
         aclstr << _printProtocol(Service::cast(srvobj));
         aclstr << " ";
 
-        if ( pgsrc!=NULL && pgsrc->isObjectGroup())
+        if ( pgsrc!=nullptr && pgsrc->isObjectGroup())
         {
             aclstr << "object-group " << pgsrc->getName();
             aclstr << " ";
@@ -283,7 +283,7 @@ string PolicyCompiler_iosacl::PrintRule::_printRule(PolicyRule *rule)
 
         aclstr << _printSrcService( compiler->getFirstSrv(rule) );
 
-        if ( pgdst!=NULL && pgdst->isObjectGroup())
+        if ( pgdst!=nullptr && pgdst->isObjectGroup())
         {
             aclstr << "object-group " << pgdst->getName();
             aclstr << " ";
@@ -368,7 +368,7 @@ string PolicyCompiler_iosacl::PrintRule::_printIPServiceOptions(PolicyRule *r)
 {
     Service *srv = compiler->getFirstSrv(r);
     const IPService *ip;
-    if ((ip=IPService::constcast(srv))!=NULL)
+    if ((ip=IPService::constcast(srv))!=nullptr)
     {
         string version = compiler->fw->getStr("version");
 
@@ -496,7 +496,7 @@ string PolicyCompiler_iosacl::PrintRule::_printProtocol(Service *srv)
 string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
 {
     PolicyCompiler_iosacl *iosacl_comp = dynamic_cast<PolicyCompiler_iosacl*>(compiler);
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
 	Interface *interface_ = Interface::cast(o);
 	if (interface_->isDyn())
@@ -513,7 +513,7 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
         const InetAddr *nm = o->getNetmaskPtr();
         InetAddr srcmask;
 
-        if (nm != NULL)
+        if (nm != nullptr)
         {
             srcmask = *nm;
         } else
@@ -535,8 +535,8 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
             str << "any  ";
         } else 
         {
-            if (Interface::cast(o)==NULL &&
-                Interface::cast(o->getParent())==NULL &&
+            if (Interface::cast(o)==nullptr &&
+                Interface::cast(o->getParent())==nullptr &&
                 o->dimension() > 1 &&
                 !srcmask.isHostMask())
             {
@@ -585,7 +585,7 @@ string PolicyCompiler_iosacl::PrintRule::_printAddr(Address  *o)
  */
 bool PolicyCompiler_iosacl::PrintRule::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 

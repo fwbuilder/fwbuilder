@@ -125,7 +125,7 @@ string OSConfigurator_pix_os::_printFixups()
     string platform = fw->getStr("platform");
     string version = fw->getStr("version");
     FWOptions *options = fw->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     string lst = Resources::platform_res[platform]->getResourceStr(
             "/FWBuilderResources/Target/options/version_" + version +

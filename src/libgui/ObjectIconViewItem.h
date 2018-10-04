@@ -49,13 +49,13 @@ class ObjectIconViewItem : public QListWidgetItem
 
     ObjectIconViewItem(QListWidget *parent) : QListWidgetItem(parent)
     {
-        db = NULL;
+        db = nullptr;
         ID=-1;
     }
 
     ObjectIconViewItem(QListWidget *parent, const QString &text, const QPixmap &icon ) : QListWidgetItem(parent) 
     {
-        db = NULL;
+        db = nullptr;
         setText(text);
         setIcon(QIcon(icon));
         ID=-1;
@@ -64,7 +64,7 @@ class ObjectIconViewItem : public QListWidgetItem
     libfwbuilder::FWObject *getFWObject()
     {
         if (ID > -1) return db->getById(ID, true);
-        else return NULL;
+        else return nullptr;
     }
     
     int getFWObjectID() {return ID; }

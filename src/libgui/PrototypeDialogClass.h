@@ -40,7 +40,7 @@ class PrototypeDialog : public PrototypeDialog_q
     bool init;
 
  public:
-    PrototypeDialog() : PrototypeDialog_q() { obj=NULL; }
+    PrototypeDialog() : PrototypeDialog_q() { obj=nullptr; }
     
 public slots:
     virtual void changed();

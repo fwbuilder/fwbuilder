@@ -67,7 +67,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
 {
     ostringstream  ostr;
 
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
         Interface *iface=Interface::cast(o);
         if (iface->isDyn())
@@ -80,7 +80,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
     addr = o->getAddressPtr();
     mask = o->getNetmaskPtr();
 
-    if (addr==NULL)
+    if (addr==nullptr)
     {
         FWObject *obj=o;
 /*
@@ -89,7 +89,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
  * Interface are inherited from Address, we can't use cast. Use isA
  * instead
  */
-        while (obj!=NULL && 
+        while (obj!=nullptr && 
                !Host::isA(obj) && 
                !Firewall::isA(obj)  && 
                !Network::isA(obj))  obj=obj->getParent();
@@ -107,7 +107,7 @@ string RoutingCompiler_ipt::PrintRule::_printAddr(Address  *o)
     {
         ostr << addr->toString();
 
-        if (Interface::cast(o)==NULL &&
+        if (Interface::cast(o)==nullptr &&
             Address::cast(o)->dimension() > 1 &&
             !mask->isHostMask())
         {
@@ -130,7 +130,7 @@ bool RoutingCompiler_ipt::PrintRule::processNext()
 {
     RoutingCompiler_ipt *ipt_comp = dynamic_cast<RoutingCompiler_ipt*>(compiler);
     RoutingRule *rule = getNext(); 
-    if (rule==NULL) return false;
+    if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
     
@@ -268,7 +268,7 @@ string RoutingCompiler_ipt::PrintRule::RoutingRuleToString(RoutingRule *rule)
     RuleElementRDst *dstrel=rule->getRDst();
     ref=dstrel->front();
     Address *dst=Address::cast(FWReference::cast(ref)->getPointer());
-    if(dst==NULL)
+    if(dst==nullptr)
         compiler->abort(rule, "Broken DST");
         
     ostringstream command_line;
@@ -312,7 +312,7 @@ string RoutingCompiler_ipt::PrintRule::_printRGtw(RoutingRule *rule)
     RuleElementRGtw *gtwrel = rule->getRGtw();
     ref = gtwrel->front();
     Address *gtw = Address::cast(FWReference::cast(ref)->getPointer());
-    if(gtw==NULL)
+    if(gtw==nullptr)
         compiler->abort(rule, "Broken GTW");
     
     string gateway = _printAddr(gtw);
@@ -329,7 +329,7 @@ string RoutingCompiler_ipt::PrintRule::_printRItf(RoutingRule *rule)
     ref=itfrel->front();
     Interface *itf=Interface::cast(FWReference::cast(ref)->getPointer());
     
-    if(itf != NULL) return "dev " + itf->getName() + " ";
+    if(itf != nullptr) return "dev " + itf->getName() + " ";
     else return "";
 }
 
@@ -340,7 +340,7 @@ string RoutingCompiler_ipt::PrintRule::_printRDst(RoutingRule *rule)
     RuleElementRDst *dstrel=rule->getRDst();
     ref=dstrel->front();
     Address *dst=Address::cast(FWReference::cast(ref)->getPointer());
-    if(dst==NULL)
+    if(dst==nullptr)
         compiler->abort(rule, "Broken DST");
     
     return _printAddr(dst);

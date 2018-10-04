@@ -448,7 +448,7 @@ public:
             }
         };
 
-        void merge(FWObjectDatabase *ndb, ConflictResolutionPredicate *mp=NULL);
+        void merge(FWObjectDatabase *ndb, ConflictResolutionPredicate *mp=nullptr);
         void findDuplicateIds(FWObjectDatabase *ndb, std::set<int> &dupids);
         
         void setFileName(const std::string &filename);

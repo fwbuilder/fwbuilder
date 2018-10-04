@@ -64,12 +64,12 @@ clusterMembersDialog::clusterMembersDialog(QWidget *parent, FWObject *o)
         parent = obj->getParent();
         if (parent == nullptr)
         {
-            throw FWException("clusterMembersDialog: parent is NULL!");
+            throw FWException("clusterMembersDialog: parent is nullptr!");
         }
         parent = parent->getParent();
         if (parent == nullptr)
         {
-            throw FWException("clusterMembersDialog: parent is NULL!");
+            throw FWException("clusterMembersDialog: parent is nullptr!");
         }
         host_os = parent->getStr("host_OS").c_str();
         platform = parent->getStr("platform").c_str();

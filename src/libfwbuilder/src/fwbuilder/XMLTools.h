@@ -189,7 +189,7 @@ class XMLTools
     
     /**
      * Convert file from older version to current one
-     * @return pointer to new document or NULL if doc is unchanged.
+     * @return pointer to new document or nullptr if doc is unchanged.
      *         if pointer to new document is returned, doc parameter
      *         becomes invalid and should not be used.
      */

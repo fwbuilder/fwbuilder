@@ -133,7 +133,7 @@ void  FilterDialog::save()
     //xmlNodePtr tree;
 
     doc = xmlNewDoc(XMLTools::ToXmlCast("1.0"));
-    doc->children = xmlNewDocNode(doc, NULL, XMLTools::ToXmlCast("FWB_FILTER"), NULL);
+    doc->children = xmlNewDocNode(doc, nullptr, XMLTools::ToXmlCast("FWB_FILTER"), nullptr);
 
     xmlSetProp(doc->children, XMLTools::ToXmlCast("version"),
                XMLTools::ToXmlCast( VERSION ));
@@ -146,8 +146,8 @@ void  FilterDialog::save()
     int n=m_dialog->table->rowCount();
     for (int i=0;i<n;i++)
     {
-        node = xmlNewChild(doc->children, NULL,
-                           XMLTools::ToXmlCast("FWB_FILTER_ITEM"), NULL);
+        node = xmlNewChild(doc->children, nullptr,
+                           XMLTools::ToXmlCast("FWB_FILTER_ITEM"), nullptr);
 
         buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,0))->currentIndex());
         xmlSetProp(node,(const xmlChar*)  "Target",
@@ -178,7 +178,7 @@ void  FilterDialog::load()
 
     xmlDocPtr doc=xmlParseFile(s.toLatin1().constData());
     //TODO: use local codepage
-    if (doc == NULL)
+    if (doc == nullptr)
     {
         qDebug("Document not parsed successfully.");
         return;
@@ -186,7 +186,7 @@ void  FilterDialog::load()
 
     xmlNodePtr node= xmlDocGetRootElement(doc);
 
-    if (node == NULL)
+    if (node == nullptr)
     {
         qDebug("empty document");
         xmlFreeDoc(doc);
@@ -215,7 +215,7 @@ void  FilterDialog::load()
 
 
     node=node->xmlChildrenNode;
-    while (node != NULL)
+    while (node != nullptr)
     {
         if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER_ITEM"))
         {

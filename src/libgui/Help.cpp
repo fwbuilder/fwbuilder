@@ -41,10 +41,10 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-Help* Help::help_window = NULL;
+Help* Help::help_window = nullptr;
 
 Help::Help(QWidget *, const QString &title) :
-    QDialog(NULL)
+    QDialog(nullptr)
 {
     m_dialog = new Ui::HelpView_q;
     m_dialog->setupUi(this);
@@ -80,7 +80,7 @@ Help::~Help()
 
 Help* Help::getHelpWindow(QWidget* w)
 {
-    if (help_window == NULL)
+    if (help_window == nullptr)
     {
         help_window = new Help(w, "Firewall Builder");
         help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);

@@ -84,7 +84,7 @@ void genericDialogTest::initTestCase()
     mw->startupLoad();
     mw->resize(1200, 600);
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     init_platforms();
     QTest::qWait(1000);
@@ -114,9 +114,9 @@ QList<QWidget*> genericDialogTest::scanDialog(QWidget *dialog)
 void genericDialogTest::activateTab(QWidget *widget)
 {
     QWidget *current = widget;
-    while (current->parent() != NULL)
+    while (current->parent() != nullptr)
     {
-        if (dynamic_cast<QTabWidget*>(current->parent()) != NULL)
+        if (dynamic_cast<QTabWidget*>(current->parent()) != nullptr)
         {
             QTabWidget *tabs = dynamic_cast<QTabWidget*>(current->parent());
             for (int i=0; i<tabs->count(); i++)
@@ -135,7 +135,7 @@ void genericDialogTest::activateTab(QWidget *widget)
 
 bool genericDialogTest::testControl(QWidget *control)
 {
-    if (dynamic_cast<QSpinBox*>(control) != NULL)
+    if (dynamic_cast<QSpinBox*>(control) != nullptr)
     {
         QSpinBox *box = dynamic_cast<QSpinBox*>(control);
         QTest::keyClick(box, Qt::Key_Up);
@@ -143,7 +143,7 @@ bool genericDialogTest::testControl(QWidget *control)
         QTest::keyClick(box, Qt::Key_Enter);
         QTest::keyClick(box, Qt::Key_Tab);
     }
-    else if (dynamic_cast<QLineEdit*>(control) != NULL)
+    else if (dynamic_cast<QLineEdit*>(control) != nullptr)
     {
         QLineEdit *line = dynamic_cast<QLineEdit*>(control);
         line->clear();
@@ -151,12 +151,12 @@ bool genericDialogTest::testControl(QWidget *control)
         //line->setText(QString("Some text for %1").arg(control->objectName()));
         QTest::keyClick(line, Qt::Key_Enter);
     }
-    else if (dynamic_cast<QCheckBox*>(control) != NULL)
+    else if (dynamic_cast<QCheckBox*>(control) != nullptr)
     {
         QCheckBox *box = dynamic_cast<QCheckBox*>(control);
         QTest::mouseClick(box, Qt::LeftButton, Qt::NoModifier, QPoint(5, 5));
     }
-    else if (dynamic_cast<QRadioButton*>(control) != NULL)
+    else if (dynamic_cast<QRadioButton*>(control) != nullptr)
     {
         QRadioButton *box = dynamic_cast<QRadioButton*>(control);
         // if it is not checked, jut clicking it
@@ -165,11 +165,11 @@ bool genericDialogTest::testControl(QWidget *control)
         else
         {
             QList<QAbstractButton*> buttons;
-            if (box->group() == NULL)
+            if (box->group() == nullptr)
             {
                 foreach(QRadioButton *button, box->parent()->findChildren<QRadioButton*>())
                 {
-                    if (button->group() == NULL)
+                    if (button->group() == nullptr)
                         buttons.append(button);
                 }
 
@@ -199,7 +199,7 @@ bool genericDialogTest::testControl(QWidget *control)
             }
         }
     }
-    else if (dynamic_cast<QComboBox*>(control) != NULL)
+    else if (dynamic_cast<QComboBox*>(control) != nullptr)
     {
         QComboBox *box = dynamic_cast<QComboBox*>(control);
         if (box->count() < 2)
@@ -211,7 +211,7 @@ bool genericDialogTest::testControl(QWidget *control)
         }
         box->setCurrentIndex((box->currentIndex() + 1) % box->count());
     }
-    else if (dynamic_cast<QTextEdit*>(control) != NULL)
+    else if (dynamic_cast<QTextEdit*>(control) != nullptr)
     {
         QTextEdit *edit = dynamic_cast<QTextEdit*>(control);
         QTest::mouseClick(edit, Qt::LeftButton, Qt::NoModifier);
@@ -241,7 +241,7 @@ void genericDialogTest::testDialog(QWidget *dialog, FWObject *object)
         // there should be another one with right type in list
         if (widget->objectName() == "qt_spinbox_lineedit") continue;
 
-        if (dynamic_cast<QDialog*>(dialog) != NULL)
+        if (dynamic_cast<QDialog*>(dialog) != nullptr)
             dynamic_cast<QDialog*>(dialog)->open();
 
         activateTab(widget);
@@ -253,7 +253,7 @@ void genericDialogTest::testDialog(QWidget *dialog, FWObject *object)
                   .arg(widgets.at(i)->objectName()).toLatin1().data());
             continue;
         }
-        if (dynamic_cast<QDialog*>(dialog) != NULL)
+        if (dynamic_cast<QDialog*>(dialog) != nullptr)
             dynamic_cast<QDialog*>(dialog)->accept();
         else
         {
@@ -353,7 +353,7 @@ void genericDialogTest::testNATRuleOptionsDialog()
 
 Library* genericDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")

@@ -108,7 +108,7 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
             QString err = QObject::tr("Missing address for management host or subnet "
                                       "for the temporary ACL.\nPlease enter it in the "
                                       "tab 'Script options' in 'Firewall Settings' dialog");
-            abort(fw, NULL, NULL, err.toStdString());
+            abort(fw, nullptr, nullptr, err.toStdString());
         }
 
         // if templ_acl_addr is ipv4 address, then we can not create this
@@ -166,7 +166,7 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
                     {
                         QString err = QObject::tr("Invalid netmask for management subnet: "
                                                   "'%1'").arg(netmask.c_str());
-                        abort(fw, NULL, NULL, err.toStdString());
+                        abort(fw, nullptr, nullptr, err.toStdString());
                     }
                 }
 
@@ -178,7 +178,7 @@ string CompilerDriver_iosacl::safetyNetInstall(Firewall *fw)
                 {
                     QString err = QObject::tr("Invalid address for management subnet: "
                                               "'%1'").arg(addr.c_str());
-                    abort(fw, NULL, NULL, err.toStdString());
+                    abort(fw, nullptr, nullptr, err.toStdString());
                 }
             }
 

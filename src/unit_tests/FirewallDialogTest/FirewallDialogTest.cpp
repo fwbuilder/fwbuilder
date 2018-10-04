@@ -76,13 +76,13 @@ void FirewallDialogTest::initTestCase()
     QTest::qWait(2000);
 
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
 }
 
 Library* FirewallDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -97,7 +97,7 @@ Library* FirewallDialogTest::findUserLibrary()
 void FirewallDialogTest::rejectDialog()
 {
     QMessageBox *box = dynamic_cast<QMessageBox*>(app->activeModalWidget());
-    Q_ASSERT(box != NULL);
+    Q_ASSERT(box != nullptr);
     box->reject();
 }
 
@@ -113,7 +113,7 @@ void FirewallDialogTest::testDialog()
     QTest::qWait(1000);
 
     FirewallDialog *dialog = mw->findChild<FirewallDialog*>("w_FirewallDialog");
-    QVERIFY(dialog != NULL);
+    QVERIFY(dialog != nullptr);
 
     QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
     TextEditWidget *comment = dialog->findChild<TextEditWidget*>("comment");

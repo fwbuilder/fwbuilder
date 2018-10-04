@@ -88,7 +88,7 @@ namespace fwcompiler {
         public:
                 
             optimize3(const std::string &name) : RoutingRuleProcessor(name){
-                printRule=NULL;
+                printRule=nullptr;
             }
             virtual bool processNext();
         };
@@ -119,7 +119,7 @@ namespace fwcompiler {
         public:
                 
             eliminateDuplicateRules(const std::string &name) : RoutingRuleProcessor(name){
-                printRule=NULL;
+                printRule=nullptr;
             }
             virtual bool processNext();
         };

@@ -105,7 +105,7 @@ void UsageResolver::findWhereUsedRecursively(
     {
         FWObject *parent_obj = *i;
         FWReference  *ref = FWReference::cast(parent_obj);
-        if (ref && RuleElement::cast(ref->getParent()) == NULL)
+        if (ref && RuleElement::cast(ref->getParent()) == nullptr)
         {
             // NB! We need parent of this ref for regular groups There
             // is no need to repeat search for the parent if it is
@@ -138,7 +138,7 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
     QTime tt;
     tt.start();
     FWObject *f=o;
-    while (f!=NULL && !Firewall::cast(f)) f=f->getParent();
+    while (f!=nullptr && !Firewall::cast(f)) f=f->getParent();
     if (f) fws.push_back(Firewall::cast(f));
 
     findWhereUsedRecursively(o, db, resset, db);
@@ -178,18 +178,18 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
         if (Cluster::isA(obj)) fws.push_back(Firewall::cast(obj));
 
         FWReference  *ref = FWReference::cast(*i);
-        if (ref && RuleElement::cast(ref->getParent()) != NULL)
+        if (ref && RuleElement::cast(ref->getParent()) != nullptr)
         {
             obj = ref->getParent();
         }
 
         Rule *r = Rule::cast(obj);
-        if (r == NULL) r = Rule::cast(obj->getParent());
+        if (r == nullptr) r = Rule::cast(obj->getParent());
 
         if (r && !r->isDisabled())
         {
             f = r;
-            while (f!=NULL && Firewall::cast(f) == NULL) f = f->getParent();
+            while (f!=nullptr && Firewall::cast(f) == nullptr) f = f->getParent();
             if (f && std::find(fws.begin(), fws.end(), f) == fws.end())
             {
                 fws.push_back(Firewall::cast(f));
@@ -199,7 +199,7 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
             // branch
 
             RuleSet *ruleset = RuleSet::cast(r->getParent());
-            assert(ruleset != NULL);
+            assert(ruleset != nullptr);
             modified_rule_sets.insert(ruleset);
         }
     }
@@ -307,7 +307,7 @@ void UsageResolver::humanizeSearchResults(std::set<FWObject *> &resset)
                      << obj->getName().c_str()
                      << " (" << obj->getTypeName().c_str() << ")";
         FWReference  *ref = FWReference::cast(*i);
-        if (ref && RuleElement::cast(ref->getParent()) == NULL)
+        if (ref && RuleElement::cast(ref->getParent()) == nullptr)
         {
             obj = ref->getParent();  // NB! We need parent of this ref for groups
         } else

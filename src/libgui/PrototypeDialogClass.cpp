@@ -51,7 +51,7 @@ void PrototypeDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Prototype *s = dynamic_cast<Prototype*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 

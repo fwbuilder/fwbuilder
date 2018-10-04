@@ -75,7 +75,7 @@ void AttachedNetworks::addNetworkObject(const InetAddrMask &addr_mask)
     const InetAddr *ip_addr = addr_mask.getAddressPtr();
     const InetAddr *ip_netm = addr_mask.getNetmaskPtr();
 
-    FWObject *new_obj = NULL;
+    FWObject *new_obj = nullptr;
 
     if (ip_addr->isV4())
     {
@@ -146,7 +146,7 @@ void AttachedNetworks::loadFromSource(bool ipv6, FWOptions*, bool)
 string AttachedNetworks::getSourceName()
 {
     Interface *parent = Interface::cast(getParent());
-    assert(parent!=NULL);
+    assert(parent!=nullptr);
     return parent->getName();
 }
 

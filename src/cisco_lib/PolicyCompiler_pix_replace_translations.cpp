@@ -41,7 +41,7 @@ using namespace std;
 
 bool PolicyCompiler_pix::matchTranslatedAddresses::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     string version = compiler->fw->getStr("version");
 
@@ -60,21 +60,21 @@ bool PolicyCompiler_pix::matchTranslatedAddresses::processNext()
                 FWObject *o1  = *i1;
                 FWObject *o2  = *i2;
                 FWObject *o3  = *i3;
-                FWObject *obj1 = NULL;
-                FWObject *obj2 = NULL;
-                FWObject *obj3 = NULL;
+                FWObject *obj1 = nullptr;
+                FWObject *obj2 = nullptr;
+                FWObject *obj3 = nullptr;
 
                 obj1 = FWReference::getObject(o1);
                 Address *src = Address::cast(obj1);
-                assert(src!=NULL);
+                assert(src!=nullptr);
 
                 obj2 = FWReference::getObject(o2);
                 Address *dst = Address::cast(obj2);
-                assert(dst!=NULL);
+                assert(dst!=nullptr);
 
                 obj3 = FWReference::getObject(o3);
                 Service *srv = Service::cast(obj3);
-                assert(srv!=NULL);
+                assert(srv!=nullptr);
 
                 list<NATRule*> tl = findMatchingNATRules(src, dst, srv);
 

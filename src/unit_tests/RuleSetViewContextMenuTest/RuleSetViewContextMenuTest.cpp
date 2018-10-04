@@ -62,7 +62,7 @@ void RuleSetViewContextMenuTest::initTestCase()
         mw->resize(1024, 768);
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "testFirewall"));
     firewall->setStr("platform", "iptables");
@@ -76,7 +76,7 @@ void RuleSetViewContextMenuTest::initTestCase()
  */
 void RuleSetViewContextMenuTest::openPolicy(QString fwname)
 {
-    Policy *p = NULL;
+    Policy *p = nullptr;
     foreach (FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == fwname.toStdString())
@@ -84,7 +84,7 @@ void RuleSetViewContextMenuTest::openPolicy(QString fwname)
             p = Firewall::cast(fw)->getPolicy();
         }
     }
-    QVERIFY (p != NULL);
+    QVERIFY (p != nullptr);
     QCoreApplication::postEvent(mw, new openRulesetImmediatelyEvent(mw->activeProject()->getFileName(), p->getId()));
     QTest::qWait(100);
 }
@@ -94,7 +94,7 @@ void RuleSetViewContextMenuTest::openPolicy(QString fwname)
  */
 Library* RuleSetViewContextMenuTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -115,7 +115,7 @@ QPoint findActionPos(QMenu *menu, QAction *action)
     int x = menu->width()/2;
     for (int y=0; y<menu->height(); y++)
     {
-        if (menu->actionAt(QPoint(x,y)) != NULL && menu->actionAt(QPoint(x,y))->text() == action->text())
+        if (menu->actionAt(QPoint(x,y)) != nullptr && menu->actionAt(QPoint(x,y))->text() == action->text())
             return QPoint(x,y);
     }
     return QPoint(-1,-1);
@@ -135,7 +135,7 @@ void RuleSetViewContextMenuTest::clickMenuItem(QString item)
 void RuleSetViewContextMenuTest::actuallyClickMenuItem()
 {
     QMenu *menu = dynamic_cast<QMenu*>(app->activePopupWidget());
-    Q_ASSERT(menu != NULL);
+    Q_ASSERT(menu != nullptr);
     foreach(QAction *action, menu->actions())
     {
         if (action->text() == itemToClick)
@@ -207,7 +207,7 @@ void RuleSetViewContextMenuTest::createGroup(QString name)
 void RuleSetViewContextMenuTest::actuallyCreateGroup()
 {
     QInputDialog *dlg = dynamic_cast<QInputDialog*>(app->activeModalWidget());
-    Q_ASSERT(dlg != NULL);
+    Q_ASSERT(dlg != nullptr);
     QLineEdit *name = dlg->findChild<QLineEdit*>();
     QTest::keyClicks(name, groupToCreate);
     dlg->accept();

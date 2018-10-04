@@ -50,7 +50,7 @@ AddressObjectMaker::~AddressObjectMaker() {}
 
 FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
 {
-    FWObject *obj = NULL;
+    FWObject *obj = nullptr;
 
     if (sig.type_name == AddressRange::TYPENAME)
         obj = createAddressRange(sig);
@@ -61,7 +61,7 @@ FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
     if (sig.type_name == DNSName::TYPENAME)
         obj = createDNSName(sig);
 
-    if (obj == NULL)
+    if (obj == nullptr)
         obj = createAddress(sig);
 
     // Now I should build new signature because actual object type has
@@ -72,11 +72,11 @@ FWObject* AddressObjectMaker::createObject(ObjectSignature &sig)
     if ( ! sig.object_name.isEmpty())
     {
         obj->setName(sig.object_name.toUtf8().constData());
-        obj->dispatch(&new_sig, (void*)(NULL));
+        obj->dispatch(&new_sig, (void*)(nullptr));
         registerNamedObject(new_sig, obj);
     } else
     {
-        obj->dispatch(&new_sig, (void*)(NULL));
+        obj->dispatch(&new_sig, (void*)(nullptr));
         registerAnonymousObject(new_sig, obj);
     }
 
@@ -150,7 +150,7 @@ FWObject* AddressObjectMaker::createAddress(ObjectSignature &sig)
 
         return net;
     }
-    return NULL;
+    return nullptr;
 }
 
 FWObject* AddressObjectMaker::createAddressRange(ObjectSignature &sig)
@@ -195,7 +195,7 @@ FWObject* AddressObjectMaker::createAddressTable(ObjectSignature &sig)
     AddressTable *at =  AddressTable::cast(
         ObjectMaker::createObject(AddressTable::TYPENAME,
                                   sig.object_name.toUtf8().constData()));
-    assert(at!=NULL);
+    assert(at!=nullptr);
     at->setRunTime(true);
     at->setSourceName(sig.address_table_name.toStdString());
     return at;
@@ -209,7 +209,7 @@ FWObject* AddressObjectMaker::createDNSName(ObjectSignature &sig)
     DNSName *dns_obj =  DNSName::cast(
         ObjectMaker::createObject(DNSName::TYPENAME,
                                   sig.object_name.toUtf8().constData()));
-    assert(dns_obj!=NULL);
+    assert(dns_obj!=nullptr);
     dns_obj->setRunTime(true);
     dns_obj->setSourceName(sig.dns_name.toStdString());
     return dns_obj;

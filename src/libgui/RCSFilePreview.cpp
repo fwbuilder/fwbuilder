@@ -90,7 +90,7 @@ RCSFilePreview::RCSFilePreview(QWidget *parent): QDialog(parent)
 RCSFilePreview::~RCSFilePreview()
 {
     if (fwbdebug) qDebug("~RCSFilePreview()  rcs=%p", rcs);
-//    if (rcs!=NULL) delete rcs;
+//    if (rcs!=nullptr) delete rcs;
     st->setRCSFilePreviewSortColumn(m_widget->RCSTreeView->sortColumn());
 }
 

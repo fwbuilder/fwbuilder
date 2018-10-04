@@ -179,7 +179,7 @@ void IC_ProgressPage::cleanupPage()
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(importerFinished()));
     if (importer != nullptr && importer->isRunning()) importer->stop();
-//    if (importer != NULL && importer->isRunning()) importer->wait();
+//    if (importer != nullptr && importer->isRunning()) importer->wait();
 }
 
 void IC_ProgressPage::importerFinished()
@@ -195,7 +195,7 @@ void IC_ProgressPage::importerFinished()
 
     QString platform = wz->platform;
 
-    if (fw) // fw can be NULL if import was uncussessful
+    if (fw) // fw can be nullptr if import was uncussessful
     {
         QString fwName = field("firewallName").toString();
         fw->setName(fwName.toUtf8().constData());
@@ -219,7 +219,7 @@ void IC_ProgressPage::importerFinished()
 
     } else
     {
-        // fw == NULL
+        // fw == nullptr
         // normally, wizard would have one more page, but since fw was not
         // created, this page should be the last
         setFinalPage(true);

@@ -136,7 +136,7 @@ public:
 
     void openRuleSet(libfwbuilder::FWObject *obj, bool immediately=false);
     void closeRuleSet(libfwbuilder::FWObject *obj)
-    { if ((libfwbuilder::FWObject*)(visibleRuleSet)==obj) visibleRuleSet=NULL;};
+    { if ((libfwbuilder::FWObject*)(visibleRuleSet)==obj) visibleRuleSet=nullptr;};
     
     ProjectPanel(QWidget *parent);
     ~ProjectPanel();
@@ -172,12 +172,12 @@ public:
 
     libfwbuilder::FWObject* createObject(const QString &objType,
                                          const QString &objName,
-                                         libfwbuilder::FWObject *copyFrom=NULL);
+                                         libfwbuilder::FWObject *copyFrom=nullptr);
 
     libfwbuilder::FWObject* createObject(libfwbuilder::FWObject *parent,
                                          const QString &objType,
                                          const QString &objName,
-                                         libfwbuilder::FWObject *copyFrom=NULL);
+                                         libfwbuilder::FWObject *copyFrom=nullptr);
 
     void updateObjectInTree(libfwbuilder::FWObject *obj, bool subtree=false);
 

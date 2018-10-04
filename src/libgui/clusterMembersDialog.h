@@ -112,7 +112,7 @@ private:
      * @return pointer to new cluster object
      */
     ClusterMember* createMember(libfwbuilder::Firewall *fw,
-                                libfwbuilder::Interface *cluster_iface = NULL,
+                                libfwbuilder::Interface *cluster_iface = nullptr,
                                 bool master = false);
 
     /**

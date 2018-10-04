@@ -135,7 +135,7 @@ void expand_interface_with_phys_address(Compiler *compiler,
     }
 
 /* 
- * if pa==NULL then this is trivial case: there is no physical address
+ * if pa==nullptr then this is trivial case: there is no physical address
  */
     if (pa==nullptr)
     {

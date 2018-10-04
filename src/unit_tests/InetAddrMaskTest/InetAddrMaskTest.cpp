@@ -115,7 +115,7 @@ void InetAddrMaskTest::testStringToInetAddrExceptions()
 
     CPPUNIT_ASSERT_THROW(new InetAddr(40), FWException);
     CPPUNIT_ASSERT_NO_THROW(new InetAddr(24));
-    CPPUNIT_ASSERT_THROW(new InetAddr((char*)(NULL)), FWException);
+    CPPUNIT_ASSERT_THROW(new InetAddr((char*)(nullptr)), FWException);
     CPPUNIT_ASSERT_NO_THROW(new InetAddr(0));
 }
 

@@ -93,9 +93,9 @@ OSConfigurator_secuwall::OSConfigurator_secuwall(FWObjectDatabase *_db,
     for (list<FWObject *>::iterator it = fw_ifaces.begin(); it != fw_ifaces.end(); it++)
     {
         Interface *iface = Interface::cast(*it);
-        assert(NULL != iface);
+        assert(nullptr != iface);
         /* Check if it is a management interface */
-        if (!iface->getName().empty() && (NULL != iface->getAddressObject()))
+        if (!iface->getName().empty() && (nullptr != iface->getAddressObject()))
         {
             m_ifaces.push_back(iface);
         }
@@ -117,7 +117,7 @@ void OSConfigurator_secuwall::processFirewallOptions()
         abort("Unable to create directory structure");
 
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     /* Do ssh key generation if not disabled. */
     if (!options->getBool("secuwall_no_ssh_key_generation"))
@@ -178,7 +178,7 @@ bool OSConfigurator_secuwall::createDirStructure() const
 int OSConfigurator_secuwall::generateManagementFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, mgm_ip, vrrp_secret, stream_string, snmp_ip;
     bool vrrp_master = false;
@@ -305,7 +305,7 @@ int OSConfigurator_secuwall::generateManagementFile()
         {
             FWOptions *failover_opts =
                 FailoverClusterGroup::cast(failover_group)->getOptionsObject();
-            if (failover_group->getStr("type") == "vrrp" && failover_opts != NULL)
+            if (failover_group->getStr("type") == "vrrp" && failover_opts != nullptr)
             {
                 vrrp_secret = failover_opts->getStr("vrrp_secret").c_str();
                 vrrp_master = iface->getOptionsObject()->getBool("failover_master");;
@@ -363,7 +363,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 int OSConfigurator_secuwall::generateNetworkFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     FWObject *routes = fw->getFirstByType(Routing::TYPENAME);
     assert(routes);
@@ -374,7 +374,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
     QTextStream stream (&stream_string);
 
     /* Default route */
-    RoutingRule* defaultRoute = NULL;
+    RoutingRule* defaultRoute = nullptr;
 
     /* Prepend static content */
     stream << "NETWORKING=yes" << endl;
@@ -393,23 +393,23 @@ int OSConfigurator_secuwall::generateNetworkFile()
 
     }
 
-    if (defaultRoute != NULL)
+    if (defaultRoute != nullptr)
     {
         RuleElementRItf* itfrel = defaultRoute->getRItf();
         RuleElementRGtw* gtwrel = defaultRoute->getRGtw();
 
         FWObject *oRGtw = FWReference::cast(gtwrel->front())->getPointer();
-        assert(oRGtw != NULL);
+        assert(oRGtw != nullptr);
         FWObject *oRItf = FWReference::cast(itfrel->front())->getPointer();
-        assert(oRItf != NULL);
+        assert(oRItf != nullptr);
 
         /* Extract Gateway IP address */
-        if (Host::cast(oRGtw) != NULL)
+        if (Host::cast(oRGtw) != nullptr)
         {
             Host *host=Host::cast(oRGtw);
             gwAddress = host->getAddressPtr()->toString().c_str();
         }
-        else if (Interface::cast(oRGtw) != NULL)
+        else if (Interface::cast(oRGtw) != nullptr)
         {
             Interface *intf=Interface::cast(oRGtw);
             gwAddress = intf->getAddressPtr()->toString().c_str();
@@ -469,7 +469,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
 int OSConfigurator_secuwall::generateHostsFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, stream_string;
 
@@ -496,7 +496,7 @@ int OSConfigurator_secuwall::generateHostsFile()
 int OSConfigurator_secuwall::generateDNSFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, stream_string;
 
@@ -537,7 +537,7 @@ int OSConfigurator_secuwall::generateDNSFile()
 int OSConfigurator_secuwall::generateNsswitchFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, stream_string;
 
@@ -595,7 +595,7 @@ int OSConfigurator_secuwall::generateNsswitchFile()
 
 int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string name, IPv4 * ip_address, int iface_number)
 {
-    FWOptions* options = NULL;
+    FWOptions* options = nullptr;
     ifaceType itype = ifNotDefined;
     QString s;
 
@@ -603,7 +603,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     QString stream_string;
     QTextStream stream(&stream_string);
 
-    assert(iface != NULL);
+    assert(iface != nullptr);
 
     /* fallback for name of the interface */
     if (name.empty())
@@ -620,7 +620,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         itype = ALIAS;
     }
-    else if (options == NULL || options->getStr("type").empty())
+    else if (options == nullptr || options->getStr("type").empty())
     {
         itype = ETHERNET;
     }
@@ -630,7 +630,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     }
 
     /* shortcut: unconfigured ethernet devices just exist, they don't need a config file */
-    if ((itype == ETHERNET) && (ip_address == NULL) && (iface->getAddressObject() == NULL))
+    if ((itype == ETHERNET) && (ip_address == nullptr) && (iface->getAddressObject() == nullptr))
         return 0;
 
     /* Interface name */
@@ -653,11 +653,11 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     stream << "\"" << endl;
 
     /* Address object contains host, network and broadcast address plus netmask */
-    const Address* ipAddr = NULL;
-    if (ip_address != NULL)
+    const Address* ipAddr = nullptr;
+    if (ip_address != nullptr)
         ipAddr = ip_address->getAddressObject();
 
-    if (ipAddr != NULL)
+    if (ipAddr != nullptr)
     {
         /* Interface IP Address */
         stream << "IPADDR=\"";
@@ -682,7 +682,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
     /* Activate on bootup */
     stream << "ONBOOT=\"";
-    if (options != NULL && options->getBool("iface_disableboot"))
+    if (options != nullptr && options->getBool("iface_disableboot"))
     {
         stream << "no";
     }
@@ -694,7 +694,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
     /* Link */
     stream << "LINK=\"";
-    if (options != NULL)
+    if (options != nullptr)
     {
         stream << options->getStr("iface_options").c_str();
     }
@@ -703,7 +703,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     /* MAC-Address */
     stream << "MACADDR=\"";
     physAddress* macAddr = iface->getPhysicalAddress();
-    if (macAddr != NULL)
+    if (macAddr != nullptr)
     {
         stream << macAddr->getPhysAddress().c_str();
     }
@@ -712,7 +712,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     /* MTU */
     s.clear();
     stream << "MTU=\"";
-    if (options == NULL || (s = options->getStr("iface_mtu").c_str()).isEmpty())
+    if (options == nullptr || (s = options->getStr("iface_mtu").c_str()).isEmpty())
     {
         /* TODO: Extract magic value */
         /* Set to "sane" default: "1500" */
@@ -723,7 +723,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
     /* Activate ARP */
     stream << "ARP=\"";
-    if (options != NULL && options->getBool("iface_disablearp"))
+    if (options != nullptr && options->getBool("iface_disablearp"))
     {
         stream << "no";
     }
@@ -758,7 +758,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
             for (list<FWObject *>::iterator it = basedevs.begin(); it != basedevs.end(); it++)
             {
                 Interface *iface = Interface::cast(*it);
-                assert(NULL != iface);
+                assert(nullptr != iface);
                 if (!(iface->getName().empty()))
                 {
                     devs.push_back(iface->getName());
@@ -774,7 +774,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
         break;
 
     case VLAN:
-        if (options == NULL || options->getStr("vlan_id").empty())
+        if (options == nullptr || options->getStr("vlan_id").empty())
         {
             abort("No VLAN id specified for " + name);
         }
@@ -783,7 +783,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
         stream << options->getStr("vlan_id").c_str();
         stream << "\"" << endl;
 
-        if (iface->getParent() == NULL || iface->getParent()->getName().empty())
+        if (iface->getParent() == nullptr || iface->getParent()->getName().empty())
         {
             /* No base device provided */
             abort("No base device specified for " + name);
@@ -868,7 +868,7 @@ int OSConfigurator_secuwall::generateInterfaces()
         FWOptions *options = (*it)->getOptionsObject();
 
         /* rename handling for our vrrp "devices" */
-        if ((options != NULL) && options->getBool("cluster_interface"))
+        if ((options != nullptr) && options->getBool("cluster_interface"))
         {
             ifname = "vrrp" + ::toString(vrrp_count++);
         }

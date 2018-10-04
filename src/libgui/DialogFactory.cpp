@@ -214,7 +214,7 @@ BaseObjectDialog *DialogFactory::createDialog(QWidget *parent, const QString &ob
     if (objType==PolicyRule::TYPENAME)    return new RuleOptionsDialog(parent);
     if (objType==NATRule::TYPENAME)       return new NATRuleOptionsDialog(parent);
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -224,13 +224,13 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
     string host_os = o->getStr("host_OS");
 
     Resources* platform_res = Resources::platform_res[platform];
-    if (platform_res==NULL)
+    if (platform_res==nullptr)
         throw FWException(
             (const char*)(QObject::tr("Support module for %1 is not available").
                           arg(platform.c_str()).toLocal8Bit().constData()));
 
     Resources* os_res = Resources::os_res[host_os];
-    if (os_res==NULL)
+    if (os_res==nullptr)
         throw FWException(
             (const char*)(QObject::tr("Support module for %1 is not available").
                           arg(host_os.c_str()).toLocal8Bit().constData()));
@@ -259,7 +259,7 @@ QWidget *DialogFactory::createFWDialog(QWidget *parent, FWObject *o)
 
     cerr << "Firewall settings dialog for " << dlgname
          << " is not implemented" << endl;
-    return NULL;
+    return nullptr;
 }
 
 
@@ -268,7 +268,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     string host_os = o->getStr("host_OS");
 
     Resources *os = Resources::os_res[host_os];
-    if (os==NULL)
+    if (os==nullptr)
         throw FWException(
             (const char*)(QObject::tr("Support module for %1 is not available").
                           arg(host_os.c_str()).toLocal8Bit().constData()));
@@ -294,7 +294,7 @@ QWidget *DialogFactory::createOSDialog(QWidget *parent,FWObject *o)
     cerr << "OS settings dialog for " << dlgname
          << " is not implemented" << endl;
 
-    return NULL;
+    return nullptr;
 }
 
 QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
@@ -304,7 +304,7 @@ QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
 
     string host_OS = h->getStr("host_OS");
     Resources *os = Resources::os_res[host_OS];
-    if (os==NULL)
+    if (os==nullptr)
         throw FWException((const char*)(
                               QObject::tr("Support module for %1 is not available").
                               arg(host_OS.c_str()).toLocal8Bit().constData()));
@@ -324,7 +324,7 @@ QWidget *DialogFactory::createIfaceDialog(QWidget *parent,FWObject *o)
     cerr << "Interface settings dialog for OS " << host_OS
          << " is not implemented" << endl;
 
-    return NULL;
+    return nullptr;
 }
 
 QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
@@ -345,7 +345,7 @@ QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
     cerr << "Cluster configuration dialog for OS " << host_OS
          << " is not implemented" << endl;
 
-    return NULL;
+    return nullptr;
 }
 
 /*
@@ -356,12 +356,12 @@ QWidget *DialogFactory::createClusterConfDialog(QWidget *parent, FWObject *o)
 QString DialogFactory::getClusterGroupOptionsDialogName(FWObject *o)
 {
     FWObject *cluster_group = o->getParent();
-    assert(ClusterGroup::cast(cluster_group)!=NULL);
+    assert(ClusterGroup::cast(cluster_group)!=nullptr);
 
     string type = ClusterGroup::cast(cluster_group)->getStr("type");
 
     FWObject *fw = o;
-    while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
+    while (fw && Firewall::cast(fw)==nullptr) fw = fw->getParent();
     if (fw)
     {
         string host_OS = fw->getStr("host_OS");
@@ -387,7 +387,7 @@ QWidget *DialogFactory::createClusterGroupOptionsDialog(
     if (dlgname == "openais")  return new openaisOptionsDialog(parent, o);
 
     // Add more cluster group options dialog here
-    return NULL;
+    return nullptr;
 }
 
 string DialogFactory::getActionDialogPageName(Firewall *fw, Rule *rule)

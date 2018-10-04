@@ -86,7 +86,7 @@ SSHSession::SSHSession(QWidget *_par,
     send_keepalive = false;
     session_completed = false;
 
-    proc = NULL;
+    proc = nullptr;
     retcode = 0;
     heartBeatTimer = new QTimer(this);
     connect(heartBeatTimer, SIGNAL(timeout()), this, SLOT(heartBeat()) );
@@ -278,7 +278,7 @@ void SSHSession::terminate()
 
     stopHeartBeat();
 
-    if (proc != NULL)
+    if (proc != nullptr)
     {
         if (proc->state() == QProcess::Running)
         {
@@ -288,7 +288,7 @@ void SSHSession::terminate()
             // this processes events and lets QProcess send signal finished()
             // in case user hit Cancel at just right time when background process
             // already exited but QProcess has not noticed this yet.
-            if (proc != NULL)
+            if (proc != nullptr)
                 proc->waitForFinished(100);
         }
 
@@ -296,14 +296,14 @@ void SSHSession::terminate()
         // waitForFinished(), the signal has been processed in
         // SSHSession::finished and proc has already been deleted.
 
-        if (proc == NULL)
+        if (proc == nullptr)
         {
-            if (fwbdebug) qDebug("SSHSession::terminate   proc==NULL");
+            if (fwbdebug) qDebug("SSHSession::terminate   proc==nullptr");
             return;
         }
 
 #ifdef _WIN32
-        if (proc->pid() != NULL)
+        if (proc->pid() != nullptr)
 #else
         if (proc->pid() != -1)
 #endif
@@ -336,7 +336,7 @@ void SSHSession::terminate()
                              << "waiting for it to finish";
 
                 int time_to_wait = 20;
-                for (int timeout = 0; proc != NULL &&
+                for (int timeout = 0; proc != nullptr &&
                          proc->state() == QProcess::Running &&
                          timeout < time_to_wait;
                      timeout++)
@@ -359,14 +359,14 @@ void SSHSession::terminate()
                         QEventLoop::ExcludeUserInputEvents,1);
 
                     // check if proc is still running after we processed events
-                    if (proc != NULL) proc->waitForFinished(1000);
+                    if (proc != nullptr) proc->waitForFinished(1000);
                 }
 
-                // proc can be NULL at this point if it had sent signal finished()
+                // proc can be nullptr at this point if it had sent signal finished()
                 // which we processed in the call to waitForFinished() above
-                if (proc == NULL)
+                if (proc == nullptr)
                 {
-                    if (fwbdebug) qDebug("SSHSession::terminate   proc==NULL");
+                    if (fwbdebug) qDebug("SSHSession::terminate   proc==nullptr");
                     return;
                 }
 
@@ -401,7 +401,7 @@ void SSHSession::terminate()
             }
 
             delete proc;
-            proc = NULL;
+            proc = nullptr;
             retcode = -1;
         }
     }
@@ -687,7 +687,7 @@ void SSHSession::cleanUp()
                this, SLOT(finished(int) ) );
 
     delete proc;
-    proc = NULL;
+    proc = nullptr;
 }
 
 void SSHSession::finished(int retcode)

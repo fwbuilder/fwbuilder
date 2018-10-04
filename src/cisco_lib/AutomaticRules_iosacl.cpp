@@ -50,7 +50,7 @@ using namespace std;
 
 void AutomaticRules_iosacl::addSshAccessRule()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     FWOptions *fwopt = fw->getOptionsObject();
 
@@ -76,7 +76,7 @@ void AutomaticRules_iosacl::addSshAccessRule()
 
         addMgmtRule(
             fw, mgmt_workstation, ssh_rev,
-            NULL, PolicyRule::Outbound, PolicyRule::Accept,
+            nullptr, PolicyRule::Outbound, PolicyRule::Accept,
             "backup ssh access rule (out)");
     }
 }

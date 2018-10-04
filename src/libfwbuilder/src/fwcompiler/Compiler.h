@@ -425,7 +425,7 @@ public:
             protected:
             libfwbuilder::FWObject *obj;
             public:
-            equalObj(){obj=NULL;}
+            equalObj(){obj=nullptr;}
             virtual ~equalObj() {}
             void set(libfwbuilder::FWObject *o) {obj=o;}
             virtual bool operator()(libfwbuilder::FWObject *o);
@@ -438,8 +438,8 @@ public:
             equalObj *comparator;
             public:
             eliminateDuplicatesInRE(const std::string &n,const std::string _type):
-                BasicRuleProcessor(n) { re_type=_type; comparator=NULL; }
-            ~eliminateDuplicatesInRE() { if (comparator!=NULL) delete comparator; }
+                BasicRuleProcessor(n) { re_type=_type; comparator=nullptr; }
+            ~eliminateDuplicatesInRE() { if (comparator!=nullptr) delete comparator; }
             virtual bool processNext();
         };
 

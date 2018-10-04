@@ -62,7 +62,7 @@ LibraryDialog::LibraryDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::LibraryDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
     //layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     Qt::WindowFlags flags = windowFlags();
@@ -82,7 +82,7 @@ void LibraryDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Library *s = dynamic_cast<Library*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );

@@ -298,7 +298,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                                               FWObject *obj,
                                               std::map<int,int> &map_ids)
 {
-    //FWObject *res = NULL;
+    //FWObject *res = nullptr;
 
     FWObject *ta = prepareForInsertion(target, obj);
     if (ta == nullptr) return nullptr;

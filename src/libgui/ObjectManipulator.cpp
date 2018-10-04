@@ -600,7 +600,7 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     if (!getCurrentObjectTree()->isSelected(otvi->getFWObject()))
         openObjectInTree( otvi, true );
 
-    //if (currentObj==NULL)  currentObj=otvi->getFWObject();
+    //if (currentObj==nullptr)  currentObj=otvi->getFWObject();
     FWObject *currentObj = getSelectedObject();
 
     if (item->childCount() > 0)
@@ -1004,7 +1004,7 @@ bool ObjectManipulator::getDeleteMenuState(FWObject *obj)
     if (del_menu_item_state && RuleSet::cast(obj))
     {
         Firewall *fw = Firewall::cast(obj->getParent());
-        // fw can be NULL if this ruleset is in the Deleted objects
+        // fw can be nullptr if this ruleset is in the Deleted objects
         // library
         if (fw==nullptr) return del_menu_item_state;
         list<FWObject*> child_objects = fw->getByType(obj->getTypeName());
@@ -1106,7 +1106,7 @@ void ObjectManipulator::getMenuState(bool haveMoveTargets,
                  i!=FWObjectClipboard::obj_clipboard->end(); ++i)
             {
                 FWObject *co= m_project->db()->findInIndex(i->first);
-                if (co==NULL)
+                if (co==nullptr)
                 {
                     continue ;
                     //QString s2 = obj->getTypeName().c_str();
@@ -1354,7 +1354,7 @@ bool ObjectManipulator::switchObjectInEditor(FWObject *obj)
 
 void ObjectManipulator::closeObject()
 {
-    //currentObj = NULL;
+    //currentObj = nullptr;
     if (mw->isEditorVisible()) mw->hideEditor();
 }
 
@@ -1377,7 +1377,7 @@ void ObjectManipulator::selectionChanged(QTreeWidgetItem *cur)
                          obj->getName().c_str());
 
     FWObject *o = obj;
-    //if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    //if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
     if (history.empty() || otvi != getCurrentHistoryItem() )
     {

@@ -336,7 +336,7 @@ void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
     if (options->getBool("generate_rc_conf_file"))
     {
         FWOptions *ifopt = iface->getOptionsObject();
-        assert(ifopt != NULL);
+        assert(ifopt != nullptr);
 
         bool enable_stp = ifopt->getBool("enable_stp");
 

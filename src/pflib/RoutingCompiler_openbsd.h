@@ -137,7 +137,7 @@ namespace fwcompiler
         {
             have_default_route = false;
             defined_restore_script_output = false;
-            printRule = NULL;
+            printRule = nullptr;
         }
 
         virtual void verifyOS();

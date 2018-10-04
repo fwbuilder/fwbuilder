@@ -34,9 +34,9 @@
 
 
 int fwbdebug = 0;
-void *mw = NULL;
-void *st = NULL;
-void *app = NULL;
+void *mw = nullptr;
+void *st = nullptr;
+void *app = nullptr;
 void *wfl;
 int sig = FWB_SIG;
 

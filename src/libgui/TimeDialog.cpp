@@ -61,7 +61,7 @@ TimeDialog::TimeDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::TimeDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -75,7 +75,7 @@ void TimeDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Interval *s = dynamic_cast<Interval*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
@@ -209,7 +209,7 @@ void TimeDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     Interval *interval = dynamic_cast<Interval*>(new_state);
-    assert(interval!=NULL);
+    assert(interval!=nullptr);
 
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     m_dialog->commentKeywords->applyChanges(new_state);

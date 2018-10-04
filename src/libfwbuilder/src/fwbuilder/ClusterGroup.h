@@ -69,7 +69,7 @@ public:
          * If @this is cluster interface and it is correctly
          * configured with member interfaces, this method returns
          * pointer to interface that belongs to the given member
-         * firewall. Otherwise it returns NULL.
+         * firewall. Otherwise it returns nullptr.
          */
         Interface* getInterfaceForMemberFirewall(Firewall *fw);
     };

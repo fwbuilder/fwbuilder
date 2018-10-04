@@ -310,8 +310,8 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         if (i>=m_objectManipulator->libs->count())
         {
 //            if (fwbdebug)
-//                qDebug("ObjectManipulator::createObject   return NULL");
-//            return NULL;
+//                qDebug("ObjectManipulator::createObject   return nullptr");
+//            return nullptr;
             lib  = getCurrentLib();
             break;
         }

@@ -411,7 +411,7 @@ namespace fwcompiler
 		       libfwbuilder::Firewall *fw,
                        bool ipv6_policy,
 		       fwcompiler::OSConfigurator *_oscnf,
-                       TableFactory *tbf = NULL
+                       TableFactory *tbf = nullptr
         ) : NATCompiler(_db, fw, ipv6_policy, _oscnf)
         {
             tables = tbf;

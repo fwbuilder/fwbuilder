@@ -57,7 +57,7 @@ using namespace std;
  */
 bool NATCompiler_pf::doOSrcNegation::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementOSrc *osrcrel=rule->getOSrc();
 
@@ -94,7 +94,7 @@ bool NATCompiler_pf::doOSrcNegation::processNext()
  */
 bool NATCompiler_pf::doODstNegation::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementODst *odstrel=rule->getODst();
 
@@ -132,7 +132,7 @@ bool NATCompiler_pf::doODstNegation::processNext()
  */
 bool NATCompiler_pf::doOSrvNegation::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementOSrv *osrvrel=rule->getOSrv();
 

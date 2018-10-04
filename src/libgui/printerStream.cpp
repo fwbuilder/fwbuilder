@@ -151,7 +151,7 @@ int printerStream::getWorkspaceHeight()
 void printerStream::beginPage()
 {
     yPos=0;
-    if (ppd!=NULL) ppd->setCurrentPageNo(pageNo);
+    if (ppd!=nullptr) ppd->setCurrentPageNo(pageNo);
 
     if (printHeader)
     {
@@ -366,7 +366,7 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
 
         int top_hdr_h = 0;
         Q_UNUSED(top_hdr_h);
-        if (top_margin && tbl->header() != NULL)
+        if (top_margin && tbl->header() != nullptr)
             top_hdr_h = tbl->header()->height();
 
         int tblWidth = columnsWidth + left_hdr_w;
@@ -470,12 +470,12 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         bottom_row = row;
 
         int left_hdr_w = 0;
-        if (left_margin && tbl->verticalHeader() != NULL)
+        if (left_margin && tbl->verticalHeader() != nullptr)
             left_hdr_w = tbl->verticalHeader()->width();
 
         int top_hdr_h = 0;
         Q_UNUSED(top_hdr_h);
-        if (top_margin && tbl->horizontalHeader() != NULL)
+        if (top_margin && tbl->horizontalHeader() != nullptr)
             top_hdr_h = tbl->horizontalHeader()->height();
 
         int tblWidth = columnsWidth + left_hdr_w;

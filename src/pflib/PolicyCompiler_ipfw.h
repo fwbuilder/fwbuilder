@@ -246,7 +246,7 @@ namespace fwcompiler {
                             libfwbuilder::Firewall *fw,
                             bool ipv6_policy,
 			   fwcompiler::OSConfigurator *_oscnf) :
-        PolicyCompiler_pf(_db, fw, ipv6_policy, _oscnf, NULL)
+        PolicyCompiler_pf(_db, fw, ipv6_policy, _oscnf, nullptr)
         {
             ipfw_num = 0;
         }

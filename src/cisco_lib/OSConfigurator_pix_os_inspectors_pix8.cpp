@@ -63,7 +63,7 @@ string OSConfigurator_pix_os::_printPolicyMapTypeInspect()
     string version = fw->getStr("version");
     string vers = "version_" + version;
     FWOptions *options = fw->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     // first, generate commands for ip-options
 

@@ -54,20 +54,20 @@ class ObjectListViewItem : public QTreeWidgetItem {
 
     ObjectListViewItem(QTreeWidget *parent) : QTreeWidgetItem(parent)
     {
-        db = NULL;
+        db = nullptr;
         ID = -1;
     }
 
     ObjectListViewItem(QTreeWidgetItem *parent) : QTreeWidgetItem(parent)
     {
-        db = NULL;
+        db = nullptr;
         ID = -1;
     }
 
     libfwbuilder::FWObject *getFWObject() const
     {
         if (ID > -1) return db->getById(ID, true);
-        else return NULL;
+        else return nullptr;
     }
     
     int getFWObjectID() {return ID; }

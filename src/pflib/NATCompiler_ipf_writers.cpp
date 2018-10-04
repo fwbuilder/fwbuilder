@@ -63,7 +63,7 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
     FWOptions* options=compiler->fw->getOptionsObject();
 
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-    if (atrt!=NULL)
+    if (atrt!=nullptr)
     {
         if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
         {
@@ -75,10 +75,10 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
         // to MultiAddressRunTime at this point. If we get some other
         // kind of MultiAddressRunTime object, we do not know what to do
         // with it so we stop.
-        assert(atrt==NULL);
+        assert(atrt==nullptr);
     }
 
-    if (Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
+    if (Interface::cast(o)!=nullptr && Interface::cast(o)->isDyn()) 
     {
         if (options->getBool("dynAddr"))
             compiler->output << "(" << o->getName() << ") ";
@@ -93,7 +93,7 @@ void NATCompiler_ipf::PrintRule::_printAddr_L(Address  *o, bool print_netmask)
     {
         InetAddr mask = *(o->getNetmaskPtr());
 
-        if (Interface::cast(o)!=NULL && ! Interface::cast(o)->isDyn()) 
+        if (Interface::cast(o)!=nullptr && ! Interface::cast(o)->isDyn()) 
             mask = InetAddr(InetAddr::getAllOnes());
 
         if (o->dimension()==1)
@@ -120,7 +120,7 @@ void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
 
     // check for the case when dynamic interface is used in TSrc (or when
     // interface in TSrc just has no IP address )
-    if (Interface::cast(o) != NULL && (addr==NULL || addr->isAny()))
+    if (Interface::cast(o) != nullptr && (addr==nullptr || addr->isAny()))
     {
         compiler->output  << "0/32 ";
         return;
@@ -130,7 +130,7 @@ void NATCompiler_ipf::PrintRule::_printAddr_R(Address  *o, bool print_netmask)
     {
         InetAddr mask = *(o->getNetmaskPtr)();
 
-        if (Interface::cast(o) != NULL)
+        if (Interface::cast(o) != nullptr)
             mask = InetAddr(InetAddr::getAllOnes());
 
         if (o->dimension()==1)
@@ -155,8 +155,8 @@ void NATCompiler_ipf::PrintRule::_printAddr_R_LB(RuleElementTDst *tdst)
     for(list<FWObject*>::iterator i=tdst->begin(); i!=tdst->end(); ++i) 
     {
         FWObject *o= *i;
-	FWObject *obj = NULL;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+	FWObject *obj = nullptr;
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
 
         Address *a=Address::cast(obj);
 
@@ -212,7 +212,7 @@ NATCompiler_ipf::PrintRule::PrintRule(const std::string &name) : NATCompiler_pf:
 
 bool NATCompiler_ipf::PrintRule::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -229,7 +229,7 @@ bool NATCompiler_ipf::PrintRule::processNext()
     string iface_name;
 
     RuleElementItfOutb *itf_re = rule->getItfOutb();
-    assert(itf_re!=NULL);
+    assert(itf_re!=nullptr);
     if ( ! itf_re->isAny())
         iface_name = FWObjectReference::getObject(itf_re->front())->getName();
 

@@ -176,7 +176,7 @@ using namespace std;
 using namespace Ui;
 
 
-FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
+FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(nullptr, Qt::Desktop),
                        m_space(0),
                        previous_subwindow(0),
                        instd(0),
@@ -195,7 +195,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     //setCentralWidget(m_space);
 
-    psd = NULL;
+    psd = nullptr;
 
     prepareFileOpenRecentMenu();
     setCompileAndInstallActionsEnabled(false);
@@ -208,13 +208,13 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 #endif
 
     findObjectWidget = new FindObjectWidget(
-        m_mainWindow->find_panel, NULL, "findObjectWidget");
+        m_mainWindow->find_panel, nullptr, "findObjectWidget");
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
     m_mainWindow->find_panel->layout()->addWidget( findObjectWidget );
     findObjectWidget->show();
 
     findWhereUsedWidget = new FindWhereUsedWidget(
-        m_mainWindow->find_panel, NULL, "findWhereUsedWidget");
+        m_mainWindow->find_panel, nullptr, "findWhereUsedWidget");
     findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
     m_mainWindow->find_panel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
@@ -399,7 +399,7 @@ void FWWindow::openRecentFile()
         QString file_path = action->data().toString();
         if (fwbdebug) qDebug() << "Open recently opened file " << file_path;
         QMdiSubWindow* sw = alreadyOpened(file_path);
-        if (sw != NULL)
+        if (sw != nullptr)
         {
             // activate window with this file
             m_mainWindow->m_space->setActiveSubWindow(sw);
@@ -470,17 +470,17 @@ ProjectPanel* FWWindow::activeProject()
 {
     QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
         QMdiArea::StackingOrder);
-    if (subwindows.size() == 0) return NULL;
+    if (subwindows.size() == 0) return nullptr;
     QMdiSubWindow *w = subwindows.last(); // last item is the topmost window
 
     // QMdiSubWindow *w = m_mainWindow->m_space->currentSubWindow();
     // if (w) return dynamic_cast<ProjectPanel*>(w->widget());
     // if (fwbdebug)
-    //     qDebug() << "FWWindow::activeProject(): currentSubWindow() returns NULL, trying activeSubWindow()";
+    //     qDebug() << "FWWindow::activeProject(): currentSubWindow() returns nullptr, trying activeSubWindow()";
     // w = m_mainWindow->m_space->activeSubWindow();
 
     if (w) return dynamic_cast<ProjectPanel*>(w->widget());
-    return NULL;
+    return nullptr;
 }
 
 void FWWindow::updateWindowTitle()
@@ -666,7 +666,7 @@ void FWWindow::fileOpen()
                            << "Absolute file path: " << file_path;
 
     QMdiSubWindow* sw = alreadyOpened(file_name);
-    if (sw != NULL)
+    if (sw != nullptr)
     {
         if (fwbdebug) qDebug() << "This file is already opened";
         // activate window with this file
@@ -711,13 +711,13 @@ QMdiSubWindow* FWWindow::alreadyOpened(const QString &file_name)
     foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
     {
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             if (fwbdebug) qDebug() << "Opened file" << pp->getFileName();
             if (pp->getFileName() == file_path) return sw;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
@@ -730,7 +730,7 @@ bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
     ProjectPanel *proj = newProjectPanel();
     if (proj->loadFile(file_name, load_rcs_head)) {
         if (oldProj != 0 && oldProj->getFileName().isEmpty() &&
-            (oldProj->db() == NULL || !oldProj->db()->isDirty())) {
+            (oldProj->db() == nullptr || !oldProj->db()->isDirty())) {
             oldProj->fileClose();
         }
         showSub(proj);
@@ -784,7 +784,7 @@ void FWWindow::fileExit()
 
             ProjectPanel * project =
                 dynamic_cast<ProjectPanel*>(subWindowList[i]->widget());
-            if (project!=NULL)
+            if (project!=nullptr)
             {
                 if (!project->saveIfModified() ||
                     !project->checkin(true))  return; // aborted
@@ -928,7 +928,7 @@ void FWWindow::prepareFileMenu()
     }
 
     bool real_file_opened = (activeProject()->getFileName() != "");
-    bool in_rcs = (activeProject()->getRCS() != NULL &&
+    bool in_rcs = (activeProject()->getRCS() != nullptr &&
                    activeProject()->getRCS()->isCheckedOut());
     bool needs_saving = (db() && db()->isDirty());
 
@@ -940,7 +940,7 @@ void FWWindow::prepareFileMenu()
 
     FWObject *lib = activeProject()->getCurrentLib();
     bool f = (
-        lib == NULL ||
+        lib == nullptr ||
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
         lib->isReadOnly()
@@ -1013,7 +1013,7 @@ void FWWindow::prepareWindowsMenu()
         windowsPainters.push_back (subWindowList[i]);
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
             subWindowList[i]->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             if (fwbdebug) qDebug("FWWindow::prepareWindowsMenu() pp=%p", pp);
 
@@ -1042,7 +1042,7 @@ QStringList FWWindow::getListOfOpenedFiles()
     for (int i = 0 ; i < subWindowList.size(); i++)
     {
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             res.push_back(pp->getFileName()); // full path
         }
@@ -1067,7 +1067,7 @@ void FWWindow::activatePreviousSubWindow()
  */
 void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
 {
-    if (subwindow==NULL) return;
+    if (subwindow==nullptr) return;
 
     if (fwbdebug)
         qDebug() << "FWWindow::subWindowActivated"
@@ -1140,7 +1140,7 @@ void FWWindow::closeEvent(QCloseEvent* ev)
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
             subWindowList[i]->widget());
 
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             if (!pp->saveIfModified())
             {
@@ -1187,7 +1187,7 @@ bool FWWindow::event(QEvent *event)
                      << "event:"
                      << ev->getEventName()
                      << "object:"
-                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "<NULL>");
+                     << ((obj!=nullptr) ? QString::fromUtf8(obj->getName().c_str()) : "<nullptr>");
 
         switch (event->type() - QEvent::User)
         {
@@ -1233,7 +1233,7 @@ bool FWWindow::event(QEvent *event)
             foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
             {
                 ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
-                if (pp!=NULL)
+                if (pp!=nullptr)
                 {
                     // string returned by getPageTitle() may also
                     // include RCS revision number. Compare only
@@ -1335,7 +1335,7 @@ void FWWindow::minimize()
             ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
                 subWindowList[i]->widget());
 
-            if (pp!=NULL)
+            if (pp!=nullptr)
             {
                 pp->loadState(false);
             }
@@ -1360,7 +1360,7 @@ void FWWindow::updateTreeFont ()
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             std::vector<QTreeWidget*> trees = pp->m_panel->om->getTreeWidgets();
             for (unsigned int o = 0 ; o < trees.size(); o++)
@@ -1441,32 +1441,32 @@ void FWWindow::enableBackAction()
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
     // Find firewall object tree item
-    FWObject* firewall = NULL;
+    FWObject* firewall = nullptr;
     foreach(QTreeWidgetItem* item,
             project->getCurrentObjectTree()->findItems(fwname,
                                      Qt::MatchExactly | Qt::MatchRecursive, 0))
     {
-        if (Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=NULL)
+        if (Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=nullptr)
         {
             firewall = dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject();
             break;
         }
     }
-    if (firewall == NULL) return;
+    if (firewall == nullptr) return;
 
     FWObject::const_iterator i =
         find_if(firewall->begin(), firewall->end(),
                 FWObjectNameEQPredicate(string(setname.toUtf8().constData())));
     if (i==firewall->end()) return;
     RuleSet *set = RuleSet::cast(*i);
-    if (set == NULL) return;
+    if (set == nullptr) return;
 
     QCoreApplication::postEvent(
         mw, new openRulesetImmediatelyEvent(project->getFileName(),
                                             set->getId()));
 
     FWObject *ruleObject = set->getRuleByNum(rule);
-    if (ruleObject == NULL) return;
+    if (ruleObject == nullptr) return;
 
     QCoreApplication::postEvent(mw, new selectRuleElementEvent(project->getFileName(),
                                  ruleObject->getId(),
@@ -1485,7 +1485,7 @@ void FWWindow::updateGlobalToolbar()
     if (pp)
     {
         list<Firewall *> fws;
-	if (pp->db() != NULL) pp->findAllFirewalls(fws);
+	if (pp->db() != nullptr) pp->findAllFirewalls(fws);
         setCompileAndInstallActionsEnabled(fws.size() != 0);
     } else
         setCompileAndInstallActionsEnabled(false);

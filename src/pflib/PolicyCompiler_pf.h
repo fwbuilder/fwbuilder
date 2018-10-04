@@ -420,7 +420,7 @@ namespace fwcompiler
                           bool ipv6_policy,
 			  fwcompiler::OSConfigurator *_oscnf,
                           const std::list<NATCompiler_pf::redirectRuleInfo> *rri,
-                          TableFactory *tbf = NULL) :
+                          TableFactory *tbf = nullptr) :
         PolicyCompiler(_db, fw, ipv6_policy, _oscnf) 
         {
             redirect_rules_info = rri;

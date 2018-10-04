@@ -57,7 +57,7 @@ HostDialog::HostDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::HostDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -71,12 +71,12 @@ void HostDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Host *s = dynamic_cast<Host*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
     Management *mgmt=s->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     FWOptions  *opt =s->getOptionsObject();
 
@@ -145,10 +145,10 @@ void HostDialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     Host *s = dynamic_cast<Host*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     Management *mgmt = s->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     FWOptions  *opt =s->getOptionsObject();
 

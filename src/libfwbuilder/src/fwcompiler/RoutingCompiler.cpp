@@ -74,7 +74,7 @@ int RoutingCompiler::prolog()
     Routing *routing = Routing::cast(fw->getFirstByType(Routing::TYPENAME));
     assert(routing);
 
-    if (source_ruleset == NULL) source_ruleset = routing;
+    if (source_ruleset == nullptr) source_ruleset = routing;
 
     source_ruleset->renumberRules();
 
@@ -87,7 +87,7 @@ int RoutingCompiler::prolog()
     for (FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
 	Rule *r = Rule::cast(*i);
-        if (r == NULL) continue; // skip RuleSetOptions object
+        if (r == nullptr) continue; // skip RuleSetOptions object
 
         if (r->getLabel().empty())
             r->setLabel( createRuleLabel("", "main", r->getPosition()) );
@@ -169,7 +169,7 @@ string RoutingCompiler::debugPrintRule(Rule *r)
 
 bool RoutingCompiler::ExpandMultipleAddresses::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementRDst *dst = rule->getRDst();    assert(dst);
@@ -182,7 +182,7 @@ bool RoutingCompiler::ExpandMultipleAddresses::processNext()
 
 bool RoutingCompiler::ConvertToAtomicForDST::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
 
     //RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementRDst *dst=rule->getRDst();    assert(dst);
@@ -206,7 +206,7 @@ bool RoutingCompiler::ConvertToAtomicForDST::processNext()
 
 bool RoutingCompiler::ExpandGroups::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementRDst *dst=rule->getRDst();   assert(dst);
@@ -217,7 +217,7 @@ bool RoutingCompiler::ExpandGroups::processNext()
 
 bool RoutingCompiler::emptyRDstAndRItf::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     
     
@@ -238,7 +238,7 @@ bool RoutingCompiler::emptyRDstAndRItf::processNext()
 
 bool RoutingCompiler::singleAdressInRGtw::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     
     RuleElementRGtw *gtwrel=rule->getRGtw();
@@ -259,13 +259,13 @@ bool RoutingCompiler::singleAdressInRGtw::processNext()
 // recursive network validity check
 bool RoutingCompiler::validateNetwork::checkValidNetwork(FWObject *o)
 {
-    if( Network::cast(o) != NULL)
+    if( Network::cast(o) != nullptr)
     {
         return ((Network *)o)->isValidRoutingNet();
     }
 
     /* if we have a group containing networks and groups, we want to check them too */
-    if( ObjectGroup::cast(o) != NULL)
+    if( ObjectGroup::cast(o) != nullptr)
     {
         FWObjectTypedChildIterator child_i =
             o->findByType(FWObjectReference::TYPENAME);
@@ -280,13 +280,13 @@ bool RoutingCompiler::validateNetwork::checkValidNetwork(FWObject *o)
             ObjectGroup *group;
             
             // Network
-            if ((network=Network::cast(child)) != NULL)
+            if ((network=Network::cast(child)) != nullptr)
             {
                 if (checkValidNetwork(network) == false)
                 {
                     return false;
                 }
-            } else if ((group=ObjectGroup::cast(child)) != NULL)
+            } else if ((group=ObjectGroup::cast(child)) != nullptr)
             { // Group
                 if (checkValidNetwork(group) == false)
                 {
@@ -302,7 +302,7 @@ bool RoutingCompiler::validateNetwork::checkValidNetwork(FWObject *o)
 // Invalid routing destination network: network address and netmask mismatch. 
 bool RoutingCompiler::validateNetwork::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     
     tmp_queue.push_back(rule);
     
@@ -337,7 +337,7 @@ bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *
     list<FWObject*> interfaces = compiler->fw->getByTypeDeep(Interface::TYPENAME);
     list<FWObject*>::iterator intf;
 
-    if( Host::cast(o) != NULL)
+    if( Host::cast(o) != nullptr)
     {
         Host *host=Host::cast(o);
         const InetAddr *ip_host = host->getAddressPtr();
@@ -362,7 +362,7 @@ bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *
         }
         return false;
 
-    } else if( Interface::cast(o) != NULL)
+    } else if( Interface::cast(o) != nullptr)
     {
         Interface *gw_interface=Interface::cast(o);
         const InetAddr *ip_gateway = gw_interface->getAddressPtr();
@@ -390,7 +390,7 @@ bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *
         }
         return false;
 
-    } else if( IPv4::cast(o) != NULL)
+    } else if( IPv4::cast(o) != nullptr)
     {
         IPv4 *ipv4=IPv4::cast(o);
         const InetAddr *ip_ipv4 = ipv4->getAddressPtr();
@@ -424,7 +424,7 @@ bool RoutingCompiler::reachableAddressInRGtw::checkReachableIPAddress(FWObject *
 //  the IP address of the gateway has to be in a local network of the firewall
 bool RoutingCompiler::reachableAddressInRGtw::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     
     RuleElementRGtw *gtwrel=rule->getRGtw();
@@ -445,7 +445,7 @@ bool RoutingCompiler::reachableAddressInRGtw::processNext()
 // the IP address of the gateway RGtw has to be in a network of the interface RItf
 bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     
     tmp_queue.push_back(rule);
     
@@ -458,18 +458,18 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
     if (oRItf->getName() == "Any") { return true; }
     
     
-    if (Host::cast(oRGtw) != NULL ||
-        Interface::cast(oRGtw) != NULL ||
+    if (Host::cast(oRGtw) != nullptr ||
+        Interface::cast(oRGtw) != nullptr ||
         Address::cast(oRGtw)->dimension()==1)
     {
 
-        const InetAddr* ip_interface = NULL;
+        const InetAddr* ip_interface = nullptr;
 
-        if ( Host::cast(oRGtw) != NULL)
+        if ( Host::cast(oRGtw) != nullptr)
         {
             Host *host=Host::cast(oRGtw);
             ip_interface = host->getAddressPtr();
-        } else if (Interface::cast(oRGtw) != NULL)
+        } else if (Interface::cast(oRGtw) != nullptr)
         {
             Interface *intf=Interface::cast(oRGtw);
             ip_interface = intf->getAddressPtr();
@@ -505,7 +505,7 @@ bool RoutingCompiler::contradictionRGtwAndRItf::processNext()
 
 bool RoutingCompiler::interfaceOrGateway::processNext()
 {
-    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+    RoutingRule *rule = getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     
     RuleElementRItf *itfrel = rule->getRItf();
@@ -523,7 +523,7 @@ bool RoutingCompiler::interfaceOrGateway::processNext()
 
 bool RoutingCompiler::rItfChildOfFw::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     
     RuleElementRItf *itfrel = rule->getRItf();
@@ -617,7 +617,7 @@ bool RoutingCompiler::sameDestinationDifferentGateways::processNext()
 
 bool RoutingCompiler::competingRules::processNext()
 {
-    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+    RoutingRule *rule = getNext(); if (rule==nullptr) return false;
         
     RuleElementRItf *itfrel = rule->getRItf();
     FWObject *itf = FWReference::cast(itfrel->front())->getPointer();
@@ -737,8 +737,8 @@ bool RoutingCompiler::competingRules::processNext()
 bool RoutingCompiler::classifyRoutingRules::processNext()
 {
 
-    assert(compiler!=NULL);
-    assert(prev_processor!=NULL);
+    assert(compiler!=nullptr);
+    assert(prev_processor!=nullptr);
 
     slurp();
 
@@ -818,7 +818,7 @@ bool RoutingCompiler::classifyRoutingRules::processNext()
 
 bool RoutingCompiler::createSortedDstIdsLabel::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     
     tmp_queue.push_back(rule);
     
@@ -857,15 +857,15 @@ bool RoutingCompiler::createSortedDstIdsLabel::processNext()
  */
 bool RoutingCompiler::processMultiAddressObjectsInRE::processNext()
 {
-    RoutingRule *rule = getNext(); if (rule==NULL) return false;
+    RoutingRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        if (atrt!=nullptr && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             compiler->abort(
                 rule, 
                 "Run-time AddressTable objects are not supported.");

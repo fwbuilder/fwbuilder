@@ -54,7 +54,7 @@ IPv4Dialog::IPv4Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -68,7 +68,7 @@ void IPv4Dialog::loadFWObject(FWObject *o)
 {
     obj=o;
     IPv4 *s = dynamic_cast<IPv4*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     dnsBusy=false;
     init=true;
@@ -137,14 +137,14 @@ void IPv4Dialog::validate(bool *result)
     }
 
     IPv4 *s = dynamic_cast<IPv4*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     try
     {
         InetAddr( m_dialog->address->text().trimmed().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *result = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -165,7 +165,7 @@ void IPv4Dialog::validate(bool *result)
             if (!nm.isValidV4Netmask())
             {
                 *result = false;
-                if (QApplication::focusWidget() != NULL)
+                if (QApplication::focusWidget() != nullptr)
                 {
                     blockSignals(true);
                     // Do not allow netmask with zeroes inside.
@@ -182,7 +182,7 @@ void IPv4Dialog::validate(bool *result)
         } catch (FWException &ex)
         {
             *result = false;
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 blockSignals(true);
                 QMessageBox::critical(
@@ -203,7 +203,7 @@ void IPv4Dialog::applyChanges()
     FWObject* new_state = cmd->getNewState();
 
     IPv4 *s = dynamic_cast<IPv4*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     new_state->setName(m_dialog->obj_name->text().toUtf8().constData());
     m_dialog->commentKeywords->applyChanges(new_state);
@@ -258,7 +258,7 @@ void IPv4Dialog::DNSlookup()
         if ( Interface::isA(obj->getParent()) )
         {
             FWObject *host = obj->getParent()->getParent();
-            assert(host!=NULL);
+            assert(host!=nullptr);
             name = host->getName().c_str();
 
             if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s",

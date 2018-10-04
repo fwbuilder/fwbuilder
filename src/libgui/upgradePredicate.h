@@ -36,7 +36,7 @@ class MessageBoxUpgradePredicate: public libfwbuilder::XMLTools::UpgradePredicat
 {
     QWidget *parent;
  public:
-    MessageBoxUpgradePredicate(QWidget *p=NULL) { parent=p; }
+    MessageBoxUpgradePredicate(QWidget *p=nullptr) { parent=p; }
     
     virtual bool operator()(const std::string&) const 
     { 

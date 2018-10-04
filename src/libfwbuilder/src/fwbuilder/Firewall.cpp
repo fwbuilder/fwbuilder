@@ -255,7 +255,7 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
                 FWObject *dst_subinterface_copy =
                     dst_interface_copy->addCopyOf(src_subinterface, preserve_id);
 
-                if (src_subinterface!=NULL && dst_subinterface_copy!=NULL)
+                if (src_subinterface!=nullptr && dst_subinterface_copy!=nullptr)
                     id_mapping[src_subinterface->getId()] = dst_subinterface_copy->getId();
             }
 

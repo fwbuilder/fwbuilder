@@ -73,7 +73,7 @@ using namespace fwcompiler;
 
 int fwbdebug = 0;
 
-FWObjectDatabase       *objdb = NULL;
+FWObjectDatabase       *objdb = nullptr;
 
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
         objdb->setFileName("");
         FWObjectDatabase *ndb = new FWObjectDatabase();
         ndb->load(filename, &upgrade_predicate,  Constants::getDTDDirectory());
-        objdb->merge(ndb, NULL);
+        objdb->merge(ndb, nullptr);
         delete ndb;
         objdb->setFileName(filename);
         objdb->reIndex();

@@ -46,11 +46,11 @@ bool DNSTest::testDNSNameObject(FWObjectDatabase *objdb, FWObject *root,
                        char* results[])
 {
     list<std::string> expected_results;
-    for (char** cptr=results; *cptr!=NULL; ++cptr)
+    for (char** cptr=results; *cptr!=nullptr; ++cptr)
         expected_results.push_back(*cptr);
 
     FWObject *nobj = objdb->create(DNSName::TYPENAME);
-    if (root != NULL)
+    if (root != nullptr)
     {
         root->add(nobj);
     }
@@ -103,10 +103,10 @@ void DNSTest::runTest()
     o1->add(root);
 
     InetAddr addr;
-    char* test1[] = {"localhost", "127.0.0.1", NULL};
+    char* test1[] = {"localhost", "127.0.0.1", nullptr};
     CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
 
-    char* test2[] = {"www.fwbuilder.org","70.85.175.170", NULL};
+    char* test2[] = {"www.fwbuilder.org","70.85.175.170", nullptr};
     CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
 
     char* test3[] = {"www.microsoft.com",
@@ -116,7 +116,7 @@ void DNSTest::runTest()
                      "207.46.19.254",
                      "207.46.192.254",
                      "207.46.193.254",
-                     NULL};
+                     nullptr};
 
     CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
 }

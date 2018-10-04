@@ -64,7 +64,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     this->m_ui->name->setText(interfacep->getName().c_str());
     this->m_ui->label->setText(interfacep->getLabel().c_str());
 
-//    if (iface->getPhysicalAddress() != NULL)
+//    if (iface->getPhysicalAddress() != nullptr)
 //       m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
 
     this->m_ui->comment->setPlainText(iface->getComment().c_str());
@@ -188,7 +188,7 @@ InterfaceEditorWidget::~InterfaceEditorWidget()
 int InterfaceEditorWidget::addNewAddress()
 {
     int row = this->m_ui->addresses->rowCount();
-    fwaddrs[row] = NULL;
+    fwaddrs[row] = nullptr;
     this->m_ui->addresses->insertRow(row);
     QTableWidgetItem *addrItem = new QTableWidgetItem();
     QTableWidgetItem *netItem = new QTableWidgetItem();
@@ -263,7 +263,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
         for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
         {
             AddressInfo info;
-            if (rows[i].first == NULL) continue; // deleted row
+            if (rows[i].first == nullptr) continue; // deleted row
             info.address = rows[i].first->text();
             info.netmask = rows[i].second->text();
             info.ipv4 = types[i]->currentIndex() == 0;
@@ -358,7 +358,7 @@ bool InterfaceEditorWidget::isValid()
 
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
-        if (types[i] == NULL) continue; // deleted row
+        if (types[i] == nullptr) continue; // deleted row
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
         if ( !validateAddress(
