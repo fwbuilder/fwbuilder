@@ -61,6 +61,7 @@
 #include <zlib.h>
 
 #include <iostream>
+#include <memory>
 
 #undef FW_XMLTOOLS_VERBOSE
 // #define FW_XMLTOOLS_VERBOSE 1
@@ -251,8 +252,9 @@ string XMLTools::readFile(const std::string &rfile)
     gzFile gzf = gzopen(rfile.c_str(), "rb9");
     if (gzf == nullptr) throw FWException("Could not read file "+rfile);
 
-    int chunk_size = 65536;
-    char *chunk = (char*)malloc(chunk_size);
+    unsigned int chunk_size = 65536;
+    std::unique_ptr<char[]> chunk_storage(new char[chunk_size]);
+    char *chunk = chunk_storage.get();
     if (!chunk) throw FWException("Out of memory");
 
     int  n = 0;
@@ -264,7 +266,6 @@ string XMLTools::readFile(const std::string &rfile)
         buf = buf + chunk;
     }
     int errn = errno;
-    free(chunk);
     gzclose(gzf);
 
     if (n<0)

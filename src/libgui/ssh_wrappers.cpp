@@ -239,16 +239,6 @@ ssize_t writen(int fd,const void *vptr, size_t n)
     return n;
 }
 
-
-#ifndef strndup
-char* strndup(const char* s,int n)
-{
-    char *tbuf = (char*)malloc(n);
-    if (tbuf) memcpy(tbuf,s,n);
-    return tbuf;
-}
-#endif
-
 void catch_sign(int sig)
 {
     if (fwbdebug) 

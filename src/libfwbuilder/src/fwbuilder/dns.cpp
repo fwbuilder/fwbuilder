@@ -78,9 +78,6 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
     DNS::init();
 
     struct hostent *hp;
-    size_t hstbuflen = 1024; 
-    char *tmphstbuf = (char *)malloc(hstbuflen);
-
     gethostbyaddr_mutex->lock();
     if (type==AF_INET)
     {
@@ -97,7 +94,6 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
     if(hp==nullptr)
     {
         gethostbyaddr_mutex->unlock();
-        free(tmphstbuf);
         throw FWException(string("Hostname of address: '") + 
                           addr.toString() + "' not found");
     } 
@@ -105,8 +101,6 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
     v.name = hp->h_name;
     if (hp->h_aliases)
         for(char **p = hp->h_aliases; *p; p++) v.aliases.insert(string(*p));
-
-    free(tmphstbuf);
 
     gethostbyaddr_mutex->unlock();
     return v;
