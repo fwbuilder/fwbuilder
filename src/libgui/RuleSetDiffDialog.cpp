@@ -159,7 +159,7 @@ void RuleSetDiffDialog::updateRuleSetView() {
 
     if (!currentRuleSet || !originalRuleSet) return;
 
-    RuleSetModel *currentRuleSetModel, *originalRuleSetModel;
+    RuleSetModel *currentRuleSetModel = nullptr, *originalRuleSetModel = nullptr;
 
     if (Policy::isA(currentRuleSet)) {
         currentRuleSetModel = new PolicyModel(Policy::cast(currentRuleSet), this);

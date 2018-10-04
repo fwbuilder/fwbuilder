@@ -957,7 +957,7 @@ void PIXImporter::commitNamedICMPServiceObject()
 
 void PIXImporter::commitNamedTCPUDPServiceObject()
 {
-    FWObject *obj;
+    FWObject *obj = nullptr;
     // have to use createTCPService because it processes "neq" port
     // operators and may create a group with two services nstead of
     // just tcp service. Same for udp.

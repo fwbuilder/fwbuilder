@@ -180,7 +180,7 @@ eth4      Link encap:Ethernet  HWaddr 00:0C:29:F6:BE:BE
 
             for (intf=it->second.begin(); intf!=it->second.end(); ++intf)
             {
-                linux24Interfaces::interface_type itype;
+                linux24Interfaces::interface_type itype{};
 
                 if ((*intf)->name.find("bond") == 0 &&
                     (*intf)->name.find(".") == string::npos)
