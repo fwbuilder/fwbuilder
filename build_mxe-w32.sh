@@ -66,9 +66,38 @@ compile()
     fi
 }
 
+prepare_w32_bin()
+{
+    pushd "release/install-root"
+    if [ -d "w32-bin" ]
+    then
+        popd
+        return
+    fi
+
+    mkdir "w32-bin"
+    pushd "w32-bin"
+
+    mkdir "rcs"
+    pushd "rcs"
+    wget  "www.cs.purdue.edu/homes/trinkle/RCS/rcs57pc1.zip"
+    unzip "rcs57pc1.zip"
+    popd
+
+    mkdir "putty"
+    pushd "putty"
+    wget  "http://the.earth.li/~sgtatham/putty/latest/x86/plink.exe"
+    wget  "http://the.earth.li/~sgtatham/putty/latest/x86/pscp.exe"
+    popd
+
+    popd
+    popd
+}
+
 package()
 {
     echo "==> Packaging"
+    prepare_w32_bin
     makensis release/install-root/fwbuilder.nsi
     if [ $? -eq 0 ]; then
         echo "==> Done packaging"

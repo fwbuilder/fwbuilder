@@ -286,17 +286,17 @@ Section "FWBuilder (required)"
 
 ; Install RCS for these files
 ;
-  File "w32-bin\ci.exe"
-  File "w32-bin\co.exe"
-  File "w32-bin\rcs.exe"
-  File "w32-bin\rcsdiff.exe"
-  File "w32-bin\rlog.exe"
-  File "w32-bin\diff.exe"
-  File "w32-bin\rcslib.dll"
+  File "w32-bin/rcs/bin/win32/ci.exe"
+  File "w32-bin/rcs/bin/win32/co.exe"
+  File "w32-bin/rcs/bin/win32/diff.exe"
+  File "w32-bin/rcs/bin/win32/rcs.exe"
+  File "w32-bin/rcs/bin/win32/rcsdiff.exe"
+  File "w32-bin/rcs/bin/win32/rcslib.dll"
+  File "w32-bin/rcs/bin/win32/rlog.exe"
 
 ;; Starting with 4.0.2, we now package putty tools with fwbuilder
-  File "w32-bin\plink.exe"
-  File "w32-bin\pscp.exe"
+  File "w32-bin/putty/plink.exe"
+  File "w32-bin/putty/pscp.exe"
 
 
 ; Write the installation path into the registry
