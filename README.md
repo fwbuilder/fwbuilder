@@ -23,6 +23,7 @@ run the following apt-get install command to install the compile requirements:
  sudo apt-get install git automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools
  git clone https://github.com/fwbuilder/fwbuilder.git
  cd fwbuilder
+ git checkout 5.3 # to build the current release version (which provides autogen.sh script)
  ./autogen.sh
  make
  sudo make install
