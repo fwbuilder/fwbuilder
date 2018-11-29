@@ -219,7 +219,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
     #elif defined(__GNUG__)
     [[gnu::fallthrough]];
     #endif
-#else
+#elif __GNUC__ >= 7
     __attribute__ ((fallthrough));
 #endif
     case NATRule::Redirect: 

@@ -197,7 +197,7 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
     #elif defined(__GNUG__)
     [[gnu::fallthrough]];
     #endif
-#else
+#elif __GNUC__ >= 7
     __attribute__ ((fallthrough));
 #endif
 
@@ -224,7 +224,7 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
     #elif defined(__GNUG__)
     [[gnu::fallthrough]];
     #endif
-#else
+#elif __GNUC__ >= 7
     __attribute__ ((fallthrough));
 #endif
     case 3:   // icmp type

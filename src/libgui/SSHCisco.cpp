@@ -333,7 +333,7 @@ void SSHCisco::stateMachine()
     #elif defined(__GNUG__)
     [[gnu::fallthrough]];
     #endif
-#else
+#elif __GNUC__ >= 7
     __attribute__ ((fallthrough));
 #endif
     case ENABLE:
