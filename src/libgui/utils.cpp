@@ -310,7 +310,7 @@ void setDisabledPalette(QWidget *w)
 
     pal.setCurrentColorGroup( QPalette::Normal );
 
-    QColor textColor = Qt::black
+    QColor textColor = Qt::black;
     if ( qGray(pal.color(QPalette::Window).rgba()) < 100) {
         textColor = Qt::white;
     }
