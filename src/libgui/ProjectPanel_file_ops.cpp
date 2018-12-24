@@ -957,6 +957,12 @@ void ProjectPanel::loadStandardObjects()
         objdb->load( Constants::getStandardObjectsFilePath(),
                      &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName("");
+        if ( qGray(palette().color(QPalette::Window).rgba()) < 100) {
+            FWObject *stdLib = objdb->findObjectByName(Library::TYPENAME, "Standard");
+            stdLib->setReadOnly(false);
+            stdLib->setStr("color", "#0a0f1f");
+            objdb->setDirty(false);
+        }
 
         if (fwbdebug) qDebug("ProjectPanel::load(): create User library");
 
