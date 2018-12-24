@@ -963,7 +963,13 @@ void ProjectPanel::loadStandardObjects()
         FWObject *userLib = FWBTree().createNewLibrary(objdb);
 
         userLib->setName("User");
-        userLib->setStr("color","#d2ffd0");
+        if ( qGray(palette().color(QPalette::Window).rgba()) < 100) {
+            // Window is using a dark palette, so we default to a very dark green for background
+            userLib->setStr("color","#0a1f08");
+        } else {
+            // Window is using a light palette, so we default to a light green background
+            userLib->setStr("color","#d2ffd0");
+        }
 
         objdb->setDirty(false);
         objdb->setFileName("");
