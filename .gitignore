@@ -30,7 +30,6 @@ qmake.inc
 .moc
 .ui
 qtdbus_test
-fwbedit
 qrc_MainRes.cpp
 fwb_iosacl
 fwb_nxosacl
@@ -59,3 +58,5 @@ default/
 debug/
 release/
 *.qbs.user
+build/
+CMakeLists.txt.user
