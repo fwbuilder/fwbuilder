@@ -12,23 +12,17 @@ Installation instructions
 
 Ubuntu
 ---------
-
-The instructions are inspired by the well-meaning but out of date instructions available from the fwbuilder.org website: http://www.fwbuilder.org/4.0/docs/users_guide5/compile_from_source.shtml
-
-run the following apt-get install command to install the compile requirements:
-
 ```
- sudo apt-get install git automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools
+ sudo apt install git cmake libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools
  git clone https://github.com/fwbuilder/fwbuilder.git
- cd fwbuilder
- ./autogen.sh
+ mkdir build
+ cd build
+ cmake ../fwbuilder
  make
  sudo make install
 ```
-Then, if you are lucky, you should be able to type
+Note: default destination is /usr/local. This is configurable:
 ```
- fwbuilder &
+ cmake ../fwbuilder -DCMAKE_INSTALL_PREFIX=/usr
 ```
-At the prompt and get it to run. There is also a GUI icon you can use to start the program. 
-
 
