@@ -134,6 +134,7 @@ ObjectManipulator::ObjectManipulator(QWidget *parent):
     popup_menu = nullptr;
 
 //    buildNewObjectMenu();
+    lastClickedItem = nullptr;
 
 }
 
