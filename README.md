@@ -26,3 +26,8 @@ Note: default destination is /usr/local. This is configurable:
  cmake ../fwbuilder -DCMAKE_INSTALL_PREFIX=/usr
 ```
 
+Create deb package
+---------
+```
+debuild -us -uc --lintian-opts --profile debian
+```
