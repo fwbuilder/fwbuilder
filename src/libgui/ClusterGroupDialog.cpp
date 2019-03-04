@@ -279,8 +279,10 @@ void ClusterGroupDialog::applyChanges()
     std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
+#ifndef NDEBUG
     ClusterGroup *g = dynamic_cast<ClusterGroup*>(new_state);
     assert(g != NULL);
+#endif
 
     QString oldname = obj->getName().c_str();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));

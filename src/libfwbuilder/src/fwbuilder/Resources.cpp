@@ -114,7 +114,7 @@ string Resources::getXmlNodeContent(xmlNodePtr node)
     if (cptr!=NULL) 
     {
         res=cptr;
-        FREEXMLBUFF(cptr);
+        XMLTools::FreeXmlBuff(cptr);
     }
     return res;
 }
@@ -122,11 +122,11 @@ string Resources::getXmlNodeContent(xmlNodePtr node)
 string Resources::getXmlNodeProp(xmlNodePtr node,string prop)
 {
     string res;
-    char* cptr=(char*)( xmlGetProp(node,TOXMLCAST(prop.c_str())));
+    char* cptr=(char*)( xmlGetProp(node,XMLTools::ToXmlCast(prop.c_str())));
     if (cptr!=NULL) 
     {
         res=cptr;
-        FREEXMLBUFF(cptr);
+        XMLTools::FreeXmlBuff(cptr);
     }
     return res;
 }
@@ -144,7 +144,7 @@ void Resources::loadRes(const std::string &rfile )
 
     root = xmlDocGetRootElement(doc);
    
-    if(!root || !root->name || strcmp(FROMXMLCAST(root->name), "FWBuilderResources")!=0) 
+    if(!root || !root->name || strcmp(XMLTools::FromXmlCast(root->name), "FWBuilderResources")!=0) 
     {
         xmlFreeDoc(doc);
         throw FWException("Invalid resources file "+rfile);
@@ -467,7 +467,7 @@ void    Resources::setDefaultOption(FWObject *o,const string &xml_node)
     xmlNodePtr pn = XMLTools::getXmlNodeByPath(root,xml_node.c_str());
     if (pn==NULL) return;
 
-    string optname=FROMXMLCAST(pn->name);
+    string optname=XMLTools::FromXmlCast(pn->name);
     string optval =getXmlNodeContent(pn);
     o->setStr(optname , optval);
 }
@@ -482,7 +482,7 @@ void    Resources::setDefaultOptionsAll(FWObject *o,const string &xml_node)
     for(opt=pn->xmlChildrenNode; opt; opt=opt->next) 
     {
         if ( xmlIsBlankNode(opt) ) continue;
-        setDefaultOption(o,xml_node+"/"+FROMXMLCAST(opt->name));
+        setDefaultOption(o,xml_node+"/"+XMLTools::FromXmlCast(opt->name));
     }
 }
 

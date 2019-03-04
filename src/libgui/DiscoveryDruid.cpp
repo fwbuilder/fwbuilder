@@ -177,10 +177,8 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     m_dialog->DNSprogress->hide();
     m_dialog->DNSprogress_2->hide();
 
-#ifndef HAVE_GOODLIBRESOLV
     m_dialog->dm_importdns->hide();
     m_dialog->snmpdnsparameters->hide();
-#endif
 
 #ifndef HAVE_LIBSNMP
     m_dialog->dm_usesnmp->setEnabled(false);

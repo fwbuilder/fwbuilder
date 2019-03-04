@@ -23,6 +23,7 @@ INCLUDEPATH += ../../.. \
                ../../iptlib \
                ../../pflib \
                ../../cisco_lib \
+               ../../juniper_lib \
                ../../libfwbuilder/src
 
 DEPENDPATH  += ../../.. \
@@ -36,6 +37,7 @@ DEPENDPATH  += ../../.. \
                ../../iptlib \
                ../../pflib \
                ../../cisco_lib \
+               ../../juniper_lib \
                ../../libfwbuilder/src
 
 run_tests.commands = echo "Running tests..."; ./${TARGET}
@@ -52,6 +54,7 @@ DEPENDPATH = ../../common \
     ../../iptlib \
     ../../pflib \
     ../../cisco_lib/ \
+    ../../juniper_lib/ \
     ../../compiler_lib \
     ../../libgui \
     ../../libfwbuilder/src/fwbuilder \
@@ -65,6 +68,7 @@ STATIC_LIBS += \
     ../../iptlib/libiptlib.a \
     ../../pflib/libfwbpf.a \
     ../../cisco_lib/libfwbcisco.a \
+    ../../juniper_lib/libfwbjuniper.a \
     ../../compiler_lib/libcompilerdriver.a \
     ../../libfwbuilder/src/fwcompiler/libfwcompiler.a \
     ../../libfwbuilder/src/fwbuilder/libfwbuilder.a \
@@ -77,6 +81,7 @@ PRE_TARGETDEPS += ../../common/libcommon.a \
     ../../iptlib/libiptlib.a \
     ../../pflib/libfwbpf.a \
     ../../cisco_lib/libfwbcisco.a \
+    ../../juniper_lib/libfwbjuniper.a \
     ../../compiler_lib/libcompilerdriver.a \
     ../../parsers/libfwbparser.a \
     ../../import/libimport.a \

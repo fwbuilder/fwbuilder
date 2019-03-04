@@ -166,7 +166,6 @@ HEADERS += ../../config.h \
     AskLibForCopyDialog.h \
     FWBAboutDialog.h \
     Help.h \
-    HttpGet.h \
     StartTipDialog.h \
     vrrpOptionsDialog.h \
     carpOptionsDialog.h \
@@ -176,7 +175,6 @@ HEADERS += ../../config.h \
     openaisOptionsDialog.h \
     pfsyncOptionsDialog.h \
     check_update_url.h \
-    startup_tip_url.h \
     InterfaceEditorWidget.h \
     FWCmdBasic.h \
     FWCmdChange.h \
@@ -395,7 +393,6 @@ SOURCES += ProjectPanel.cpp \
     AskLibForCopyDialog.cpp \
     ObjectListViewItem.cpp \
     Help.cpp \
-    HttpGet.cpp \
     StartTipDialog.cpp \
     FWBAboutDialog.cpp \
     vrrpOptionsDialog.cpp \

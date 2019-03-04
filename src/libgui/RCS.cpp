@@ -163,7 +163,7 @@ RCSEnvFix::RCSEnvFix()
     time(&clock);
     ltm = (struct tm *) localtime(&clock);
 
-#if defined(HAVE_STRUCT_TM_TM_ZONE)
+#ifndef _WIN32
 /*
  * struct tm has member tm_zone and should have member tm_gmtoff
  * autoconf checks only for tm_zone, but these two member fields come
@@ -262,28 +262,34 @@ void RCS::init()
 {
     if (rcs_file_name=="")
     {
-#ifdef _WIN32
-        string ts;
-        ts = getPathToBinary(RCS_FILE_NAME);
-        rcs_file_name     = ts.c_str();
-
-        ts = getPathToBinary(RLOG_FILE_NAME);
-        rlog_file_name    = ts.c_str();
-
-        ts = getPathToBinary(RCSDIFF_FILE_NAME);
-        rcsdiff_file_name = ts.c_str();
-
-        ts = getPathToBinary(CI_FILE_NAME);
-        ci_file_name      = ts.c_str();
-
-        ts = getPathToBinary(CO_FILE_NAME);
-        co_file_name      = ts.c_str();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        rcs_file_name = QString::fromLatin1("rcs");
+        rlog_file_name = QString::fromLatin1("rlog");
+        rcsdiff_file_name = QString::fromLatin1("rcsdiff");
+        ci_file_name = QString::fromLatin1("ci");
+        co_file_name = QString::fromLatin1("co");
 #else
-        rcs_file_name     = RCS_FILE_NAME      ;
-        rlog_file_name    = RLOG_FILE_NAME     ;
-        rcsdiff_file_name = RCSDIFF_FILE_NAME  ;
-        ci_file_name      = CI_FILE_NAME       ;
-        co_file_name      = CO_FILE_NAME       ;
+        rcs_file_name = QStringLiteral("rcs");
+        rlog_file_name = QStringLiteral("rlog");
+        rcsdiff_file_name = QStringLiteral("rcsdiff");
+        ci_file_name = QStringLiteral("ci");
+        co_file_name = QStringLiteral("co");
+#endif
+
+#ifdef _WIN32
+  #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        rcs_file_name = QString::fromLatin1("rcs.exe");
+        rlog_file_name = QString::fromLatin1("rlog.exe");
+        rcsdiff_file_name = QString::fromLatin1("rcsdiff.exe");
+        ci_file_name = QString::fromLatin1("ci.exe");
+        co_file_name = QString::fromLatin1("co.exe");
+  #else
+        rcs_file_name = QStringLiteral("rcs.exe");
+        rlog_file_name = QStringLiteral("rlog.exe");
+        rcsdiff_file_name = QStringLiteral("rcsdiff.exe");
+        ci_file_name = QStringLiteral("ci.exe");
+        co_file_name = QStringLiteral("co.exe");
+  #endif
 #endif
     }
 

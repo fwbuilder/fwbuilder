@@ -25,13 +25,13 @@
 
 #include "RCSTest.h"
 
-#include "../../../../config.h"
+#include "../../../config.h"
 //#include "../../global.h"
 #include "../../libgui/RCS.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 
 #include <iostream>
 

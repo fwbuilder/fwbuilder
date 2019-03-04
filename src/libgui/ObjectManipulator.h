@@ -32,9 +32,9 @@
 #include "global.h"
 #include "utils.h"
 
-#include <qdialog.h>
-#include <qtreewidget.h>
-#include <qtooltip.h>
+#include <QDialog>
+#include <QTreeWidget>
+#include <QToolTip>
 #include <QMenu>
 
 #include <ui_objectmanipulator_q.h>

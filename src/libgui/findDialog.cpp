@@ -189,18 +189,7 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
             }
             break;
         }
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#elif __GNUC__ >= 7
-    __attribute__ ((fallthrough));
-#endif
-
+    /* FALLTHRU */
     case 2:   // protocol num.
         if (IPService::cast(obj)!=NULL)
         {
@@ -216,17 +205,7 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
             }
             break;
         }
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#elif __GNUC__ >= 7
-    __attribute__ ((fallthrough));
-#endif
+    /* FALLTHRU */
     case 3:   // icmp type
         if (ICMPService::cast(obj)!=NULL)
         {

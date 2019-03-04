@@ -1,39 +1,41 @@
 sudo: required
-dist: trusty
-language: c++
+language: bash
 
-addons:
-  apt:
-    packages:
-    - build-essential
-    - autoconf
-    - libxml2-dev
-    - libxslt1-dev
-    - qt5-default
-    - libsnmp-dev
+services:
+  - docker
 
-env:
-  global:
-    - MAKEJOBS=-j3
-    - CXXFLAGS="-Wall -Werror -Qunused-arguments"
+cache:
+  directories:
+  - $HOME/Library/Caches/Homebrew
 
 matrix:
   include:
     - os: linux
-      compiler: clang
-      env: QMAKESPEC=linux-clang
+      env: VM=ubuntu:18.04
     - os: linux
-      compiler: gcc
+      env: VM=ubuntu:16.04
+    - os: linux
+      env: VM=mxe-w32-ubuntu:18.04
     - os: osx
       compiler: clang
+      env: CXXFLAGS="-Wno-nullability-completeness"
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5 && brew link --force qt5 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew install qt5 net-snmp ;
+    fi
 
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./autogen.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      docker pull fwbuilder/$VM ;
+    fi
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make $MAKEJOBS; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh build_mac.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      docker run -v $(pwd):/root -it fwbuilder/$VM "docker/travis.$VM.sh" ;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export PATH="/usr/local/opt/qt/bin:/usr/local/opt/net-snmp/bin:$PATH" ;
+      ./build_mac.sh all ;
+    fi
 

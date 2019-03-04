@@ -111,8 +111,11 @@ void NetworkDialogIPv6::validate(bool *res)
         return;
     }
 
+#ifndef NDEBUG
     NetworkIPv6 *s = dynamic_cast<NetworkIPv6*>(obj);
     assert(s != NULL);
+#endif
+
     try
     {
         InetAddr(AF_INET6, m_dialog->address->text().toStdString() );

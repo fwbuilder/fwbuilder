@@ -42,7 +42,7 @@ using namespace libfwbuilder;
 bool linux24Interfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
 {
     QList<QRegExp> vlan_name_patterns;
-    vlan_name_patterns.append(QRegExp("([a-zA-Z-]+\\d{1,})\\.(\\d{1,})"));
+    vlan_name_patterns.append(QRegExp("([a-zA-Z0-9-]+\\d{1,})\\.(\\d{1,})"));
     vlan_name_patterns.append(QRegExp("(vlan)(\\d{1,})"));
     for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
     {

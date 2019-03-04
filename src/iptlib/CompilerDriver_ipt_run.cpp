@@ -69,6 +69,7 @@
 #include "fwbuilder/StateSyncClusterGroup.h"
 #include "fwbuilder/FailoverClusterGroup.h"
 #include "fwbuilder/Library.h"
+#include "fwbuilder/Constants.h"
 
 #include <QString>
 #include <QStringList>
@@ -169,7 +170,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             epilog_done = true;
         }
 
-        string os_variant = DISTRO;
+        string os_variant = Constants::getDistro();
 
 /* minimal sanity checking */
         if (os_family == "ipcop")
@@ -734,7 +735,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
                                  QStringList("script_name_on_firewall"));
 
         script_buffer = "";
-        script << MANIFEST_MARKER
+        script << manifestMarker()
                << "* "
                << this->escapeFileName(file_names[FW_FILE]);
 
@@ -756,7 +757,7 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
             {
                 string name = c_iter->first;
                 string dest = c_iter->second;
-                script << MANIFEST_MARKER << this->escapeFileName(name.c_str());
+                script << manifestMarker() << this->escapeFileName(name.c_str());
                 if (!dest.empty()) script << " " << dest;
                 script << "\n";
             }

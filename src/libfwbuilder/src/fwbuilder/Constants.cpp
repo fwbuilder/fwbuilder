@@ -26,6 +26,10 @@
 
 #include "fwbuilder/Constants.h"
 
+#if defined (__linux__) || defined (__FreeBSD_kernel__) || defined (__MINGW64__) || defined (__MINGW32__)
+#   include <sys/stat.h>
+#endif
+
 using namespace std;
 using namespace libfwbuilder;
 
@@ -87,5 +91,34 @@ string Constants::getTemplatesObjectsFilePath()
 string Constants::getLocaleDirectory()
 {
     return getResourcesDirectory() + "/locale";
+}
+
+string Constants::getDistro()
+{
+#if defined (__linux__)
+    if (fileExists("/etc/debian_version"))
+        return "Debian";
+    if (fileExists("/etc/mandrake-release"))
+        return "Mandrake";
+    if (fileExists("/etc/slackware-version"))
+        return "Slackware";
+    if (fileExists("/etc/SuSE-release"))
+        return "SuSE";
+    if (fileExists("/etc/redhat-release"))
+        return "RedHat";
+    return "Unknown";
+#elif defined (__FreeBSD_kernel__) && defined (__GLIBC__)
+    if (fileExists("/etc/debian_version"))
+        return "Debian";
+    return "Unknown";
+#else
+    return "";
+#endif
+}
+
+bool Constants::fileExists(const string &file)
+{
+    struct stat sb;
+    return (stat(file.c_str(), &sb) == 0);
 }
 

@@ -132,7 +132,7 @@ void newClusterDialogTest::test1()
     for (int i=1; i<dialog->getUi()->interfaceEditor->count(); i++)
         dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(i))->setProtocolIndex(2);
 
-    InterfaceEditorWidget* eth0 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth0_widget");
+    InterfaceEditorWidget* eth0 = dialog->getUi()->interfaceEditor->findChild<InterfaceEditorWidget*>("eth0_widget");
     eth0->setProtocolIndex(0);
     eth0->addNewAddress("123.45.67.89", "24", true);
 
@@ -168,7 +168,7 @@ void newClusterDialogTest::test1()
     }
 
     dialog->getUi()->interfaceEditor->setCurrentIndex(1);
-    InterfaceEditorWidget* eth1 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth1_widget");
+    InterfaceEditorWidget* eth1 = dialog->getUi()->interfaceEditor->findChild<InterfaceEditorWidget*>("eth1_widget");
     eth1->setProtocolIndex(0);
     QTableWidget *addrs = eth1->findChild<QTableWidget*>("addresses");
     QVERIFY(addrs != NULL);

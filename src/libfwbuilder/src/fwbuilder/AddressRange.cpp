@@ -114,32 +114,42 @@ void AddressRange::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("start_address")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("start_address")));
     assert(n!=NULL);
-    start_address = InetAddr(n);
-    FREEXMLBUFF(n);
+    start_address = InetAddr(AF_UNSPEC, n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("end_address")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("end_address")));
     assert(n!=NULL);
-    end_address = InetAddr(n);
-    FREEXMLBUFF(n);
+    end_address = InetAddr(AF_UNSPEC, n);
+    XMLTools::FreeXmlBuff(n);
+
+    if (start_address.addressFamily() != end_address.addressFamily()) {
+
+        std::ostringstream s;
+        s << "AddressRange start and end address must be of same IP address family: ";
+        s << "start_address: " << start_address.toString() << ", ";
+        s << "end_address: " << end_address.toString();
+
+        throw(FWException(s.str()));
+    }
 }
 
 xmlNodePtr AddressRange::toXML(xmlNodePtr xml_parent_node)
 {
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
     
     xmlNewProp(me, 
-               TOXMLCAST("start_address"),
-               STRTOXMLCAST(start_address.toString()));
+               XMLTools::ToXmlCast("start_address"),
+               XMLTools::StrToXmlCast(start_address.toString()));
     
     xmlNewProp(me, 
-               TOXMLCAST("end_address"),
-               STRTOXMLCAST(end_address.toString()));
+               XMLTools::ToXmlCast("end_address"),
+               XMLTools::StrToXmlCast(end_address.toString()));
     
     return me;
 }

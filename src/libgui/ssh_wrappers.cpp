@@ -40,21 +40,17 @@
 #include <termios.h>
 #include <time.h>
 #include <sys/select.h>
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#endif
 
-#ifdef HAVE_PTY_H
+#if defined(__linux__)
 #include <pty.h>
-#endif
-
-#ifdef HAVE_LIBUTIL_H
+#define HAVE_FORKPTY
+#elif defined(__FreeBSD__)
 #include <libutil.h>
-#endif
-
-#ifdef HAVE_UTIL_H
+#define HAVE_FORKPTY
+#elif defined(__unix__) || defined(__APPLE__) && defined(__MACH__)
 #include <util.h>
+#define HAVE_FORKPTY
 #endif
 
 #include <errno.h>
@@ -71,7 +67,7 @@ static int ttysavefd = -1;
 static pid_t pid = 0;
 
 
-#ifndef HAVE_CFMAKERAW
+#ifdef _WIN32
 static inline void cfmakeraw(struct termios *termios_p)
 {
     termios_p->c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IXON);
@@ -463,6 +459,8 @@ void ssh_wrapper( int argc, char *argv[] )
 
 void ssh_wrapper( int argc, char *argv[] )
 {
+	(void) argc;
+	(void) argv;
 }
 
 #endif

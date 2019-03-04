@@ -72,51 +72,51 @@ void FWObject::fromXML(xmlNodePtr root)
     assert(root!=NULL);
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("name")));
     if(n)
     {
         setName(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("id")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("id")));
     if(n)
     {
         setId(FWObjectDatabase::registerStringId(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("comment")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("comment")));
     if(n)
     {
         setComment(XMLTools::unquote_linefeeds(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("keywords")));
-    if (n != 0) {
+    n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("keywords")));
+    if (n != NULL) {
         keywords = stringToSet(n);
         dbroot->keywords.insert(keywords.begin(), keywords.end());
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("subfolders")));
-    if (n != 0) {
+    n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("subfolders")));
+    if (n != NULL) {
         setStr("subfolders", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("folder")));
-    if (n != 0) {
+    n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("folder")));
+    if (n != NULL) {
         setStr("folder", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ro")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("ro")));
     if(n)
     {
         ro = (cxx_strcasecmp(n, "1")==0 || cxx_strcasecmp(n , "true")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     // ref_counter = 0;
@@ -160,20 +160,20 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
     xmlNodePtr me = xmlNewChild(
         parent,
         NULL,
-        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
+        xml_name.empty() ? XMLTools::StrToXmlCast(getTypeName()) : XMLTools::StrToXmlCast(xml_name),
         NULL);
 
     if (id!=-1)
     {
         xmlNewProp(
             me, 
-            TOXMLCAST("id"),
-            STRTOXMLCAST(s_id));
+            XMLTools::ToXmlCast("id"),
+            XMLTools::StrToXmlCast(s_id));
     }
 
     if (!keywords.empty()) {
-        xmlNewProp(me, TOXMLCAST("keywords"),
-                   STRTOXMLCAST(setToString(keywords)));
+        xmlNewProp(me, XMLTools::ToXmlCast("keywords"),
+                   XMLTools::StrToXmlCast(setToString(keywords)));
     }
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -184,7 +184,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
         if (name[0]=='.') continue;
         if (name == "folder" && value.empty()) continue;
 
-        xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
+        xmlNewProp(me, XMLTools::StrToXmlCast(name), XMLTools::StrToXmlCast(value));
     }
 
     if (process_children)

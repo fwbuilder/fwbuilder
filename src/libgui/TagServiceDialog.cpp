@@ -98,9 +98,10 @@ void TagServiceDialog::loadFWObject(FWObject *o)
 void TagServiceDialog::validate(bool *res)
 {
     *res=true;
+#ifndef NDEBUG
     TagService *s = dynamic_cast<TagService*>(obj);
     assert(s!=NULL);
-
+#endif
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 

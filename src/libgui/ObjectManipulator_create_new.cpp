@@ -302,7 +302,8 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
         qDebug("libs->count()=%d", m_objectManipulator->libs->count() );
     }
 
-    while ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+    while ( lib == NULL ||
+            lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
             lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
             lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
             lib->isReadOnly() )
@@ -367,7 +368,8 @@ FWObject* ObjectManipulator::createObject(FWObject *parent,
                objType.toLatin1().constData(), objName.toLatin1().constData());
     }
 
-    while ( lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
+    while ( lib == NULL ||
+            lib->getId()==FWObjectDatabase::STANDARD_LIB_ID ||
             lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
             lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
             lib->isReadOnly() )
@@ -462,7 +464,7 @@ FWObject* ObjectManipulator::newLibrary(QUndoCommand* macro)
 FWObject* ObjectManipulator::newPolicyRuleSet(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
     QString name = "Policy";
     Firewall * fw = Firewall::cast(currentObj);
     if (fw!=NULL)
@@ -484,7 +486,7 @@ FWObject* ObjectManipulator::newPolicyRuleSet(QUndoCommand* macro)
 FWObject* ObjectManipulator::newNATRuleSet(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
     QString name = "NAT";
     Firewall * fw = Firewall::cast(currentObj);
     if (fw!=NULL)
@@ -509,8 +511,11 @@ FWObject* ObjectManipulator::newFirewall(QUndoCommand* macro)
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Firewall::TYPENAME);
     assert(parent);
+
+#ifndef NDEBUG
     ObjectTreeViewItem* parent_item = allItems[parent];
     assert(parent_item);
+#endif
 
     newFirewallDialog *nfd = new newFirewallDialog(this, parent);
     if (mw->isEditorVisible()) mw->hideEditor();
@@ -538,8 +543,11 @@ FWObject* ObjectManipulator::newCluster(QUndoCommand* macro, bool fromSelected)
     FWObject *parent =
         FWBTree().getStandardSlotForObject(getCurrentLib(), Cluster::TYPENAME);
     assert(parent);
+
+#ifndef NDEBUG
     ObjectTreeViewItem* parent_item = allItems[parent];
     assert(parent_item);
+#endif
 
     newClusterDialog *ncd = new newClusterDialog(this, parent);
     if (mw->isEditorVisible())  mw->hideEditor();
@@ -601,7 +609,7 @@ void ObjectManipulator::newClusterFromSelected()
 FWObject* ObjectManipulator::newClusterIface(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
     QString new_name = makeNameUnique(currentObj,
                                       findNewestInterfaceName(currentObj),
                                       Interface::TYPENAME);
@@ -616,7 +624,7 @@ FWObject* ObjectManipulator::newClusterIface(QUndoCommand* macro)
 FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     FWObject *o = NULL;
 
@@ -653,7 +661,7 @@ FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
 FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     FWObject *o = NULL;
 
@@ -680,7 +688,7 @@ FWObject* ObjectManipulator::newFailoverClusterGroup(QUndoCommand* macro)
 FWObject* ObjectManipulator::newAttachedNetworks(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {
@@ -742,7 +750,7 @@ QString ObjectManipulator::findNewestInterfaceName(FWObject *parent)
 FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     Interface *new_interface = NULL;
     FWObject *parent = NULL;
@@ -800,7 +808,7 @@ FWObject* ObjectManipulator::newInterface(QUndoCommand* macro)
 FWObject* ObjectManipulator::newInterfaceAddress(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {
@@ -821,7 +829,7 @@ FWObject* ObjectManipulator::newInterfaceAddress(QUndoCommand* macro)
 FWObject* ObjectManipulator::newInterfaceAddressIPv6(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {
@@ -842,7 +850,7 @@ FWObject* ObjectManipulator::newInterfaceAddressIPv6(QUndoCommand* macro)
 FWObject* ObjectManipulator::newPhysicalAddress(QUndoCommand* macro)
 {
     FWObject *currentObj = getSelectedObject();
-    if ( currentObj->isReadOnly() ) return NULL;
+    if ( !currentObj || currentObj->isReadOnly() ) return NULL;
 
     if (Interface::isA(currentObj))
     {

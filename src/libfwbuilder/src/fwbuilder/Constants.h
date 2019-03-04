@@ -93,7 +93,13 @@ public:
      */
     static std::string getLocaleDirectory();
 
-    
+    /**
+      * Returns name of distro, determined dynamically
+      */
+    static std::string getDistro();
+
+private:
+    bool static fileExists(const std::string& file);
 };
 
 }

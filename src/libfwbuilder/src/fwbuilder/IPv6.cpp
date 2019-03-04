@@ -82,12 +82,12 @@ void IPv6::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
+    const char* n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address")));
     assert(n!=NULL);
     setAddress(InetAddr(AF_INET6, n));
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("netmask")));
     assert(n!=NULL);
     if (strlen(n))
     {
@@ -102,7 +102,7 @@ void IPv6::fromXML(xmlNodePtr root)
             setNetmask(InetAddr(AF_INET6, netm));
         }
     } else setNetmask(InetAddr(AF_INET6, 0));
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
 xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node)
@@ -110,18 +110,18 @@ xmlNodePtr IPv6::toXML(xmlNodePtr xml_parent_node)
     if (getName().empty()) setName(getTypeName());
 
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
     
     xmlNewProp(me, 
-               TOXMLCAST("address"),
-               STRTOXMLCAST(inet_addr_mask->getAddressPtr()->toString()));
+               XMLTools::ToXmlCast("address"),
+               XMLTools::StrToXmlCast(inet_addr_mask->getAddressPtr()->toString()));
 
     // Save netmask as bit length
     ostringstream str;
     str << inet_addr_mask->getNetmaskPtr()->getLength();
-    xmlNewProp(me, TOXMLCAST("netmask"), STRTOXMLCAST(str.str()));
+    xmlNewProp(me, XMLTools::ToXmlCast("netmask"), XMLTools::StrToXmlCast(str.str()));
     
     return me;
 }

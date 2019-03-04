@@ -137,8 +137,11 @@ void IPv4Dialog::validate(bool *result)
         return;
     }
 
+#ifndef NDEBUG
     IPv4 *s = dynamic_cast<IPv4*>(obj);
     assert(s!=NULL);
+#endif
+
     try
     {
         InetAddr( m_dialog->address->text().trimmed().toLatin1().constData() );

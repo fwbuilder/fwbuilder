@@ -325,17 +325,7 @@ void SSHCisco::stateMachine()
             stateMachine();
             break;
         }
-#if __cplusplus > 201402L
-    [[fallthrough]];
-#elif __cplusplus > 199711L
-    #if defined(__clang__)
-    [[clang::fallthrough]];
-    #elif defined(__GNUG__)
-    [[gnu::fallthrough]];
-    #endif
-#elif __GNUC__ >= 7
-    __attribute__ ((fallthrough));
-#endif
+    /* FALLTHRU */
     case ENABLE:
         if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
         {

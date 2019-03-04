@@ -30,15 +30,7 @@
 #include "VERSION.h"
 #include "../common/commoninit.h"
 
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
+#include <getopt.h>
 
 #include <QString>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -290,6 +282,8 @@ int main( int argc, char *argv[] )
 
     // We need to call FWWindow::~FWWindow() to remove temporary directory
     delete mw;
+
+    return 0;
 }
 
 

@@ -916,7 +916,9 @@ bool PolicyCompiler_ipt::Logging2::processNext()
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *rule = getNext(); if (rule==NULL) return false;
 
+#ifndef NDEBUG
     RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+#endif
 
     RuleElementSrc      *nsrc;
     RuleElementDst      *ndst;
@@ -1976,8 +1978,11 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
  * this only if the rule is not associated with any bridging
  * interfaces
  */
+
+#ifndef NDEBUG
             RuleElementItf *itfre = rule->getItf();
             assert(itfre);
+#endif
 
             RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
             Interface *rule_iface = 
@@ -2190,7 +2195,9 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
     /* See #2008. It appears "--physdev-out" is not allowed in OUTPUT
      * chain.
      */
+#ifndef NDEBUG
     RuleElementItf *itfre = rule->getItf(); assert(itfre);
+#endif
     Interface *itf = compiler->getFirstItf(rule);
 
     if (fwopt->getBool("bridging_fw") && itf && itf->isBridgePort())
@@ -2343,10 +2350,16 @@ bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
         if (addr_obj && !addr_obj->isAny() && AddressRange::isA(addr_obj) &&
             addr_obj->dimension() == 1)
         {
-            Address *new_addr = compiler->dbcopy->createIPv4();
+            bool IPv4 = AddressRange::cast(addr_obj)->isV4();
+            int address_family = IPv4 ? AF_INET : AF_INET6;
+
+            Address *new_addr = IPv4
+                    ? static_cast<Address*>(compiler->dbcopy->createIPv4())
+                    : static_cast<Address*>(compiler->dbcopy->createIPv6());
+
             new_addr->setName(addr_obj->getName() + "_addr");
             new_addr->setAddress(AddressRange::cast(addr_obj)->getRangeStart());
-            new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
+            new_addr->setNetmask(InetAddr(InetAddr::getAllOnes(address_family)));
             compiler->persistent_objects->add(new_addr);
             new_children.push_back(new_addr);
         } else

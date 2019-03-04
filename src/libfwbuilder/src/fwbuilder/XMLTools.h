@@ -39,6 +39,7 @@
 
 #include <string>
 #include <functional>
+#include <type_traits>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -50,14 +51,19 @@
 namespace libfwbuilder
 {
 
-//TODO: define type cast operators for these
-#define FROMXMLCAST(x) ((const char *)x)
-#define STRTOXMLCAST(x) ((xmlChar *)x.c_str())
-#define TOXMLCAST(x) ((xmlChar *)x)
-
 class XMLTools
 {
     public:
+
+    static const char * FromXmlCast(xmlChar * c) { return reinterpret_cast<const char *>(c); }
+    static const char * FromXmlCast(const xmlChar * c) { return reinterpret_cast<const char *>(c); }
+    static xmlChar * ToXmlCast(char * c) { return reinterpret_cast<xmlChar *>(c); }
+    static xmlChar * ToXmlCast(const char * c) { return ToXmlCast(const_cast<char *>(c)); }
+    static xmlChar * StrToXmlCast(const std::string s) { return ToXmlCast(s.c_str()); }
+    template<class T>
+    static void FreeXmlBuff(const T t) {
+        xmlFree(reinterpret_cast<void *>(const_cast< typename std::remove_const<T>::type>(t) >(t)));
+    }
 
     static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const char   *path       );
     static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const std::string &path  );

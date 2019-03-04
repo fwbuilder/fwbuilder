@@ -1,5 +1,5 @@
 include(../tests_common.pri)
-QT += gui network
+QT += gui widgets printsupport network
 HEADERS = generatedScriptTestsPF.h
 SOURCES = main_generatedScriptTestsPF.cpp \
 	  generatedScriptTestsPF.cpp

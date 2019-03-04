@@ -105,7 +105,7 @@ QString CompilerDriver_pix::assembleManifest(Cluster*, Firewall*, bool)
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << "!" << MANIFEST_MARKER
+    script << "!" << manifestMarker()
            << "* " << this->escapeFileName(file_names[FW_FILE]) << endl;
 
     return script_buffer;
@@ -916,8 +916,10 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
                      failover_group->findByType(FWObjectReference::TYPENAME);
                  it != it.end(); ++it)
             {
+#ifndef NDEBUG
                 Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
                 assert(member_iface);
+#endif
 
                 pixClusterGroupChecks(failover_group);
 

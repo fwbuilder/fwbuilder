@@ -169,7 +169,7 @@ macx {
 # dependency libraries. Building on 10.6 with deployment target 10.5
 # should solve the problem
 	QMAKE_MACOSX_DEPLOYMENT_TARGET = $$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
-	QMAKE_CXXFLAGS += -mmacosx-version-min=$$(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+	QMAKE_CXXFLAGS += -mmacosx-version-min=$$(QMAKE_MACOSX_DEPLOYMENT_TARGET) $$(CXXFLAGS)
 	QMAKE_MAC_SDK = $$(QMAKE_MAC_SDK)
 
 	CONFIG += qt thread rtti stl warn_on debug  # release
@@ -186,6 +186,7 @@ macx {
 
 	INCLUDEPATH += $(INSTALL_ROOT)/$$PREFIX/include/
 	INCLUDEPATH += /usr/include/libxml2 /usr/include
+	INCLUDEPATH += /usr/local/opt/openssl/include
 
 	QMAKE_LIBS_QT =
 	QMAKE_LIBS_QT_THREAD =
@@ -193,6 +194,7 @@ macx {
     # LIBS += $$LIBS_FWBUILDER
     LIBS += -lxml2 -lz
     LIBS += -lpthread
+    LIBS += -L/usr/local/opt/openssl/lib
 
 }
 
@@ -201,8 +203,8 @@ FWB_SIG = $$(FWB_SIG)
 if (isEmpty(FWB_SIG)) { FWB_SIG=26932 }
 DEFINES += FWB_SIG=$$FWB_SIG
 
-QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS
-QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS
+QMAKE_CXXFLAGS_DEBUG += -D__STDC_FORMAT_MACROS $$(CXXFLAGS)
+QMAKE_CXXFLAGS_RELEASE += -D__STDC_FORMAT_MACROS  $$(CXXFLAGS)
 
 exists(qmake2.inc) {
   include(qmake2.inc)

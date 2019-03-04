@@ -86,7 +86,7 @@ SSHUnx::SSHUnx(QWidget *_par,
     shell_errors << "error in parsing address";
     shell_errors << "can't set";
     shell_errors << ".* malformed";
-    shell_errors << ".* failed";
+    shell_errors << ".*(?<!PEM_read_PrivateKey) failed";
     shell_errors << ".* not allowed for the AF";
     shell_errors << "internal error";
     shell_errors << "unable to allocate .*";

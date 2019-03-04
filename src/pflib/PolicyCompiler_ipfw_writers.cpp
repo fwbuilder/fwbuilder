@@ -26,7 +26,7 @@
 #include "definitions.h"
 
 #include "PolicyCompiler_ipfw.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
@@ -515,9 +515,11 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
     compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
     RuleElementSrc *srcrel=rule->getSrc();
+#ifndef NDEBUG
     Address        *src   =compiler->getFirstSrc(rule);  assert(src);
-    RuleElementDst *dstrel=rule->getDst();
     Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
+#endif
+    RuleElementDst *dstrel=rule->getDst();
     RuleElementSrv *srvrel=rule->getSrv();
     Service        *srv   =compiler->getFirstSrv(rule);  assert(srv);
 

@@ -94,8 +94,10 @@ void UserDialog::validate(bool *res)
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
+#ifndef NDEBUG
     UserService *s = dynamic_cast<UserService*>(obj);
     assert(s!=NULL);
+#endif
 }
 
 
