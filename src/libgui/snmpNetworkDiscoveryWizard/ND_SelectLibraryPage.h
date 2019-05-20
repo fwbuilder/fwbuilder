@@ -21,8 +21,8 @@
 
 */
 
-#ifndef __SELECTLIBRARYPAGE_H_
-#define __SELECTLIBRARYPAGE_H_
+#ifndef __ND_SELECTLIBRARYPAGE_H_
+#define __ND_SELECTLIBRARYPAGE_H_
 
 #include "ui_nd_selectlibrarypage_q.h"
 
