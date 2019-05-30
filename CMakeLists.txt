@@ -10,6 +10,7 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
 find_package(Qt5PrintSupport REQUIRED)
 find_package(LibXml2 REQUIRED)
+find_package(LibXslt REQUIRED)
 
 include(GNUInstallDirs)
 set(FWB_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fwbuilder-${PROJECT_VERSION})
