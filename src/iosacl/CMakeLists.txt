@@ -6,11 +6,19 @@ set(iosacl_srcs
 
 add_executable(fwb_iosacl ${iosacl_srcs})
 
-target_link_libraries(fwb_iosacl common fwbcisco compilerdriver fwcompiler fwbuilder pthread c xml2 m dl xslt z util)
+target_link_libraries(fwb_iosacl common fwbcisco compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z)
+
+IF (WIN32)
+  target_link_libraries(fwb_iosacl lzma iconv)
+ENDIF()
+
+IF (UNIX)
+  target_link_libraries(fwb_iosacl c dl util)
+ENDIF()
 
 target_compile_options(fwb_iosacl PRIVATE ${CXX_DEFAULT_FLAGS})
 
-install(TARGETS fwb_iosacl RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS fwb_iosacl RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 
 qt5_use_modules(fwb_iosacl Widgets)
 

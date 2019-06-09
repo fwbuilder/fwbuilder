@@ -17,6 +17,14 @@ set(FWB_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fwbuilder-${PROJECT_VERSION})
 set(FWB_INSTALL_DOCDIR ${CMAKE_INSTALL_DATADIR}/doc/fwbuilder-${PROJECT_VERSION})
 set(FWB_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
 
+if (WIN32)
+    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
+    set(FWB_INSTALL_DATADIR release/resources)
+    set(FWB_INSTALL_DOCDIR release)
+    set(FWB_INSTALL_BINDIR release)
+ENDIF()
+
+set(CMAKE_CXX_STANDARD 11)
 set(CXX_DEFAULT_FLAGS # clang/GCC warnings
 	$<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:-Wall;-Wextra;-Werror;-Wno-overloaded-virtual>
                          # MSVC warnings
@@ -28,7 +36,17 @@ add_definitions(-DVERSION="${PROJECT_VERSION}")
 add_definitions(-DFS_SEPARATOR="/")
 add_definitions(-DFWBUILDER_XML_VERSION="${FWBUILDER_XML_VERSION}")
 add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
-add_definitions(-DRES_DIR="${CMAKE_INSTALL_PREFIX}/${FWB_INSTALL_DATADIR}")
+
+IF (WIN32)
+  add_definitions(-DRES_DIR="resources")
+ELSE()
+  add_definitions(-DRES_DIR="${CMAKE_INSTALL_PREFIX}/${FWB_INSTALL_DATADIR}")
+ENDIF()
+
+IF (WIN32)
+  #add_definitions(-DIN_LIBXML) # Enable for static build
+  add_definitions(-DWIN32_LEAN_AND_MEAN)
+ENDIF()
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING

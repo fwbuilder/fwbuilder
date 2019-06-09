@@ -6,11 +6,19 @@ set(junosacl_srcs
 
 add_executable(fwb_junosacl ${junosacl_srcs})
 
-target_link_libraries(fwb_junosacl common fwbcisco fwbjuniper compilerdriver fwcompiler fwbuilder pthread c xml2 m dl xslt z util)
+target_link_libraries(fwb_junosacl common fwbcisco fwbjuniper compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z)
+
+IF (WIN32)
+  target_link_libraries(fwb_junosacl iconv lzma)
+ENDIF()
+
+IF (UNIX)
+  target_link_libraries(fwb_junosacl c dl util)
+ENDIF()
 
 target_compile_options(fwb_junosacl PRIVATE ${CXX_DEFAULT_FLAGS})
 
-install(TARGETS fwb_junosacl RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS fwb_junosacl RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 
 qt5_use_modules(fwb_junosacl Widgets)
 

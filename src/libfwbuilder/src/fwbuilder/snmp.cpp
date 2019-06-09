@@ -1886,6 +1886,6 @@ void SNMP_discover_query::run_impl(Logger *logger,std::atomic<bool> *stop_progra
 
 #else
 #ifndef _WIN32
-# warning ucd-snmp library not found - SNMP functionality will be disabled.
+//# warning ucd-snmp library not found - SNMP functionality will be disabled.
 #endif
 #endif

@@ -69,7 +69,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#ifndef __MINGW32__
+#if !defined(__MINGW32__) || defined(IN_LIBXML)
 extern int xmlDoValidityCheckingDefaultValue ;
 extern int xmlLoadExtDtdDefaultValue         ;
 #else
