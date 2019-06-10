@@ -249,7 +249,7 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
             obj->getTypeName() + "/hidden")) return nullptr;
 
     ObjectTreeViewItem *item = itm;
-     if (!obj->getStr("folder").empty()) {
+    if (!obj->getStr("folder").empty()) {
         item = findUserFolder(itm, obj->getStr("folder").c_str());
 
         /* If we can't find the user folder, put it under the system
@@ -278,7 +278,6 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
     }
 
     nitm->setProperty("type", obj->getTypeName().c_str() );
-
     nitm->setFWObject( obj );
 
     allItems[obj] = nitm;
@@ -310,9 +309,6 @@ void ObjectManipulator::insertSubtree(ObjectTreeViewItem *itm, FWObject *obj)
     for (iter = subfolders.begin(); iter != subfolders.end(); ++iter) {
         ObjectTreeViewItem *sub = new ObjectTreeViewItem(nitm);
         sub->setUserFolderParent(obj);
-//        FWObject* newFolder = obj->getRoot()->create("ObjectGroup");
-//        newFolder->setParent(obj);
-//        sub->setFWObject(newFolder);
         QString name = QString::fromUtf8((*iter).c_str());
         sub->setUserFolderName(name);
         sub->setText(0, name);
@@ -781,19 +777,10 @@ void ObjectManipulator::moveItems(ObjectTreeViewItem *dest,
 void ObjectManipulator::addUserFolderToTree(FWObject *obj,
                                             const QString &folder)
 {
-
     ObjectTreeViewItem *item = allItems[obj];
-
     if (item == nullptr) return;
 
     ObjectTreeViewItem *sub = new ObjectTreeViewItem(item);
-
-
-    FWObject* newFolder = obj->getRoot()->create(ObjectGroup::TYPENAME);
-    newFolder->setParent(obj);
-    sub->setFWObject(newFolder);
-    allItems[newFolder] = sub;
-
     sub->setUserFolderParent(obj);
     sub->setUserFolderName(folder);
     sub->setText(0, folder);
