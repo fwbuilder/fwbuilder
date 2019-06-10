@@ -553,7 +553,7 @@ void ObjectManipulator::clearObjects()
     libs_model->removeRows(0, libs_model->rowCount());
 
     libs_model->addStaticItems();
-    
+
     current_tree_view = nullptr;
 
     if (fwbdebug) qDebug("ObjectManipulator::clearObjects done");
@@ -814,12 +814,9 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
 
     FWObject* newFolder = obj->getRoot()->create(ObjectGroup::TYPENAME);
     newFolder->setParent(obj);
-    newFolder->setName(folder.toUtf8().constData()
-                       );
     sub->setFWObject(newFolder);
     allItems[newFolder] = sub;
     obj->setStr("folder", folder.toUtf8().constData());
-    newFolder->setStr("folder", getFolderNameString(newFolder));
 
     sub->setUserFolderParent(obj);
     sub->setUserFolderName(folder);
@@ -828,21 +825,6 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
     refreshSubtree(item, sub);
 }
 
-
-std::string ObjectManipulator::getFolderNameString(libfwbuilder::FWObject *obj) {
-    std::string result = "";
-    FWObject *parent = obj->getParent();
-
-
-    while(parent != nullptr) {
-        result = parent->getName() + "/" + result;
-        parent = parent->getParent();
-    }
-
-    result = result  + obj->getName();
-
-    return result;
-}
 
 void ObjectManipulator::removeUserFolderFromTree(FWObject *obj,
                                                  const QString &folder)
@@ -892,4 +874,4 @@ void ObjectManipulator::moveToFromUserFolderInTree(FWObject *obj,
     refreshSubtree(newItem, nullptr);
 }
 
-                                                   
+
