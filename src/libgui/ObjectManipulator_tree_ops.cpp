@@ -224,39 +224,17 @@ static ObjectTreeViewItem *findUserFolder(ObjectTreeViewItem *parent,
 {
     if (folder.isEmpty()) return parent;
 
-    ObjectTreeViewItem *otvi = nullptr;
-
-    int childNo = 0;
-    while(parent->child(childNo) != nullptr && otvi == nullptr) {
+    for (int ii = 0; ii < parent->childCount(); ii++) {
         ObjectTreeViewItem *sub =
-            dynamic_cast<ObjectTreeViewItem *>(parent->child(childNo));
+            dynamic_cast<ObjectTreeViewItem *>(parent->child(ii));
         if (sub != nullptr &&
             sub->getUserFolderParent() != nullptr &&
             sub->getUserFolderName() == folder) {
-            otvi = sub;
-            return otvi;
-            break;
+            return sub;
         }
-        else {
-            otvi = findUserFolder(sub, folder);
-        }
-        childNo++;
     }
 
-//    for (int ii = 0; ii < parent->childCount(); ii++) {
-//        while(parent->childCount() > 0) {
-//            ObjectTreeViewItem *sub =
-//                dynamic_cast<ObjectTreeViewItem *>(parent->child(ii));
-//            if (sub != 0 &&
-//                sub->getUserFolderParent() != 0 &&
-//                sub->getUserFolderName() == folder) {
-//                return sub;
-//            }
-//            parent = sub;
-//        }
-//    }
-
-    return otvi;
+    return nullptr;
 }
 
 
@@ -280,7 +258,6 @@ ObjectTreeViewItem* ObjectManipulator::insertObject(ObjectTreeViewItem *itm,
             item = itm;
             obj->setStr("folder", "");
         }
-
     }
 
     ObjectTreeViewItem *nitm = new ObjectTreeViewItem(item);
@@ -816,7 +793,6 @@ void ObjectManipulator::addUserFolderToTree(FWObject *obj,
     newFolder->setParent(obj);
     sub->setFWObject(newFolder);
     allItems[newFolder] = sub;
-    obj->setStr("folder", folder.toUtf8().constData());
 
     sub->setUserFolderParent(obj);
     sub->setUserFolderName(folder);
