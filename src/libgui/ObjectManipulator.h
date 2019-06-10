@@ -323,8 +323,6 @@ public:
                      const std::string &namesuffix);
      void autorenameVlans(std::list<libfwbuilder::FWObject*> &obj_list);
 
-     std::string getFolderNameString(libfwbuilder::FWObject *obj);
-
      void reload();
 
      void loadObjects();
@@ -494,8 +492,6 @@ public:
      void addSubfolderActions(QList<QAction*> &AddObjectActions, libfwbuilder::FWObject *currentObj, ObjectTreeViewItem *item, bool &addSubfolder);
 signals:
      void libraryAccessChanged(bool writable);
-
-
 };
 
 #endif
