@@ -416,6 +416,7 @@ void ObjectManipulator::addSubfolderActions(QList<QAction*> &AddObjectActions, F
 
     //Do not allow to create subfolders on real objects
     if(item==nullptr && (currentObj!=nullptr
+                      &&!Library::isA(currentObj)
                       &&!Firewall::isA(currentObj)
                       &&!Cluster::isA(currentObj)
                       &&!IPv4::isA(currentObj)
