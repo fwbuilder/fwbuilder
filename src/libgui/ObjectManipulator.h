@@ -206,6 +206,7 @@ public slots:
      void selectionChanged(QTreeWidgetItem *cur);
 
      void removeUserFolder();
+     void renameUserFolder();
      void moveItems(ObjectTreeViewItem *dest,
                     const std::list<libfwbuilder::FWObject *> &items);
 

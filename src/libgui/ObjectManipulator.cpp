@@ -583,12 +583,19 @@ void ObjectManipulator::contextMenuRequested(const QPoint &pos)
     FWObject *obj = otvi->getFWObject();
     if (obj == nullptr) {
         assert(otvi->getUserFolderParent() != nullptr);
-        QAction *action =
+        QAction *removeUserFolderAction =
             popup_menu->addAction(tr("Delete"), this, SLOT(removeUserFolder()));
+
+        QAction *renameUserFolderAction =
+            popup_menu->addAction(tr("Rename"), this, SLOT(renameUserFolder()));
+
         /* The user-defined folder doesn't get counted as a selected obj */
         if (objTreeView->getNumSelected() > 0) {
-            action->setEnabled(false);
+            removeUserFolderAction->setEnabled(false);
+            renameUserFolderAction->setEnabled(false);
         }
+
+
 
         addSubfolderActions(AddObjectActions, nullptr, otvi, addSubfolder);
 
