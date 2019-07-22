@@ -1,10 +1,21 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9"
+    CACHE STRING "Minimum macOS deployment version"
+)
+
 project(firewallbuilder LANGUAGES CXX C)
+
 include(VERSION)
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING
+        "Choose the type of build, options are: Debug or Release."
+        FORCE)
+endif()
+
+### Dependencies
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Network REQUIRED)
@@ -12,19 +23,15 @@ find_package(Qt5PrintSupport REQUIRED)
 find_package(LibXml2 REQUIRED)
 find_package(LibXslt REQUIRED)
 
-include(GNUInstallDirs)
-set(FWB_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fwbuilder-${PROJECT_VERSION})
-set(FWB_INSTALL_DOCDIR ${CMAKE_INSTALL_DATADIR}/doc/fwbuilder-${PROJECT_VERSION})
-set(FWB_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
+find_package(NetSNMP)
+if(NETSNMP_FOUND)
+    add_definitions(-DHAVE_LIBSNMP -DNET_SNMP -DHAVE_SNPRINT_OBJID)
+endif()
 
-if (WIN32)
-    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
-    set(FWB_INSTALL_DATADIR release/resources)
-    set(FWB_INSTALL_DOCDIR release)
-    set(FWB_INSTALL_BINDIR release)
-ENDIF()
+### Compiler options
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CXX_DEFAULT_FLAGS # clang/GCC warnings
 	$<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:-Wall;-Wextra;-Werror;-Wno-overloaded-virtual>
                          # MSVC warnings
@@ -37,27 +44,48 @@ add_definitions(-DFS_SEPARATOR="/")
 add_definitions(-DFWBUILDER_XML_VERSION="${FWBUILDER_XML_VERSION}")
 add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
 
-IF (WIN32)
+if(APPLE)
+  add_definitions(-DRES_DIR="../Resources")
+elseif(WIN32)
   add_definitions(-DRES_DIR="resources")
-ELSE()
+else()
   add_definitions(-DRES_DIR="${CMAKE_INSTALL_PREFIX}/${FWB_INSTALL_DATADIR}")
-ENDIF()
+endif()
 
-IF (WIN32)
+if(WIN32)
   #add_definitions(-DIN_LIBXML) # Enable for static build
   add_definitions(-DWIN32_LEAN_AND_MEAN)
-ENDIF()
+endif()
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING
-        "Choose the type of build, options are: Debug or Release."
-        FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
+### Install
 
-FIND_PACKAGE(NetSNMP)
-IF (NETSNMP_FOUND)
-    add_definitions(-DHAVE_LIBSNMP -DNET_SNMP -DHAVE_SNPRINT_OBJID)
-ENDIF()
+if(APPLE)
+  set(APP_ICON_FILE fwbuilder-macosx.icns)
+  set(APP_ICON "${PROJECT_SOURCE_DIR}/src/gui/${APP_ICON_FILE}")
+  set(APPLICATION_NAME fwbuilder)
+  set(MACOSX_BUNDLE_ICON_FILE ${APP_ICON_FILE})
+  set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_GENERATION})
+  set(MACOSX_BUNDLE_VERSION ${VERSION})
+  set(MACOSX_BUNDLE_LONG_VERSION_STRING ${VERSION})
+  set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+  set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
+  set(FWB_INSTALL_DATADIR ${APPLICATION_NAME}.app/Contents/Resources)
+  set(FWB_INSTALL_DOCDIR ${FWB_INSTALL_DATADIR}/doc)
+  set(FWB_INSTALL_BINDIR ${APPLICATION_NAME}.app/Contents/MacOS)
+elseif(WIN32)
+  set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+  set(FWB_INSTALL_DATADIR release/resources)
+  set(FWB_INSTALL_DOCDIR release)
+  set(FWB_INSTALL_BINDIR release)
+else()
+  include(GNUInstallDirs)
+  set(FWB_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fwbuilder-${PROJECT_VERSION})
+  set(FWB_INSTALL_DOCDIR ${CMAKE_INSTALL_DATADIR}/doc/fwbuilder-${PROJECT_VERSION})
+  set(FWB_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
+endif()
+
+### Sources
 
 add_subdirectory(src/libfwbuilder/src/fwcompiler)
 add_subdirectory(src/libfwbuilder/src/fwbuilder)
@@ -87,3 +115,5 @@ add_subdirectory(src/libfwbuilder/migration)
 add_subdirectory(src/res)
 add_subdirectory(doc)
 
+### Packaging
+add_subdirectory(packaging)

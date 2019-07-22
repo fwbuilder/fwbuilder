@@ -1,5 +1,7 @@
 project(fwbedit)
 
+find_package(OpenSSL REQUIRED)
+
 set(fwbedit_srcs
     fwbedit.cpp
     new_object.cpp
@@ -12,7 +14,7 @@ set(fwbedit_srcs
 
 add_executable(fwbedit ${fwbedit_srcs})
 
-target_link_libraries(fwbedit gui import fwbparser antlr common iptlib fwbpf fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z crypto pthread)
+target_link_libraries(fwbedit gui import fwbparser antlr common iptlib fwbpf fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z OpenSSL::Crypto pthread)
 
 IF (WIN32)
   target_link_libraries(fwbedit lzma iconv)
@@ -30,5 +32,5 @@ target_compile_options(fwbedit PRIVATE ${CXX_DEFAULT_FLAGS})
 
 install(TARGETS fwbedit RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 
-qt5_use_modules(fwbedit Widgets Network PrintSupport)
+qt5_use_modules(fwbedit Widgets PrintSupport)
 

@@ -15,7 +15,7 @@ install(FILES ${platform_files} DESTINATION ${FWB_INSTALL_DATADIR}/platform)
 install(FILES ${help_files} DESTINATION ${FWB_INSTALL_DATADIR}/help/en_US)
 install(DIRECTORY configlets DESTINATION ${FWB_INSTALL_DATADIR})
 
-if (NOT WIN32)
+if (UNIX AND NOT APPLE)
     install(FILES fwbuilder.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES Icons/16x16/fwbuilder.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/16x16/apps)
     install(FILES Icons/24x24/fwbuilder.png DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/24x24/apps)
