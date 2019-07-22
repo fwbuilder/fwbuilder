@@ -41,6 +41,14 @@ if(APPLE)
   set(CPACK_DMG_FORMAT "UDBZ")
   set(CPACK_DMG_VOLUME_NAME fwbuilder)
   set(CPACK_PACKAGE_FILE_NAME fwbuilder-${PROJECT_VERSION})
+elseif(WIN32)
+configure_file(fwbuilder.nsi.in fwbuilder.nsi @ONLY)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/fwbuilder.nsi
+    fwbuilder-160x60.bmp
+    fwbuilder-164x314.bmp
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/release)
 endif()
 
 include(CPack)
