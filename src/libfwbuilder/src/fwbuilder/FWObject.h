@@ -583,7 +583,8 @@ class FWObjectTypedChildIterator
     FWObjectTypedChildIterator();
     FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);   
     FWObjectTypedChildIterator(const FWObject *o, const std::string &_type_name);
-    
+    FWObjectTypedChildIterator& operator=(const FWObjectTypedChildIterator&) = default;
+
     bool operator==(const FWObject::const_iterator& __x) const;
     bool operator!=(const FWObject::const_iterator& __x) const;
     FWObject *operator*() const;

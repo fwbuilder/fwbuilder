@@ -61,6 +61,7 @@ public:
     bool hasNext();
     bool hasPrev();
 
+    constexpr RuleSetModelIterator(const RuleSetModelIterator&) = default;
     RuleSetModelIterator& operator= (const RuleSetModelIterator&);
     RuleSetModelIterator& operator++ ();
     RuleSetModelIterator& operator-- ();

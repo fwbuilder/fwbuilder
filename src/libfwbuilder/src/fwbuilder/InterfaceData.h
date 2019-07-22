@@ -64,6 +64,7 @@ public:
         InterfaceData();
         InterfaceData(const InterfaceData& other);
         InterfaceData(const libfwbuilder::Interface &iface);
+        InterfaceData& operator=(const InterfaceData&) = default;
         virtual ~InterfaceData();
 
     };
