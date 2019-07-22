@@ -670,7 +670,7 @@ QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
 {
     QStringList keys = interface_configuration_lines.keys();
     //keys.sort();
-    qSort(keys.begin(), keys.end(), sort_interface_names);
+    std::sort(keys.begin(), keys.end(), sort_interface_names);
     QStringList res;
     foreach (QString iface, keys)
         res << interface_configuration_lines[iface].join("\n");

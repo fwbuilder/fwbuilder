@@ -282,14 +282,14 @@ void IPv4Dialog::DNSlookup()
                 this,"Firewall Builder",
                 tr("DNS lookup failed for both names of the address object '%1' and the name of the host '%2'.")
                 .arg(m_dialog->obj_name->text()).arg(name),
-                "&Continue", QString::null,QString::null, 0, 1 );
+                "&Continue", QString(),QString(), 0, 1 );
             return;
         }
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("DNS lookup failed for name of the address object '%1'.")
             .arg(name),
-            "&Continue", QString::null,QString::null, 0, 1 );
+            "&Continue", QString(),QString(), 0, 1 );
         return;
     }
 }

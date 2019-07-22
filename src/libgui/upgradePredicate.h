@@ -52,7 +52,7 @@ directory with extension '.bak'.\n\
 Are you sure you want to open it?"),
                                          QObject::tr("&Upgrade"),
                                          QObject::tr("&Do not load the file"),
-                                         QString::null,
+                                         QString(),
                                          0, 1 )==0;
     }
 };

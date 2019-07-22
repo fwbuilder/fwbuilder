@@ -194,7 +194,7 @@ int PrintingController::addObjectsToTable(list<FWObject*> &objects,
 
         QString icn = (":/Icons/"+type_name+"/icon").c_str();
         QPixmap pm;
-        if ( ! QPixmapCache::find( icn, pm) )
+        if ( ! QPixmapCache::find( icn, &pm) )
         {
             pm.load( icn );
             QPixmapCache::insert( icn, pm);
@@ -383,7 +383,7 @@ void PrintingController::printLegend(bool newPageForSection)
 
         QString icn = ":/Icons/"+type_name+"/icon";
         QPixmap pm;
-        if ( ! QPixmapCache::find( icn, pm) )
+        if ( ! QPixmapCache::find( icn, &pm) )
         {
             pm.load( icn );
             QPixmapCache::insert( icn, pm);

@@ -335,7 +335,7 @@ void ObjectManipulator::delObj(QUndoCommand* macro)
                                 "disappear from the tree and all groups and rules that reference them.\n"
                                 "Do you still want to delete library %1?")
                             .arg(QString::fromUtf8(obj->getName().c_str())),
-                            tr("&Yes"), tr("&No"), QString::null,
+                            tr("&Yes"), tr("&No"), QString(),
                             0, 1 )!=0 ) continue;
                 }
     

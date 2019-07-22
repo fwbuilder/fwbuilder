@@ -926,8 +926,8 @@ void* ObjectSignature::dispatch(TCPService *obj, void*)
     flags = obj->getAllTCPFlagMasks();
     for (it=flags.begin(); it!=flags.end(); ++it) flags_mask << *it;
 
-    qSort(flags_comp);
-    qSort(flags_mask);
+    std::sort(begin(flags_comp), end(flags_comp));
+    std::sort(begin(flags_mask), end(flags_mask));
 
     return this;
 }

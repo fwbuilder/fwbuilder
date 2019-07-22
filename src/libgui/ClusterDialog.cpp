@@ -197,7 +197,7 @@ void ClusterDialog::validate(bool *res)
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Character \"/\" is not allowed in cluster object name"),
-                tr("&Continue"), QString::null,QString::null,
+                tr("&Continue"), QString(),QString(),
                 0, 1 );
             blockSignals(false);
         }
@@ -229,7 +229,7 @@ void ClusterDialog::applyChanges()
         blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
-                                  tr("&Yes"), tr("&No"), QString::null,
+                                  tr("&Yes"), tr("&No"), QString(),
                                   0, 1 )==0 );
         blockSignals(false);
     }

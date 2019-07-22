@@ -169,7 +169,7 @@ QStringList instDialog::prepareArgForCompiler(Firewall *fw)
             this,"Firewall Builder",
             tr("Firewall platform is not specified in this object.\n\
 Can't compile firewall policy."),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return args; // still empty list
     }

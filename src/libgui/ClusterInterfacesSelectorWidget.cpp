@@ -174,7 +174,7 @@ bool ClusterInterfacesSelectorWidget::isValid()
                         QMessageBox::warning(this,"Firewall Builder",
                                  tr("Interface %1 of firewall %2 is used in more than one cluster interface.")
                                     .arg(iface1.second->getName().c_str()).arg(iface1.first->getName().c_str()),
-                                "&Continue", QString::null, QString::null, 0, 1 );
+                                "&Continue", QString(), QString(), 0, 1 );
                         return false;
                     }
                 }

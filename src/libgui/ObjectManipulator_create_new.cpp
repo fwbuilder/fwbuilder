@@ -340,7 +340,7 @@ FWObject* ObjectManipulator::createObject(const QString &objType,
 "corresponding branch is missing in the object tree.\n"
 "Please repair the tree using command 'fwbedit checktree -f file.fwb'.")
                            .arg(objType),
-                           "&Continue", QString::null, QString::null,
+                           "&Continue", QString(), QString(),
                            0, 1 );
       return nullptr;
     }
@@ -640,7 +640,7 @@ FWObject* ObjectManipulator::newStateSyncClusterGroup(QUndoCommand* macro)
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Cluster host OS %1 does not support state synchronization").arg(host_os),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return nullptr;
     }
 

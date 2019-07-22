@@ -121,7 +121,7 @@ bool FirewallInstallerJuniper::packInstallJobsList(Firewall*)
         QMessageBox::critical(
             inst_dlg, "Firewall Builder",
             tr("Can not read generated script %1").arg(ff),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return false;
     }

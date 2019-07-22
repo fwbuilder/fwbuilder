@@ -521,7 +521,7 @@ void RuleSetView::mouseMoveEvent( QMouseEvent* ev )
     {
         QDrag* drag = dragObject();
         if (drag)
-            drag->start(Qt::CopyAction | Qt::MoveAction); //just start dragging
+            drag->exec(Qt::CopyAction | Qt::MoveAction); //just start dragging
         startingDrag = false;
         return;
     }
@@ -809,7 +809,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 {
                     QMessageBox::critical( nullptr , "Firewall Builder",
                                            ex.toString().c_str(),
-                                           QString::null,QString::null);
+                                           QString(),QString());
                 }
                 negID->setEnabled(supports_neg &&  !re->isAny());
                 fndID->setEnabled(!re->isAny());
@@ -1143,7 +1143,7 @@ void RuleSetView::removeRule()
         {
             foreach(QModelIndex group, groups)
             {
-                qSort(itemsInGroups[group]);
+		    std::sort(begin(itemsInGroups[group]), end(itemsInGroups[group]));
 
                 Rule* first = md->nodeFromIndex(md->index(itemsInGroups[group].at(0), 0, group))->rule;
                 Rule* last = md->nodeFromIndex(md->index(itemsInGroups[group].at(itemsInGroups[group].size() - 1), 0, group))->rule;
@@ -1691,14 +1691,14 @@ void RuleSetView::removeFromGroup()
     // Remove groups from the end to the begin
 
     QList<QModelIndex> groups = itemsInGroups.keys();
-    qSort(groups);
+    std::sort(begin(groups), end(groups));
 
     QListIterator<QModelIndex> i(groups);
     i.toBack();
     while (i.hasPrevious())
     {
         QModelIndex group = i.previous();
-        qSort(itemsInGroups[group]);
+	std::sort(begin(itemsInGroups[group]), end(itemsInGroups[group]));
         QModelIndex first = md->index(itemsInGroups[group].first(), 0, group);
         QModelIndex last = md->index(itemsInGroups[group].last(), 0, group);
 
@@ -2393,7 +2393,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
                     QObject::tr(
                         "A single interface belonging to this firewall is "
                         "expected in this field."),
-                    QString::null,QString::null);
+                    QString(),QString());
             }
             else if (RuleElementRGtw::cast(re))
             {
@@ -2403,7 +2403,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
                         "A single ip adress is expected here. You may also "
                         "insert a host or a network adapter leading to a single "
                         "ip adress."),
-                    QString::null,QString::null);
+                    QString(),QString());
             }
         }
         return false;

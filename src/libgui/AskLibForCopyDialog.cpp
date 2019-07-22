@@ -91,7 +91,7 @@ int AskLibForCopyDialog::addLib( FWObject *lib)
     string icn=":/Icons/"+lib->getTypeName()+"/icon-tree";
             //Resources::global_res->getObjResourceStr(lib,"icon-tree").c_str();
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn.c_str(), pm) )
+    if ( ! QPixmapCache::find( icn.c_str(), &pm) )
     {
         pm.load( icn.c_str() );
         QPixmapCache::insert( icn.c_str(), pm);

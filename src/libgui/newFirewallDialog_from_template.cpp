@@ -131,7 +131,7 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                 this, "Firewall Builder",
                 tr("Can not find interface %1 in the interface editor data")
                 .arg(intf->getName().c_str()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
         } else
         {
             EditedInterfaceData new_data = new_configuration[intf];

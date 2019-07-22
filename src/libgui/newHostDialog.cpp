@@ -280,7 +280,7 @@ void newHostDialog::getInterfacesViaSNMP()
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Missing SNMP community string."),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return ;
     }
 
@@ -302,7 +302,7 @@ void newHostDialog::getInterfacesViaSNMP()
             this,"Firewall Builder",
             tr("Address of %1 could not be obtained via DNS")
             .arg(m_dialog->obj_name->text()),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         getInterfacesBusy = false;
         return ;
     }
@@ -411,7 +411,7 @@ void newHostDialog::showPage(const int page)
             FWObject *o=*m;
 
             QPixmap pm;
-            if ( ! QPixmapCache::find( icn, pm) )
+            if ( ! QPixmapCache::find( icn, &pm) )
             {
                 pm.load( icn );
                 QPixmapCache::insert( icn, pm);
@@ -526,7 +526,7 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return false;
     }
     try
@@ -540,7 +540,7 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
                 QMessageBox::warning(
                     this,"Firewall Builder",
                     tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+                    "&Continue", QString(), QString(), 0, 1 );
                 return false;
             }          
         }
@@ -555,7 +555,7 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return false;
     }
     return true;

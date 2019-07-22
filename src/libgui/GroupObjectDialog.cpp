@@ -389,7 +389,7 @@ void GroupObjectDialog::addIcon(FWObject *o, bool ref)
             (":/Icons/"+o->getTypeName()+((ref)?"/icon-ref":"/icon")).c_str();
 
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn_filename, pm) )
+    if ( ! QPixmapCache::find( icn_filename, &pm) )
     {
         pm.load( icn_filename );
         QPixmapCache::insert( icn_filename, pm);

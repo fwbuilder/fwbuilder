@@ -378,7 +378,7 @@ QPixmap clusterMembersDialog::getIcon(FWObject *o)
                         "/icon").c_str();
 
     QPixmap pm;
-    if (!QPixmapCache::find(icn_file, pm))
+    if (!QPixmapCache::find(icn_file, &pm))
     {
         pm.load(icn_file);
         QPixmapCache::insert(icn_file, pm);

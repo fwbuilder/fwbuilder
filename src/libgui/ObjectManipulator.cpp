@@ -1203,7 +1203,7 @@ void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
                 QMessageBox::warning(this, "Firewall Builder",
                         QObject::tr("No firewalls assigned to cluster '%1'").
                                      arg(cl->getName().c_str()),
-                        "&Continue", QString::null, QString::null, 0, 1 );
+                        "&Continue", QString(), QString(), 0, 1 );
                 continue;
             }
             fo.insert(cl);
@@ -1253,7 +1253,7 @@ FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj
         QMessageBox::critical(
             this,"Firewall Builder",
             err,
-            "&Continue", QString::null, QString::null,
+            "&Continue", QString(), QString(),
             0, 1 );
 
         return nullptr;

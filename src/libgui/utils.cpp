@@ -97,7 +97,7 @@ QAction* addPopupMenuItem(QObject *res,
     if(icn!="")
     {
 //        pm = QPixmap::fromMimeSource( icn.c_str() );
-        if ( ! QPixmapCache::find( icn.c_str(), pm) )
+        if ( ! QPixmapCache::find( icn.c_str(), &pm) )
         {
             pm.load( (":/"+icn).c_str() );//fromMimeSource( icn.c_str() );
             QPixmapCache::insert( icn.c_str(), pm);
@@ -453,7 +453,7 @@ void loadIcon(QPixmap &pm, FWObject *obj)
 
 void LoadPixmap(const QString &path, QPixmap &pm)
 {
-    if ( ! QPixmapCache::find( path, pm ) )
+    if ( ! QPixmapCache::find( path, &pm ) )
     {
         pm.load( path );
         if (pm.width() == 0)
@@ -624,6 +624,6 @@ static bool stringsCompare(const QString &a, const QString &b)
 QStringList sortStrings(const QStringList &list)
 {
     QStringList ret = list;
-    qSort(ret.begin(), ret.end(), stringsCompare);
+    std::sort(ret.begin(), ret.end(), stringsCompare);
     return ret;
 }

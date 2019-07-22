@@ -53,7 +53,7 @@ QWidget *DynamicItemDelegate::createEditor(QWidget *parent,
     if (index.column() == 0) {
         QToolButton *button = new QToolButton(parent);
         QPixmap pixmap;
-        if (!QPixmapCache::find(":/Icons/neg", pixmap)) {
+        if (!QPixmapCache::find(":/Icons/neg", &pixmap)) {
             pixmap.load(":/Icons/neg");
             QPixmapCache::insert(":/Icons/neg", pixmap);
         }
@@ -291,7 +291,7 @@ void DynamicGroupDialog::loadFWObject(FWObject *o)
         icon += "/icon-ref";
 
         QPixmap pixmap;
-        if (!QPixmapCache::find(icon, pixmap)) {
+        if (!QPixmapCache::find(icon, &pixmap)) {
             pixmap.load(icon);
             QPixmapCache::insert(icon, pixmap);
         }

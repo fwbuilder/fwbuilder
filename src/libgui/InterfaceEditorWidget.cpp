@@ -324,7 +324,7 @@ bool InterfaceEditorWidget::isValid()
             tr("Failover protocol %1 does not require IP address for interface %2")
             .arg(this->m_ui->protocol->currentText())
             .arg(this->m_ui->name->text()),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return false;
     }
 
@@ -338,7 +338,7 @@ bool InterfaceEditorWidget::isValid()
                 tr("Failover protocol %1 requires an IP address for interface %2")
                 .arg(this->m_ui->protocol->currentText())
                 .arg(this->m_ui->name->text()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
             return false;
         }
     }
@@ -522,5 +522,5 @@ void InterfaceEditorWidget::setError(const QString &title,
 void InterfaceEditorWidget::showError()
 {
     QMessageBox::warning(this, errorTitle, errorText, "&Continue",
-                         QString::null, QString::null, 0, 1);
+                         QString(), QString(), 0, 1);
 }

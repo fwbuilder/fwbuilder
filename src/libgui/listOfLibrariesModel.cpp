@@ -108,9 +108,9 @@ void ListOfLibrariesModel::sort(int column, Qt::SortOrder order)
     }
 
     if (order == Qt::AscendingOrder)
-        qSort(list.begin(), list.end(), ascendingLessThan);
+        std::sort(list.begin(), list.end(), ascendingLessThan);
     else
-        qSort(list.begin(), list.end(), decendingLessThan);
+        std::sort(list.begin(), list.end(), decendingLessThan);
 
     int pos = 0;
     foreach(QString itm, top_static_items)

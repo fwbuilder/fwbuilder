@@ -145,7 +145,7 @@ void ActionsDialog::applyChanges()
             QMessageBox::information(
                 this,"Firewall Builder",
                 tr("Rule name for accounting is converted to the iptables\nchain name and therefore may not contain white space\nand special characters."),
-                tr("&Continue"), QString::null,QString::null,
+                tr("&Continue"), QString(),QString(),
                 0, 1 );
 
             return;

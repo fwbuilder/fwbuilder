@@ -200,7 +200,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     // TODO: This is not ideal because lines are sorted alphabetically.
     // Rules should be sorted by their numbers numerically.
     QStringList keys = widget_items.keys();
-    qSort(keys);
+    std::sort(begin(keys), end(keys));
     foreach(QString k, keys)
     {
         QTreeWidgetItem *item = widget_items[k];

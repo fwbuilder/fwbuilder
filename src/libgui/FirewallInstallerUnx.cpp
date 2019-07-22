@@ -136,7 +136,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
             tr("Incorrect manifest format in generated script. "
                "Line with \"*\" is missing, can not find any files "
                "to copy to the firewall.\n%1").arg(cnf->script),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return false;
     }

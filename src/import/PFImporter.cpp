@@ -482,7 +482,7 @@ void PFImporter::convertTcpFlags(QList<int> &flags_list,
                             "are not supported."));
         }
     }
-    qSort(flags_list);
+    std::sort(begin(flags_list), end(flags_list));
 }
 
 FWObject* PFImporter::makeAddressObj(AddressSpec &as)

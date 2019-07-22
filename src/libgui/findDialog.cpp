@@ -272,7 +272,7 @@ loop:
         if ( QMessageBox::warning(
               this,"Firewall Builder",
               tr("Search hit the end of the object tree."),
-              tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0 ) goto loop;
+              tr("&Continue at top"), tr("&Stop"), QString(), 0, 1 )==0 ) goto loop;
 
         return;
     }

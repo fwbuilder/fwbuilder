@@ -214,7 +214,7 @@ void FWWindow::filePrint()
                 QMessageBox::information(
                     this,"Firewall Builder",
                     tr("Printing aborted"),
-                    tr("&Continue"), QString::null,QString::null,
+                    tr("&Continue"), QString(),QString(),
                     0, 1 );
             } else
                 showStatusBarMessage(tr("Printing completed"));

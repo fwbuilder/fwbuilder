@@ -131,7 +131,7 @@ QDrag* ObjectIconView::dragObject()
     //QPixmap          pm   = QPixmap::fromMimeSource( icn_filename );
 
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn, pm) )
+    if ( ! QPixmapCache::find( icn, &pm) )
     {
         pm.load( icn );
         QPixmapCache::insert( icn, pm);
@@ -229,7 +229,7 @@ void ObjectIconView::mouseMoveEvent ( QMouseEvent * event )
     {
         startingDrag = false;
         QDrag *dr = dragObject();
-        if (dr) dr->start();
+        if (dr) dr->exec();
     }
     QListWidget::mouseMoveEvent(event);
 }

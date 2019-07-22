@@ -466,7 +466,7 @@ loop:
             if ( QMessageBox::warning(
                      this,"Firewall Builder",
                      tr("Search hit the end of the policy rules."),
-                     tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0 )
+                     tr("&Continue at top"), tr("&Stop"), QString(), 0, 1 )==0 )
                 goto loop;
         }
         else
@@ -475,7 +475,7 @@ loop:
             bool r= ( QMessageBox::warning(
                      this,"Firewall Builder",
                      tr("Search hit the end of the object tree."),
-                     tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0);
+                     tr("&Continue at top"), tr("&Stop"), QString(), 0, 1 )==0);
             if (fwbdebug) qDebug("widget that has focus: %p",mw->focusWidget());
             if (r)  goto loop;
         }

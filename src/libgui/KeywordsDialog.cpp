@@ -137,7 +137,7 @@ bool KeywordsDialog::validateKeyword(QWidget *parent, const QString &keyword)
     if (keyword.contains(',')) {
         QMessageBox::warning(parent, "Firewall Builder",
                              tr("Keyword cannot contain a comma"), "&OK",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         return false;
     }
 

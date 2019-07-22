@@ -321,7 +321,7 @@ void newFirewallDialog::getIPAddressOfFirewallByName()
             this,"Firewall Builder",
             tr("Address of %1 could not be obtained via DNS")
             .arg(m_dialog->obj_name->text()),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
     }
 
     getInterfacesBusy = false;
@@ -442,7 +442,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Missing SNMP community string."),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return ;
     }
 
@@ -469,7 +469,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
                 this,"Firewall Builder",
                 tr("Address of %1 could not be obtained via DNS")
                 .arg(m_dialog->snmpIP->text()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
             getInterfacesBusy = false;
             return ;
         }
@@ -532,7 +532,7 @@ void newFirewallDialog::nextClicked()
             QMessageBox::warning(
                     this,"Firewall Builder",
                     tr("Please select template"),
-                    tr("&Continue"), QString::null,QString::null,
+                    tr("&Continue"), QString(),QString(),
                     0, 1 );
             showPage(CHOOSE_FW_TEMPLATE);
             return;
@@ -666,7 +666,7 @@ void newFirewallDialog::showPage(const int page)
                     this,"Firewall Builder",
                     tr("Error loading template library:\n%1")
                     .arg(ex.toString().c_str()),
-                    tr("&Continue"), QString::null,QString::null,
+                    tr("&Continue"), QString(),QString(),
                     0, 1 );
             }
         }
@@ -715,7 +715,7 @@ void newFirewallDialog::showPage(const int page)
 */
 
             QPixmap pm;
-            if ( ! QPixmapCache::find( icn, pm) )
+            if ( ! QPixmapCache::find( icn, &pm) )
             {
                 pm.load( icn );
                 QPixmapCache::insert( icn, pm);
@@ -806,7 +806,7 @@ void newFirewallDialog::getInterfaceDataFromInterfaceEditor(
         {
             QMessageBox::warning(
                 this,"Firewall Builder", ex.toString().c_str(),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
             showPage( CONFIGURE_INTERFACES_MANUALLY );
             return;
         }
@@ -1028,7 +1028,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return false;
     }
     try
@@ -1042,7 +1042,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
                 QMessageBox::warning(
                     this,"Firewall Builder",
                     tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+                    "&Continue", QString(), QString(), 0, 1 );
                 return false;
             }
         }
@@ -1057,7 +1057,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return false;
     }
     return true;

@@ -170,7 +170,7 @@ bool vlanOnlyIfaceOptsDialog::validate()
     {
         QMessageBox::warning(this, "Firewall Builder",
                              tr("Input not valid: %1").arg(message), "&Continue",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         focus->setFocus();
     }
     return valid;

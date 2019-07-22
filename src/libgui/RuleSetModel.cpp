@@ -1146,7 +1146,7 @@ bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
                 QObject::tr(
                     "A single interface belonging to "
                     "this firewall is expected in this field."),
-                QString::null,QString::null);
+                QString(),QString());
         }
         else if (RuleElementRGtw::cast(re))
         {
@@ -1157,7 +1157,7 @@ bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
                     "here. You may also insert a host "
                     "or a network adapter leading to "
                     "a single ip adress."),
-                QString::null,QString::null);
+                QString(),QString());
         }
         return false;
     }

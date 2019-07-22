@@ -423,7 +423,7 @@ RCS::RCS(const QString &file)
         }
         // sort list revisions; its defined like this:
         // QList<Revision> revisions
-        qSort(revisions);
+	std::sort(revisions.begin(), revisions.end());
 
         inrcs         = true;
         tracking_file = true;
@@ -774,7 +774,7 @@ bool RCS::co(const QString &rev,bool force)
                             app->activeWindow(),"Firewall Builder",
                             tr("File is opened and locked by %1.\nYou can only open it read-only.")
                             .arg(locked_by),
-                            "Open &read-only", "&Cancel", QString::null,
+                            "Open &read-only", "&Cancel", QString(),
                             0, 1 ) )
                 {
                 case 0:  ro=true;   return false;

@@ -138,5 +138,5 @@ bool FWObjectDrag::decode( QDragEnterEvent *ev, list<FWObject*> &ol)
 Qt::DropAction FWObjectDrag::start(Qt::DropActions action)
 {
     if (fwbdebug)  qDebug("FWObjectDrag::start"/*, action*/);
-    return QDrag::start(action);
+    return QDrag::exec(action);
 }
