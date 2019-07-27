@@ -1,5 +1,3 @@
-project(juniper_lib)
-
 set(juniper_lib_srcs
     CompilerDriver_junosacl.cpp
     CompilerDriver_junosacl_run.cpp

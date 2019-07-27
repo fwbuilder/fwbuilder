@@ -1,5 +1,3 @@
-project(libfwbuilder)
-
 set(libfwbuilder_srcs
     InetAddr.cpp 
     InetAddrMask.cpp 
@@ -74,6 +72,16 @@ set(libfwbuilder_srcs
     inet_net_ntop.c 
     inet_net_pton.c 
     uint128.cpp)
+
+if(APPLE)
+  set(RES_DIR "../Resources")
+elseif(WIN32)
+  set(RES_DIR "resources")
+else()
+  set(RES_DIR "${CMAKE_INSTALL_PREFIX}/${FWB_INSTALL_DATADIR}")
+endif()
+
+set_source_files_properties(Constants.cpp PROPERTIES COMPILE_DEFINITIONS RES_DIR=\"${RES_DIR}\")
 
 add_library(fwbuilder STATIC ${libfwbuilder_srcs})
 

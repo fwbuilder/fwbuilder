@@ -39,6 +39,7 @@
 #include <iomanip>
 #include <memory>
 
+#include "version.h"
 #include "CompilerDriver_ipt.h"
 #include "PolicyCompiler_ipt.h"
 #include "NATCompiler_ipt.h"

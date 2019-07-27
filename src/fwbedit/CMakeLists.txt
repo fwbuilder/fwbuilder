@@ -1,5 +1,3 @@
-project(fwbedit)
-
 find_package(OpenSSL REQUIRED)
 
 set(fwbedit_srcs
@@ -29,6 +27,8 @@ IF (NETSNMP_FOUND)
 ENDIF()
 
 target_compile_options(fwbedit PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(fwbedit.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwbedit RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

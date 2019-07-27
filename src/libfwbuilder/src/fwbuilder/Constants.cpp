@@ -15,13 +15,14 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
 
+#include "version.h"
 #include "fwbuilder/Constants.h"
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__) || defined (__MINGW64__) || defined (__MINGW32__) || defined (__APPLE__)
@@ -36,7 +37,7 @@ string Constants::res_dir;
 void Constants::init(const std::string &app_root_dir)
 {
     if (app_root_dir.empty()) res_dir = string(RES_DIR);
-    else res_dir = app_root_dir + FS_SEPARATOR + string(RES_DIR);
+    else res_dir = app_root_dir + "/" + string(RES_DIR);
 }
 
 const string Constants::getLibraryDescription()
@@ -73,17 +74,17 @@ string Constants::getResourcesDirectory()
 
 string Constants::getResourcesFilePath()
 {
-    return getResourcesDirectory() + FS_SEPARATOR + "resources.xml";
+    return getResourcesDirectory() + "/resources.xml";
 }
 
 string Constants::getStandardObjectsFilePath()
 {
-    return getResourcesDirectory() + FS_SEPARATOR  + "objects_init.xml";
+    return getResourcesDirectory() + "/objects_init.xml";
 }
 
 string Constants::getTemplatesObjectsFilePath()
 {
-    return getResourcesDirectory() + FS_SEPARATOR  + "templates.xml";
+    return getResourcesDirectory() + "/templates.xml";
 }
 
 string Constants::getLocaleDirectory()

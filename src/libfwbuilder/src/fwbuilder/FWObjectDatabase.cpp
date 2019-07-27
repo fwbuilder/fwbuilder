@@ -35,6 +35,7 @@
 #include <cstring>
 #include <signal.h>
 
+#include "version.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/FWObjectDatabase.h"
 

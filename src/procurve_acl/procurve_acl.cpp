@@ -45,6 +45,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "version.h"
 #include "CompilerDriver_procurve_acl.h"
 
 #include "fwbuilder/Resources.h"

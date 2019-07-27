@@ -1,5 +1,3 @@
-project(import)
-
 set(import_srcs
     getProtoByName.cpp
     PreImport.cpp

@@ -7,7 +7,13 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9"
 
 project(firewallbuilder LANGUAGES CXX C)
 
+### Version variables and include file
+
 include(VERSION)
+configure_file("${CMAKE_SOURCE_DIR}/src/version.h.in" "${CMAKE_BINARY_DIR}/src/version.h" @ONLY)
+include_directories(${CMAKE_BINARY_DIR}/src)
+
+### Build type
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -38,19 +44,6 @@ set(CXX_DEFAULT_FLAGS # clang/GCC warnings
     $<$<CXX_COMPILER_ID:MSVC>:/WX;/W4>)
 
 add_definitions(-D__STDC_FORMAT_MACROS)
-add_definitions(-DGENERATION="${PROJECT_GENERATION}")
-add_definitions(-DVERSION="${PROJECT_VERSION}")
-add_definitions(-DFS_SEPARATOR="/")
-add_definitions(-DFWBUILDER_XML_VERSION="${FWBUILDER_XML_VERSION}")
-add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
-
-if(APPLE)
-  add_definitions(-DRES_DIR="../Resources")
-elseif(WIN32)
-  add_definitions(-DRES_DIR="resources")
-else()
-  add_definitions(-DRES_DIR="${CMAKE_INSTALL_PREFIX}/${FWB_INSTALL_DATADIR}")
-endif()
 
 if(WIN32)
   #add_definitions(-DIN_LIBXML) # Enable for static build

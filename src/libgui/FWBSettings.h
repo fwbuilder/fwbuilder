@@ -38,8 +38,6 @@
 
 #include <set>
 
-#define SETTINGS_PATH_PREFIX  "/" GENERATION
-
 #include <fwbuilder/FWObject.h>
 
 
@@ -74,10 +72,7 @@ class FWBSettings : public QSettings
     FWBSettings(bool testData = false);
     ~FWBSettings();
 
-    static QString getApplicationNameForSettings()
-    {
-        return "FirewallBuilder" GENERATION;
-    }
+    static const QString getApplicationNameForSettings();
 
     void init(bool force_first_time_run=false);
     void save();

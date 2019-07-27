@@ -139,7 +139,7 @@ list<string> getDirList(const std::string &dir,
                 continue;
 
             string pfile=de->d_name;
-            string rfile=dir+FS_SEPARATOR+pfile;
+            string rfile=dir+"/"+pfile;
             if (rfile.rfind(string(".")+ext)==rfile.size()-ext.size()-1)
                 res.push_back(rfile);
         }
@@ -149,16 +149,16 @@ list<string> getDirList(const std::string &dir,
 
     struct _finddata_t c_file;
     intptr_t hFile;
-    string filepath=dir + FS_SEPARATOR + "*." + ext;
+    string filepath=dir + "/*." + ext;
     /* Find first file in current directory */
     if( (hFile = _findfirst( filepath.c_str(), &c_file )) != -1L )
     {
-        string rfile=dir+FS_SEPARATOR+c_file.name;
+        string rfile=dir+"/"+c_file.name;
         res.push_back(rfile);
         /* Find the rest of the files */
         while( _findnext( hFile, &c_file ) == 0 )
         {
-            string rfile=dir+FS_SEPARATOR+c_file.name;
+            string rfile=dir+"/"+c_file.name;
             res.push_back(rfile);
         }
     }

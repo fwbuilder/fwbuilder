@@ -1,5 +1,3 @@
-project(pf)
-
 set(pf_srcs
     pf.cpp)
 
@@ -16,6 +14,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_pf PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(pf.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_pf RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

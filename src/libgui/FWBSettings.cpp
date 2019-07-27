@@ -31,6 +31,7 @@
 #include "global.h"
 
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "FWWindow.h"
 #include "ObjectManipulator.h"
 
@@ -178,6 +179,11 @@ FWBSettings::~FWBSettings()
 #ifdef _WIN32
     delete ssh_timeout_setings_object;
 #endif
+}
+
+const QString FWBSettings::getApplicationNameForSettings()
+{
+    return "FirewallBuilder" GENERATION;
 }
 
 /**

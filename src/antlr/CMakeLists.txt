@@ -1,5 +1,3 @@
-project(antlr)
-
 set(antlr_srcs
     ANTLRUtil.cpp 
     ASTFactory.cpp 

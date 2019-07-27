@@ -1,5 +1,3 @@
-project(compiler_lib)
-
 set(compiler_lib_srcs
     CompilerDriver.cpp
     CompilerDriver_files.cpp

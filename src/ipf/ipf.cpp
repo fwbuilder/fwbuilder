@@ -50,6 +50,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "version.h"
 #include "CompilerDriver_ipf.h"
 
 #include "fwbuilder/Resources.h"

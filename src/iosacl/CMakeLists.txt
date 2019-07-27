@@ -1,5 +1,3 @@
-project(iosacl)
-
 set(iosacl_srcs
     iosacl.cpp
     )
@@ -17,6 +15,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_iosacl PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(iosacl.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_iosacl RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

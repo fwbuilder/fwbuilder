@@ -162,25 +162,25 @@ void Resources::loadSystemResources()
     string::size_type n=resfile.find_last_of("/\\");
     string resDir = resfile.substr(0,n);
 
-    list<string> pllist = getDirList( resDir + FS_SEPARATOR +PLATFORM_RES_DIR_NAME,
+    list<string> pllist = getDirList( resDir + "/" +PLATFORM_RES_DIR_NAME,
                                       "xml" );
 
     for (list<string>::iterator lsi1=pllist.begin(); lsi1!=pllist.end(); lsi1++)
     {
         string::size_type n=lsi1->find_last_of("/\\")+1;
         string platform=lsi1->substr(n, lsi1->rfind(".xml")-n);
-        Resources *tr=new Resources(*lsi1);	
+        Resources *tr=new Resources(*lsi1);
         platform_res[platform]=tr;
     }
 
 
-    list<string> oslist = getDirList( resDir + FS_SEPARATOR +OS_RES_DIR_NAME,
+    list<string> oslist = getDirList( resDir + "/" +OS_RES_DIR_NAME,
                                       "xml" );
     for (list<string>::iterator lsi2=oslist.begin(); lsi2!=oslist.end(); lsi2++)
     {
         string::size_type n=lsi2->find_last_of("/\\")+1;
         string os=lsi2->substr(n, lsi2->rfind(".xml")-n);
-        Resources *tr=new Resources(*lsi2);	
+        Resources *tr=new Resources(*lsi2);
         os_res[os]=tr;
     }
 

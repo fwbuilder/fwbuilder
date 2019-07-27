@@ -30,6 +30,7 @@
 #include <functional>
 #include <stdexcept>
 
+#include "version.h"
 #include "CompilerDriver_ipt.h"
 
 #include "fwbuilder/Resources.h"

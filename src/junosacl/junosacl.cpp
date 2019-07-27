@@ -45,6 +45,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "version.h"
 #include "CompilerDriver_junosacl.h"
 
 #include "fwbuilder/Resources.h"

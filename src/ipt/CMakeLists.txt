@@ -1,5 +1,3 @@
-project(ipt)
-
 set(ipt_srcs
     ipt.cpp)
 
@@ -16,6 +14,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_ipt PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(ipt.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_ipt RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

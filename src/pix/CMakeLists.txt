@@ -1,5 +1,3 @@
-project(pix)
-
 set(pix_srcs
     pix.cpp)
 
@@ -16,6 +14,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_pix PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(pix.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_pix RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

@@ -1,5 +1,3 @@
-project(libgui)
-
 set(libgui_srcs
     ProjectPanel.cpp
     ProjectPanel_events.cpp

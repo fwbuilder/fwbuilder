@@ -35,6 +35,7 @@
 #include "instDialog.h"
 #include "FirewallInstaller.h"
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "FWWindow.h"
 #include "InstallFirewallViewItem.h"
 #include "instOptionsDialog.h"

@@ -1,5 +1,3 @@
-project(nxosacl)
-
 set(nxosacl_srcs
     nxosacl.cpp
     )
@@ -17,6 +15,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_nxosacl PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(nxosacl.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_nxosacl RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

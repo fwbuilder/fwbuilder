@@ -52,7 +52,7 @@ namespace libfwbuilder
 class XMLTools
 {
     public:
-
+    static const std::string defaultVersion;
     static const char * FromXmlCast(xmlChar * c) { return reinterpret_cast<const char *>(c); }
     static const char * FromXmlCast(const xmlChar * c) { return reinterpret_cast<const char *>(c); }
     static xmlChar * ToXmlCast(char * c) { return reinterpret_cast<xmlChar *>(c); }
@@ -94,7 +94,7 @@ class XMLTools
                               const std::string &dtd_file,
                               const UpgradePredicate *upgrade,
                               const std::string &template_dir,
-                              const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
+                              const std::string &current_version = defaultVersion
     );
 
     static void setDTD(xmlDocPtr doc, 
@@ -197,7 +197,7 @@ class XMLTools
                              const std::string &file_name, 
                              const std::string &type_name,
                              const std::string &template_dir,
-                             const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
+                             const std::string &current_version = defaultVersion
     );
 
     /**

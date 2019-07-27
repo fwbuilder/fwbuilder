@@ -123,6 +123,6 @@ string strip(const string &s)
 
 string getPathToBinary(const string &pgm_name)
 {
-    return appRootDir + FS_SEPARATOR + pgm_name;
+    return appRootDir + "/" + pgm_name;
 }
 

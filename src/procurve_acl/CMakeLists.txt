@@ -1,5 +1,3 @@
-project(procurve_acl)
-
 set(procurve_acl_srcs
     procurve_acl.cpp
     )
@@ -17,6 +15,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_procurve_acl PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(procurve_acl.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_procurve_acl RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

@@ -1,5 +1,3 @@
-project(ipfw)
-
 set(ipfw_srcs
     ipfw.cpp)
 
@@ -16,6 +14,8 @@ IF (UNIX)
 ENDIF()
 
 target_compile_options(fwb_ipfw PRIVATE ${CXX_DEFAULT_FLAGS})
+
+set_source_files_properties(ipfw.cpp PROPERTIES COMPILE_DEFINITIONS PREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 install(TARGETS fwb_ipfw RUNTIME DESTINATION ${FWB_INSTALL_BINDIR})
 

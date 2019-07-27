@@ -1,5 +1,3 @@
-project(libfwcompiler)
-
 set(libfwcompiler_srcs
     BaseCompiler.cpp
     Compiler.cpp

@@ -1,6 +1,4 @@
-project(doc)
-
-FILE(GLOB readme_files "${PROJECT_SOURCE_DIR}/README.*")
+FILE(GLOB readme_files "${CMAKE_CURRENT_SOURCE_DIR}/README.*")
 
 install(FILES
         AUTHORS

@@ -1,5 +1,3 @@
-project(fwbuilder-gui)
-
 find_package(OpenSSL REQUIRED)
 
 set(fwbuilder-gui_srcs

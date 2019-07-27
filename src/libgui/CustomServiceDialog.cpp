@@ -32,6 +32,7 @@
 #include "FWBTree.h"
 #include "CustomServiceDialog.h"
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "FWCmdChange.h"
 
 #include "fwbuilder/Library.h"

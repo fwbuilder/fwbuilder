@@ -1,5 +1,3 @@
-project(parsers)
-
 set(parsers_srcs
     IOSCfgLexer.cpp
     IOSCfgParser.cpp

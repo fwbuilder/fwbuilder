@@ -28,6 +28,7 @@
 
 */
 
+#include "version.h"
 #include "global.h"
 #include "check_update_url.h"
 

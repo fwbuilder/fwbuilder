@@ -1,5 +1,3 @@
-project(pflib)
-
 set(pflib_srcs
     AutomaticRules_pf.cpp
     CompilerDriver_ipf.cpp

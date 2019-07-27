@@ -1,5 +1,3 @@
-project(iptlib)
-
 set(iptlib_srcs
     CompilerDriver_ipt_policy.cpp
     OSData_ipt.cpp

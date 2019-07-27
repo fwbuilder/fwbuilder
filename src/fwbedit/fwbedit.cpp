@@ -22,6 +22,7 @@
 */
 
 
+#include "version.h"
 #include "fwbuilder/Constants.h"
 
 #include <qsettings.h>

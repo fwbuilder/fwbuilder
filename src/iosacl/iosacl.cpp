@@ -45,6 +45,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "version.h"
 #include "CompilerDriver_iosacl.h"
 
 #include "fwbuilder/Resources.h"

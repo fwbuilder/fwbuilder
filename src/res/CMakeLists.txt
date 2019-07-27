@@ -1,9 +1,8 @@
-project(res)
 configure_file(objects_init.xml.in objects_init.xml)
 configure_file(templates.xml.in templates.xml)
-FILE(GLOB os_files "${PROJECT_SOURCE_DIR}/os/*.xml")
-FILE(GLOB platform_files "${PROJECT_SOURCE_DIR}/platform/*.xml")
-FILE(GLOB help_files "${PROJECT_SOURCE_DIR}/help/en_US/*.html" "${PROJECT_SOURCE_DIR}/help/en_US/*.png" "${PROJECT_SOURCE_DIR}/help/en_US/*.jpg")
+FILE(GLOB os_files "${CMAKE_CURRENT_SOURCE_DIR}/os/*.xml")
+FILE(GLOB platform_files "${CMAKE_CURRENT_SOURCE_DIR}/platform/*.xml")
+FILE(GLOB help_files "${CMAKE_CURRENT_SOURCE_DIR}/help/en_US/*.html" "${CMAKE_CURRENT_SOURCE_DIR}/help/en_US/*.png" "${CMAKE_CURRENT_SOURCE_DIR}/help/en_US/*.jpg")
 
 install(FILES
 	${CMAKE_CURRENT_BINARY_DIR}/objects_init.xml

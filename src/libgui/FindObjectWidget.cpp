@@ -33,6 +33,7 @@
 #include "FWObjectDropArea.h"
 #include "FWBTree.h"
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "ObjectTreeView.h"
 #include "RuleSetView.h"
 #include "ObjectEditor.h"

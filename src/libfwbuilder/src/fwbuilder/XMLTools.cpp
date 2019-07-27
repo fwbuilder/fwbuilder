@@ -26,7 +26,7 @@
 
 
 
-
+#include "version.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/ThreadTools.h"
 
@@ -115,6 +115,8 @@ static void xslt_error_handler(void *ctx, const char *msg, ...)
     *((string*)ctx)+=buf;
 }
 
+const std::string XMLTools::defaultVersion = std::string(FWBUILDER_XML_VERSION);
+
 xmlNodePtr XMLTools::getXmlChildNode(xmlNodePtr r,const char *child_name)
 {
     xmlNodePtr  cur;
@@ -197,7 +199,7 @@ xmlParserInputPtr fwbExternalEntityLoader(const char *URL,
 
     string fname;
 
-    fname=string(current_template_dir) + FS_SEPARATOR;
+    fname=string(current_template_dir) + "/";
 
     string url=URL;
     string::size_type pos=url.find_last_of("/\\");
@@ -778,7 +780,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
 
         fname = template_dir;
 
-        fname = fname+FS_SEPARATOR+"migration"+FS_SEPARATOR+type_name+"_"+vers+".xslt";
+        fname = fname+"/migration/"+type_name+"_"+vers+".xslt";
 
         if (access(fname.c_str() , R_OK )!=0) 
         {

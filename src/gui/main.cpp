@@ -25,6 +25,7 @@
 */
 
 
+#include "version.h"
 #include "global.h"
 #include "../common/commoninit.h"
 

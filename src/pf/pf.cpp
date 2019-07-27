@@ -32,6 +32,7 @@
 #include <stdexcept>
 #include <utility>
 
+#include "version.h"
 #include "CompilerDriver_pf.h"
 
 #include "fwbuilder/Resources.h"

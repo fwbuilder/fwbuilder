@@ -30,9 +30,6 @@
 #include "FWBApplication.h"
 #include "RCS.h"
 
-// need this for FS_SEPARATOR
-#include "fwbuilder/Tools.h"
-
 //#include "FWWindow.h"
 
 #include <qdir.h>

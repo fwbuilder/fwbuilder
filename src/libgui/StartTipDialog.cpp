@@ -23,6 +23,7 @@
 
 */
 
+#include "version.h"
 #include "global.h"
 #include "utils.h"
 

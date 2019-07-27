@@ -1,5 +1,3 @@
-project(cisco_lib)
-
 set(cisco_lib_srcs
     PolicyCompiler_cisco.cpp
     PolicyCompiler_cisco_acls.cpp

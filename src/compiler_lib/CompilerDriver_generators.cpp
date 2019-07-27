@@ -28,6 +28,7 @@
 #include <iostream>
 #include <iomanip>
 
+#include "version.h"
 #include "CompilerDriver.h"
 #include "Configlet.h"
 
