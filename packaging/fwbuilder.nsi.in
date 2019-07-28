@@ -1,3 +1,4 @@
+setCompressor lzma
 ; fwbuilder.nsi
 ;
 ;
@@ -11,122 +12,17 @@ Var STARTMENU_FOLDER
 ; GENERATION is used to build the path in the registry, it should be coordinated
 ; with the path defined in FWBSettings class
 ;
-!define GENERATION "@PROJECT_GENERATION_SHORT@"
+!define GENERATION "@PROJECT_GENERATION@"
 !define VERSION "@PROJECT_VERSION@"
+!define APPNAME "FirewallBuilder"
 
-
-
-!define APPNAME "FirewallBuilder-${VERSION}"
-
-;------------------------------------------------------------------------------
-; GetWindowsVersion
-;
-; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
-; Returns on top of stack
-;
-; Windows Version (95, 98, ME, NT x.x, 2000)
-; or
-; '' (Unknown Windows Version)
-;
-; Usage:
-;   Call GetWindowsVersion
-;   Pop $0
-;   ; at this point $0 is "NT 4.0" or whatnot
-
-Function GetWindowsVersion
-  Push $0
-  Push $9
-  ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-  StrCmp $0 "" 0 lbl_winnt
-  ; we are not NT.
-  ReadRegStr $0 HKLM SOFTWARE\Microsoft\Windows\CurrentVersion VersionNumber
- 
-  StrCpy $9 $0 1
-  StrCmp $9 '4' 0 lbl_error
-
-  StrCpy $9 $0 3
-
-  StrCmp $9 '4.0' lbl_win32_95
-  StrCmp $9 '4.9' lbl_win32_ME lbl_win32_98
-
-  lbl_win32_95:
-    StrCpy $0 '95'
-  Goto lbl_done
-
-  lbl_win32_98:
-    StrCpy $0 '98'
-  Goto lbl_done
-
-  lbl_win32_ME:
-    StrCpy $0 'ME'
-  Goto lbl_done
-
-  lbl_winnt: 
-
-    StrCpy $9 $0 1
-    StrCmp $9 '3' lbl_winnt_x
-    StrCmp $9 '4' lbl_winnt_x
-    StrCmp $9 '5' lbl_winnt_5
-    StrCmp $9 '6' lbl_winnt_6 lbl_error
-
-    lbl_winnt_x:
-      StrCpy $0 "NT $0" 6
-    Goto lbl_done
-
-    lbl_winnt_5:
-      Strcpy $0 '2000'
-    Goto lbl_done
-
-    lbl_winnt_6:
-      Strcpy $0 'Vista'
-    Goto lbl_done
-
-  lbl_error:
-    Strcpy $0 ''
-  lbl_done:
-  Pop $9
-  Exch $0
-FunctionEnd
-
-
+!include WinVer.nsh
 Function .onInit
-
-  Call GetWindowsVersion
-  Pop $0
-
-  StrCmp $0 "NT 4.0" lbl_done check_2000
-  check_2000:
-      StrCmp $0 "2000" lbl_done check_vista
-  check_vista:
-      StrCmp $0 "Vista" lbl_done lbl_error
-  lbl_error:
-      MessageBox MB_OK  "Firewall Builder supports only Windows 2000, Windows XP and Vista platform."
-      Abort
-
-lbl_done:
-
+  ${IfNot} ${AtLeastWin7}
+    MessageBox MB_OK  "Firewall Builder require at least Windows 7."
+    Abort
+  ${EndIf}
 FunctionEnd
-
-
-Function un.UninstallSurveyPageText
-
-  IfFileExists $PROFILE\fwb4*license* +4 0
-  IfFileExists $PROFILE\Documents\fwb4*license* +3 0
-
-  MessageBox MB_YESNO "Help us improve Firewall Builder!  If you are \
-uninstalling because you don't plan to use the software please fill out \
-a short survey to tell us why you are leaving and what we can do better.\
-$\n\
-$\n\
-Click Yes to open the survey in your web browser, click No to exit the \
-uninstaller." IDNO +2
-
-  ExecShell open "http://www.fwbuilder.org/uninstall_survey.html" 
-
-;  MessageBox MB_ICONSTOP "Continuing uninstaller"
-
-FunctionEnd
-
 
 ;****************************************************************************
 ;Include Modern UI
@@ -135,33 +31,22 @@ FunctionEnd
 
 ;****************************************************************************
 
-  setCompressor lzma
 
   Name "Firewall Builder ${VERSION}"
   Caption "Firewall Builder installation"
   OutFile "fwbuilder-${VERSION}.exe"
 
 ;  Default installation folder
-  InstallDir "$PROGRAMFILES\FWBuilder-${GENERATION}"
+  InstallDir "$PROGRAMFILES\FWBuilder${GENERATION}"
 
 ;****************************************************************************
 ; We need to keep installation data and program settings in
 ; registry folders with different names. QSettings always looks into
-; Current User registry first, so if the folders have the same names,
-; then we store evaluation key in Current User, while it is better
-; to put it in the Local Machine branch.
-;
-; So, installation data goes to HKLM Software\NetCitadel\FirewallBuilder\2.1
-; and settings to HKCU Software\NetCitadel\FirewallBuilder2_1
-;
-; fwbuilder-lm determines folder path for the license file by
-; reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder\2.1
-;
 ;****************************************************************************
 ;
 ;  Get installation folder from registry if available
 
-  InstallDirRegKey HKLM Software\NetCitadel\${APPNAME} "Install_Dir"
+  InstallDirRegKey HKLM Software\fwbuilder.github.io\${APPNAME}\${GENERATION} "Install_Dir"
 
 ;****************************************************************************
 ;Interface Settings
@@ -170,7 +55,7 @@ FunctionEnd
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\NetCitadel\${APPNAME}" 
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
   LicenseText "GNU GENERAL PUBLIC LICENSE"
@@ -222,11 +107,6 @@ Section "FWBuilder (required)"
   File /r resources\os
   File /r resources\platform
   File /r resources\migration
-
-  SetOutPath $INSTDIR\resources\locale
-
-; we have no working translations for v4 and v5
-;  File src\libgui\*.qm
 
   SetOutPath $INSTDIR
 
@@ -300,7 +180,7 @@ Section "FWBuilder (required)"
 
 
 ; Write the installation path into the registry
-  WriteRegStr HKLM Software\NetCitadel\${APPNAME} "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM Software\fwbuilder.github.io\${APPNAME}\${GENERATION} "Install_Dir" "$INSTDIR"
 
 ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayName"     "Firewall Builder ${VERSION}"
@@ -329,10 +209,10 @@ Section "FWBuilder (required)"
 ;
 ; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings 
 ;
-  ReadRegStr $0 HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SSHPath"
+  ReadRegStr $0 HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}\SSH" "SSHPath"
   StrCmp $0 "" 0 +3
-    WriteRegStr HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SSHPath" "$INSTDIR\plink.exe"
-    WriteRegStr HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SCPPath" "$INSTDIR\pscp.exe"
+    WriteRegStr HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}\SSH" "SSHPath" "$INSTDIR\plink.exe"
+    WriteRegStr HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}\SSH" "SCPPath" "$INSTDIR\pscp.exe"
 ; ========================================================================
 
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -363,14 +243,13 @@ Section "Uninstall"
 
   ; remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}"
-  DeleteRegKey HKLM "Software\NetCitadel\${APPNAME}"
+  DeleteRegKey HKLM "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}"
+  DeleteRegKey /ifempty HKLM "Software\fwbuilder.github.io\${APPNAME}"
+  DeleteRegKey /ifempty HKLM "Software\fwbuilder.github.io"
 
-  ; delete obsolete registry folder, not used in v3.x but could be left over from older versions
-  DeleteRegKey HKCU "Software\NetCitadel LLC\Firewall Builder"
-
-  DeleteRegKey HKCU "Software\netcitadel.com\${APPNAME}"
-  DeleteRegKey /ifempty HKCU "Software\netcitadel.com\${APPNAME}"
-  DeleteRegKey /ifempty HKCU "Software\netcitadel.com"
+  DeleteRegKey HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}"
+  DeleteRegKey /ifempty HKCU "Software\fwbuilder.github.io\${APPNAME}"
+  DeleteRegKey /ifempty HKCU "Software\fwbuilder.github.io"
 
   DeleteRegKey HKCR ".fwb"
   DeleteRegKey HKCR ".fwl"
@@ -392,10 +271,6 @@ Section "Uninstall"
 
   RMDir /r "$INSTDIR"
 
-;  !insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
-;  Delete  "$SMPROGRAMS\$MUI_TEMP\*.*"
-;  StrCpy $MUI_TEMP "$SMPROGRAMS\$MUI_TEMP"
-
 ;  Remove Start menu shortcuts
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENU_FOLDER
@@ -405,10 +280,6 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk"
   Delete "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk"
   RMDir  "$SMPROGRAMS\$STARTMENU_FOLDER"
-
-  ; delete only if empty because there could be registry folders
-  ; for our other products
-  DeleteRegKey /ifempty HKLM "Software\NetCitadel"
 
 SectionEnd
 

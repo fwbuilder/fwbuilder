@@ -72,7 +72,8 @@ class FWBSettings : public QSettings
     FWBSettings(bool testData = false);
     ~FWBSettings();
 
-    static const QString getApplicationNameForSettings();
+    static const QString ApplicationName;
+    static const QString OrganizationName;
 
     void init(bool force_first_time_run=false);
     void save();

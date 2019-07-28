@@ -146,6 +146,8 @@ const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 
 const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodifiedRules";
 
+const QString FWBSettings::ApplicationName = QStringLiteral("FirewallBuilder");
+const QString FWBSettings::OrganizationName = QStringLiteral("fwbuilder.github.io");
 
 /**
  * Settings path defined here should match Windows registry paths used
@@ -156,15 +158,15 @@ const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodif
  */
 FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
-              "netcitadel.com",
-              testData?"fwb_test_data":getApplicationNameForSettings())
+              OrganizationName,
+              testData ? "fwb_test_data" : ApplicationName)
 {
     if (testData)
     {
         this->clear();
     }
     uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                                  "netcitadel.com", "FirewallBuilder");
+                                  OrganizationName, ApplicationName);
 #ifdef _WIN32
     ssh_timeout_setings_object = new QSettings(QSettings::UserScope,
                                                  "SimonTatham", "PuTTY");
@@ -179,11 +181,6 @@ FWBSettings::~FWBSettings()
 #ifdef _WIN32
     delete ssh_timeout_setings_object;
 #endif
-}
-
-const QString FWBSettings::getApplicationNameForSettings()
-{
-    return "FirewallBuilder" GENERATION;
 }
 
 /**
