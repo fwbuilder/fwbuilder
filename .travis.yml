@@ -27,7 +27,8 @@ matrix:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew install qt cmake openssl net-snmp ;
+      brew install qt net-snmp ;
+      brew upgrade openssl cmake ;
     fi
 
 before_script:
@@ -37,7 +38,7 @@ before_script:
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      docker run -v $(pwd):/fwbuilder -it fwbuilder/$VM:$TAG "docker/travis.${VM}_${TAG}.sh" ;
+      docker run -v $(pwd):/fwbuilder -it fwbuilder/$VM:$TAG "/fwbuilder/docker/travis.${VM}_${TAG}.sh" ;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export PATH="/usr/local/opt/qt/bin:/usr/local/opt/net-snmp/bin:$PATH" ;
