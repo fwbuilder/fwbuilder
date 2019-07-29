@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     libxslt1-dev \
     make \
     nsis \
-    qbs \
+    cmake \
+    git \
     qt5-default
 
-WORKDIR /root
+WORKDIR /
+CMD ["bash"]
