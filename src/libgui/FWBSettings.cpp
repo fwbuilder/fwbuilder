@@ -110,7 +110,7 @@ const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize"
 const char* rulesFont = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
 const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
-const char* compilerOutputFont = 
+const char* compilerOutputFont =
     SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputFont";
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
@@ -147,7 +147,7 @@ const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodifiedRules";
 
 const QString FWBSettings::ApplicationName = QStringLiteral("FirewallBuilder");
-const QString FWBSettings::OrganizationName = QStringLiteral("fwbuilder.github.io");
+const QString FWBSettings::OrganizationName = QStringLiteral("firewallbuilder.org");
 
 /**
  * Settings path defined here should match Windows registry paths used
@@ -211,7 +211,7 @@ void FWBSettings::init(bool force_first_time_run)
         } else
         {
             ok = uuid_settings->contains(appGUID_4_0);
-            if (ok) 
+            if (ok)
             {
                 uuid_settings->setValue(
                     appGUID, uuid_settings->value(appGUID_4_0).toString());

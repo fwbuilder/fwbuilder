@@ -46,7 +46,7 @@ FunctionEnd
 ;
 ;  Get installation folder from registry if available
 
-  InstallDirRegKey HKLM Software\fwbuilder.github.io\${APPNAME}\${GENERATION} "Install_Dir"
+  InstallDirRegKey HKLM Software\firewallbuilder.org\${APPNAME}\${GENERATION} "Install_Dir"
 
 ;****************************************************************************
 ;Interface Settings
@@ -55,7 +55,7 @@ FunctionEnd
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}"
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\firewallbuilder.org\${APPNAME}\${GENERATION}"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
   LicenseText "GNU GENERAL PUBLIC LICENSE"
@@ -180,7 +180,7 @@ Section "FWBuilder (required)"
 
 
 ; Write the installation path into the registry
-  WriteRegStr HKLM Software\fwbuilder.github.io\${APPNAME}\${GENERATION} "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM Software\firewallbuilder.org\${APPNAME}\${GENERATION} "Install_Dir" "$INSTDIR"
 
 ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayName"     "Firewall Builder ${VERSION}"
@@ -209,10 +209,10 @@ Section "FWBuilder (required)"
 ;
 ; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings 
 ;
-  ReadRegStr $0 HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}\SSH" "SSHPath"
+  ReadRegStr $0 HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SSHPath"
   StrCmp $0 "" 0 +3
-    WriteRegStr HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}\SSH" "SSHPath" "$INSTDIR\plink.exe"
-    WriteRegStr HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}\SSH" "SCPPath" "$INSTDIR\pscp.exe"
+    WriteRegStr HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SSHPath" "$INSTDIR\plink.exe"
+    WriteRegStr HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SCPPath" "$INSTDIR\pscp.exe"
 ; ========================================================================
 
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -243,13 +243,13 @@ Section "Uninstall"
 
   ; remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}"
-  DeleteRegKey HKLM "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}"
-  DeleteRegKey /ifempty HKLM "Software\fwbuilder.github.io\${APPNAME}"
-  DeleteRegKey /ifempty HKLM "Software\fwbuilder.github.io"
+  DeleteRegKey HKLM "Software\firewallbuilder.org\${APPNAME}\${GENERATION}"
+  DeleteRegKey /ifempty HKLM "Software\firewallbuilder.org\${APPNAME}"
+  DeleteRegKey /ifempty HKLM "Software\firewallbuilder.org"
 
-  DeleteRegKey HKCU "Software\fwbuilder.github.io\${APPNAME}\${GENERATION}"
-  DeleteRegKey /ifempty HKCU "Software\fwbuilder.github.io\${APPNAME}"
-  DeleteRegKey /ifempty HKCU "Software\fwbuilder.github.io"
+  DeleteRegKey HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}"
+  DeleteRegKey /ifempty HKCU "Software\firewallbuilder.org\${APPNAME}"
+  DeleteRegKey /ifempty HKCU "Software\firewallbuilder.org"
 
   DeleteRegKey HKCR ".fwb"
   DeleteRegKey HKCR ".fwl"
