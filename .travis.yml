@@ -27,7 +27,7 @@ matrix:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew install qt net-snmp ;
+      brew install https://homebrew.bintray.com/bottles/qt-5.13.2.high_sierra.bottle.tar.gz net-snmp ;
       brew upgrade openssl cmake ;
     fi
 
