@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="24" id="root">
   <Library id="id40CCB499" color="#d2ffd0" name="User" comment="" ro="False">
     <ObjectGroup id="id40CCB49A_clusters" name="Clusters" comment="" ro="False"/>
     <ObjectGroup id="id40CCB49A" name="Objects" comment="" ro="False">
