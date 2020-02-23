@@ -232,9 +232,9 @@ void ObjectManipulator::pasteObj()
 
         // Check if we have already copied the same object before
         QString buff;
-        buff.sprintf(".copy_of_%p", co->getRoot());
+        buff.asprintf(".copy_of_%p", co->getRoot());
         string dedup_attribute = buff.toLatin1().constData();
-        buff.sprintf("%d", co->getId());
+        buff = QString::number(co->getId());
         QByteArray bytes = buff.toLatin1();
         FWObject *n_obj =
             target_object->getRoot()->findObjectByAttribute(dedup_attribute,

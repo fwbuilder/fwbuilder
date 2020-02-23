@@ -99,7 +99,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
             Interface *iface = Interface::cast(*iter);
             //if (iface->isLoopback()) continue;
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(firewall, QStringList() << QString::fromUtf8(iface->getName().c_str()));
-            ifaceitem->setData(0, Qt::UserRole, qVariantFromValue(iface));//QVariant(QVariant::UserType, iface));
+            ifaceitem->setData(0, Qt::UserRole, QVariant::fromValue(iface));//QVariant(QVariant::UserType, iface));
             ifaceitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
             ifaceitem->setDisabled(!interfaceSelectable(iface));
             if (!interfaceSelectable(iface))
@@ -113,7 +113,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
                 //if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
-                subitem->setData(0, Qt::UserRole, qVariantFromValue(subiface));//QVariant(QVariant::UserType, subitem));
+                subitem->setData(0, Qt::UserRole, QVariant::fromValue(subiface));//QVariant(QVariant::UserType, subitem));
                 subitem->setDisabled(!interfaceSelectable(subiface));
                 subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))

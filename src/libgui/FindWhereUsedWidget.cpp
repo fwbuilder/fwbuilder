@@ -355,7 +355,7 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject *o,
     item->setIcon(1, QIcon(parent_icon));
     item->setIcon(0, QIcon(object_icon));
 
-    item->setData(1, Qt::UserRole, qVariantFromValue((void*)container));
+    item->setData(1, Qt::UserRole, QVariant::fromValue((void*)container));
 
     return item;
 }

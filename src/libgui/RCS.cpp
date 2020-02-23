@@ -198,7 +198,9 @@ RCSEnvFix::RCSEnvFix()
 
 #endif
 
-    TZOffset.sprintf("%02d:%02d",tzoffset/60,tzoffset%60);
+    TZOffset = QString("%1:%2")
+            .arg(tzoffset / 60, 2, 10, QChar('0'))
+            .arg(tzoffset % 60, 2, 10, QChar('0'));
     TZOffset = tzsign + TZOffset;
 
     if (fwbdebug)

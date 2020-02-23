@@ -389,7 +389,7 @@ static void addKeywordsMenu(ObjectManipulator *om, QMenu *menu)
         removeKeywords->setDisabled(true);
     } else {
         data[0] = "remove";
-        foreach (QString str, sortStrings(toRemove.toList())) {
+        foreach (QString str, sortStrings(toRemove.values())) {
             QAction *act =
                 removeKeywords->addAction(str, om, SLOT(processKeywordSlot()));
             data[1] = str;

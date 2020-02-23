@@ -27,6 +27,7 @@
 #include "UsageResolver.h"
 
 #include <QTime>
+#include <QElapsedTimer>
 #include <QtDebug>
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -135,7 +136,7 @@ list<Firewall*> UsageResolver::findFirewallsForObject(FWObject *o,
     list<Firewall *> fws;
 
     set<FWObject *> resset;
-    QTime tt;
+    QElapsedTimer tt;
     tt.start();
     FWObject *f=o;
     while (f!=nullptr && !Firewall::cast(f)) f=f->getParent();

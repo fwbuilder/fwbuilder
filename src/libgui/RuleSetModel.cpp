@@ -36,6 +36,7 @@
 #include <QRegExp>
 #include <QMessageBox>
 #include <QTime>
+#include <QElapsedTimer>
 #include <QtAlgorithms>
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -176,7 +177,7 @@ void RuleSetModel::initModel()
     RuleNode* node;
     RuleNode* group;
 
-    QTime t; t.start();
+    QElapsedTimer t; t.start();
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++, row++)
     {
 
@@ -212,7 +213,7 @@ void RuleSetModel::initModel()
         }
 
     }
-    //if (fwbdebug) qDebug("Model init: %d ms", t.elapsed());
+    if (fwbdebug) qDebug("Model init: %lld ms", t.elapsed());
 }
 
 int RuleSetModel::rowCount(const QModelIndex &parent) const

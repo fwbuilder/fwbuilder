@@ -71,6 +71,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include <QTime>
+#include <QElapsedTimer>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -171,16 +172,16 @@ void RuleSetView::init()
 
 
     setUpdatesEnabled(false);
-    QTime t; t.start();
+    QElapsedTimer t; t.start();
     configureGroups();
     if (fwbdebug)
-        qDebug("RuleSetView configureGroups: %d ms", t.restart());
+        qDebug("RuleSetView configureGroups: %lld ms", t.restart());
     restoreCollapsedGroups();
     if (fwbdebug)
-        qDebug("RuleSetView restoreCollapsedGroups: %d ms", t.restart());
+        qDebug("RuleSetView restoreCollapsedGroups: %lld ms", t.restart());
     resizeColumns();
     if (fwbdebug)
-        qDebug("RuleSetView resizeColumns: %d ms", t.restart());
+        qDebug("RuleSetView resizeColumns: %lld ms", t.restart());
     setUpdatesEnabled(true);
 }
 
@@ -2614,7 +2615,7 @@ void RuleSetView::restoreCollapsedGroups()
 {
     if (project)
     {
-        QTime t;
+        QElapsedTimer t;
         t.start();
         RuleSetModel* md = ((RuleSetModel*)model());
         QStringList collapsed_groups;
@@ -2622,7 +2623,7 @@ void RuleSetView::restoreCollapsedGroups()
         filename = project->getRCS()->getFileName();
 
         if (fwbdebug)
-            qDebug("restoreCollapsedGroups begin: %d ms", t.restart());
+            qDebug("restoreCollapsedGroups begin: %lld ms", t.restart());
 
         Firewall *f = md->getFirewall();
         if (f)
@@ -2633,14 +2634,14 @@ void RuleSetView::restoreCollapsedGroups()
                 collapsed_groups);
 
         if (fwbdebug)
-            qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %d ms", t.restart());
+            qDebug("restoreCollapsedGroups getCollapsedRuleGroups: %lld ms", t.restart());
 
         QList<QModelIndex> groups;
         md->getGroups(groups);
 
         if (fwbdebug)
         {
-            qDebug("restoreCollapsedGroups getGroups: %d ms", t.restart());
+            qDebug("restoreCollapsedGroups getGroups: %lld ms", t.restart());
             qDebug() << "Groups:" << groups.size();
         }
 
@@ -2651,7 +2652,7 @@ void RuleSetView::restoreCollapsedGroups()
         }
 
         if (fwbdebug)
-            qDebug("restoreCollapsedGroups foreach setExpanded: %d ms", t.restart());
+            qDebug("restoreCollapsedGroups foreach setExpanded: %lld ms", t.restart());
     }
 }
 

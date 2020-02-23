@@ -44,6 +44,7 @@
 #include <QStringList>
 #include <QTextCodec>
 #include <QTime>
+#include <QElapsedTimer>
 
 
 #include "../common/init.cpp"
@@ -78,7 +79,7 @@ int main(int argc, char **argv)
 {   
     QCoreApplication app(argc, argv, false);
 
-    QTime total_time_timer;
+    QElapsedTimer total_time_timer;
     total_time_timer.start();
 
     // compilers always write file names into manifest in Utf8
