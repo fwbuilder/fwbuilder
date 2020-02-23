@@ -41,7 +41,7 @@ class DNSTest : public CppUnit::TestCase
     bool testDNSNameObject(libfwbuilder::FWObjectDatabase *objdb,
                            libfwbuilder::FWObject *root,
                            const std::string &dnsrec,
-                           char* results[]);
+                           const char* results[]);
 public:
     void runTest();
 
