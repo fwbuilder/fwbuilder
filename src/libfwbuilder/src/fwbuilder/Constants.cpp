@@ -29,15 +29,26 @@
 #   include <sys/stat.h>
 #endif
 
+#include <cstdlib>
+
 using namespace std;
 using namespace libfwbuilder;
 
 string Constants::res_dir;
 
+const char* EnvResDirVariable = "FWB_RES_DIR";
+
 void Constants::init(const std::string &app_root_dir)
 {
-    if (app_root_dir.empty()) res_dir = string(RES_DIR);
-    else res_dir = app_root_dir + "/" + string(RES_DIR);
+    if (app_root_dir.empty()) {
+        if (const char* env_res_dir = std::getenv(EnvResDirVariable)) {
+            res_dir = string(env_res_dir);
+        } else {
+            res_dir = string(RES_DIR);
+        }
+    } else {
+        res_dir = app_root_dir + "/" + string(RES_DIR);
+    }
 }
 
 const string Constants::getLibraryDescription()
