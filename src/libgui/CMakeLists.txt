@@ -218,8 +218,7 @@ set(libgui_srcs
     RuleSetDiffDialog.cpp
     RuleSetDiffDelegate.cpp
     RuleSetDiffModel.cpp
-    BackgroundCompileInfoWidget.cpp
-    temporarydir.cpp)
+    BackgroundCompileInfoWidget.cpp)
 
 set(libgui_hdrs
     #events.h
@@ -427,8 +426,7 @@ set(libgui_hdrs
     RuleSetDiffDialog.h
     RuleSetDiffDelegate.h
     RuleSetDiffModel.h
-    BackgroundCompileInfoWidget.h
-    temporarydir.h)
+    BackgroundCompileInfoWidget.h)
 
 set(libgui_ui
     FWBMainWindow_q.ui
