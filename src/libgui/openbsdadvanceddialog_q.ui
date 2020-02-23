@@ -383,7 +383,7 @@
       <attribute name="title">
        <string>Data</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="openbsdAdvanced_gridLayout">
        <item row="0" column="1">
         <spacer name="spacer">
          <property name="orientation">

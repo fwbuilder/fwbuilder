@@ -757,7 +757,7 @@
       <attribute name="title">
        <string>Path</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_1">
+      <layout class="QGridLayout" name="linux24Advanced_gridLayout_1">
        <item row="0" column="1">
         <spacer>
          <property name="orientation">
@@ -1005,7 +1005,7 @@
       <attribute name="title">
        <string>conntrack</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
+      <layout class="QGridLayout" name="linux24Advanced_gridLayout_4">
        <item row="0" column="0">
         <widget class="QFrame" name="frame">
          <property name="frameShape">
@@ -1014,7 +1014,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QGridLayout" name="linux24Advanced_gridLayout_2">
           <item row="1" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
@@ -1219,7 +1219,7 @@ Explanation of this parameter can be found at&lt;br&gt;
       <attribute name="title">
        <string>Data</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="linux24Advanced_gridLayout">
        <item row="0" column="1">
         <spacer name="spacer">
          <property name="orientation">

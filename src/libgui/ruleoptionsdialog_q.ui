@@ -151,7 +151,7 @@
           <attribute name="title">
            <string>General</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_3">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_3">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -417,7 +417,7 @@
           <attribute name="title">
            <string>limit</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_10">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_10">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -601,7 +601,7 @@
           <attribute name="title">
            <string>connlimit</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_9">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_9">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -769,7 +769,7 @@
           <attribute name="title">
            <string>hashlimit</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_8">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_8">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1190,7 +1190,7 @@
           <attribute name="title">
            <string>Tag</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1285,7 +1285,7 @@
           <attribute name="title">
            <string>Classify</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_12">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_12">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1349,7 +1349,7 @@
           <attribute name="title">
            <string>Route</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_21">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_21">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1366,7 +1366,7 @@
             <number>12</number>
            </property>
            <item row="0" column="0" colspan="3">
-            <layout class="QGridLayout" name="gridLayout_20">
+            <layout class="QGridLayout" name="RuleOptions_gridLayout_20">
              <property name="spacing">
               <number>12</number>
              </property>
@@ -1409,7 +1409,7 @@
                <property name="frameShadow">
                 <enum>QFrame::Raised</enum>
                </property>
-               <layout class="QGridLayout" name="gridLayout_13">
+               <layout class="QGridLayout" name="RuleOptions_gridLayout_13">
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_5">
                   <property name="minimumSize">
@@ -1551,7 +1551,7 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="ipf">
-      <layout class="QGridLayout" name="gridLayout_7">
+      <layout class="QGridLayout" name="RuleOptions_gridLayout_7">
        <property name="spacing">
         <number>12</number>
        </property>
@@ -1573,7 +1573,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>General</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_5">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_5">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1639,7 +1639,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>Logging</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_6">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_6">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1751,7 +1751,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>Route</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_18">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_18">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -1906,7 +1906,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>State Tracking</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_2">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_2">
            <item row="0" column="0" colspan="2">
             <widget class="QCheckBox" name="pf_stateless">
              <property name="text">
@@ -2399,7 +2399,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>TCP</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_122">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_122">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -2455,7 +2455,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>Tag</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_14">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_14">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -2537,7 +2537,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>Classify</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_15">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_15">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -2598,7 +2598,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>Route</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_16">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_16">
            <item row="0" column="0" colspan="2">
             <layout class="QHBoxLayout" name="_2">
              <property name="spacing">
@@ -2830,7 +2830,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>State Tracking</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_4">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_4">
            <property name="leftMargin">
             <number>12</number>
            </property>
@@ -2907,7 +2907,7 @@ p, li { white-space: pre-wrap; }
           <attribute name="title">
            <string>Classify</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_19">
+          <layout class="QGridLayout" name="RuleOptions_gridLayout_19">
            <item row="0" column="0">
             <widget class="QLabel" name="textLabel1_9">
              <property name="text">
@@ -2929,7 +2929,7 @@ p, li { white-space: pre-wrap; }
              <property name="flat">
               <bool>true</bool>
              </property>
-             <layout class="QGridLayout" name="gridLayout_17">
+             <layout class="QGridLayout" name="RuleOptions_gridLayout_17">
               <item row="0" column="0">
                <widget class="QComboBox" name="ipfw_classify_method">
                 <item>
@@ -3198,7 +3198,7 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="iosacl">
-      <layout class="QGridLayout" name="gridLayout_11">
+      <layout class="QGridLayout" name="RuleOptions_gridLayout_11">
        <item row="0" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
@@ -3247,7 +3247,7 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="junosacl">
-      <layout class="QGridLayout" name="gridLayout_22">
+      <layout class="QGridLayout" name="RuleOptions_gridLayout_22">
        <item row="0" column="0">
         <widget class="QTabWidget" name="tabwJunos">
          <property name="tabShape">
@@ -3264,7 +3264,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
-              <layout class="QGridLayout" name="gridLayout_23">
+              <layout class="QGridLayout" name="RuleOptions_gridLayout_23">
                <item row="0" column="0">
                 <widget class="QLabel" name="label_7">
                  <property name="text">
