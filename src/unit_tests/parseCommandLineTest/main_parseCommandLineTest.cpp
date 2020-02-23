@@ -38,7 +38,6 @@ void *mw = nullptr;
 void *st = nullptr;
 void *app = nullptr;
 void *wfl;
-int sig = FWB_SIG;
 
 int main( int, char** )
 {

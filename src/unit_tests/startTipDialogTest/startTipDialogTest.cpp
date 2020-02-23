@@ -26,6 +26,7 @@
 #include "startTipDialogTest.h"
 #include "FWWindow.h"
 #include "FWBApplication.h"
+#include "FWObjectClipboard.h"
 #include "StartTipDialog.h"
 #include <QFile>
 #include "global.h"
@@ -46,6 +47,7 @@ void startTipDialogTest::testDialogAppear()
 {
     st->setBool("UI/NoStartTip", false);
     st->setBool("UI/FirstRun", true);
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->startupLoad();

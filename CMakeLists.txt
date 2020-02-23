@@ -20,6 +20,7 @@ if(NOT CMAKE_BUILD_TYPE)
         "Choose the type of build, options are: Debug or Release."
         FORCE)
 endif()
+include( CTest )
 
 ### Dependencies
 
@@ -107,6 +108,7 @@ add_subdirectory(src/libfwbuilder/etc)
 add_subdirectory(src/libfwbuilder/migration)
 add_subdirectory(src/res)
 add_subdirectory(doc)
+add_subdirectory(src/unit_tests)
 
 ### Packaging
 add_subdirectory(packaging)

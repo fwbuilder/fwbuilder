@@ -41,7 +41,6 @@ FWWindow *mw = nullptr;
 FWBSettings *st = nullptr; 
 FWBApplication *app = nullptr; 
  
-int sig = FWB_SIG; 
 
 
 extern void build_app(int argc, char** argv,

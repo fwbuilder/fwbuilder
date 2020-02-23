@@ -39,6 +39,7 @@
 #include <QString>
 
 
+
 class PIXImporterTest : public CppUnit::TestFixture
 {
     libfwbuilder::FWObjectDatabase *db;

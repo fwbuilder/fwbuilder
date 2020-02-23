@@ -41,7 +41,6 @@ int fwbdebug = 0;
 FWWindow *mw = nullptr; 
 FWBSettings *st = nullptr; 
 FWBApplication *app = nullptr; 
-int sig = FWB_SIG; 
 
 
 extern void build_app(int argc, char** argv,
@@ -56,6 +55,7 @@ int main(int argc, char** argv)
 
     build_app(argc, argv, &app, &st);
 
+    QFile::copy("test.fwb", "test_work.fwb");
 
     QTest::qExec(new instDialogInspectTest()); 
 

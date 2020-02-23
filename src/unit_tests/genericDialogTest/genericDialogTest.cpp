@@ -39,6 +39,7 @@
 
 #include <QToolButton>
 #include <QRadioButton>
+#include <QButtonGroup>
 #include <QMessageBox>
 #include <QWidget>
 #include <QLineEdit>

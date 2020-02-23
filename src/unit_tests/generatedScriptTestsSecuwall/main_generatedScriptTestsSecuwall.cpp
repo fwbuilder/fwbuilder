@@ -26,7 +26,7 @@
 #include <QApplication>
 #include <QTextCodec>
 
-#include "../../../common/init.cpp"
+#include "common/init.cpp"
 
 using namespace std;
 using namespace libfwbuilder;

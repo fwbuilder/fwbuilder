@@ -36,14 +36,13 @@
 #include <QString>
 #include <string>
 
-#include "../../../common/init.cpp"
+#include "common/init.cpp"
 
 int fwbdebug = 0;
 //QString user_name;
 FWWindow *mw = nullptr; 
 FWBSettings *st = nullptr; 
 FWBApplication *app = nullptr; 
-int sig = FWB_SIG; 
 std::string platform;
 
 int main(int argc, char** argv)
