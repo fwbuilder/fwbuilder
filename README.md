@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/fwbuilder/fwbuilder.svg?branch=master)](https://travis-ci.org/fwbuilder/fwbuilder)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ffwbuilder%2Ffwbuilder.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ffwbuilder%2Ffwbuilder?ref=badge_shield)
 
 fwbuilder
 =========
@@ -31,3 +32,7 @@ Create deb package
 ```
 debuild -us -uc --lintian-opts --profile debian
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ffwbuilder%2Ffwbuilder.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ffwbuilder%2Ffwbuilder?ref=badge_large)
