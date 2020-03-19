@@ -276,7 +276,7 @@ void instDialogInstallTest::testInstall2()
 
     // reset additional args for scp and ssh
     FWOptions *fwoptions = test1->getOptionsObject();
-    fwoptions->setStr("scpArgs", "");
+    fwoptions->setStr("scpArgs", "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null");
     fwoptions->setStr("sshArgs", "");
 
     fwoptions->setStr("firewall_dir", (QDir::currentPath()+"/test_install").toStdString());
