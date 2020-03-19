@@ -4,5 +4,7 @@ set -e -x
 
 mkdir -p /fwbuilder/build
 cd /fwbuilder/build
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Debug
 make -j$(nproc)
+make install
+QT_QPA_PLATFORM=vnc ctest -j $(nproc)
