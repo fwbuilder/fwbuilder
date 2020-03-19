@@ -22,9 +22,8 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+#include <QTest>
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "AddressTableTest.h"
 #include "fwbuilder/FWObjectDatabase.h"
 
@@ -33,13 +32,7 @@
 int fwbdebug = 0;
 std::string platform;
 
-int main( int, char** argv)
+int main()
 {
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( AddressTableTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new AddressTableTest());
 }

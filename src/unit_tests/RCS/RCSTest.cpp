@@ -25,9 +25,9 @@
 
 #include "RCSTest.h"
 
-//#include "../../global.h"
 #include "../../libgui/RCS.h"
 
+#include <QTest>
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
@@ -106,7 +106,7 @@ void RCSTest::verifyRevisions()
         realrevsmap[rev.rev] = rev;
     }
 
-    CPPUNIT_ASSERT(realrevs.size() == rcsrevs.size());
+    QVERIFY(realrevs.size() == rcsrevs.size());
 
     for (int i = 0; i < realrevs.size(); i++)
     {
@@ -122,7 +122,7 @@ void RCSTest::verifyRevisions()
         qDebug() << "----------";
         qDebug() << (realr == rcsr);
 */
-        CPPUNIT_ASSERT (realr == rcsr);
+        QVERIFY (realr == rcsr);
     }
 
 }

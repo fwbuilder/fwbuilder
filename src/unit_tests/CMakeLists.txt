@@ -1,6 +1,5 @@
 include( CTest )
 
-find_package(CppUnit REQUIRED)
 find_package(Qt5Test REQUIRED)
 
 enable_testing(TRUE)

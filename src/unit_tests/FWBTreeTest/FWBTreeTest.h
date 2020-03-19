@@ -26,24 +26,19 @@
 #ifndef FWBTREETEST_H
 #define FWBTREETEST_H
 
+#include <QObject>
 
 #include "FWBTree.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
-
-class FWBTreeTest : public CppUnit::TestFixture
+class FWBTreeTest : public QObject
 {
+    Q_OBJECT
+
     QSet<libfwbuilder::FWObject*> getStandardFolders(libfwbuilder::FWObject *root);
 
-public:
+private slots:
     void isSystem();
     void validateForInsertion();
-
-    CPPUNIT_TEST_SUITE(FWBTreeTest);
-    CPPUNIT_TEST(isSystem);
-    CPPUNIT_TEST(validateForInsertion);
-    CPPUNIT_TEST_SUITE_END();
     
 };
 

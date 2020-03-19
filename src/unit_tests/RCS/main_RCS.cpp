@@ -23,22 +23,10 @@
 
 */
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "RCSTest.h"
-#include <QString>
-#include <string>
-
-//int fwbdebug = 0;
-//QString user_name;
+#include <QTest>
 
 int main( int, char** )
 {
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( RCSTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new RCSTest());
 }

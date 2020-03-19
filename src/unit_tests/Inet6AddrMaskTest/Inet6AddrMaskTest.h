@@ -26,11 +26,13 @@
 #ifndef INET6ADDRMASKTEST_H
 #define INET6ADDRMASKTEST_H
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <QObject>
 
-class Inet6AddrMaskTest : public CppUnit::TestFixture
+class Inet6AddrMaskTest : public QObject
 {
-public:
+    Q_OBJECT
+
+private slots:
     void testStringToInetAddrExceptions();
     void testIntToInetAddr6();
     void testStringToInetAddr6();
@@ -38,18 +40,6 @@ public:
     void testInet6AddressOps();
     void testUInt128ToInetAddr6();
     void testInetAddr6ToUInt128();
-
-    CPPUNIT_TEST_SUITE(Inet6AddrMaskTest);
-
-    CPPUNIT_TEST(testStringToInetAddrExceptions);
-    CPPUNIT_TEST(testIntToInetAddr6);
-    CPPUNIT_TEST(testUInt128ToInetAddr6);
-    CPPUNIT_TEST(testInetAddr6ToUInt128);
-    CPPUNIT_TEST(testStringToInetAddr6);
-    CPPUNIT_TEST(testStringToInetAddrMask);
-    CPPUNIT_TEST(testInet6AddressOps);
-    
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

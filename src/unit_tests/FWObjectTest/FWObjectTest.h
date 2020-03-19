@@ -26,24 +26,14 @@
 #ifndef OBJECTMATCHERTEST_H
 #define OBJECTMATCHERTEST_H
 
+#include <QObject>
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-
-class FWObjectTest : public CppUnit::TestCase
+class FWObjectTest : public QObject
 {
-public:
-    void cmpTest();
+    Q_OBJECT
 
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "FWObjectTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<FWObjectTest>(
-                                   "cmpTest",
-                                   &FWObjectTest::cmpTest ) );
-      return suiteOfTests;
-    }
+private slots:
+    void cmpTest();
 };
 
 #endif // OBJECTMATCHERTEST_H

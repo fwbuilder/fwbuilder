@@ -23,21 +23,14 @@
 
 */
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "UsageResolverTest.h"
 #include <string>
+#include <QTest>
 
 int fwbdebug = 0;
 QString user_name;
 
 int main( int, char** )
 {
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( UsageResolverTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new UsageResolverTest());
 }

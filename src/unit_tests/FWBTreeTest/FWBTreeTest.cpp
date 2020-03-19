@@ -22,7 +22,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
+#include <QTest>
 #include <QDebug>
 #include "FWBTreeTest.h"
 
@@ -57,21 +57,21 @@ void FWBTreeTest::isSystem()
     FWBTree fwbtree;
 
     FWObjectDatabase db;
-    CPPUNIT_ASSERT(fwbtree.isSystem(&db) == true);
+    QVERIFY(fwbtree.isSystem(&db) == true);
 
     Library *lib = db.createLibrary(4);
-    CPPUNIT_ASSERT(fwbtree.isSystem(lib) == true);
+    QVERIFY(fwbtree.isSystem(lib) == true);
     lib = db.createLibrary(7);
-    CPPUNIT_ASSERT(fwbtree.isSystem(lib) == true);
+    QVERIFY(fwbtree.isSystem(lib) == true);
     lib = db.createLibrary(1);
-    CPPUNIT_ASSERT(fwbtree.isSystem(lib) == false);
+    QVERIFY(fwbtree.isSystem(lib) == false);
 
     lib = Library::cast(fwbtree.createNewLibrary(&db));
     FWObject *slot = fwbtree.getStandardSlotForObject(lib, Firewall::TYPENAME);
-    CPPUNIT_ASSERT(fwbtree.isSystem(slot) == true);
+    QVERIFY(fwbtree.isSystem(slot) == true);
 
     Firewall fw;
-    CPPUNIT_ASSERT(fwbtree.isSystem(&fw) == false);
+    QVERIFY(fwbtree.isSystem(&fw) == false);
 }
 
 QSet<FWObject*> FWBTreeTest::getStandardFolders(FWObject *root)
@@ -104,26 +104,26 @@ void FWBTreeTest::validateForInsertion()
     Firewall fw;
     Network net;
 
-    CPPUNIT_ASSERT(tree.validateForInsertion(&host, &iface, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&firewall, &iface, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&iface, &ipv4, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&iface, &ipv6, err) == true);
+    QVERIFY(tree.validateForInsertion(&host, &iface, err) == true);
+    QVERIFY(tree.validateForInsertion(&firewall, &iface, err) == true);
+    QVERIFY(tree.validateForInsertion(&iface, &ipv4, err) == true);
+    QVERIFY(tree.validateForInsertion(&iface, &ipv6, err) == true);
     firewall.addInterface(&iface);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&iface, &ipv4, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&iface, &ipv6, err) == true);
+    QVERIFY(tree.validateForInsertion(&iface, &ipv4, err) == true);
+    QVERIFY(tree.validateForInsertion(&iface, &ipv6, err) == true);
 
     ObjectGroup grp, grp2;
     Cluster cluster;
     DNSName dnsname;
     AddressRange addrrange;
     AddressTable addrtable;
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &host, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &firewall, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &cluster, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &dnsname, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &addrrange, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &addrtable, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &grp2, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &host, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &firewall, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &cluster, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &dnsname, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &addrrange, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &addrtable, err) == true);
+    QVERIFY(tree.validateForInsertion(&grp, &grp2, err) == true);
 
     ServiceGroup sgrp, sgrp2;
     IPService ip;
@@ -131,67 +131,67 @@ void FWBTreeTest::validateForInsertion()
     TCPService tcp;
     UDPService udp;
     CustomService custom;
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &ip, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &icmp, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &tcp, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &udp, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &custom, err) == true);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &sgrp2, err) == true);
+    QVERIFY(tree.validateForInsertion(&sgrp, &ip, err) == true);
+    QVERIFY(tree.validateForInsertion(&sgrp, &icmp, err) == true);
+    QVERIFY(tree.validateForInsertion(&sgrp, &tcp, err) == true);
+    QVERIFY(tree.validateForInsertion(&sgrp, &udp, err) == true);
+    QVERIFY(tree.validateForInsertion(&sgrp, &custom, err) == true);
+    QVERIFY(tree.validateForInsertion(&sgrp, &sgrp2, err) == true);
 
     Interval interval;
     IntervalGroup igrp;
-    CPPUNIT_ASSERT(tree.validateForInsertion(&igrp, &interval, err) == true);
+    QVERIFY(tree.validateForInsertion(&igrp, &interval, err) == true);
 
     foreach (FWObject* folder, stdFolders)
     {
         if (folder->getName() == "Hosts")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &host, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &host, err) == true);
         if (folder->getName() == "Firewalls")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &fw, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &fw, err) == true);
         if (folder->getName() == "Addresses")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv4, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &ipv4, err) == true);
         if (folder->getName() == "Addresses")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv6, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &ipv6, err) == true);
         if (folder->getName() == "TCP")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &tcp, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &tcp, err) == true);
         if (folder->getName() == "UDP")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &udp, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &udp, err) == true);
         if (folder->getName() == "ICMP")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &icmp, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &icmp, err) == true);
         if (folder->getName() == "Address ranges")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &addrrange, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &addrrange, err) == true);
         if (folder->getName() == "Networks")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &net, err) == true);
+            QVERIFY(tree.validateForInsertion(folder, &net, err) == true);
     }
 
-    CPPUNIT_ASSERT(tree.validateForInsertion(&host, &ipv4, err) == false);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&firewall, &ipv4, err) == false);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&cluster, &ipv4, err) == false);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &ip, err) == false);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &ipv4, err) == false);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&grp, &interval, err) == false);
-    CPPUNIT_ASSERT(tree.validateForInsertion(&sgrp, &interval, err) == false);
+    QVERIFY(tree.validateForInsertion(&host, &ipv4, err) == false);
+    QVERIFY(tree.validateForInsertion(&firewall, &ipv4, err) == false);
+    QVERIFY(tree.validateForInsertion(&cluster, &ipv4, err) == false);
+    QVERIFY(tree.validateForInsertion(&grp, &ip, err) == false);
+    QVERIFY(tree.validateForInsertion(&sgrp, &ipv4, err) == false);
+    QVERIFY(tree.validateForInsertion(&grp, &interval, err) == false);
+    QVERIFY(tree.validateForInsertion(&sgrp, &interval, err) == false);
 
     foreach (FWObject* folder, stdFolders)
     {
         if (folder->getName() == "Addresses")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &host, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &host, err) == false);
         if (folder->getName() == "Addresses")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &fw, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &fw, err) == false);
         if (folder->getName() == "Hosts")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv4, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &ipv4, err) == false);
         if (folder->getName() == "Firewalls")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &ipv6, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &ipv6, err) == false);
         if (folder->getName() == "Networks")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &tcp, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &tcp, err) == false);
         if (folder->getName() == "TCP")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &udp, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &udp, err) == false);
         if (folder->getName() == "Address ranges")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &icmp, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &icmp, err) == false);
         if (folder->getName() == "ICMP")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &addrrange, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &addrrange, err) == false);
         if (folder->getName() == "UDP")
-            CPPUNIT_ASSERT(tree.validateForInsertion(folder, &net, err) == false);
+            QVERIFY(tree.validateForInsertion(folder, &net, err) == false);
     }
 
 

@@ -27,6 +27,8 @@
 #ifndef INTERFACEPROPERTIESTEST
 #define INTERFACEPROPERTIESTEST
 
+#include <QObject>
+
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Cluster.h"
@@ -36,23 +38,24 @@
 #include "interfaceProperties.h"
 #include "interfacePropertiesObjectFactory.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
 #include <list>
 #include <string>
 
 
 
-class interfacePropertiesTest: public CppUnit::TestFixture
+class interfacePropertiesTest: public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *db;
     
     void isValidVlanInterfaceNameLinuxFamilies(interfaceProperties *int_prop);
   
-public:
-    //interfaceProperties( std::string name ) : CppUnit::TestCase( name ) {}
     interfaceProperties* getIntProps(const QString &os);
-    
+
+private slots:
+    void init();
+
     void validateInterfaceNameCommon();
     void validateInterfaceNameLinux();
     void validateInterfaceNameProCurve();
@@ -70,26 +73,6 @@ public:
     void validateInterfaceProCurve();
     void testManageIpAddresses();
     void testManageIpAddressesCluster();
-    
-    void setUp();
-
-    CPPUNIT_TEST_SUITE(interfacePropertiesTest);
-    CPPUNIT_TEST(validateInterfaceNameCommon);
-    CPPUNIT_TEST(validateInterfaceNameLinux);
-    CPPUNIT_TEST(validateInterfaceNameProCurve);
-    CPPUNIT_TEST(validateInterface);
-    CPPUNIT_TEST(isEligibleForCluster);
-    CPPUNIT_TEST(isValidVlanInterfaceNameLinux24);
-    CPPUNIT_TEST(isValidVlanInterfaceNameOpenWRT);
-    CPPUNIT_TEST(isValidVlanInterfaceNameDDWRT1);
-    CPPUNIT_TEST(isValidVlanInterfaceNameDDWRT2);
-    CPPUNIT_TEST(isValidVlanInterfaceNameSecuwall);
-    CPPUNIT_TEST(isValidVlanInterfaceNameBSD);
-    CPPUNIT_TEST(isValidVlanInterfaceNameIOS);
-    CPPUNIT_TEST(isValidVlanInterfaceNamePIX);
-    CPPUNIT_TEST(testManageIpAddresses);
-    CPPUNIT_TEST(testManageIpAddressesCluster);
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

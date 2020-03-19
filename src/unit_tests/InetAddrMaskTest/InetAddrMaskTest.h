@@ -26,37 +26,26 @@
 #ifndef INETADDRMASKTEST_H
 #define INETADDRMASKTEST_H
 
-#include <cppunit/extensions/HelperMacros.h>
-
 #include "fwbuilder/InetAddrMask.h"
 
 #include <vector>
+#include <QObject>
 
 
-
-class InetAddrMaskTest : public CppUnit::TestFixture
+class InetAddrMaskTest : public QObject
 {
-public:
+    Q_OBJECT
+
     std::string vectorInetAddrMaskToString(
         std::vector<libfwbuilder::InetAddrMask> vect);
-    
+
+private slots:
     void testIntToInetAddr();
     void testStringToInetAddr();
     void testStringToInetAddrExceptions();
     void testStringToInetAddrMask();
     void testInetAddressOps();
     void testIPv4Overlap();
-
-    CPPUNIT_TEST_SUITE(InetAddrMaskTest);
-
-    CPPUNIT_TEST(testStringToInetAddrExceptions);
-    CPPUNIT_TEST(testIntToInetAddr);
-    CPPUNIT_TEST(testStringToInetAddr);
-    CPPUNIT_TEST(testStringToInetAddrMask);
-    CPPUNIT_TEST(testInetAddressOps);
-    CPPUNIT_TEST(testIPv4Overlap);
-    
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

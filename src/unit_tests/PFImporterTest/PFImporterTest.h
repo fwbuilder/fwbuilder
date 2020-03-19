@@ -30,23 +30,24 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
 #include <map>
 #include <fstream>
 #include <iostream>
 
+#include <QObject>
 #include <QString>
 
 
-class PFImporterTest : public CppUnit::TestFixture
+class PFImporterTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
     libfwbuilder::QueueLogger *logger;
     int predictable_id_tracker;
     std::map<std::string, std::string> id_mapping;
-    
+
     void compareResults(libfwbuilder::QueueLogger* logger,
                         QString expected_result_file_name,
                         QString obtained_result_file_name);
@@ -54,9 +55,9 @@ class PFImporterTest : public CppUnit::TestFixture
                          QString obtained_result_file_name);
 
     std::string openTestFile(const QString &file_name);
-    
-public:
-    void setUp();
+
+private slots:
+    void init();
 
     void macrosTest();
     void hostsMatchTest();
@@ -76,29 +77,6 @@ public:
     void userGroupMatches();
     void routeToTest();
     void routeTo47Test();
-    
-    CPPUNIT_TEST_SUITE(PFImporterTest);
-
-    CPPUNIT_TEST(macrosTest);
-    CPPUNIT_TEST(hostsMatchTest);
-    CPPUNIT_TEST(blockReturnTest);
-    CPPUNIT_TEST(icmpMatchTest);
-    CPPUNIT_TEST(interfaceMatchTest);
-    CPPUNIT_TEST(portMatchTest);
-    CPPUNIT_TEST(setCommandsTest);
-    CPPUNIT_TEST(stateMatchTest);
-    CPPUNIT_TEST(tcpFlagsMatchTest);
-    CPPUNIT_TEST(natCommands);
-    CPPUNIT_TEST(rdrCommands);
-    CPPUNIT_TEST(setTimeoutCommands);
-    CPPUNIT_TEST(scrubCommandsOld);
-    CPPUNIT_TEST(scrubCommandsNew);
-    CPPUNIT_TEST(tableDefinitions);
-    CPPUNIT_TEST(userGroupMatches);
-    CPPUNIT_TEST(routeToTest);
-    CPPUNIT_TEST(routeTo47Test);
-    
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

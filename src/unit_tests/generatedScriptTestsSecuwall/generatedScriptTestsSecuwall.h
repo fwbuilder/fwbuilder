@@ -17,12 +17,14 @@
 #ifndef GENERATEDSCRIPTTESTS_SECUWALL_H
 #define GENERATEDSCRIPTTESTS_SECUWALL_H
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <QObject>
 
 #include "fwbuilder/FWObjectDatabase.h"
 
-class GeneratedScriptTest : public CppUnit::TestFixture
+class GeneratedScriptTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *objdb;
 
     void loadDataFile(const std::string &file_name);
@@ -34,14 +36,10 @@ class GeneratedScriptTest : public CppUnit::TestFixture
     void assertFilesEqual(const std::string &left_filename,
                           const std::string &right_filename);
 
-public:
-    void setUp();
-    void tearDown();
+private slots:
+    void init();
+    void cleanup();
     void FilesGenerationTest();
-
-    CPPUNIT_TEST_SUITE(GeneratedScriptTest);
-    CPPUNIT_TEST(FilesGenerationTest);
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

@@ -22,21 +22,14 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+#include <QTest>
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "FWBTreeTest.h"
 
 int fwbdebug;
 
 
-int main(int /*UNUSED argc*/, char ** /*UNUSED argv[]*/)
+int main()
 {
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( FWBTreeTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new FWBTreeTest());
 }

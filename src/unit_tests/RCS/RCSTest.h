@@ -26,16 +26,14 @@
 #ifndef RCSTEST_H
 #define RCSTEST_H
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <QObject>
 
-class RCSTest : public CppUnit::TestFixture
+class RCSTest : public QObject
 {
-public:
-    void verifyRevisions();
+    Q_OBJECT
 
-    CPPUNIT_TEST_SUITE(RCSTest);
-    CPPUNIT_TEST(verifyRevisions);
-    CPPUNIT_TEST_SUITE_END();
+private slots:
+    void verifyRevisions();
 
 };
 

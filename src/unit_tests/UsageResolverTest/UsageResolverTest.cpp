@@ -26,6 +26,7 @@
 #include "UsageResolverTest.h"
 #include "UsageResolver.h"
 
+#include <QTest>
 #include <QDebug>
 #include <set>
 
@@ -38,7 +39,7 @@ void UsageResolverTest::addToLib(FWObject* obj)
     FWBTree().getStandardSlotForObject(lib, obj->getTypeName().c_str())->add(obj);
 }
 
-void UsageResolverTest::setUp()
+void UsageResolverTest::init()
 {
     db = new FWObjectDatabase();
     db->setName("Database");
@@ -159,7 +160,7 @@ void UsageResolverTest::findWhereObjectIsUsed()
     set<FWObject*> res;
 
     db->findWhereObjectIsUsed(addr1, db, res);
-    CPPUNIT_ASSERT(res.size() == 3);
+    QVERIFY(res.size() == 3);
 
     set<FWObject*>::iterator iter = res.begin();
     while (iter!=res.end())
@@ -173,24 +174,24 @@ void UsageResolverTest::findWhereObjectIsUsed()
             // if we get reference, the parent must be rule element or user group
             obj = obj->getParent();
 
-            CPPUNIT_ASSERT(
+            QVERIFY(
                 obj->getTypeName() == RuleElementSrc::TYPENAME ||
                 obj->getTypeName() == ObjectGroup::TYPENAME);
 
             if (RuleElementSrc::isA(obj))
             {
-                CPPUNIT_ASSERT(obj->getParent()->getName() == "PolicyRule 1 of Firewall 1");
+                QVERIFY(obj->getParent()->getName() == "PolicyRule 1 of Firewall 1");
             }
 
             if (ObjectGroup::isA(obj))
             {
-                CPPUNIT_ASSERT(obj->getName() == "Group 1");
+                QVERIFY(obj->getName() == "Group 1");
             }
 
         } else
         {
             // otherwise we should get system folder "Addresses"
-            CPPUNIT_ASSERT(name == "Addresses" );
+            QVERIFY(name == "Addresses" );
         }
         iter++;
     }
@@ -204,26 +205,26 @@ void UsageResolverTest::findFirewallsForObject()
     qDebug() << "Dependencies for addr1:";
     list<Firewall*> res = UsageResolver().findFirewallsForObject(addr1, db);
     list<Firewall*>::iterator iter = res.begin();
-    CPPUNIT_ASSERT(res.size() == 3);
+    QVERIFY(res.size() == 3);
     while (iter!=res.end())
     {
         string name = (*iter)->getName();
         qDebug() << name.c_str()
                  << "' (" << (*iter)->getTypeName().c_str() << ")";
-        CPPUNIT_ASSERT ( name == "Firewall 1" || name == "Firewall 3" || name == "Firewall 4" );
+        QVERIFY ( name == "Firewall 1" || name == "Firewall 3" || name == "Firewall 4" );
         iter++;
     }
 
     qDebug() << "Dependencies for addr2:";
     res = UsageResolver().findFirewallsForObject(addr2, db);
     iter = res.begin();
-    CPPUNIT_ASSERT(res.size() == 4);
+    QVERIFY(res.size() == 4);
     while (iter!=res.end())
     {
         string name = (*iter)->getName();
         qDebug() << name.c_str()
                  << "' (" << (*iter)->getTypeName().c_str() << ")";
-        CPPUNIT_ASSERT ( name == "Firewall 1" || name == "Firewall 2" || name == "Firewall 3"  || name == "Firewall 4");
+        QVERIFY ( name == "Firewall 1" || name == "Firewall 2" || name == "Firewall 3"  || name == "Firewall 4");
         iter++;
     }
 
@@ -231,13 +232,13 @@ void UsageResolverTest::findFirewallsForObject()
     qDebug() << "Dependencies for addr3:";
     res = UsageResolver().findFirewallsForObject(addr3, db);
     iter = res.begin();
-    //CPPUNIT_ASSERT(res.size() == 3);
+    //QVERIFY(res.size() == 3);
     while (iter!=res.end())
     {
         string name = (*iter)->getName();
         qDebug() << name.c_str()
                  << "' (" << (*iter)->getTypeName().c_str() << ")";
-        CPPUNIT_ASSERT ( name == "Firewall 2" || name == "Firewall 3" || name == "Firewall 4" );
+        QVERIFY ( name == "Firewall 2" || name == "Firewall 3" || name == "Firewall 4" );
         iter++;
     }
 }
@@ -255,11 +256,11 @@ void UsageResolverTest::humanizeSearchResults()
         if (type == "ObjectRef")
         {
             FWObjectReference *o = FWObjectReference::cast(*iter);
-            CPPUNIT_ASSERT(o->getPointer()->getName() == "Address 1");
+            QVERIFY(o->getPointer()->getName() == "Address 1");
         }
         else
         {
-           CPPUNIT_ASSERT ( name == "Group 1" || name == "Addresses");
+           QVERIFY ( name == "Group 1" || name == "Addresses");
         }
         iter++;
     }

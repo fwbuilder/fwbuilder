@@ -26,19 +26,21 @@
 #ifndef GENERATEDSCRIPTTESTS_IPFILTER_H
 #define GENERATEDSCRIPTTESTS_IPFILTER_H
 
+#include <QObject>
+
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/Library.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
 #include <QStringList>
 
 
-class GeneratedScriptTest : public CppUnit::TestFixture
+class GeneratedScriptTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *objdb;
 
     void loadDataFile(const std::string &file_name);
@@ -48,8 +50,12 @@ class GeneratedScriptTest : public CppUnit::TestFixture
                      const std::string &output_file_option="");
 
 public:
-    void setUp();
-    void tearDown();
+    void init();
+    void cleanup();
+
+    // The order of tests matters because activation commands tests use
+    // files produced in manifest tests
+
     void ManifestTest_1();
     void ManifestTest_2();
     void ManifestTest_3();
@@ -59,29 +65,6 @@ public:
     void ManifestTest_7();
     void FwCommentTest();
     
-    CPPUNIT_TEST_SUITE(GeneratedScriptTest);
-
-    // The order of tests matters because activation commands tests use
-    // files produced in manifest tests
-    CPPUNIT_TEST(ManifestTest_1);
-
-    CPPUNIT_TEST(ManifestTest_2);
-
-    CPPUNIT_TEST(ManifestTest_3);
-
-    CPPUNIT_TEST(ManifestTest_4);
-
-//    CPPUNIT_TEST(ManifestTest_5);
-//    CPPUNIT_TEST(ActivationCommandsTest_5);
-
-    CPPUNIT_TEST(ManifestTest_6);
-
-    CPPUNIT_TEST(ManifestTest_7);
-
-    CPPUNIT_TEST(FwCommentTest);
-
-    CPPUNIT_TEST_SUITE_END();
-
 };
 
 #endif // GENERATEDSCRIPTTESTS_IPFILTER_H

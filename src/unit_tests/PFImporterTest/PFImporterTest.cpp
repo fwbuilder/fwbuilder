@@ -42,6 +42,7 @@
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/Constants.h"
 
+#include <QTest>
 #include <QDebug>
 #include <QFile>
 #include <QStringList>
@@ -67,7 +68,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     }
 };
 
-void PFImporterTest::setUp()
+void PFImporterTest::init()
 {
     FWBTree *tree = new FWBTree();
 
@@ -122,22 +123,22 @@ void PFImporterTest::compareResults(QueueLogger* logger,
     QString result_file = rr.readAll();
     QStringList expected_result = result_file.split("\n");
 
-    CPPUNIT_ASSERT_MESSAGE(
+    QVERIFY2(
+        expected_result.size() == obtained_result.size(),
         QString(
             "Sizes of the generated importer output and test files are different.\n"
             "Expected: %1 (%2)\n"
             "Obtained: %3 (%4)\n"
             "diff -u  %1 %3 | less -S")
         .arg(expected_result_file_name).arg(expected_result.size())
-        .arg(obtained_result_file_name).arg(obtained_result.size()).toStdString(),
-        expected_result.size() == obtained_result.size());
+        .arg(obtained_result_file_name).arg(obtained_result.size()).toStdString().data());
 
     int max_idx = max(expected_result.size(), obtained_result.size());
     for (int i=0; i < max_idx; ++i)
     {
         QString err = QString("Line %1:\nExpected: '%2'\nResult: '%3'\n")
             .arg(i).arg(expected_result[i]).arg(obtained_result[i]);
-        CPPUNIT_ASSERT_MESSAGE(err.toStdString(), obtained_result[i] == expected_result[i]);
+        QVERIFY2(obtained_result[i] == expected_result[i], err.toStdString().data());
     }
 }
 
@@ -152,7 +153,7 @@ void PFImporterTest::compareFwbFiles(QString expected_result_file_name,
     QString result_file = rr.readAll();
     rr.close();
     obtained_result = result_file.split("\n");
-   
+
     QFile er(expected_result_file_name);
     er.open(QFile::ReadOnly);
     result_file = er.readAll();
@@ -167,12 +168,12 @@ void PFImporterTest::compareFwbFiles(QString expected_result_file_name,
                 "Obtained: %3 (%4)\n"
                 "diff -u  %1 %3 | less -S");
 
-    CPPUNIT_ASSERT_MESSAGE(
+    QVERIFY2(
+        expected_result.size() == obtained_result.size(),
         err
         .arg(expected_result_file_name).arg(expected_result.size())
         .arg(obtained_result_file_name).arg(obtained_result.size())
-        .toStdString(),
-        expected_result.size() == obtained_result.size());
+        .toStdString().data());
 
     QRegExp last_mod_re("lastModified=\"\\d+\"");
     int max_idx = max(expected_result.size(), obtained_result.size());
@@ -189,7 +190,7 @@ void PFImporterTest::compareFwbFiles(QString expected_result_file_name,
     {
         QString err = QString("Line %1:\nExpected: '%2'\nResult: '%3'\n")
             .arg(i).arg(expected_result[i]).arg(obtained_result[i]);
-        CPPUNIT_ASSERT_MESSAGE(err.toStdString(), obtained_result[i] == expected_result[i]);
+        QVERIFY2(obtained_result[i] == expected_result[i], err.toStdString().data());
     }
 }
 
@@ -212,7 +213,13 @@ void PFImporterTest::macrosTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -231,7 +238,13 @@ void PFImporterTest::hostsMatchTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -253,7 +266,13 @@ void PFImporterTest::blockReturnTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -275,7 +294,13 @@ void PFImporterTest::icmpMatchTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -297,7 +322,13 @@ void PFImporterTest::interfaceMatchTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -319,7 +350,13 @@ void PFImporterTest::portMatchTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -341,7 +378,13 @@ void PFImporterTest::setCommandsTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     //db->setPredictableIds();
@@ -363,7 +406,13 @@ void PFImporterTest::stateMatchTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -385,7 +434,13 @@ void PFImporterTest::tcpFlagsMatchTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -407,7 +462,13 @@ void PFImporterTest::natCommands()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -429,7 +490,13 @@ void PFImporterTest::rdrCommands()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -451,7 +518,13 @@ void PFImporterTest::setTimeoutCommands()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
 //    db->setPredictableIds();
@@ -471,7 +544,13 @@ void PFImporterTest::scrubCommandsOld()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     compareResults(logger,
@@ -488,7 +567,13 @@ void PFImporterTest::scrubCommandsNew()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     compareResults(logger,
@@ -505,7 +590,13 @@ void PFImporterTest::tableDefinitions()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -525,7 +616,13 @@ void PFImporterTest::userGroupMatches()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -547,7 +644,13 @@ void PFImporterTest::routeToTest()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();
@@ -566,7 +669,13 @@ void PFImporterTest::routeTo47Test()
 
     Importer* imp = new PFImporter(lib, instream, logger, "test_fw");
     imp->setAddStandardCommentsFlag(true);
-    CPPUNIT_ASSERT_NO_THROW( imp->run() );
+
+    try {
+         imp->run() ;
+    } catch (const std::exception &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    }
+
     imp->finalize();
 
     db->setPredictableIds();

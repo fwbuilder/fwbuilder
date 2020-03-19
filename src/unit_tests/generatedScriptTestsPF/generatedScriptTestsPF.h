@@ -32,13 +32,14 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
+#include <QObject>
 #include <QStringList>
 
 
-class GeneratedScriptTest : public CppUnit::TestFixture
+class GeneratedScriptTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *objdb;
 
     void loadDataFile(const std::string &file_name);
@@ -47,9 +48,13 @@ class GeneratedScriptTest : public CppUnit::TestFixture
                      const std::string &generate_file_name,
                      const std::string &output_file_option="");
 
-public:
-    void setUp();
-    void tearDown();
+private slots:
+    void init();
+    void cleanup();
+
+    // The order of tests matters because activation commands tests use
+    // files produced in manifest tests
+
     void ManifestTest_1();
     void ManifestTest_2();
     void ManifestTest_3();
@@ -68,7 +73,7 @@ public:
     void ActivationCommandsTest_2();
     void ActivationCommandsTest_3();
     void ActivationCommandsTest_4();
-//    void ActivationCommandsTest_5();
+
     void ActivationCommandsTest_6();
     void ActivationCommandsTest_7();
     void ActivationCommandsTest_8();
@@ -76,50 +81,6 @@ public:
     void ActivationCommandsTest_10();
     void ActivationCommandsTest_11();
     void ActivationCommandsTest_12();
-    
-    CPPUNIT_TEST_SUITE(GeneratedScriptTest);
-
-    // The order of tests matters because activation commands tests use
-    // files produced in manifest tests
-    CPPUNIT_TEST(ManifestTest_1);
-    CPPUNIT_TEST(ActivationCommandsTest_1);
-
-    CPPUNIT_TEST(ManifestTest_2);
-    CPPUNIT_TEST(ActivationCommandsTest_2);
-
-    CPPUNIT_TEST(ManifestTest_3);
-    CPPUNIT_TEST(ActivationCommandsTest_3);
-
-    CPPUNIT_TEST(ManifestTest_4);
-    CPPUNIT_TEST(ActivationCommandsTest_4);
-
-//    CPPUNIT_TEST(ManifestTest_5);
-//    CPPUNIT_TEST(ActivationCommandsTest_5);
-
-    CPPUNIT_TEST(ManifestTest_6);
-    CPPUNIT_TEST(ActivationCommandsTest_6);
-
-    CPPUNIT_TEST(ManifestTest_7);
-    CPPUNIT_TEST(ActivationCommandsTest_7);
-
-    CPPUNIT_TEST(ManifestTest_8);
-    CPPUNIT_TEST(ActivationCommandsTest_8);
-
-    CPPUNIT_TEST(ManifestTest_9);
-    CPPUNIT_TEST(ActivationCommandsTest_9);
-
-    CPPUNIT_TEST(ManifestTest_10);
-    CPPUNIT_TEST(ActivationCommandsTest_10);
-
-    CPPUNIT_TEST(ManifestTest_11);
-    CPPUNIT_TEST(ActivationCommandsTest_11);
-
-    CPPUNIT_TEST(ManifestTest_12);
-    CPPUNIT_TEST(ActivationCommandsTest_12);
-
-    CPPUNIT_TEST(FwCommentTest);
-
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

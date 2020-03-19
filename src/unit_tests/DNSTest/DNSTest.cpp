@@ -23,6 +23,8 @@
 
 */
 
+#include <QTest>
+
 #include "DNSTest.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/XMLTools.h"
@@ -84,7 +86,7 @@ bool DNSTest::testDNSNameObject(FWObjectDatabase *objdb, FWObject *root,
     return true;
 }
 
-void DNSTest::runTest()
+void DNSTest::init()
 {
     libfwbuilder::init();
 
@@ -98,17 +100,30 @@ void DNSTest::runTest()
     o1->setName("Objects");
     nlib->add(o1);
 
-    FWObject *root = objdb->create(ObjectGroup::TYPENAME);
+    root = objdb->create(ObjectGroup::TYPENAME);
     root->setName("DNS Names");
     o1->add(root);
+}
 
-    InetAddr addr;
+void DNSTest::cleanup()
+{
+    delete objdb;
+}
+
+void DNSTest::testLocalhost()
+{
     const char* test1[] = {"localhost", "127.0.0.1", nullptr};
-    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
+    QVERIFY(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
+}
 
+void DNSTest::testSingleIP()
+{
     const char* test2[] = {"www.fwbuilder.org","70.85.175.170", nullptr};
-    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
+    QVERIFY(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
+}
 
+void DNSTest::testMultipleIPs()
+{
     const char* test3[] = {"www.microsoft.com",
                      "65.55.21.250",
                      "207.46.232.182",
@@ -118,5 +133,5 @@ void DNSTest::runTest()
                      "207.46.193.254",
                      nullptr};
 
-    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
+    QVERIFY(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
 }

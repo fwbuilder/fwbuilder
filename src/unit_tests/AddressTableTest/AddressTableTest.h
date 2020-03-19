@@ -27,29 +27,26 @@
 #ifndef ADDRESSTABLETEST_H
 #define ADDRESSTABLETEST_H
 
+#include <QObject>
 
 #include "fwbuilder/FWObjectDatabase.h"
 
 #include <set>
 #include <string>
 
-#include <cppunit/extensions/HelperMacros.h>
-
 typedef std::set <std::string, std::less<std::string> > setStrings;
 
-class AddressTableTest : public CppUnit::TestFixture
+class AddressTableTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *objdb;
     libfwbuilder::FWObject *address_tables_group;
 
-    CPPUNIT_TEST_SUITE(AddressTableTest);
-    CPPUNIT_TEST(positiveTest);
-    CPPUNIT_TEST(negativeTest1);
-    CPPUNIT_TEST(negativeTest2);
-    CPPUNIT_TEST_SUITE_END();
+private slots:
+    void init();
+    void cleanup();
 
-public:
-    void setUp();
     void positiveTest();
     void negativeTest1();
     void negativeTest2();
