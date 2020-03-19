@@ -62,6 +62,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 void GeneratedScriptTest::init()
 {
     Configlet::setDebugging(true);
+    QDir().mkdir("tmp");
 }
 
 void GeneratedScriptTest::cleanup()
