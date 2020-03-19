@@ -108,7 +108,11 @@ add_subdirectory(src/libfwbuilder/etc)
 add_subdirectory(src/libfwbuilder/migration)
 add_subdirectory(src/res)
 add_subdirectory(doc)
-add_subdirectory(src/unit_tests)
+
+if(UNIX AND NOT APPLE)
+  add_subdirectory(src/unit_tests)
+endif()
+
 
 ### Packaging
 add_subdirectory(packaging)
