@@ -264,7 +264,7 @@ void instDialogCompileTest::testCompile()
 
     for(int i=0; i<list->topLevelItemCount(); i++)
     {
-        QVERIFY(list->topLevelItem(i)->text(1) == "Success");
+        QVERIFY(list->topLevelItem(i)->text(1).contains("Success"));
     }
 
     // test state of the buttons
