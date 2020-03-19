@@ -172,13 +172,14 @@ void RuleSetViewContextMenuTest::actuallyClickMenuItem()
  */
 QPoint RuleSetViewContextMenuTest::findRulePosition(Rule *rule)
 {
-    int x = 30;
     view->scrollTo(((RuleSetModel*)view->model())->index(rule, 0));
-    for (int y=view->header()->height(); y<view->height(); y+=5)
-    {
-        Rule *found = ((RuleSetModel*)view->model())->getRule(view->indexAt(QPoint(x,y)));
-        if (found == rule)
-            return QPoint(x,y);
+    for (int x=0; x<view->width(); x+=1) {
+        for (int y=0; y<view->height(); y+=1)
+        {
+            Rule *found = ((RuleSetModel*)view->model())->getRule(view->indexAt(QPoint(x,y)));
+            if (found == rule)
+                return QPoint(x,y);
+        }
     }
     return QPoint(-1,-1);
 }
