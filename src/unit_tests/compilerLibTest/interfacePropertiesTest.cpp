@@ -544,10 +544,10 @@ void interfacePropertiesTest::isValidVlanInterfaceNameProCurve()
     QVERIFY (int_prop->isValidVlanInterfaceName("vlan 2", parent, err) == true);
     QVERIFY (int_prop->isValidVlanInterfaceName("VLAN 2", parent, err) == true);
     QVERIFY (int_prop->isValidVlanInterfaceName("Vlan 2", parent, err) == true);
-    QVERIFY (int_prop->isValidVlanInterfaceName("vlan2", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan2", parent, err) == true);
 
     QVERIFY (int_prop->isValidVlanInterfaceName("vlan 101", parent, err) == true);
-    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
 
     QVERIFY (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
 }
@@ -581,7 +581,7 @@ void interfacePropertiesTest::validateInterfaceProCurve()
     QVERIFY(int_prop->validateInterface(&fw, iface, false, err) == true);
 
     iface->setName("vlan 34324");
-    QVERIFY(int_prop->validateInterface(&fw, iface, false, err) == false);
+    QVERIFY(int_prop->validateInterface(&fw, iface, false, err) == true);
 }
 
 void interfacePropertiesTest::testManageIpAddresses()
