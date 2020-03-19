@@ -372,7 +372,6 @@ set(libgui_hdrs
     heartbeatOptionsDialog.h
     openaisOptionsDialog.h
     pfsyncOptionsDialog.h
-    #check_update_url.h
     #startup_tip_url.h
     InterfaceEditorWidget.h
     #FWCmdBasic.h

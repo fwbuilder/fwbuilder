@@ -30,7 +30,6 @@
 
 #include "version.h"
 #include "global.h"
-#include "check_update_url.h"
 
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -169,7 +168,7 @@
 #include <qtimer.h>
 #include <qtoolbutton.h>
 #include <QTemporaryDir>
- 
+
 extern bool regCheck();
 
 using namespace libfwbuilder;
@@ -454,7 +453,7 @@ void FWWindow::showSub(ProjectPanel *pp)
         pp->setWindowState(Qt::WindowMaximized);
     else
         pp->setWindowState(Qt::WindowNoState);
-    
+
     sub->show();
     /*
      * for reasons I do not understand, QMdiArea does not send signal
@@ -565,7 +564,7 @@ void FWWindow::showIntroDialog()
         msg_box.setInformativeText(tr("The guide will open in the web browser"));
         QCheckBox cb(tr("Do not show this again"), &msg_box);
         msg_box.addButton(&cb, QMessageBox::ResetRole);  // is this role right ?
-        QPushButton *watch_button = 
+        QPushButton *watch_button =
             msg_box.addButton(tr("Watch the guide"), QMessageBox::AcceptRole);
         msg_box.addButton(QMessageBox::Close);
 
@@ -825,7 +824,7 @@ void FWWindow::importPolicy()
     {
         if (!activeProject()->m_panel->om->isObjectAllowed(Firewall::TYPENAME))
             return;
-        
+
         ImportFirewallConfigurationWizard wiz(this, db());
         wiz.exec();
     }

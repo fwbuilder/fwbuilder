@@ -30,7 +30,6 @@
 
 
 #include "global.h"
-#include "check_update_url.h"
 
 #include "utils.h"
 #include "platforms.h"
@@ -638,7 +637,7 @@ void PrefsDialog::accept()
     st->setDiffPath( m_dialog->diffPath->text() );
 
     st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
-    
+
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
 
     st->setDiffColor(FWBSettings::ADD_COLOR,    colors[FWBSettings::ADD_COLOR]);
