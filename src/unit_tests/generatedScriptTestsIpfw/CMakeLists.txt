@@ -3,7 +3,11 @@ SET(CMAKE_AUTOMOC ON)
 add_executable(generatedScriptTestsIpfw generatedScriptTestsIpfw.cpp main_generatedScriptTestsIpfw.cpp)
 add_test(NAME generatedScriptTestsIpfw COMMAND generatedScriptTestsIpfw)
 
-target_link_libraries(generatedScriptTestsIpfw PRIVATE test_main netsnmp gui import fwbparser antlr common iptlib fwbpf fwbjuniper fwbcisco compilerdriver fwcompiler fwbuilder xml2 xslt z pthread Qt5::Test)
+target_link_libraries(generatedScriptTestsIpfw PRIVATE test_main gui import fwbparser antlr common iptlib fwbpf fwbjuniper fwbcisco compilerdriver fwcompiler fwbuilder xml2 xslt z pthread Qt5::Test)
+
+IF (NETSNMP_FOUND)
+  target_link_libraries(generatedScriptTestsIpfw netsnmp)
+ENDIF()
 
 file(COPY test1.fwb DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

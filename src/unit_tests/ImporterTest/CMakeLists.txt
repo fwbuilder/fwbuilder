@@ -3,7 +3,11 @@ set (CMAKE_AUTOMOC ON)
 add_executable(ImporterTest ImporterTest.cpp main_ImporterTest.cpp)
 add_test(NAME ImporterTest COMMAND ImporterTest)
 
-target_link_libraries(ImporterTest PRIVATE test_main netsnmp gui import fwbparser antlr common iptlib fwbpf fwbjuniper fwbcisco compilerdriver fwcompiler fwbuilder xml2 xslt z pthread Qt5::Test)
+target_link_libraries(ImporterTest PRIVATE test_main gui import fwbparser antlr common iptlib fwbpf fwbjuniper fwbcisco compilerdriver fwcompiler fwbuilder xml2 xslt z pthread Qt5::Test)
+
+IF (NETSNMP_FOUND)
+  target_link_libraries(ImporterTest netsnmp)
+ENDIF()
 
 file(COPY test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
