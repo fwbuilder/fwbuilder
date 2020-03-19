@@ -47,7 +47,6 @@ src/unit_tests/*/*Test
 src/unit_tests/*/*Tests
 src/unit_tests/*/*.output
 src/unit_tests/generatedScriptTests*/generatedScriptTests*
-src/unit_tests/generatedScriptTestsSecuwall/ref.*
 src/unit_tests/generatedScriptTestsSecuwall/secuwall-1/
 src/unit_tests/generatedScriptTestsSecuwall/secuwall-2/
 *.pro.user
