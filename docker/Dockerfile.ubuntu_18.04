@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     nsis \
     cmake \
     git \
-    qt5-default
+    qt5-default \
+    ccache
 
 WORKDIR /
 CMD ["bash"]

@@ -5,8 +5,9 @@ services:
   - docker
 
 cache:
-  directories:
-  - $HOME/Library/Caches/Homebrew
+  - ccache: true
+  - directories:
+      - $HOME/Library/Caches/Homebrew
 
 matrix:
   include:

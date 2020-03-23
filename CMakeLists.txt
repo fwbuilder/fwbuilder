@@ -5,6 +5,11 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9"
     CACHE STRING "Minimum macOS deployment version"
 )
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 project(firewallbuilder LANGUAGES CXX C)
 
 ### Version variables and include file
