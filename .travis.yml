@@ -39,7 +39,7 @@ before_script:
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      docker run -v $(pwd):/fwbuilder -it fwbuilder/$VM:$TAG "/fwbuilder/docker/travis.${VM}_${TAG}.sh" ;
+      docker run -v $(pwd):/fwbuilder -v $HOME/.ccache:/root/.ccache -it fwbuilder/$VM:$TAG "/fwbuilder/docker/travis.${VM}_${TAG}.sh" ;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export PATH="/usr/local/opt/qt/bin:/usr/local/opt/net-snmp/bin:$PATH" ;
