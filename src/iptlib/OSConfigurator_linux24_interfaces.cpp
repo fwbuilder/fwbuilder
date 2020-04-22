@@ -305,14 +305,14 @@ string OSConfigurator_linux24::printVlanInterfaceConfigurationCommands()
                     if (vlan_name == sintf_name) name_type = "VLAN_PLUS_VID_NO_PAD";
                     else
                     {
-                        vlan_name = QString("vlan%1.%2")
+                        vlan_name = QString("%1.%2")
                                 .arg(iface->getName().c_str())
                                 .arg(vlan_id, 4, 10, QChar('0'));
                         supported_vlan_names.append(vlan_name);
                         if (vlan_name == sintf_name) name_type = "DEV_PLUS_VID_PAD";
                         else
                         {
-                            vlan_name = QString("vlan%1.%2")
+                            vlan_name = QString("%1.%2")
                                     .arg(iface->getName().c_str())
                                     .arg(vlan_id);
                             supported_vlan_names.append(vlan_name);
