@@ -33,6 +33,9 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
+#include "fwbuilder/Firewall.h"
+#include "fwbuilder/Interface.h"
+#include <iterator>
 
 #include <QTest>
 #include <QApplication>
@@ -696,5 +699,33 @@ void GeneratedScriptTest::outputFileNameOptionTest3()
     QVERIFY(res.indexOf("# files: * test1.fw") == -1);
     QVERIFY(res.indexOf("# files: * test2.fw") == -1);
     delete objdb;
+}
+
+void GeneratedScriptTest::vlanNamingTest()
+{
+    objdb = new FWObjectDatabase();
+    loadDataFile("test1.fwb");
+
+//    CompilerDriver_ipt driver(objdb);
+
+    Firewall *firewall = Firewall::cast(objdb->findObjectByName(Firewall::TYPENAME, "vlantest"));
+    auto interfaces = firewall->getByTypeDeep(Interface::TYPENAME);
+
+    QCOMPARE(std::distance(interfaces.cbegin(), interfaces.cend()), 3);
+
+    QCOMPARE(interfaces.front()->getName(), "bond0");
+    interfaces.pop_front();
+    QCOMPARE(interfaces.front()->getName(), "bond0.101");
+    interfaces.pop_front();
+    QCOMPARE(interfaces.front()->getName(), "bond0.0102");
+
+    OSConfigurator_linux24 oscnf(objdb, firewall, false);
+
+    try {
+        std::string output = oscnf.printVlanInterfaceConfigurationCommands();
+    } catch(const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
+    }
+
 }
 

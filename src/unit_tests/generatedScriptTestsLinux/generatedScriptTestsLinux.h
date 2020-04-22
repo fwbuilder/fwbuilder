@@ -68,6 +68,7 @@ private slots:
     void outputFileNameOptionTest1();
     void outputFileNameOptionTest2();
     void outputFileNameOptionTest3();
+    void vlanNamingTest();
 };
 
 #endif // GENERATEDSCRIPTTESTS_LINUX_H
