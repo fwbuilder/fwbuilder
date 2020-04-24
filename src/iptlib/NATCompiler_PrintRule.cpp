@@ -779,7 +779,11 @@ bool NATCompiler_ipt::PrintRule::processNext()
 	    string ports = _printDNATPorts(tsrv);
 	    if (!ports.empty())
             {
-                cmdout << addr_part.trimmed().toStdString()
+                bool ipv6 = tdst->hasInetAddress() && tdst->getAddressPtr()->isV6();
+
+                cmdout << (ipv6 ? "[" : "")
+                       << addr_part.trimmed().toStdString()
+                       << (ipv6 ? "]" : "")
                        << ":" << ports;
             } else
             {
