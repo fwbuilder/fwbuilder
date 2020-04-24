@@ -35,7 +35,6 @@
 #include "fwbuilder/Constants.h"
 #include "fwbuilder/Firewall.h"
 #include "fwbuilder/Interface.h"
-#include <iterator>
 
 #include <QTest>
 #include <QApplication>
@@ -706,18 +705,15 @@ void GeneratedScriptTest::vlanNamingTest()
     objdb = new FWObjectDatabase();
     loadDataFile("test1.fwb");
 
-//    CompilerDriver_ipt driver(objdb);
-
     Firewall *firewall = Firewall::cast(objdb->findObjectByName(Firewall::TYPENAME, "vlantest"));
     auto interfaces = firewall->getByTypeDeep(Interface::TYPENAME);
 
-    QCOMPARE(std::distance(interfaces.cbegin(), interfaces.cend()), 3);
-
-    QCOMPARE(interfaces.front()->getName(), "bond0");
+    QVERIFY(interfaces.size() == 3);
+    QVERIFY(interfaces.front()->getName() == "bond0");
     interfaces.pop_front();
-    QCOMPARE(interfaces.front()->getName(), "bond0.101");
+    QVERIFY(interfaces.front()->getName() == "bond0.101");
     interfaces.pop_front();
-    QCOMPARE(interfaces.front()->getName(), "bond0.0102");
+    QVERIFY(interfaces.front()->getName() == "bond0.0102");
 
     OSConfigurator_linux24 oscnf(objdb, firewall, false);
 
