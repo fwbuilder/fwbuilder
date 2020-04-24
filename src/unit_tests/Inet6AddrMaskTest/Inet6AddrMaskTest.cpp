@@ -26,6 +26,7 @@
 #include "Inet6AddrMaskTest.h"
 #include <fwbuilder/Inet6AddrMask.h>
 #include <fwbuilder/uint128.h>
+#include "fwbuilder/FWException.h"
 
 #include <QTest>
 
@@ -136,8 +137,8 @@ void Inet6AddrMaskTest::testStringToInetAddrExceptions()
 
     try {
         new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/64");
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     QVERIFY_EXCEPTION_THROWN(new InetAddr(AF_INET6, "fe80::20c:29ff:fed2:cca1/200"), FWException);
@@ -146,8 +147,8 @@ void Inet6AddrMaskTest::testStringToInetAddrExceptions()
 
     try {
         new InetAddr(AF_INET6, 64);
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     QVERIFY_EXCEPTION_THROWN(new InetAddr(AF_INET6, 256), FWException);

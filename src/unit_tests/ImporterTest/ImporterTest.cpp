@@ -42,6 +42,7 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/Constants.h"
+#include "fwbuilder/FWException.h"
 
 #include <QTest>
 #include <QDebug>
@@ -233,8 +234,8 @@ void ImporterTest::IOSImporterTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -263,8 +264,8 @@ void ImporterTest::IPTImporterTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -293,8 +294,8 @@ void ImporterTest::IPTImporterNoNatTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -334,8 +335,8 @@ void ImporterTest::IPTImporterParseVersionsTest()
 
         try {
             imp->run();
-        } catch (const std::exception &e) {
-            QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+        } catch (const FWException &e) {
+            QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
         }
 
         imp->finalize();

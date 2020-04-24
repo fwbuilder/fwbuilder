@@ -41,6 +41,7 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/Constants.h"
+#include "fwbuilder/FWException.h"
 
 #include <QTest>
 #include <QDebug>
@@ -215,8 +216,8 @@ void PIXImporterTest::PIX_6_Test()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -239,8 +240,8 @@ void PIXImporterTest::PIX_7_Test()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -263,8 +264,8 @@ void PIXImporterTest::PIX_7_NAT_Test()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -287,8 +288,8 @@ void PIXImporterTest::ASA_8_0_Test()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -311,8 +312,8 @@ void PIXImporterTest::ASA_8_3_Test()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -335,8 +336,8 @@ void PIXImporterTest::ObjectsAndGroupsTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -362,8 +363,8 @@ void PIXImporterTest::ACLObjectsAndGroupsTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -389,8 +390,8 @@ void PIXImporterTest::ACLTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -413,8 +414,8 @@ void PIXImporterTest::NamesTest()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -435,8 +436,8 @@ void PIXImporterTest::FWSM_4_1_Test()
 
     try {
         imp->run();
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();

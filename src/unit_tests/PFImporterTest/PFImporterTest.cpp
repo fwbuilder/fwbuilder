@@ -41,6 +41,7 @@
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/Constants.h"
+#include "fwbuilder/FWException.h"
 
 #include <QTest>
 #include <QDebug>
@@ -216,8 +217,8 @@ void PFImporterTest::macrosTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -241,8 +242,8 @@ void PFImporterTest::hostsMatchTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -269,8 +270,8 @@ void PFImporterTest::blockReturnTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -297,8 +298,8 @@ void PFImporterTest::icmpMatchTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -325,8 +326,8 @@ void PFImporterTest::interfaceMatchTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -353,8 +354,8 @@ void PFImporterTest::portMatchTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -381,8 +382,8 @@ void PFImporterTest::setCommandsTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -409,8 +410,8 @@ void PFImporterTest::stateMatchTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -437,8 +438,8 @@ void PFImporterTest::tcpFlagsMatchTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -465,8 +466,8 @@ void PFImporterTest::natCommands()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -493,8 +494,8 @@ void PFImporterTest::rdrCommands()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -521,8 +522,8 @@ void PFImporterTest::setTimeoutCommands()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -547,8 +548,8 @@ void PFImporterTest::scrubCommandsOld()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -570,8 +571,8 @@ void PFImporterTest::scrubCommandsNew()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -593,8 +594,8 @@ void PFImporterTest::tableDefinitions()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -619,8 +620,8 @@ void PFImporterTest::userGroupMatches()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -647,8 +648,8 @@ void PFImporterTest::routeToTest()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();
@@ -672,8 +673,8 @@ void PFImporterTest::routeTo47Test()
 
     try {
          imp->run() ;
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     imp->finalize();

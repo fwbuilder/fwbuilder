@@ -25,6 +25,8 @@
 
 #include "InetAddrMaskTest.h"
 #include <fwbuilder/InetAddrMask.h>
+#include "fwbuilder/FWException.h"
+
 #include <QTest>
 
 using namespace libfwbuilder;
@@ -107,14 +109,14 @@ void InetAddrMaskTest::testStringToInetAddrExceptions()
 {
     try {
         new InetAddr("1.2.3.4");
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     try {
         new InetAddr("1.2.3.4/24");
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     QVERIFY_EXCEPTION_THROWN(new InetAddr("1.2.3.4/40"), FWException);
@@ -127,16 +129,16 @@ void InetAddrMaskTest::testStringToInetAddrExceptions()
     QVERIFY_EXCEPTION_THROWN(new InetAddr(40), FWException);
     try {
         new InetAddr(24);
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
     QVERIFY_EXCEPTION_THROWN(new InetAddr((char*)(nullptr)), FWException);
 
     try {
         new InetAddr(0);
-    } catch (const std::exception &e) {
-        QFAIL(std::string("Exception thrown: ").append(e.what()).data());
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
     }
 
 }
