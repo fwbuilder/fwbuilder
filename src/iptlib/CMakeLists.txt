@@ -33,6 +33,10 @@ target_include_directories(iptlib PUBLIC
 
 target_link_libraries(iptlib compilerdriver)
 
+IF (WIN32)
+  target_link_libraries(iptlib compilerdriver ws2_32)
+ENDIF()
+
 target_compile_options(iptlib PRIVATE ${CXX_DEFAULT_FLAGS})
 
 qt5_use_modules(iptlib Core)
