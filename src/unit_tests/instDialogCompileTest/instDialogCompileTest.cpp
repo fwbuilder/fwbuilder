@@ -262,6 +262,13 @@ void instDialogCompileTest::testCompile()
         QVERIFY(waited < 10000);
     }
 
+    while (!finish->isEnabled()) {
+        waited = 0;
+        QTest::qWait(500);
+        waited += 500;
+        QVERIFY(waited < 10000);
+    }
+
     for(int i=0; i<list->topLevelItemCount(); i++)
     {
         QVERIFY(list->topLevelItem(i)->text(1).contains("Success"));
