@@ -7,7 +7,7 @@ add_executable(fwb_iosacl ${iosacl_srcs})
 target_link_libraries(fwb_iosacl common fwbcisco compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z)
 
 IF (WIN32)
-  target_link_libraries(fwb_iosacl lzma iconv)
+  target_link_libraries(fwb_iosacl lzma iconv ws2_32)
 ENDIF()
 
 IF (UNIX)

@@ -6,7 +6,7 @@ add_executable(fwb_ipfw ${ipfw_srcs})
 target_link_libraries(fwb_ipfw common fwbpf compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z)
 
 IF (WIN32)
-  target_link_libraries(fwb_ipfw lzma iconv)
+  target_link_libraries(fwb_ipfw lzma iconv ws2_32)
 ENDIF()
 
 IF (UNIX)

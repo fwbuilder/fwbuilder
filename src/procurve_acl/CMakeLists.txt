@@ -7,7 +7,7 @@ add_executable(fwb_procurve_acl ${procurve_acl_srcs})
 target_link_libraries(fwb_procurve_acl common fwbcisco compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z)
 
 IF (WIN32)
-  target_link_libraries(fwb_procurve_acl lzma iconv)
+  target_link_libraries(fwb_procurve_acl lzma iconv ws2_32)
 ENDIF()
 
 IF (UNIX)

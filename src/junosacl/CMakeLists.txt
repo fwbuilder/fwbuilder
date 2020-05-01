@@ -7,7 +7,7 @@ add_executable(fwb_junosacl ${junosacl_srcs})
 target_link_libraries(fwb_junosacl common fwbcisco fwbjuniper compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z)
 
 IF (WIN32)
-  target_link_libraries(fwb_junosacl iconv lzma)
+  target_link_libraries(fwb_junosacl iconv lzma ws2_32)
 ENDIF()
 
 IF (UNIX)
