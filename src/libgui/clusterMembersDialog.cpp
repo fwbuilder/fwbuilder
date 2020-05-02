@@ -491,17 +491,23 @@ void clusterMembersDialog::masterSelected(int row, int column)
                      << ", " << column << ")";
         }
 
-        QList<QTableWidgetItem *> itemlist;
-        itemlist = m_dialog->fwSelectedTable->selectedItems();
+        QTableWidget * fwSelectedTable = m_dialog->fwSelectedTable;
 
-        if (itemlist[2]->checkState() == Qt::Checked)
-        {
-            setMaster(itemlist[0]->text());
+        bool noMasterSelected = true;
+        for (int rowIdx = 0; rowIdx < fwSelectedTable->rowCount(); ++rowIdx) {
+            if (fwSelectedTable->item(rowIdx, 2)->checkState() == Qt::Checked) {
+                noMasterSelected = false;
+                break;
+            }
         }
-        else
-        {
-            setMaster(itemlist[0]->text(), false);
+
+        if (noMasterSelected) {
+            fwSelectedTable->item(row, 2)->setCheckState(Qt::Checked);
         }
+
+        QTableWidgetItem *itemName = fwSelectedTable->item(row, 0);
+        QTableWidgetItem *itemMasterCheckBox = fwSelectedTable->item(row, column);
+        setMaster(itemName->text(), itemMasterCheckBox->checkState() == Qt::Checked);
     }
 }
 
