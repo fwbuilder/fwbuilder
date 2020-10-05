@@ -361,8 +361,13 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
 
 #endif
 
-    if (!cnf->sshArgs.isEmpty())
+    if (!cnf->sshArgs.isEmpty()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        args += cnf->sshArgs.split(" ", Qt::SkipEmptyParts);
+#else
         args += cnf->sshArgs.split(" ", QString::SkipEmptyParts);
+#endif
+    }
 
     if (cnf->verbose) args.push_back("-v");
 
@@ -469,8 +474,13 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
 #endif
 
-    if (!cnf->scpArgs.isEmpty())
+    if (!cnf->scpArgs.isEmpty()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        args += cnf->scpArgs.split(" ", Qt::SkipEmptyParts);
+#else
         args += cnf->scpArgs.split(" ", QString::SkipEmptyParts);
+#endif
+    }
 
     args.push_back("-q");
 
@@ -604,7 +614,11 @@ void FirewallInstaller::executeExternalInstallScript(const QString &command,
         args.push_back(wdir);
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    args += script_args.trimmed().split(" ", Qt::SkipEmptyParts);
+#else
     args += script_args.trimmed().split(" ", QString::SkipEmptyParts);
+#endif
 
     args.push_back(cnf->fwobj->getName().c_str());
 

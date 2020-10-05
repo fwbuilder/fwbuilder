@@ -203,7 +203,11 @@ string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
 /* do not put comment in the script if it is intended for linksys */
         if (!nocomm || compiler->inSingleRuleCompileMode())
         {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+            QStringList comm = QString(rule->getComment().c_str()).split("\n", Qt::SkipEmptyParts);
+#else
             QStringList comm = QString(rule->getComment().c_str()).split("\n", QString::SkipEmptyParts);
+#endif
             foreach(QString line, comm)
             {
                 res << "# " << line.toStdString() << endl;

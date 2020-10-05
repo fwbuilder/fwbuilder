@@ -210,7 +210,12 @@ Can't compile firewall policy."),
     args.push_back(compiler.c_str());
 
     QString qs = fwopt->getStr("cmdline").c_str();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    args += qs.split(" ", Qt::SkipEmptyParts);
+#else
     args += qs.split(" ", QString::SkipEmptyParts);
+#endif
 
     args.push_back("-v");
     args.push_back("-f");

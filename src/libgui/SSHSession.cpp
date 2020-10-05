@@ -565,7 +565,11 @@ void SSHSession::readFromStdout()
         QString lastLine = "";
 
         // split on LF
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        QStringList bufLines = buf.split("\n", Qt::KeepEmptyParts);
+#else
         QStringList bufLines = buf.split("\n", QString::KeepEmptyParts);
+#endif
 
         // if buf ends with a LF character, the last element in the list is
         // an empty string

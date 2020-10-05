@@ -755,9 +755,11 @@ int main(int argc, char * const *argv)
                 usage_import();
                 exit(1);
             }
-
-            QStringList components = QString::fromUtf8(object.c_str())
-                .split("/", QString::SkipEmptyParts);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+            QStringList components = QString::fromUtf8(object.c_str()).split("/", Qt::SkipEmptyParts);
+#else
+            QStringList components = QString::fromUtf8(object.c_str()).split("/", QString::SkipEmptyParts);
+#endif
             string fw_name = components.last().toUtf8().constData();
             
             Library *library = nullptr;

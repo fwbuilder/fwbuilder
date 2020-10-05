@@ -207,11 +207,13 @@ void FirewallInstallerJuniper::activatePolicy(const QString&, const QString&)
 
     replaceMacrosInCommand(&post_config);
 
-    ssh_object->loadPreConfigCommands(
-        pre_config.expand().split("\n", QString::SkipEmptyParts) );
-
-    ssh_object->loadPostConfigCommands(
-        post_config.expand().split("\n", QString::SkipEmptyParts) );
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    ssh_object->loadPreConfigCommands( pre_config.expand().split("\n", Qt::SkipEmptyParts) );
+    ssh_object->loadPostConfigCommands( post_config.expand().split("\n", Qt::SkipEmptyParts) );
+#else
+    ssh_object->loadPreConfigCommands( pre_config.expand().split("\n", QString::SkipEmptyParts) );
+    ssh_object->loadPostConfigCommands( post_config.expand().split("\n", QString::SkipEmptyParts) );
+#endif
 
     Configlet activation(host_os, os_family, "installer_commands_reg_user");
     activation.removeComments();
@@ -227,8 +229,11 @@ void FirewallInstallerJuniper::activatePolicy(const QString&, const QString&)
                                config_lines.join("\n"));
     }
 
-    ssh_object->loadActivationCommands(
-        activation.expand().split("\n", QString::SkipEmptyParts) );
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    ssh_object->loadActivationCommands( activation.expand().split("\n", Qt::SkipEmptyParts) );
+#else
+    ssh_object->loadActivationCommands( activation.expand().split("\n", QString::SkipEmptyParts) );
+#endif
 
     runSSHSession(ssh_object);
 
