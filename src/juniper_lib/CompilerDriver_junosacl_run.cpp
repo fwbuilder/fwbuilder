@@ -39,7 +39,7 @@ QString CompilerDriver_junosacl::assembleManifest(Cluster*, Firewall*, bool)
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
     script << "/* " << manifestMarker()
-           << " * " << this->escapeFileName(file_names[FW_FILE]) << " */" << endl;
+           << " * " << this->escapeFileName(file_names[FW_FILE]) << " */" << '\n';
     return script_buffer;
 }
 

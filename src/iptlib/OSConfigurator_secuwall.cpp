@@ -199,7 +199,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     stream << "MGM_DEV=\"";
     stream << stringify(mgm_iface, " ").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* lookup Management IP address */
     mgm_ip = options->getStr("secuwall_mgmt_mgmtaddr").c_str();
@@ -221,7 +221,7 @@ int OSConfigurator_secuwall::generateManagementFile()
             tmp_v.clear();
             tokenize(mgm_ip.toStdString(), tmp_v, ",");
             stream << stringify(tmp_v, " ").c_str();
-            stream << s << "\"" << endl;
+            stream << s << "\"" << '\n';
         }
     }
 
@@ -230,7 +230,7 @@ int OSConfigurator_secuwall::generateManagementFile()
     tmp_v.clear();
     tokenize(options->getStr("secuwall_mgmt_loggingaddr"), tmp_v, ",");
     stream << stringify(tmp_v, " ").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* SNMP-Server IP address */
     snmp_ip = options->getStr("secuwall_mgmt_snmpaddr").c_str();
@@ -246,12 +246,12 @@ int OSConfigurator_secuwall::generateManagementFile()
             tmp_v.clear();
             tokenize(options->getStr("secuwall_mgmt_snmpaddr"), tmp_v, ",");
             stream << stringify(tmp_v, " ").c_str();
-            stream << "\"" << endl;
+            stream << "\"" << '\n';
 
             /* SNMP Community string */
             stream << "SNMP_COM=\"";
             stream << options->getStr("secuwall_mgmt_rosnmp").c_str();
-            stream << "\"" << endl;
+            stream << "\"" << '\n';
         }
     }
 
@@ -260,17 +260,17 @@ int OSConfigurator_secuwall::generateManagementFile()
     tmp_v.clear();
     tokenize(options->getStr("secuwall_mgmt_ntpaddr"), tmp_v, ",");
     stream << stringify(tmp_v, " ").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* /var partition */
     stream << "VARPART=\"";
     stream << options->getStr("secuwall_mgmt_varpart").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Configuration partition */
     stream << "CFGPART=\"";
     stream << options->getStr("secuwall_mgmt_confpart").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Activate Nagios */
     stream << "NRPE=";
@@ -278,18 +278,18 @@ int OSConfigurator_secuwall::generateManagementFile()
     s = options->getStr("secuwall_mgmt_nagiosaddr").c_str();
     if (!s.isEmpty())
     {
-        stream << "yes" << endl;
+        stream << "yes" << '\n';
 
         /* Nagios-Server IP-Address */
         stream << "NRPE_IP=\"";
         tmp_v.clear();
         tokenize(s.toStdString(), tmp_v, ",");
         stream << stringify(tmp_v, " ").c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
     }
     else
     {
-        stream << "no" << endl;
+        stream << "no" << '\n';
     }
 
     /* VRRP interfaces */
@@ -317,20 +317,20 @@ int OSConfigurator_secuwall::generateManagementFile()
     stream << "VRRPD=";
     if (options->getBool("cluster_member"))
     {
-        stream << "yes" << endl;
+        stream << "yes" << '\n';
         /* VRRP secret */
         stream << "VRRPSECRET=\"";
         stream << vrrp_secret;
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* VRRP Master/Slave */
         stream << "MASTER=";
         stream << (vrrp_master ? "yes" : "no");
-        stream << endl;
+        stream << '\n';
     }
     else
     {
-        stream << "no" << endl;
+        stream << "no" << '\n';
     }
 
     /* conntrackd */
@@ -339,15 +339,15 @@ int OSConfigurator_secuwall::generateManagementFile()
     stream << "CONNTRACKD=";
     if (!s.isEmpty())
     {
-        stream << "yes" << endl;
+        stream << "yes" << '\n';
         /* conntrack device */
         stream << "CONN_DEV=\"";
         stream << s;
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
     }
     else
     {
-        stream << "no" << endl;
+        stream << "no" << '\n';
     }
 
     /* Write actual management file */
@@ -377,7 +377,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
     RoutingRule* defaultRoute = nullptr;
 
     /* Prepend static content */
-    stream << "NETWORKING=yes" << endl;
+    stream << "NETWORKING=yes" << '\n';
 
     /* Find default route */
     FWObjectTypedChildIterator routing_rules = routes->findByType(RoutingRule::TYPENAME);
@@ -430,7 +430,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
     {
     // stream << s;
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Gateway interface */
     stream << "GATEWAYDEV=\"";
@@ -438,12 +438,12 @@ int OSConfigurator_secuwall::generateNetworkFile()
     {
     // stream << s;
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Hostname */
     stream << "HOSTNAME=\"";
     stream << fw->getName().c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Routing */
     stream << "FORWARD_IPV4=\"";
@@ -455,7 +455,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
     {
         stream << "no";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Write actual network file */
     string filename = fw->getName() + "/" + network_filename;
@@ -477,12 +477,12 @@ int OSConfigurator_secuwall::generateHostsFile()
     QTextStream stream (&stream_string);
 
     /* Prepend static content */
-    stream << "127.0.0.1\tlocalhost\n\n# Secuwall hosts" << endl;
+    stream << "127.0.0.1\tlocalhost\n\n# Secuwall hosts" << '\n';
 
     /* TODO: Should entries of every fw interface address be appended?  */
 
     stream << options->getStr("secuwall_dns_hosts").c_str();
-    stream << endl;
+    stream << '\n';
 
     /* Write actual hosts file */
     string filename = fw->getName() + "/" + hosts_filename;
@@ -509,21 +509,21 @@ int OSConfigurator_secuwall::generateDNSFile()
     {
         /* Replace \n with " " */
         s.replace(QString("\n"), QString(" "));
-        stream << "search\t\t" << s << endl;
+        stream << "search\t\t" << s << '\n';
     }
 
     /* DNS-Server entries */
     s = options->getStr("secuwall_dns_srv1").c_str();
     if (!s.isEmpty())
-        stream << "nameserver\t" << s << endl;
+        stream << "nameserver\t" << s << '\n';
 
     s = options->getStr("secuwall_dns_srv2").c_str();
     if (!s.isEmpty())
-        stream << "nameserver\t" << s << endl;
+        stream << "nameserver\t" << s << '\n';
 
     s = options->getStr("secuwall_dns_srv3").c_str();
     if (!s.isEmpty())
-        stream << "nameserver\t" << s << endl;
+        stream << "nameserver\t" << s << '\n';
 
     /* Write actual DNS file */
     string filename = fw->getName() + "/" + dns_filename;
@@ -545,7 +545,7 @@ int OSConfigurator_secuwall::generateNsswitchFile()
     QTextStream stream(&stream_string);
 
     /* Prepend static content */
-    stream << "passwd:\t\tfiles\nshadow:\t\tfiles\ngroup:\t\tfiles\n" << endl;
+    stream << "passwd:\t\tfiles\nshadow:\t\tfiles\ngroup:\t\tfiles\n" << '\n';
 
     /* hosts entries */
     stream << "hosts:\t\t";
@@ -576,10 +576,10 @@ int OSConfigurator_secuwall::generateNsswitchFile()
     s = options->getStr("secuwall_dns_reso5").c_str();
     if (!s.isEmpty() && s != "none")
     {
-        stream << " " << s << endl;
+        stream << " " << s << '\n';
     }
 
-    stream << endl;
+    stream << '\n';
 
     /* Append static content */
     stream << "ethers:\t\tfiles\nnetmasks:\tfiles\nnetworks:\tfiles\nprotocols:\tfiles\nrpc:\t\tfiles\nservices:\tfiles\n";
@@ -638,7 +638,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     stream << name.c_str();
     if (iface_number > 0)
         stream << ":" << iface_number;
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Boot-Protocol */
     stream << "BOOTPROTO=\"";
@@ -650,7 +650,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << "none";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Address object contains host, network and broadcast address plus netmask */
     const Address* ipAddr = nullptr;
@@ -662,22 +662,22 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
         /* Interface IP Address */
         stream << "IPADDR=\"";
         stream << ipAddr->getAddressPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* Netmask */
         stream << "NETMASK=\"";
         stream << ipAddr->getNetmaskPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* Network IP Address */
         stream << "NETWORK=\"";
         stream << ipAddr->getNetworkAddressPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* Broadcast IP Address */
         stream << "BROADCAST=\"";
         stream << ipAddr->getBroadcastAddressPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
     }
 
     /* Activate on bootup */
@@ -690,7 +690,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << "yes";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Link */
     stream << "LINK=\"";
@@ -698,7 +698,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << options->getStr("iface_options").c_str();
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* MAC-Address */
     stream << "MACADDR=\"";
@@ -707,7 +707,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << macAddr->getPhysAddress().c_str();
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* MTU */
     s.clear();
@@ -719,7 +719,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
         s = "1500";
     }
     stream << s;
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Activate ARP */
     stream << "ARP=\"";
@@ -731,12 +731,12 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << "yes";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Interface type */
     stream << "TYPE=\"";
     stream << s_mapIfaceStrings[itype].c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* get all direct children of type interface */
     list<FWObject *> basedevs = iface->getByType(Interface::TYPENAME);
@@ -769,7 +769,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
             /* Base Device */
             stream << "BASEDEV=\"";
             stream << stringify(devs," ").c_str();
-            stream << "\"" << endl;
+            stream << "\"" << '\n';
         }
         break;
 
@@ -781,7 +781,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
         stream << "VLANID=\"";
         stream << options->getStr("vlan_id").c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         if (iface->getParent() == nullptr || iface->getParent()->getName().empty())
         {
@@ -791,7 +791,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
         stream << "BASEDEV=\"";
         stream << iface->getParent()->getName().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         generateInterfaceFile(Interface::cast(iface->getParent()));
         break;
@@ -805,14 +805,14 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
         stream << "BASEDEV=\"";
         stream << options->getStr("base_device").c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
         break;
 
     case ALIAS:
         /* Base Device for secondary interfaces*/
         stream << "BASEDEV=\"";
         stream << name.c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
         break;
 
     default:

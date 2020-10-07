@@ -109,7 +109,7 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 
     if (remote_name != file_names[FW_FILE])
         script << " " << this->escapeFileName(remote_name);
-    script << endl;
+    script << '\n';
 
     if (have_filter) 
     {
@@ -119,7 +119,7 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 
         if (remote_ipf_name != file_names[CONF1_FILE])
             script << " " << this->escapeFileName(remote_ipf_name);
-        script << endl;
+        script << '\n';
     }
 
     if (have_nat) 
@@ -130,7 +130,7 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
 
         if (remote_nat_name != file_names[CONF2_FILE])
             script << " " << this->escapeFileName(remote_nat_name);
-        script << endl;
+        script << '\n';
     }
 
     return script_buffer;
@@ -332,7 +332,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 {
                     all_errors.push_back(c.getErrors("").c_str());
                     ipf_str << "# Policy compiler errors and warnings:"
-                            << endl;
+                            << '\n';
                     ipf_str << QString::fromUtf8(c.getErrors("# ").c_str());
                 }
                 ipf_str << QString::fromUtf8(c.getCompiledScript().c_str());
@@ -371,7 +371,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 {
                     all_errors.push_back(n.getErrors("").c_str());
                     nat_str << "# NAT compiler errors and warnings:"
-                            << endl;
+                            << '\n';
                     nat_str << QString::fromUtf8(n.getErrors("# ").c_str());
                 }
                 nat_str << QString::fromUtf8(n.getCompiledScript().c_str());

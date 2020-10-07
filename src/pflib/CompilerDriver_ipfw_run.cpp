@@ -80,8 +80,8 @@ QString CompilerDriver_ipfw::assembleManifest(Cluster*, Firewall* , bool )
     if (!remote_file_names[FW_FILE].isEmpty())
         script << " " << this->escapeFileName(remote_file_names[FW_FILE]);
     script << "\n";
-    script << "#" << endl;
-    script << "#" << endl;
+    script << "#" << '\n';
+    script << "#" << '\n';
     return script_buffer;
 }
 
