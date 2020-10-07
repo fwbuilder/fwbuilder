@@ -21,9 +21,7 @@ add_library(compilerdriver STATIC ${compiler_lib_srcs})
 target_include_directories(compilerdriver PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-target_link_libraries(compilerdriver fwbuilder)
+target_link_libraries(compilerdriver fwbuilder Qt5::Core)
 
 target_compile_options(compilerdriver PRIVATE ${CXX_DEFAULT_FLAGS})
-
-qt5_use_modules(compilerdriver Core)
 

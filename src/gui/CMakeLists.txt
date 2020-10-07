@@ -13,7 +13,7 @@ else()
   add_executable(fwbuilder-gui ${fwbuilder-gui_srcs})
 endif()
 
-target_link_libraries(fwbuilder-gui gui import fwbparser antlr common iptlib fwbpf fwbjuniper fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z OpenSSL::Crypto pthread)
+target_link_libraries(fwbuilder-gui gui import fwbparser antlr common iptlib fwbpf fwbjuniper fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z OpenSSL::Crypto pthread Qt5::Core Qt5::Widgets Qt5::Network Qt5::PrintSupport)
 
 IF (WIN32)
   target_link_libraries(fwbuilder-gui lzma iconv)
@@ -36,6 +36,4 @@ if(APPLE)
 else()
   install(TARGETS fwbuilder-gui DESTINATION ${FWB_INSTALL_BINDIR} COMPONENT Runtime)
 endif()
-
-qt5_use_modules(fwbuilder-gui Widgets Network PrintSupport)
 

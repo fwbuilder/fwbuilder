@@ -579,8 +579,7 @@ target_include_directories(gui PRIVATE
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>/src/libgui)
 
-target_link_libraries(gui fwbcisco fwbjuniper iptlib fwbpf import)
+target_link_libraries(gui fwbcisco fwbjuniper iptlib fwbpf import Qt5::Core Qt5::Widgets Qt5::Network Qt5::PrintSupport)
 
 target_compile_options(gui PRIVATE ${CXX_DEFAULT_FLAGS})
 
-qt5_use_modules(gui Widgets Network PrintSupport)

@@ -69,9 +69,7 @@ target_include_directories(fwbcisco PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/..)
 
-target_link_libraries(fwbcisco compilerdriver)
+target_link_libraries(fwbcisco compilerdriver Qt5::Core)
 
 target_compile_options(fwbcisco PRIVATE ${CXX_DEFAULT_FLAGS})
-
-qt5_use_modules(fwbcisco Core)
 

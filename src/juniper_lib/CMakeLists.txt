@@ -22,9 +22,7 @@ add_library(fwbjuniper STATIC ${juniper_lib_srcs})
 target_include_directories(fwbjuniper PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-target_link_libraries(fwbjuniper fwbcisco compilerdriver)
+target_link_libraries(fwbjuniper fwbcisco compilerdriver Qt5::Core)
 
 target_compile_options(fwbjuniper PRIVATE ${CXX_DEFAULT_FLAGS})
-
-qt5_use_modules(fwbjuniper Core)
 

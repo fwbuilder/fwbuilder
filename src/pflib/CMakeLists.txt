@@ -39,9 +39,7 @@ add_library(fwbpf STATIC ${pflib_srcs})
 target_include_directories(fwbpf PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-target_link_libraries(fwbpf compilerdriver)
+target_link_libraries(fwbpf compilerdriver Qt5::Core)
 
 target_compile_options(fwbpf PRIVATE ${CXX_DEFAULT_FLAGS})
-
-qt5_use_modules(fwbpf Core)
 

@@ -31,13 +31,11 @@ add_library(iptlib STATIC ${iptlib_srcs})
 target_include_directories(iptlib PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-target_link_libraries(iptlib compilerdriver)
+target_link_libraries(iptlib compilerdriver Qt5::Core)
 
 IF (WIN32)
   target_link_libraries(iptlib compilerdriver ws2_32)
 ENDIF()
 
 target_compile_options(iptlib PRIVATE ${CXX_DEFAULT_FLAGS})
-
-qt5_use_modules(iptlib Core)
 
