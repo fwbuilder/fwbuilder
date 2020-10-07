@@ -106,7 +106,11 @@ void ProjectPanel::loadState(bool)
     if (!mdiWindow->isMaximized() && mdiWindow)
     {
         if (fwbdebug) qDebug("ProjectPanel::loadState  show normal");
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        setWindowState(Qt::WindowStates());
+#else
         setWindowState(nullptr);
+#endif
         int x = st->getInt("Window/"+filename+"/x");
         int y = st->getInt("Window/"+filename+"/y");
         int width = st->getInt("Window/"+filename+"/width");

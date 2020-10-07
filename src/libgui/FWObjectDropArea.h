@@ -61,7 +61,11 @@ protected:
         
 public:
     Ui::FWObjectDropArea_q *m_objectDropArea;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    FWObjectDropArea(QWidget*p, const char * n = 0, Qt::WindowFlags f = Qt::WindowFlags());
+#else
     FWObjectDropArea(QWidget*p, const char * n = 0, Qt::WindowFlags f = 0);
+#endif
     ~FWObjectDropArea(); 
     libfwbuilder::FWObject * getObject(){return object;};
     void setObject(libfwbuilder::FWObject * o){ object = o ;};

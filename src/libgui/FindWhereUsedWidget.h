@@ -61,7 +61,11 @@ private:
 
 public:
     FindWhereUsedWidget(QWidget*p, ProjectPanel* pp, const char * n = 0,
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+                        Qt::WindowFlags f = Qt::WindowFlags(), bool f_mini=false);
+#else
                         Qt::WindowFlags f = 0, bool f_mini=false);
+#endif
     ~FindWhereUsedWidget();
 
     void setShowObject(bool fl);

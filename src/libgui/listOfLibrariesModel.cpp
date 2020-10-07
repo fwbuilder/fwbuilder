@@ -59,7 +59,11 @@ void ListOfLibrariesModel::addStaticItems()
 Qt::ItemFlags ListOfLibrariesModel::flags(const QModelIndex &index) const
 {
     int row = index.row();
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    if (row < 0 || row >= items.size()) return Qt::ItemFlags();
+#else
     if (row < 0 || row >= items.size()) return nullptr;
+#endif
     
     FWObject *lib = items.at(index.row()).lib;
     if (lib == nullptr) return Qt::ItemIsEnabled;

@@ -7,7 +7,11 @@ class ClickableLabel : public QLabel
 {
     Q_OBJECT
 public:
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    ClickableLabel(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags() );
+#else
     ClickableLabel(QWidget *parent = 0, Qt::WindowFlags f = 0 );
+#endif
     void mousePressEvent(QMouseEvent *);
 
 signals:

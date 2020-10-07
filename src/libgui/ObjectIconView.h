@@ -56,8 +56,11 @@ protected:
     bool event ( QEvent * event );
     
 public:
-
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    ObjectIconView(QWidget* parent, const char * name = 0, Qt::WindowFlags f = Qt::WindowFlags());
+#else
     ObjectIconView(QWidget* parent, const char * name = 0, Qt::WindowFlags f = 0);
+#endif
     
     void setDB(libfwbuilder::FWObjectDatabase *_db) { db = _db; }
 

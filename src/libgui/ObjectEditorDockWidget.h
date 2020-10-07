@@ -43,10 +43,18 @@ public:
 
     ObjectEditorDockWidget(const QString &title,
                            QWidget *parent = 0,
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+                           Qt::WindowFlags flags = Qt::WindowFlags());
+#else
                            Qt::WindowFlags flags = 0);
+#endif
 
     ObjectEditorDockWidget(QWidget *parent = 0,
-                           Qt::WindowFlags flags = 0);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+                          Qt::WindowFlags flags = Qt::WindowFlags());
+#else
+                          Qt::WindowFlags flags = 0);
+#endif
 
     void setupEditor(ObjectEditor *ed);
     

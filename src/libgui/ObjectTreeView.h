@@ -110,7 +110,11 @@ protected:
     ObjectTreeView(ProjectPanel* project,
                    QWidget* parent = 0,
                    const char * name = 0,
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+                   Qt::WindowFlags f = Qt::WindowFlags());
+#else
                    Qt::WindowFlags f = 0);
+#endif
 
     void freezeSelection(bool f) { selectionFrozen = f; }
 
