@@ -218,7 +218,9 @@ void FWBSettings::init(bool force_first_time_run)
                 uuid_settings->remove(appGUID_4_0);
             } else
             {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
                 qsrand(time(nullptr));
+#endif
                 uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
                 first_run = true;
             }
@@ -282,7 +284,9 @@ void FWBSettings::init(bool force_first_time_run)
     if (my_uuid == "b7203c47-06bf-4878-9ff5-6afffb2db546" ||
         my_uuid == "46759a87-7956-431f-a171-ccb754ef239e")
     {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
         qsrand(time(nullptr));
+#endif
         uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
     }
 
