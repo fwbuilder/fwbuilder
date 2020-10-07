@@ -309,7 +309,7 @@ void IC_ProgressPage::saveLog()
             }
             QTextStream strm(&f);
             QString txt = m_dialog->importLog->toPlainText();
-            strm << txt << endl;
+            strm << txt << '\n';
             if (fwbdebug)
             {
                 qDebug("%s",txt.toLatin1().constData());

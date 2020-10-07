@@ -395,7 +395,7 @@ void ND_ProgressPage::saveLog()
             }
             QTextStream strm(&f);
             QString txt = m_dialog->discoveryLog->toPlainText();
-            strm << txt << endl;
+            strm << txt << '\n';
             if (fwbdebug)
             {
                 qDebug("%s",txt.toLatin1().constData());
