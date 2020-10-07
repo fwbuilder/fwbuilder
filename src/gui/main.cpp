@@ -122,7 +122,6 @@ int main( int argc, char *argv[] )
     QCommandLineParser parser;
     parser.addOption({"h", "help"});
     parser.addOption({"v", "version"});
-    parser.addOption({"f", "filename"});
 
     QCommandLineOption fileNameOption("f", "file_name", "file_name");
     parser.addOption(fileNameOption);
