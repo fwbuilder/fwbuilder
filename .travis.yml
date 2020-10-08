@@ -20,6 +20,10 @@ matrix:
         - VM=ubuntu
         - TAG=18.04
     - os: linux
+      env:
+        - VM=ubuntu
+        - TAG=20.04
+    - os: linux
       env: 
         - VM=mxe
         - TAG=qt-5.12
