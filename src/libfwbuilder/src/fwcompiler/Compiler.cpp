@@ -605,35 +605,39 @@ void Compiler::_expandAddressRanges(Rule *rule, FWObject *re)
         {
             if (MatchesAddressFamily(o))
             {
-                InetAddr a1 = aro->getRangeStart();
-                InetAddr a2 = aro->getRangeEnd();
-                vector<InetAddrMask> vn = 
-                    libfwbuilder::convertAddressRange(a1,a2);
+                if (aro->isV6()) {
+                    cl.push_back(o);
+                } else {
+                    InetAddr a1 = aro->getRangeStart();
+                    InetAddr a2 = aro->getRangeEnd();
+                    vector<InetAddrMask> vn =
+                        libfwbuilder::convertAddressRange(a1,a2);
 
-                if (vn.size() == 0)
-                {
-                    abort(rule,
-                        "Address Range object '" + aro->getName() +
-                        "' can not be converted to set of addresses");
-                }
-
-                for (vector<InetAddrMask>::iterator i=vn.begin();
-                     i!=vn.end(); i++)
-                {
-                    Network *h = dbcopy->createNetwork();
-                    h->setName(string("%n-")+(*i).toString()+string("%") );
-                    h->setNetmask(*(i->getNetmaskPtr()));
-                    h->setAddress(*(i->getAddressPtr()));
-                    persistent_objects->add(h, false);
-                    cl.push_back(h);
-
-                    // see GroupRegistry::registerGroupObject()
-                    if (group_registry != nullptr)
+                    if (vn.size() == 0)
                     {
-                        group_registry->setGroupRegistryKey(
-                            h, group_registry->getGroupRegistryKey(aro));
+                        abort(rule,
+                            "Address Range object '" + aro->getName() +
+                            "' can not be converted to set of addresses");
                     }
-               }
+
+                    for (vector<InetAddrMask>::iterator i=vn.begin();
+                         i!=vn.end(); i++)
+                    {
+                        Network *h = dbcopy->createNetwork();
+                        h->setName(string("%n-")+(*i).toString()+string("%") );
+                        h->setNetmask(*(i->getNetmaskPtr()));
+                        h->setAddress(*(i->getAddressPtr()));
+                        persistent_objects->add(h, false);
+                        cl.push_back(h);
+
+                        // see GroupRegistry::registerGroupObject()
+                        if (group_registry != nullptr)
+                        {
+                            group_registry->setGroupRegistryKey(
+                                h, group_registry->getGroupRegistryKey(aro));
+                        }
+                   }
+                }
             }
 	} else
         {

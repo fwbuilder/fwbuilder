@@ -34,6 +34,8 @@
 #include "fwbuilder/Library.h"
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/FWException.h"
+#include "fwbuilder/InetAddrMask.h"
+#include "fwbuilder/Inet6AddrMask.h"
 
 #include <qlineedit.h>
 #include <qspinbox.h>
@@ -171,6 +173,43 @@ void AddressRangeDialog::applyChanges()
     
 }
 
+void AddressRangeDialog::addressEntered()
+{
+    try
+    {
+        QString addrStr = m_dialog->rangeStart->text();
+        InetAddr rangeStartAddress(AF_UNSPEC, addrStr.toStdString());
 
+        if (addrStr.contains('/'))
+        {
+            unique_ptr<InetAddrMask> address_and_mask = nullptr;
 
+            if (rangeStartAddress.isV4()) {
+                address_and_mask.reset(new InetAddrMask(addrStr.toStdString()));
+            } else if (rangeStartAddress.isV6()) {
+                address_and_mask.reset(new Inet6AddrMask(addrStr.toStdString()));
+            }
 
+            m_dialog->rangeStart->setText(
+                address_and_mask->getFirstHostPtr()->toString().c_str());
+            m_dialog->rangeEnd->setText(
+                address_and_mask->getLastHostPtr()->toString().c_str());
+
+        } else {
+            InetAddr rangeEndAddress(AF_UNSPEC, m_dialog->rangeEnd->text().toStdString());
+            if (rangeEndAddress.addressFamily() != rangeStartAddress.addressFamily()) {
+                m_dialog->rangeEnd->setText(m_dialog->rangeStart->text());
+            }
+        }
+    } catch (FWException &ex)
+    {
+        // exception thrown if user types illegal m_dialog->rangeStart do
+        // not show error dialog. This method is called by
+        // editingFinished signal and therefore is invoked when user
+        // switches focus from the address input widget to some other
+        // widget or even when user switches to another application to
+        // look up the address. Error dialog interrupts the workflow
+        // in the latter case which is annoying.
+    }
+
+}
