@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.com/fwbuilder/fwbuilder.svg?branch=master)](https://travis-ci.com/fwbuilder/fwbuilder)
+![Linux](https://github.com/fwbuilder/fwbuilder/workflows/Linux/badge.svg)
+![macOS](https://github.com/fwbuilder/fwbuilder/workflows/macOS/badge.svg)
+![w32-mxe](https://github.com/fwbuilder/fwbuilder/workflows/w32-mxe/badge.svg)
 
 fwbuilder
 =========
