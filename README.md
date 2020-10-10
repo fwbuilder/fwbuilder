@@ -1,6 +1,6 @@
-![Linux](https://github.com/fwbuilder/fwbuilder/workflows/Linux/badge.svg)
-![macOS](https://github.com/fwbuilder/fwbuilder/workflows/macOS/badge.svg)
-![w32-mxe](https://github.com/fwbuilder/fwbuilder/workflows/w32-mxe/badge.svg)
+[![Linux](https://github.com/fwbuilder/fwbuilder/workflows/Linux/badge.svg)](https://github.com/fwbuilder/fwbuilder/actions?query=workflow%3ALinux)
+[![macOS](https://github.com/fwbuilder/fwbuilder/workflows/macOS/badge.svg)](https://github.com/fwbuilder/fwbuilder/actions?query=workflow%3AmacOS)
+[![w32-mxe](https://github.com/fwbuilder/fwbuilder/workflows/w32-mxe/badge.svg)](https://github.com/fwbuilder/fwbuilder/actions?query=workflow%3Aw32-mxe)
 
 fwbuilder
 =========
