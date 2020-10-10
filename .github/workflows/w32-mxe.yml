@@ -9,6 +9,11 @@ jobs:
       matrix:
         config:
           - {
+              id: "mxe-qt-5.15",
+              name: "MXE Qt 5.15",
+              docker_image: "fwbuilder/mxe:qt-5.15"
+            }
+          - {
               id: "mxe-qt-5.12",
               name: "MXE Qt 5.12",
               docker_image: "fwbuilder/mxe:qt-5.12"
