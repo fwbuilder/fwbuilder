@@ -1,0 +1,33 @@
+name: macOS
+
+on: [push]
+
+jobs:
+  release-build:
+    runs-on: macos-10.15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          brew install qt net-snmp ccache
+          brew upgrade openssl cmake
+      - name: Compilation cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-ccache
+      - name: Configure
+        run: |
+          export PATH="/usr/local/opt/qt/bin:/usr/local/opt/net-snmp/bin:$PATH"
+          export OPENSSL_ROOT_DIR="/usr/local/opt/openssl" ;
+          mkdir -p build && cd build
+          cmake ..
+      - name: Build
+        run: |
+          export PATH="/usr/local/opt/qt/bin:/usr/local/opt/net-snmp/bin:$PATH"
+          export OPENSSL_ROOT_DIR="/usr/local/opt/openssl" ;
+          cd build
+          make -j$(sysctl -n hw.ncpu) install
