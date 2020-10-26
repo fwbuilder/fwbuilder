@@ -192,11 +192,11 @@ Section "FWBuilder (required)"
 ; Write file associations and icons
 
   WriteRegStr HKLM "Software\Classes\.fwb" "" "fwbfile"
-  WriteRegStr HKLM "Software\Classes\fwbfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe -noexec %1"
+  WriteRegStr HKLM "Software\Classes\fwbfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe %1"
   WriteRegStr HKLM "Software\Classes\fwbfile\DefaultIcon"        "" "$INSTDIR\fwbuilder.exe,0"
 
   WriteRegStr HKLM "Software\Classes\.fwl" "" "fwlfile"
-  WriteRegStr HKLM "Software\Classes\fwlfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe -noexec %1"
+  WriteRegStr HKLM "Software\Classes\fwlfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe %1"
   WriteRegStr HKLM "Software\Classes\fwlfile\DefaultIcon"        "" "$INSTDIR\fwbuilder.exe,0"
 
 
@@ -207,7 +207,7 @@ Section "FWBuilder (required)"
 ; ========================================================================
 ; Configure installer to use our prepackaged plink.exe and pscp.exe but only if it was not configured before
 ;
-; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings 
+; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings
 ;
   ReadRegStr $0 HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SSHPath"
   StrCmp $0 "" 0 +3
