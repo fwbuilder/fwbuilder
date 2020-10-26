@@ -217,10 +217,7 @@ Section "FWBuilder (required)"
 
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
-; Setting var context to "all" makes Start menu shortcuts appear for all
-; users
-
-;  SetShellVarContext all
+  SetShellVarContext all
 
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk" "$INSTDIR\fwbuilder.exe" "" "$INSTDIR\fwbuilder.exe"
