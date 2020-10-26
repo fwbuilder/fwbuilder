@@ -192,12 +192,12 @@ Section "FWBuilder (required)"
 ; Write file associations and icons
 
   WriteRegStr HKLM "Software\Classes\.fwb" "" "fwbfile"
-  WriteRegStr HKLM "Software\Classes\fwbfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe %1"
-  WriteRegStr HKLM "Software\Classes\fwbfile\DefaultIcon"        "" "$INSTDIR\fwbuilder.exe,0"
+  WriteRegStr HKLM "Software\Classes\fwbfile\shell\open\command" "" '"$INSTDIR\fwbuilder.exe" "%1"'
+  WriteRegStr HKLM "Software\Classes\fwbfile\DefaultIcon"        "" '"$INSTDIR\fwbuilder.exe,0"'
 
   WriteRegStr HKLM "Software\Classes\.fwl" "" "fwlfile"
-  WriteRegStr HKLM "Software\Classes\fwlfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe %1"
-  WriteRegStr HKLM "Software\Classes\fwlfile\DefaultIcon"        "" "$INSTDIR\fwbuilder.exe,0"
+  WriteRegStr HKLM "Software\Classes\fwlfile\shell\open\command" "" '"$INSTDIR\fwbuilder.exe" "%1"'
+  WriteRegStr HKLM "Software\Classes\fwlfile\DefaultIcon"        "" '"$INSTDIR\fwbuilder.exe,0"'
 
 
 ; Create registry entry for putty session with ssh keepalive
