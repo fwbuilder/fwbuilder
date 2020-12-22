@@ -10,7 +10,7 @@ IF (WIN32)
 ENDIF()
 
 IF (UNIX)
-  target_link_libraries(fwb_iosacl c dl util)
+  target_link_libraries(fwb_iosacl c ${CMAKE_DL_LIBS} util)
 ENDIF()
 
 target_compile_options(fwb_iosacl PRIVATE ${CXX_DEFAULT_FLAGS})

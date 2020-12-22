@@ -19,7 +19,7 @@ IF (WIN32)
 ENDIF()
 
 IF (UNIX)
-  target_link_libraries(fwbedit c dl util)
+  target_link_libraries(fwbedit c ${CMAKE_DL_LIBS} util)
 ENDIF()
 
 IF (NETSNMP_FOUND)

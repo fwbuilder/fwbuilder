@@ -11,7 +11,7 @@ IF (WIN32)
 ENDIF()
 
 IF (UNIX)
-  target_link_libraries(fwb_junosacl c dl util)
+  target_link_libraries(fwb_junosacl c ${CMAKE_DL_LIBS} util)
 ENDIF()
 
 target_compile_options(fwb_junosacl PRIVATE ${CXX_DEFAULT_FLAGS})

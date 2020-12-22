@@ -10,7 +10,7 @@ IF (WIN32)
 ENDIF()
 
 IF (UNIX)
-  target_link_libraries(fwb_nxosacl c dl util)
+  target_link_libraries(fwb_nxosacl c ${CMAKE_DL_LIBS} util)
 ENDIF()
 
 target_compile_options(fwb_nxosacl PRIVATE ${CXX_DEFAULT_FLAGS})
