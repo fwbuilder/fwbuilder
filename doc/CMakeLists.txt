@@ -39,6 +39,6 @@ if(UNIX AND NOT APPLE)
             ${CMAKE_BINARY_DIR}/fwb_ipt.1.gz
             ${CMAKE_BINARY_DIR}/fwb_pf.1.gz
             ${CMAKE_BINARY_DIR}/fwb_pix.1.gz
-            DESTINATION ${CMAKE_INSTALL_DATADIR}/man/man1)
+            DESTINATION ${CMAKE_INSTALL_MANDIR}/man1)
 endif(UNIX AND NOT APPLE)
 
