@@ -11,7 +11,7 @@ IF (WIN32)
 ENDIF()
 
 IF (UNIX)
-  target_link_libraries(fwb_procurve_acl c dl util)
+  target_link_libraries(fwb_procurve_acl c ${CMAKE_DL_LIBS} util)
 ENDIF()
 
 target_compile_options(fwb_procurve_acl PRIVATE ${CXX_DEFAULT_FLAGS})

@@ -10,7 +10,7 @@ IF (WIN32)
 ENDIF()
 
 IF (UNIX)
-  target_link_libraries(fwb_pix c dl util)
+  target_link_libraries(fwb_pix c ${CMAKE_DL_LIBS} util)
 ENDIF()
 
 target_compile_options(fwb_pix PRIVATE ${CXX_DEFAULT_FLAGS})
