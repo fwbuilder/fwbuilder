@@ -918,10 +918,10 @@ void FWBSettings::getPrinterOptions(QPrinter *printer,
 #ifndef Q_OS_MAC
     printer->setOutputFileName(getStr("PrintSetup/outputFileName"));
 #endif
-    printer->setOrientation(
-        QPrinter::Orientation(getInt("PrintSetup/orientation")));
+    printer->setPageOrientation(
+        QPageLayout::Orientation(getInt("PrintSetup/orientation")));
     printer->setPageSize(
-        QPrinter::PageSize(getInt("PrintSetup/pageSize")));
+        QPageSize(QPageSize::PageSizeId(getInt("PrintSetup/pageSize"))));
     printer->setPageOrder(
         QPrinter::PageOrder(getInt("PrintSetup/pageOrder")));
 //    int res = getInt("PrintSetup/resolution");
@@ -947,8 +947,8 @@ void FWBSettings::setPrinterOptions(QPrinter *printer,
            printer->printerSelectionOption());
 #endif
     setStr("PrintSetup/outputFileName",printer->outputFileName());
-    setInt("PrintSetup/orientation",printer->orientation());
-    setInt("PrintSetup/pageSize",printer->pageSize());
+    setInt("PrintSetup/orientation",printer->pageLayout().orientation());
+    setInt("PrintSetup/pageSize",printer->pageLayout().pageSize().id());
     setInt("PrintSetup/pageOrder",printer->pageOrder());
 //    setInt("PrintSetup/resolution",printer->resolution());
     setInt("PrintSetup/colorMode",printer->colorMode());
