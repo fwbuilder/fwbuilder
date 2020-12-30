@@ -406,20 +406,20 @@ QString wordWrap(const QString& s, int maxchinline)
             {
                 if (linestart<lastwdpos)
                 {
-                    res.append(s.mid(linestart,lastwdpos-linestart));
+                    res.append(s.midRef(linestart,lastwdpos-linestart));
                     linestart=lastwdpos;
                     pos=lastwdpos;
 
                 }else
                 {
-                    res.append(s.mid(linestart,pos-linestart));
+                    res.append(s.midRef(linestart,pos-linestart));
                     linestart=pos;
                     lastwdpos=pos;
                 }
             }
             else
             {
-                res.append(s.mid(linestart,pos-linestart));
+                res.append(s.midRef(linestart,pos-linestart));
                 while (++pos< s.length() && s.at(pos).isSpace()) ;
                 if (pos<s.length())
                 {
@@ -435,7 +435,7 @@ QString wordWrap(const QString& s, int maxchinline)
             chcount=0;
         }
     }
-    res.append(s.mid(linestart,pos-linestart));
+    res.append(s.midRef(linestart,pos-linestart));
     return res;
 }
 
