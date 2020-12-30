@@ -302,15 +302,12 @@ void SSHSession::terminate()
             return;
         }
 
-#ifdef _WIN32
-        if (proc->pid() != nullptr)
-#else
-        if (proc->pid() != -1)
-#endif
+
+        if (proc->processId() != 0)
         {
             if (proc->state() == QProcess::Running)
             {
-                Q_PID pid = proc->pid();
+                qint64 pid = proc->processId();
                 if (fwbdebug)
                     qDebug() << "SSHSession::terminate   "
                              << "terminating child process pid="  << pid;
