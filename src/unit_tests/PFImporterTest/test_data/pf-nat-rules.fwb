@@ -29,6 +29,17 @@
         <IPv4 id="id3403X88798" name="mDNS" comment="" ro="False" address="224.0.0.251" netmask="0.0.0.0"/>
         <IPv4 id="id3410X88798" name="LLMNR" comment="Link-Local Multicast Name Resolution, RFC4795" ro="False" address="224.0.0.252" netmask="0.0.0.0"/>
         <IPv4 id="id3411X88798" name="Teredo" comment="" ro="False" address="224.0.0.253" netmask="0.0.0.0"/>
+        <IPv6 id="id3412X88798" name="All nodes" comment="RFC4291" ro="False" address="ff02::1" netmask="128"/>
+        <IPv6 id="id3413X88798" name="All routers" comment="RFC4291" ro="False" address="ff02::2" netmask="128"/>
+        <IPv6 id="id3414X88798" name="OSPF (all routers)" comment="RFC2328" ro="False" address="ff02::5" netmask="128"/>
+        <IPv6 id="id3415X88798" name="OSPF (designated routers)" comment="RFC2328" ro="False" address="ff02::6" netmask="128"/>
+        <IPv6 id="id3416X88798" name="RIP" comment="RFC2080" ro="False" address="ff02::9" netmask="128"/>
+        <IPv6 id="id3417X88798" name="EIGRP" comment="RFC7868" ro="False" address="ff02::a" netmask="128"/>
+        <IPv6 id="id3418X88798" name="PIM" comment="RFC2375" ro="False" address="ff02::d" netmask="128"/>
+        <IPv6 id="id3419X88798" name="MLDv2 reports" comment="RFC3810" ro="False" address="ff02::16" netmask="128"/>
+        <IPv6 id="id3420X88798" name="DHCPv6 (link-local)" comment="RFC3315" ro="False" address="ff02::1:2" netmask="128"/>
+        <IPv6 id="id3421X88798" name="LLMNR (link-local)" comment="RFC4795" ro="False" address="ff02::1:3" netmask="128"/>
+        <IPv6 id="id3422X88798" name="DHCP (site-local)" comment="RFC3315" ro="False" address="ff05::1:3" netmask="128"/>
       </ObjectGroup>
       <ObjectGroup id="stdid17" name="DNS Names" comment="" ro="False"/>
       <ObjectGroup id="stdid18" name="Address Tables" comment="" ro="False"/>
