@@ -308,14 +308,21 @@ void setDisabledPalette(QWidget *w)
 {
     QPalette    pal=w->palette();
 
+    pal.setCurrentColorGroup( QPalette::Normal );
+
+    QColor textColor = Qt::black;
+    if ( qGray(pal.color(QPalette::Window).rgba()) < 100) {
+        textColor = Qt::white;
+    }
+
     pal.setCurrentColorGroup( QPalette::Active );
-    pal.setColor( QPalette::Text, Qt::black );
+    pal.setColor( QPalette::Text, textColor );
 
     pal.setCurrentColorGroup( QPalette::Inactive );
-    pal.setColor( QPalette::Text, Qt::black );
+    pal.setColor( QPalette::Text, textColor );
 
     pal.setCurrentColorGroup( QPalette::Disabled );
-    pal.setColor( QPalette::Text, Qt::black );
+    pal.setColor( QPalette::Text, textColor );
 
     w->setPalette( pal );
 }

@@ -957,13 +957,25 @@ void ProjectPanel::loadStandardObjects()
         objdb->load( Constants::getStandardObjectsFilePath(),
                      &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName("");
+        if ( qGray(palette().color(QPalette::Window).rgba()) < 100) {
+            FWObject *stdLib = objdb->findObjectByName(Library::TYPENAME, "Standard");
+            stdLib->setReadOnly(false);
+            stdLib->setStr("color", "#0a0f1f");
+            objdb->setDirty(false);
+        }
 
         if (fwbdebug) qDebug("ProjectPanel::load(): create User library");
 
         FWObject *userLib = FWBTree().createNewLibrary(objdb);
 
         userLib->setName("User");
-        userLib->setStr("color","#d2ffd0");
+        if ( qGray(palette().color(QPalette::Window).rgba()) < 100) {
+            // Window is using a dark palette, so we default to a very dark green for background
+            userLib->setStr("color","#0a1f08");
+        } else {
+            // Window is using a light palette, so we default to a light green background
+            userLib->setStr("color","#d2ffd0");
+        }
 
         objdb->setDirty(false);
         objdb->setFileName("");
@@ -1036,6 +1048,12 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
         objdb->load( Constants::getStandardObjectsFilePath(),
                      &upgrade_predicate, Constants::getDTDDirectory());
         objdb->setFileName("");
+        if ( qGray(palette().color(QPalette::Window).rgba()) < 100) {
+            FWObject *stdLib = objdb->findObjectByName(Library::TYPENAME, "Standard");
+            stdLib->setReadOnly(false);
+            stdLib->setStr("color", "#0a0f1f");
+            objdb->setDirty(false);
+        }
 
 // objects from a data file are in database ndb
 

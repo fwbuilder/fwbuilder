@@ -167,7 +167,12 @@ void RuleSetView::init()
      * RuleSetViewDelegate when I paint individual cells.
      */
     QPalette updated_palette = palette();
-    updated_palette.setColor(QPalette::Highlight, QColor("silver"));
+    if ( qGray(updated_palette.color(QPalette::Window).rgba()) < 100) {
+        // Window is using a dark palette, so we just lighten a little for the highlight
+        updated_palette.setColor(QPalette::Highlight, updated_palette.color(QPalette::Window).lighter(150));
+    } else {
+        updated_palette.setColor(QPalette::Highlight, QColor("silver"));
+    }
     setPalette(updated_palette);
 
 
