@@ -403,10 +403,11 @@ void FWBSettings::init(bool force_first_time_run)
 #ifndef _WIN32
     if (getSSHPath().isEmpty()) setSSHPath("ssh");
     if (getSCPPath().isEmpty()) setSCPPath("scp");
-#endif
-    // default timeout is 30 sec (default value of ServerAliveCountMax is 3)
-    // do this for both Linux and windows !
+
+    // Default timeout is 30 sec (default value of ServerAliveCountMax is 3).
+    // Do this for Linux only, Windows-installer creates the value always!
     if (!haveSSHTimeout()) setSSHTimeout(10);
+#endif
 
     // Note: hasKey calls QSettings::contains using path given as
     // argument, prepended with SETTINGS_PATH_PREFIX
