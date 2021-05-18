@@ -168,10 +168,10 @@ FWBSettings::FWBSettings(bool testData) :
     uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                                   OrganizationName, ApplicationName);
 #ifdef _WIN32
-    ssh_timeout_setings_object = new QSettings(QSettings::UserScope,
+    ssh_timeout_settings_object = new QSettings(QSettings::UserScope,
                                                  "SimonTatham", "PuTTY");
 #else
-    ssh_timeout_setings_object = this;
+    ssh_timeout_settings_object = this;
 #endif
 }
 
@@ -179,7 +179,7 @@ FWBSettings::~FWBSettings()
 {
     delete uuid_settings;
 #ifdef _WIN32
-    delete ssh_timeout_setings_object;
+    delete ssh_timeout_settings_object;
 #endif
 }
 
@@ -883,21 +883,21 @@ void FWBSettings::setDiffPath(const QString &path)
 // and keeps it as part of the session, stored in registry. Using
 // separate QSettings object on windows that controls putty session
 // "fwb_session_with_keepalive". On all other platforms
-// ssh_timeout_setings_object == this
+// ssh_timeout_settings_object == this
 
 bool FWBSettings::haveSSHTimeout()
 {
-    return ssh_timeout_setings_object->contains(SSHTimeout);
+    return ssh_timeout_settings_object->contains(SSHTimeout);
 }
 
 int FWBSettings::getSSHTimeout()
 {
-    return ssh_timeout_setings_object->value(SSHTimeout).toInt();
+    return ssh_timeout_settings_object->value(SSHTimeout).toInt();
 }
 
 void FWBSettings::setSSHTimeout(int value_sec)
 {
-    ssh_timeout_setings_object->setValue(SSHTimeout, value_sec);
+    ssh_timeout_settings_object->setValue(SSHTimeout, value_sec);
 }
 
 

@@ -60,13 +60,13 @@ class FWBSettings : public QSettings
 
  private:
     QSettings *uuid_settings;
-    QSettings *ssh_timeout_setings_object;
+    QSettings *ssh_timeout_settings_object;
     bool first_run;
-    
+
     QString getLabelColorStr(enum LabelColors c);
     QString getDiffColorStr(enum LabelColors c);
 
-    
+
  public:
 
     FWBSettings(bool testData = false);
@@ -79,7 +79,7 @@ class FWBSettings : public QSettings
     void save();
 
     bool isFirstRun() { return first_run; }
-    
+
     QString getWDir();
     void    setWDir(const QString &wd);
 
@@ -138,7 +138,7 @@ class FWBSettings : public QSettings
     void    setDontSaveStdLib( bool f);
 
     bool hasKey(const QString &attribute);
-    
+
     QString getStr(const QString &attribute);
     void    setStr(const QString &attribute, const QString &val);
 
@@ -187,10 +187,10 @@ class FWBSettings : public QSettings
 
     bool isReminderAboutStandardLibSuppressed();
     void suppressReminderAboutStandardLib(bool f);
-    
+
     bool isReminderAboutDataDirSuppressed();
     void suppressReminderAboutDataDir(bool f);
-    
+
     enum IconSize getIconsInRulesSize();
     void setIconsInRulesSize(enum IconSize size);
 
@@ -220,10 +220,10 @@ class FWBSettings : public QSettings
 
     uint getTimeOfLastUpdateAvailableWarning();
     void setTimeOfLastUpdateAvailableWarning(uint v);
-    
+
     uint getTimeOfLastAnnouncement(const QString &announcement);
     void setTimeOfLastAnnouncement(const QString &announcement, uint v);
-    
+
     QString getTargetStatus(const QString &platform, const QString &default_stat);
     void setTargetStatus(const QString &plaform, const QString &status);
 
@@ -274,7 +274,7 @@ class FWBSettings : public QSettings
 
     bool getIconsWithText();
     void setIconsWithText(bool f);
-    
+
     int getABTestingGroup();
     void setABTestingGroup(int n);
 
@@ -288,7 +288,7 @@ class FWBSettings : public QSettings
 
     bool getDisplayUnmodifiedRules();
     void setDisplayUnmodifiedRules(bool);
-    
+
 private:
     QFont getFontByType(const char*type);
 };
