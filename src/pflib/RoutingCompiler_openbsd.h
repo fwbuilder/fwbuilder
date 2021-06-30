@@ -24,11 +24,9 @@
 #ifndef __ROUTINGCOMPILER_OPENBSD_HH__
 #define __ROUTINGCOMPILER_OPENBSD_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/RoutingCompiler.h"
 #include "fwbuilder/RuleElement.h"
-#include "config.h"
 
 
 namespace libfwbuilder {
@@ -139,7 +137,7 @@ namespace fwcompiler
         {
             have_default_route = false;
             defined_restore_script_output = false;
-            printRule = NULL;
+            printRule = nullptr;
         }
 
         virtual void verifyOS();

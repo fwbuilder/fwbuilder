@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -62,7 +61,7 @@ TimeDialog::TimeDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::TimeDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -76,7 +75,7 @@ void TimeDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Interval *s = dynamic_cast<Interval*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
@@ -206,11 +205,11 @@ void TimeDialog::validate(bool *res)
 void TimeDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     Interval *interval = dynamic_cast<Interval*>(new_state);
-    assert(interval!=NULL);
+    assert(interval!=nullptr);
 
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
     m_dialog->commentKeywords->applyChanges(new_state);
@@ -259,11 +258,7 @@ void TimeDialog::applyChanges()
     if (m_dialog->cbStart6_2->checkState ()==Qt::Checked)
         weekDays.append("6");
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    interval->setDaysOfWeek(weekDays.join(",").toAscii().data());
-#else
     interval->setDaysOfWeek(weekDays.join(",").toLatin1().data());
-#endif
 
     if (!cmd->getOldState()->cmp(new_state, true))
     {

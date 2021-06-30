@@ -62,7 +62,7 @@ void RuleSetViewContextMenuTest::initTestCase()
         mw->resize(1024, 768);
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "testFirewall"));
     firewall->setStr("platform", "iptables");
@@ -76,7 +76,7 @@ void RuleSetViewContextMenuTest::initTestCase()
  */
 void RuleSetViewContextMenuTest::openPolicy(QString fwname)
 {
-    Policy *p = NULL;
+    Policy *p = nullptr;
     foreach (FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == fwname.toStdString())
@@ -84,7 +84,7 @@ void RuleSetViewContextMenuTest::openPolicy(QString fwname)
             p = Firewall::cast(fw)->getPolicy();
         }
     }
-    QVERIFY (p != NULL);
+    QVERIFY (p != nullptr);
     QCoreApplication::postEvent(mw, new openRulesetImmediatelyEvent(mw->activeProject()->getFileName(), p->getId()));
     QTest::qWait(100);
 }
@@ -94,7 +94,7 @@ void RuleSetViewContextMenuTest::openPolicy(QString fwname)
  */
 Library* RuleSetViewContextMenuTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -115,7 +115,7 @@ QPoint findActionPos(QMenu *menu, QAction *action)
     int x = menu->width()/2;
     for (int y=0; y<menu->height(); y++)
     {
-        if (menu->actionAt(QPoint(x,y)) != NULL && menu->actionAt(QPoint(x,y))->text() == action->text())
+        if (menu->actionAt(QPoint(x,y)) != nullptr && menu->actionAt(QPoint(x,y))->text() == action->text())
             return QPoint(x,y);
     }
     return QPoint(-1,-1);
@@ -135,7 +135,7 @@ void RuleSetViewContextMenuTest::clickMenuItem(QString item)
 void RuleSetViewContextMenuTest::actuallyClickMenuItem()
 {
     QMenu *menu = dynamic_cast<QMenu*>(app->activePopupWidget());
-    Q_ASSERT(menu != NULL);
+    Q_ASSERT(menu != nullptr);
     foreach(QAction *action, menu->actions())
     {
         if (action->text() == itemToClick)
@@ -161,15 +161,9 @@ void RuleSetViewContextMenuTest::actuallyClickMenuItem()
 
     // need to hide the menu, otherwise test just hangs
     menu->hide();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
-          .arg(itemToClick)
-          .arg(items.join(" ")).toAscii().constData());
-#else
     QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
           .arg(itemToClick)
           .arg(items.join(" ")).toLatin1().constData());
-#endif
 }
 
 /*
@@ -178,13 +172,14 @@ void RuleSetViewContextMenuTest::actuallyClickMenuItem()
  */
 QPoint RuleSetViewContextMenuTest::findRulePosition(Rule *rule)
 {
-    int x = 30;
     view->scrollTo(((RuleSetModel*)view->model())->index(rule, 0));
-    for (int y=view->header()->height(); y<view->height(); y+=5)
-    {
-        Rule *found = ((RuleSetModel*)view->model())->getRule(view->indexAt(QPoint(x,y)));
-        if (found == rule)
-            return QPoint(x,y);
+    for (int x=0; x<view->width(); x+=1) {
+        for (int y=0; y<view->height(); y+=1)
+        {
+            Rule *found = ((RuleSetModel*)view->model())->getRule(view->indexAt(QPoint(x,y)));
+            if (found == rule)
+                return QPoint(x,y);
+        }
     }
     return QPoint(-1,-1);
 }
@@ -213,7 +208,7 @@ void RuleSetViewContextMenuTest::createGroup(QString name)
 void RuleSetViewContextMenuTest::actuallyCreateGroup()
 {
     QInputDialog *dlg = dynamic_cast<QInputDialog*>(app->activeModalWidget());
-    Q_ASSERT(dlg != NULL);
+    Q_ASSERT(dlg != nullptr);
     QLineEdit *name = dlg->findChild<QLineEdit*>();
     QTest::keyClicks(name, groupToCreate);
     dlg->accept();
@@ -364,11 +359,7 @@ void RuleSetViewContextMenuTest::test_menus()
         qDebug() << "Verifying context menu for column" << i;
         verifyMenu(i);
         showContextMenu(findCell(rule, i));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        QVERIFY2(!failed, QString("Failed for column %1").arg(i).toAscii().constData());
-#else
         QVERIFY2(!failed, QString("Failed for column %1").arg(i).toLatin1().constData());
-#endif
     }
 
     // Remove created rule
@@ -416,11 +407,7 @@ void RuleSetViewContextMenuTest::test_group_menus()
             qDebug() << "Verifying context menu for column" << i;
             verifyMenu(i);
             showContextMenu(findCell(getRuleForPosition(j), i));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            QVERIFY2(!failed, QString("Failed for column %1").arg(i).toAscii().constData());
-#else
             QVERIFY2(!failed, QString("Failed for column %1").arg(i).toLatin1().constData());
-#endif
         }
     }
 
@@ -432,11 +419,7 @@ void RuleSetViewContextMenuTest::test_group_menus()
         view->selectRE(getRuleForPosition(i),0);
     //    QTest::qWait(1000);
         showContextMenu(findCell(getRuleForPosition(i), 0));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        QVERIFY2(!failed, QString("Failed for rule #%1 of 5").arg(i+1).toAscii().constData());
-#else
         QVERIFY2(!failed, QString("Failed for rule #%1 of 5").arg(i+1).toLatin1().constData());
-#endif
     }
 
     // remove created rules
@@ -471,11 +454,7 @@ void RuleSetViewContextMenuTest::test_platforms()
         firewall->setStr("platform", platform.toStdString());
         verifyMenu(6);
         showContextMenu(findCell(rule, 6));
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        QVERIFY2(!failed, QString("Failed for paltform %1").arg(platform).toAscii().constData());
-#else
         QVERIFY2(!failed, QString("Failed for paltform %1").arg(platform).toLatin1().constData());
-#endif
     }
 
     // Verify that column count changes depending of firewall platform

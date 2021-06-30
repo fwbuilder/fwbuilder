@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -31,6 +30,7 @@
 #include <functional>
 #include <stdexcept>
 
+#include "version.h"
 #include "CompilerDriver_ipt.h"
 
 #include "fwbuilder/Resources.h"
@@ -44,6 +44,7 @@
 #include <QStringList>
 #include <QTextCodec>
 #include <QTime>
+#include <QElapsedTimer>
 
 
 #include "../common/init.cpp"
@@ -52,7 +53,7 @@ using namespace std;
 using namespace libfwbuilder;
 using namespace fwcompiler;
 
-FWObjectDatabase *objdb = NULL;
+FWObjectDatabase *objdb = nullptr;
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
@@ -78,13 +79,10 @@ int main(int argc, char **argv)
 {   
     QCoreApplication app(argc, argv, false);
 
-    QTime total_time_timer;
+    QElapsedTimer total_time_timer;
     total_time_timer.start();
 
     // compilers always write file names into manifest in Utf8
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
-#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     QStringList args = app.arguments();

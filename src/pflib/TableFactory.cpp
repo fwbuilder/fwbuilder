@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "TableFactory.h"
 
@@ -39,6 +38,7 @@
 #include <functional>
 #include <iostream>
 #include <iomanip>
+#include <iterator>
 
 #include <assert.h>
 #include <sstream>
@@ -62,7 +62,7 @@ TableFactory::TableFactory(BaseCompiler *comp, Firewall *fwall,
     firewall = fwall;
     ruleSetName = "";
     group_registry = _group_registry;
-    dbroot = NULL;
+    dbroot = nullptr;
     persistent_tables = new ObjectGroup();
     persistent_tables->setName("PF Tables");
     persistent_objects->add(persistent_tables);
@@ -94,7 +94,7 @@ string TableFactory::generateTblID(RuleElement *re)
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o   = *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         lids.push_back(FWObjectDatabase::getStringId(o->getId()));
     }
     lids.sort();
@@ -103,7 +103,7 @@ string TableFactory::generateTblID(RuleElement *re)
 }
 
 void TableFactory::registerTable(const string& tblname, const string& tblid,
-                                 FWObject* tbl) throw(FWException)
+                                 FWObject* tbl)
 {
 // two different table objects should have different names
 // 
@@ -166,7 +166,7 @@ void TableFactory::createTablesForRE(RuleElement *re, Rule *rule)
 
     string tblID = generateTblID(re);
 
-    FWObject *tblgrp = NULL;
+    FWObject *tblgrp = nullptr;
 
     list<FWObject*> objects_in_groups;
     list<FWObject*> objects;
@@ -310,7 +310,7 @@ string TableFactory::PrintTables()
         output << "table ";
         output << "<" << grp->getName() << "> ";
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(grp);
-        if (atrt!=NULL &&
+        if (atrt!=nullptr &&
             atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
         {
             output << "persist";
@@ -333,10 +333,10 @@ string TableFactory::PrintTables()
         {
             if (i!=grp->begin())  output << ", ";
             FWObject *o = FWReference::getObject(*i);
-            if (o==NULL) compiler->abort("broken table object ");
+            if (o==nullptr) compiler->abort("broken table object ");
 
             MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-            if (atrt!=NULL)
+            if (atrt!=nullptr)
             {
                 if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
                 {
@@ -354,7 +354,7 @@ string TableFactory::PrintTables()
                 } else
                 {
                     Address *A=Address::cast( o );
-                    if (A==NULL)
+                    if (A==nullptr)
                         compiler->abort("table object must be an address: '" +
                                           o->getTypeName()+"'");
 

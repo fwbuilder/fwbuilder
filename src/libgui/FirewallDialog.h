@@ -27,7 +27,6 @@
 #ifndef __FIREWALLDIALOG_H_
 #define __FIREWALLDIALOG_H_
 
-#include "config.h"
 #include <ui_firewalldialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

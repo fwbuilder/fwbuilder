@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_pix.h"
 #include "NamedObjectsAndGroupsSupport.h"
@@ -240,7 +239,7 @@ bool NATCompiler_pix::mergeNATCmd::processNext()
 bool  NATCompiler_pix::optimizeDefaultNAT::processNext()
 {
 //    NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementOSrc  *osrc=rule->getOSrc();
@@ -261,7 +260,7 @@ bool  NATCompiler_pix::optimizeDefaultNAT::processNext()
  */    
     FWObject *o=osrc->front();
     string osrc_id;
-    if (FWReference::cast(o)!=NULL)
+    if (FWReference::cast(o)!=nullptr)
         osrc_id = FWObjectDatabase::getStringId(FWReference::cast(o)->getPointerId());
     else
         osrc_id = FWObjectDatabase::getStringId(o->getId());
@@ -295,7 +294,7 @@ bool  NATCompiler_pix::SuppressDuplicateNONATStatics::processNext()
 {
     Helper helper(compiler);
 //    NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getRuleType()== NATRule::NONAT && 
         rule->getInt("nonat_type")==NONAT_STATIC)
@@ -358,7 +357,7 @@ string NATCompiler_pix::DetectOverlap::printGlobalPoolAddress(const Address &poo
 bool  NATCompiler_pix::DetectGlobalPoolProblems::processNext()
 {
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     if (rule->getRuleType()== NATRule::SNAT )
@@ -425,13 +424,15 @@ bool  NATCompiler_pix::DetectGlobalPoolProblems::processNext()
 bool  NATCompiler_pix::DetectOverlappingGlobalPoolsAndStaticRules::processNext()
 {
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     if (rule->getRuleType()== NATRule::DNAT )
     {
         Address  *outa=compiler->getFirstODst(rule);  assert(outa);
+#ifndef NDEBUG
         Address  *insa=compiler->getFirstTDst(rule);  assert(insa);
+#endif
 
         for (map<int,NATCmd*>::iterator i=pix_comp->nat_commands.begin(); 
              i!=pix_comp->nat_commands.end(); ++i)
@@ -456,9 +457,9 @@ bool  NATCompiler_pix::DetectOverlappingGlobalPoolsAndStaticRules::processNext()
             IPv4 addr;
 
             Interface *iface=Interface::cast(natcmd->t_addr);
-            if (iface!=NULL && iface->isDyn()) return true;
+            if (iface!=nullptr && iface->isDyn()) return true;
 
-            if (iface!=NULL && iface->getId()==outa->getId()) return true;
+            if (iface!=nullptr && iface->getId()==outa->getId()) return true;
 
             addr.setAddress(*(natcmd->t_addr->getAddressPtr()));
             addr.setNetmask(*(natcmd->t_addr->getNetmaskPtr()));
@@ -487,7 +488,7 @@ bool  NATCompiler_pix::DetectOverlappingGlobalPoolsAndStaticRules::processNext()
 bool  NATCompiler_pix::DetectDuplicateNAT::processNext()
 {
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     if (rule->getRuleType()== NATRule::SNAT)
@@ -551,7 +552,7 @@ return true;
 bool  NATCompiler_pix::DetectOverlappingStatics::processNext()
 {
     NATCompiler_pix *pix_comp=dynamic_cast<NATCompiler_pix*>(compiler);
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     if (rule->getRuleType()== NATRule::DNAT )

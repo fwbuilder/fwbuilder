@@ -25,12 +25,11 @@
 
 #include "AddressRangeDialogTest.h"
 
-#include "../../../../config.h"
 //#include "../../global.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTest>
 #include <iostream>
 
@@ -79,7 +78,7 @@ void AddressRangeDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     QTest::qWait(10);
 }
 
@@ -112,15 +111,15 @@ void AddressRangeDialogTest::editSelectedObject()
     om->editSelectedObject();
 
     QWidget *address_range_dialog = mw->findChild<QWidget*>("w_AddressRangeDialog");
-    QVERIFY(address_range_dialog != NULL);
+    QVERIFY(address_range_dialog != nullptr);
 
     QLineEdit *rangeStart = address_range_dialog->findChildren<QLineEdit*>("rangeStart").first();
     QLineEdit *rangeEnd = address_range_dialog->findChildren<QLineEdit*>("rangeEnd").first();
     QLineEdit *objName = address_range_dialog->findChild<QLineEdit*>("obj_name");
-    QVERIFY(objName != NULL);
+    QVERIFY(objName != nullptr);
 
     TextEditWidget *comment = address_range_dialog->findChild<TextEditWidget*>("comment");
-    QVERIFY(comment != NULL);
+    QVERIFY(comment != nullptr);
 
     objName->clear();
     QTest::keyClicks(objName, "TestAddressRange");

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_ipf.h"
 #include "fwcompiler/Compiler.h"
@@ -72,7 +71,7 @@ int PolicyCompiler_ipf::prolog()
 bool PolicyCompiler_ipf::expandAnyService::processNext()
 {
     PolicyCompiler_ipf *pcomp=dynamic_cast<PolicyCompiler_ipf*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv=rule->getSrv();
     FWOptions *ruleopt =rule->getOptionsObject();
@@ -118,7 +117,7 @@ bool PolicyCompiler_ipf::expandAnyService::processNext()
 
 bool PolicyCompiler_ipf::doSrcNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *src=rule->getSrc();
 
@@ -159,7 +158,7 @@ bool PolicyCompiler_ipf::doSrcNegation::processNext()
 
 bool PolicyCompiler_ipf::doDstNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementDst *dst=rule->getDst();
 
@@ -200,7 +199,7 @@ bool PolicyCompiler_ipf::doDstNegation::processNext()
 
 bool PolicyCompiler_ipf::doSrvNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv=rule->getSrv();
 
@@ -220,10 +219,10 @@ void PolicyCompiler_ipf::specialCaseWithDynInterface::dropDynamicInterface(RuleE
     {
         FWObject *o   = *i1;
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface  *ifs   =Interface::cast( obj );
 
-        if (ifs!=NULL && !ifs->isRegular()) continue;
+        if (ifs!=nullptr && !ifs->isRegular()) continue;
         cl.push_back(obj);
     }
     if (!cl.empty()) 
@@ -236,7 +235,7 @@ void PolicyCompiler_ipf::specialCaseWithDynInterface::dropDynamicInterface(RuleE
 
 bool PolicyCompiler_ipf::specialCaseWithDynInterface::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     dropDynamicInterface( rule->getDst() );
     dropDynamicInterface( rule->getSrc() );
@@ -317,7 +316,7 @@ bool PolicyCompiler_ipf::calculateSkip::processNext()
 
 bool PolicyCompiler_ipf::checkForKeepState::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     Service   *srv=compiler->getFirstSrv(rule);    assert(srv);
@@ -333,11 +332,11 @@ bool PolicyCompiler_ipf::checkForKeepState::processNext()
 bool PolicyCompiler_ipf::eliminateDuplicateRules::processNext()
 {
     PolicyCompiler *pcomp = dynamic_cast<PolicyCompiler*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     // Note that if rule has "any" in Interface column, it is
     // implemented as reference to the AnyNetwork object. In this case
-    // Compiler::getFirstItf() returns NULL.
+    // Compiler::getFirstItf() returns nullptr.
     Interface *intf_rule = compiler->getFirstItf(rule);
     int intf_id_rule = (intf_rule) ? intf_rule->getId() : -1;
 
@@ -373,15 +372,15 @@ bool PolicyCompiler_ipf::eliminateDuplicateRules::processNext()
 
 bool PolicyCompiler_ipf::processMultiAddressObjectsInRE::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        if (atrt!=nullptr && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             compiler->abort(
                 
                     rule, 
@@ -394,7 +393,7 @@ bool PolicyCompiler_ipf::processMultiAddressObjectsInRE::processNext()
 
 bool PolicyCompiler_ipf::SplitDirectionIpfilter::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getDirection()==PolicyRule::Both)
     {
@@ -578,7 +577,7 @@ string PolicyCompiler_ipf::debugPrintRule(Rule *r)
     for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
     {
         FWObject *o   = *it;
-        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o = FWReference::cast(o)->getPointer();
         rule_interfaces += " " + o->getName();
         intf_count++;
     }

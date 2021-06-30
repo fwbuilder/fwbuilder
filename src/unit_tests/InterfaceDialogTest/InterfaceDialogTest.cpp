@@ -25,12 +25,11 @@
 
 #include "InterfaceDialogTest.h"
 
-#include "../../../../config.h"
 //#include "../../global.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTest>
 #include <iostream>
 
@@ -73,18 +72,18 @@ void InterfaceDialogTest::initTestCase()
     mw->startupLoad();
 //    mw->resize(1200, 600);
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
     firewall = Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "TestFirewall"));
     firewall->setStr("platform", "pix"); // using pix platforms as it supports all dialog options
     interface = Interface::cast(om->createObject(firewall, Interface::TYPENAME, "TestInterface"));
-    QVERIFY(interface!=NULL);
+    QVERIFY(interface!=nullptr);
 }
 
 Library* InterfaceDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -101,7 +100,7 @@ void InterfaceDialogTest::testDialog()
 {
     om->editObject(interface);
     InterfaceDialog *dialog = mw->findChild<InterfaceDialog*>("w_InterfaceDialog");
-    QVERIFY(dialog != NULL);
+    QVERIFY(dialog != nullptr);
 
     QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
     QLineEdit *label = dialog->findChild<QLineEdit*>("label");

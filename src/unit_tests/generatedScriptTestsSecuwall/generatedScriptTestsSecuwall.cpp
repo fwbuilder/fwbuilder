@@ -14,7 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "../../config.h"
 
 #include "generatedScriptTestsSecuwall.h"
 
@@ -24,6 +23,7 @@
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
 
+#include <QTest>
 #include <QDir>
 #include <QDirIterator>
 #include <QFile>
@@ -44,7 +44,7 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 };
 
 
-void GeneratedScriptTest::setUp()
+void GeneratedScriptTest::init()
 {
     // register protocols we need
     IPService::addNamedProtocol(51, "ah");
@@ -53,7 +53,7 @@ void GeneratedScriptTest::setUp()
     Configlet::setDebugging(true);
 }
 
-void GeneratedScriptTest::tearDown()
+void GeneratedScriptTest::cleanup()
 {
 }
 
@@ -79,14 +79,14 @@ void GeneratedScriptTest::runCompiler(const std::string &test_file,
 
     CompilerDriver_ipt driver(objdb);
     driver.setEmbeddedMode();
-    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipt initialization failed",
-                           driver.prepare(args) == true);
+    QVERIFY2(driver.prepare(args) == true,
+             "CompilerDriver_ipt initialization failed");
     driver.compile();
     // compiler should have created file secuwall-1.fw and test1 directory with
     // secuwall-specific configuration files.
     QFileInfo fi(generate_file_name.c_str());
-    CPPUNIT_ASSERT_MESSAGE("Generated file " + generate_file_name + " not found",
-                           fi.exists() == true);
+    QVERIFY2(fi.exists() == true,
+             std::string("Generated file " + generate_file_name + " not found").data());
 }
 
 void GeneratedScriptTest::assertDirsEqual(const std::string &left_dir,
@@ -103,11 +103,11 @@ void GeneratedScriptTest::assertDirsEqual(const std::string &left_dir,
 
     if (leftIt.hasNext())
     {
-        CPPUNIT_FAIL("Directory " + left_dir + " contains more files than " + right_dir);
+        QFAIL(std::string("Directory " + left_dir + " contains more files than " + right_dir).data());
     }
     if (rightIt.hasNext())
     {
-        CPPUNIT_FAIL("Directory " + right_dir + " contains more files than " + left_dir);
+        QFAIL(std::string("Directory " + right_dir + " contains more files than " + left_dir).data());
     }
 
     leftList.sort();
@@ -135,8 +135,7 @@ void GeneratedScriptTest::assertFilesEqual(const std::string &left_filename,
         rightFile.close();
     }
 
-    CPPUNIT_ASSERT_MESSAGE("Files " + left_filename + " and " + right_filename + " differ",
-                           result);
+    QVERIFY2(result, std::string("Files " + left_filename + " and " + right_filename + " differ").data());
 }
 
 void GeneratedScriptTest::FilesGenerationTest()

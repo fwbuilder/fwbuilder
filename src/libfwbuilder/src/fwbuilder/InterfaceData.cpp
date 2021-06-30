@@ -25,8 +25,6 @@
 */
 
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "InterfaceData.h"
@@ -65,7 +63,7 @@ InterfaceData::InterfaceData(const InterfaceData& other) : addr_mask()
             InetAddrMask *am;
             const InetAddr *ad = (*i)->getAddressPtr();
             const InetAddr *nm = (*i)->getNetmaskPtr();
-            if (ad==NULL) continue;
+            if (ad==nullptr) continue;
             if (ad->isV6())
             {
                 am = new Inet6AddrMask();
@@ -111,7 +109,7 @@ InterfaceData::InterfaceData(const Interface &iface)  : addr_mask()
     isUnnumbered = iface.isUnnumbered();
     isBridgePort = iface.isBridgePort();
     libfwbuilder::physAddress *pa = iface.getPhysicalAddress();
-    if (pa!=NULL)
+    if (pa!=nullptr)
         mac_addr = pa->getPhysAddress();
     label = iface.getLabel();
     networkZone = iface.getStr("network_zone");

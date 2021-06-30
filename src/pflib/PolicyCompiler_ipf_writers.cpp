@@ -101,7 +101,7 @@ string PolicyCompiler_ipf::PrintRule::_printPort(int rs,int re,bool neg)
 void PolicyCompiler_ipf::PrintRule::_printDstService(RuleElement  *rel)
 {
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
     Service *srv= Service::cast(o);
     IPService *ip_srv = IPService::cast(srv);
@@ -247,7 +247,7 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
     FWOptions* options=compiler->fw->getOptionsObject();
 
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-    if (atrt!=NULL)
+    if (atrt!=nullptr)
     {
         if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
         {
@@ -259,11 +259,11 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
         // to MultiAddressRunTime at this point. If we get some other
         // kind of MultiAddressRunTime object, we do not know what to do
         // with it so we stop.
-        assert(atrt==NULL);
+        assert(atrt==nullptr);
     }
 
     if (options->getBool("dynAddr") &&
-        Interface::cast(o)!=NULL && Interface::cast(o)->isDyn()) 
+        Interface::cast(o)!=nullptr && Interface::cast(o)->isDyn()) 
     {
         if (neg) compiler->output << "! ";
         compiler->output << "(" << o->getName() << ") ";
@@ -271,7 +271,7 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
     }
 
     const InetAddr *addr = o->getAddressPtr();
-    if (Interface::cast(o)!=NULL && addr==NULL)
+    if (Interface::cast(o)!=nullptr && addr==nullptr)
     {
         compiler->output << "<thishost> ";
     }
@@ -279,7 +279,7 @@ void PolicyCompiler_ipf::PrintRule::_printAddr(Address  *o,bool neg)
     {
         InetAddr mask = *(o->getNetmaskPtr());
 
-        if (Interface::cast(o)!=NULL) {
+        if (Interface::cast(o)!=nullptr) {
             mask = InetAddr(InetAddr::getAllOnes());
         }
 
@@ -309,7 +309,7 @@ PolicyCompiler_ipf::PrintRule::PrintRule(const std::string &name) : PolicyCompil
 
 bool PolicyCompiler_ipf::PrintRule::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
 
     tmp_queue.push_back(rule);
@@ -317,9 +317,11 @@ bool PolicyCompiler_ipf::PrintRule::processNext()
     compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
     RuleElementSrc *srcrel=rule->getSrc();
+#ifndef NDEBUG
     Address        *src   =compiler->getFirstSrc(rule);  assert(src);
-    RuleElementDst *dstrel=rule->getDst();
     Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
+#endif
+    RuleElementDst *dstrel=rule->getDst();
     RuleElementSrv *srvrel=rule->getSrv();
     Service        *srv   =compiler->getFirstSrv(rule);  assert(srv);
 
@@ -389,7 +391,7 @@ bool PolicyCompiler_ipf::PrintRule::processNext()
         TCPService *tcpsrv=TCPService::cast(srv);
 
         if ( ! compiler->getCachedFwOpt()->getBool("accept_new_tcp_with_no_syn") &&
-             tcpsrv!=NULL && !tcpsrv->inspectFlags() )
+             tcpsrv!=nullptr && !tcpsrv->inspectFlags() )
             compiler->output << "flags S ";
 
 

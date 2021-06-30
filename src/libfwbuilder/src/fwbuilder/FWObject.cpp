@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/Tools.h"
@@ -67,56 +65,56 @@ string FWObject::dataDir;
 //#define TI_DEBUG
 
 
-void FWObject::fromXML(xmlNodePtr root) throw(FWException)
+void FWObject::fromXML(xmlNodePtr root)
 {
-    assert(root!=NULL);
+    assert(root!=nullptr);
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("name")));
     if(n)
     {
         setName(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("id")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("id")));
     if(n)
     {
         setId(FWObjectDatabase::registerStringId(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("comment")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("comment")));
     if(n)
     {
         setComment(XMLTools::unquote_linefeeds(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("keywords")));
-    if (n != 0) {
+    n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("keywords")));
+    if (n != nullptr) {
         keywords = stringToSet(n);
         dbroot->keywords.insert(keywords.begin(), keywords.end());
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("subfolders")));
-    if (n != 0) {
+    n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("subfolders")));
+    if (n != nullptr) {
         setStr("subfolders", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("folder")));
-    if (n != 0) {
+    n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("folder")));
+    if (n != nullptr) {
         setStr("folder", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ro")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("ro")));
     if(n)
     {
         ro = (cxx_strcasecmp(n, "1")==0 || cxx_strcasecmp(n , "true")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     // ref_counter = 0;
@@ -127,7 +125,7 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
         if (cur && !xmlIsBlankNode(cur))
         {
             FWObject *o = dbr->createFromXML(cur);
-            if (o!=NULL) 
+            if (o!=nullptr) 
             {
                 /* Add w/o validation. Trust XML to do that */
 		add(o, false);
@@ -148,33 +146,32 @@ void FWObject::fromXML(xmlNodePtr root) throw(FWException)
     setDirty(false);
 }
 
-xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr FWObject::toXML(xmlNodePtr xml_parent_node)
 {
     return toXML(xml_parent_node, true);
 }
 
 xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
-    throw(FWException)
 {
     string s_id = FWObjectDatabase::getStringId(getId());
 
     xmlNodePtr me = xmlNewChild(
         parent,
-        NULL,
-        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
-        NULL);
+        nullptr,
+        xml_name.empty() ? XMLTools::StrToXmlCast(getTypeName()) : XMLTools::StrToXmlCast(xml_name),
+        nullptr);
 
     if (id!=-1)
     {
         xmlNewProp(
             me, 
-            TOXMLCAST("id"),
-            STRTOXMLCAST(s_id));
+            XMLTools::ToXmlCast("id"),
+            XMLTools::StrToXmlCast(s_id));
     }
 
     if (!keywords.empty()) {
-        xmlNewProp(me, TOXMLCAST("keywords"),
-                   STRTOXMLCAST(setToString(keywords)));
+        xmlNewProp(me, XMLTools::ToXmlCast("keywords"),
+                   XMLTools::StrToXmlCast(setToString(keywords)));
     }
 
     for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
@@ -185,7 +182,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
         if (name[0]=='.') continue;
         if (name == "folder" && value.empty()) continue;
 
-        xmlNewProp(me, STRTOXMLCAST(name), STRTOXMLCAST(value));
+        xmlNewProp(me, XMLTools::StrToXmlCast(name), XMLTools::StrToXmlCast(value));
     }
 
     if (process_children)
@@ -202,8 +199,8 @@ FWObject::FWObject()
 {
     busy = false;
     ref_counter = 0;
-    parent = NULL;
-    dbroot = NULL;
+    parent = nullptr;
+    dbroot = nullptr;
     name = "";
     comment = "";
     id = -1;
@@ -220,8 +217,8 @@ FWObject::FWObject(bool new_id)
 {
     busy = false;
     ref_counter = 0;
-    parent = NULL;
-    dbroot = NULL;
+    parent = nullptr;
+    dbroot = nullptr;
     name = "";
     comment = "";
     id = -1;
@@ -264,7 +261,7 @@ void* FWObject::getPrivateData(const string &key) const
 {
     map<string, void*>::const_iterator it = private_data.find(key);
     if(it == private_data.end())
-        return NULL;
+        return nullptr;
     else
         return it->second;
 }
@@ -296,7 +293,7 @@ void FWObject::setXMLName(const string &n)
 FWObject* FWObject::_find(const string& name) const
 {
     const_iterator i = std::find_if(begin(),end(), FWObjectNameEQPredicate(name));
-    return i==end()?NULL:(*i);
+    return i==end()?nullptr:(*i);
 }
 
 list<FWObject*> FWObject::findIf(FWObjectFindPredicate *pred)
@@ -313,7 +310,7 @@ list<FWObject*> FWObject::findIf(FWObjectFindPredicate *pred)
 }
 
 FWObject* FWObject::findObjectByName(const string &type,
-                                     const string &name) throw(FWException)
+                                     const string &name)
 {
     if (getTypeName()==type && getName()==name) return this;
 
@@ -326,12 +323,11 @@ FWObject* FWObject::findObjectByName(const string &type,
         if(o) return o;
     }
 
-    return NULL; // not found
+    return nullptr; // not found
 }
 
 FWObject* FWObject::findObjectByAttribute(const std::string &attr,
                                           const std::string &val)
-    throw(FWException)
 {
     if (getStr(attr)==val) return this;
 
@@ -344,11 +340,11 @@ FWObject* FWObject::findObjectByAttribute(const std::string &attr,
         if(o) return o;
     }
 
-    return NULL; // not found
+    return nullptr; // not found
 }
 
 
-bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool FWObject::cmp(const FWObject *obj, bool recursive)
 {
     if (getTypeName() != obj->getTypeName() || name != obj->name || comment != obj->comment || ro != obj->ro)
         return false;
@@ -399,13 +395,12 @@ bool FWObject::cmp(const FWObject *obj, bool recursive) throw(FWException)
     return true;
 }
 
-FWObject& FWObject::operator=(const FWObject &x)  throw(FWException)
+FWObject& FWObject::operator=(const FWObject &x)
 {
     return duplicate(&x, false);
 }
 
 FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
     checkReadOnly();
     bool xro = x->ro;
@@ -429,12 +424,11 @@ FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
 }
 
 FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
-    if (x==NULL) return NULL;
+    if (x==nullptr) return nullptr;
     FWObject *o1;
     FWObjectDatabase *root = getRoot();
-    if (root==NULL) root = x->getRoot();
+    if (root==nullptr) root = x->getRoot();
     // do not prepopulte children for objects that do that automatically
     // in their constructor
     o1 = root->create(x->getTypeName(), -1);
@@ -459,7 +453,6 @@ FWObject* FWObject::addCopyOf(const FWObject *x, bool preserve_id)
  * attribute.  Clear it in the caller if neccessary.
  */
 FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
-    throw(FWException)
 {
     checkReadOnly();
 
@@ -492,8 +485,8 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
             setId(old_id);
     }
 
-    if (dbroot==NULL) setRoot(x->getRoot());
-    if (dbroot!=NULL) dbroot->addToIndex(this);
+    if (dbroot==nullptr) setRoot(x->getRoot());
+    if (dbroot!=nullptr) dbroot->addToIndex(this);
 
     setReadOnly(x->ro);
     setDirty(true);
@@ -506,11 +499,11 @@ class InheritsFWOptions: public std::unary_function<FWObject*, bool>
     InheritsFWOptions() {}
     bool operator()(const FWObject *o) const 
     {
-        return FWOptions::constcast(o)!=NULL;
+        return FWOptions::constcast(o)!=nullptr;
     }
 };
 
-FWObject& FWObject::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& FWObject::duplicateForUndo(const FWObject *obj)
 {
     setRO(false);
     InheritsFWOptions pred;
@@ -547,7 +540,7 @@ const string& FWObject::getLibraryName() const
 FWObject*  FWObject::getLibrary() const
 {
     const FWObject *p=this;
-    while (p!=NULL && !Library::isA(p) ) p=p->getParent();
+    while (p!=nullptr && !Library::isA(p) ) p=p->getParent();
     return (FWObject*)p;
 }
 
@@ -559,7 +552,7 @@ FWObjectDatabase* FWObject::getRoot() const
 int FWObject::getDistanceFromRoot() const
 {
     int count = 0;
-    for (FWObject *obj = getParent(); obj != 0; obj = obj->getParent()) {
+    for (FWObject *obj = getParent(); obj != nullptr; obj = obj->getParent()) {
         count++;
     }
     return count;
@@ -579,9 +572,9 @@ string FWObject::getPath(bool relative, bool detailed) const
     list<string> res;
     const FWObject *p = this;
 
-    if (p == NULL) res.push_front("(0x0)");
+    if (p == nullptr) res.push_front("(0x0)");
 
-    while (p!=NULL)
+    while (p!=nullptr)
     {
         if (relative && Library::isA(p)) break;
         ostringstream s;
@@ -627,7 +620,7 @@ void FWObject::setId(int c)
     {
         id = c;
         setDirty(true);
-        if (dbroot!=NULL) dbroot->addToIndex(this);
+        if (dbroot!=nullptr) dbroot->addToIndex(this);
     }
 }
 
@@ -756,7 +749,7 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
         {
 	    list<FWObject*>::const_iterator m;
 	    for (m=begin(); m!=end(); ++m) {
-		if (  (o=(*m))!=NULL)  o->dump(f,recursive,brief,offset+2);
+		if (  (o=(*m))!=nullptr)  o->dump(f,recursive,brief,offset+2);
 	    }
 	}
     } else
@@ -771,7 +764,7 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
 	f << string(offset,' ') << "Type:   " << getTypeName() << endl;
 	f << string(offset,' ') << "Library:" << getLibrary() << endl;
 //    f << string(offset,' ') << "Path:   " << getPath() << endl;
-	n=(getParent()!=NULL)?getParent()->getName():"";
+	n=(getParent()!=nullptr)?getParent()->getName():"";
 	f << string(offset,' ') << "Parent: " << getParent()
 	  << "  name=" << n << endl;
 	f << string(offset,' ') << "Root:   " << getRoot() << endl;
@@ -787,7 +780,7 @@ void FWObject::dump(std::ostream &f,bool recursive,bool brief,int offset) const
 	    list<FWObject*>::const_iterator m;
 	    for (m=begin(); m!=end(); ++m)
             {
-		if (  (o=(*m))!=NULL)  o->dump(f,recursive,brief,offset+2);
+		if (  (o=(*m))!=nullptr)  o->dump(f,recursive,brief,offset+2);
 	    }
 	}
     }
@@ -814,7 +807,7 @@ void FWObject::_adopt(FWObject *obj)
 void FWObject::addAt(int where_id, FWObject *obj)
 {
     FWObject *p = getRoot()->findInIndex( where_id );
-    assert (p!=NULL);
+    assert (p!=nullptr);
     p->add(obj);
 }
 
@@ -823,7 +816,7 @@ void FWObject::add(FWObject *obj, bool validate)
     checkReadOnly();
 
     FWObject *old_parent = obj->getParent();
-    if (old_parent != NULL)
+    if (old_parent != nullptr)
     {
         cerr << "WARNING: object " << obj << " "
              << "(name: " << obj->getName()
@@ -836,7 +829,7 @@ void FWObject::add(FWObject *obj, bool validate)
              << " type: " << getTypeName() << ") "
              << endl;
 
-        assert(old_parent == NULL);
+        assert(old_parent == nullptr);
     }
 
     // do not allow to add the same object twice
@@ -865,7 +858,7 @@ void FWObject::add(FWObject *obj, bool validate)
 void FWObject::reparent(FWObject *obj, bool validate)
 {
     FWObject *old_parent = obj->getParent();
-    if (old_parent != NULL && old_parent != this)
+    if (old_parent != nullptr && old_parent != this)
     {
         old_parent->remove(obj, false);
         add(obj, validate);
@@ -903,8 +896,8 @@ void FWObject::insert_before(FWObject *o1, FWObject *obj)
 {
     checkReadOnly();
 
-    if (obj == NULL) return;
-    if (o1 == NULL)
+    if (obj == nullptr) return;
+    if (o1 == nullptr)
     {
         insert(begin(), obj);
         _adopt(obj);
@@ -925,7 +918,7 @@ void FWObject::insert_after(FWObject *o1, FWObject *obj)
 {
     checkReadOnly();
 
-    if (obj == NULL) return;
+    if (obj == nullptr) return;
 
     list<FWObject*>::iterator m = find(begin(), end(), o1);
     if (m != end())
@@ -971,7 +964,7 @@ void FWObject::remove(FWObject *obj, bool delete_if_last)
             delete obj;
         }
 
-        obj->parent = NULL;
+        obj->parent = nullptr;
     }
 }
 
@@ -1137,7 +1130,7 @@ bool FWObject::verifyTree()
         FWObject *o_parent = o->getParent();
         if (o_parent != this)
         {
-            if (o_parent != NULL)
+            if (o_parent != nullptr)
             {
                 cerr << "WARNING: Object " << o << " (name: '" << o->getName()
                      << "' type: " << o->getTypeName() << ")"
@@ -1164,7 +1157,7 @@ bool FWObject::verifyTree()
                 cerr << "WARNING: Object " << o << " (name: '" << o->getName()
                      << "' type: " << o->getTypeName() << ")"
                      << " was not correctly added to its parent "
-                     << "(getParent()==NULL):" << endl;
+                     << "(getParent()==nullptr):" << endl;
                 cerr << "    " << getPath(false, true) << endl;
             }
 
@@ -1271,7 +1264,7 @@ bool FWObject::isChildOf(FWObject *obj)
     cerr << endl;
 #endif
     FWObject *p=this;
-    while (p!=NULL && p!=obj) p=p->getParent();
+    while (p!=nullptr && p!=obj) p=p->getParent();
     return (p==obj);
 }
 
@@ -1296,15 +1289,15 @@ FWObject* FWObject::getById  (int id, bool recursive)
         int oid = o->getId();
         if(id==oid) return o;
 
-        if(recursive && (o=o->getById(id, true))!=NULL ) return o;
+        if(recursive && (o=o->getById(id, true))!=nullptr ) return o;
     }
-    return NULL; // not found
+    return nullptr; // not found
 }
 
 FWObject* FWObject::getFirstByType(const string &type_name) const
 {
     const_iterator i=find_if(begin(),end(), FWObjectTypeNameEQPredicate(type_name));
-    return i==end()?NULL:(*i);
+    return i==end()?nullptr:(*i);
 }
 
 list<FWObject*> FWObject::getByType(const string &type_name) const
@@ -1342,7 +1335,7 @@ FWObjectTypedChildIterator FWObject::findByType(const std::string &type_name) co
 void  FWObject::setDirty(bool f)
 {
     FWObjectDatabase *dbr = getRoot();
-    if (dbr==NULL) return;
+    if (dbr==nullptr) return;
     if (dbr==this) dirty = f;
     else dbr->dirty = f;
 }
@@ -1350,7 +1343,7 @@ void  FWObject::setDirty(bool f)
 bool FWObject::isDirty()
 {
     FWObjectDatabase *dbr = getRoot();
-    if (dbr==NULL) return false;
+    if (dbr==nullptr) return false;
     return (dbr->dirty);
 }
 
@@ -1383,7 +1376,7 @@ void FWObject::setReadOnly(bool f)
 bool FWObject::isReadOnly()
 {
     FWObjectDatabase *dbr = getRoot();
-    if (dbr==NULL || dbr->busy) return false;
+    if (dbr==nullptr || dbr->busy) return false;
     FWObject *p=this;
     while (p)
     {
@@ -1393,7 +1386,7 @@ bool FWObject::isReadOnly()
     return false;
 }
 
-void FWObject::checkReadOnly() throw(FWException)
+void FWObject::checkReadOnly()
 {
     if (isReadOnly() && ! getRoot()->getIgnoreReadOnlyFlag())
         throw FWException(string("Attempt to modify read-only object ")+getName());
@@ -1511,7 +1504,7 @@ FWObject::tree_iterator& FWObject::tree_iterator::operator++()
     }
 
     FWObject *p = node;
-    while (node->getParent()!=NULL)
+    while (node->getParent()!=nullptr)
     {
         p = node->getParent();
 
@@ -1598,7 +1591,7 @@ void FWObject::replaceReferenceInternal(int old_id, int new_id, int &counter)
     if (old_id == new_id) return;
 
     FWReference *ref = FWReference::cast(this);
-    if (ref==NULL)
+    if (ref==nullptr)
     {
         for (FWObject::iterator j1=begin(); j1!=end(); ++j1)
             (*j1)->replaceReferenceInternal(old_id, new_id, counter);
@@ -1614,7 +1607,7 @@ void FWObject::replaceReferenceInternal(int old_id, int new_id, int &counter)
 
 void FWObject::findDependencies(list<FWObject*> &deps)
 {
-    int loop_id = time(NULL);
+    int loop_id = time(nullptr);
     _findDependencies_internal(this, deps, loop_id);
 }
 
@@ -1622,9 +1615,9 @@ void FWObject::_findDependencies_internal(FWObject *obj,
                                           list<FWObject*> &deps,
                                           int anti_loop_id)
 {
-    if (obj==NULL) return;
+    if (obj==nullptr) return;
     if (FWOptions::cast(obj)) return;
-    if (FWReference::cast(obj)!=NULL)
+    if (FWReference::cast(obj)!=nullptr)
     {
         _findDependencies_internal(FWReference::cast(obj)->getPointer(),
                                    deps, anti_loop_id);

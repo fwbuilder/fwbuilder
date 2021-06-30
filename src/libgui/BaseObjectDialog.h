@@ -53,7 +53,7 @@ public:
     {
         obj = 0;
         init = false;
-        m_project = NULL;
+        m_project = nullptr;
     }
     virtual ~BaseObjectDialog() {};
 

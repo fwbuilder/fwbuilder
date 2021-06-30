@@ -31,16 +31,12 @@
 #ifndef __FWBSETTINGS_H_
 #define __FWBSETTINGS_H_
 
-#include "../../VERSION.h"
-
 #include <qsettings.h>
 #include <qrect.h>
 #include <qprinter.h>
 #include <qfont.h>
 
 #include <set>
-
-#define SETTINGS_PATH_PREFIX  "/" GENERATION
 
 #include <fwbuilder/FWObject.h>
 
@@ -76,10 +72,8 @@ class FWBSettings : public QSettings
     FWBSettings(bool testData = false);
     ~FWBSettings();
 
-    static QString getApplicationNameForSettings()
-    {
-        return "FirewallBuilder" GENERATION;
-    }
+    static const QString ApplicationName;
+    static const QString OrganizationName;
 
     void init(bool force_first_time_run=false);
     void save();

@@ -79,7 +79,7 @@ void ObjectMakerErrorTracker::registerWarning(const string &msg)
 
 void ObjectMaker::clear()
 {
-    last_created = NULL;
+    last_created = nullptr;
     named_object_registry.clear(); 
     anon_object_registry.clear(); 
 }
@@ -93,13 +93,13 @@ FWObject* ObjectMaker::findMatchingObject(const ObjectSignature &sig)
         if (named_object_registry.count(sig_str) > 0)
             return library->getRoot()->findInIndex(
                 named_object_registry[sig_str]);
-        return NULL;
+        return nullptr;
     }
 
     if (anon_object_registry.count(sig_str) > 0)
         return library->getRoot()->findInIndex(anon_object_registry[sig_str]);
 
-    return NULL;
+    return nullptr;
 }
 
 void ObjectMaker::registerNamedObject(const ObjectSignature &sig,
@@ -110,7 +110,7 @@ void ObjectMaker::registerNamedObject(const ObjectSignature &sig,
     QString as = anon_sig.toString();
     if (anon_object_registry.count(as) > 0) anon_object_registry.remove(as);
 
-    named_object_registry[sig.toString()] = (obj!=NULL) ? obj->getId() : -1;
+    named_object_registry[sig.toString()] = (obj!=nullptr) ? obj->getId() : -1;
 }
 
 void ObjectMaker::registerAnonymousObject(const ObjectSignature &sig,
@@ -118,7 +118,7 @@ void ObjectMaker::registerAnonymousObject(const ObjectSignature &sig,
 {
     ObjectSignature anon_sig = sig;
     anon_sig.object_name = "";
-    anon_object_registry[anon_sig.toString()] = (obj!=NULL) ? obj->getId() : -1;
+    anon_object_registry[anon_sig.toString()] = (obj!=nullptr) ? obj->getId() : -1;
 }
 
 /*
@@ -140,14 +140,14 @@ FWObject* ObjectMaker::promoteToNamedObject(FWObject *obj,
         new_obj->duplicate(obj);
         new_obj->setName(objName);
         ObjectSignature sig(error_tracker);
-        new_obj->dispatch(&sig, (void*)(NULL));
+        new_obj->dispatch(&sig, (void*)nullptr);
         registerNamedObject(sig, new_obj);
         return new_obj;
     } else
     {
         obj->setName(objName);
         ObjectSignature sig(error_tracker);
-        obj->dispatch(&sig, (void*)(NULL));
+        obj->dispatch(&sig, (void*)nullptr);
         registerNamedObject(sig, obj);
         return obj;
     }
@@ -158,7 +158,7 @@ FWObject* ObjectMaker::promoteToNamedObject(FWObject *obj,
 FWObject* ObjectMaker::createObject(const std::string &objType,
                                     const std::string &objName)
 {
-    assert(library!=NULL);
+    assert(library!=nullptr);
     FWBTree tree ;
     FWObject *slot = tree.getStandardSlotForObject(library,objType.c_str());
     return createObject(slot, objType, objName);
@@ -168,9 +168,9 @@ FWObject* ObjectMaker::createObject(FWObject *parent,
                                     const std::string &objType,
                                     const std::string &objName)
 {
-    assert(library!=NULL);
+    assert(library!=nullptr);
     FWObject*  o = library->getRoot()->create(objType);
-    if (parent != NULL)
+    if (parent != nullptr)
     {
         if (parent->isReadOnly())
         {     
@@ -201,7 +201,7 @@ FWObject* ObjectMaker::createObject(FWObject *parent,
 
 FWObject* ObjectMaker::createObject(ObjectSignature &)
 {
-    return NULL;
+    return nullptr;
 }
 
 //****************************************************************
@@ -230,7 +230,7 @@ void ObjectMaker::prepareForDeduplication(FWObject *root)
     {
         ObjectSignature sig(error_tracker);
 
-        root->dispatch(&sig, (void*)(NULL));
+        root->dispatch(&sig, (void*)nullptr);
 
         registerNamedObject(sig, root);
         registerAnonymousObject(sig, root); // this erases sig.object_name

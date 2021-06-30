@@ -23,28 +23,19 @@
 
 */
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "Inet6AddrMaskTest.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include <string>
+#include <QTest>
 
 using namespace libfwbuilder;
 
 int fwbdebug = 0;
-//QString user_name;
 std::string platform;
 
 int main( int, char** argv)
 {
-    //init(argv);
     init();
 
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( Inet6AddrMaskTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new Inet6AddrMaskTest());
 }

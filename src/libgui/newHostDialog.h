@@ -27,7 +27,6 @@
 #ifndef __NEWHOSTDIALOG_H_
 #define __NEWHOSTDIALOG_H_
 
-#include "config.h"
 #include <ui_newhostdialog_q.h>
 
 #include "fwbuilder/InterfaceData.h"

@@ -70,7 +70,9 @@ using namespace std;
 void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
 {
     FWOptions *ruleopt = rule->getOptionsObject();
+#ifndef NDEBUG
     Service *srv = compiler->getFirstSrv(rule);    assert(srv);
+#endif
     string version = compiler->fw->getStr("version");
 
     switch (rule->getAction())
@@ -148,7 +150,7 @@ void PolicyCompiler_pf::PrintRule::_printAction(PolicyRule *rule)
     case PolicyRule::Branch:
     {
         RuleSet *ruleset = rule->getBranch();
-        if (ruleset==NULL)
+        if (ruleset==nullptr)
         {
             compiler->abort(
                     rule, 
@@ -353,7 +355,7 @@ void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
 {
     RuleElementSrv *srvrel = rule->getSrv();
     FWObject *o = srvrel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
     Service *srv= Service::cast(o);
     if (!UserService::isA(srv)) return;
     ostringstream str;
@@ -370,7 +372,7 @@ void PolicyCompiler_pf::PrintRule::_printUser(PolicyRule *rule)
 	for (FWObject::iterator i=srvrel->begin(); i!=srvrel->end(); i++) 
         {
 	    FWObject *o= *i;
-	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	    if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	    Service *s=Service::cast( o );
 	    assert(s);
             if (counter > 0) str << ",";
@@ -587,7 +589,7 @@ void PolicyCompiler_pf::PrintRule::_printSrcService(RuleElement  *rel)
  * find the object. I'd rather use a cached copy in the compiler
  */
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
     Service *srv= Service::cast(o);
     string prefix = "";
@@ -606,7 +608,7 @@ void PolicyCompiler_pf::PrintRule::_printSrcService(RuleElement  *rel)
 	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++)
         {
 	    FWObject *o= *i;
-	    if (FWReference::cast(o)!=NULL)
+	    if (FWReference::cast(o)!=nullptr)
                 o=FWReference::cast(o)->getPointer();
 	    Service *s = Service::cast( o );
 	    assert(s);
@@ -638,7 +640,7 @@ string PolicyCompiler_pf::PrintRule::_printSrcService(Service *srv, bool neg)
 void PolicyCompiler_pf::PrintRule::_printDstService(RuleElement  *rel)
 {
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
     Service *srv= Service::cast(o);
 
     if (rel->size()==1) 
@@ -683,7 +685,7 @@ void PolicyCompiler_pf::PrintRule::_printDstService(RuleElement  *rel)
 	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
         {
 	    FWObject *o= *i;
-	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	    if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	    Service *s=Service::cast( o );
 	    assert(s);
 	    string str1= _printDstService(s , rel->getNeg() );
@@ -766,7 +768,7 @@ string PolicyCompiler_pf::PrintRule::_printTCPFlags(libfwbuilder::TCPService *sr
 void PolicyCompiler_pf::PrintRule::_printAddr(FWObject *o, bool )
 {
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-    if (atrt!=NULL)
+    if (atrt!=nullptr)
     {
         if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
         {
@@ -784,7 +786,7 @@ void PolicyCompiler_pf::PrintRule::_printAddr(FWObject *o, bool )
             return ;
         }
 
-        assert(atrt==NULL);
+        assert(atrt==nullptr);
     }
 
     if (o->getBool("pf_table"))
@@ -794,12 +796,12 @@ void PolicyCompiler_pf::PrintRule::_printAddr(FWObject *o, bool )
     }
 
     Address *addr_obj = Address::cast(o);
-    assert(addr_obj!=NULL);
+    assert(addr_obj!=nullptr);
 
     const InetAddr *addr = addr_obj->getAddressPtr();
     InetAddr mask;
 
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
 	Interface *interface_=Interface::cast(o);
 	if (interface_->isDyn()) 
@@ -841,7 +843,7 @@ void PolicyCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool negflag)
     {
         if (i!=grp->begin())  compiler->output << ", ";
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         _printAddr(o , negflag);
     }
     compiler->output << "} ";
@@ -851,11 +853,11 @@ void PolicyCompiler_pf::PrintRule::_printSrcAddr(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     FWReference *oref = FWReference::cast(o);
-    if (o && oref!=NULL) o=oref->getPointer();
+    if (o && oref!=nullptr) o=oref->getPointer();
 
     _printNegation(rel);
 
-    if (o==NULL)
+    if (o==nullptr)
     {
         PolicyRule *rule = PolicyRule::cast(rel->getParent());
         ostringstream errstr;
@@ -882,11 +884,11 @@ void PolicyCompiler_pf::PrintRule::_printDstAddr(RuleElement  *rel)
 {
     FWObject *o=rel->front();
     FWReference *oref = FWReference::cast(o);
-    if (o && oref!=NULL) o=oref->getPointer();
+    if (o && oref!=nullptr) o=oref->getPointer();
 
     _printNegation(rel);
 
-    if (o==NULL)
+    if (o==nullptr)
     {
         PolicyRule *rule = PolicyRule::cast(rel->getParent());
         ostringstream errstr;
@@ -922,7 +924,7 @@ PolicyCompiler_pf::PrintRule::PrintRule(const std::string &name) : PolicyRulePro
 
 bool PolicyCompiler_pf::PrintRule::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt = rule->getOptionsObject();
     string version = compiler->fw->getStr("version");
 
@@ -979,7 +981,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
 
         TCPService *tcpsrv=TCPService::cast(srv);
 
-        if (tcpsrv!=NULL && ! tcpsrv->inspectFlags() )
+        if (tcpsrv!=nullptr && ! tcpsrv->inspectFlags() )
         {
             // tcp service, no special flag match
 
@@ -1021,7 +1023,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
          * First, set explicit state tracking parameter, then add
          * stateful tracking options. 
          */
-	if (ruleopt->getBool("pf_synproxy") && tcpsrv!=NULL)
+	if (ruleopt->getBool("pf_synproxy") && tcpsrv!=nullptr)
         {
 	    compiler->output << "synproxy state ";
             have_state_option = true;
@@ -1029,7 +1031,7 @@ bool PolicyCompiler_pf::PrintRule::processNext()
         {
             if ((ruleopt->getBool("pf_modulate_state") || 
                  compiler->getCachedFwOpt()->getBool("pf_modulate_state")) &&
-                tcpsrv!=NULL) 
+                tcpsrv!=nullptr) 
             {
                 compiler->output << "modulate state ";
                 have_state_option = true;

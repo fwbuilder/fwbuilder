@@ -28,10 +28,8 @@
 
 */
 
-#include "config.h"
+#include "version.h"
 #include "global.h"
-#include "check_update_url.h"
-#include "../../VERSION.h"
 
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -70,7 +68,6 @@
 
 #include "instConf.h"
 #include "instDialog.h"
-#include "HttpGet.h"
 #include "StartTipDialog.h"
 
 #include "events.h"
@@ -170,8 +167,8 @@
 #include <qtextstream.h>
 #include <qtimer.h>
 #include <qtoolbutton.h>
-#include "temporarydir.h"
- 
+#include <QTemporaryDir>
+
 extern bool regCheck();
 
 using namespace libfwbuilder;
@@ -179,7 +176,7 @@ using namespace std;
 using namespace Ui;
 
 
-FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
+FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(nullptr, Qt::Desktop),
                        m_space(0),
                        previous_subwindow(0),
                        instd(0),
@@ -198,7 +195,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 
     //setCentralWidget(m_space);
 
-    psd = NULL;
+    psd = nullptr;
 
     prepareFileOpenRecentMenu();
     setCompileAndInstallActionsEnabled(false);
@@ -211,13 +208,13 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
 #endif
 
     findObjectWidget = new FindObjectWidget(
-        m_mainWindow->find_panel, NULL, "findObjectWidget");
+        m_mainWindow->find_panel, nullptr, "findObjectWidget");
     findObjectWidget->setFocusPolicy( Qt::NoFocus );
     m_mainWindow->find_panel->layout()->addWidget( findObjectWidget );
     findObjectWidget->show();
 
     findWhereUsedWidget = new FindWhereUsedWidget(
-        m_mainWindow->find_panel, NULL, "findWhereUsedWidget");
+        m_mainWindow->find_panel, nullptr, "findWhereUsedWidget");
     findWhereUsedWidget->setFocusPolicy( Qt::NoFocus );
     m_mainWindow->find_panel->layout()->addWidget( findWhereUsedWidget );
     findWhereUsedWidget->hide();
@@ -260,10 +257,6 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     m_mainWindow->editMenu->insertAction(undoAction, redoAction);
 
     printer = new QPrinter(QPrinter::HighResolution);
-
-    current_version_http_getter = new HttpGet();
-    connect(current_version_http_getter, SIGNAL(done(const QString&)),
-            this, SLOT(checkForUpgrade(const QString&)));
 
     connect( m_mainWindow->findAction, SIGNAL( triggered() ),
              this, SLOT(search()) );
@@ -308,7 +301,7 @@ FWWindow::FWWindow() : QMainWindow(),   // QMainWindow(NULL, Qt::Desktop),
     if (tabbar)
         tabbar->installEventFilter(new MDIEventFilter());
 
-    m_temporaryDir = new TemporaryDir(QDir::tempPath().append("/fwbuilder-tempdir-"));
+    m_temporaryDir = new QTemporaryDir(QDir::tempPath().append("/fwbuilder-tempdir-"));
 
 }
 
@@ -406,7 +399,7 @@ void FWWindow::openRecentFile()
         QString file_path = action->data().toString();
         if (fwbdebug) qDebug() << "Open recently opened file " << file_path;
         QMdiSubWindow* sw = alreadyOpened(file_path);
-        if (sw != NULL)
+        if (sw != nullptr)
         {
             // activate window with this file
             m_mainWindow->m_space->setActiveSubWindow(sw);
@@ -460,7 +453,7 @@ void FWWindow::showSub(ProjectPanel *pp)
         pp->setWindowState(Qt::WindowMaximized);
     else
         pp->setWindowState(Qt::WindowNoState);
-    
+
     sub->show();
     /*
      * for reasons I do not understand, QMdiArea does not send signal
@@ -477,17 +470,17 @@ ProjectPanel* FWWindow::activeProject()
 {
     QList<QMdiSubWindow*> subwindows = m_mainWindow->m_space->subWindowList(
         QMdiArea::StackingOrder);
-    if (subwindows.size() == 0) return NULL;
+    if (subwindows.size() == 0) return nullptr;
     QMdiSubWindow *w = subwindows.last(); // last item is the topmost window
 
     // QMdiSubWindow *w = m_mainWindow->m_space->currentSubWindow();
     // if (w) return dynamic_cast<ProjectPanel*>(w->widget());
     // if (fwbdebug)
-    //     qDebug() << "FWWindow::activeProject(): currentSubWindow() returns NULL, trying activeSubWindow()";
+    //     qDebug() << "FWWindow::activeProject(): currentSubWindow() returns nullptr, trying activeSubWindow()";
     // w = m_mainWindow->m_space->activeSubWindow();
 
     if (w) return dynamic_cast<ProjectPanel*>(w->widget());
-    return NULL;
+    return nullptr;
 }
 
 void FWWindow::updateWindowTitle()
@@ -504,28 +497,6 @@ void FWWindow::updateWindowTitle()
 
 void FWWindow::startupLoad()
 {
-    if (st->getCheckUpdates())
-    {
-        QString update_url = CHECK_UPDATE_URL;
-
-        // Use env variable FWBUILDER_CHECK_UPDATE_URL to override url to test
-        // e.g. export FWBUILDER_CHECK_UPDATE_URL="file://$(pwd)/update_%1"
-        //
-        char* update_check_override_url = getenv("FWBUILDER_CHECK_UPDATE_URL");
-        if (update_check_override_url != NULL)
-            update_url = QString(update_check_override_url);
-
-        // start http query to get latest version from the web site
-        QString url = QString(update_url).arg(VERSION).arg(st->getAppGUID());
-
-        if (!current_version_http_getter->get(QUrl(url)) && fwbdebug)
-        {
-            qDebug() << "HttpGet error: "
-                     << current_version_http_getter->getLastError();
-            qDebug() << "Url: " << url;
-        }
-    }
-
     if (activeProject())
     {
         activeProject()->loadStandardObjects();
@@ -581,27 +552,19 @@ void FWWindow::showIntroDialog()
 
         msg_box.setWindowModality(Qt::ApplicationModal);
 
-#if QT_VERSION >= 0x040500
         msg_box.setWindowFlags(
             Qt::Window |
             Qt::WindowTitleHint |
             Qt::CustomizeWindowHint |
             Qt::WindowCloseButtonHint |
             Qt::WindowSystemMenuHint);
-#else
-        msg_box.setWindowFlags(
-            Qt::Window |
-            Qt::WindowTitleHint |
-            Qt::CustomizeWindowHint |
-            Qt::WindowSystemMenuHint);
-#endif
 
         msg_box.setWindowTitle(tr("Welcome to Firewall Builder"));
         msg_box.setIconPixmap(pm);
         msg_box.setInformativeText(tr("The guide will open in the web browser"));
         QCheckBox cb(tr("Do not show this again"), &msg_box);
         msg_box.addButton(&cb, QMessageBox::ResetRole);  // is this role right ?
-        QPushButton *watch_button = 
+        QPushButton *watch_button =
             msg_box.addButton(tr("Watch the guide"), QMessageBox::AcceptRole);
         msg_box.addButton(QMessageBox::Close);
 
@@ -661,7 +624,7 @@ void FWWindow::fileNew()
         activeProject()->fileNew();
     } else
     {
-        std::auto_ptr<ProjectPanel> proj(newProjectPanel());
+        std::unique_ptr<ProjectPanel> proj(newProjectPanel());
         if (proj->fileNew())
         {
             showSub(proj.get());
@@ -703,7 +666,7 @@ void FWWindow::fileOpen()
                            << "Absolute file path: " << file_path;
 
     QMdiSubWindow* sw = alreadyOpened(file_name);
-    if (sw != NULL)
+    if (sw != nullptr)
     {
         if (fwbdebug) qDebug() << "This file is already opened";
         // activate window with this file
@@ -748,13 +711,13 @@ QMdiSubWindow* FWWindow::alreadyOpened(const QString &file_name)
     foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
     {
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             if (fwbdebug) qDebug() << "Opened file" << pp->getFileName();
             if (pp->getFileName() == file_path) return sw;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
@@ -767,7 +730,7 @@ bool FWWindow::loadFile(const QString &file_name, bool load_rcs_head)
     ProjectPanel *proj = newProjectPanel();
     if (proj->loadFile(file_name, load_rcs_head)) {
         if (oldProj != 0 && oldProj->getFileName().isEmpty() &&
-            (oldProj->db() == NULL || !oldProj->db()->isDirty())) {
+            (oldProj->db() == nullptr || !oldProj->db()->isDirty())) {
             oldProj->fileClose();
         }
         showSub(proj);
@@ -821,7 +784,7 @@ void FWWindow::fileExit()
 
             ProjectPanel * project =
                 dynamic_cast<ProjectPanel*>(subWindowList[i]->widget());
-            if (project!=NULL)
+            if (project!=nullptr)
             {
                 if (!project->saveIfModified() ||
                     !project->checkin(true))  return; // aborted
@@ -861,7 +824,7 @@ void FWWindow::importPolicy()
     {
         if (!activeProject()->m_panel->om->isObjectAllowed(Firewall::TYPENAME))
             return;
-        
+
         ImportFirewallConfigurationWizard wiz(this, db());
         wiz.exec();
     }
@@ -965,7 +928,7 @@ void FWWindow::prepareFileMenu()
     }
 
     bool real_file_opened = (activeProject()->getFileName() != "");
-    bool in_rcs = (activeProject()->getRCS() != NULL &&
+    bool in_rcs = (activeProject()->getRCS() != nullptr &&
                    activeProject()->getRCS()->isCheckedOut());
     bool needs_saving = (db() && db()->isDirty());
 
@@ -977,7 +940,7 @@ void FWWindow::prepareFileMenu()
 
     FWObject *lib = activeProject()->getCurrentLib();
     bool f = (
-        lib == NULL ||
+        lib == nullptr ||
         lib->getId()==FWObjectDatabase::TEMPLATE_LIB_ID ||
         lib->getId()==FWObjectDatabase::DELETED_OBJECTS_ID  ||
         lib->isReadOnly()
@@ -1050,7 +1013,7 @@ void FWWindow::prepareWindowsMenu()
         windowsPainters.push_back (subWindowList[i]);
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
             subWindowList[i]->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             if (fwbdebug) qDebug("FWWindow::prepareWindowsMenu() pp=%p", pp);
 
@@ -1079,7 +1042,7 @@ QStringList FWWindow::getListOfOpenedFiles()
     for (int i = 0 ; i < subWindowList.size(); i++)
     {
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(subWindowList[i]->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             res.push_back(pp->getFileName()); // full path
         }
@@ -1104,7 +1067,7 @@ void FWWindow::activatePreviousSubWindow()
  */
 void FWWindow::subWindowActivated(QMdiSubWindow *subwindow)
 {
-    if (subwindow==NULL) return;
+    if (subwindow==nullptr) return;
 
     if (fwbdebug)
         qDebug() << "FWWindow::subWindowActivated"
@@ -1177,7 +1140,7 @@ void FWWindow::closeEvent(QCloseEvent* ev)
         ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
             subWindowList[i]->widget());
 
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             if (!pp->saveIfModified())
             {
@@ -1224,7 +1187,7 @@ bool FWWindow::event(QEvent *event)
                      << "event:"
                      << ev->getEventName()
                      << "object:"
-                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "<NULL>");
+                     << ((obj!=nullptr) ? QString::fromUtf8(obj->getName().c_str()) : "<nullptr>");
 
         switch (event->type() - QEvent::User)
         {
@@ -1270,7 +1233,7 @@ bool FWWindow::event(QEvent *event)
             foreach(QMdiSubWindow* sw, m_mainWindow->m_space->subWindowList())
             {
                 ProjectPanel * pp = dynamic_cast<ProjectPanel *>(sw->widget());
-                if (pp!=NULL)
+                if (pp!=nullptr)
                 {
                     // string returned by getPageTitle() may also
                     // include RCS revision number. Compare only
@@ -1372,7 +1335,7 @@ void FWWindow::minimize()
             ProjectPanel * pp = dynamic_cast<ProjectPanel *>(
                 subWindowList[i]->widget());
 
-            if (pp!=NULL)
+            if (pp!=nullptr)
             {
                 pp->loadState(false);
             }
@@ -1397,7 +1360,7 @@ void FWWindow::updateTreeFont ()
     for (int i = 0 ; i < subWindowList.size();i++)
     {
         ProjectPanel * pp = dynamic_cast <ProjectPanel *>(subWindowList[i]->widget());
-        if (pp!=NULL)
+        if (pp!=nullptr)
         {
             std::vector<QTreeWidget*> trees = pp->m_panel->om->getTreeWidgets();
             for (unsigned int o = 0 ; o < trees.size(); o++)
@@ -1405,80 +1368,6 @@ void FWWindow::updateTreeFont ()
                 trees[o]->setFont(font);
             }
         }
-    }
-}
-
-void FWWindow::checkForUpgrade(const QString& server_response)
-{
-    if (fwbdebug) qDebug() << "FWWindow::checkForUpgrade  server_response: "
-                           << server_response
-                           << " http_getter_status: " 
-                           << current_version_http_getter->getStatus();
-
-    disconnect(current_version_http_getter, SIGNAL(done(const QString&)),
-               this, SLOT(checkForUpgrade(const QString&)));
-
-    /*
-     * getStatus() returns error status if server esponded with 302 or
-     * 301 redirect. Only "200" is considered success.
-     */
-    if (current_version_http_getter->getStatus())
-    {
-        /*
-         * server response may be some html or other data in case
-         * connection goes via proxy, esp. with captive portals. We
-         * should not interpret that as "new version is available"
-         */
-        uint now = QDateTime::currentDateTime().toTime_t();
-        uint last_update_available_warning_time =
-            st->getTimeOfLastUpdateAvailableWarning();
-        bool update_available = (server_response.trimmed() == "update = 1");
-
-        if (update_available
-            && (now - last_update_available_warning_time > 24*3600)
-        )
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("A new version of Firewall Builder is available at"
-                   " http://www.fwbuilder.org"));
-            st->setTimeOfLastUpdateAvailableWarning(now);
-        } else
-        {
-            // format of the announcement string is very simple: it is just
-            // announcement = URL
-            // All on one line.
-            QRegExp announcement_re = QRegExp("announcement\\s*=\\s*(\\S+)");
-            if (announcement_re.indexIn(server_response.trimmed()) != -1)
-            {
-                QStringList list = announcement_re.capturedTexts();
-                if (list.size() > 1)
-                {
-                    QString announcement_url = list[1];
-                    uint last_annluncement_time = st->getTimeOfLastAnnouncement(
-                        announcement_url);
-
-                    if (fwbdebug)
-                        qDebug() << "announcement_url=" << announcement_url
-                                 << "last_annluncement_time=" << last_annluncement_time;
-
-                    if (last_annluncement_time == 0)
-                    {
-                        // We have an announcement to make and this user has not
-                        // seen it yet.
-                        st->setTimeOfLastAnnouncement(announcement_url, now);
-                        Help *h = Help::getHelpWindow(this);
-                        h->setSource(QUrl(announcement_url));
-                    }
-                }
-            }
-        }
-    } else
-    {
-        if (fwbdebug)
-            qDebug("Update check error:  %s",
-                   current_version_http_getter->getLastError().
-                   toLatin1().constData());
     }
 }
 
@@ -1552,32 +1441,32 @@ void FWWindow::enableBackAction()
 void FWWindow::activateRule(ProjectPanel* project, QString fwname, QString setname, int rule)
 {
     // Find firewall object tree item
-    FWObject* firewall = NULL;
+    FWObject* firewall = nullptr;
     foreach(QTreeWidgetItem* item,
             project->getCurrentObjectTree()->findItems(fwname,
                                      Qt::MatchExactly | Qt::MatchRecursive, 0))
     {
-        if (Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=NULL)
+        if (Firewall::cast(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject())!=nullptr)
         {
             firewall = dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject();
             break;
         }
     }
-    if (firewall == NULL) return;
+    if (firewall == nullptr) return;
 
     FWObject::const_iterator i =
         find_if(firewall->begin(), firewall->end(),
                 FWObjectNameEQPredicate(string(setname.toUtf8().constData())));
     if (i==firewall->end()) return;
     RuleSet *set = RuleSet::cast(*i);
-    if (set == NULL) return;
+    if (set == nullptr) return;
 
     QCoreApplication::postEvent(
         mw, new openRulesetImmediatelyEvent(project->getFileName(),
                                             set->getId()));
 
     FWObject *ruleObject = set->getRuleByNum(rule);
-    if (ruleObject == NULL) return;
+    if (ruleObject == nullptr) return;
 
     QCoreApplication::postEvent(mw, new selectRuleElementEvent(project->getFileName(),
                                  ruleObject->getId(),
@@ -1596,7 +1485,7 @@ void FWWindow::updateGlobalToolbar()
     if (pp)
     {
         list<Firewall *> fws;
-	if (pp->db() != NULL) pp->findAllFirewalls(fws);
+	if (pp->db() != nullptr) pp->findAllFirewalls(fws);
         setCompileAndInstallActionsEnabled(fws.size() != 0);
     } else
         setCompileAndInstallActionsEnabled(false);

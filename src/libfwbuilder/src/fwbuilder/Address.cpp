@@ -27,8 +27,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/Interface.h"
@@ -58,7 +56,7 @@ Address::~Address()
 }
 
 FWObject& Address::shallowDuplicate(const FWObject *other,
-                                    bool preserve_id) throw(FWException)
+                                    bool preserve_id)
 {
     const Address* a_other = Address::constcast(other);
     delete inet_addr_mask;
@@ -80,14 +78,14 @@ bool Address::isAny() const
 
 const Address* Address::getAddressObject() const
 {
-    return NULL;
+    return nullptr;
 }
 
 const InetAddrMask* Address::getInetAddrMaskObjectPtr() const
 {
     const Address *addr_obj = getAddressObject();
     if (addr_obj) return addr_obj->inet_addr_mask;
-    return NULL;
+    return nullptr;
 }
 
 bool Address::hasInetAddress() const
@@ -104,28 +102,28 @@ const InetAddr* Address::getAddressPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getAddressPtr();
-    return NULL;
+    return nullptr;
 }
 
 const InetAddr* Address::getNetmaskPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getNetmaskPtr();
-    return NULL;
+    return nullptr;
 }
 
 const InetAddr* Address::getNetworkAddressPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getNetworkAddressPtr();
-    return NULL;
+    return nullptr;
 }
 
 const InetAddr* Address::getBroadcastAddressPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getBroadcastAddressPtr();
-    return NULL;
+    return nullptr;
 }
 
 void Address::setAddress(const InetAddr& a)
@@ -149,20 +147,20 @@ void Address::setAddressNetmask(const std::string&)
 unsigned int Address::dimension()  const
 {
     const InetAddrMask *addr_obj = getInetAddrMaskObjectPtr();
-    if (addr_obj!=NULL) return addr_obj->dimension();
+    if (addr_obj!=nullptr) return addr_obj->dimension();
     return 1;
 }
 
 bool Address::belongs(const InetAddr &other) const
 {
     const InetAddrMask *addr_obj = getInetAddrMaskObjectPtr();
-    if (addr_obj!=NULL) return addr_obj->belongs(other);
+    if (addr_obj!=nullptr) return addr_obj->belongs(other);
     return false;
 }
 
-bool Address::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool Address::cmp(const FWObject *obj, bool recursive)
 {
-    if (Address::constcast(obj)==NULL) return false;
+    if (Address::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
     if (hasInetAddress()!=Address::constcast(obj)->hasInetAddress()) return false;
     if (!hasInetAddress()) return true;

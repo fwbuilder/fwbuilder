@@ -26,7 +26,6 @@
  * will be refactored into some other common module in the future).
  */
 
-#include "../../config.h"
 
 #include "Importer.h"
 
@@ -124,14 +123,14 @@ Importer::Importer(FWObject *_lib,
 {
     this->fwname = fwname;
     library = _lib;
-    fw = NULL;
+    fw = nullptr;
     error_counter = 0;
     logger = log;
     platform = _platform;
 
-    current_interface = NULL;
-    current_ruleset = NULL;
-    current_rule = NULL;
+    current_interface = nullptr;
+    current_ruleset = nullptr;
+    current_rule = nullptr;
 
     error_tracker = new ObjectMakerErrorTracker();
 
@@ -213,7 +212,7 @@ void Importer::clear()
 
 Firewall* Importer::getFirewallObject()
 {
-    if (fw!=NULL) return fw;
+    if (fw!=nullptr) return fw;
 
     ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *nobj = commitObject(
@@ -276,7 +275,7 @@ void Importer::ignoreCurrentInterface()
         string name = current_interface->getName();
         current_interface->getParent()->remove(current_interface);
         all_interfaces.erase(name);
-        current_interface = NULL;
+        current_interface = nullptr;
     }
 }
 
@@ -300,7 +299,7 @@ void Importer::addAddressObjectToInterface(Interface*intf,
 void Importer::addInterfaceAddress(const std::string &a,
                                    const std::string &nm)
 {
-    if (current_interface!=NULL)
+    if (current_interface!=nullptr)
     {
         addAddressObjectToInterface(current_interface, a, nm);
         addMessageToLog("Interface address: " + a + "/" + nm);
@@ -325,12 +324,12 @@ void Importer::addInterfaceAddress(const std::string &label,
 
 void Importer::setInterfaceComment(const std::string &descr)
 {
-    // current_interface can be NULL if parser encountered command
+    // current_interface can be nullptr if parser encountered command
     // that looked like interface description but in reality was 
     // description of something else. For example this happens when
     // it finds command "description" under "controller" in Cisco router
     // configuration.
-    if (current_interface!=NULL)
+    if (current_interface!=nullptr)
     {
         current_interface->setComment(descr);
         addMessageToLog("Interface comment: " + descr);
@@ -339,7 +338,7 @@ void Importer::setInterfaceComment(const std::string &descr)
 
 void Importer::setInterfaceLabel(const std::string &descr)
 {
-    if (current_interface!=NULL)
+    if (current_interface!=nullptr)
     {
         current_interface->setLabel(descr);
         addMessageToLog("Interface label: " + descr);
@@ -378,7 +377,7 @@ void Importer::setInterfaceParametes(const std::string &phys_intf_or_label,
 
 void Importer::setInterfaceSecurityLevel(const std::string &seclevel)
 {
-    if (current_interface!=NULL)
+    if (current_interface!=nullptr)
     {
         QString sl(seclevel.c_str());
         current_interface->setSecurityLevel(sl.toInt());
@@ -387,7 +386,7 @@ void Importer::setInterfaceSecurityLevel(const std::string &seclevel)
 
 void Importer::setInterfaceVlanId(const std::string &vlan_id)
 {
-    if (current_interface!=NULL)
+    if (current_interface!=nullptr)
     {
         FWOptions *ifopt = (Interface::cast(current_interface))->getOptionsObject();
         ifopt->setStr("type", "8021q");
@@ -411,7 +410,7 @@ UnidirectionalRuleSet* Importer::getUnidirRuleSet(
     const std::string &ruleset_name, const string &ruleset_type_name)
 {
     UnidirectionalRuleSet *rs = all_rulesets[ruleset_name];
-    if (rs==NULL)
+    if (rs==nullptr)
     {
         // got 'ip access-group' command before the access list was defined
         rs = new UnidirectionalRuleSet();
@@ -459,7 +458,7 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
                                                   const std::string &intf_name,
                                                   const std::string &dir)
 {
-    Interface *intf = NULL;
+    Interface *intf = nullptr;
     if ( ! intf_name.empty())
     {
         intf = all_interfaces[intf_name];
@@ -468,9 +467,9 @@ void Importer::setInterfaceAndDirectionForRuleSet(const std::string &ruleset_nam
         if (current_interface) intf = current_interface;
     }
 
-    if (intf == NULL)
+    if (intf == nullptr)
     {
-        // current_interface is NULL and _intf_name is empty. Not enough
+        // current_interface is nullptr and _intf_name is empty. Not enough
         // information to associate ruleset with an interface.
         QString err("Can not associate rule set %1 with any interface\n");
         addMessageToLog(err.arg(QString::fromUtf8(ruleset_name.c_str())));
@@ -514,7 +513,7 @@ void Importer::newPolicyRule()
 
     // check if all child objects were populated properly
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
     ropt->setBool("stateless", true);
 }
 
@@ -531,14 +530,14 @@ void Importer::newNATRule()
 
 void Importer::pushRule()
 {
-    assert(current_ruleset!=NULL);
-    assert(current_rule!=NULL);
+    assert(current_ruleset!=nullptr);
+    assert(current_rule!=nullptr);
     // populate all elements of the rule
 
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
 
     if (action=="permit")
     {
@@ -589,7 +588,7 @@ void Importer::pushRule()
     addStandardImportComment(
         current_rule, QString::fromUtf8(rule_comment.c_str()));
 
-    current_rule = NULL;
+    current_rule = nullptr;
     rule_comment = "";
 
     clear();
@@ -615,7 +614,7 @@ FWObject* Importer::makeAddressObj(const std::string addr, const std::string net
     if ( (addr=="" && netm=="") || 
          (addr==InetAddr::getAny().toString() &&
           netm==InetAddr::getAny().toString()))
-        return NULL;  // this is 'any'
+        return nullptr;  // this is 'any'
 
     ObjectSignature sig(error_tracker);
     sig.type_name = Address::TYPENAME;
@@ -641,7 +640,7 @@ FWObject* Importer::makeDstObj()
 
 FWObject* Importer::makeSrvObj()
 {
-    if (protocol=="") return NULL; // this is 'any'
+    if (protocol=="") return nullptr; // this is 'any'
     FWObject *s;
     if (protocol=="icmp")
     {
@@ -676,7 +675,7 @@ FWObject* Importer::makeSrvObj()
             }
         }
     }
-    // if create*Service returns NULL, this is 'any'
+    // if create*Service returns nullptr, this is 'any'
     return commitObject(s);
 }
 
@@ -684,7 +683,7 @@ void Importer::addSrc()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
     RuleElementSrc* src = rule->getSrc();
-    assert(src!=NULL);
+    assert(src!=nullptr);
     FWObject *s = makeSrcObj();
     if (s) src->addRef( s );
 }
@@ -693,7 +692,7 @@ void Importer::addDst()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
     RuleElementDst* dst = rule->getDst();
-    assert(dst!=NULL);
+    assert(dst!=nullptr);
     FWObject *s = makeDstObj();
     if (s) dst->addRef( s );
 }
@@ -702,7 +701,7 @@ void Importer::addSrv()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     FWObject *s = makeSrvObj();
     if (s) srv->addRef( s );
 }
@@ -711,7 +710,7 @@ void Importer::addOSrc()
 {
     NATRule *rule = NATRule::cast(current_rule);
     RuleElementOSrc* src = rule->getOSrc();
-    assert(src!=NULL);
+    assert(src!=nullptr);
     FWObject *s = makeSrcObj();
     if (s) src->addRef( s );
 }
@@ -720,7 +719,7 @@ void Importer::addODst()
 {
     NATRule *rule = NATRule::cast(current_rule);
     RuleElementODst* dst = rule->getODst();
-    assert(dst!=NULL);
+    assert(dst!=nullptr);
     FWObject *s = makeDstObj();
     if (s) dst->addRef( s );
 }
@@ -729,7 +728,7 @@ void Importer::addOSrv()
 {
     NATRule *rule = NATRule::cast(current_rule);
     RuleElementOSrv* srv = rule->getOSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     FWObject *s= makeSrvObj();
     if (s) srv->addRef( s );
 }
@@ -750,13 +749,13 @@ Firewall* Importer::finalize()
 FWObject* Importer::createTCPService(const QString &)
 {
     // Default implementation
-    return NULL;
+    return nullptr;
 }
 
 FWObject* Importer::createUDPService(const QString &)
 {
     // Default implementation
-    return NULL;
+    return nullptr;
 }
 
 FWObject* Importer::createGroupOfInterfaces(
@@ -801,7 +800,7 @@ FWObject* Importer::createGroupOfInterfaces(
 void Importer::markCurrentRuleBad()
 {
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
     ropt->setStr("color", getBadRuleColor());
 
     QStringList comment;
@@ -933,7 +932,7 @@ void Importer::addMessageToLog(const QString &msg)
 void Importer::addStandardImportComment(FWObject *obj,
                                         const QString &additional_comment)
 {
-    if (obj == NULL) return;
+    if (obj == nullptr) return;
 
     // what if this object has been found in a read-only library?
     if (obj->isReadOnly()) return;
@@ -975,7 +974,7 @@ FWObject* Importer::commitObject(FWObject *obj)
  */
 void Importer::rearrangeVlanInterfaces()
 {
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             getFirewallObject()));
 

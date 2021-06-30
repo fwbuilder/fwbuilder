@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FailoverClusterGroup.h"
@@ -41,13 +39,13 @@ FailoverClusterGroup::FailoverClusterGroup() : ClusterGroup()
     setStr("type", "");
 }
 
-void FailoverClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
+void FailoverClusterGroup::fromXML(xmlNodePtr parent)
 {
     ClusterGroup::fromXML(parent);
     // Read additional attributes here
 }
 
-xmlNodePtr FailoverClusterGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr FailoverClusterGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = ClusterGroup::toXML(parent);
 

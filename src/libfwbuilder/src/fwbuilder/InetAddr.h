@@ -47,7 +47,6 @@ typedef unsigned int uint32_t;
 #endif
 
 #include "fwbuilder/uint128.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"
 
 namespace libfwbuilder
@@ -115,18 +114,16 @@ class InetAddr
     void init_from_uint128(uint128 int128a);
     uint128 to_uint128() const;
     
-    InetAddr(const char *data) throw(FWException);
-    InetAddr(int af, const char *data) throw(FWException);
-    InetAddr(const struct in_addr*) throw(FWException);
-    InetAddr(const struct in6_addr*) throw(FWException);
-    explicit InetAddr(const std::string&)
-        throw(FWException, FWNotSupportedException);
-    explicit InetAddr(int af, const std::string&)
-        throw(FWException, FWNotSupportedException);
+    InetAddr(const char *data);
+    InetAddr(int af, const char *data);
+    InetAddr(const struct in_addr*);
+    InetAddr(const struct in6_addr*);
+    explicit InetAddr(const std::string&);
+    explicit InetAddr(int af, const std::string&);
     InetAddr(const InetAddr &);
     // creates netmask 'n' bits long
-    explicit InetAddr(int n) throw(FWException);
-    explicit InetAddr(int af, int n) throw(FWException);
+    explicit InetAddr(int n);
+    explicit InetAddr(int af, int n);
 
     InetAddr& operator=(const InetAddr &addr);
 

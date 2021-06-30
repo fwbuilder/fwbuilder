@@ -51,8 +51,8 @@ public:
     TCPService();
     virtual ~TCPService();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
 
     DECLARE_FWOBJECT_SUBTYPE(TCPService);
 

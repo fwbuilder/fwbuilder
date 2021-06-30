@@ -22,19 +22,14 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-#include "config.h"
+#include <QTest>
 
 #include "common/init.cpp"
 #include "interfacePropertiesTest.h"
 
 #include "fwbuilder/Constants.h"
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include <string>
-
-//QString user_name;
 
 int main(int, char **argv)
 {
@@ -44,11 +39,5 @@ int main(int, char **argv)
 
     Resources res(Constants::getResourcesFilePath());
 
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( interfacePropertiesTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new interfacePropertiesTest());
 }

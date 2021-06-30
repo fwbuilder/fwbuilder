@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -80,7 +79,7 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
     obj=o;
 
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     // As of 4.1.0 we do not support scp install method for Procurve
     // I could not figure out how to copy configuration to the switch
@@ -202,7 +201,7 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
     }
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.registerOption(m_dialog->ipv4before_2,    fwoptions,
                         "ipv4_6_order",
@@ -322,15 +321,15 @@ procurveaclAdvancedDialog::procurveaclAdvancedDialog(QWidget *parent,FWObject *o
 void procurveaclAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* options = Firewall::cast(new_state)->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.saveAll(options);
 

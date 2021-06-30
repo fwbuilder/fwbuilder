@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -55,7 +54,7 @@ IPv4Dialog::IPv4Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv4Dialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -69,7 +68,7 @@ void IPv4Dialog::loadFWObject(FWObject *o)
 {
     obj=o;
     IPv4 *s = dynamic_cast<IPv4*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     dnsBusy=false;
     init=true;
@@ -137,15 +136,18 @@ void IPv4Dialog::validate(bool *result)
         return;
     }
 
+#ifndef NDEBUG
     IPv4 *s = dynamic_cast<IPv4*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
+
     try
     {
         InetAddr( m_dialog->address->text().trimmed().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *result = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -166,7 +168,7 @@ void IPv4Dialog::validate(bool *result)
             if (!nm.isValidV4Netmask())
             {
                 *result = false;
-                if (QApplication::focusWidget() != NULL)
+                if (QApplication::focusWidget() != nullptr)
                 {
                     blockSignals(true);
                     // Do not allow netmask with zeroes inside.
@@ -183,7 +185,7 @@ void IPv4Dialog::validate(bool *result)
         } catch (FWException &ex)
         {
             *result = false;
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 blockSignals(true);
                 QMessageBox::critical(
@@ -200,11 +202,11 @@ void IPv4Dialog::validate(bool *result)
 
 void IPv4Dialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     IPv4 *s = dynamic_cast<IPv4*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     new_state->setName(m_dialog->obj_name->text().toUtf8().constData());
     m_dialog->commentKeywords->applyChanges(new_state);
@@ -241,11 +243,7 @@ void IPv4Dialog::DNSlookup()
     if (!dnsBusy)
     {
         QString name = m_dialog->obj_name->text().trimmed();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s", name.toAscii().constData());
-#else
         if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s", name.toLatin1().constData());
-#endif
         dnsBusy=true;
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
         QString addr = getAddrByName(name, AF_INET);
@@ -263,16 +261,11 @@ void IPv4Dialog::DNSlookup()
         if ( Interface::isA(obj->getParent()) )
         {
             FWObject *host = obj->getParent()->getParent();
-            assert(host!=NULL);
+            assert(host!=nullptr);
             name = host->getName().c_str();
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s",
-                name.toAscii().constData());
-#else
             if (fwbdebug) qDebug("IPv4Dialog::DNSlookup()  name=%s",
                 name.toLatin1().constData());
-#endif
             dnsBusy=true;
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
             QString addr = getAddrByName(name, AF_INET);
@@ -289,14 +282,14 @@ void IPv4Dialog::DNSlookup()
                 this,"Firewall Builder",
                 tr("DNS lookup failed for both names of the address object '%1' and the name of the host '%2'.")
                 .arg(m_dialog->obj_name->text()).arg(name),
-                "&Continue", QString::null,QString::null, 0, 1 );
+                "&Continue", QString(),QString(), 0, 1 );
             return;
         }
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("DNS lookup failed for name of the address object '%1'.")
             .arg(name),
-            "&Continue", QString::null,QString::null, 0, 1 );
+            "&Continue", QString(),QString(), 0, 1 );
         return;
     }
 }

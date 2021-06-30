@@ -27,7 +27,6 @@
 #ifndef __FINDOBJECTWIDGET_H_
 #define __FINDOBJECTWIDGET_H_
 
-#include "config.h"
 #include <ui_findobjectwidget_q.h>
 #include "ProjectPanel.h"
 
@@ -66,7 +65,11 @@ private:
     
  public:
     Ui::findObjectWidget_q *m_widget;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    FindObjectWidget(QWidget*p, ProjectPanel *pp, const char * n = 0, Qt::WindowFlags f = Qt::WindowFlags());
+#else
     FindObjectWidget(QWidget*p, ProjectPanel *pp, const char * n = 0, Qt::WindowFlags f = 0);
+#endif
     ~FindObjectWidget() { delete m_widget; };
     void findObject (libfwbuilder::FWObject *o);
     void attachToProjectWindow(ProjectPanel *pp) { project_panel = pp; }

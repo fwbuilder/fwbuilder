@@ -27,8 +27,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/CustomService.h"
@@ -51,7 +49,7 @@ int    CustomService::getProtocolNumber() const { return 65000; }
 
 
 FWObject& CustomService::shallowDuplicate(const FWObject *x,
-                                          bool preserve_id) throw(FWException)
+                                          bool preserve_id)
 {
     const CustomService *cs = dynamic_cast<const CustomService *>(x);
     codes = cs->codes;
@@ -61,97 +59,97 @@ FWObject& CustomService::shallowDuplicate(const FWObject *x,
     return FWObject::shallowDuplicate(x, preserve_id);
 }
 
-void CustomService::fromXML(xmlNodePtr root) throw(FWException)
+void CustomService::fromXML(xmlNodePtr root)
 {
     const char *n;
     const char *cont;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("name")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("name")));
     if (n)
     {
         setName(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("id")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("id")));
     if (n)
     {
         setId(FWObjectDatabase::registerStringId(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("comment")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("comment")));
     if (n)
     {
         setComment(XMLTools::unquote_linefeeds(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("protocol")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("protocol")));
     if (n)
     {
         setProtocol(XMLTools::unquote_linefeeds(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address_family")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address_family")));
     if (n)
     {
         string af(XMLTools::unquote_linefeeds(n));
         if (af=="ipv6") setAddressFamily(AF_INET6);
         else setAddressFamily(AF_INET);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     for (xmlNodePtr cur=root->xmlChildrenNode; cur; cur=cur->next)
     {
         if (cur && !xmlIsBlankNode(cur))
         {
-    	    n = FROMXMLCAST(xmlGetProp(cur,TOXMLCAST("platform")));
-            assert(n!=NULL);
-            cont = FROMXMLCAST( xmlNodeGetContent(cur) );
+            n = XMLTools::FromXmlCast(xmlGetProp(cur,XMLTools::ToXmlCast("platform")));
+            assert(n!=nullptr);
+            cont = XMLTools::FromXmlCast( xmlNodeGetContent(cur) );
             if (cont)
             {
                 setCodeForPlatform(n, cont );
-                FREEXMLBUFF(cont);
+                XMLTools::FreeXmlBuff(cont);
             }
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         }
     }
 }
 
-xmlNodePtr CustomService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr CustomService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr opt;
 
     xmlNodePtr me = FWObject::toXML(parent);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("protocol"), STRTOXMLCAST(getProtocol()));
+    xmlNewProp(me, XMLTools::ToXmlCast("protocol"), XMLTools::StrToXmlCast(getProtocol()));
     string af;
     if (getAddressFamily() == AF_INET6) af ="ipv6";
     else af = "ipv4";
-    xmlNewProp(me, TOXMLCAST("address_family"), STRTOXMLCAST(af));
+    xmlNewProp(me, XMLTools::ToXmlCast("address_family"), XMLTools::StrToXmlCast(af));
 
     map<string, string>::const_iterator i;
     for(i=codes.begin(); i!=codes.end(); ++i)  
     {
         const string &platform  = (*i).first;
         const string &code      = (*i).second;
-        xmlChar *codebuf = xmlEncodeSpecialChars(NULL, STRTOXMLCAST(code) );
-        opt=xmlNewChild(me,NULL,TOXMLCAST("CustomServiceCommand"), codebuf);
-        FREEXMLBUFF(codebuf);
+        xmlChar *codebuf = xmlEncodeSpecialChars(nullptr, XMLTools::StrToXmlCast(code) );
+        opt=xmlNewChild(me,nullptr,XMLTools::ToXmlCast("CustomServiceCommand"), codebuf);
+        XMLTools::FreeXmlBuff(codebuf);
 
-        xmlNewProp(opt, TOXMLCAST("platform") , STRTOXMLCAST(platform));
+        xmlNewProp(opt, XMLTools::ToXmlCast("platform") , XMLTools::StrToXmlCast(platform));
     }
     return me;
 }
 
-bool CustomService::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool CustomService::cmp(const FWObject *obj, bool recursive)
 {
-    if (CustomService::constcast(obj)==NULL) return false;
+    if (CustomService::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
     
     const CustomService *o2 = CustomService::constcast(obj);

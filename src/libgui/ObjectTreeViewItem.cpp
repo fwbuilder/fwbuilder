@@ -58,16 +58,16 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
         QFont item_font = QTreeWidgetItem::data(column, role).value<QFont>();
 
         FWObject *obj = getFWObject();
-        Firewall *o = NULL;
+        Firewall *o = nullptr;
 
-        if (obj!=NULL && (
+        if (obj!=nullptr && (
                 getProperty("type")==Firewall::TYPENAME ||
                 getProperty("type")==Cluster::TYPENAME))
         {
             o = Firewall::cast( obj );
         }
 
-        if (o!=NULL)
+        if (o!=nullptr)
         {
             bool mf = !o->getInactive() && (o->needsCompile()) ;
             item_font.setBold (mf);
@@ -84,12 +84,12 @@ QVariant ObjectTreeViewItem::data(int column, int role) const
 static int getRank(FWObject *obj)
 {
     /* User-defined folders are first */
-    if (obj == 0) return 0;
+    if (obj == nullptr) return 0;
     
-    if (Interface::cast(obj) != 0) return 5;
-    if (Policy::cast(obj) != 0) return 2;
-    if (NAT::cast(obj) != 0) return 3;
-    if (Routing::cast(obj) != 0) return 4;
+    if (Interface::cast(obj) != nullptr) return 5;
+    if (Policy::cast(obj) != nullptr) return 2;
+    if (NAT::cast(obj) != nullptr) return 3;
+    if (Routing::cast(obj) != nullptr) return 4;
 
     return 1;
 }

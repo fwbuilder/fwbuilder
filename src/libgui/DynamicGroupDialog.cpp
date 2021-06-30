@@ -53,7 +53,7 @@ QWidget *DynamicItemDelegate::createEditor(QWidget *parent,
     if (index.column() == 0) {
         QToolButton *button = new QToolButton(parent);
         QPixmap pixmap;
-        if (!QPixmapCache::find(":/Icons/neg", pixmap)) {
+        if (!QPixmapCache::find(":/Icons/neg", &pixmap)) {
             pixmap.load(":/Icons/neg");
             QPixmapCache::insert(":/Icons/neg", pixmap);
         }
@@ -248,15 +248,8 @@ void DynamicGroupDialog::loadObjFilter()
        ResizeToContents doesn't always seem to work */
     header->resizeSection(0, 35);
     header->setStretchLastSection(true);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    header->setResizeMode(0, QHeaderView::ResizeToContents);
-    header->setResizeMode(1, QHeaderView::ResizeToContents);
-#else
     header->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     header->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-#endif
-
     m_reloadObjFilter = false;
     m_loadedObjFilter = filter;
     m_loadedAllKeywords = obj->getAllKeywords();
@@ -298,7 +291,7 @@ void DynamicGroupDialog::loadFWObject(FWObject *o)
         icon += "/icon-ref";
 
         QPixmap pixmap;
-        if (!QPixmapCache::find(icon, pixmap)) {
+        if (!QPixmapCache::find(icon, &pixmap)) {
             pixmap.load(icon);
             QPixmapCache::insert(icon, pixmap);
         }
@@ -356,7 +349,7 @@ void DynamicGroupDialog::gotItemDoubleClicked(QTreeWidgetItem *item, int)
 {
     int objId = item->data(0, Qt::UserRole).toInt();
     FWObject *o = m_project->db()->findInIndex(objId);
-    if (o == 0) return;
+    if (o == nullptr) return;
 
     QCoreApplication::postEvent(m_project, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(), objId));
     QCoreApplication::postEvent(mw, new openObjectInEditorEvent(o->getRoot()->getFileName().c_str(), objId));

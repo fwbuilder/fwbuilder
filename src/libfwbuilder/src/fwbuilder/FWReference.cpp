@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWReference.h"
@@ -50,50 +48,50 @@ FWReference::FWReference(FWObject *p)
 
 FWReference::FWReference()
 {
-    setPointer(NULL);
+    setPointer(nullptr);
 }
 
 FWReference::~FWReference()  {}
 
 
-void FWReference::fromXML(xmlNodePtr root)  throw(FWException)
+void FWReference::fromXML(xmlNodePtr root)
 {
-    assert(root!=NULL);
+    assert(root!=nullptr);
     FWObject::fromXML(root);
 
-    const char *n = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ref")));
-    assert(n!=NULL);
+    const char *n = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("ref")));
+    assert(n!=nullptr);
     str_ref = n;
     //setInt("ref", n);
     // if object with id str_ref has not been loaded yet, 
     // FWObjectDatabase::getIntId returns -1.
     int_ref = FWObjectDatabase::getIntId(str_ref);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
 // Note that XML elements represented by FWReference have only one
 // attribute "ref" and no value
-xmlNodePtr FWReference::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr FWReference::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = xmlNewChild(
         parent,
-        NULL,
-        xml_name.empty() ? STRTOXMLCAST(getTypeName()) : STRTOXMLCAST(xml_name),
-        NULL);
+        nullptr,
+        xml_name.empty() ? XMLTools::StrToXmlCast(getTypeName()) : XMLTools::StrToXmlCast(xml_name),
+        nullptr);
 
     if (int_ref == -1 && !str_ref.empty())
         int_ref = FWObjectDatabase::getIntId(str_ref);
 
     str_ref = FWObjectDatabase::getStringId(int_ref);
 
-    xmlNewProp(me, TOXMLCAST("ref"), STRTOXMLCAST(str_ref));
-    //xmlAddRef(NULL, parent->doc, STRTOXMLCAST(str_ref), pr);
+    xmlNewProp(me, XMLTools::ToXmlCast("ref"), XMLTools::StrToXmlCast(str_ref));
+    //xmlAddRef(nullptr, parent->doc, XMLTools::StrToXmlCast(str_ref), pr);
 
     return me;
 }
 
 FWObject& FWReference::shallowDuplicate(const FWObject *_other,
-                                        bool) throw(FWException)
+                                        bool)
 {
     const FWReference *other = FWReference::constcast(_other);
     int_ref = other->int_ref;
@@ -101,10 +99,10 @@ FWObject& FWReference::shallowDuplicate(const FWObject *_other,
     return *this;
 }
 
-bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */) throw(FWException)
+bool FWReference::cmp(const FWObject *obj, bool /* UNUSED recursive */)
 {
     const FWReference *rx = FWReference::constcast(obj);
-    if (rx == NULL) return false;
+    if (rx == nullptr) return false;
     if (int_ref != rx->int_ref || str_ref != rx->str_ref) return false;
     return true;
 }
@@ -169,7 +167,7 @@ void FWReference::dump(std::ostream &f, bool recursive, bool brief, int offset) 
 
 FWObject* FWReference::getObject(FWObject* o)
 {
-    if (o==NULL) return NULL;
-    if (FWReference::cast(o)!=NULL) return FWReference::cast(o)->getPointer();
+    if (o==nullptr) return nullptr;
+    if (FWReference::cast(o)!=nullptr) return FWReference::cast(o)->getPointer();
     return o;
 }

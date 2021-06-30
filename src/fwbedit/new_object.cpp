@@ -23,8 +23,6 @@
 
 */
 
-#include "../../config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
 
 #include <qsettings.h>
@@ -53,16 +51,6 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdio.h>
-
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
 
 #include "fwbuilder/Resources.h"
 
@@ -214,6 +202,16 @@ void invalidIPv6(string s)
     }
 }
 
+void invalidIPv4Orv6(string s)
+{
+    if (!testIPv4(s) && !testIPv6(s))
+    {
+        cout << "\"" << s << "\" - invalid IP address." << endl;
+
+        exit(0);
+    }
+}
+
 bool testPlatform(const string &pl, const string &os)
 {
     vector<string> platforms = Resources::getListOfPlatforms();
@@ -250,7 +248,7 @@ bool testPlatform(const string &pl, const string &os)
 FWObject* createObject(FWObjectDatabase *objdb,
                        const string &type, const string &parent)
 {
-    FWObject* obj = NULL;
+    FWObject* obj = nullptr;
     string path;
 
     obj = objdb->create(type);
@@ -382,19 +380,32 @@ void _modObject(FWObject *nobj, const string &comment_txt, operands ops)
     {
         try
         {
-            addr1 = getNextOpt(ops); invalidIPv4(addr1);
-            addr2 = getNextOpt(ops); invalidIPv4(addr2);
+            addr1 = getNextOpt(ops); invalidIPv4Orv6(addr1);
+            addr2 = getNextOpt(ops); invalidIPv4Orv6(addr2);
         } catch (OperandsError &e)
         {
             notEnoughAttributesError();
+        }
+
+        InetAddr range_start(AF_UNSPEC, addr1);
+        InetAddr range_end(AF_UNSPEC, addr2);
+
+        if (range_start.addressFamily() != range_end.addressFamily()) {
+
+            cout << "AddressRange start and end address must be of same IP address family: ";
+            cout << "start_address: " << range_start.toString() << ", ";
+            cout << "end_address: " << range_end.toString();
+            cout << endl;
+
+            exit(1);
         }
 
         cout   << "Range start: " << addr1 << endl
                << "Range end: " << addr2 << endl;
 
         AddressRange *o=AddressRange::cast(nobj);
-        o->setRangeStart(InetAddr(addr1));
-        o->setRangeEnd(InetAddr(addr2));
+        o->setRangeStart(range_start);
+        o->setRangeEnd(range_end);
     }
     else if (objtype==ObjectGroup::TYPENAME)
     {

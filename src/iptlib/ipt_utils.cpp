@@ -117,7 +117,7 @@ void expand_interface_with_phys_address(Compiler *compiler,
 
     std::list<FWObject*> lipaddr;
     std::list<FWObject*> lother;
-    physAddress *pa = NULL;
+    physAddress *pa = nullptr;
 
     for (std::list<FWObject*>::iterator j=ol1.begin(); j!=ol1.end(); j++)
     {
@@ -126,7 +126,7 @@ void expand_interface_with_phys_address(Compiler *compiler,
             lipaddr.push_back(*j);
             continue;
         }
-        if (physAddress::cast(*j)!=NULL)
+        if (physAddress::cast(*j)!=nullptr)
         {
             pa = physAddress::cast(*j);
             continue;
@@ -135,9 +135,9 @@ void expand_interface_with_phys_address(Compiler *compiler,
     }
 
 /* 
- * if pa==NULL then this is trivial case: there is no physical address
+ * if pa==nullptr then this is trivial case: there is no physical address
  */
-    if (pa==NULL)
+    if (pa==nullptr)
     {
         list_result.insert(list_result.end(), ol1.begin(), ol1.end());
         return;
@@ -163,10 +163,10 @@ void expand_interface_with_phys_address(Compiler *compiler,
  */
     FWObject *p = Host::getParentHost(iface);
     //FWObject *p = iface->getParentHost();
-    assert(p!=NULL);
+    assert(p!=nullptr);
 
     FWOptions *hopt = Host::cast(p)->getOptionsObject();
-    bool use_mac = (hopt!=NULL && hopt->getBool("use_mac_addr_filter") );
+    bool use_mac = (hopt!=nullptr && hopt->getBool("use_mac_addr_filter") );
 
     if (lipaddr.empty())    list_result.push_back(pa);
     else

@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -59,7 +58,7 @@ bool CompilerDriver::prepare(const QStringList &_args)
     if (!single_rule_compile_on)
     {
         Firewall *fw = locateObject();
-        if (fw == NULL)
+        if (fw == nullptr)
         {
             cerr << "Firewall or cluster object not found" << endl;
             return false;
@@ -128,16 +127,16 @@ void CompilerDriver::compile()
  */
 QMap<QString,QString> CompilerDriver::compileSingleRule(const string &rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     Rule *rule = Rule::cast(
         objdb->findInIndex(FWObjectDatabase::getIntId(rule_id)));
-    if (rule==NULL)
+    if (rule==nullptr)
         throw FWException(string("Rule with ID=") + rule_id + " not found");
 
     FWObject *p = rule;
-    while (p && Firewall::cast(p)==NULL) p = p->getParent();
+    while (p && Firewall::cast(p)==nullptr) p = p->getParent();
 
     if (Cluster::isA(p)) cluster = Cluster::cast(p);
     if (Firewall::isA(p)) fw = Firewall::cast(p);

@@ -70,7 +70,7 @@ int PolicyCompiler::prolog()
     Policy *policy = Policy::cast(fw->getFirstByType(Policy::TYPENAME));
     assert(policy);
 
-    if (source_ruleset == NULL) source_ruleset = policy;
+    if (source_ruleset == nullptr) source_ruleset = policy;
 
     source_ruleset->renumberRules();
 
@@ -88,7 +88,7 @@ int PolicyCompiler::prolog()
     for (FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
 	PolicyRule *r = PolicyRule::cast(*i);
-        if (r == NULL) continue; // skip RuleSetOptions object
+        if (r == nullptr) continue; // skip RuleSetOptions object
 
         /*
          * do not remove disabled rules just yet because some
@@ -257,12 +257,12 @@ bool PolicyCompiler::checkForShadowing(PolicyRule &r1, PolicyRule &r2)
         rule_elements_cache[r2.getId()] = tt;
     }
 
-    if (src1==NULL || dst1==NULL || srv1==NULL)
+    if (src1==nullptr || dst1==nullptr || srv1==nullptr)
         throw FWException("Can not compare rules because rule " + 
                           r1.getLabel()
                           + " has a group in one of its elements. Aborting.");
 
-    if (src2==NULL || dst2==NULL || srv2==NULL)
+    if (src2==nullptr || dst2==nullptr || srv2==nullptr)
         throw FWException("Can not compare rules because rule " + 
                           r2.getLabel() +
                           " has a group in one of its elements. Aborting.");
@@ -334,12 +334,12 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
     Address  *dst2=getFirstDst(&r2);
     Service  *srv2=getFirstSrv(&r2);
 
-    if (src1==NULL || dst1==NULL || srv1==NULL)
+    if (src1==nullptr || dst1==nullptr || srv1==nullptr)
         throw FWException("Can not compare rules because rule " +
                           r1.getLabel() +
                           " has a group in one of its elements. Aborting.");
 
-    if (src2==NULL || dst2==NULL || srv2==NULL)
+    if (src2==nullptr || dst2==nullptr || srv2==nullptr)
         throw FWException("Can not compare rules because rule " +
                           r2.getLabel() +
                           " has a group in one of its elements. Aborting.");
@@ -357,7 +357,7 @@ bool PolicyCompiler::cmpRules(PolicyRule &r1, PolicyRule &r2)
 
 bool PolicyCompiler::InterfacePolicyRules::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     RuleElementItf *itfre = rule->getItf(); assert(itfre);
     if (itfre->isAny())
@@ -413,7 +413,7 @@ bool PolicyCompiler::InterfacePolicyRules::processNext()
 
 bool  PolicyCompiler::ExpandGroups::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -430,7 +430,7 @@ bool  PolicyCompiler::ExpandGroups::processNext()
 
 bool PolicyCompiler::expandGroupsInSrv::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElementSrv *srv = rule->getSrv();
     compiler->expandGroupsInRuleElement(srv);
     tmp_queue.push_back(rule);
@@ -439,7 +439,7 @@ bool PolicyCompiler::expandGroupsInSrv::processNext()
 
 bool PolicyCompiler::expandGroupsInItf::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElementItf *itf = rule->getItf();
     compiler->expandGroupsInRuleElement(itf);
     tmp_queue.push_back(rule);
@@ -448,7 +448,7 @@ bool PolicyCompiler::expandGroupsInItf::processNext()
 
 bool  PolicyCompiler::ExpandMultipleAddresses::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
     compiler->_expand_addr(rule, src, true);
@@ -471,7 +471,7 @@ void PolicyCompiler::addressRanges::expandAddressRangesInDst(PolicyRule *rule)
 
 bool PolicyCompiler::addressRanges::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     expandAddressRangesInSrc(rule);
     expandAddressRangesInDst(rule);
     tmp_queue.push_back(rule);
@@ -563,11 +563,11 @@ PolicyCompiler::find_more_specific_rule(
 			cerr << debugPrintRule(ir);
 			cerr << "------------------------------------------------\n";
 		    }
-		    if (intersection!=NULL) *intersection=ir;
+		    if (intersection!=nullptr) *intersection=ir;
 		    return j;
 		}
 
-	    } catch (FWException ex) {
+	    } catch (FWException &ex) {
 		cerr << " *** Exception: " << ex.toString() << endl;
 	    }  
 	}
@@ -590,19 +590,19 @@ PolicyCompiler::find_more_specific_rule(
  */
 Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
 {
-    Address *a=NULL;
+    Address *a=nullptr;
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
-	assert(o!=NULL);
+	assert(o!=nullptr);
 
         MultiAddress *maddr = MultiAddress::cast(o);
         if (maddr && maddr->isRunTime()) continue;
 
         Address *addr = Address::cast(o);
         
-        if (addr==NULL && o!=NULL)
+        if (addr==nullptr && o!=nullptr)
             compiler->warning(
                     re->getParent(), 
                     string("findZeroAddress: Unknown object in rule element: ") +
@@ -611,7 +611,7 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
 
         if (addr && addr->hasInetAddress())
         {
-            if (Interface::cast(o)!=NULL && 
+            if (Interface::cast(o)!=nullptr && 
                 (Interface::cast(o)->isDyn() ||
                  Interface::cast(o)->isUnnumbered() ||
                  Interface::cast(o)->isBridgePort()))
@@ -624,7 +624,7 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                 // AddressRange has address but not netmask
                 // AddressRange with address 0.0.0.0 is acceptable
                 // (not equivalent to "any")
-                if (ad->isAny() && nm!=NULL && nm->isAny())
+                if (ad->isAny() && nm!=nullptr && nm->isAny())
                 {
                     a = addr;
                     break;
@@ -632,7 +632,7 @@ Address* PolicyCompiler::checkForZeroAddr::findZeroAddress(RuleElement *re)
                 // Address A.B.C.D/0 is most likely a mistake if
                 // A.B.C.D != 0.0.0.0
                 if ((Network::cast(addr) || NetworkIPv6::cast(addr)) &&
-                    !ad->isAny() && nm!=NULL && nm->isAny())
+                    !ad->isAny() && nm!=nullptr && nm->isAny())
                 {
                     a = addr;
                     break;
@@ -650,10 +650,10 @@ Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++) 
     {
         FWObject *o = FWReference::getObject(*i);
-	assert(o!=NULL);
+	assert(o!=nullptr);
         Host *addr = Host::cast(o);
 
-        if (addr!=NULL && addr->front()!=NULL)
+        if (addr!=nullptr && addr->front()!=nullptr)
         {
             FWObject::iterator it;
             it=addr->begin();
@@ -662,7 +662,7 @@ Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -672,30 +672,30 @@ Address* PolicyCompiler::checkForZeroAddr::findHostWithNoInterfaces(
  */
 bool PolicyCompiler::checkForZeroAddr::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
-    Address *a=NULL;
+    Address *a=nullptr;
 
     a = findHostWithNoInterfaces( rule->getSrc() );
-    if (a==NULL) a = findHostWithNoInterfaces( rule->getDst() );
+    if (a==nullptr) a = findHostWithNoInterfaces( rule->getDst() );
 
-    if (a!=NULL)
+    if (a!=nullptr)
         compiler->abort(
                 rule, "Object '"+a->getName()+
                 "' has no interfaces, therefore it does not have "
                 "address and can not be used in the rule.");
 
     a = findZeroAddress( rule->getSrc() );
-    if (a==NULL) a = findZeroAddress( rule->getDst() );
+    if (a==nullptr) a = findZeroAddress( rule->getDst() );
 
-    if (a!=NULL)
+    if (a!=nullptr)
     {
         string err="Object '"+a->getName()+"'";
-        if (IPv4::cast(a)!=NULL) // || IPv6::cast(a)!=NULL
+        if (IPv4::cast(a)!=nullptr) // || IPv6::cast(a)!=nullptr
         {
             FWObject *p=a->getParent();
             Interface *iface = Interface::cast(p);
-            if (iface!=NULL) 
+            if (iface!=nullptr) 
             {
                 err+=" (an address of interface ";
                 if (iface->getLabel()!="") err+=iface->getLabel();
@@ -717,7 +717,7 @@ bool PolicyCompiler::checkForZeroAddr::processNext()
 
 bool PolicyCompiler::checkForUnnumbered::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( compiler->catchUnnumberedIfaceInRE( rule->getSrc() ) || 
          compiler->catchUnnumberedIfaceInRE( rule->getDst() ) )
@@ -732,7 +732,7 @@ bool PolicyCompiler::checkForUnnumbered::processNext()
 
 bool PolicyCompiler::ConvertToAtomicForAddresses::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *src=rule->getSrc();    assert(src);
     RuleElementDst *dst=rule->getDst();    assert(dst);
@@ -761,11 +761,11 @@ bool PolicyCompiler::ConvertToAtomicForAddresses::processNext()
 
 bool PolicyCompiler::ConvertToAtomicForIntervals::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementInterval *ivl=rule->getWhen();
 
-    if (ivl==NULL || ivl->isAny()) {
+    if (ivl==nullptr || ivl->isAny()) {
         tmp_queue.push_back(rule);
         return true;
     }
@@ -789,7 +789,7 @@ bool PolicyCompiler::ConvertToAtomicForIntervals::processNext()
 
 bool  PolicyCompiler::ConvertToAtomic::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrc *src=rule->getSrc();  assert(src);
     RuleElementDst *dst=rule->getDst();  assert(dst);
     RuleElementSrv *srv=rule->getSrv();  assert(srv);
@@ -891,7 +891,7 @@ PolicyCompiler::findMoreGeneralRule::find_more_general_rule(
 bool PolicyCompiler::DetectShadowing::processNext()
 {
     PolicyRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);  // to pass it to the next processor, if any
     if (rule->isFallback()) return true; // do not check fallback  ..
@@ -926,7 +926,7 @@ bool PolicyCompiler::DetectShadowing::processNext()
 bool PolicyCompiler::DetectShadowingForNonTerminatingRules::processNext()
 {
     PolicyRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);  // to pass it to the next processor, if any
     if (rule->isFallback()) return true; // do not check fallback  ..
@@ -979,7 +979,7 @@ bool PolicyCompiler::MACFiltering::checkRuleElement(RuleElement *re)
 
 bool PolicyCompiler::MACFiltering::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElement *src=rule->getSrc();

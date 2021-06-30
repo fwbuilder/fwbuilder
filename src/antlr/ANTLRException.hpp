@@ -27,7 +27,7 @@ public:
 	: text(s)
 	{
 	}
-	virtual ~ANTLRException() throw()
+	virtual ~ANTLRException()
 	{
 	}
 

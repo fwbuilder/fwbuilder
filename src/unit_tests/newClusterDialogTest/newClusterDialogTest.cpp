@@ -80,7 +80,7 @@ void newClusterDialogTest::initTestCase()
     QTest::qWait(5000);
 
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
 }
 
 void newClusterDialogTest::test1()
@@ -89,7 +89,7 @@ void newClusterDialogTest::test1()
     FWObjectDatabase *db = new FWObjectDatabase();
     XMLTools::UpgradePredicate p;
     db->load("test_work.fwb", &p, Constants::getDTDDirectory());
-    newClusterDialog_ext *dialog = new newClusterDialog_ext(NULL, db);
+    newClusterDialog_ext *dialog = new newClusterDialog_ext(nullptr, db);
     vector<FWObject*> fws;
     QStringList fwnames;
     foreach(FWObject *obj, db->getByTypeDeep(Firewall::TYPENAME))
@@ -132,7 +132,7 @@ void newClusterDialogTest::test1()
     for (int i=1; i<dialog->getUi()->interfaceEditor->count(); i++)
         dynamic_cast<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor->widget(i))->setProtocolIndex(2);
 
-    InterfaceEditorWidget* eth0 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth0_widget");
+    InterfaceEditorWidget* eth0 = dialog->getUi()->interfaceEditor->findChild<InterfaceEditorWidget*>("eth0_widget");
     eth0->setProtocolIndex(0);
     eth0->addNewAddress("123.45.67.89", "24", true);
 
@@ -168,12 +168,12 @@ void newClusterDialogTest::test1()
     }
 
     dialog->getUi()->interfaceEditor->setCurrentIndex(1);
-    InterfaceEditorWidget* eth1 = qFindChild<InterfaceEditorWidget*>(dialog->getUi()->interfaceEditor, "eth1_widget");
+    InterfaceEditorWidget* eth1 = dialog->getUi()->interfaceEditor->findChild<InterfaceEditorWidget*>("eth1_widget");
     eth1->setProtocolIndex(0);
     QTableWidget *addrs = eth1->findChild<QTableWidget*>("addresses");
-    QVERIFY(addrs != NULL);
+    QVERIFY(addrs != nullptr);
     QPushButton *addaddr = eth1->findChild<QPushButton*>("addAddress");
-    QVERIFY(addaddr != NULL);
+    QVERIFY(addaddr != nullptr);
     addaddr->click();
     addrs->item(0,0)->setText("98.76.54.32");
     addrs->item(0,1)->setText("24");
@@ -190,7 +190,7 @@ void newClusterDialogTest::test1()
 
     Cluster *newc = dialog->getNewCluster();
 
-    QVERIFY(newc != NULL);
+    QVERIFY(newc != nullptr);
     QVERIFY(Cluster::isA(newc));
 
     dialog->findChild<QPushButton*>("cancelButton")->click();
@@ -204,16 +204,16 @@ void newClusterDialogTest::test2()
     mw->loadFile("test_work.fwb", false);
 
     FWObjectDatabase *db = mw->db();
-    Library *lib = NULL;
+    Library *lib = nullptr;
 
     foreach(FWObject *obj, db->getByTypeDeep(Library::TYPENAME))
     {
         qDebug() << obj->getName().c_str();
         if (obj->getName() == "new_cluster_test") lib = Library::cast(obj);
     }
-    QVERIFY(lib != NULL);
+    QVERIFY(lib != nullptr);
 
-    newClusterDialog_ext *dialog = new newClusterDialog_ext(NULL, FWBTree().getStandardSlotForObject(lib, Cluster::TYPENAME));
+    newClusterDialog_ext *dialog = new newClusterDialog_ext(nullptr, FWBTree().getStandardSlotForObject(lib, Cluster::TYPENAME));
     vector<FWObject*> fws;
     QStringList fwnames;
     foreach(FWObject *obj, db->getByTypeDeep(Firewall::TYPENAME))
@@ -269,15 +269,15 @@ void newClusterDialogTest::test2()
 
     Cluster *newc = dialog->getNewCluster();
 
-    QVERIFY(newc != NULL);
+    QVERIFY(newc != nullptr);
     QVERIFY(Cluster::isA(newc));
 
     Firewall *bak = Firewall::cast(mw->getCurrentLib()->findObjectByName(Firewall::TYPENAME, "linux-1-bak"));
-    QVERIFY(bak != NULL);
+    QVERIFY(bak != nullptr);
     QVERIFY(bak->getInactive() == true);
 
     Firewall *linux1 = Firewall::cast(mw->getCurrentLib()->findObjectByName(Firewall::TYPENAME, "linux-1"));
-    QVERIFY(linux1 != NULL);
+    QVERIFY(linux1 != nullptr);
     QVERIFY(linux1->getPolicy()->getChildrenCount() == 1); // there should be only RuleSetOptions object
 
 
@@ -328,7 +328,7 @@ void newClusterDialogTest::openContextMenu(ObjectManipulator *om, ObjectTreeView
     foreach (QObject *act, menu->children())
     {
         QAction *action = dynamic_cast<QAction*>(act);
-        if (action == NULL) continue;
+        if (action == nullptr) continue;
         if (action->text() == actionText)
         {
             QTimer::singleShot(100, this, SLOT(test3_part2()));
@@ -343,14 +343,14 @@ void newClusterDialogTest::test3()
     mw->loadFile("test_work.fwb", false);
 
     FWObjectDatabase *db = mw->db();
-    Library *lib = NULL;
+    Library *lib = nullptr;
 
     foreach(FWObject *obj, db->getByTypeDeep(Library::TYPENAME))
     {
         qDebug() << obj->getName().c_str();
         if (obj->getName() == "new_cluster_test") lib = Library::cast(obj);
     }
-    QVERIFY(lib != NULL);
+    QVERIFY(lib != nullptr);
 
     mw->show();
 
@@ -372,20 +372,20 @@ void newClusterDialogTest::test3()
 void newClusterDialogTest::test3_part2()
 {
     QTest::qWait(100);
-    newClusterDialog *dialog = NULL;
+    newClusterDialog *dialog = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<newClusterDialog*>(w) != NULL)
+        if (dynamic_cast<newClusterDialog*>(w) != nullptr)
             dialog = dynamic_cast<newClusterDialog*>(w);
-    QVERIFY(dialog != NULL);
+    QVERIFY(dialog != nullptr);
 
     QPushButton *nextButton = dialog->findChild<QPushButton*>("nextButton");
     QPushButton *finishButton = dialog->findChild<QPushButton*>("finishButton");
     InterfacesTabWidget *interfaceEditor = dialog->findChild<InterfacesTabWidget*>("interfaceEditor");
     QLineEdit *obj_name = dialog->findChild<QLineEdit*>("obj_name");
-    QVERIFY(nextButton != NULL);
-    QVERIFY(finishButton != NULL);
-    QVERIFY(interfaceEditor != NULL);
-    QVERIFY(obj_name != NULL);
+    QVERIFY(nextButton != nullptr);
+    QVERIFY(finishButton != nullptr);
+    QVERIFY(interfaceEditor != nullptr);
+    QVERIFY(obj_name != nullptr);
     QTest::keyClicks(obj_name, "New Cluster");
     QVERIFY(nextButton->isEnabled());
 
@@ -413,7 +413,7 @@ void newClusterDialogTest::test3_part2()
 
     Cluster *newc = dialog->getNewCluster();
 
-    QVERIFY(newc != NULL);
+    QVERIFY(newc != nullptr);
     QVERIFY(Cluster::isA(newc));
 
 }

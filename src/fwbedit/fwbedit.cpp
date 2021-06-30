@@ -21,9 +21,8 @@
 
 */
 
-#include "../../config.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
+#include "version.h"
 #include "fwbuilder/Constants.h"
 
 #include <qsettings.h>
@@ -55,15 +54,7 @@
 extern int errno;
 #endif
 
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
+#include <QCommandLineParser>
 
 #include "fwbuilder/Resources.h"
 
@@ -113,10 +104,9 @@ using namespace libfwbuilder;
 using namespace std;
 
 
-FWWindow *mw = NULL; 
-FWBSettings *st = NULL; 
-FWBApplication *app = NULL; 
-int sig = FWB_SIG; 
+FWWindow *mw = nullptr; 
+FWBSettings *st = nullptr; 
+FWBApplication *app = nullptr; 
 
 string cmd_str = "";
 command cmd = NONE;
@@ -128,7 +118,7 @@ int conflict_res = 1;
 
 vector<string> platforms;
 
-FWObjectDatabase *objdb = NULL;
+FWObjectDatabase *objdb = nullptr;
 
 int fwbdebug = 0;
 
@@ -461,13 +451,19 @@ int main(int argc, char * const *argv)
         exit(1);
     }
 
+    QStringList arguments;
+    for (int i = 0; i < argc; ++i) {
+        arguments.append(QString(argv[i]));
+    }
+
     /*
      *  Command line format:
      *  fwbedit command [options]
      *
      *  argv[1] is always command
      */
-    cmd_str = string(argv[1]);
+
+    cmd_str = arguments.at(1).toStdString();
 
     cmd = NONE;
     if (cmd_str=="new") cmd = NEWOBJECT;
@@ -481,112 +477,109 @@ int main(int argc, char * const *argv)
     if (cmd_str=="merge") cmd = MERGE;
     if (cmd_str=="import") cmd = IMPORT;
 
-    char * const *args = argv;
-    args++;
-    argc--;
+    QCommandLineParser parser;
 
-    int   opt;
+    QCommandLineOption fileNameOption("f", "filename", "filename");
+    QCommandLineOption objectTypeOption("t", "objtype", "objtype");
+    QCommandLineOption nameOption("n", "name", "name");
+    QCommandLineOption commentOption("c", "comment", "comment");
+    QCommandLineOption parentOption("p", "parent", "parent");
+    QCommandLineOption attributesOption("a", "attributes", "attributes");
+    QCommandLineOption objectOption("o", "object", "object");
+    QCommandLineOption formatOption("F", "format", "format");
+    QCommandLineOption groupOption("g", "group", "group");
 
     switch (cmd)
     {
     case NEWOBJECT:
     {
         // -f file.fwb -t objtype -n name -c comment -p parent [-a attrs]
-        while( (opt=getopt(argc, args, "f:t:n:c:p:a:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 't': objtype = optarg; break;
-            case 'n': name = optarg; break;
-            case 'c': comment_txt = optarg; break;
-            case 'p': parent = optarg; break;
-            case 'a':
-                int num=0;
-                Q_UNUSED(num);
-                if (optarg!=NULL)
-                {
-                    string str = optarg;
-                    num = splitStr(',', str, &ops);
-                }
-                break;
-            }
-        }
 
-        if (filename=="")
-        {
+        parser.addOption(fileNameOption);
+        parser.addOption(objectTypeOption);
+        parser.addOption(nameOption);
+        parser.addOption(commentOption);
+        parser.addOption(parentOption);
+        parser.addOption(attributesOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        if (filename.empty()) {
             usage_new();
             exit(1);
+        }
+
+        objtype = parser.value(objectTypeOption).toStdString();
+        name = parser.value(nameOption).toStdString();
+        comment_txt = parser.value(commentOption).toStdString();
+        parent = parser.value(parentOption).toStdString();
+        auto attributes = parser.value(attributesOption).split(',');
+        for (const QString& attribute : attributes) {
+            ops.push_back(attribute.toStdString());
         }
 
         break;
     }
 
     case DELOBJECT:
+    {
         // -f file.fwb -o object_def
         // object_def can be either full path or object ID
-        while( (opt=getopt(argc, args, "f:o:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 'o': object = optarg; break;
-            }
-        }
 
-        if (filename.empty() || object.empty())
-        {
+        parser.addOption(fileNameOption);
+        parser.addOption(objectOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        object = parser.value(objectOption).toStdString();
+
+        if (filename.empty() || object.empty()) {
             usage_delete();
             exit(1);
         }
 
         break;
-
+    }
     case MODOBJECT:
     {
         // -f file.fwb -o object -c comment [-a attrs]
-        while( (opt=getopt(argc, args, "f:o:c:a:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 'o': object = optarg; break;
-            case 'c': comment_txt = optarg; break;
-            case 'a':
-                int num=0;
-                Q_UNUSED(num);
-                if (optarg!=NULL)
-                {
-                    string str = optarg;
-                    num = splitStr(',', str, &ops);
-                }
-                break;
-            }
+
+        parser.addOption(fileNameOption);
+        parser.addOption(objectOption);
+        parser.addOption(commentOption);
+        parser.addOption(attributesOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        object = parser.value(objectOption).toStdString();
+        comment_txt = parser.value(commentOption).toStdString();
+        auto attributes = parser.value(attributesOption).split(',');
+        for (const QString& attribute : attributes) {
+            ops.push_back(attribute.toStdString());
         }
 
-        if (filename.empty() || object.empty())
-        {
+        if (filename.empty() || object.empty()) {
             usage_modify();
             exit(1);
         }
 
         break;
     }
-
     case ADDGRP:
     case REMGRP:
+    {
         // -f file.fwb -p group -o object
         // Add/remove object to group
         // both group and object can be either path or ID
-        while( (opt=getopt(argc, args, "f:g:o:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 'g': group = optarg; break;
-            case 'o': object = optarg; break;
-            }
-        }
+
+        parser.addOption(fileNameOption);
+        parser.addOption(groupOption);
+        parser.addOption(objectOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        object = parser.value(objectOption).toStdString();
+        group = parser.value(groupOption).toStdString();
 
         if (filename.empty() || group.empty() || object.empty())
         {
@@ -594,24 +587,31 @@ int main(int argc, char * const *argv)
             if (cmd == REMGRP) usage_remove();
             exit(1);
         }
-
         break;
-
+    }
     case LIST:
+    {
         // -f file.fwb -o object [-r] [-Fformat_string] [-d]
         // object can be either path or ID
-        while( (opt=getopt(argc, args, "f:o:crdF:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 'o': object = optarg; break;
-            case 'c': list_children = true; break;
-            case 'r': recursive = true; break;
-            case 'F': list_format = optarg; break;
-            case 'd': full_dump = true; break;
-            }
-        }
+
+        QCommandLineOption recursiveOption("r", "recursive");
+        QCommandLineOption listChildrenOption("c", "list_children");
+        QCommandLineOption fullDumpOption("d", "full_dump");
+
+        parser.addOption(fileNameOption);
+        parser.addOption(objectOption);
+        parser.addOption(formatOption);
+        parser.addOption(recursiveOption);
+        parser.addOption(listChildrenOption);
+        parser.addOption(fullDumpOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        object = parser.value(objectOption).toStdString();
+        list_format = parser.value(formatOption).toStdString();
+        recursive = parser.isSet(recursiveOption);
+        list_children = parser.isSet(listChildrenOption);
+        full_dump = parser.isSet(fullDumpOption);
 
         if (filename.empty() || object.empty())
         {
@@ -620,17 +620,15 @@ int main(int argc, char * const *argv)
         }
 
         break;
-
+    }
     case UPGRADE:
+    {
         // -f file.fwb
         autoupgrade_flag = true;
-        while( (opt=getopt(argc, args, "f:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            }
-        }
+
+        parser.addOption(fileNameOption);
+        parser.parse(arguments);
+        filename = parser.value(fileNameOption).toStdString();
 
         if (filename.empty())
         {
@@ -639,16 +637,14 @@ int main(int argc, char * const *argv)
         }
 
         break;
-
+    }
     case STRUCT:
+    {
         // -f file.fwb
-        while( (opt=getopt(argc, args, "f:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            }
-        }
+
+        parser.addOption(fileNameOption);
+        parser.parse(arguments);
+        filename = parser.value(fileNameOption).toStdString();
 
         if (filename.empty())
         {
@@ -657,16 +653,26 @@ int main(int argc, char * const *argv)
         }
 
         break;
-    
+    }
     case MERGE:
+    {
         // -f file1.fwb -i file2.fwb
-        while( (opt=getopt(argc, args, "f:i:c:")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 'i': filemerge = optarg; break;
-            case 'c': conflict_res = atoi(optarg); break;
+
+        QCommandLineOption mergeFileNameOption("f", "mergeFile", "mergeFile");
+        QCommandLineOption conflictResolveOption("c", "conflictResolve", "conflictResolve");
+
+        parser.addOption(fileNameOption);
+        parser.addOption(mergeFileNameOption);
+        parser.addOption(conflictResolveOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        filemerge = parser.value(mergeFileNameOption).toStdString();
+        if (parser.isSet(conflictResolveOption)) {
+            bool ok = false;
+            conflict_res = parser.value(conflictResolveOption).toInt(&ok);
+            if (!ok) {
+                conflict_res = 1;
             }
         }
 
@@ -677,19 +683,24 @@ int main(int argc, char * const *argv)
         }
 
         break;
-
+    }
     case IMPORT:
+    {
         // -f file.fwb -i config.txt -o /User/Firewalls/new_firewall
-        while( (opt=getopt(argc, args, "f:i:o:d")) != EOF )
-        {
-            switch(opt)
-            {
-            case 'f': filename = optarg; break;
-            case 'i': import_config = optarg; break;
-            case 'o': object = optarg; break;
-            case 'd': deduplicate = true; break;
-            }
-        }
+
+        QCommandLineOption importConfigFileNameOption("i", "importConfigFilename", "importConfigFilename");
+        QCommandLineOption deduplicateOption("d", "deduplicate");
+
+        parser.addOption(fileNameOption);
+        parser.addOption(importConfigFileNameOption);
+        parser.addOption(objectOption);
+        parser.addOption(deduplicateOption);
+        parser.parse(arguments);
+
+        filename = parser.value(fileNameOption).toStdString();
+        import_config = parser.value(importConfigFileNameOption).toStdString();
+        object = parser.value(objectOption).toStdString();
+        deduplicate = parser.isSet(deduplicateOption);
 
         if (filename.empty() || import_config.empty() || object.empty())
         {
@@ -698,7 +709,7 @@ int main(int argc, char * const *argv)
         }
 
         break;
-
+    }
     case NONE:
         break;
     }
@@ -744,13 +755,15 @@ int main(int argc, char * const *argv)
                 usage_import();
                 exit(1);
             }
-
-            QStringList components = QString::fromUtf8(object.c_str())
-                .split("/", QString::SkipEmptyParts);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+            QStringList components = QString::fromUtf8(object.c_str()).split("/", Qt::SkipEmptyParts);
+#else
+            QStringList components = QString::fromUtf8(object.c_str()).split("/", QString::SkipEmptyParts);
+#endif
             string fw_name = components.last().toUtf8().constData();
             
-            Library *library = NULL;
-            while (library == NULL)
+            Library *library = nullptr;
+            while (library == nullptr)
             {
                 components.pop_back();
                 string library_path = components.join("/").toUtf8().constData();
@@ -888,7 +901,7 @@ int main(int argc, char * const *argv)
     } catch (std::string s) {
         cerr << s;
         exit(1);
-    } catch (std::exception ex) {
+    } catch (std::exception &ex) {
         cerr << ex.what();
         exit(1);
     } catch (...) {

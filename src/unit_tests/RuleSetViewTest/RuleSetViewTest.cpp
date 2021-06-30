@@ -55,7 +55,7 @@ void RuleSetViewTest::initTestCase()
     mw->resize(QSize(800,600));
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d) if (d!=NULL) d->close();
+    if (d) if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     Firewall::cast(om->createObject(FWBTree().getStandardSlotForObject(findUserLibrary(), Firewall::TYPENAME), Firewall::TYPENAME, "testFirewall"));
     openPolicy("testFirewall");
@@ -81,7 +81,7 @@ void RuleSetViewTest::showContextMenu(int x, int y)
  */
 void RuleSetViewTest::openPolicy(QString fwname)
 {
-    Policy *p = NULL;
+    Policy *p = nullptr;
     foreach (FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == fwname.toStdString())
@@ -89,7 +89,7 @@ void RuleSetViewTest::openPolicy(QString fwname)
             p = Firewall::cast(fw)->getPolicy();
         }
     }
-    QVERIFY (p != NULL);
+    QVERIFY (p != nullptr);
     QCoreApplication::postEvent(mw, new openRulesetImmediatelyEvent(mw->activeProject()->getFileName(), p->getId()));
     QTest::qWait(100);
 }
@@ -99,7 +99,7 @@ void RuleSetViewTest::openPolicy(QString fwname)
  */
 Library* RuleSetViewTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -120,7 +120,7 @@ QPoint findActionPos(QMenu *menu, QAction *action)
     int x = menu->width()/2;
     for (int y=0; y<menu->height(); y++)
     {
-        if (menu->actionAt(QPoint(x,y)) != NULL && menu->actionAt(QPoint(x,y))->text() == action->text())
+        if (menu->actionAt(QPoint(x,y)) != nullptr && menu->actionAt(QPoint(x,y))->text() == action->text())
             return QPoint(x,y);
     }
     return QPoint(-1,-1);
@@ -140,7 +140,7 @@ void RuleSetViewTest::clickMenuItem(QString item)
 void RuleSetViewTest::actuallyClickMenuItem()
 {
     QMenu *menu = dynamic_cast<QMenu*>(app->activePopupWidget());
-    Q_ASSERT(menu != NULL);
+    Q_ASSERT(menu != nullptr);
     foreach(QAction *action, menu->actions())
     {
         if (action->text() == itemToClick)
@@ -166,15 +166,9 @@ void RuleSetViewTest::actuallyClickMenuItem()
 
     // need to hide the menu, otherwise test just hangs
     menu->hide();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
-          .arg(itemToClick)
-          .arg(items.join(" ")).toAscii().constData());
-#else
     QFAIL(QString("Menu item %1 not found. Menu consists of: %2")
           .arg(itemToClick)
           .arg(items.join(" ")).toLatin1().constData());
-#endif
 }
 
 /*
@@ -235,7 +229,7 @@ void RuleSetViewTest::createGroup(QString name)
 void RuleSetViewTest::actuallyCreateGroup()
 {
     QInputDialog *dlg = dynamic_cast<QInputDialog*>(app->activeModalWidget());
-    Q_ASSERT(dlg != NULL);
+    Q_ASSERT(dlg != nullptr);
     QLineEdit *name = dlg->findChild<QLineEdit*>();
     QTest::keyClicks(name, groupToCreate);
     dlg->accept();
@@ -509,7 +503,7 @@ void RuleSetViewTest::test_move()
     QVERIFY(rules[0]->getPosition() == 3);
 
     // Adding two more rules
-    Rule *newrules[6] = { rules[1], rules[3], rules[2], rules[0], NULL, NULL };
+    Rule *newrules[6] = { rules[1], rules[3], rules[2], rules[0], nullptr, nullptr };
     for (int i=4; i<6;i++)
     {
         clickMenuItem("Add New Rule at the Bottom");

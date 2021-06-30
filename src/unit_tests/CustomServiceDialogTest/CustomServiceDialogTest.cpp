@@ -25,12 +25,11 @@
 
 #include "CustomServiceDialogTest.h"
 
-#include "../../../../config.h"
 //#include "../../global.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTest>
 #include <iostream>
 
@@ -76,14 +75,14 @@ void CustomServiceDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
 }
 
 Library* CustomServiceDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -98,7 +97,7 @@ Library* CustomServiceDialogTest::findUserLibrary()
 void CustomServiceDialogTest::selectComboItem(QWidget *widget, QString name)
 {
     QComboBox * combo = dynamic_cast<QComboBox*>(widget);
-    Q_ASSERT(combo != NULL);
+    Q_ASSERT(combo != nullptr);
     int id = combo->findText(name);
     combo->setCurrentIndex(id);
 }

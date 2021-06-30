@@ -25,12 +25,12 @@
 
 #include "parseCommandLineTest.h"
 
-#include "config.h"
 #include "utils.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QTest>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 
 #include <iostream>
 
@@ -50,16 +50,16 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "/usr/local/bin/ssh");
-    CPPUNIT_ASSERT(argv[1] == "-i");
-    CPPUNIT_ASSERT(argv[2] == "identity.key");
-    CPPUNIT_ASSERT(argv[3] == "-o");
-    CPPUNIT_ASSERT(argv[4] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[5] == "-o");
-    CPPUNIT_ASSERT(argv[6] == "arg2");
-    CPPUNIT_ASSERT(argv[7] == "val2");
-    CPPUNIT_ASSERT(argv[8] == "foo");
-    CPPUNIT_ASSERT(argv[9] == "bar");
+    QVERIFY(argv[0] == "/usr/local/bin/ssh");
+    QVERIFY(argv[1] == "-i");
+    QVERIFY(argv[2] == "identity.key");
+    QVERIFY(argv[3] == "-o");
+    QVERIFY(argv[4] == "arg1=val1");
+    QVERIFY(argv[5] == "-o");
+    QVERIFY(argv[6] == "arg2");
+    QVERIFY(argv[7] == "val2");
+    QVERIFY(argv[8] == "foo");
+    QVERIFY(argv[9] == "bar");
 
     argv.clear();
     parseCommandLine(
@@ -67,16 +67,16 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "/usr/local/bin/ssh");
-    CPPUNIT_ASSERT(argv[1] == "-i");
-    CPPUNIT_ASSERT(argv[2] == "identity.key");
-    CPPUNIT_ASSERT(argv[3] == "-o");
-    CPPUNIT_ASSERT(argv[4] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[5] == "-o");
-    CPPUNIT_ASSERT(argv[6] == "arg2");
-    CPPUNIT_ASSERT(argv[7] == "val2");
-    CPPUNIT_ASSERT(argv[8] == "foo");
-    CPPUNIT_ASSERT(argv[9] == "bar");
+    QVERIFY(argv[0] == "/usr/local/bin/ssh");
+    QVERIFY(argv[1] == "-i");
+    QVERIFY(argv[2] == "identity.key");
+    QVERIFY(argv[3] == "-o");
+    QVERIFY(argv[4] == "arg1=val1");
+    QVERIFY(argv[5] == "-o");
+    QVERIFY(argv[6] == "arg2");
+    QVERIFY(argv[7] == "val2");
+    QVERIFY(argv[8] == "foo");
+    QVERIFY(argv[9] == "bar");
 
 
 
@@ -86,15 +86,15 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "-i");
-    CPPUNIT_ASSERT(argv[1] == "identity.key");
-    CPPUNIT_ASSERT(argv[2] == "-o");
-    CPPUNIT_ASSERT(argv[3] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[4] == "-o");
-    CPPUNIT_ASSERT(argv[5] == "arg2");
-    CPPUNIT_ASSERT(argv[6] == "val2");
-    CPPUNIT_ASSERT(argv[7] == "foo");
-    CPPUNIT_ASSERT(argv[8] == "bar");
+    QVERIFY(argv[0] == "-i");
+    QVERIFY(argv[1] == "identity.key");
+    QVERIFY(argv[2] == "-o");
+    QVERIFY(argv[3] == "arg1=val1");
+    QVERIFY(argv[4] == "-o");
+    QVERIFY(argv[5] == "arg2");
+    QVERIFY(argv[6] == "val2");
+    QVERIFY(argv[7] == "foo");
+    QVERIFY(argv[8] == "bar");
 
 
 
@@ -104,15 +104,15 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "-i");
-    CPPUNIT_ASSERT(argv[1] == "identity.key");
-    CPPUNIT_ASSERT(argv[2] == "-o");
-    CPPUNIT_ASSERT(argv[3] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[4] == "-o");
-    CPPUNIT_ASSERT(argv[5] == "arg2");
-    CPPUNIT_ASSERT(argv[6] == "val2");
-    CPPUNIT_ASSERT(argv[7] == "foo");
-    CPPUNIT_ASSERT(argv[8] == "bar");
+    QVERIFY(argv[0] == "-i");
+    QVERIFY(argv[1] == "identity.key");
+    QVERIFY(argv[2] == "-o");
+    QVERIFY(argv[3] == "arg1=val1");
+    QVERIFY(argv[4] == "-o");
+    QVERIFY(argv[5] == "arg2");
+    QVERIFY(argv[6] == "val2");
+    QVERIFY(argv[7] == "foo");
+    QVERIFY(argv[8] == "bar");
 
 
 
@@ -122,15 +122,15 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "-i");
-    CPPUNIT_ASSERT(argv[1] == "identity.key");
-    CPPUNIT_ASSERT(argv[2] == "-o");
-    CPPUNIT_ASSERT(argv[3] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[4] == "-o");
-    CPPUNIT_ASSERT(argv[5] == "arg2");
-    CPPUNIT_ASSERT(argv[6] == "val2");
-    CPPUNIT_ASSERT(argv[7] == "foo");
-    CPPUNIT_ASSERT(argv[8] == "bar");
+    QVERIFY(argv[0] == "-i");
+    QVERIFY(argv[1] == "identity.key");
+    QVERIFY(argv[2] == "-o");
+    QVERIFY(argv[3] == "arg1=val1");
+    QVERIFY(argv[4] == "-o");
+    QVERIFY(argv[5] == "arg2");
+    QVERIFY(argv[6] == "val2");
+    QVERIFY(argv[7] == "foo");
+    QVERIFY(argv[8] == "bar");
 
 
 
@@ -140,13 +140,13 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "/usr/local/bin/program");
-    CPPUNIT_ASSERT(argv[1] == "-arg1");
-    CPPUNIT_ASSERT(argv[2] == "val1 'val2 val3' val4");
-    CPPUNIT_ASSERT(argv[3] == "-o");
-    CPPUNIT_ASSERT(argv[4] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[5] == "foo");
-    CPPUNIT_ASSERT(argv[6] == "bar");
+    QVERIFY(argv[0] == "/usr/local/bin/program");
+    QVERIFY(argv[1] == "-arg1");
+    QVERIFY(argv[2] == "val1 'val2 val3' val4");
+    QVERIFY(argv[3] == "-o");
+    QVERIFY(argv[4] == "arg1=val1");
+    QVERIFY(argv[5] == "foo");
+    QVERIFY(argv[6] == "bar");
 
 
 
@@ -156,13 +156,13 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "/usr/local/bin/program");
-    CPPUNIT_ASSERT(argv[1] == "-arg1");
-    CPPUNIT_ASSERT(argv[2] == "val1 'val2 \"val3 val4\" val5' val6");
-    CPPUNIT_ASSERT(argv[3] == "-o");
-    CPPUNIT_ASSERT(argv[4] == "arg1=val1");
-    CPPUNIT_ASSERT(argv[5] == "foo");
-    CPPUNIT_ASSERT(argv[6] == "bar");
+    QVERIFY(argv[0] == "/usr/local/bin/program");
+    QVERIFY(argv[1] == "-arg1");
+    QVERIFY(argv[2] == "val1 'val2 \"val3 val4\" val5' val6");
+    QVERIFY(argv[3] == "-o");
+    QVERIFY(argv[4] == "arg1=val1");
+    QVERIFY(argv[5] == "foo");
+    QVERIFY(argv[6] == "bar");
 
 
 
@@ -172,12 +172,12 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "c:\\putty\\plink.exe");
-    CPPUNIT_ASSERT(argv[1] == "-i");
-    CPPUNIT_ASSERT(argv[2] == "identity.key");
-    CPPUNIT_ASSERT(argv[3] == "-q");
-    CPPUNIT_ASSERT(argv[4] == "foo");
-    CPPUNIT_ASSERT(argv[5] == "bar");
+    QVERIFY(argv[0] == "c:\\putty\\plink.exe");
+    QVERIFY(argv[1] == "-i");
+    QVERIFY(argv[2] == "identity.key");
+    QVERIFY(argv[3] == "-q");
+    QVERIFY(argv[4] == "foo");
+    QVERIFY(argv[5] == "bar");
 
     argv.clear();
     parseCommandLine(
@@ -185,12 +185,12 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "c:\\Program Files\\plink.exe");
-    CPPUNIT_ASSERT(argv[1] == "-i");
-    CPPUNIT_ASSERT(argv[2] == "identity.key");
-    CPPUNIT_ASSERT(argv[3] == "-q");
-    CPPUNIT_ASSERT(argv[4] == "foo");
-    CPPUNIT_ASSERT(argv[5] == "bar");
+    QVERIFY(argv[0] == "c:\\Program Files\\plink.exe");
+    QVERIFY(argv[1] == "-i");
+    QVERIFY(argv[2] == "identity.key");
+    QVERIFY(argv[3] == "-q");
+    QVERIFY(argv[4] == "foo");
+    QVERIFY(argv[5] == "bar");
 
 
     argv.clear();
@@ -199,12 +199,12 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "c:\\Program Files\\plink.exe");
-    CPPUNIT_ASSERT(argv[1] == "-i");
-    CPPUNIT_ASSERT(argv[2] == "c:\\Documents and Settings\\firewall\\identity.key");
-    CPPUNIT_ASSERT(argv[3] == "-q");
-    CPPUNIT_ASSERT(argv[4] == "foo");
-    CPPUNIT_ASSERT(argv[5] == "bar");
+    QVERIFY(argv[0] == "c:\\Program Files\\plink.exe");
+    QVERIFY(argv[1] == "-i");
+    QVERIFY(argv[2] == "c:\\Documents and Settings\\firewall\\identity.key");
+    QVERIFY(argv[3] == "-q");
+    QVERIFY(argv[4] == "foo");
+    QVERIFY(argv[5] == "bar");
 
 
     argv.clear();
@@ -213,12 +213,12 @@ void parseCommandLineTest::parseCommandLines()
         argv);
     qDebug() << argv;
 
-    CPPUNIT_ASSERT(argv[0] == "c:\\Program Files\\plink.exe");
-    CPPUNIT_ASSERT(argv[1] == "-i");
-    CPPUNIT_ASSERT(argv[2] == "c:\\Documents and Settings\\firewall\\identity.key");
-    CPPUNIT_ASSERT(argv[3] == "-q");
-    CPPUNIT_ASSERT(argv[4] == "foo");
-    CPPUNIT_ASSERT(argv[5] == "bar");
+    QVERIFY(argv[0] == "c:\\Program Files\\plink.exe");
+    QVERIFY(argv[1] == "-i");
+    QVERIFY(argv[2] == "c:\\Documents and Settings\\firewall\\identity.key");
+    QVERIFY(argv[3] == "-q");
+    QVERIFY(argv[4] == "foo");
+    QVERIFY(argv[5] == "bar");
 
 
 }

@@ -28,21 +28,14 @@
 #ifndef __BACKGROUNDOP_HH_FLAG__
 #define __BACKGROUNDOP_HH_FLAG__
 
+#include "ThreadTools.h"
+
 #include <vector>
 #include <iostream>
-#ifdef __MINGW32__ //win32 pthread ditrib doesn't have config.h
-# ifdef HAVE_CONFIG_H
-#  undef HAVE_CONFIG_H
-#  include <pthread.h>
-#  define HAVE_CONFIG_H
-# endif
-#else
-# include <pthread.h>
-#endif
+#include <atomic>
 
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Tools.h"
-#include "fwbuilder/ThreadTools.h"
 #include "fwbuilder/Pool.h"
 #include "fwbuilder/Logger.h"
 
@@ -62,17 +55,18 @@ class BackgroundOp
 
     private: 
 
-    SyncFlag     running      ;
-    SyncFlag     connected    ;
+    std::atomic<bool> running;
+    std::atomic<bool> connected;
 
+#ifdef USE_PTHREADS
     pthread_attr_t tattr;
+#endif
 
     protected:
 
-    SyncFlag    *stop_program ;
-
-    FWException        *error      ;
-    SyncFlag           *iamdead    ;
+    std::atomic<bool> *stop_program;
+    FWException *error;
+    std::atomic<bool> *iamdead;
 
     /**
      * Implementation of the actual operation. Use logger to send
@@ -85,7 +79,7 @@ class BackgroundOp
      * or methods, we create this flag as a dynamic variable and pass
      * pointer to run_impl, which should destroy it when it finishes.
      */
-    virtual void  run_impl(Logger *,SyncFlag *) throw(FWException) = 0;
+    virtual void  run_impl(Logger *, std::atomic<bool> *) = 0;
 
     /**
      * sets flag "running"
@@ -102,13 +96,13 @@ class BackgroundOp
      * from inside run_impl to check if background operation should be
      * immediately interrupted
      */
-    #define CHECK_STOP_AND_RETURN { stop_program->lock();\
-      if ( stop_program->peek() ){ stop_program->unlock(); return; }\
-      stop_program->unlock(); }
+    #define CHECK_STOP_AND_RETURN { \
+      if ( stop_program->load() ){ return; }\
+    }
     
-    #define CHECK_STOP_AND_THROW_EXCEPTION { stop_program->lock();\
-      if ( stop_program->peek() ){ stop_program->unlock(); throw FWException("Interrupted"); }\
-      stop_program->unlock(); }
+    #define CHECK_STOP_AND_THROW_EXCEPTION { \
+      if ( stop_program->load() ){ throw FWException("Interrupted"); }\
+    }
     
     public:
     
@@ -128,7 +122,7 @@ class BackgroundOp
     /**
      * Initiates background operation
      */
-    virtual Logger* start_operation()  throw(FWException);
+    virtual Logger* start_operation();
 
     /**
      * Stops background operation

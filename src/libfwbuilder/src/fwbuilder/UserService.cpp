@@ -27,8 +27,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/UserService.h"
@@ -46,39 +44,39 @@ string UserService::getProtocolName() const     {    return "user_service";}
 int    UserService::getProtocolNumber() const   {    return 65002; }
 
 FWObject& UserService::shallowDuplicate(const FWObject *x,
-                                        bool preserve_id) throw(FWException)
+                                        bool preserve_id)
 {
     const UserService *cs = dynamic_cast<const UserService *>(x);
     userid = cs->userid;
     return FWObject::shallowDuplicate(x, preserve_id);
 }
 
-void UserService::fromXML(xmlNodePtr root) throw(FWException)
+void UserService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char *n = FROMXMLCAST(xmlGetProp(root,TOXMLCAST("userid")));
+    const char *n = XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("userid")));
     if(n)
     {
         userid = string(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
-xmlNodePtr UserService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr UserService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("userid"), STRTOXMLCAST(userid));
+    xmlNewProp(me, XMLTools::ToXmlCast("userid"), XMLTools::StrToXmlCast(userid));
     return me;
 }
 
-bool UserService::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool UserService::cmp(const FWObject *obj, bool recursive)
 {
-    if (UserService::constcast(obj)==NULL) return false;
+    if (UserService::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
     
     const UserService *user_serv = UserService::constcast(obj);

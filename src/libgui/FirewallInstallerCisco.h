@@ -28,7 +28,6 @@
 #define __FIREWALLINSTALLERCISCO_H_
 
 
-#include "config.h"
 
 #include "FirewallInstaller.h"
 

@@ -58,7 +58,7 @@ PolicyRule* AutomaticRules_ipt::addMgmtRule(
                                                    iface, direction, action,
                                                    label);
 
-    FWOptions *ruleopt = rule->getOptionsObject(); assert(ruleopt!=NULL);
+    FWOptions *ruleopt = rule->getOptionsObject(); assert(ruleopt!=nullptr);
     if (related)
     {
         ruleopt->setBool("stateless", false);
@@ -74,7 +74,7 @@ PolicyRule* AutomaticRules_ipt::addMgmtRule(
 
 void AutomaticRules_ipt::addConntrackRule()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     FWOptions* options = fw->getOptionsObject();
     string conntrack_iface_name = options->getStr("state_sync_interface");
@@ -91,7 +91,7 @@ void AutomaticRules_ipt::addConntrackRule()
                 FWObjectDatabase::getIntId(conntrack_group_id)));
 
     Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
-    assert(os_res != NULL);
+    assert(os_res != nullptr);
 
     string default_address =
         os_res->getResourceStr("/FWBuilderResources/Target/protocols/conntrack/default_address");
@@ -104,7 +104,7 @@ void AutomaticRules_ipt::addConntrackRule()
 
     try
     {
-        InetAddr(addr);
+        (void) InetAddr(addr);
     } catch (FWException &ex)
     {
         try
@@ -138,7 +138,7 @@ void AutomaticRules_ipt::addConntrackRule()
     /* Find conntrack interface */
     Interface* conntrack_iface = Interface::cast(fw->findObjectByName(Interface::TYPENAME, conntrack_iface_name));
 
-    if (conntrack_iface == NULL)
+    if (conntrack_iface == nullptr)
     {
         throw FWException(
             "Unable to get CONNTRACK interface ("+ conntrack_iface_name +")");
@@ -147,7 +147,7 @@ void AutomaticRules_ipt::addConntrackRule()
     /* Add automatic rules for CONNTRACK */
     if (ucast)
     {
-        Interface *fw_iface = NULL;
+        Interface *fw_iface = nullptr;
         list<Interface*> other_interfaces;
         for (FWObjectTypedChildIterator it =
                  state_sync_group->findByType(FWObjectReference::TYPENAME);
@@ -186,7 +186,7 @@ void AutomaticRules_ipt::addConntrackRule()
         }
     } else
     {
-        addMgmtRule(NULL,
+        addMgmtRule(nullptr,
                     conntrack_dst,
                     conntrack_srv,
                     conntrack_iface,
@@ -206,10 +206,10 @@ void AutomaticRules_ipt::addConntrackRule()
 
 void AutomaticRules_ipt::addFailoverRules()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
-    assert(os_res != NULL);
+    assert(os_res != nullptr);
 
     string default_heartbeat_port =
         os_res->getResourceStr(
@@ -245,13 +245,13 @@ void AutomaticRules_ipt::addFailoverRules()
             FWObject *failover_group =
                 iface->getFirstByType(FailoverClusterGroup::TYPENAME);
 
-            PolicyRule *rule = NULL;
+            PolicyRule *rule = nullptr;
 
             string fw_iface_id = iface->getOptionsObject()->getStr("base_interface_id");
             Interface *fw_iface =
                 Interface::cast(
                     ruleset->getRoot()->findInIndex(FWObjectDatabase::getIntId(fw_iface_id)));
-            if (fw_iface == NULL)
+            if (fw_iface == nullptr)
             {
                 throw FWException(
                     QString("Can not find interface of the firewall "
@@ -309,9 +309,9 @@ void AutomaticRules_ipt::addFailoverRules()
                     if (other_iface->getId() == fw_iface->getId()) continue;
                     // if interface is dynamic, we can't use it in the rule
                     // (because it belongs to another machine, not the fw
-                    // we compile for so we can't use script). NULL means "any"
+                    // we compile for so we can't use script). nullptr means "any"
                     // in the call to addMgmtRule()
-                    if (other_iface->isDyn()) other_iface = NULL;
+                    if (other_iface->isDyn()) other_iface = nullptr;
 
                     if (!use_ipsec_ah)
                     {
@@ -390,9 +390,9 @@ void AutomaticRules_ipt::addFailoverRules()
                     if (other_iface->getId() == fw_iface->getId()) continue;
                     // if interface is dynamic, we can't use it in the rule
                     // (because it belongs to another machine, not the fw
-                    // we compile for so we can't use script). NULL means "any"
+                    // we compile for so we can't use script). nullptr means "any"
                     // in the call to addMgmtRule()
-                    if (other_iface->isDyn()) other_iface = NULL;
+                    if (other_iface->isDyn()) other_iface = nullptr;
 
                     if (ucast)
                     {
@@ -453,9 +453,9 @@ void AutomaticRules_ipt::addFailoverRules()
                     if (other_iface->getId() == fw_iface->getId()) continue;
                     // if interface is dynamic, we can't use it in the rule
                     // (because it belongs to another machine, not the fw
-                    // we compile for so we can't use script). NULL means "any"
+                    // we compile for so we can't use script). nullptr means "any"
                     // in the call to addMgmtRule()
-                    if (other_iface->isDyn()) other_iface = NULL;
+                    if (other_iface->isDyn()) other_iface = nullptr;
 
                     addMgmtRule(other_iface, openais_dst, openais_srv, iface,
                                 PolicyRule::Inbound, PolicyRule::Accept,
@@ -469,7 +469,7 @@ void AutomaticRules_ipt::addFailoverRules()
             if (rule)
             {
                 FWOptions *ruleopt = rule->getOptionsObject();
-                assert(ruleopt!=NULL);
+                assert(ruleopt!=nullptr);
                 ruleopt->setInt("firewall_is_part_of_any_and_networks", 1);
             }
         }

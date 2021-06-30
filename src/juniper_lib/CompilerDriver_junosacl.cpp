@@ -1,4 +1,3 @@
-#include "../../config.h"
 
 #include <string>
 
@@ -32,12 +31,12 @@ CompilerDriver* CompilerDriver_junosacl::clone()
 
 void CompilerDriver_junosacl::printProlog(QTextStream &file, const string &prolog_code)
 {
-    file << endl;
-    file << "/*" << endl;
-    file << " * Prolog script" << endl;
-    file << " */" << endl;
-    file << prolog_code << endl;
-    file << "/*" << endl;
-    file << " * End of prolog script" << endl;
-    file << " */" << endl;
+    file << '\n';
+    file << "/*" << '\n';
+    file << " * Prolog script" << '\n';
+    file << " */" << '\n';
+    file << prolog_code << '\n';
+    file << "/*" << '\n';
+    file << " * End of prolog script" << '\n';
+    file << " */" << '\n';
 }

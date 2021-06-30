@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_pix.h"
 #include "PortRangeConverter.h"
@@ -129,7 +128,7 @@ string NATCompiler_pix::PrintRule::_printDstService(Service *srv)
 
 string NATCompiler_pix::PrintRule::_printConnOptions(NATRule *rule)
 {
-    if (rule==NULL) return "";
+    if (rule==nullptr) return "";
 
     ostringstream ostr;
 
@@ -163,16 +162,18 @@ void NATCompiler_pix::PrintRule::printNONAT(NATRule *rule)
         string("/FWBuilderResources/Target/options/")+
         "version_"+version+"/pix_commands/clear_acl");
 
-    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst=compiler->getFirstODst(rule);  assert(odst);
+#ifndef NDEBUG
+    Address  *osrc=compiler->getFirstOSrc(rule);  assert(osrc);
     Service  *osrv=compiler->getFirstOSrv(rule);  assert(osrv);
                                       
     Address  *tsrc=compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst=compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv=compiler->getFirstTSrv(rule);  assert(tsrv);
+#endif
 
-    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
-    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
 
     Interface *i_iface = Interface::cast(
         FWObjectReference::getObject(itf_in_re->front()));
@@ -261,13 +262,15 @@ void NATCompiler_pix::PrintRule::printSNAT(NATRule *rule)
     Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst = compiler->getFirstODst(rule);  assert(odst);
     Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
-                                      
+
+#ifndef NDEBUG
     Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
+#endif
 
-    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
-    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
 
     Interface *i_iface = Interface::cast(
         FWObjectReference::getObject(itf_in_re->front()));
@@ -392,16 +395,19 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
         string("/FWBuilderResources/Target/options/") +
         "version_" + version+"/pix_commands/clear_acl");
 
+    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
+
+#ifndef NDEBUG
     Address  *osrc = compiler->getFirstOSrc(rule);  assert(osrc);
     Address  *odst = compiler->getFirstODst(rule);  assert(odst);
-    Service  *osrv = compiler->getFirstOSrv(rule);  assert(osrv);
                                       
     Address  *tsrc = compiler->getFirstTSrc(rule);  assert(tsrc);
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
+#endif
 
-    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
-    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
 
     Interface *i_iface = Interface::cast(
         FWObjectReference::getObject(itf_in_re->front()));
@@ -433,7 +439,7 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
         if (TCPService::cast(osrv)) { use_ports=true; compiler->output << "tcp "; }
         if (UDPService::cast(osrv)) { use_ports=true; compiler->output << "udp "; }
 
-        if (Interface::cast(scmd->oaddr)!=NULL) 
+        if (Interface::cast(scmd->oaddr)!=nullptr) 
         {
             compiler->output << "interface ";
             if (use_ports)	_printPort(scmd->osrv);
@@ -510,7 +516,7 @@ void NATCompiler_pix::PrintRule::printDNAT(NATRule *rule)
                 compiler->output << "udp ";
             }
 
-            if (Interface::cast(scmd->oaddr)!=NULL)
+            if (Interface::cast(scmd->oaddr)!=nullptr)
                 compiler->output << "interface ";
             else
                 compiler->output << outa->toString() << " ";
@@ -534,7 +540,7 @@ bool NATCompiler_pix::PrintRule::processNext()
         string("/FWBuilderResources/Target/options/") +
         "version_" + version + "/pix_commands/clear_acl");
 
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     bool suppress_comments =

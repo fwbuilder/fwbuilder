@@ -31,7 +31,6 @@
 #include <list>
 #include <assert.h>
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 namespace libfwbuilder {
     class InetAddr;
@@ -117,29 +116,29 @@ namespace libfwbuilder {
 };
 
 /*
- * Keeping return NULL; after assert() to make sure the function
+ * Keeping return nullptr; after assert() to make sure the function
  * returns something even if compiled with  -DNDEBUG that disables assert()
  * and to make gcc happy at compile time.
  */
 #define __DECLARE_DISPATCH_METHODS(classname) \
  virtual void* dispatch(classname*, void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch("#classname"*, void*)"==NULL); \
- return NULL; } \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch("#classname"*, void*)"==nullptr); \
+ return nullptr; } \
  virtual void* dispatch(classname*, const void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch("#classname"*, const void*)"==NULL); \
- return NULL; } \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch("#classname"*, const void*)"==nullptr); \
+ return nullptr; } \
  virtual void* dispatch(const classname*, void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch(const "#classname"*, void*)"==NULL); \
- return NULL; } \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(const "#classname"*, void*)"==nullptr); \
+ return nullptr; } \
  virtual void* dispatch(const classname*, const void*) \
- { assert("Call to unimplemented virtual void* Dispatch::dispatch(const "#classname"*, const void*)"==NULL); \
- return NULL; } \
+ { assert("Call to unimplemented virtual void* Dispatch::dispatch(const "#classname"*, const void*)"==nullptr); \
+ return nullptr; } \
  virtual const void* const_dispatch(const classname*, void*) \
- { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const "#classname"*, void*)"==NULL); \
- return NULL; } \
+ { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const "#classname"*, void*)"==nullptr); \
+ return nullptr; } \
  virtual const void* const_dispatch(const classname*, const void*) \
- { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const "#classname"*, const void*)"==NULL); \
- return NULL; }\
+ { assert("Call to unimplemented virtual const void* Dispatch::const_dispatch(const "#classname"*, const void*)"==nullptr); \
+ return nullptr; }\
 
 namespace libfwbuilder
 {

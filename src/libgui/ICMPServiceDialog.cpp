@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -58,7 +57,7 @@ ICMPServiceDialog::ICMPServiceDialog(QWidget *parent) :
 {
     m_dialog = new Ui::ICMPServiceDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -72,7 +71,7 @@ void ICMPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     ICMPService *s = dynamic_cast<ICMPService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     // if (ICMP6Service::isA(o))
     // {
@@ -115,7 +114,7 @@ void ICMPServiceDialog::validate(bool *res)
 
 void ICMPServiceDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();

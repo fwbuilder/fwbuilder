@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "platforms.h"
 
@@ -65,10 +64,10 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
     obj=o;
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     if (fwbdebug)
         qDebug("%s",Resources::getTargetOptionStr(
@@ -140,15 +139,15 @@ ipfwAdvancedDialog::ipfwAdvancedDialog(QWidget *parent,FWObject *o)
 void ipfwAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.saveAll(fwoptions);
 

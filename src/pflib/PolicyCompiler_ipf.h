@@ -26,7 +26,6 @@
 #ifndef __POLICYCOMPILER_IPF_HH
 #define __POLICYCOMPILER_IPF_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "PolicyCompiler_pf.h"
 
 
@@ -235,10 +234,7 @@ namespace fwcompiler {
             virtual std::string _printPort(int rs,int re,bool neg=false);
             virtual void _printWith(libfwbuilder::Service *srv);
             virtual void _printAction(libfwbuilder::PolicyRule *r);
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Woverloaded-virtual"
             virtual void _printAddr(libfwbuilder::Address  *o,bool neg=false);
-#pragma GCC diagnostic pop
             virtual void _printDstService(libfwbuilder::RuleElement  *o);
 
             public:
@@ -256,7 +252,7 @@ namespace fwcompiler {
 			   libfwbuilder::Firewall *fw,
                            bool ipv6_policy,
 			   fwcompiler::OSConfigurator *_oscnf) :
-        PolicyCompiler_pf(_db, fw, ipv6_policy, _oscnf, NULL) {}
+        PolicyCompiler_pf(_db, fw, ipv6_policy, _oscnf, nullptr) {}
 
 
 	virtual int  prolog();

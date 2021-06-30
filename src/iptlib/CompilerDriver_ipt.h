@@ -71,7 +71,7 @@ namespace fwcompiler
         // or "POSTROUTING"
         std::map<std::string, std::list<std::string> > branch_ruleset_to_chain_mapping;
        
-        std::auto_ptr<PolicyCompiler_ipt> createPolicyCompiler(
+        std::unique_ptr<PolicyCompiler_ipt> createPolicyCompiler(
             libfwbuilder::Firewall *fw,
             bool ipv6_policy,
             fwcompiler::OSConfigurator *_oscnf,

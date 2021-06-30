@@ -28,7 +28,6 @@
 #ifndef __SIMPLEINTEDITOR_H__
 #define __SIMPLEINTEDITOR_H__
 
-#include "config.h"
 #include <ui_simpleinteditor_q.h>
 
 class SimpleIntEditor : public QDialog

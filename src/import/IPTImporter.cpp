@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "IPTImporter.h"
 #include "getProtoByName.h"
@@ -76,9 +75,9 @@ IPTImporter::IPTImporter(FWObject *lib,
     current_table = "";
     current_chain = "";
     current_state = "";
-    current_ruleset = NULL;
-    current_rule = NULL;
-    last_mark_rule = NULL;
+    current_ruleset = nullptr;
+    current_rule = nullptr;
+    last_mark_rule = nullptr;
 
     clear();
 
@@ -397,14 +396,16 @@ void IPTImporter::addSrv()
 void IPTImporter::processModuleMatches()
 {
     PolicyRule *rule = PolicyRule::cast(current_rule);
+#ifndef NDEBUG
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
 
     FWOptions  *fwopt = getFirewallObject()->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
+#endif
 
     addAllModuleMatches(rule);
 
@@ -460,7 +461,7 @@ void IPTImporter::addAllModuleMatches(PolicyRule *rule)
 void IPTImporter::addMarkMatch(PolicyRule *rule)
 {
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     if (rule->getSrv()->isAny() && !match_mark.empty())
     {
         ObjectSignature sig(error_tracker);
@@ -475,7 +476,7 @@ void IPTImporter::addMarkMatch(PolicyRule *rule)
 void IPTImporter::addLengthMatch(PolicyRule *rule)
 {
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     if (rule->getSrv()->isAny() && !length_spec.empty())
     {
         // create custom service with module "length"
@@ -492,7 +493,7 @@ void IPTImporter::addLengthMatch(PolicyRule *rule)
 void IPTImporter::addPktTypeMatch(PolicyRule *rule)
 {
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     if (rule->getSrv()->isAny() && !pkt_type_spec.empty())
     {
         // create custom service with module "pkttype"
@@ -509,7 +510,7 @@ void IPTImporter::addPktTypeMatch(PolicyRule *rule)
 void IPTImporter::addLimitMatch(PolicyRule *rule)
 {
     FWOptions  *ropt = rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
     if (target!="LOG" && !limit_val.empty())
     {
         // TODO: this is where we should add support for hashlimit
@@ -524,7 +525,7 @@ void IPTImporter::addLimitMatch(PolicyRule *rule)
 void IPTImporter::addRecentMatch(PolicyRule *rule)
 {
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     if (rule->getSrv()->isAny() && !recent_match.empty())
     {
         // create custom service with module "recent"
@@ -542,7 +543,7 @@ void IPTImporter::addRecentMatch(PolicyRule *rule)
 void IPTImporter::addStateMatch(libfwbuilder::PolicyRule *rule, const string &state)
 {
     RuleElementSrv* srv = rule->getSrv();
-    assert(srv!=NULL);
+    assert(srv!=nullptr);
     if (rule->getSrv()->isAny() && !state.empty())
     {
         // create custom service with module "state"
@@ -570,7 +571,7 @@ PolicyRule* IPTImporter::createPolicyBranch(
     bool clear_rule_elements, bool make_stateless)
 {
     UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
-    if (rs==NULL)
+    if (rs==nullptr)
         rs = getUnidirRuleSet(branch_ruleset_name, Policy::TYPENAME);
     branch_rulesets[branch_ruleset_name] = rs;
     rs->ruleset->setName(branch_ruleset_name);
@@ -585,10 +586,10 @@ PolicyRule* IPTImporter::createPolicyBranch(
     rule->setBranch(rs->ruleset);
 
     FWOptions  *ropt = rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
     ropt->setBool("stateless", true);
 
-    if (rule->getParent() != NULL)
+    if (rule->getParent() != nullptr)
     {
         ostringstream str1;
         str1 << "Called from ruleset " << rule->getParent()->getName()
@@ -608,7 +609,7 @@ PolicyRule* IPTImporter::createPolicyBranch(
     if (make_stateless)
     {
         FWOptions  *ropt = new_rule->getOptionsObject();
-        assert(ropt!=NULL);
+        assert(ropt!=nullptr);
         ropt->setBool("stateless", true);
     }
 
@@ -623,7 +624,7 @@ NATRule* IPTImporter::createNATBranch(
     bool clear_rule_elements)
 {
     UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
-    if (rs==NULL)
+    if (rs==nullptr)
         rs = getUnidirRuleSet(branch_ruleset_name, NAT::TYPENAME);
     branch_rulesets[branch_ruleset_name] = rs;
     rs->ruleset->setName(branch_ruleset_name);
@@ -637,7 +638,7 @@ NATRule* IPTImporter::createNATBranch(
     rule->setRuleType(NATRule::NATBranch);
     rule->setBranch(rs->ruleset);
 
-    if (rule->getParent() != NULL)
+    if (rule->getParent() != nullptr)
     {
         ostringstream str1;
         str1 << "Called from ruleset " << rule->getParent()->getName()
@@ -670,8 +671,8 @@ NATRule* IPTImporter::createNATBranch(
 
 void IPTImporter::pushRule()
 {
-//    assert(current_ruleset!=NULL);
-    if (current_rule==NULL) return;
+//    assert(current_ruleset!=nullptr);
+    if (current_rule==nullptr) return;
 
     if (current_table=="nat")  pushNATRule();
     else                       pushPolicyRule();
@@ -685,10 +686,10 @@ void IPTImporter::pushPolicyRule()
     rule->setLogging(false);
 
     FWOptions  *fwopt = getFirewallObject()->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
 
     bool skip_rule = false;
 
@@ -880,7 +881,7 @@ void IPTImporter::pushPolicyRule()
         std::string branch_ruleset_name = target;
         action = PolicyRule::Branch;
         UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
-        if (rs==NULL)
+        if (rs==nullptr)
             rs = getUnidirRuleSet(branch_ruleset_name, Policy::TYPENAME);
 
         branch_rulesets[branch_ruleset_name] = rs;
@@ -918,12 +919,12 @@ void IPTImporter::pushPolicyRule()
     {
         RuleElementSrv *srv = rule->getSrv();
         std::string protocol = "";
-        FWObject *estab = NULL;
+        FWObject *estab = nullptr;
 
         FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
         FWObject *std_obj = dbroot->findInIndex(FWObjectDatabase::STANDARD_LIB_ID);
         estab = std_obj->findObjectByName(CustomService::TYPENAME, "ESTABLISHED");
-        if (estab == NULL)
+        if (estab == nullptr)
         {
             ObjectSignature sig(error_tracker);
             sig.type_name = CustomService::TYPENAME;
@@ -1035,11 +1036,11 @@ void IPTImporter::pushPolicyRule()
 
 
     if (target=="CONNMARK" &&
-        last_mark_rule != NULL &&
+        last_mark_rule != nullptr &&
         !action_params["connmark_save_mark"].empty())
     {
         FWOptions  *lmr_ropt = last_mark_rule->getOptionsObject();
-        assert(lmr_ropt!=NULL);
+        assert(lmr_ropt!=nullptr);
         lmr_ropt->setBool("ipt_mark_connections", true);
         skip_rule = true;
         addMessageToLog(
@@ -1098,25 +1099,25 @@ void IPTImporter::pushPolicyRule()
         }
 
         //  add rule to the right ruleset
-        RuleSet *ruleset = NULL;
+        RuleSet *ruleset = nullptr;
         std::string ruleset_name = "";
 
         // if (isStandardChain(current_chain))
         // {
         //     ruleset = RuleSet::cast(
         //         getFirewallObject()->getFirstByType(Policy::TYPENAME));
-        //     assert(ruleset!=NULL);
+        //     assert(ruleset!=nullptr);
         // } else
         // {
         //     UnidirectionalRuleSet *rs = getUnidirRuleSet(
         //         current_chain, Policy::TYPENAME);
-        //     assert(rs!=NULL);
+        //     assert(rs!=nullptr);
         //     ruleset = rs->ruleset;
         // }
 
         UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain,
                                                      Policy::TYPENAME);
-        assert(rs!=NULL);
+        assert(rs!=nullptr);
         ruleset = rs->ruleset;
 
         ruleset->add(current_rule);
@@ -1239,7 +1240,7 @@ void IPTImporter::pushPolicyRule()
         markCurrentRuleBad();
     }
 
-    current_rule = NULL;
+    current_rule = nullptr;
     rule_comment = "";
 
     clear();
@@ -1251,11 +1252,13 @@ void IPTImporter::pushNATRule()
 
     NATRule *rule = NATRule::cast(current_rule);
 
+#ifndef NDEBUG
     FWOptions  *fwopt = getFirewallObject()->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
+#endif
 
     addOSrc();
     addODst();
@@ -1277,7 +1280,7 @@ void IPTImporter::pushNATRule()
         rule_type = NATRule::Masq;
 
         RuleElementTSrc *re = rule->getTSrc();
-        assert(re!=NULL);
+        assert(re!=nullptr);
         if ( !o_intf.empty() )
         {
             newInterface(o_intf);
@@ -1293,7 +1296,7 @@ void IPTImporter::pushNATRule()
     {
         rule_type = NATRule::SNAT;
 
-        FWObject *tsrc = NULL;
+        FWObject *tsrc = nullptr;
         if (nat_addr1!=nat_addr2)
         {
             ObjectSignature sig(error_tracker);
@@ -1311,7 +1314,7 @@ void IPTImporter::pushNATRule()
         }
 
         RuleElementTSrc *re = rule->getTSrc();
-        assert(re!=NULL);
+        assert(re!=nullptr);
         re->addRef(tsrc);
 
         if (!nat_port_range_start.empty())
@@ -1320,14 +1323,14 @@ void IPTImporter::pushNATRule()
             str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
             FWObject *s = createTCPUDPService(nat_port_range, empty_range, protocol);
             RuleElementTSrv *re = rule->getTSrv();
-            assert(re!=NULL);
+            assert(re!=nullptr);
             re->addRef(s);
         }
 
         if (!o_intf.empty())
         {
             RuleElement *itf_o_re = rule->getItfOutb();
-            assert(itf_o_re!=NULL);
+            assert(itf_o_re!=nullptr);
             newInterface(o_intf);
             Interface *intf = all_interfaces[o_intf];
             itf_o_re->addRef(intf);
@@ -1343,11 +1346,11 @@ void IPTImporter::pushNATRule()
         if (current_chain == "OUTPUT")
         {
             RuleElementOSrc *re = rule->getOSrc();
-            assert(re!=NULL);
+            assert(re!=nullptr);
             re->addRef(getFirewallObject());
         }
 
-        FWObject *tdst = NULL;
+        FWObject *tdst = nullptr;
         if (nat_addr1!=nat_addr2)
         {
             ObjectSignature sig(error_tracker);
@@ -1365,7 +1368,7 @@ void IPTImporter::pushNATRule()
         }
 
         RuleElementTDst *re = rule->getTDst();
-        assert(re!=NULL);
+        assert(re!=nullptr);
         re->addRef(tdst);
 
         if (!nat_port_range_start.empty())
@@ -1374,14 +1377,14 @@ void IPTImporter::pushNATRule()
             str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
             FWObject *s = createTCPUDPService(empty_range, nat_port_range, protocol);
             RuleElementTSrv *re = rule->getTSrv();
-            assert(re!=NULL);
+            assert(re!=nullptr);
             re->addRef(s);
         }
 
         if (!i_intf.empty())
         {
             RuleElement *itf_i_re = rule->getItfInb();
-            assert(itf_i_re!=NULL);
+            assert(itf_i_re!=nullptr);
             newInterface(i_intf);
             Interface *intf = all_interfaces[i_intf];
             itf_i_re->addRef(intf);
@@ -1393,7 +1396,7 @@ void IPTImporter::pushNATRule()
         rule_type = NATRule::Redirect;
 
         RuleElementTDst *re = rule->getTDst();
-        assert(re!=NULL);
+        assert(re!=nullptr);
         re->addRef(getFirewallObject());
 
         if (!nat_port_range_start.empty())
@@ -1402,14 +1405,14 @@ void IPTImporter::pushNATRule()
             str_tuple nat_port_range(nat_port_range_start, nat_port_range_end);
             FWObject *s = createTCPUDPService(empty_range, nat_port_range, protocol);
             RuleElementTSrv *re = rule->getTSrv();
-            assert(re!=NULL);
+            assert(re!=nullptr);
             re->addRef(s);
         }
 
         if ( ! o_intf.empty())
         {
             RuleElement *itf_o_re = rule->getItfOutb();
-            assert(itf_o_re!=NULL);
+            assert(itf_o_re!=nullptr);
             newInterface(o_intf);
             Interface *intf = all_interfaces[o_intf];
             itf_o_re->addRef(intf);
@@ -1418,14 +1421,14 @@ void IPTImporter::pushNATRule()
 
     if (target=="NETMAP")
     {
-        FWObject *o = NULL;
+        FWObject *o = nullptr;
 
         if (!src_a.empty())
         {
             rule_type = NATRule::SNetnat;
 
             RuleElementTSrc *tsrc = rule->getTSrc();
-            assert(tsrc!=NULL);
+            assert(tsrc!=nullptr);
 
             ObjectSignature sig(error_tracker);
             sig.type_name = Address::TYPENAME;
@@ -1440,7 +1443,7 @@ void IPTImporter::pushNATRule()
             rule_type = NATRule::DNetnat;
 
             RuleElementTDst *tdst = rule->getTDst();
-            assert(tdst!=NULL);
+            assert(tdst!=nullptr);
 
             ObjectSignature sig(error_tracker);
             sig.type_name = Address::TYPENAME;
@@ -1464,7 +1467,7 @@ void IPTImporter::pushNATRule()
         rule->setAction(NATRule::Branch);
 
         UnidirectionalRuleSet *rs = branch_rulesets[branch_ruleset_name];
-        if (rs==NULL)
+        if (rs==nullptr)
         {
             rs = getUnidirRuleSet(branch_ruleset_name, NAT::TYPENAME);
             branch_rulesets[branch_ruleset_name] = rs;
@@ -1478,18 +1481,18 @@ void IPTImporter::pushNATRule()
     rule->setRuleType(rule_type);
 
     //  add rule to the right ruleset
-    RuleSet *ruleset = NULL;
+    RuleSet *ruleset = nullptr;
     std::string ruleset_name = "";
     if (isStandardChain(current_chain))
     {
         ruleset = RuleSet::cast(
             getFirewallObject()->getFirstByType(NAT::TYPENAME));
-        assert(ruleset!=NULL);
+        assert(ruleset!=nullptr);
         ruleset->add(current_rule);
     } else
     {
         UnidirectionalRuleSet *rs = getUnidirRuleSet(current_chain, NAT::TYPENAME);
-        assert(rs!=NULL);
+        assert(rs!=nullptr);
         rs->ruleset->add(current_rule);
         ruleset = rs->ruleset;
     }
@@ -1503,10 +1506,10 @@ void IPTImporter::pushNATRule()
 
     // RuleSet *nat = RuleSet::cast(
     //     getFirewallObject()->getFirstByType(NAT::TYPENAME));
-    // assert( nat!=NULL );
+    // assert( nat!=nullptr );
     // nat->add(current_rule);
 
-    current_rule = NULL;
+    current_rule = nullptr;
     rule_comment = "";
 
     clear();
@@ -1541,7 +1544,7 @@ Firewall* IPTImporter::finalize()
         fw->getManagementObject(); // creates management obj
 
         FWOptions  *fwopt = fw->getOptionsObject();
-        assert(fwopt!=NULL);
+        assert(fwopt!=nullptr);
 
         fwopt->setBool("firewall_is_part_of_any_and_networks", false);
 
@@ -1563,7 +1566,7 @@ Firewall* IPTImporter::finalize()
 
                 // check if all child objects were populated properly
                 FWOptions  *ropt = rule->getOptionsObject();
-                assert(ropt != NULL);
+                assert(ropt != nullptr);
                 ropt->setBool("stateless", true);
 
                 rule->setAction(PolicyRule::Accept);
@@ -1598,7 +1601,7 @@ Firewall* IPTImporter::finalize()
                 if (rs->name == "INPUT")
                 {
                     RuleElementDst* dst = rule->getDst();
-                    assert(dst!=NULL);
+                    assert(dst!=nullptr);
                     dst->addRef(fw);
                     rule->setDirection(PolicyRule::Inbound);
 
@@ -1623,7 +1626,7 @@ Firewall* IPTImporter::finalize()
                 if (rs->name == "OUTPUT")
                 {
                     RuleElementSrc* src = rule->getSrc();
-                    assert(src!=NULL);
+                    assert(src!=nullptr);
                     src->addRef(fw);
                     rule->setDirection(PolicyRule::Outbound);
                 }
@@ -1666,7 +1669,7 @@ Firewall* IPTImporter::finalize()
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -1682,9 +1685,9 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
 {
     string all_rulesets_index = current_table + "/" + ruleset_name;
     UnidirectionalRuleSet *rs = all_rulesets[all_rulesets_index];
-    if (rs == NULL)
+    if (rs == nullptr)
     {
-        RuleSet *ruleset = NULL;
+        RuleSet *ruleset = nullptr;
         FWObjectDatabase *dbroot = getFirewallObject()->getRoot();
 
         if (isStandardChain(ruleset_name))
@@ -1710,7 +1713,7 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
                             break;
                         }
                     }
-                    if (ruleset == NULL)
+                    if (ruleset == nullptr)
                     {
                         ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
                         FWOptions *rulesetopt = ruleset->getOptionsObject();
@@ -1734,7 +1737,7 @@ UnidirectionalRuleSet* IPTImporter::getUnidirRuleSet(
                             break;
                         }
                     }
-                    if (ruleset == NULL)
+                    if (ruleset == nullptr)
                     {
                         ruleset = RuleSet::cast(dbroot->create(Policy::TYPENAME));
                         FWOptions *rulesetopt = ruleset->getOptionsObject();

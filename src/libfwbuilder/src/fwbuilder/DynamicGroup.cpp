@@ -21,8 +21,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/DynamicGroup.h"
 #include "fwbuilder/XMLTools.h"
@@ -47,41 +45,41 @@ DynamicGroup::~DynamicGroup() {}
 
 bool DynamicGroup::validateChild(FWObject *o)
 { 
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
 
     return FWObject::validateChild(o);
 }
 
-void DynamicGroup::fromXML(xmlNodePtr root) throw(FWException)
+void DynamicGroup::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
     for (xmlNodePtr child = root->xmlChildrenNode;
-         child != 0; child = child->next) {
+         child != nullptr; child = child->next) {
         if (child->type != XML_ELEMENT_NODE) continue;
-        assert(strcmp(FROMXMLCAST(child->name), "SelectionCriteria") == 0);
+        assert(strcmp(XMLTools::FromXmlCast(child->name), "SelectionCriteria") == 0);
 
-        const char *type = FROMXMLCAST(xmlGetProp(child, TOXMLCAST("type")));
+        const char *type = XMLTools::FromXmlCast(xmlGetProp(child, XMLTools::ToXmlCast("type")));
         const char *keyword =
-            FROMXMLCAST(xmlGetProp(child, TOXMLCAST("keyword")));
+            XMLTools::FromXmlCast(xmlGetProp(child, XMLTools::ToXmlCast("keyword")));
         
         string filter;
         if (makeFilter(filter, type, keyword)) {
             m_filter.push_back(filter);
         }
 
-        FREEXMLBUFF(type);
-        FREEXMLBUFF(keyword);
+        XMLTools::FreeXmlBuff(type);
+        XMLTools::FreeXmlBuff(keyword);
     }
 }
 
-xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlRemoveProp(xmlHasProp(me, TOXMLCAST("run_time")));
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlRemoveProp(xmlHasProp(me, XMLTools::ToXmlCast("run_time")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     list<string>::const_iterator iter;
     for (iter = m_filter.begin(); iter != m_filter.end(); ++iter) {
@@ -89,10 +87,10 @@ xmlNodePtr DynamicGroup::toXML(xmlNodePtr parent) throw(FWException)
         if (!splitFilter(*iter, type, keyword)) continue;
         if (!makeFilter(filter, type, keyword)) continue;
 
-        xmlNodePtr item = xmlNewChild(me, NULL,
-                                      TOXMLCAST("SelectionCriteria"), NULL);
-        xmlNewProp(item, TOXMLCAST("type"), STRTOXMLCAST(type));
-        xmlNewProp(item, TOXMLCAST("keyword"), STRTOXMLCAST(keyword));
+        xmlNodePtr item = xmlNewChild(me, nullptr,
+                                      XMLTools::ToXmlCast("SelectionCriteria"), nullptr);
+        xmlNewProp(item, XMLTools::ToXmlCast("type"), XMLTools::StrToXmlCast(type));
+        xmlNewProp(item, XMLTools::ToXmlCast("keyword"), XMLTools::StrToXmlCast(keyword));
     }
 
     return me;
@@ -121,7 +119,7 @@ bool DynamicGroup::makeFilter(string &filter, const string &type,
 
 
 bool DynamicGroup::cmp(const FWObject *obj,
-                      bool recursive) throw(FWException)
+                      bool recursive)
 {
     if (!FWObject::cmp(obj, recursive)) return false;
 
@@ -131,7 +129,7 @@ bool DynamicGroup::cmp(const FWObject *obj,
 
 
 FWObject& DynamicGroup::shallowDuplicate(const FWObject *other,
-                                        bool preserve_id) throw (FWException)
+                                        bool preserve_id)
 {
     const DynamicGroup *otherObj = DynamicGroup::constcast(other);
     m_filter = otherObj->m_filter;
@@ -146,7 +144,6 @@ bool DynamicGroup::isCompileTime() const
 
 
 void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
-    throw (FWException)
 {
     (void) ipv6; (void) options; (void) test_mode; // Unused
 
@@ -167,22 +164,22 @@ void DynamicGroup::loadFromSource(bool ipv6, FWOptions *options, bool test_mode)
 static bool isInDeletedObjs(FWObject *obj)
 {
     FWObject *lib = obj->getLibrary();
-    return lib == 0 || lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID;
+    return lib == nullptr || lib->getId() == FWObjectDatabase::DELETED_OBJECTS_ID;
 }
 
 
 bool DynamicGroup::isMemberOfGroup(FWObject *obj)
 {
     if (obj == this) return false;
-    if (ObjectGroup::cast(obj) == 0 && Address::cast(obj) == 0) return false;
-    if (RuleElement::cast(obj) != 0) return false;
+    if (ObjectGroup::cast(obj) == nullptr && Address::cast(obj) == nullptr) return false;
+    if (RuleElement::cast(obj) != nullptr) return false;
     if (isInDeletedObjs(obj)) return false;
 
     /* There's no way to figure out what are the "standard" object
        groups (like "address tables") from within the fwbuilder
        library, so we rely on counting how deep we are in the tree
        instead. */
-    if (ObjectGroup::cast(obj) != 0 &&
+    if (ObjectGroup::cast(obj) != nullptr &&
         obj->getDistanceFromRoot() <= 3) return false;
 
     const set<string> &keywords = obj->getKeywords();

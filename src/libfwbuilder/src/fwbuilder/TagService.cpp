@@ -27,8 +27,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/TagService.h"
@@ -59,24 +57,24 @@ string TagService::getCode() const
     return getStr("tagcode");
 }
 
-void TagService::fromXML(xmlNodePtr root) throw(FWException)
+void TagService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("tagcode")));
-    assert(n!=NULL);
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("tagcode")));
+    assert(n!=nullptr);
     setStr("tagcode", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
     
 
 }
 
-xmlNodePtr TagService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr TagService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }

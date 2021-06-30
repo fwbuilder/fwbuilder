@@ -32,7 +32,7 @@ TokenRef* TokenRef::getRef(const Token* p)
 		else
 			return new TokenRef(pp);
 	} else
-		return 0;
+		return nullptr;
 }
 
 #ifdef ANTLR_CXX_SUPPORTS_NAMESPACE

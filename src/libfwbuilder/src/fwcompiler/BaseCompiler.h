@@ -26,7 +26,6 @@
 #ifndef __BASE_COMPILER_HH__
 #define __BASE_COMPILER_HH__
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Rule.h"
 
@@ -100,11 +99,11 @@ public:
          * in testing mode (flag test_mode==true), then just prints
          * the error message and returns.
          */
-	virtual void abort(const std::string &errstr) throw(libfwbuilder::FWException);
+	virtual void abort(const std::string &errstr);
 	virtual void abort(libfwbuilder::FWObject *fw,
                            libfwbuilder::FWObject *ruleset,
                            libfwbuilder::FWObject *rule,
-                           const std::string &errstr) throw(libfwbuilder::FWException);
+                           const std::string &errstr);
 
         /**
          * prints an error message and returns
@@ -158,6 +157,10 @@ public:
          * warning messages
          */
         static void warningRegExp(std::list<std::string> *warn_regexp);
+
+        static const std::string manifestMarker() {
+            return "# files: ";
+        }
 
     };
 }

@@ -28,8 +28,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -52,10 +50,10 @@ Management::Management()
     setId(-1);
 }
 
-void Management::fromXML(xmlNodePtr root) throw(FWException)
+void Management::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address")));
     if (!n)
     {
         throw FWException(
@@ -64,17 +62,17 @@ void Management::fromXML(xmlNodePtr root) throw(FWException)
     try
     {
         addr = InetAddr(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } catch(FWException &ex)
     {
         // try ipv6
         try
         {
             addr = InetAddr(AF_INET6, n);
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         } catch(FWException &ex)
         {
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
             throw FWException(
                 string("Invalid address attribute in Management element: ") +
                 ex.toString());
@@ -82,7 +80,7 @@ void Management::fromXML(xmlNodePtr root) throw(FWException)
     }
 }
 
-xmlNodePtr Management::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Management::toXML(xmlNodePtr parent)
 {
     setId(-1);
     setStr("address", addr.toString());
@@ -105,9 +103,9 @@ xmlNodePtr Management::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool Management::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool Management::cmp(const FWObject *obj, bool recursive)
 {
-    if (Management::constcast(obj)==NULL) return false;
+    if (Management::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const Management *o2=Management::constcast(obj);
@@ -126,7 +124,7 @@ bool Management::validateChild(FWObject *o)
 
 
 FWObject& Management::shallowDuplicate(const FWObject *o,
-                                       bool preserve_id) throw(FWException)
+                                       bool preserve_id)
 {
     const Management *other = dynamic_cast<const Management*>(o);
     addr = other->getAddress();
@@ -204,36 +202,36 @@ void PolicyInstallScript::setEnabled(bool v)
     enabled = v;
 }
 
-void PolicyInstallScript::fromXML(xmlNodePtr root) throw(FWException)
+void PolicyInstallScript::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
     const char *n;
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("command")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("command")));
     if(n)
     {
         command=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("arguments")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("arguments")));
     if(n)
     {
         arguments=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("enabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("enabled")));
     if(n)
     {
         enabled=(cxx_strcasecmp(n,"True")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } else enabled = false;
     
 }
 
-xmlNodePtr PolicyInstallScript::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr PolicyInstallScript::toXML(xmlNodePtr parent)
 {
     setId(-1);
     setStr("command", command );
@@ -242,9 +240,9 @@ xmlNodePtr PolicyInstallScript::toXML(xmlNodePtr parent) throw(FWException)
     return FWObject::toXML(parent);
 }
 
-bool PolicyInstallScript::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool PolicyInstallScript::cmp(const FWObject *obj, bool recursive)
 {
-    if (PolicyInstallScript::constcast(obj)==NULL) return false;
+    if (PolicyInstallScript::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const PolicyInstallScript *o2=PolicyInstallScript::constcast(obj);
@@ -254,7 +252,7 @@ bool PolicyInstallScript::cmp(const FWObject *obj, bool recursive) throw(FWExcep
             enabled==o2->enabled);
 }
 
-FWObject& PolicyInstallScript::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
+FWObject& PolicyInstallScript::shallowDuplicate(const FWObject *o, bool preserve_id)
 {
     const PolicyInstallScript *n=dynamic_cast<const PolicyInstallScript *>(o);
     command   =  n->getCommand();
@@ -310,36 +308,36 @@ void SNMPManagement::setEnabled(bool v)
     enabled = v;
 }
 
-void SNMPManagement::fromXML(xmlNodePtr root) throw(FWException)
+void SNMPManagement::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
     const char *n;
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("snmp_read_community")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("snmp_read_community")));
     if(n)
     {
         read_community=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("snmp_write_community")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("snmp_write_community")));
     if(n)
     {
         write_community=n;
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("enabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("enabled")));
     if(n)
     {
         enabled=(cxx_strcasecmp(n,"True")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } else enabled = false;
     
 }
 
-xmlNodePtr SNMPManagement::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr SNMPManagement::toXML(xmlNodePtr parent)
 {
     setId(-1);
     setStr("snmp_read_community", read_community );
@@ -348,9 +346,9 @@ xmlNodePtr SNMPManagement::toXML(xmlNodePtr parent) throw(FWException)
     return FWObject::toXML(parent);
 }
 
-bool SNMPManagement::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool SNMPManagement::cmp(const FWObject *obj, bool recursive)
 {
-    if (SNMPManagement::constcast(obj)==NULL) return false;
+    if (SNMPManagement::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const SNMPManagement *o2=SNMPManagement::constcast(obj);
@@ -360,7 +358,7 @@ bool SNMPManagement::cmp(const FWObject *obj, bool recursive) throw(FWException)
             enabled==o2->enabled);
 }
 
-FWObject& SNMPManagement::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
+FWObject& SNMPManagement::shallowDuplicate(const FWObject *o, bool preserve_id)
 {
     const SNMPManagement *n=dynamic_cast<const SNMPManagement *>(o);
     read_community  =  n->getReadCommunity();
@@ -423,28 +421,28 @@ void FWBDManagement::setEnabled(bool v)
     enabled = v;
 }
 
-void FWBDManagement::fromXML(xmlNodePtr parent) throw(FWException)
+void FWBDManagement::fromXML(xmlNodePtr parent)
 {
-    const char *n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("identity")));
-    assert(n!=NULL);
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(parent,XMLTools::ToXmlCast("identity")));
+    assert(n!=nullptr);
     identity_id = n;
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
     
-    n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("port")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(parent,XMLTools::ToXmlCast("port")));
+    assert(n!=nullptr);
     port = atoi(n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
     enabled=false;
-    n=FROMXMLCAST(xmlGetProp(parent,TOXMLCAST("enabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(parent,XMLTools::ToXmlCast("enabled")));
     if(n)
     {
         enabled=(cxx_strcasecmp(n,"True")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
-xmlNodePtr FWBDManagement::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr FWBDManagement::toXML(xmlNodePtr parent)
 {
     setId(-1);
     setInt("port", port);
@@ -456,9 +454,9 @@ xmlNodePtr FWBDManagement::toXML(xmlNodePtr parent) throw(FWException)
     return me;
 }
 
-bool FWBDManagement::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool FWBDManagement::cmp(const FWObject *obj, bool recursive)
 {
-    if (FWBDManagement::constcast(obj)==NULL) return false;
+    if (FWBDManagement::constcast(obj)==nullptr) return false;
     if (!FWObject::cmp(obj, recursive)) return false;
 
     const FWBDManagement *o2=FWBDManagement::constcast(obj);
@@ -468,7 +466,7 @@ bool FWBDManagement::cmp(const FWObject *obj, bool recursive) throw(FWException)
             enabled==o2->enabled);
 }
 
-FWObject& FWBDManagement::shallowDuplicate(const FWObject *o, bool preserve_id) throw(FWException)
+FWObject& FWBDManagement::shallowDuplicate(const FWObject *o, bool preserve_id)
 {
     const FWBDManagement *n=dynamic_cast<const FWBDManagement *>(o);
 #if 0

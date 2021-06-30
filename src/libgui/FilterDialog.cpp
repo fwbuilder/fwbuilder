@@ -23,11 +23,10 @@
 
 */
 
-#include "config.h"
+#include "version.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
-#include "VERSION.h"
 
 #include "FilterDialog.h"
 #include "ObjectManipulator.h"
@@ -134,33 +133,33 @@ void  FilterDialog::save()
     xmlNodePtr node;
     //xmlNodePtr tree;
 
-    doc = xmlNewDoc(TOXMLCAST("1.0"));
-    doc->children = xmlNewDocNode(doc, NULL, TOXMLCAST("FWB_FILTER"), NULL);
+    doc = xmlNewDoc(XMLTools::ToXmlCast("1.0"));
+    doc->children = xmlNewDocNode(doc, nullptr, XMLTools::ToXmlCast("FWB_FILTER"), nullptr);
 
-    xmlSetProp(doc->children, TOXMLCAST("version"),
-               TOXMLCAST( VERSION ));
-    xmlSetProp(doc->children, TOXMLCAST("CaseSensitive"),
-               TOXMLCAST( ((m_dialog->case_sensitive->isChecked())?"1":"0") ));
-    xmlSetProp(doc->children, TOXMLCAST("Match"),
-               TOXMLCAST( QString("%1").arg(m_dialog->combo->currentIndex()).toLatin1().constData() ));
+    xmlSetProp(doc->children, XMLTools::ToXmlCast("version"),
+               XMLTools::ToXmlCast( VERSION ));
+    xmlSetProp(doc->children, XMLTools::ToXmlCast("CaseSensitive"),
+               XMLTools::ToXmlCast( ((m_dialog->case_sensitive->isChecked())?"1":"0") ));
+    xmlSetProp(doc->children, XMLTools::ToXmlCast("Match"),
+               XMLTools::ToXmlCast( QString("%1").arg(m_dialog->combo->currentIndex()).toLatin1().constData() ));
 
     QString buf;
     int n=m_dialog->table->rowCount();
     for (int i=0;i<n;i++)
     {
-        node = xmlNewChild(doc->children, NULL,
-                           TOXMLCAST("FWB_FILTER_ITEM"), NULL);
+        node = xmlNewChild(doc->children, nullptr,
+                           XMLTools::ToXmlCast("FWB_FILTER_ITEM"), nullptr);
 
         buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,0))->currentIndex());
         xmlSetProp(node,(const xmlChar*)  "Target",
-                   TOXMLCAST(buf.toLatin1().constData()) );
+                   XMLTools::ToXmlCast(buf.toLatin1().constData()) );
 
         buf=QString("%1").arg(((QComboBox*)m_dialog->table->cellWidget(i,1))->currentIndex());
         xmlSetProp(node, (const xmlChar*) "Type",
-                   TOXMLCAST(buf.toLatin1().constData()) );
+                   XMLTools::ToXmlCast(buf.toLatin1().constData()) );
 
         xmlSetProp(node, (const xmlChar*) "Pattern",
-                   TOXMLCAST(m_dialog->table->item(i,2)->text().toLatin1().constData()));
+                   XMLTools::ToXmlCast(m_dialog->table->item(i,2)->text().toLatin1().constData()));
     }
 
     xmlSaveFile(s.toLatin1().constData(),doc);
@@ -180,7 +179,7 @@ void  FilterDialog::load()
 
     xmlDocPtr doc=xmlParseFile(s.toLatin1().constData());
     //TODO: use local codepage
-    if (doc == NULL)
+    if (doc == nullptr)
     {
         qDebug("Document not parsed successfully.");
         return;
@@ -188,7 +187,7 @@ void  FilterDialog::load()
 
     xmlNodePtr node= xmlDocGetRootElement(doc);
 
-    if (node == NULL)
+    if (node == nullptr)
     {
         qDebug("empty document");
         xmlFreeDoc(doc);
@@ -206,18 +205,18 @@ void  FilterDialog::load()
     QString qbuf;
 
     xmlbuf=xmlGetProp(node,(const xmlChar*) "CaseSensitive");
-    qbuf=FROMXMLCAST(xmlbuf);
-    FREEXMLBUFF(xmlbuf);
+    qbuf=XMLTools::FromXmlCast(xmlbuf);
+    XMLTools::FreeXmlBuff(xmlbuf);
     m_dialog->case_sensitive->setChecked(qbuf.toInt());
 
     xmlbuf=xmlGetProp(node,(const xmlChar*) "Match");
-    qbuf=FROMXMLCAST(xmlbuf);
-    FREEXMLBUFF(xmlbuf);
+    qbuf=XMLTools::FromXmlCast(xmlbuf);
+    XMLTools::FreeXmlBuff(xmlbuf);
     m_dialog->combo->setCurrentIndex(qbuf.toInt());
 
 
     node=node->xmlChildrenNode;
-    while (node != NULL)
+    while (node != nullptr)
     {
         if (xmlStrcmp(node->name,(const xmlChar*) "FWB_FILTER_ITEM"))
         {
@@ -231,21 +230,21 @@ void  FilterDialog::load()
 
 
         xmlbuf=xmlGetProp(node,(const xmlChar*) "Target");
-        qbuf=FROMXMLCAST(xmlbuf);
-        FREEXMLBUFF(xmlbuf);
+        qbuf=XMLTools::FromXmlCast(xmlbuf);
+        XMLTools::FreeXmlBuff(xmlbuf);
         ((QComboBox*)m_dialog->table->cellWidget(n,0))->setCurrentIndex(
             qbuf.toInt());
 
         xmlbuf=xmlGetProp(node,(const xmlChar*) "Type");
-        qbuf=FROMXMLCAST(xmlbuf);
-        FREEXMLBUFF(xmlbuf);
+        qbuf=XMLTools::FromXmlCast(xmlbuf);
+        XMLTools::FreeXmlBuff(xmlbuf);
         ((QComboBox*)m_dialog->table->cellWidget(n,1))->setCurrentIndex(
             qbuf.toInt());
 
 
         xmlbuf=xmlGetProp(node,(const xmlChar*) "Pattern");
-        qbuf=FROMXMLCAST(xmlbuf);
-        FREEXMLBUFF(xmlbuf);
+        qbuf=XMLTools::FromXmlCast(xmlbuf);
+        XMLTools::FreeXmlBuff(xmlbuf);
         m_dialog->table->item(n,2)->setText(qbuf);
 
         node=node->next;

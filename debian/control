@@ -1,14 +1,13 @@
 Source: fwbuilder
 Section: net
 Priority: optional
-Maintainer: Morten Knutsen <morten.knutsen@uninett.no>
-Build-Depends: debhelper (>= 5), cdbs, autotools-dev, zlib1g-dev,
- libqt4-dev, libxml2-dev, libxslt1-dev, libssl-dev, libsnmp-dev, qt4-dev-tools, 
- autoconf, automake, libtool
+Maintainer: Sirius Bakke <sirius@bakke.co>
+Build-Depends: debhelper (>=11~), cdbs, cmake, qtbase5-dev,
+ qttools5-dev-tools, zlib1g-dev, libxml2-dev, libxslt1-dev, libsnmp-dev
 Standards-Version: 3.9.3
-Homepage: http://www.fwbuilder.org/
-Vcs-Svn: https://bollin.googlecode.com/svn/fwbuilder/trunk
-Vcs-Browser: http://bollin.googlecode.com/svn/fwbuilder/trunk
+Homepage: https://www.fwbuilder.org
+Vcs-Browser: https://github.com/fwbuilder/fwbuilder
+Vcs-Git: https://github.com/fwbuilder/fwbuilder.git
 
 Package: fwbuilder
 Architecture: any

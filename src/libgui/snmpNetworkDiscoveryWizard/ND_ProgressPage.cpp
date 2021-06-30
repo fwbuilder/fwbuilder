@@ -57,7 +57,7 @@ ND_ProgressPage::ND_ProgressPage(QWidget *parent) : QWizardPage(parent)
     m_dialog->setupUi(this);
 
 #ifdef HAVE_LIBSNMP
-    crawler = NULL;
+    crawler = nullptr;
 
     connect(m_dialog->discoveryStopButton, SIGNAL(clicked()), this, SLOT(stop()));
     connect(m_dialog->logSaveButton, SIGNAL(clicked()), this, SLOT(saveLog()));
@@ -91,7 +91,7 @@ ND_ProgressPage::~ND_ProgressPage()
 
 #ifdef HAVE_LIBSNMP
 
-    if (crawler != NULL && crawler->isRunning())
+    if (crawler != nullptr && crawler->isRunning())
     {
         if (fwbdebug_nd)
             qDebug() << "ND_ProgressPage::initializePage()"
@@ -119,20 +119,20 @@ bool ND_ProgressPage::validatePage()
                  << "isRunning=" << ((crawler) ? crawler->isRunning() : 0)
                  << "objects->size()=" << objects->size();
 
-    if (crawler != NULL && crawler->isRunning()) return false;
+    if (crawler != nullptr && crawler->isRunning()) return false;
     return (objects->size() > 0);
 }
 
 bool ND_ProgressPage::isComplete() const
 {
-    if (crawler != NULL && crawler->isRunning()) return false;
+    if (crawler != nullptr && crawler->isRunning()) return false;
     return true;
 }
 
 void ND_ProgressPage::crawlerDestroyed(QObject *obj)
 {
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::crawlerDestroyed() obj=" << obj;
-    if (obj == crawler) crawler = NULL;
+    if (obj == crawler) crawler = nullptr;
 }
 
 void ND_ProgressPage::initializePage()
@@ -182,7 +182,7 @@ void ND_ProgressPage::initializePage()
         }
     }
 
-    if (crawler != NULL && crawler->isRunning())
+    if (crawler != nullptr && crawler->isRunning())
     {
         if (fwbdebug_nd)
             qDebug() << "ND_ProgressPage::initializePage()"
@@ -221,13 +221,13 @@ void ND_ProgressPage::cleanupPage()
     if (fwbdebug_nd) qDebug() << "ND_ProgressPage::cleanupPage()";
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(crawlerFinished()));
-    if (crawler != NULL && crawler->isRunning()) crawler->stop();
+    if (crawler != nullptr && crawler->isRunning()) crawler->stop();
     include_networks.clear();
 }
 
 void ND_ProgressPage::stop()
 {
-    if (crawler != NULL && crawler->isRunning())
+    if (crawler != nullptr && crawler->isRunning())
     {
         logLine(tr("Stopping network crawler process..."));
         crawler->stop();
@@ -254,7 +254,7 @@ void ND_ProgressPage::crawlerFinished()
 
     bool snmpDoDNS = field("snmpDoDNS").toBool();
 
-    if (crawler==NULL) return;
+    if (crawler==nullptr) return;
 
     set<InetAddrMask>::iterator m;
     set<InetAddrMask> discovered_networks = crawler->getNetworks();
@@ -395,14 +395,10 @@ void ND_ProgressPage::saveLog()
             }
             QTextStream strm(&f);
             QString txt = m_dialog->discoveryLog->toPlainText();
-            strm << txt << endl;
+            strm << txt << '\n';
             if (fwbdebug)
             {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                qDebug("%s",txt.toAscii().constData());
-#else
                 qDebug("%s",txt.toLatin1().constData());
-#endif
                 qDebug("--------------------------------");
             }
             f.close();

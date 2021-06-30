@@ -27,7 +27,6 @@
 #ifndef __SIMPLETEXTVIEW_H_
 #define __SIMPLETEXTVIEW_H_
 
-#include "config.h"
 #include <ui_simpletextview_q.h>
 #include <QDialog>
 

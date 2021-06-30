@@ -25,12 +25,11 @@
 
 #include "ICMP6ServiceDialogTest.h"
 
-#include "../../../../config.h"
 //#include "../../global.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTest>
 #include <iostream>
 
@@ -73,14 +72,14 @@ void ICMP6ServiceDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
 }
 
 Library* ICMP6ServiceDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")

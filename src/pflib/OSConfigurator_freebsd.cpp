@@ -48,14 +48,14 @@ string OSConfigurator_freebsd::myPlatformName() { return "FreeBSD"; }
 string OSConfigurator_freebsd::printKernelVarsCommands() 
 {
     FWOptions* options = fw->getOptionsObject();
-    std::auto_ptr<Configlet> kernel_vars;
+    std::unique_ptr<Configlet> kernel_vars;
     if (options->getBool("generate_rc_conf_file"))
     {
-        kernel_vars = std::auto_ptr<Configlet>(
+        kernel_vars = std::unique_ptr<Configlet>(
             new Configlet(fw, "freebsd", "rc_conf_kernel_vars"));
     } else
     {
-        kernel_vars = std::auto_ptr<Configlet>(
+        kernel_vars = std::unique_ptr<Configlet>(
             new Configlet(fw, "bsd", "kernel_vars"));
     }
 
@@ -336,7 +336,7 @@ void OSConfigurator_freebsd::interfaceConfigLineBridge(Interface *iface,
     if (options->getBool("generate_rc_conf_file"))
     {
         FWOptions *ifopt = iface->getOptionsObject();
-        assert(ifopt != NULL);
+        assert(ifopt != nullptr);
 
         bool enable_stp = ifopt->getBool("enable_stp");
 

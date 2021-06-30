@@ -22,7 +22,7 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout_7">
+  <layout class="QGridLayout" name="pixAdvanced_gridLayout_7">
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
@@ -94,7 +94,7 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_20">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_20">
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="textLabel1_5">
          <property name="sizePolicy">
@@ -154,7 +154,7 @@
          <property name="title">
           <string>Policy Compiler Options</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_3">
           <item row="0" column="0">
            <widget class="QCheckBox" name="pix_assume_fw_part_of_any">
             <property name="toolTip">
@@ -223,7 +223,7 @@
          <property name="title">
           <string>Address Translation</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_18">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_18">
           <item row="0" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
@@ -270,7 +270,7 @@
          <property name="title">
           <string>Verification of NAT rules</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_17">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_17">
           <property name="verticalSpacing">
            <number>-1</number>
           </property>
@@ -312,7 +312,7 @@
         </widget>
        </item>
        <item row="5" column="0" colspan="2">
-        <layout class="QGridLayout" name="gridLayout_4">
+        <layout class="QGridLayout" name="pixAdvanced_gridLayout_4">
          <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="mgmt_ssh">
            <property name="text">
@@ -379,13 +379,13 @@
       <attribute name="title">
        <string>Installer</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_6">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_6">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox2">
          <property name="title">
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_124">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_124">
           <item row="0" column="0">
            <widget class="QLabel" name="textLabel1_2">
             <property name="text">
@@ -556,7 +556,7 @@
          <property name="title">
           <string>External install script</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_2">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="spacing">
@@ -656,7 +656,7 @@
       <attribute name="title">
        <string>Prolog/Epilog</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_10">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_10">
        <item row="0" column="0">
         <widget class="QGroupBox" name="frame146">
          <property name="title">
@@ -779,7 +779,7 @@
       <attribute name="title">
        <string>Timeouts</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_9">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_9">
        <item row="1" column="0">
         <spacer>
          <property name="orientation">
@@ -1479,7 +1479,7 @@
       <attribute name="title">
        <string>Inspect</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_11">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_11">
        <item row="0" column="0">
         <widget class="QLabel" name="textLabel1_4">
          <property name="text">
@@ -3575,7 +3575,7 @@
           <attribute name="title">
            <string>IP options</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout">
+          <layout class="QGridLayout" name="pixAdvanced_gridLayout">
            <property name="horizontalSpacing">
             <number>20</number>
            </property>
@@ -3780,13 +3780,13 @@
       <attribute name="title">
        <string>Logging</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_16">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_16">
        <item row="0" column="0">
         <widget class="QGroupBox" name="frame171">
          <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_15">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_15">
           <item row="0" column="0">
            <widget class="QLabel" name="label599">
             <property name="text">
@@ -3918,7 +3918,7 @@
             <property name="title">
              <string>Set device id for syslog messages (v6.3 and later):</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_14">
+            <layout class="QGridLayout" name="pixAdvanced_gridLayout_14">
              <item row="0" column="0">
               <widget class="QRadioButton" name="syslog_device_id_hostname">
                <property name="text">
@@ -4006,7 +4006,7 @@
          <property name="title">
           <string>Other logging destinations and levels:</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_5">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_5">
           <item row="0" column="0">
            <widget class="QCheckBox" name="logging_buffered">
             <property name="text">
@@ -4092,7 +4092,7 @@
       <attribute name="title">
        <string>Script</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_19">
+      <layout class="QGridLayout" name="pixAdvanced_gridLayout_19">
        <item row="0" column="0">
         <widget class="QGroupBox" name="buttonGroup10">
          <property name="sizePolicy">
@@ -4104,7 +4104,7 @@
          <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_12">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_12">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
@@ -4319,7 +4319,7 @@ First, create temporary access list to permit connections from the management su
          <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_13">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_13">
           <item row="0" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
@@ -4438,7 +4438,7 @@ First, create temporary access list to permit connections from the management su
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
          </property>
-         <layout class="QGridLayout" name="gridLayout_8">
+         <layout class="QGridLayout" name="pixAdvanced_gridLayout_8">
           <property name="verticalSpacing">
            <number>12</number>
           </property>

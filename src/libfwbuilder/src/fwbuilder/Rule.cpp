@@ -30,8 +30,6 @@
 #include <sstream>
 #include <iostream>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -65,8 +63,8 @@ void Rule::init(FWObjectDatabase*)
 {
 }
 
-FWOptions* Rule::getOptionsObject() const { return NULL; }
-RuleSet* Rule::getBranch() { return NULL; }
+FWOptions* Rule::getOptionsObject() const { return nullptr; }
+RuleSet* Rule::getBranch() { return nullptr; }
 void Rule::setPosition(int n)  { setInt("position", n); }
 int Rule::getPosition() const { return getInt("position"); }
 void Rule::disable() { setBool("disabled",true); }
@@ -87,7 +85,7 @@ void Rule::setRuleGroupName(const std::string &group_name)
 
 
 FWObject& Rule::shallowDuplicate(const FWObject *x,
-                                 bool preserve_id) throw(FWException)
+                                 bool preserve_id)
 {
     const Rule *rx=Rule::constcast(x);
     fallback = rx->fallback;
@@ -99,7 +97,7 @@ FWObject& Rule::shallowDuplicate(const FWObject *x,
     return  FWObject::shallowDuplicate(x,preserve_id);
 }
 
-bool Rule::cmp(const FWObject *x, bool recursive) throw(FWException)
+bool Rule::cmp(const FWObject *x, bool recursive)
 {
     const Rule *rx = Rule::constcast(x);
     if (fallback != rx->fallback ||
@@ -119,33 +117,33 @@ PolicyRule::PolicyRule()
 //    setStr("action","Deny");
     setAction(PolicyRule::Deny);
 
-    src_re = NULL;
-    dst_re = NULL;
-    srv_re = NULL;
-    itf_re = NULL;
-    when_re = NULL;
+    src_re = nullptr;
+    dst_re = nullptr;
+    srv_re = nullptr;
+    itf_re = nullptr;
+    when_re = nullptr;
 }
 
 void PolicyRule::init(FWObjectDatabase *root)
 {
     FWObject *re = getFirstByType(RuleElementSrc::TYPENAME);
 
-    if (re == NULL)
+    if (re == nullptr)
     {
 // <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
-        re = root->createRuleElementSrc();  assert(re!=NULL);
+        re = root->createRuleElementSrc();  assert(re!=nullptr);
         add(re); src_re = RuleElementSrc::cast(re);
 
-        re = root->createRuleElementDst();  assert(re!=NULL);
+        re = root->createRuleElementDst();  assert(re!=nullptr);
         add(re); dst_re = RuleElementDst::cast(re);
 
-        re = root->createRuleElementSrv();  assert(re!=NULL);
+        re = root->createRuleElementSrv();  assert(re!=nullptr);
         add(re); srv_re = RuleElementSrv::cast(re);
 
-        re = root->createRuleElementItf();  assert(re!=NULL);
+        re = root->createRuleElementItf();  assert(re!=nullptr);
         add(re); itf_re = RuleElementItf::cast(re);
 
-        re = root->createRuleElementInterval(); assert(re!=NULL);
+        re = root->createRuleElementInterval(); assert(re!=nullptr);
         add(re); when_re = RuleElementInterval::cast(re);
 
         add( root->createPolicyRuleOptions() );
@@ -153,26 +151,26 @@ void PolicyRule::init(FWObjectDatabase *root)
 }
 
 FWObject& PolicyRule::shallowDuplicate(const FWObject *x,
-                                       bool preserve_id) throw(FWException)
+                                       bool preserve_id)
 {
     const PolicyRule *rx=PolicyRule::constcast(x);
     setDirection(rx->getDirection());
     setAction(rx->getAction());
     setLogging(rx->getLogging());
 
-    src_re = NULL;
-    dst_re = NULL;
-    srv_re = NULL;
-    itf_re = NULL;
-    when_re = NULL;
+    src_re = nullptr;
+    dst_re = nullptr;
+    srv_re = nullptr;
+    itf_re = nullptr;
+    when_re = nullptr;
 
     return  Rule::shallowDuplicate(x, preserve_id);
 }
 
-bool PolicyRule::cmp(const FWObject *x, bool recursive) throw(FWException)
+bool PolicyRule::cmp(const FWObject *x, bool recursive)
 {
     const PolicyRule *rx = PolicyRule::constcast(x);
-    if (rx == NULL) return false;
+    if (rx == nullptr) return false;
     if (getDirection() != rx->getDirection() ||
         getAction() != rx->getAction() ||
         getLogging() != rx->getLogging()) return false;
@@ -364,70 +362,70 @@ bool   PolicyRule::getLogging() const    { return getBool("log"); }
 void   PolicyRule::setLogging(bool flag) { setBool("log",flag);   }
 
 
-void PolicyRule::fromXML(xmlNodePtr root) throw(FWException)
+void PolicyRule::fromXML(xmlNodePtr root)
 {
     const char* n;
 
     FWObject::fromXML(root);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("position")));
     if(n)
     {
         setInt("position",atoi(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("disabled")));
     if(n)
     {
         setStr("disabled",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("action")));
     if(n)
     {
         setAction(string(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("log")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("log")));
     if(n)
     {
         setStr("log",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("interface")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("interface")));
     if(n)
     {
         setStr("interface",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("direction")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("direction")));
     if(n)
     {
         setDirection(string(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("group")));
     if(n)
     {
         setStr("group",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
 
-xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr PolicyRule::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
-    xmlNewProp(me, TOXMLCAST("direction"),STRTOXMLCAST(getDirectionAsString()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("action"), XMLTools::StrToXmlCast(getActionAsString()));
+    xmlNewProp(me, XMLTools::ToXmlCast("direction"),XMLTools::StrToXmlCast(getDirectionAsString()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
 
@@ -438,26 +436,26 @@ xmlNodePtr PolicyRule::toXML(xmlNodePtr parent) throw(FWException)
      *
      <!ELEMENT PolicyRule (Src,Dst,Srv?,Itf?,When?,PolicyRuleOptions?)>
      */
-    if ( (o=getFirstByType( RuleElementSrc::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementSrc::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementDst::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementDst::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementSrv::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementSrv::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementItf::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementItf::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementInterval::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementInterval::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( PolicyRuleOptions::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( PolicyRuleOptions::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
     // there should be no children Policy objects in v3
-    if ( (o=getFirstByType( Policy::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( Policy::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
     return me;
@@ -489,10 +487,10 @@ void PolicyRule::updateNonStandardObjectReferences()
 
 RuleSet* PolicyRule::getBranch()
 {
-    if (getAction() != PolicyRule::Branch) return NULL;
+    if (getAction() != PolicyRule::Branch) return nullptr;
     FWObject *fw = this;
-    while (fw && Firewall::cast(fw) == NULL) fw = fw->getParent();
-    assert(fw!=NULL);
+    while (fw && Firewall::cast(fw) == nullptr) fw = fw->getParent();
+    assert(fw!=nullptr);
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())
     {
@@ -506,7 +504,7 @@ RuleSet* PolicyRule::getBranch()
             return RuleSet::cast(
                 fw->findObjectByName(Policy::TYPENAME, branch_name));
         } else
-            return NULL;
+            return nullptr;
     }
 }
 
@@ -567,7 +565,7 @@ FWObject* PolicyRule::getTagObject()
                 FWObjectDatabase::getIntId(tagobj_id));
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 string PolicyRule::getTagValue()
@@ -656,44 +654,44 @@ NATRule::NATRule() : Rule()
     rule_type = Unknown;
     setAction(NATRule::Translate);
 
-    osrc_re = NULL;
-    odst_re = NULL;
-    osrv_re = NULL;
-    tsrc_re = NULL;
-    tdst_re = NULL;
-    tsrv_re = NULL;
-    itf_inb_re = NULL;
-    itf_outb_re = NULL;
-    when_re = NULL;
+    osrc_re = nullptr;
+    odst_re = nullptr;
+    osrv_re = nullptr;
+    tsrc_re = nullptr;
+    tdst_re = nullptr;
+    tsrv_re = nullptr;
+    itf_inb_re = nullptr;
+    itf_outb_re = nullptr;
+    when_re = nullptr;
 }
 
 void NATRule::init(FWObjectDatabase *root)
 {
     FWObject *re = getFirstByType(RuleElementOSrc::TYPENAME);
-    if (re == NULL)
+    if (re == nullptr)
     {
-        re = root->createRuleElementOSrc();  assert(re!=NULL);
+        re = root->createRuleElementOSrc();  assert(re!=nullptr);
         add(re); osrc_re = RuleElementOSrc::cast(re);
 
-        re = root->createRuleElementODst();  assert(re!=NULL);
+        re = root->createRuleElementODst();  assert(re!=nullptr);
         add(re); odst_re = RuleElementODst::cast(re);
 
-        re = root->createRuleElementOSrv();  assert(re!=NULL);
+        re = root->createRuleElementOSrv();  assert(re!=nullptr);
         add(re); osrv_re = RuleElementOSrv::cast(re);
     
-        re = root->createRuleElementTSrc();  assert(re!=NULL);
+        re = root->createRuleElementTSrc();  assert(re!=nullptr);
         add(re); tsrc_re = RuleElementTSrc::cast(re);
 
-        re = root->createRuleElementTDst();  assert(re!=NULL);
+        re = root->createRuleElementTDst();  assert(re!=nullptr);
         add(re); tdst_re = RuleElementTDst::cast(re);
 
-        re = root->createRuleElementTSrv();  assert(re!=NULL);
+        re = root->createRuleElementTSrv();  assert(re!=nullptr);
         add(re); tsrv_re = RuleElementTSrv::cast(re);
 
-        re = root->createRuleElementItfInb();  assert(re!=NULL);
+        re = root->createRuleElementItfInb();  assert(re!=nullptr);
         add(re); itf_inb_re = RuleElementItfInb::cast(re);
 
-        re = root->createRuleElementItfOutb();  assert(re!=NULL);
+        re = root->createRuleElementItfOutb();  assert(re!=nullptr);
         add(re); itf_outb_re = RuleElementItfOutb::cast(re);
 
         add( root->createNATRuleOptions() );
@@ -833,82 +831,82 @@ bool NATRule::isEmpty()
             itf_inb->isAny() && itf_outb->isAny());
 }
 
-void NATRule::fromXML(xmlNodePtr root) throw(FWException)
+void NATRule::fromXML(xmlNodePtr root)
 {
     const char* n;
 
     FWObject::fromXML(root);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("action")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("action")));
     if(n)
     {
         setAction(string(n));
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("disabled")));
     if(n)
     {
         setStr("disabled",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("position")));
     if(n)
     {
         setStr("position",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("group")));
     if(n)
     {
         setStr("group",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
 
-xmlNodePtr NATRule::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr NATRule::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("action"), STRTOXMLCAST(getActionAsString()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+//    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("action"), XMLTools::StrToXmlCast(getActionAsString()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
 
-    if ( (o=getFirstByType( RuleElementOSrc::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementOSrc::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementODst::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementODst::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementOSrv::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementOSrv::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementTSrc::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementTSrc::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementTDst::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementTDst::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementTSrv::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementTSrv::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementItfInb::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementItfInb::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementItfOutb::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementItfOutb::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementInterval::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementInterval::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( NATRuleOptions::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( NATRuleOptions::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( NAT::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( NAT::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
     return me;
@@ -921,9 +919,9 @@ FWOptions* NATRule::getOptionsObject() const
 
 RuleSet* NATRule::getBranch()
 {
-    if (getAction() != NATRule::Branch) return NULL;
+    if (getAction() != NATRule::Branch) return nullptr;
     FWObject *fw = getParent()->getParent();
-    assert(fw!=NULL);
+    assert(fw!=nullptr);
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())
     {
@@ -936,7 +934,7 @@ RuleSet* NATRule::getBranch()
             return RuleSet::cast(fw->findObjectByName(NAT::TYPENAME,
                                                   branch_name));
         else
-            return NULL;
+            return nullptr;
     }
 }
 
@@ -978,29 +976,29 @@ void NATRule::setRuleType(NATRuleTypes rt)
 }
 
 FWObject& NATRule::shallowDuplicate(const FWObject *x,
-                                    bool preserve_id) throw(FWException)
+                                    bool preserve_id)
 {
     const NATRule *rx = NATRule::constcast(x);
-    if (rx!=NULL) rule_type = rx->rule_type;
+    if (rx!=nullptr) rule_type = rx->rule_type;
     setAction(rx->getAction());
 
-    osrc_re = NULL;
-    odst_re = NULL;
-    osrv_re = NULL;
-    tsrc_re = NULL;
-    tdst_re = NULL;
-    tsrv_re = NULL;
-    itf_inb_re = NULL;
-    itf_outb_re = NULL;
-    when_re = NULL;
+    osrc_re = nullptr;
+    odst_re = nullptr;
+    osrv_re = nullptr;
+    tsrc_re = nullptr;
+    tdst_re = nullptr;
+    tsrv_re = nullptr;
+    itf_inb_re = nullptr;
+    itf_outb_re = nullptr;
+    when_re = nullptr;
 
     return  Rule::shallowDuplicate(x, preserve_id);
 }
 
-bool NATRule::cmp(const FWObject *x, bool recursive) throw(FWException)
+bool NATRule::cmp(const FWObject *x, bool recursive)
 {
     const NATRule *rx = NATRule::constcast(x);
-    if (rx == NULL) return false;
+    if (rx == nullptr) return false;
     if (getAction() != rx->getAction()) return false;
     return  Rule::cmp(x, recursive);
 }
@@ -1019,11 +1017,11 @@ RoutingRule::RoutingRule() : Rule()
 void RoutingRule::init(FWObjectDatabase *root)
 {
     FWObject *re = getFirstByType(RuleElementRDst::TYPENAME);
-    if (re == NULL)
+    if (re == nullptr)
     {
-        re = root->createRuleElementRDst();  assert(re!=NULL); add(re);
-        re = root->createRuleElementRGtw();  assert(re!=NULL); add(re);
-        re = root->createRuleElementRItf();  assert(re!=NULL); add(re);
+        re = root->createRuleElementRDst();  assert(re!=nullptr); add(re);
+        re = root->createRuleElementRGtw();  assert(re!=nullptr); add(re);
+        re = root->createRuleElementRItf();  assert(re!=nullptr); add(re);
         add( root->createRoutingRuleOptions() );
     }
 }
@@ -1075,63 +1073,63 @@ void RoutingRule::setMetric(string metric) {
     setInt("metric", imetric);
 }
 
-void RoutingRule::fromXML(xmlNodePtr root) throw(FWException)
+void RoutingRule::fromXML(xmlNodePtr root)
 {
     const char* n;
 
     FWObject::fromXML(root);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("disabled")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("disabled")));
     if(n)
     {
         setStr("disabled",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("metric")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("metric")));
     if(n)
     {
         setStr("metric",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("position")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("position")));
     if(n)
     {
         setStr("position",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n= FROMXMLCAST(xmlGetProp(root,TOXMLCAST("group")));
+    n= XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("group")));
     if(n)
     {
         setStr("group",n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
 
-xmlNodePtr RoutingRule::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RoutingRule::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-//    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+//    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
 
-    if ( (o=getFirstByType( RuleElementRDst::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementRDst::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementRGtw::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementRGtw::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RuleElementRItf::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleElementRItf::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( RoutingRuleOptions::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RoutingRuleOptions::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
-    if ( (o=getFirstByType( Routing::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( Routing::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
     return me;
@@ -1145,7 +1143,7 @@ FWOptions* RoutingRule::getOptionsObject() const
 RuleSet*   RoutingRule::getBranch()
 {
     FWObject *fw = getParent()->getParent();
-    assert(fw!=NULL);
+    assert(fw!=nullptr);
     string branch_id = getOptionsObject()->getStr("branch_id");
     if (!branch_id.empty())
     {
@@ -1158,7 +1156,7 @@ RuleSet*   RoutingRule::getBranch()
             return RuleSet::cast(fw->findObjectByName(Routing::TYPENAME,
                                                       branch_name));
         else
-            return NULL;
+            return nullptr;
     }
 }
 
@@ -1183,11 +1181,11 @@ void RoutingRule::setRuleType(RoutingRuleTypes rt)
 }
 
 FWObject& RoutingRule::duplicate(const FWObject *x,
-                                 bool preserve_id) throw(FWException)
+                                 bool preserve_id)
 {
     Rule::duplicate(x,preserve_id);
     const RoutingRule *rx = RoutingRule::constcast(x);
-    if (rx!=NULL)
+    if (rx!=nullptr)
     {
         rule_type = rx->rule_type;
         sorted_dst_ids = rx->sorted_dst_ids;

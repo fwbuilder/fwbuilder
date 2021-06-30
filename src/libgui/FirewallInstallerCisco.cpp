@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -68,15 +67,11 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
 {
     if (fwbdebug)
         qDebug("FirewallInstallerCisco::packInstallJobList  script=%s",
-       #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-               cnf->script.toAscii().constData());
-       #else
                cnf->script.toLatin1().constData());
-       #endif
     job_list.clear();
 
     Management *mgmt = cnf->fwobj->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
     PolicyInstallScript *pis = mgmt->getPolicyInstallScript();
     if (pis->getCommand()!="")
     {
@@ -128,7 +123,7 @@ bool FirewallInstallerCisco::packInstallJobsList(Firewall*)
         QMessageBox::critical(
             inst_dlg, "Firewall Builder",
             tr("Can not read generated script %1").arg(ff),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return false;
     }
@@ -168,7 +163,7 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
     packSSHArgs(args);
     if (cnf->verbose) inst_dlg->displayCommand(args);
 
-    SSHCisco *ssh_object = NULL;
+    SSHCisco *ssh_object = nullptr;
     if (cnf->fwobj->getStr("platform")=="pix" ||
         cnf->fwobj->getStr("platform")=="fwsm")
     {
@@ -253,11 +248,14 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
 
     replaceMacrosInCommand(&post_config);
 
-    ssh_object->loadPreConfigCommands(
-        pre_config.expand().split("\n", QString::SkipEmptyParts) );
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    ssh_object->loadPreConfigCommands( pre_config.expand().split("\n", Qt::SkipEmptyParts) );
+    ssh_object->loadPostConfigCommands( post_config.expand().split("\n", Qt::SkipEmptyParts) );
+#else
+    ssh_object->loadPreConfigCommands( pre_config.expand().split("\n", QString::SkipEmptyParts) );
+    ssh_object->loadPostConfigCommands( post_config.expand().split("\n", QString::SkipEmptyParts) );
+#endif
 
-    ssh_object->loadPostConfigCommands(
-        post_config.expand().split("\n", QString::SkipEmptyParts) );
 
     Configlet activation(host_os, os_family, "installer_commands_reg_user");
     activation.removeComments();
@@ -276,8 +274,11 @@ void FirewallInstallerCisco::activatePolicy(const QString&, const QString&)
                                config_lines.join("\n"));
     }
 
-    ssh_object->loadActivationCommands(
-        activation.expand().split("\n", QString::SkipEmptyParts) );
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    ssh_object->loadActivationCommands( activation.expand().split("\n", Qt::SkipEmptyParts) );
+#else
+    ssh_object->loadActivationCommands( activation.expand().split("\n", QString::SkipEmptyParts) );
+#endif
 
     runSSHSession(ssh_object);
 

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "BlankDialog.h"
@@ -35,7 +34,7 @@ BlankDialog::BlankDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::BlankDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 }
 
 BlankDialog::~BlankDialog()

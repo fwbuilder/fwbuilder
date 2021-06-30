@@ -14,8 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/SecuwallMgmtFile.h"
@@ -28,7 +26,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-void SecuwallMgmtFile::parse(const string &filename) throw(FWException)
+void SecuwallMgmtFile::parse(const string &filename)
 {
     ifstream f(filename.c_str(), ios::in);
     if (!f)
@@ -44,7 +42,7 @@ void SecuwallMgmtFile::parse(const string &filename) throw(FWException)
 /**
  * Does the actual parsing.
  */
-void SecuwallMgmtFile::parse(istream &from) throw(FWException)
+void SecuwallMgmtFile::parse(istream &from)
 {
     enum
     {

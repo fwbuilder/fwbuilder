@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1265584375" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="24" lastModified="1265584375" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False">
     <IPv4 id="id9040X76354" name="pc:eth0:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
   </Library>
@@ -28,9 +28,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -46,9 +46,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>

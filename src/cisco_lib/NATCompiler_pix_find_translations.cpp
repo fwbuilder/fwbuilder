@@ -44,7 +44,7 @@ class triplet {
             libfwbuilder::Address *src;
             libfwbuilder::Address *dst;
             libfwbuilder::Service *srv;
-            triplet() {src=NULL; dst=NULL; srv=NULL;}
+            triplet() {src=nullptr; dst=nullptr; srv=nullptr;}
             triplet(libfwbuilder::Address *s,
                     libfwbuilder::Address *d,
                     libfwbuilder::Service *v) {src=s; dst=d; srv=v;}
@@ -85,7 +85,7 @@ list<NATRule*> NATCompiler_pix::findMatchingDNATRules(
     for (FWObject::iterator i=final_ruleset->begin(); i!=final_ruleset->end(); ++i)
     {
         NATRule *rule = NATRule::cast(*i);
-        if (rule == NULL) continue; // skip RuleSetOptions object
+        if (rule == nullptr) continue; // skip RuleSetOptions object
 
         switch (rule->getRuleType())
         {
@@ -100,20 +100,22 @@ list<NATRule*> NATCompiler_pix::findMatchingDNATRules(
             Address  *odst = getFirstODst(rule);  assert(odst);
             Service  *osrv = getFirstOSrv(rule);  assert(osrv);
 
+#ifndef NDEBUG
             Address  *tsrc = getFirstTSrc(rule);  assert(tsrc);
+#endif
             // Address  *tdst = getFirstTDst(rule);  assert(tdst);
             Service  *tsrv = getFirstTSrv(rule);  assert(tsrv);
 
             const InetAddr *dst_to_compare_addr = dst_to_compare->getAddressPtr();
 
-            // dst_to_compare_addr can be NULL if object in rule
+            // dst_to_compare_addr can be nullptr if object in rule
             // element is a dynamic interface or a group. We should
             // have expanded groups by now, but dynamic interface can
             // still be there.
 
             if (*(src->getAddressPtr()) == *(osrc->getAddressPtr()) &&
                 (osrv->isAny() || srv->getId()==tsrv->getId()) &&
-                (dst_to_compare_addr == NULL || 
+                (dst_to_compare_addr == nullptr || 
                  *(dst->getAddressPtr()) == *(dst_to_compare_addr)))
             {
                 if (osrv->isAny())

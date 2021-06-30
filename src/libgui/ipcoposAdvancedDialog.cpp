@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "platforms.h"
 
@@ -68,10 +67,12 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
     setWindowTitle(QObject::tr("%1 advanced settings").arg(description.c_str()));
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
+#endif
 
     QStringList threeStateMapping;
 
@@ -186,12 +187,12 @@ ipcoposAdvancedDialog::ipcoposAdvancedDialog(QWidget *parent,FWObject *o)
 void ipcoposAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     data.saveAll(fwoptions);
 

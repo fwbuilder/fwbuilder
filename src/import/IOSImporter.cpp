@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 // #include "global.h"
 // #include "utils_no_qt.h"
@@ -183,8 +182,8 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
     if ( ! name.isEmpty()) sig.object_name = name;
 
     QString group_name;
-    FWObject *srv1 = NULL;
-    FWObject *srv2 = NULL;
+    FWObject *srv1 = nullptr;
+    FWObject *srv2 = nullptr;
 
     if (src_port_op == "neq")
     {
@@ -222,7 +221,7 @@ FWObject* IOSImporter::createTCPUDPNeqObject(const QString &proto,
         srv2 = service_maker->createObject(sig);
     }
 
-    assert(srv1 != NULL && srv2 != NULL);
+    assert(srv1 != nullptr && srv2 != nullptr);
 
     ObjectMaker maker(Library::cast(library), error_tracker);
     FWObject *grp = 
@@ -251,8 +250,8 @@ void IOSImporter::ignoreCurrentInterface()
 
 void IOSImporter::pushRule()
 {
-    assert(current_ruleset!=NULL);
-    assert(current_rule!=NULL);
+    assert(current_ruleset!=nullptr);
+    assert(current_rule!=nullptr);
     // populate all elements of the rule
 
     addMessageToLog(
@@ -271,7 +270,7 @@ void IOSImporter::MergeRules::move(FWObject* r)
     // classes PolicyRule and RuleSetOptions. If r does not cast to
     // PolicyRule, then it must be RuleSetOptions and we should just
     // skip it.
-    if (rule==NULL)
+    if (rule==nullptr)
     {
         r->getParent()->remove(r);
         return;
@@ -311,7 +310,7 @@ Firewall* IOSImporter::finalize()
         fw->getManagementObject(); // creates management obj
 
         FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
-        assert( policy!=NULL );
+        assert( policy!=nullptr );
 
         if (all_rulesets.size()!=0)
         {
@@ -402,7 +401,7 @@ Firewall* IOSImporter::finalize()
                         if (_dir=="out") direction = PolicyRule::Outbound;
 
                         // not all access lists are associated with interfaces
-                        if (intf!=NULL)
+                        if (intf!=nullptr)
                         {
                             if (fwbdebug)
                                 qDebug() << "    interface=" 
@@ -435,6 +434,6 @@ Firewall* IOSImporter::finalize()
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }

@@ -27,7 +27,6 @@
 #ifndef __TAGSERVICEDIALOG_H_
 #define __TAGSERVICEDIALOG_H_
 
-#include "config.h"
 #include <ui_tagservicedialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

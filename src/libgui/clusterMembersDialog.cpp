@@ -60,16 +60,16 @@ clusterMembersDialog::clusterMembersDialog(QWidget *parent, FWObject *o)
     // if empty, retry with parent of parent (interface level)
     if (host_os.isEmpty())
     {
-        FWObject *parent = NULL;
+        FWObject *parent = nullptr;
         parent = obj->getParent();
-        if (parent == NULL)
+        if (parent == nullptr)
         {
-            throw FWException("clusterMembersDialog: parent is NULL!");
+            throw FWException("clusterMembersDialog: parent is nullptr!");
         }
         parent = parent->getParent();
-        if (parent == NULL)
+        if (parent == nullptr)
         {
-            throw FWException("clusterMembersDialog: parent is NULL!");
+            throw FWException("clusterMembersDialog: parent is nullptr!");
         }
         host_os = parent->getStr("host_OS").c_str();
         platform = parent->getStr("platform").c_str();
@@ -120,9 +120,9 @@ void clusterMembersDialog::getSelectedMembers()
     {
 
         // get fw and interface pointer from interface reference
-        Interface *iface = NULL;
+        Interface *iface = nullptr;
         iface = Interface::cast(FWReference::cast((*it))->getPointer());
-        assert(iface != NULL);
+        assert(iface != nullptr);
         Firewall *fw = Firewall::cast(Host::getParentHost(iface));
         //Firewall *fw = Firewall::cast(iface->getParentHost());
 
@@ -135,7 +135,7 @@ void clusterMembersDialog::getSelectedMembers()
         }
         // create ClusterMember object
         ClusterMember *new_member = createMember(fw, iface, master);
-        if (new_member == NULL)
+        if (new_member == nullptr)
         {
             qWarning() << "clusterMembersDialog: could not create new "
                 "cluster member";
@@ -183,7 +183,7 @@ void clusterMembersDialog::getPossibleMembers()
 
             // valid member, add to member list
             ClusterMember *new_member = createMember(fw);
-            if (new_member == NULL)
+            if (new_member == nullptr)
             {
                 qWarning() << "clusterMembersDialog: could not create new "
                     "cluster member";
@@ -200,7 +200,7 @@ void clusterMembersDialog::updateSelectedTable()
     table_update = true;
     m_dialog->fwSelectedTable->setRowCount(selected.size());
 
-    QTableWidgetItem *item = NULL;
+    QTableWidgetItem *item = nullptr;
     int row = 0;
     for (t_memberList::const_iterator it = selected.begin();
             it != selected.end(); it++)
@@ -211,7 +211,7 @@ void clusterMembersDialog::updateSelectedTable()
 
         item = m_dialog->fwSelectedTable->item(row, 0);
         const char *new_text = (*it)->fwobj->getName().c_str();
-        if (item == NULL)
+        if (item == nullptr)
         {
             item = new QTableWidgetItem;
             item->setText(new_text);
@@ -226,7 +226,7 @@ void clusterMembersDialog::updateSelectedTable()
         // Column "Interface"
         item = m_dialog->fwSelectedTable->item(row, 1);
         new_text = (*it)->iface_cluster->getName().c_str();
-        if (item == NULL)
+        if (item == nullptr)
         {
             item = new QTableWidgetItem;
             item->setText(new_text);
@@ -241,7 +241,7 @@ void clusterMembersDialog::updateSelectedTable()
         // Column "Master"
         item = m_dialog->fwSelectedTable->item(row, 2);
         Qt::CheckState state = (*it)->is_master ? Qt::Checked : Qt::Unchecked;
-        if (item == NULL)
+        if (item == nullptr)
         {
             item = new QTableWidgetItem;
             item->setCheckState(state);
@@ -305,15 +305,15 @@ ClusterMember*
 clusterMembersDialog::createMember(Firewall *fw,
                                    Interface *cluster_iface, bool master)
 {
-    if (fw == NULL)
+    if (fw == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
 
     ClusterMember *new_member = new ClusterMember;
     new_member->fwobj = fw;
     new_member->is_master = master;
-    if (cluster_iface != NULL)
+    if (cluster_iface != nullptr)
     {
         new_member->iface_cluster = cluster_iface;
     }
@@ -378,7 +378,7 @@ QPixmap clusterMembersDialog::getIcon(FWObject *o)
                         "/icon").c_str();
 
     QPixmap pm;
-    if (!QPixmapCache::find(icn_file, pm))
+    if (!QPixmapCache::find(icn_file, &pm))
     {
         pm.load(icn_file);
         QPixmapCache::insert(icn_file, pm);
@@ -400,7 +400,7 @@ void clusterMembersDialog::invalidate()
 void clusterMembersDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     bool master_found = false;
@@ -491,17 +491,23 @@ void clusterMembersDialog::masterSelected(int row, int column)
                      << ", " << column << ")";
         }
 
-        QList<QTableWidgetItem *> itemlist;
-        itemlist = m_dialog->fwSelectedTable->selectedItems();
+        QTableWidget * fwSelectedTable = m_dialog->fwSelectedTable;
 
-        if (itemlist[2]->checkState() == Qt::Checked)
-        {
-            setMaster(itemlist[0]->text());
+        bool noMasterSelected = true;
+        for (int rowIdx = 0; rowIdx < fwSelectedTable->rowCount(); ++rowIdx) {
+            if (fwSelectedTable->item(rowIdx, 2)->checkState() == Qt::Checked) {
+                noMasterSelected = false;
+                break;
+            }
         }
-        else
-        {
-            setMaster(itemlist[0]->text(), false);
+
+        if (noMasterSelected) {
+            fwSelectedTable->item(row, 2)->setCheckState(Qt::Checked);
         }
+
+        QTableWidgetItem *itemName = fwSelectedTable->item(row, 0);
+        QTableWidgetItem *itemMasterCheckBox = fwSelectedTable->item(row, column);
+        setMaster(itemName->text(), itemMasterCheckBox->checkState() == Qt::Checked);
     }
 }
 

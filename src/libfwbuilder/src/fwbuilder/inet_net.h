@@ -19,14 +19,9 @@
 #ifndef INET_NET_H
 #define INET_NET_H
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #ifdef _WIN32
 #  include <winsock2.h>
-// missing errno definitions:
-#define EMSGSIZE     40 /* Message too long */
-#define EAFNOSUPPORT 47 /* Address family not supported by protocol family */
-
 #else
 
 #  include <sys/types.h>
@@ -42,7 +37,7 @@
  *  convert host/network address from network to presentation format.
  *  "src"'s size is determined from its "af".
  * return:
- *  pointer to dst, or NULL if an error occurred (check errno).
+ *  pointer to dst, or nullptr if an error occurred (check errno).
  * note:
  *  192.5.5.1/28 has a nonzero host part, which means it isn't a network
  *  as called for by inet_net_pton() but it can be a host address with

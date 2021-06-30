@@ -87,7 +87,7 @@ void instDialogClusterTest::initTestCase()
     QTest::qWait(5000);
 
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
 
     mw->loadFile("test_work.fwb", false);
 
@@ -96,19 +96,19 @@ void instDialogClusterTest::initTestCase()
     ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
 
     FWObject *user_lib = mw->db()->findObjectByName(Library::TYPENAME, "User");
-    QVERIFY(user_lib != NULL);
+    QVERIFY(user_lib != nullptr);
 
     om->openLibForObject(user_lib);
 
     FWObject *cl = om->getCurrentLib();
 
-    QVERIFY(cl != NULL);
+    QVERIFY(cl != nullptr);
     QVERIFY(cl == user_lib);
 }
 
 void instDialogClusterTest::openPolicy(QString fwname)
 {
-    Policy *p = NULL;
+    Policy *p = nullptr;
     foreach (FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == fwname.toStdString())
@@ -116,17 +116,17 @@ void instDialogClusterTest::openPolicy(QString fwname)
             p = Firewall::cast(fw)->getPolicy();
         }
     }
-    QVERIFY (p != NULL);
+    QVERIFY (p != nullptr);
     QCoreApplication::postEvent(mw, new openRulesetImmediatelyEvent(mw->activeProject()->getFileName(), p->getId()));
     QTest::qWait(100);
 }
 
 void instDialogClusterTest::verifyDialog(instDialog *dlg, int items)
 {
-    QVERIFY(dlg != NULL);
+    QVERIFY(dlg != nullptr);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     if (items != -1)
         QVERIFY(table->topLevelItemCount() == items);
     QTreeWidgetItemIterator it(table, QTreeWidgetItemIterator::Enabled);
@@ -154,7 +154,7 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 
 void instDialogClusterTest::closeContextMenu()
 {
-    QMenu *menu = NULL;
+    QMenu *menu = nullptr;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -175,7 +175,7 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om,
     QPoint item_pos = findItemPos(item, tree);
     om->contextMenuRequested(item_pos);
 
-    QMenu *menu = NULL;
+    QMenu *menu = nullptr;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -188,7 +188,7 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om,
     foreach (QObject *act, menu->children())
     {
         QAction *action = dynamic_cast<QAction*>(act);
-        if (action == NULL) continue;
+        if (action == nullptr) continue;
         if (action->text() == actionText)
         {
             action->activate(QAction::Trigger);
@@ -200,12 +200,12 @@ void instDialogClusterTest::openContextMenu(ObjectManipulator *om,
 void instDialogClusterTest::page1_8()
 {
     ObjectTreeView *tree = mw->getCurrentObjectTree();
-    QVERIFY(tree != NULL);
+    QVERIFY(tree != nullptr);
 
     ObjectTreeViewItem *test3 = dynamic_cast<ObjectTreeViewItem*>(
         tree->findItems(
             "test3", Qt::MatchExactly | Qt::MatchRecursive, 0).first());
-    QVERIFY(test3 != NULL);
+    QVERIFY(test3 != nullptr);
 
     tree->selectionModel()->select(
         tree->indexAt(findItemPos(test3, tree)),
@@ -216,14 +216,14 @@ void instDialogClusterTest::page1_8()
 
     openContextMenu(om, test3, tree, "Compile");
 
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
+    QVERIFY(dlg != nullptr);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->topLevelItemCount() == 1);
     QVERIFY(table->topLevelItem(0)->text(0) == "test3");
 
@@ -248,14 +248,14 @@ void instDialogClusterTest::page1_9()
     tree->setCurrentItem(cluster1);
     ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, cluster1, tree, "Compile");
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
+    QVERIFY(dlg != nullptr);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->topLevelItemCount() == 1);
     QVERIFY(table->topLevelItem(0)->text(0) == "cluster1");
     QVERIFY(table->topLevelItem(0)->childCount() == 2);
@@ -275,14 +275,14 @@ void instDialogClusterTest::page1_10()
     QAction *compile = mw->findChild<QAction*>("compileAction");
     compile->activate(QAction::Trigger);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
+    QVERIFY(dlg != nullptr);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->topLevelItemCount() == 3);
     QVERIFY(! table->findItems("cluster1", Qt::MatchExactly, 0).isEmpty());
     QVERIFY(! table->findItems("test1", Qt::MatchExactly, 0).isEmpty());
@@ -302,14 +302,14 @@ void instDialogClusterTest::page1_11()
     QAction *compile = mw->findChild<QAction*>("installAction");
     compile->activate(QAction::Trigger);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
-    QVERIFY(dlg != NULL);
+    QVERIFY(dlg != nullptr);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->topLevelItemCount() == 3);
     //QTest::qWait(100000);
     for (int i=0; i< table->topLevelItemCount(); i++)

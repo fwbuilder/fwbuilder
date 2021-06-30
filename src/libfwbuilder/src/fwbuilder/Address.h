@@ -59,11 +59,10 @@ public:
     virtual ~Address();
 
 //    Address(const std::string& addr,const std::string& mask);
-//    Address(const std::string &s) throw(FWException);
+//    Address(const std::string &s);
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                       bool preserve_id = true)
-        throw(FWException);
+                                       bool preserve_id = true);
 
     const InetAddrMask* getInetAddrMaskObjectPtr() const;
 
@@ -83,7 +82,7 @@ public:
     
     /**
      * returns const pointer to internal InetAddr object. Some objects
-     * that inherit this class may return NULL if they do not have
+     * that inherit this class may return nullptr if they do not have
      * their own IP address (examples: physAddress or Interface with
      * no child IPv4 object). Using exclusively method that returns
      * pointer rather than reference to the object allows us to
@@ -105,7 +104,7 @@ public:
     bool belongs(const InetAddr &) const;
     
     virtual FWReference* createRef();
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
 
     bool isAny() const;
 

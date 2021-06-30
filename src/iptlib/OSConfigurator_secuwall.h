@@ -68,7 +68,7 @@ private:
     int generateInterfaces();
     int generateInterfaceFile(libfwbuilder::Interface * iface,
                               std::string name = "",
-                              libfwbuilder::IPv4 * ip_address = NULL,
+                              libfwbuilder::IPv4 * ip_address = nullptr,
                               int iface_number = 0);
 
     int generateSSHKeys();

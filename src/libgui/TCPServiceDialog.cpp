@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -57,7 +56,7 @@ TCPServiceDialog::TCPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::TCPServiceDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -71,7 +70,7 @@ void TCPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     TCPService *s = dynamic_cast<TCPService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -172,7 +171,7 @@ void TCPServiceDialog::validate(bool *res)
 
 void TCPServiceDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "platforms.h"
 
@@ -62,10 +61,13 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
     obj=o;
 
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
+#endif
+
 /*
  * since v2.0.3 we do not need to know shell prompt on linksys. Will
  * remove the page completely when code becomes stable.
@@ -135,12 +137,12 @@ linksysAdvancedDialog::linksysAdvancedDialog(QWidget *parent,FWObject *o)
 void linksysAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     data.saveAll(fwoptions);
 
@@ -157,8 +159,10 @@ void linksysAdvancedDialog::reject()
 
 void linksysAdvancedDialog::setDefaultPrompts()
 {
+#ifndef NDEBUG
     FWOptions *fwopt=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwopt!=NULL);
+    assert(fwopt!=nullptr);
+#endif
     m_dialog->linksys_prompt1->setText(
         Resources::getTargetOptionStr("sveasoft","default/prompt1").c_str() );
     m_dialog->linksys_prompt2->setText(

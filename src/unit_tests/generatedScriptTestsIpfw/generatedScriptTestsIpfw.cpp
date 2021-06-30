@@ -23,8 +23,6 @@
 
 */
 
-#include "../../config.h"
-
 #include "generatedScriptTestsIpfw.h"
 
 #include "CompilerDriver_ipfw.h"
@@ -35,6 +33,7 @@
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
 
+#include <QTest>
 #include <QApplication>
 #include <QStringList>
 #include <QFileInfo>
@@ -59,12 +58,12 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
 };
 
 
-void GeneratedScriptTest::setUp()
+void GeneratedScriptTest::init()
 {
     Configlet::setDebugging(true);
 }
 
-void GeneratedScriptTest::tearDown()
+void GeneratedScriptTest::cleanup()
 {
 }
 
@@ -98,13 +97,13 @@ void GeneratedScriptTest::runCompiler(const std::string &test_file,
     CompilerDriver_ipfw driver(objdb);
 
     driver.setEmbeddedMode();
-    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_ipfw initialization failed",
-                           driver.prepare(args) == true);
+    QVERIFY2(driver.prepare(args) == true,
+             "CompilerDriver_ipfw initialization failed");
     driver.compile();
     // compiler should have created file generate_file_name
     QFileInfo fi(generate_file_name.c_str());
-    CPPUNIT_ASSERT_MESSAGE("Generated file " + generate_file_name + " not found",
-                           fi.exists() == true);
+    QVERIFY2(fi.exists() == true,
+             std::string("Generated file " + generate_file_name + " not found").data());
 }
 
 // I can check only certain parts of the top comment. Can't
@@ -118,7 +117,7 @@ void GeneratedScriptTest::ManifestTest_1()
     runCompiler("test1.fwb", "ipfw1", "ipfw1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw1.fw") != -1);
+    QVERIFY(res.indexOf("# files: * ipfw1.fw") != -1);
     delete objdb;
 }
 
@@ -132,7 +131,7 @@ void GeneratedScriptTest::ManifestTest_2()
     runCompiler("test1.fwb", "ipfw2", "ipfw2-1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1.fw") != -1);
+    QVERIFY(res.indexOf("# files: * ipfw2-1.fw") != -1);
     delete objdb;
 }
 
@@ -146,7 +145,7 @@ void GeneratedScriptTest::ManifestTest_3()
     runCompiler("test1.fwb", "ipfw2a", "ipfw2-1");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1") != -1);
+    QVERIFY(res.indexOf("# files: * ipfw2-1") != -1);
     delete objdb;
 }
 
@@ -161,19 +160,21 @@ void GeneratedScriptTest::ManifestTest_4()
     runCompiler("test1.fwb", "ipfw2", "ipfw2-1.fw", option_o.toStdString());
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * " + option_o) != -1);
+    QVERIFY(res.indexOf("# files: * " + option_o) != -1);
     delete objdb;
 }
 
 void GeneratedScriptTest::ManifestTest_5()
 {
+    QSKIP("This test was disabled in the original code");
+
     objdb = new FWObjectDatabase();
     QString option_o = QDir::currentPath() + "/ipfw2-1";
     QFile::remove(option_o);
     runCompiler("test1.fwb", "ipfw2a", "ipfw2-1.fw", option_o.toStdString());
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw2-1");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw2-1") != -1);
+    QVERIFY(res.indexOf("# files: * ipfw2-1") != -1);
     delete objdb;
 }
 
@@ -187,7 +188,7 @@ void GeneratedScriptTest::ManifestTest_6()
     runCompiler("test1.fwb", "ipfw3", "ipfw3.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw3.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw3.fw") != -1);
+    QVERIFY(res.indexOf("# files: * ipfw3.fw") != -1);
     delete objdb;
 }
 
@@ -200,7 +201,7 @@ void GeneratedScriptTest::ManifestTest_7()
     runCompiler("test1.fwb", "ipfw4", "ipfw4.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw4.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipfw4.fw /etc/path\\ with\\ space/ipfw4.fw") != -1);
+    QVERIFY(res.indexOf("# files: * ipfw4.fw /etc/path\\ with\\ space/ipfw4.fw") != -1);
     delete objdb;
 }
 
@@ -212,7 +213,7 @@ void GeneratedScriptTest::FwCommentTest()
     runCompiler("test1.fwb", "ipfw1", "ipfw1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipfw1.fw");
     // find string from the firewall object comment and compare
-    CPPUNIT_ASSERT(res.indexOf("# Firewall object test1 comment") != -1);
+    QVERIFY(res.indexOf("# Firewall object test1 comment") != -1);
     delete objdb;
 }
 

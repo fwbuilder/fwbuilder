@@ -193,10 +193,7 @@ public:
     virtual void* dispatch(libfwbuilder::DNSName*, void*);
     virtual void* dispatch(libfwbuilder::ObjectGroup*, void*);
     virtual void* dispatch(libfwbuilder::ServiceGroup*, void*);
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Woverloaded-virtual"
     virtual void* dispatch(libfwbuilder::AttachedNetworks*, void*);
-#pragma GCC diagnostic pop
     virtual void* dispatch(libfwbuilder::UserService*, void*);
     virtual void* dispatch(libfwbuilder::DynamicGroup*, void*);
     

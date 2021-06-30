@@ -25,7 +25,6 @@
 */
 
 
-#include "../../config.h"
 
 #ifndef _WIN32
 
@@ -40,21 +39,17 @@
 #include <termios.h>
 #include <time.h>
 #include <sys/select.h>
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#endif
 
-#ifdef HAVE_PTY_H
+#if defined(__linux__)
 #include <pty.h>
-#endif
-
-#ifdef HAVE_LIBUTIL_H
+#define HAVE_FORKPTY
+#elif defined(__FreeBSD__)
 #include <libutil.h>
-#endif
-
-#ifdef HAVE_UTIL_H
+#define HAVE_FORKPTY
+#elif defined(__unix__) || defined(__APPLE__) && defined(__MACH__)
 #include <util.h>
+#define HAVE_FORKPTY
 #endif
 
 #include <errno.h>
@@ -71,7 +66,7 @@ static int ttysavefd = -1;
 static pid_t pid = 0;
 
 
-#ifndef HAVE_CFMAKERAW
+#ifdef _WIN32
 static inline void cfmakeraw(struct termios *termios_p)
 {
     termios_p->c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IXON);
@@ -117,7 +112,7 @@ int forkpty (int *amaster, char *name, void *unused1, void *unused2)
     }
 
     slave_name = ptsname (master);
-    if (slave_name == NULL)
+    if (slave_name == nullptr)
     {
         close (master);
         return -1;
@@ -244,16 +239,6 @@ ssize_t writen(int fd,const void *vptr, size_t n)
     return n;
 }
 
-
-#ifndef strndup
-char* strndup(const char* s,int n)
-{
-    char *tbuf = (char*)malloc(n);
-    if (tbuf) memcpy(tbuf,s,n);
-    return tbuf;
-}
-#endif
-
 void catch_sign(int sig)
 {
     if (fwbdebug) 
@@ -321,13 +306,13 @@ void ssh_wrapper( int argc, char *argv[] )
         for (i = 0; i < new_args.size() && i < 127; ++i)
             arg[i] = strdup(new_args[i].toLatin1().constData());
 
-        arg[i] = NULL;
+        arg[i] = nullptr;
 
         if (fwbdebug)
         {
             qDebug("cmd: %s", arg[0]);
             qDebug("Arguments:");
-            for (const char **cptr = arg; *cptr!=NULL; cptr++)
+            for (const char **cptr = arg; *cptr!=nullptr; cptr++)
             {
                 qDebug("    %s", *cptr);
             }
@@ -340,7 +325,7 @@ void ssh_wrapper( int argc, char *argv[] )
         char  slave_name[64];
 //        char  *pgm;
 
-        pid = forkpty(&mfd,slave_name,NULL,NULL);
+        pid = forkpty(&mfd,slave_name,nullptr,nullptr);
         if (pid<0)
         {
             qDebug("Fork failed: %s", strerror(errno));
@@ -392,7 +377,7 @@ void ssh_wrapper( int argc, char *argv[] )
             FD_SET(mfd,  &rfds);
             if (!endOfStream)  FD_SET(STDIN_FILENO  , &rfds);
 
-            retval = select( max(STDIN_FILENO,mfd)+1 , &rfds, NULL, NULL, &tv);
+            retval = select( max(STDIN_FILENO,mfd)+1 , &rfds, nullptr, nullptr, &tv);
             if (retval==0)  // timeout
             {
                 if (fwbdebug) qDebug("timeout");
@@ -463,6 +448,8 @@ void ssh_wrapper( int argc, char *argv[] )
 
 void ssh_wrapper( int argc, char *argv[] )
 {
+	(void) argc;
+	(void) argv;
 }
 
 #endif

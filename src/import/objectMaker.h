@@ -122,7 +122,7 @@ public:
     {
         library = l;
         error_tracker = et;
-        last_created = NULL;
+        last_created = nullptr;
     }
     virtual ~ObjectMaker() {};
     

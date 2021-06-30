@@ -50,7 +50,7 @@ using namespace std;
 
 void AutomaticRules_pf::addSshAccessRule()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     FWOptions *fwopt = fw->getOptionsObject();
 
@@ -114,22 +114,22 @@ void AutomaticRules_pf::addSshAccessRule()
         r->setBool("needs_established",true);  // supported in ipfw
 
         RuleElement *src = r->getSrc();
-        assert(src!=NULL);
+        assert(src!=nullptr);
         src->addRef(mgmt_workstation);
 
         RuleElement *dst = r->getDst();
-        assert(dst!=NULL);
+        assert(dst!=nullptr);
         dst->addRef(fw);
 
         RuleElement *srv = r->getSrv();
-        assert(srv!=NULL);
+        assert(srv!=nullptr);
         srv->addRef(ssh);
     }
 }
 
 void AutomaticRules_pf::addCarpRules()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     /* Add CARP-Service to database */
     IPService* carp_service =
@@ -161,10 +161,10 @@ void AutomaticRules_pf::addCarpRules()
                 if (phys_iface)
                 {
                     PolicyRule *rule = 
-                        addMgmtRule(NULL, NULL, carp_service, phys_iface,
+                        addMgmtRule(nullptr, nullptr, carp_service, phys_iface,
                                     PolicyRule::Both, PolicyRule::Accept, "CARP");
                     FWOptions *ruleopt = rule->getOptionsObject();
-                    assert(ruleopt!=NULL);
+                    assert(ruleopt!=nullptr);
                     ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
                 } else
                 {
@@ -180,7 +180,7 @@ void AutomaticRules_pf::addCarpRules()
 
 void AutomaticRules_pf::addPfsyncRules()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     /* Add pfsync service to database */
     IPService* pfsync_service = IPService::cast(ruleset->getRoot()->create(IPService::TYPENAME));
@@ -197,14 +197,14 @@ void AutomaticRules_pf::addPfsyncRules()
             FWObject *state_sync_group = ruleset->getRoot()->findInIndex(
                 ruleset->getRoot()->getIntId(
                     iface->getOptionsObject()->getStr("state_sync_group_id")));
-            assert(state_sync_group!=NULL);
+            assert(state_sync_group!=nullptr);
             if (state_sync_group && state_sync_group->getStr("type") == "pfsync")
             {
-                PolicyRule *rule = addMgmtRule(NULL, NULL, pfsync_service, iface,
+                PolicyRule *rule = addMgmtRule(nullptr, nullptr, pfsync_service, iface,
                                                PolicyRule::Both,
                                                PolicyRule::Accept, "pfsync");
                 FWOptions *ruleopt = rule->getOptionsObject();
-                assert(ruleopt!=NULL);
+                assert(ruleopt!=nullptr);
                 ruleopt->setBool("firewall_is_part_of_any_and_networks", false);
             }
         }
@@ -213,7 +213,7 @@ void AutomaticRules_pf::addPfsyncRules()
 
 void AutomaticRules_pf::addFallbackRule()
 {
-    if (ruleset == NULL) return;
+    if (ruleset == nullptr) return;
 
     FWOptions *fwopt = fw->getOptionsObject();
 

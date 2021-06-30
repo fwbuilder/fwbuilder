@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_ipf.h"
 
@@ -65,7 +64,7 @@ int NATCompiler_ipf::prolog()
 
 bool NATCompiler_ipf::VerifyRules::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
@@ -73,7 +72,9 @@ bool NATCompiler_ipf::VerifyRules::processNext()
     RuleElementOSrv  *osrv=rule->getOSrv();  assert(osrv);
 
     RuleElementTSrc  *tsrc=rule->getTSrc();  assert(tsrc);
+#ifndef NDEBUG
     RuleElementTDst  *tdst=rule->getTDst();  assert(tdst);
+#endif
     RuleElementTSrv  *tsrv=rule->getTSrv();  assert(tsrv);
 
     if (rule->getRuleType()==NATRule::DNAT && odst->size()!=1)
@@ -94,9 +95,9 @@ bool NATCompiler_ipf::VerifyRules::processNext()
                         "contain single object");
 
     FWObject *o=tsrv->front();
-    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
-    if ( Group::cast(o)!=NULL)
+    if ( Group::cast(o)!=nullptr)
 	compiler->abort(rule,
                         "Can not use group in translated service");
 
@@ -104,7 +105,7 @@ bool NATCompiler_ipf::VerifyRules::processNext()
     {
         Network *a1=Network::cast(compiler->getFirstOSrc(rule));
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
-        if ( a1==NULL || a2==NULL ||
+        if ( a1==nullptr || a2==nullptr ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
             compiler->abort(rule,
                             "Original and translated source should both "
@@ -115,7 +116,7 @@ bool NATCompiler_ipf::VerifyRules::processNext()
     {
         Network *a1=Network::cast(compiler->getFirstODst(rule));
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
-        if ( a1==NULL || a2==NULL ||
+        if ( a1==nullptr || a2==nullptr ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
             compiler->abort(rule,
                             "Original and translated destination should "
@@ -130,7 +131,7 @@ bool NATCompiler_ipf::VerifyRules::processNext()
 
 bool NATCompiler_ipf::ExpandPortRange::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     Service          *osrv=compiler->getFirstOSrv(rule);
 
@@ -185,10 +186,10 @@ bool NATCompiler_ipf::ExpandPortRange::processNext()
 
 bool NATCompiler_ipf::AssignInterface::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElementItfOutb *itf_re = rule->getItfOutb();
 
-    Address *a = NULL;
+    Address *a = nullptr;
 
     switch (rule->getRuleType() )
     {
@@ -202,7 +203,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
         a=compiler->getFirstODst(rule);
         iface=compiler->findInterfaceFor( compiler->getFirstODst(rule) , 
                                           compiler->fw);
-        if (iface!=NULL && !iface->isLoopback()) 
+        if (iface!=nullptr && !iface->isLoopback()) 
         { 
             if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
             // rule->setInterfaceId( iface->getId() );
@@ -211,7 +212,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
         }
 /* slip into Redirect case to assign rule to all interfaces */
     }
-
+    /* FALLTHRU */
     case NATRule::Redirect: 
     case NATRule::DNAT:
     case NATRule::DNetnat:
@@ -223,17 +224,17 @@ bool NATCompiler_ipf::AssignInterface::processNext()
  * is connected to the subnet OSrc belongs to. If that does not work,
  * we assign rule to all interfaces, except loopback 
  */
-        a = NULL;
+        a = nullptr;
         if ( ! rule->getOSrc()->isAny() )  a = compiler->getFirstOSrc(rule);
-        if ( a==NULL && ! rule->getODst()->isAny() )
+        if ( a==nullptr && ! rule->getODst()->isAny() )
             a = compiler->getFirstODst(rule);
 
-        if (a!=NULL)
+        if (a!=nullptr)
         {
             Interface *iface;
             iface = compiler->findInterfaceFor(a,compiler->fw);
 
-            if (iface!=NULL && !iface->isLoopback()) 
+            if (iface!=nullptr && !iface->isLoopback()) 
             { 
                 if ( ! itf_re->hasRef(iface)) itf_re->addRef(iface);
                 // rule->setInterfaceId( iface->getId() );
@@ -320,7 +321,7 @@ bool NATCompiler_ipf::AssignInterface::processNext()
 
 bool NATCompiler_ipf::prepareForLB::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getRuleType()==NATRule::LB ) 
     {
@@ -331,7 +332,7 @@ bool NATCompiler_ipf::prepareForLB::processNext()
             for(list<FWObject*>::iterator i=tdst->begin(); i!=tdst->end(); ++i) 
             {
                 FWObject *o= *i;
-                if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+                if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
                 cl.push_back(o);
                 if (cl.size()==2)
@@ -375,7 +376,7 @@ bool NATCompiler_ipf::prepareForLB::processNext()
  */
 bool NATCompiler_ipf::RedirectRules::processNext()
 {
-    NATRule   *rule = getNext(); if (rule==NULL) return false;
+    NATRule   *rule = getNext(); if (rule==nullptr) return false;
     RuleElementItfOutb *itf_re = rule->getItfOutb();
     Interface *rule_iface =
         Interface::cast(FWObjectReference::getObject(itf_re->front()));
@@ -386,7 +387,7 @@ bool NATCompiler_ipf::RedirectRules::processNext()
     RuleElementTDst *rel=rule->getTDst();          assert(rel);
     Address         *otdst=compiler->getFirstTDst(rule);
 
-    if (rule->getRuleType()==NATRule::Redirect && rule_iface!=NULL &&
+    if (rule->getRuleType()==NATRule::Redirect && rule_iface!=nullptr &&
         otdst->getId()==compiler->fw->getId())
     {
         rel->clearChildren();
@@ -399,7 +400,7 @@ bool NATCompiler_ipf::RedirectRules::processNext()
 
 bool NATCompiler_ipf::appProxy::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     bool ftp_proxy    = compiler->getCachedFwOpt()->getBool("ipf_nat_ftp_proxy");
     bool rcmd_proxy   = compiler->getCachedFwOpt()->getBool("ipf_nat_rcmd_proxy");
@@ -472,7 +473,7 @@ bool NATCompiler_ipf::appProxy::processNext()
 
 bool NATCompiler_ipf::expandAnyService::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementOSrv *srv=rule->getOSrv();
 
     if (rule->getRuleType()==NATRule::SNAT && srv->isAny())
@@ -490,15 +491,15 @@ bool NATCompiler_ipf::expandAnyService::processNext()
 
 bool NATCompiler_ipf::processMultiAddressObjectsInRE::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        if (atrt!=nullptr && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             compiler->abort(
                     rule, 
                     "Run-time AddressTable objects are not supported.");

@@ -26,14 +26,13 @@
 #ifndef _OSNETWORKCONFIGURATOR_SOLARIS_HH
 #define _OSNETWORKCONFIGURATOR_SOLARIS_HH
 
-#include "config.h"
 
 #include "fwbuilder/InetAddr.h"
 
 #include <vector>
 
 #include "OSConfigurator_bsd.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 
 /*
  * Of course Solaris has nothing to do with BSD. Class
@@ -49,7 +48,7 @@ namespace fwcompiler
     class OSConfigurator_solaris : public OSConfigurator_bsd
     {
 
-        OSData os_data;
+        OSData_pf os_data;
 
 	std::vector<libfwbuilder::InetAddr> virtual_addresses;
 

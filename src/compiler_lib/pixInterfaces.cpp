@@ -44,8 +44,8 @@ bool pixInterfaces::parseVlan(const QString &name, QString *base_name, int *vlan
     QRegExp vlan_name_pattern("([a-zA-Z-]+\\d{1,}(/\\d{1,})*)\\.(\\d{1,})");
     if (vlan_name_pattern.indexIn(name) != -1)
     {
-        if (base_name!=NULL) *base_name = vlan_name_pattern.cap(1);
-        if (vlan_id!=NULL) *vlan_id = vlan_name_pattern.cap(3).toInt();
+        if (base_name!=nullptr) *base_name = vlan_name_pattern.cap(1);
+        if (vlan_id!=nullptr) *vlan_id = vlan_name_pattern.cap(3).toInt();
         return true;
     }
     return false;

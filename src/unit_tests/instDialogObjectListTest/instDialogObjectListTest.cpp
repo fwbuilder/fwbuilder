@@ -113,7 +113,7 @@ void instDialogObjectListTest::initTestCase()
 
 void instDialogObjectListTest::openPolicy(QString fwname)
 {
-    Policy *p = NULL;
+    Policy *p = nullptr;
     foreach (FWObject *fw, mw->db()->getByTypeDeep(Firewall::TYPENAME))
     {
         if (fw->getName() == fwname.toStdString())
@@ -121,7 +121,7 @@ void instDialogObjectListTest::openPolicy(QString fwname)
             p = Firewall::cast(fw)->getPolicy();
         }
     }
-    QVERIFY (p != NULL);
+    QVERIFY (p != nullptr);
     QCoreApplication::postEvent(mw, new openRulesetImmediatelyEvent(mw->activeProject()->getFileName(), p->getId()));
     QTest::qWait(100);
 }
@@ -270,7 +270,7 @@ QPoint findItemPos(ObjectTreeViewItem *item, ObjectTreeView *tree)
 
 void instDialogObjectListTest::closeContextMenu()
 {
-    QMenu *menu = NULL;
+    QMenu *menu = nullptr;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -294,7 +294,7 @@ void instDialogObjectListTest::openContextMenu(ObjectManipulator *om,
     QTimer::singleShot(100, this, SLOT(closeContextMenu()));
     om->contextMenuRequested(findItemPos(item, tree));
     bool found_menu_item = false;
-    QMenu *menu = NULL;
+    QMenu *menu = nullptr;
     foreach(QWidget *w, QApplication::allWidgets())
     {
         if (w->objectName() == "objectTreeContextMenu")
@@ -303,11 +303,11 @@ void instDialogObjectListTest::openContextMenu(ObjectManipulator *om,
             break;
         }
     }
-    QVERIFY(menu != NULL);
+    QVERIFY(menu != nullptr);
     foreach (QObject *act, menu->children())
     {
         QAction *action = dynamic_cast<QAction*>(act);
-        if (action == NULL) continue;
+        if (action == nullptr) continue;
         if (action->text() == actionText)
         {
             QVERIFY(action->isEnabled() == true);
@@ -316,13 +316,8 @@ void instDialogObjectListTest::openContextMenu(ObjectManipulator *om,
             break;
         }
     }
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QVERIFY2(found_menu_item == true,
-             QString("Item %1 not found in the context menu").arg(actionText).toAscii().constData());
-#else
     QVERIFY2(found_menu_item == true,
              QString("Item %1 not found in the context menu").arg(actionText).toLatin1().constData());
-#endif
 }
 
 
@@ -338,13 +333,13 @@ void instDialogObjectListTest::test_compile_1()
     QAction *compile = mw->findChild<QAction*>("compileAction");
     compile->activate(QAction::Trigger);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 3);
@@ -361,21 +356,21 @@ void instDialogObjectListTest::test_compile_1()
 void instDialogObjectListTest::test_compile_2()
 {
     QMenu *rules = mw->menuBar()->findChild<QMenu*>("RulesMenu");
-    QAction *compile = NULL;
+    QAction *compile = nullptr;
 
     foreach(QAction *itm, rules->actions())
         if (itm->objectName() == "compileAction")
             compile = dynamic_cast<QAction*>(itm);
-    QVERIFY(compile != NULL);
+    QVERIFY(compile != nullptr);
     compile->activate(QAction::Trigger);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 3);
@@ -396,16 +391,16 @@ void instDialogObjectListTest::test_compile_3()
     openPolicy("test1");
     QTest::qWait(10);
     QToolButton* compileThis = mw->activeProject()->findChild<QToolButton*>("compile_this_fw");
-    QVERIFY(compileThis != NULL);
+    QVERIFY(compileThis != nullptr);
     QTest::mouseClick (compileThis, Qt::LeftButton);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     QVERIFY(table->topLevelItemCount() == 1);
@@ -426,16 +421,16 @@ void instDialogObjectListTest::test_compile_4()
     openPolicy("test2");
     QTest::qWait(100);
     QToolButton* compileThis = mw->activeProject()->findChild<QToolButton*>("compile_this_fw");
-    QVERIFY(compileThis != NULL);
+    QVERIFY(compileThis != nullptr);
     QTest::mouseClick (compileThis, Qt::LeftButton);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 1);
@@ -463,13 +458,13 @@ void instDialogObjectListTest::test_compile_5()
     tree->setCurrentItem(test1);
     ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test1, tree, "Compile");
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 1);
@@ -496,13 +491,13 @@ void instDialogObjectListTest::test_compile_6()
     tree->setCurrentItem(test2);
     ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test2, tree, "Compile");
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 1);
@@ -535,13 +530,13 @@ void instDialogObjectListTest::test_compile_7()
 
     ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test2, tree, "Compile");
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 2);
@@ -561,13 +556,13 @@ void instDialogObjectListTest::test_install_1()
     QAction *compile = mw->findChild<QAction*>("installAction");
     compile->activate(QAction::Trigger);
     QTest::qWait(100);
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == false);
     verifyCompileCheckboxes(table, 3);
@@ -613,13 +608,13 @@ void instDialogObjectListTest::test_actually_compile_1()
 
     ObjectManipulator *om = mw->activeProject()->findChild<ObjectManipulator*>("om");
     openContextMenu(om, test2, tree, "Compile");
-    instDialog *dlg = NULL;
+    instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     QTreeWidget *table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes(table, 2);
@@ -628,7 +623,7 @@ void instDialogObjectListTest::test_actually_compile_1()
     dlg->findChild<QPushButton*>("nextButton")->click();
 
     QPushButton *finish = dlg->findChild<QPushButton*>("finishButton");
-    QVERIFY(finish != NULL);
+    QVERIFY(finish != nullptr);
 
     int timeout_counter = 0;
     while (!finish->isEnabled())
@@ -652,11 +647,11 @@ void instDialogObjectListTest::test_actually_compile_1()
 
     openContextMenu(om, test2, tree, "Compile");
     foreach (QWidget *w, app->allWidgets())
-        if (dynamic_cast<instDialog*>(w) != NULL)
+        if (dynamic_cast<instDialog*>(w) != nullptr)
             dlg = dynamic_cast<instDialog*>(w);
 
     table = dlg->findChild<QTreeWidget*>("selectTable");
-    QVERIFY(table != NULL);
+    QVERIFY(table != nullptr);
     QVERIFY(table->isColumnHidden(COMPILE_CHECKBOX_COLUMN) == false);
     QVERIFY(table->isColumnHidden(INSTALL_CHECKBOX_COLUMN) == true);
     verifyCompileCheckboxes_2(table);

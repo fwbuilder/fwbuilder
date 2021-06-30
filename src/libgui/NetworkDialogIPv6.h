@@ -27,7 +27,6 @@
 #ifndef __NETWORKDIALOGIPV6_H_
 #define __NETWORKDIALOGIPV6_H_
 
-#include "config.h"
 #include <ui_networkdialogipv6_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

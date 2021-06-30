@@ -13,7 +13,6 @@
 #include "global.h"
 #include "utils.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Address.h"
 #include "fwbuilder/AddressRange.h"

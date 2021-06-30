@@ -77,7 +77,7 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(
 
     for (FWObject::iterator i=r->begin(); i!=r->end(); ++i)
     {
-        if (RuleElement::cast(*i)!=NULL)
+        if (RuleElement::cast(*i)!=nullptr)
         {
             if ((*i)->getTypeName()!=re_type && (*i)->size()!=1)
             {
@@ -151,7 +151,7 @@ void PolicyCompiler_ipt::optimize1::optimizeForRuleElement(
 
 bool PolicyCompiler_ipt::optimize1::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc      *srcrel;
     RuleElementDst      *dstrel;
@@ -171,22 +171,22 @@ bool PolicyCompiler_ipt::optimize1::processNext()
     bool srcany = srcrel->isAny();
     bool dstany = dstrel->isAny();
     bool srvany = srvrel->isAny();
-    bool intany = (intrel!=NULL && intrel->isAny());
+    bool intany = (intrel!=nullptr && intrel->isAny());
 
     int  srcn = srcrel->size();
     int  dstn = dstrel->size();
     int  srvn = srvrel->size();
     int  intn = 1;
-    if (intrel!=NULL) intn = intrel->size();
+    if (intrel!=nullptr) intn = intrel->size();
 
     bool all_tcp_or_udp = true;
     for (FWObject::iterator i=srvrel->begin(); i!=srvrel->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	    
         Service *service_object = Service::cast( o );
-        if (service_object==NULL)
+        if (service_object==nullptr)
         {
             compiler->abort(rule,
                                                       "Broken Service rule element");
@@ -259,7 +259,7 @@ bool PolicyCompiler_ipt::optimize1::processNext()
 bool PolicyCompiler_ipt::optimize2::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srvrel=rule->getSrv();
 
@@ -290,7 +290,7 @@ bool PolicyCompiler_ipt::optimize2::processNext()
 bool PolicyCompiler_ipt::optimize3::processNext()
 {
     PolicyRule *rule;
-    rule = getNext(); if (rule==NULL) return false;
+    rule = getNext(); if (rule==nullptr) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {
@@ -298,7 +298,7 @@ bool PolicyCompiler_ipt::optimize3::processNext()
         return true;
     }
 
-    if (printRule==NULL)
+    if (printRule==nullptr)
     {
         printRule = new PrintRule("");
         printRule->setContext(compiler);
@@ -317,9 +317,9 @@ bool PolicyCompiler_ipt::optimize3::processNext()
 bool PolicyCompiler_ipt::optimizeForMinusIOPlus::processNext()
 {
     PolicyRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule=getNext(); if (rule==nullptr) return false;
 
-    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=nullptr);
     FWObject *rule_iface = FWObjectReference::getObject(itf_re->front());
     string iface_name = rule_iface->getName();  // rule->getInterfaceStr();
 

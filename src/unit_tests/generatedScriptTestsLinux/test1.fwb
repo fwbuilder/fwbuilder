@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1296619808" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="24" lastModified="1587592764" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
     <AnyInterval id="sysid2" days_of_week="0,1,2,3,4,5,6" from_day="-1" from_hour="-1" from_minute="-1" from_month="-1" from_weekday="-1" from_year="-1" to_day="-1" to_hour="-1" to_minute="-1" to_month="-1" to_weekday="-1" to_year="-1" name="Any" comment="Any Interval" ro="False"/>
+    <DummyNetwork id="dummyaddressid0" name="Dummy" comment="Dummy Network" ro="False" address="255.255.255.255" netmask="255.255.255.255"/>
+    <DummyIPService id="dummyserviceid0" protocol_num="0" name="Dummy" comment="Dummy IP Service" ro="False"/>
+    <DummyInterface id="dummyinterfaceid0" dedicated_failover="False" dyn="False" security_level="0" unnum="True" unprotected="False" name="Dummy" comment="Dummy Interface" ro="False">
+      <InterfaceOptions/>
+    </DummyInterface>
     <ObjectGroup id="stdid01" name="Objects" comment="" ro="False">
       <ObjectGroup id="stdid16" name="Addresses" comment="" ro="False">
         <IPv4 id="id2001X88798" name="all-hosts" comment="" ro="False" address="224.0.0.1" netmask="0.0.0.0"/>
@@ -51,9 +56,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -69,9 +74,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -92,6 +97,13 @@
         <NetworkIPv6 id="id2383X75851" name="link-local ipv6" comment="RFC4291   Link-local unicast net" ro="False" address="fe80::" netmask="10"/>
         <NetworkIPv6 id="id2685X75851" name="multicast ipv6" comment="RFC4291  ipv6 multicast addresses" ro="False" address="ff00::" netmask="8"/>
         <NetworkIPv6 id="id2986X75851" name="experimental ipv6" comment="RFC2928, RFC4773 &#10;&#10;&quot;The block of Sub-TLA IDs assigned to the IANA&#10;(i.e., 2001:0000::/29 - 2001:01F8::/29) is for&#10;assignment for testing and experimental usage to&#10;support activities such as the 6bone, and&#10;for new approaches like exchanges.&quot;  [RFC2928]&#10;&#10;" ro="False" address="2001::" netmask="23"/>
+        <Network id="id3289X12564" name="TEST-NET-2" comment="RFC 5735&#10;RFC 5737&#10;" ro="False" address="198.51.100.0" netmask="255.255.255.0"/>
+        <Network id="id3300X12564" name="TEST-NET-3" comment="RFC 5735&#10;RFC 5737" ro="False" address="203.0.113.0" netmask="255.255.255.0"/>
+        <Network id="id3311X12564" name="Benchmark tests network" comment="RFC 5735" ro="False" address="198.18.0.0" netmask="255.254.0.0"/>
+        <NetworkIPv6 id="id3326X12564" name="mapped-ipv4" comment="" ro="False" address="::ffff:0.0.0.0" netmask="96"/>
+        <NetworkIPv6 id="id3341X12564" name="translated-ipv4" comment="" ro="False" address="::ffff:0:0:0" netmask="96"/>
+        <NetworkIPv6 id="id3350X12564" name="Teredo" comment="" ro="False" address="2001::" netmask="32"/>
+        <NetworkIPv6 id="id3359X12564" name="unique-local" comment="" ro="False" address="fc00::" netmask="7"/>
       </ObjectGroup>
       <ObjectGroup id="stdid15" name="Address Ranges" comment="" ro="False">
         <AddressRange id="id3F6D115C" name="broadcast" comment="" ro="False" start_address="255.255.255.255" end_address="255.255.255.255"/>
@@ -100,19 +112,23 @@
     </ObjectGroup>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="junosacl">tcp-established</CustomServiceCommand>
+        <CustomServiceCommand platform="nxosacl">established</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
+        <CustomServiceCommand platform="junosacl">tcp-established</CustomServiceCommand>
+        <CustomServiceCommand platform="nxosacl">established</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <ServiceGroup id="stdid10" name="Groups" comment="" ro="False">
@@ -318,6 +334,12 @@
         <TCPService id="id41291887" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-java-1" comment="Java VNC viewer, display 1" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5801" dst_range_end="5801"/>
         <TCPService id="id41291888" ack_flag="False" ack_flag_mask="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="vnc-1" comment="Regular VNC viewer, display 1" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5901" dst_range_end="5901"/>
         <TCPService id="id463FE5FE11008" ack_flag="False" ack_flag_mask="False" established="True" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="All TCP established" comment="Some firewall platforms can match TCP packets with flags ACK or RST set; the option is usually called &quot;established&quot;.&#10;&#10;Note that you can use this object only in the policy rules of the firewall that supports this option.&#10;&#10;If you need to match reply packets for a specific TCP service and wish to use option &quot;established&quot;, make a copy of this object and set source port range to match the service.&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="0" dst_range_end="0"/>
+        <TCPService id="id1577X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="rtmp" comment="Real Time Messaging Protocol" ro="False" src_range_start="0" src_range_end="0" dst_range_start="1935" dst_range_end="1935"/>
+        <TCPService id="id1590X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-client" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5222" dst_range_end="5222"/>
+        <TCPService id="id1609X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-server" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5269" dst_range_end="5269"/>
+        <TCPService id="id1622X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-client-ssl" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5223" dst_range_end="5223"/>
+        <TCPService id="id1631X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="xmpp-server-ssl" comment="Extensible Messaging and Presence Protocol (XMPP)   RFC3920&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5270" dst_range_end="5270"/>
+        <TCPService id="id1644X28030" ack_flag="False" ack_flag_mask="False" established="False" fin_flag="False" fin_flag_mask="False" psh_flag="False" psh_flag_mask="False" rst_flag="False" rst_flag_mask="False" syn_flag="False" syn_flag_mask="False" urg_flag="False" urg_flag_mask="False" name="nrpe" comment="NRPE add-on for Nagios  http://www.nagios.org/&#10;" ro="False" src_range_start="0" src_range_end="0" dst_range_start="5666" dst_range_end="5666"/>
       </ServiceGroup>
       <ServiceGroup id="stdid08" name="UDP" comment="" ro="False">
         <UDPService id="udp-ALL_UDP_Masqueraded" name="ALL UDP Masqueraded" comment="ipchains used to use this port range for masqueraded packets" ro="False" src_range_start="61000" src_range_end="65095" dst_range_start="0" dst_range_end="0"/>
@@ -359,54 +381,93 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13" name="Custom" comment="" ro="False">
         <CustomService id="id3B64EEA8" name="rpc" comment="works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m record_rpc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF4E" name="irc-conn" comment="IRC connection tracker, supports DCC.&#10;Works on iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/&#10;" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m irc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF50" name="psd" comment="Port scan detector, works only on iptables and  requires patch-o-matic &#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m psd --psd-weight-threshold 5 --psd-delay-threshold 10000</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF52" name="string" comment="Matches a string in a whole packet, works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m string --string test_pattern</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF54" name="talk" comment="Talk protocol support. Works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m talk</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
+        </CustomService>
+        <CustomService id="id3B6CEB55" name="Fragment Small Offset IPv4 UDP" comment="Only implemented for Junos ACL." ro="False" protocol="udp" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="iosacl"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="iptables"/>
+          <CustomServiceCommand platform="junosacl">fragment-offset 1-5</CustomServiceCommand>
+          <CustomServiceCommand platform="nxosacl"/>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="procurve_acl"/>
+          <CustomServiceCommand platform="unknown"/>
+        </CustomService>
+        <CustomService id="id3B6CEB56" name="Fragment IPv6 UDP" comment="Only implemented for Junos ACL." ro="False" protocol="fragment" address_family="ipv6">
+          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="iosacl"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="iptables"/>
+          <CustomServiceCommand platform="junosacl">payload-protocol udp</CustomServiceCommand>
+          <CustomServiceCommand platform="nxosacl"/>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="procurve_acl"/>
+          <CustomServiceCommand platform="unknown"/>
+        </CustomService>
+        <CustomService id="id3B6CEB57" name="Fragment IPv4 UDP" comment="Only implemented for Junos ACL." ro="False" protocol="udp" address_family="ipv4">
+          <CustomServiceCommand platform="fwsm"/>
+          <CustomServiceCommand platform="iosacl"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfw"/>
+          <CustomServiceCommand platform="iptables"/>
+          <CustomServiceCommand platform="junosacl">fragment-offset 6-8191</CustomServiceCommand>
+          <CustomServiceCommand platform="nxosacl"/>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="procurve_acl"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid19" name="TagServices" comment="" ro="False"/>
@@ -449,6 +510,18 @@
         <Option name="type">8021q</Option>
         <Option name="vlan_id">200</Option>
       </InterfaceOptions>
+    </Interface>
+    <Interface id="id5399X53483" dedicated_failover="False" dyn="False" label="inside" mgmt="True" security_level="100" unnum="False" unprotected="False" name="eth1" comment="" ro="False">
+      <IPv4 id="id5402X53483" name="vlantest:eth1:ip" comment="" ro="False" address="192.168.1.1" netmask="255.255.255.0"/>
+      <InterfaceOptions/>
+    </Interface>
+    <Interface id="id5404X53483" dedicated_failover="False" dyn="False" label="loopback" mgmt="False" security_level="100" unnum="False" unprotected="False" name="lo" comment="" ro="False">
+      <IPv4 id="id5407X53483" name="vlantest:lo:ip" comment="" ro="False" address="127.0.0.1" netmask="255.0.0.0"/>
+      <InterfaceOptions/>
+    </Interface>
+    <Interface id="id5409X53483" dedicated_failover="False" dyn="False" label="dmz" mgmt="False" security_level="0" unnum="False" unprotected="False" name="eth2" comment="" ro="False">
+      <IPv4 id="id5412X53483" name="vlantest:eth2:ip" comment="" ro="False" address="192.168.2.1" netmask="255.255.255.0"/>
+      <InterfaceOptions/>
     </Interface>
   </Library>
   <Library id="id1548X1251" color="#d2ffd0" name="User" comment="" ro="False">
@@ -514,7 +587,7 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -587,19 +660,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -607,14 +680,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -629,11 +702,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -651,11 +724,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -699,19 +772,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -719,14 +792,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -741,11 +814,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -763,11 +836,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -831,19 +904,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -851,14 +924,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -873,11 +946,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -895,11 +968,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">/etc/init.d/firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -985,7 +1058,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1014,19 +1087,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -1034,14 +1107,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1056,11 +1129,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -1078,11 +1151,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">/etc/init.d/firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -1168,7 +1241,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1197,19 +1270,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">False</Option>
@@ -1217,14 +1290,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1239,11 +1312,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -1261,11 +1334,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">/etc/init.d/firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -1351,7 +1424,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1372,7 +1445,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1393,7 +1466,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -1422,19 +1495,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">False</Option>
@@ -1442,14 +1515,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1464,11 +1537,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -1486,11 +1559,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">/etc/init.d/firewall.fw</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -1535,19 +1608,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -1555,14 +1628,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1577,7 +1650,7 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
@@ -1599,11 +1672,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
+          <Option name="script_name_on_firewall"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -1648,19 +1721,19 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_mgmt_ssh_rule_when_stoped">False</Option>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">True</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
           <Option name="clear_unknown_interfaces">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -1668,14 +1741,14 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -1690,7 +1763,7 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
@@ -1712,11 +1785,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
-          <Option name="script_name_on_firewall"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
+          <Option name="script_name_on_firewall"/>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -1725,6 +1798,97 @@
           <Option name="use_m_set">False</Option>
           <Option name="use_numeric_log_levels">False</Option>
           <Option name="verify_interfaces">True</Option>
+        </FirewallOptions>
+      </Firewall>
+      <Firewall id="id5386X53483" host_OS="linux24" inactive="False" lastCompiled="0" lastInstalled="0" lastModified="1587592781" platform="iptables" version="" name="vlantest" comment="Firewall object test1 comment" ro="False">
+        <NAT id="id5417X53483" name="NAT" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </NAT>
+        <Policy id="id5414X53483" name="Policy" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Policy>
+        <Routing id="id5420X53483" name="Routing" comment="" ro="False" ipv4_rule_set="False" ipv6_rule_set="False" top_rule_set="True">
+          <RuleSetOptions/>
+        </Routing>
+        <Interface id="id5394X53483" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bond0" comment="" ro="False">
+          <IPv4 id="id5397X53483" name="vlantest:bond0:ip" comment="This is a test address, change it to your real one" ro="False" address="192.0.2.1" netmask="255.255.255.0"/>
+          <InterfaceOptions>
+            <Option name="bonding_policy">balance-xor</Option>
+            <Option name="bondng_driver_options"/>
+            <Option name="enable_stp">False</Option>
+            <Option name="type">bonding</Option>
+            <Option name="vlan_id">0</Option>
+            <Option name="xmit_hash_policy">layer2</Option>
+          </InterfaceOptions>
+          <Interface id="id5507X53483" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bond0.101" comment="" ro="False">
+            <IPv4 id="id5539X53483" name="vlantest:bond0:bond0.101:ip" comment="" ro="False" address="192.10.20.10" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"/>
+              <Option name="bondng_driver_options"/>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">101</Option>
+              <Option name="xmit_hash_policy"/>
+            </InterfaceOptions>
+          </Interface>
+          <Interface id="id5531X82662" dedicated_failover="False" dyn="False" label="" mgmt="False" security_level="0" unnum="False" unprotected="False" name="bond0.0102" comment="" ro="False">
+            <IPv4 id="id5565X82662" name="vlantest:bond0:bond0.0102:ip" comment="" ro="False" address="192.5.10.15" netmask="255.255.255.0"/>
+            <InterfaceOptions>
+              <Option name="bonding_policy"/>
+              <Option name="bondng_driver_options"/>
+              <Option name="enable_stp">False</Option>
+              <Option name="type">8021q</Option>
+              <Option name="vlan_id">102</Option>
+              <Option name="xmit_hash_policy"/>
+            </InterfaceOptions>
+          </Interface>
+        </Interface>
+        <Management address="0.0.0.0">
+          <SNMPManagement enabled="False" snmp_read_community="" snmp_write_community=""/>
+          <FWBDManagement enabled="False" identity="" port="-1"/>
+          <PolicyInstallScript arguments="" command="" enabled="False"/>
+        </Management>
+        <FirewallOptions>
+          <Option name="accept_established">true</Option>
+          <Option name="accept_new_tcp_with_no_syn">true</Option>
+          <Option name="check_shading">true</Option>
+          <Option name="compiler"/>
+          <Option name="configure_interfaces">true</Option>
+          <Option name="eliminate_duplicates">true</Option>
+          <Option name="firewall_dir">/etc</Option>
+          <Option name="firewall_is_part_of_any_and_networks">true</Option>
+          <Option name="flush_and_set_default_policy">True</Option>
+          <Option name="freebsd_ip_forward">1</Option>
+          <Option name="limit_value">0</Option>
+          <Option name="linux24_ip_forward">1</Option>
+          <Option name="load_modules">true</Option>
+          <Option name="local_nat">false</Option>
+          <Option name="log_level">info</Option>
+          <Option name="log_prefix">RULE %N -- %A </Option>
+          <Option name="loopback_interface">lo</Option>
+          <Option name="macosx_ip_forward">1</Option>
+          <Option name="manage_virtual_addr">true</Option>
+          <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
+          <Option name="openbsd_ip_forward">1</Option>
+          <Option name="pf_limit_frags">5000</Option>
+          <Option name="pf_limit_states">10000</Option>
+          <Option name="pf_timeout_frag">30</Option>
+          <Option name="pf_timeout_interval">10</Option>
+          <Option name="pix_add_clear_statements">true</Option>
+          <Option name="pix_assume_fw_part_of_any">true</Option>
+          <Option name="pix_default_logint">300</Option>
+          <Option name="pix_emblem_log_format">false</Option>
+          <Option name="pix_emulate_out_acl">true</Option>
+          <Option name="pix_floodguard">true</Option>
+          <Option name="pix_include_comments">true</Option>
+          <Option name="pix_route_dnat_supported">true</Option>
+          <Option name="pix_rule_syslog_settings">false</Option>
+          <Option name="pix_security_fragguard_supported">true</Option>
+          <Option name="pix_syslog_device_id_supported">false</Option>
+          <Option name="pix_use_acl_remarks">true</Option>
+          <Option name="solaris_ip_forward">1</Option>
+          <Option name="ulog_nlgroup">1</Option>
+          <Option name="verify_interfaces">true</Option>
         </FirewallOptions>
       </Firewall>
     </ObjectGroup>

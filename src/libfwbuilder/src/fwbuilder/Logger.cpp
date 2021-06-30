@@ -25,8 +25,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include <stdlib.h>
@@ -34,6 +32,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <mutex>
 
 #ifndef _WIN32
 #include <unistd.h>
@@ -42,32 +41,16 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <signal.h>
-
-#include "fwbuilder/BackgroundOp.h"
+#include "Logger.h"
 
 using namespace std;
 using namespace libfwbuilder;
 
-/*
-Logger &libfwbuilder::start(Logger &l)
-{
-    l.line_lock.lock();
-    return l;
-}
-
-Logger &libfwbuilder::end(Logger &l)
-{
-    l.line_lock.unlock();
-    return l;
-}
-*/
-
 void    Logger::blackhole()
 {
-    line_lock.lock();
+    LockGuard lock(line_lock);
     blackhole_mode = true;
     copy_to_stderr = false;
-    line_lock.unlock();
 }
 
 
@@ -99,9 +82,8 @@ Logger& QueueLogger::operator<< (char  *str)
     if (blackhole_mode) return *this;
     if (copy_to_stderr) cerr << str;
 
-    line_lock.lock();
+    LockGuard lock(line_lock);
     linequeue.push(str);
-    line_lock.unlock();
     return *this;
 }
 
@@ -110,9 +92,8 @@ Logger& QueueLogger::operator<< (const char  *str)
     if (blackhole_mode) return *this;
     if (copy_to_stderr) cerr << str;
 
-    line_lock.lock();
+    LockGuard lock(line_lock);
     linequeue.push(str);
-    line_lock.unlock();
     return *this;
 }
 
@@ -121,9 +102,8 @@ Logger& QueueLogger::operator<< (const string &str)
     if (blackhole_mode) return *this;
     if (copy_to_stderr) cerr << str;
 
-    line_lock.lock();
+    LockGuard lock(line_lock);
     linequeue.push(str);
-    line_lock.unlock();
     return *this;
 }
 
@@ -154,9 +134,8 @@ Logger& QueueLogger::operator<< (std::ostringstream &sstr)
     if (blackhole_mode) return *this;
     if (copy_to_stderr) cerr << sstr.str();
 
-    line_lock.lock();
+    LockGuard lock(line_lock);
     linequeue.push(sstr.str());
-    line_lock.unlock();
     sstr.str("");    // purge stream contents
 
     return *this;
@@ -167,9 +146,8 @@ bool   QueueLogger::ready()
     if (blackhole_mode) return false;
 
     bool res=false;
-    line_lock.lock();
+    LockGuard lock(line_lock);
     res=(!linequeue.empty());
-    line_lock.unlock();
     return res;
 }
 
@@ -178,12 +156,11 @@ string QueueLogger::getLine()
     if (blackhole_mode) return "";
 
     string str;
-    line_lock.lock();
+    LockGuard lock(line_lock);
     if(!linequeue.empty()) {
-	str=linequeue.front();
-	linequeue.pop();
+        str=linequeue.front();
+        linequeue.pop();
     }
-    line_lock.unlock();
     return str;
 }
 

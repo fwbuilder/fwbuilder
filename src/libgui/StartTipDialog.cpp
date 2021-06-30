@@ -23,12 +23,11 @@
 
 */
 
-#include "config.h"
+#include "version.h"
 #include "global.h"
 #include "utils.h"
 
 #include "StartTipDialog.h"
-#include "startup_tip_url.h"
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "Help.h"
@@ -50,10 +49,6 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setModal(false);
-
-    http_getter = new HttpGet();
-    connect(http_getter, SIGNAL(done(const QString&)),
-            this, SLOT(downloadComplete(const QString&)));
 
     m_dialog = new Ui::StartTipDialog_q;
     m_dialog->setupUi(this);
@@ -79,19 +74,15 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
     
     // we use separate Help() object for the tip of the day becayse it should
     // have different size and should not be persistent
-    Help *h = new Help(NULL, "");
+    Help *h = new Help(nullptr, "");
     int tip_no = 1;
     while (true)
     {
         QString tip_file;
-        tip_file.sprintf("tip%02d.html", tip_no);
+        tip_file = QString("tip%1.html").arg(tip_no, 2, 10, QChar('0'));
         QString contents;
         if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("Trying tip file %s", tip_file.toAscii().constData());
-#else
             qDebug("Trying tip file %s", tip_file.toLatin1().constData());
-#endif
 
         QString help_file = h->findHelpFile(tip_file);
         if (!help_file.isEmpty())
@@ -112,18 +103,6 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
 StartTipDialog::~StartTipDialog()
 {
     delete m_dialog;
-    delete http_getter;
-};
-
-/*
- * disconnect signal in case dialog is closed before http query completes.
- * This does happen in unit tests and might happen on slow machines or
- * slow internet connections
- */
-void StartTipDialog::closeEvent(QCloseEvent*)
-{
-    disconnect(http_getter, SIGNAL(done(const QString&)),
-               this, SLOT(downloadComplete(const QString&)));
 }
 
 /*
@@ -148,39 +127,7 @@ void StartTipDialog::run()
         st->setBool("UI/FirstRun", false);
     } else
     {
-        if (http_getter->get(QUrl(STARTUP_TIP_URL)))
-        {
-            start_time = time(NULL);
-        } else
-        {
-            if (fwbdebug) qDebug("Can not connect to the url %s", STARTUP_TIP_URL);
-            showTip(getRandomTip(), false);
-        }
-    }
-}
-
-void StartTipDialog::downloadComplete(const QString &txt)
-{
-    // Do not show dialog if download took too long (time out occurred)
-    if (time(NULL) - start_time < 15)
-    {
-        QString tip;
-        if (http_getter->getStatus())
-        {
-            showTip(txt);
-        } else
-        {
-            if (fwbdebug)
-            {
-                qDebug() << "Error connecting to the url " <<  STARTUP_TIP_URL;
-                qDebug() << http_getter->getLastError();
-            }
-            showTip(getRandomTip(), false);
-        }
-    } else
-    {
-        if (fwbdebug)
-            qDebug("Suppressing startup tip dialog because download took too long");
+        showTip(getRandomTip(), false);
     }
 }
 
@@ -194,7 +141,7 @@ void StartTipDialog::showTip(const QString &txt, bool new_tip)
     }
 
     QUrl url(txt);
-    if (url.isValid() && (url.scheme() == "file" || url.scheme() == "http"))
+    if (url.isValid() && url.scheme() == "file")
         m_dialog->textview->setSource(url);
     else
         m_dialog->textview->setText(txt);
@@ -230,11 +177,4 @@ void StartTipDialog::prevTip()
     current_tip--;
     if (current_tip < 0) current_tip = 0;
     showTip(current_tip);
-}
-
-void StartTipDialog::showGettingStartedTutorial()
-{
-    int ab_group = st->getABTestingGroup();
-    QString url("http://www.fwbuilder.org/4.0/quick_start_guide_%1.html");
-    QDesktopServices::openUrl(QUrl(url.arg(ab_group), QUrl::StrictMode));
 }

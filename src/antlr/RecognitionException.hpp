@@ -24,26 +24,26 @@ namespace antlr
 									const ANTLR_USE_NAMESPACE(std)string& fileName,
 									int line, int column );
 
-		virtual ~RecognitionException() throw()
+		virtual ~RecognitionException()
 		{
 		}
 
 		/// Return file where mishap occurred.
-		virtual ANTLR_USE_NAMESPACE(std)string getFilename() const throw()
+		virtual ANTLR_USE_NAMESPACE(std)string getFilename() const
 		{
 			return fileName;
 		}
 		/**
 		 * @return the line number that this exception happened on.
 		 */
-		virtual int getLine() const throw()
+		virtual int getLine() const
 		{
 			return line;
 		}
 		/**
 		 * @return the column number that this exception happened on.
 		 */
-		virtual int getColumn() const throw()
+		virtual int getColumn() const
 		{
 			return column;
 		}

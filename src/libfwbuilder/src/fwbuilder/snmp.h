@@ -25,8 +25,6 @@
 #ifndef __SNMP_HH_FLAG__
 #define __SNMP_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #ifdef HAVE_LIBSNMP
 
@@ -51,6 +49,8 @@
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #endif
+
+#include <atomic>
 
 namespace libfwbuilder
 {
@@ -80,13 +80,13 @@ class SNMPVariable
     virtual std::string toString() = 0;
 
     static std::string varList2String(std::vector<SNMPVariable*> &v);
-    static long varList2Int(std::vector<SNMPVariable*> &v) throw(FWException);
-    static long var2Int(SNMPVariable *var) throw(FWException);
+    static long varList2Int(std::vector<SNMPVariable*> &v);
+    static long var2Int(SNMPVariable *var);
     static void freeVarList(std::vector<SNMPVariable*> &v);
 
     protected:   
 
-    static SNMPVariable *create(struct variable_list *v) throw(FWException);
+    static SNMPVariable *create(struct variable_list *v);
 };
 
 class SNMPVariable_Int : public SNMPVariable
@@ -129,7 +129,7 @@ class SNMPVariable_Bits : public SNMPVariable
             memcpy((void*)value, v, len);
         } else
         {
-            value = NULL ;
+            value = nullptr ;
             len   = 0    ;
         }
     }
@@ -152,12 +152,12 @@ class SNMPVariable_IPaddr  : public SNMPVariable
     
     virtual std::string toString();
 
-    virtual InetAddr getInetAddrValue() throw(FWException);
-    virtual InetAddr getNetmaskValue() throw(FWException);
+    virtual InetAddr getInetAddrValue();
+    virtual InetAddr getNetmaskValue();
 
     protected:
     
-    SNMPVariable_IPaddr(u_char *v, size_t l) throw(FWException)
+    SNMPVariable_IPaddr(u_char *v, size_t l)
     { 
         type  = snmp_ipaddr; 
         if(v)
@@ -253,10 +253,10 @@ class SNMPConnection
     /**
      * Optional parameter timeout is in milliseconds.
      */
-    void connect(int retries=SNMP_DEFAULT_RETRIES, long timeout=SNMP_DEFAULT_TIMEOUT) throw(FWException);
-    void disconnect() throw(FWException);
-    std::vector<SNMPVariable*> get(const std::string &variable) throw(FWException);
-    std::multimap<std::string, SNMPVariable*> walk(const std::string &variable) throw(FWException);
+    void connect(int retries=SNMP_DEFAULT_RETRIES, long timeout=SNMP_DEFAULT_TIMEOUT);
+    void disconnect();
+    std::vector<SNMPVariable*> get(const std::string &variable);
+    std::multimap<std::string, SNMPVariable*> walk(const std::string &variable);
 
     private:
 
@@ -341,15 +341,15 @@ public:
 	      int retries_=SNMP_DEFAULT_RETRIES, 
 	      long timeout_=SNMP_DEFAULT_TIMEOUT);
 
-    void fetchArpTable(Logger *,SyncFlag *stop_program,
-                       SNMPConnection *connection=NULL) throw(FWException);
-    void fetchInterfaces(Logger *,SyncFlag *stop_program,
-                         SNMPConnection *connection=NULL) throw(FWException);
-    void fetchSysInfo(Logger *,SyncFlag *stop_program,
-                      SNMPConnection *connection=NULL) throw(FWException);
-    void fetchAll(Logger *,SyncFlag *stop_program) throw(FWException);
-    void fetchRoutingTable(Logger *,SyncFlag *stop_program,
-                           SNMPConnection *connection=NULL) throw(FWException);
+    void fetchArpTable(Logger *,std::atomic<bool> *stop_program,
+                       SNMPConnection *connection=nullptr);
+    void fetchInterfaces(Logger *,std::atomic<bool> *stop_program,
+                         SNMPConnection *connection=nullptr);
+    void fetchSysInfo(Logger *,std::atomic<bool> *stop_program,
+                      SNMPConnection *connection=nullptr);
+    void fetchAll(Logger *,std::atomic<bool> *stop_program);
+    void fetchRoutingTable(Logger *,std::atomic<bool> *stop_program,
+                           SNMPConnection *connection=nullptr);
     
     std::map<int, InterfaceData>* getInterfaces();
     std::map<InetAddr, std::string>* getArpTable();
@@ -385,7 +385,7 @@ class SNMP_interface_query : public SNMPQuery
 	SNMPQuery::init(hostname, community, retries_, timeout_);
     }
     
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
 
 };
 
@@ -408,7 +408,7 @@ class SNMP_sysdesc_query : public SNMPQuery
 	SNMPQuery::init(hostname, community, retries_, timeout_);
     }
 
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
 };
 
 class SNMP_discover_query : public SNMPQuery
@@ -422,7 +422,7 @@ class SNMP_discover_query : public SNMPQuery
     SNMP_discover_query() : SNMPQuery() {}
     SNMP_discover_query(std::string hostname, std::string community, int retries_=SNMP_DEFAULT_RETRIES, long timeout_=SNMP_DEFAULT_TIMEOUT, bool _f=true):SNMPQuery(hostname, community, retries_, timeout_) { fetch_inerfaces=_f; }
     
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program) throw(FWException);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
 };
 
 class CrawlerFind: public HostEnt
@@ -495,7 +495,7 @@ class SNMPCrawler : public BackgroundOp
                 long _timeout=SNMP_DEFAULT_TIMEOUT,
 		int  _dns_retries=RES_DFLRETRY,
 		int  _dns_timeout=RES_TIMEOUT,
-                const std::vector<InetAddrMask> *include=NULL);
+                const std::vector<InetAddrMask> *include=nullptr);
     virtual ~SNMPCrawler();
 
     void init(const InetAddr &seed, 
@@ -508,15 +508,13 @@ class SNMPCrawler : public BackgroundOp
 	      long _snmp_timeout=SNMP_DEFAULT_TIMEOUT,
 	      int  _dns_retries=RES_DFLRETRY,
 	      int  _dns_timeout=RES_TIMEOUT,
-	      const std::vector<InetAddrMask> *include=NULL);
+	      const std::vector<InetAddrMask> *include=nullptr);
 
     std::map<InetAddr, CrawlerFind>  getAllIPs();
     std::set<InetAddrMask> getNetworks();
         
-    virtual void run_impl(Logger *logger,SyncFlag *stop_program)
-        throw(FWException);
-    void bacresolve_results(Logger *logger,SyncFlag *stop_program)
-        throw(FWException);
+    virtual void run_impl(Logger *logger,std::atomic<bool> *stop_program);
+    void bacresolve_results(Logger *logger,std::atomic<bool> *stop_program);
 
 };
 

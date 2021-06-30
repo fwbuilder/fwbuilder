@@ -63,7 +63,7 @@ class IPRoute
 
     /**
      * @return interface associated with this route, or
-     * NULL if none.
+     * nullptr if none.
      */
     const InterfaceData& getInterface() const { return intf; }
     

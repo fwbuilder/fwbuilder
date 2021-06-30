@@ -29,7 +29,7 @@ public:
 	: ANTLRException(s)
 	{
 	}
-	virtual ~TokenStreamException() throw()
+	virtual ~TokenStreamException()
 	{
 	}
 };

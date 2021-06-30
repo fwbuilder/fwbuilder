@@ -110,8 +110,8 @@ protected:
     ObjectTreeView(ProjectPanel* project,
                    QWidget* parent = 0,
                    const char * name = 0,
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                   Qt::WFlags f = 0);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+                   Qt::WindowFlags f = Qt::WindowFlags());
 #else
                    Qt::WindowFlags f = 0);
 #endif

@@ -24,7 +24,6 @@
 #ifndef _OBJECT_GROUPS_SUPPORT_HH
 #define _OBJECT_GROUPS_SUPPORT_HH
 
-#include "config.h"
 
 #include "BaseObjectGroup.h"
 #include "NamedObject.h"

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_ipfw.h"
 #include "fwcompiler/Compiler.h"
@@ -79,10 +78,10 @@ void PolicyCompiler_ipfw::_expand_addr(Rule *rule, FWObject *s, bool expand_clus
 {
     RuleElement *re=RuleElement::cast(s);
 
-    if (re!=NULL && re->size()==1 )
+    if (re!=nullptr && re->size()==1 )
     {
         FWObject *o=re->front();
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
         if (o->getId()==fw->getId()) return;
     }
@@ -92,7 +91,7 @@ void PolicyCompiler_ipfw::_expand_addr(Rule *rule, FWObject *s, bool expand_clus
 bool PolicyCompiler_ipfw::expandAnyService::processNext()
 {
     PolicyCompiler_ipfw *pcomp=dynamic_cast<PolicyCompiler_ipfw*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv=rule->getSrv();
     FWOptions *ruleopt =rule->getOptionsObject();
@@ -138,7 +137,7 @@ bool PolicyCompiler_ipfw::expandAnyService::processNext()
 
 bool PolicyCompiler_ipfw::SpecialRuleActionsForShadowing::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getAction()==PolicyRule::Pipe ||
         rule->getAction()==PolicyRule::Custom) 
@@ -150,7 +149,7 @@ bool PolicyCompiler_ipfw::SpecialRuleActionsForShadowing::processNext()
 
 bool PolicyCompiler_ipfw::doSrcNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *src=rule->getSrc();
 
@@ -191,7 +190,7 @@ bool PolicyCompiler_ipfw::doSrcNegation::processNext()
 
 bool PolicyCompiler_ipfw::doDstNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementDst *dst=rule->getDst();
 
@@ -232,7 +231,7 @@ bool PolicyCompiler_ipfw::doDstNegation::processNext()
 
 bool PolicyCompiler_ipfw::doSrvNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv=rule->getSrv();
 
@@ -247,7 +246,7 @@ bool PolicyCompiler_ipfw::doSrvNegation::processNext()
 
 bool PolicyCompiler_ipfw::separatePortRanges::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrv *rel= rule->getSrv();
 
     if (rel->size()==1) 
@@ -261,9 +260,9 @@ bool PolicyCompiler_ipfw::separatePortRanges::processNext()
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
     {	    
 	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	Service *s=Service::cast(o);
-	assert(s!=NULL);
+	assert(s!=nullptr);
 
 	if ( TCPService::isA(s) || UDPService::isA(s) ) 
         {
@@ -306,7 +305,7 @@ bool PolicyCompiler_ipfw::separatePortRanges::processNext()
 
 bool PolicyCompiler_ipfw::sortTCPUDPServices::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrv *rel= rule->getSrv();
 
     if (rel->size()==1) 
@@ -316,7 +315,7 @@ bool PolicyCompiler_ipfw::sortTCPUDPServices::processNext()
     }
 
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
     Service *s1= Service::cast(o);
     if ( !UDPService::isA(s1) && !TCPService::isA(s1))
@@ -330,14 +329,14 @@ bool PolicyCompiler_ipfw::sortTCPUDPServices::processNext()
  * objects with port ranges, there is only one left. We just need to
  * move it to the front of the list.
  */
-    Service *portRangeSvc=NULL;
+    Service *portRangeSvc=nullptr;
     for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
     {	    
 	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL)
+	if (FWReference::cast(o)!=nullptr)
             o=FWReference::cast(o)->getPointer();
 	Service *s=Service::cast(o);
-	assert(s!=NULL);
+	assert(s!=nullptr);
 
         unsigned srs=TCPUDPService::cast(s)->getSrcRangeStart();
         unsigned sre=TCPUDPService::cast(s)->getSrcRangeEnd();
@@ -377,10 +376,10 @@ void PolicyCompiler_ipfw::specialCaseWithDynInterface::dropDynamicInterface(Rule
     {
         FWObject *o   = *i1;
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface  *ifs   =Interface::cast( obj );
 
-        if (ifs!=NULL && !ifs->isRegular()) continue;
+        if (ifs!=nullptr && !ifs->isRegular()) continue;
         cl.push_back(obj);
     }
     if (!cl.empty()) 
@@ -393,7 +392,7 @@ void PolicyCompiler_ipfw::specialCaseWithDynInterface::dropDynamicInterface(Rule
 
 bool PolicyCompiler_ipfw::specialCaseWithDynInterface::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     dropDynamicInterface( rule->getDst() );
     dropDynamicInterface( rule->getSrc() );
@@ -448,7 +447,7 @@ bool PolicyCompiler_ipfw::calculateNum::processNext()
 
 bool PolicyCompiler_ipfw::checkForKeepState::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     Service   *srv=compiler->getFirstSrv(rule);    assert(srv);
@@ -464,11 +463,11 @@ bool PolicyCompiler_ipfw::checkForKeepState::processNext()
 bool PolicyCompiler_ipfw::eliminateDuplicateRules::processNext()
 {
     PolicyCompiler *pcomp=dynamic_cast<PolicyCompiler*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     // Note that if rule has "any" in Interface column, it is
     // implemented as reference to the AnyNetwork object. In this case
-    // Compiler::getFirstItf() returns NULL.
+    // Compiler::getFirstItf() returns nullptr.
     Interface *intf_rule = compiler->getFirstItf(rule);
     int intf_id_rule = (intf_rule) ? intf_rule->getId() : -1;
 
@@ -505,15 +504,15 @@ bool PolicyCompiler_ipfw::eliminateDuplicateRules::processNext()
  */
 bool PolicyCompiler_ipfw::processMultiAddressObjectsInRE::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        if (atrt!=nullptr && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             compiler->abort(
                 
                     rule, 
@@ -673,7 +672,7 @@ string PolicyCompiler_ipfw::debugPrintRule(Rule *r)
     for (FWObject::iterator it=intf_re->begin(); it!=intf_re->end(); ++it)
     {
         FWObject *o   = *it;
-        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o = FWReference::cast(o)->getPointer();
         rule_interfaces += " " + o->getName();
         intf_count++;
     }

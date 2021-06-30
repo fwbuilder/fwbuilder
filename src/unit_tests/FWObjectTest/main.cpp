@@ -22,9 +22,8 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+#include <QTest>
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "FWObjectTest.h"
 #include "fwbuilder/FWObjectDatabase.h"
 
@@ -33,19 +32,11 @@
 using namespace libfwbuilder;
 
 int fwbdebug = 0;
-//QString user_name;
 std::string platform;
 
-int main( int, char** argv)
+int main()
 {
-    //init(argv);
     init();
 
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( FWObjectTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new FWObjectTest());
 }

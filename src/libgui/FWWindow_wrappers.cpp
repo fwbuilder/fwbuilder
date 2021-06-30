@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include <ui_FWBMainWindow_q.h>
@@ -418,7 +417,7 @@ QString FWWindow::getCurrentFileName()
 RCS * FWWindow::getRCS()
 {
     if (activeProject()) return activeProject()->getRCS();
-    return 0;
+    return nullptr;
 }
 
 /*
@@ -434,14 +433,14 @@ FWObject* FWWindow::getCurrentLib()
 {
     if (activeProject())
         return activeProject()->getCurrentLib();
-    return 0;
+    return nullptr;
 }
 
 FWObject* FWWindow::createObject(const QString &objType,
                                                const QString &objName,
                                                FWObject *copyFrom)
 {
-    FWObject *res = NULL;
+    FWObject *res = nullptr;
     if (activeProject())
     {
         res = activeProject()->createObject(objType, objName, copyFrom);
@@ -454,7 +453,7 @@ FWObject* FWWindow::createObject(FWObject *parent,
                                                const QString &objName,
                                                FWObject *copyFrom)
 {
-    FWObject *res = NULL;
+    FWObject *res = nullptr;
     if (activeProject())
     {
         res =  activeProject()->createObject(parent, objType,
@@ -482,7 +481,7 @@ void FWWindow::moveObject(const QString &targetLibName, FWObject *obj)
 ObjectTreeView* FWWindow::getCurrentObjectTree()
 {
     if (activeProject()) return activeProject()->getCurrentObjectTree();
-    return 0;
+    return nullptr;
 }
 
 void FWWindow::findAllFirewalls (std::list<Firewall *> &fws)
@@ -509,7 +508,7 @@ void FWWindow::unselect()
 FWObjectDatabase* FWWindow::db() 
 { 
     if (activeProject()) return activeProject()->db(); 
-    return NULL;
+    return nullptr;
 }
 
 QString FWWindow::printHeader()

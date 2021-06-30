@@ -26,7 +26,7 @@ public:
 	, io(e)
 	{
 	}
-	~TokenStreamIOException() throw()
+	~TokenStreamIOException()
 	{
 	}
 private:

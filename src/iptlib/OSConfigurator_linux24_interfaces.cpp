@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 
 #include "OSConfigurator_linux24.h"
 
@@ -123,7 +122,7 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 {
     FWOptions* options = fw->getOptionsObject();
 
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 
@@ -185,7 +184,7 @@ string OSConfigurator_linux24::printInterfaceConfigurationCommands()
 string OSConfigurator_linux24::printVirtualAddressesForNatCommands()
 {
     QStringList gencmd;
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             fw->getStr("host_OS")));
 
@@ -294,22 +293,28 @@ string OSConfigurator_linux24::printVlanInterfaceConfigurationCommands()
                 QString sintf_name = subinterface->getName().c_str();
                 QString vlan_name;
                 QStringList supported_vlan_names;
-                vlan_name.sprintf("vlan%04d", vlan_id);
+                vlan_name = QString("vlan%1")
+                        .arg(vlan_id, 4, 10, QChar('0'));
                 supported_vlan_names.append(vlan_name);
                 if (vlan_name == sintf_name) name_type = "VLAN_PLUS_VID";
                 else
                 {
-                    vlan_name.sprintf("vlan%d", vlan_id);
+                    vlan_name = QString("vlan%1")
+                            .arg(vlan_id);
                     supported_vlan_names.append(vlan_name);
                     if (vlan_name == sintf_name) name_type = "VLAN_PLUS_VID_NO_PAD";
                     else
                     {
-                        vlan_name.sprintf("%s.%04d", iface->getName().c_str(), vlan_id);
+                        vlan_name = QString("%1.%2")
+                                .arg(iface->getName().c_str())
+                                .arg(vlan_id, 4, 10, QChar('0'));
                         supported_vlan_names.append(vlan_name);
                         if (vlan_name == sintf_name) name_type = "DEV_PLUS_VID_PAD";
                         else
                         {
-                            vlan_name.sprintf("%s.%d", iface->getName().c_str(), vlan_id);
+                            vlan_name = QString("%1.%2")
+                                    .arg(iface->getName().c_str())
+                                    .arg(vlan_id);
                             supported_vlan_names.append(vlan_name);
                             if (vlan_name == sintf_name) name_type = "DEV_PLUS_VID_NO_PAD";
                         }

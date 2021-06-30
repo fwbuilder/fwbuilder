@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_pf.h"
 #include "NATCompiler_pf.h"
@@ -105,7 +104,7 @@ int PolicyCompiler_pf::prolog()
 bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
 {
     PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
-    Rule *rule=prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule=prev_processor->getNextRule(); if (rule==nullptr) return false;
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
 
@@ -113,7 +112,7 @@ bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         /* 
          * All addressTable objects will be run-time here because we
          * switch them in preprocessor. The difference is: if address
@@ -124,7 +123,7 @@ bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
          * AddressTable objects that originally used to be
          * compile-time because we need to create tables for them.
          */
-        if (AddressTable::cast(o)!=NULL &&
+        if (AddressTable::cast(o)!=nullptr &&
             AddressTable::cast(o)->isRunTime() &&
             o->size() > 0)
             cl.push_back(MultiAddress::cast(o));
@@ -146,7 +145,7 @@ bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
 
             MultiAddressRunTime *mart = 
                 MultiAddressRunTime::cast(compiler->dbcopy->findInIndex(mart_id));
-            if (mart==NULL)
+            if (mart==nullptr)
             {
                 mart = new MultiAddressRunTime(atbl);
 
@@ -181,7 +180,7 @@ bool PolicyCompiler_pf::swapAddressTableObjectsInRE::processNext()
 bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
 {
     PolicyCompiler_pf *pf_comp=dynamic_cast<PolicyCompiler_pf*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
     bool neg = re->getNeg();
@@ -193,10 +192,10 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
         for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
         {
             FWObject *o= *i;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
             MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-            if (atrt!=NULL &&
+            if (atrt!=nullptr &&
                 atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             {
                 if (re->size()>1 && neg)
@@ -251,7 +250,7 @@ bool PolicyCompiler_pf::processMultiAddressObjectsInRE::processNext()
 
 bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     PolicyRule *r;
     RuleElementSrc *src = rule->getSrc();
@@ -263,12 +262,12 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 	return true;
     }
 
-    FWObject *fw_in_src = NULL;
+    FWObject *fw_in_src = nullptr;
     vector<FWObject*> cl;
     for (FWObject::iterator i1=src->begin(); i1!=src->end(); ++i1)
     {
 	FWObject *obj = FWReference::getObject(*i1);
-	if (obj==NULL)
+	if (obj==nullptr)
             compiler->abort(rule, "Broken Src object");
 
 	if (obj->getId()==compiler->getFwId())
@@ -287,7 +286,7 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 	    tmp_queue.push_back(r);
 	}
     }
-    if (fw_in_src!=NULL) src->removeRef( fw_in_src );
+    if (fw_in_src!=nullptr) src->removeRef( fw_in_src );
 
     tmp_queue.push_back(rule);
     return true;
@@ -296,7 +295,7 @@ bool PolicyCompiler_pf::splitIfFirewallInSrc::processNext()
 
 bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     PolicyRule *r;
     RuleElementDst *dst = rule->getDst();    assert(dst);
@@ -307,12 +306,12 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 	return true;
     }
 
-    FWObject *fw_in_dst = NULL;
+    FWObject *fw_in_dst = nullptr;
     vector<FWObject*> cl;
     for (FWObject::iterator i1=dst->begin(); i1!=dst->end(); ++i1)
     {
 	FWObject *obj = FWReference::getObject(*i1);
-	if (obj==NULL)
+	if (obj==nullptr)
             compiler->abort(rule, "Broken Dst");
 
 	if (obj->getId()==compiler->getFwId())
@@ -331,7 +330,7 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 	    tmp_queue.push_back(r);
 	}
     }
-    if (fw_in_dst!=NULL) dst->removeRef( fw_in_dst );
+    if (fw_in_dst!=nullptr) dst->removeRef( fw_in_dst );
 
     tmp_queue.push_back(rule);
     return true;
@@ -341,7 +340,7 @@ bool PolicyCompiler_pf::splitIfFirewallInDst::processNext()
 
 bool PolicyCompiler_pf::fillDirection::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
 /* after interface policies have been merged with global policy, rules
@@ -378,7 +377,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
         Address  *dst = compiler->getFirstDst(rule);
         //int fwid = compiler->getFwId();
 
-        if (src==NULL || dst==NULL)
+        if (src==nullptr || dst==nullptr)
             compiler->abort(rule, "Broken src or dst");
 
         if (!src->isAny() && !dst->isAny() &&
@@ -403,7 +402,7 @@ bool PolicyCompiler_pf::fillDirection::processNext()
 
 bool PolicyCompiler_pf::SpecialServices::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementSrv *srv=rule->getSrv();
@@ -411,11 +410,11 @@ bool PolicyCompiler_pf::SpecialServices::processNext()
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++)
     {
 	FWObject *o= *i;
-	if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	Service *s=Service::cast( o );
 	assert(s);
 
-	if (IPService::cast(s)!=NULL  && rule->getAction()==PolicyRule::Accept)
+	if (IPService::cast(s)!=nullptr  && rule->getAction()==PolicyRule::Accept)
         {
             rule->setBool("allow_opts", IPService::constcast(s)->hasIpOptions());
 	}
@@ -425,7 +424,7 @@ bool PolicyCompiler_pf::SpecialServices::processNext()
 
 bool PolicyCompiler_pf::SplitDirection::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getDirection()==PolicyRule::Both && rule->getRouting())
     {
@@ -449,7 +448,7 @@ bool PolicyCompiler_pf::SplitDirection::processNext()
 
 bool PolicyCompiler_pf::ProcessScrubOption::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     FWOptions *ruleopt =rule->getOptionsObject();
 
@@ -504,7 +503,7 @@ bool PolicyCompiler_pf::ProcessScrubOption::processNext()
 
 bool PolicyCompiler_pf::setQuickFlag::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     FWOptions *ropt = rule->getOptionsObject();
@@ -537,7 +536,7 @@ bool PolicyCompiler_pf::setQuickFlag::processNext()
 
 bool PolicyCompiler_pf::doSrcNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *src=rule->getSrc();
 
@@ -576,7 +575,7 @@ bool PolicyCompiler_pf::doSrcNegation::processNext()
 
 bool PolicyCompiler_pf::doDstNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementDst *dst=rule->getDst();
 
@@ -615,7 +614,7 @@ bool PolicyCompiler_pf::doDstNegation::processNext()
 
 bool PolicyCompiler_pf::doSrvNegation::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv=rule->getSrv();
 
@@ -632,13 +631,13 @@ bool PolicyCompiler_pf::doSrvNegation::processNext()
 
 bool PolicyCompiler_pf::addLoopbackForRedirect::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     PolicyCompiler_pf *pf_comp = dynamic_cast<PolicyCompiler_pf*>(compiler);
 
     RuleElementDst *dst = rule->getDst();
     RuleElementSrv *srv = rule->getSrv();
 
-    if (pf_comp->redirect_rules_info==NULL)
+    if (pf_comp->redirect_rules_info==nullptr)
         compiler->abort(
             rule, 
             "addLoopbackForRedirect needs a valid pointer to "
@@ -695,10 +694,10 @@ void PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInte
     {
         FWObject *o   = *i1;
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface  *ifs   =Interface::cast( obj );
 
-        if (ifs!=NULL    &&
+        if (ifs!=nullptr    &&
             ifs->isDyn() &&
             ifs->getParent()->getId()!=compiler->fw->getId() &&
             ! ifs->getParent()->getBool("pf_table") )
@@ -718,7 +717,7 @@ void PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::findDynamicInte
 
 bool PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     findDynamicInterfaces( rule->getSrc() , rule );
     findDynamicInterfaces( rule->getDst() , rule );
@@ -730,7 +729,7 @@ bool PolicyCompiler_pf::checkForDynamicInterfacesOfOtherObjects::processNext()
 
 bool PolicyCompiler_pf::splitIfInterfaceInRE::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElement *re=RuleElement::cast( rule->getFirstByType(re_type) );
     if (re->size()<=2)
@@ -744,10 +743,10 @@ bool PolicyCompiler_pf::splitIfInterfaceInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
         Interface *interface_=Interface::cast(o);
-        if (interface_!=NULL && interface_->isDyn())
+        if (interface_!=nullptr && interface_->isDyn())
             cl.push_back(interface_);
     }
 
@@ -782,7 +781,7 @@ bool PolicyCompiler_pf::splitIfInterfaceInRE::processNext()
 bool PolicyCompiler_pf::createTables::processNext()
 {
     PolicyCompiler_pf *pf_comp = dynamic_cast<PolicyCompiler_pf*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *src = rule->getSrc();
     RuleElementDst *dst = rule->getDst();
@@ -797,7 +796,7 @@ bool PolicyCompiler_pf::createTables::processNext()
 
 bool PolicyCompiler_pf::printScrubRule::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions* options=compiler->fw->getOptionsObject();
 
     if (!init && options->getBool("pf_do_scrub"))

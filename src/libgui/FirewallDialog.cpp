@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
@@ -79,7 +78,7 @@ FirewallDialog::FirewallDialog(QWidget *parent) :
 {
     m_dialog = new Ui::FirewallDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -90,7 +89,7 @@ void FirewallDialog::loadFWObject(FWObject *o)
     {
         obj = o;
         Firewall *s = dynamic_cast<Firewall*>(obj);
-        assert(s!=NULL);
+        assert(s!=nullptr);
 
         init = true;
 
@@ -106,8 +105,10 @@ void FirewallDialog::loadFWObject(FWObject *o)
 /* ---------------- */
         updateTimeStamps();
 
+#ifndef NDEBUG
         Management *mgmt=s->getManagementObject();
-        assert(mgmt!=NULL);
+        assert(mgmt!=nullptr);
+#endif
 
 //    FWOptions  *opt =s->getOptionsObject();
 
@@ -240,13 +241,13 @@ void FirewallDialog::validate(bool *res)
     if (m_dialog->obj_name->text().contains("/"))
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Character \"/\" is not allowed in firewall object name"),
-                tr("&Continue"), QString::null,QString::null,
+                tr("&Continue"), QString(),QString(),
                 0, 1 );
             blockSignals(false);
         }
@@ -293,7 +294,7 @@ void FirewallDialog::applyChanges()
         blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
-                                  tr("&Yes"), tr("&No"), QString::null,
+                                  tr("&Yes"), tr("&No"), QString(),
                                   0, 1 )==0 );
         blockSignals(false);
     }
@@ -302,15 +303,18 @@ void FirewallDialog::applyChanges()
         qDebug() << "Sending FWCmdChange  autorename_chidren="
                  << autorename_chidren;
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
 
     Firewall *s = dynamic_cast<Firewall*>(new_state);
+
+#ifndef NDEBUG
     Management *mgmt = s->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
+#endif
 
     string old_name = obj->getName();
     string new_name = string(m_dialog->obj_name->text().toUtf8().constData());
@@ -364,7 +368,7 @@ void FirewallDialog::applyChanges()
         QMessageBox::critical(
             this, "Firewall Builder",
             tr("Platform setting can not be empty"),
-            tr("&Continue"), 0, 0,
+            tr("&Continue"), nullptr, nullptr,
             0 );
         return;
     }
@@ -374,7 +378,7 @@ void FirewallDialog::applyChanges()
         QMessageBox::critical(
             this, "Firewall Builder",
             tr("Host OS setting can not be empty"),
-            tr("&Continue"), 0, 0,
+            tr("&Continue"), nullptr, nullptr,
             0 );
         return;
     }
@@ -402,9 +406,9 @@ void FirewallDialog::openFWDialog()
     try
     {
         QWidget *w = DialogFactory::createFWDialog(mw, obj);
-        if (w==NULL)   return;   // some dialogs may not be implemented yet
+        if (w==nullptr)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
-        assert(d!=NULL);
+        assert(d!=nullptr);
         d->setWindowModality(Qt::WindowModal);
 //        d->open();
         d->exec();
@@ -415,7 +419,7 @@ void FirewallDialog::openFWDialog()
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("FWBuilder API error: %1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return;
     }
@@ -427,9 +431,9 @@ void FirewallDialog::openOSDialog()
     try
     {
         QWidget *w = DialogFactory::createOSDialog(mw, obj);
-        if (w==NULL)   return;   // some dialogs may not be implemented yet
+        if (w==nullptr)   return;   // some dialogs may not be implemented yet
         QDialog *d=dynamic_cast<QDialog*>(w);
-        assert(d!=NULL);
+        assert(d!=nullptr);
         d->exec();
         delete d;
     }
@@ -438,7 +442,7 @@ void FirewallDialog::openOSDialog()
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("FWBuilder API error: %1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return;
     }

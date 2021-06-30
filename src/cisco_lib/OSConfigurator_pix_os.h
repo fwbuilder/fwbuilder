@@ -27,7 +27,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_PIX_OS_HH
 #define _OSNETWORKCONFIGURATOR_PIX_OS_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 

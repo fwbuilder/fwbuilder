@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -171,7 +170,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
     syslogFacilityMapping.push_back("23");
 
     FWOptions *fwoptions = (Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
 /* Page Script */
 
@@ -194,7 +193,7 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
     }
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.registerOption( m_dialog->short_script, fwoptions, "short_script");
 
@@ -372,137 +371,137 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
     allFixups.push_back(fixupControl(
                             m_dialog->pix_ctiqbe_switch,
                             m_dialog->pix_ctiqbe_port,
-                            NULL,
-                            NULL,
+                            nullptr,
+                            nullptr,
                             "ctiqbe_fixup", "ctiqbe", 0));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_dns_switch, 
                             m_dialog->pix_dns_max_length, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
                             "dns_fixup", "dns", 1));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_espike_switch, 
-                            NULL, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
+                            nullptr, 
                             "espike_fixup", "esp-ike", 2));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_ftp_switch, 
                             m_dialog->pix_ftp_port, 
-                            NULL, 
+                            nullptr, 
                             m_dialog->pix_ftp_strict, 
                             "ftp_fixup", "ftp", 3));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_h323h225_switch, 
                             m_dialog->pix_h323h225_port1, 
                             m_dialog->pix_h323h225_port2, 
-                            NULL, 
+                            nullptr, 
                             "h323_h225_fixup", "h323 h225", 4));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_h323ras_switch, 
                             m_dialog->pix_h323ras_port1, 
                             m_dialog->pix_h323ras_port2, 
-                            NULL, 
+                            nullptr, 
                             "h323_ras_fixup", "h323 ras", 5));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_http_switch, 
                             m_dialog->pix_http_port1, 
                             m_dialog->pix_http_port2, 
-                            NULL, 
+                            nullptr, 
                             "http_fixup", "http", 6));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_icmperror_switch, 
-                            NULL, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
+                            nullptr, 
                             "icmp_error_fixup", "icmp error", 7));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_ils_switch, 
                             m_dialog->pix_ils_port1, 
                             m_dialog->pix_ils_port2, 
-                            NULL, 
+                            nullptr, 
                             "ils_fixup", "ils", 8));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_mgcp_switch, 
                             m_dialog->pix_mgcp_gateway_port, 
                             m_dialog->pix_mgcp_call_agent_port, 
-                            NULL, 
+                            nullptr, 
                             "mgcp_fixup", "mgcp", 9));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_pptp_switch, 
                             m_dialog->pix_pptp_port, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
                             "pptp_fixup", "pptp", 10));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_rsh_switch, 
                             m_dialog->pix_rsh_port1, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
                             "rsh_fixup", "rsh", 11));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_rtsp_switch, 
                             m_dialog->pix_rtsp_port, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
                             "rtsp_fixup", "rtsp", 12));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_sip_switch, 
                             m_dialog->pix_sip_port1, 
                             m_dialog->pix_sip_port2, 
-                            NULL, 
+                            nullptr, 
                             "sip_fixup", "sip", 13));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_sipudp_switch, 
                             m_dialog->pix_sip_udp_port1, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
                             "sip_udp_fixup", "sip udp", 14));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_skinny_switch, 
                             m_dialog->pix_skinny_port1, 
                             m_dialog->pix_skinny_port2, 
-                            NULL, 
+                            nullptr, 
                             "skinny_fixup", "skinny", 15));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_smtp_switch, 
                             m_dialog->pix_smtp_port1, 
                             m_dialog->pix_smtp_port2, 
-                            NULL, 
+                            nullptr, 
                             "smtp_fixup", "smtp", 16));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_sqlnet_switch, 
                             m_dialog->pix_sqlnet_port1, 
                             m_dialog->pix_sqlnet_port2, 
-                            NULL, 
+                            nullptr, 
                             "sqlnet_fixup", "sqlnet", 17));
     allFixups.push_back(fixupControl(
                             m_dialog->pix_tftp_switch, 
                             m_dialog->pix_tftp_port, 
-                            NULL, 
-                            NULL, 
+                            nullptr, 
+                            nullptr, 
                             "tftp_fixup", "tftp", 18));
 
     allFixups.push_back(fixupControl(
                             m_dialog->pix_ip_options_eool_switch, 
-                            NULL,
-                            NULL, 
-                            NULL, 
+                            nullptr,
+                            nullptr, 
+                            nullptr, 
                             "ip_options_eool_fixup", "IP options", 19));
 
     allFixups.push_back(fixupControl(
                             m_dialog->pix_ip_options_nop_switch, 
-                            NULL,
-                            NULL, 
-                            NULL, 
+                            nullptr,
+                            nullptr, 
+                            nullptr, 
                             "ip_options_nop_fixup", "IP options", 20));
 
     allFixups.push_back(fixupControl(
                             m_dialog->pix_ip_options_rtralt_switch, 
-                            NULL,
-                            NULL, 
-                            NULL, 
+                            nullptr,
+                            nullptr, 
+                            nullptr, 
                             "ip_options_rtralt_fixup", "IP options", 21));
 
     QStringList allowed_fixups = 
@@ -522,17 +521,17 @@ pixAdvancedDialog::pixAdvancedDialog(QWidget*parent, FWObject *o)
             qDebug() << "pixAdvancedDialog::pixAdvancedDialog fwopt:"
                      << fi->fwoption;
 
-        if (fi->switch_widget!=NULL)
+        if (fi->switch_widget!=nullptr)
             connect( fi->switch_widget, SIGNAL(activated(int)),
                      this, SLOT(fixupCmdChanged()));
 
-        if (fi->arg1!=NULL) connect( fi->arg1, SIGNAL(valueChanged(int)),
+        if (fi->arg1!=nullptr) connect( fi->arg1, SIGNAL(valueChanged(int)),
                                      this, SLOT(fixupCmdChanged()));
 
-        if (fi->arg2!=NULL) connect( fi->arg2, SIGNAL(valueChanged(int)),
+        if (fi->arg2!=nullptr) connect( fi->arg2, SIGNAL(valueChanged(int)),
                                      this, SLOT(fixupCmdChanged()));
 
-        if (fi->arg3!=NULL) connect( fi->arg3, SIGNAL(clicked()),
+        if (fi->arg3!=nullptr) connect( fi->arg3, SIGNAL(clicked()),
                                      this, SLOT(fixupCmdChanged()));
 
         bool active = allowed_fixups.contains(fi->fwoption);
@@ -719,7 +718,7 @@ void pixAdvancedDialog::changeAllFixups(int state)
 void pixAdvancedDialog::loadFixups()
 {
     FWOptions *options=(Firewall::cast(obj))->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     for (list<fixupControl>::iterator fi=allFixups.begin(); fi!=allFixups.end(); fi++)
     {
@@ -802,7 +801,7 @@ void pixAdvancedDialog::displayCommands()
  * object back
  */
     FWOptions *options = (Firewall::cast(obj))->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     FWOptions *backup_options = new FWOptions();
     backup_options->duplicate(options, false);
@@ -834,15 +833,15 @@ void pixAdvancedDialog::fixupCmdChanged()
 void pixAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.saveAll(fwoptions);
 
@@ -910,21 +909,13 @@ void pixAdvancedDialog::editEpilog()
 void pixAdvancedDialog::setDefaultTimeoutValue(const QString &option)
 {
     string platform = obj->getStr("platform");   // could be 'pix' or 'fwsm'
+#ifndef NDEBUG
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
-
+    assert(fwoptions!=nullptr);
+#endif
     string vers="version_"+obj->getStr("version");
 
     if (option=="uauth_abs" || option=="uauth_inact")
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        data.setWidgetValue(option.toAscii().constData(),
-                        Resources::platform_res[platform]->getResourceBool(
-     "/FWBuilderResources/Target/options/"+vers+"/timeouts/"+option.toLatin1().constData()));
-    else
-        data.setWidgetValue(option.toAscii().constData(),
-                        Resources::platform_res[platform]->getResourceInt(
-     "/FWBuilderResources/Target/options/"+vers+"/timeouts/"+option.toLatin1().constData()));
-#else
         data.setWidgetValue(option.toLatin1().constData(),
                         Resources::platform_res[platform]->getResourceBool(
      "/FWBuilderResources/Target/options/"+vers+"/timeouts/"+option.toLatin1().constData()));
@@ -932,14 +923,14 @@ void pixAdvancedDialog::setDefaultTimeoutValue(const QString &option)
         data.setWidgetValue(option.toLatin1().constData(),
                         Resources::platform_res[platform]->getResourceInt(
      "/FWBuilderResources/Target/options/"+vers+"/timeouts/"+option.toLatin1().constData()));
-#endif
 }
 
 void pixAdvancedDialog::defaultTimeouts()
 {
+#ifndef NDEBUG
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
-
+    assert(fwoptions!=nullptr);
+#endif
     string vers="version_"+obj->getStr("version");
 
     setDefaultTimeoutValue("xlate_hh"       );

@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/IPService.h"
@@ -91,101 +89,101 @@ int IPService::getProtocolNumber() const
 }
 
 
-void IPService::fromXML(xmlNodePtr root) throw(FWException)
+void IPService::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("protocol_num")));
-    assert(n!=NULL);
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("protocol_num")));
+    assert(n!=nullptr);
     setStr("protocol_num", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("fragm")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("fragm")));
+    if(n!=nullptr)
     {
         setStr("fragm", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("short_fragm")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("short_fragm")));
+    if(n!=nullptr)
     {
         setStr("short_fragm", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("any_opt")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("any_opt")));
+    if(n!=nullptr)
     {
         setStr("any_opt", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lsrr")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lsrr")));
+    if(n!=nullptr)
     {
         setStr("lsrr", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ssrr")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("ssrr")));
+    if(n!=nullptr)
     {
         setStr("ssrr", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rr")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("rr")));
+    if(n!=nullptr)
     {
         setStr("rr", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("ts")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("ts")));
+    if(n!=nullptr)
     {
         setStr("ts", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("tos")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("tos")));
+    if(n!=nullptr)
     {
         setStr("tos", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dscp")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("dscp")));
+    if(n!=nullptr)
     {
         setStr("dscp", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rtralt")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("rtralt")));
+    if(n!=nullptr)
     {
         setStr("rtralt", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("rtralt_value")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("rtralt_value")));
+    if(n!=nullptr)
     {
         setStr("rtralt_value", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 }
 
-xmlNodePtr IPService::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr IPService::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }

@@ -38,7 +38,7 @@ using namespace std;
 bool SpecialServices::processNext()
 {
     PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
     if (re->size() == 0)
@@ -53,7 +53,7 @@ bool SpecialServices::processNext()
 
     string version = compiler->fw->getStr("version");
 
-    if (IPService::cast(s)!=NULL)
+    if (IPService::cast(s)!=nullptr)
     {
 	if (s->getBool("short_fragm") ||
 	    s->getBool("fragm") )
@@ -72,7 +72,7 @@ bool SpecialServices::processNext()
         }
     }
 
-    if (TCPService::cast(s)!=NULL)
+    if (TCPService::cast(s)!=nullptr)
     {
 	if (s->getBool("ack_flag")  ||
 	    s->getBool("fin_flag")  ||
@@ -86,7 +86,7 @@ bool SpecialServices::processNext()
         }
     }
 
-    if (CustomService::cast(s)!=NULL && pix_comp==NULL)
+    if (CustomService::cast(s)!=nullptr && pix_comp==nullptr)
     {
         compiler->abort(
             rule, 

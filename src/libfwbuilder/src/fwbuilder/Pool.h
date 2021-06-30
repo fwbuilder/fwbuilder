@@ -29,7 +29,6 @@
 
 #include <vector>
 #include <set>
-
 #include "fwbuilder/ThreadTools.h"
 
 namespace libfwbuilder
@@ -53,8 +52,8 @@ template<class T> class Pool
     
     size_t max;
 
-    Mutex mutex ;
-    Cond  cond  ;
+    Mutex m_mutex;
+    Cond m_cond;
     
     std::vector<T *> freepool;
     std::set   <T *> usedpool;
@@ -92,7 +91,8 @@ template<class T> class Pool
      */
     virtual T *lease()
     {
-        mutex.lock();
+        UniqueLock lock(m_mutex);
+
         while(true)
         {
             if(freepool.size()==0)
@@ -102,12 +102,11 @@ template<class T> class Pool
                     // create new instance 
                     T* res = create();
                     usedpool.insert(res);
-                    mutex.unlock();
                     return res;
                 } else
                 {
                     // wait for instance to be released
-                    cond.wait(mutex);
+                    m_cond.wait(lock);
                 }
             } else
             {
@@ -116,7 +115,6 @@ template<class T> class Pool
                 usedpool.insert(*m);
 		freepool.erase(m);
 
-                mutex.unlock();
                 return (*m);
             }
         }
@@ -127,11 +125,11 @@ template<class T> class Pool
      */
     virtual void release(T *t)
     {
-        mutex.lock();
+        LockGuard lock(m_mutex);
+
         usedpool.erase(t);
         freepool.push_back(t);
-        cond.signal();
-        mutex.unlock();
+        m_cond.notify_one();
     }
     
     protected:

@@ -26,7 +26,7 @@ public:
 	, recog(re)
 	{
 	}
-	virtual ~TokenStreamRecognitionException() throw()
+	virtual ~TokenStreamRecognitionException()
 	{
 	}
 	virtual ANTLR_USE_NAMESPACE(std)string toString() const
@@ -34,15 +34,15 @@ public:
 		return recog.getFileLineColumnString()+getMessage();
 	}
 
-	virtual ANTLR_USE_NAMESPACE(std)string getFilename() const throw()
+	virtual ANTLR_USE_NAMESPACE(std)string getFilename() const
 	{
 		return recog.getFilename();
 	}
-	virtual int getLine() const throw()
+	virtual int getLine() const
 	{
 		return recog.getLine();
 	}
-	virtual int getColumn() const throw()
+	virtual int getColumn() const
 	{
 		return recog.getColumn();
 	}

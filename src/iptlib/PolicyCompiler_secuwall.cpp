@@ -45,7 +45,7 @@ vector<string> PolicyCompiler_secuwall::getMgmtInterfaces()
     {
         Interface *iface = Interface::cast(*fw_ifaces);
         /* Check if it is a management interface */
-        if (iface->isManagement() && iface->getAddressObject() != NULL)
+        if (iface->isManagement() && iface->getAddressObject() != nullptr)
         {
             interfaces.push_back(iface->getName());
         }
@@ -122,19 +122,19 @@ std::string PolicyCompiler_secuwall::printAutomaticRules()
  */
 bool PolicyCompiler_secuwall::isValidMgmtRuleInterface(Interface *intf)
 {
-    if (intf == NULL)
+    if (intf == nullptr)
         return false;
 
     if (Interface::isA(intf))
     {
         FWOptions* if_opts = intf->getOptionsObject();
-        if (if_opts == NULL)
+        if (if_opts == nullptr)
             return false;
 
         /* TODO: Extract magic value! */
         string iface_type = if_opts->getStr("type");
         if (intf->isManagement() && (iface_type != "cluster_member") &&
-            (intf->getAddressObject() != NULL))
+            (intf->getAddressObject() != nullptr))
         {
             return true;
         }

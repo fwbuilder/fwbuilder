@@ -67,7 +67,7 @@ vector<FWObject*> fwcompiler::_find_obj_intersection(Address *op1, Address *op2)
     const InetAddr *addr2 = op2->getAddressPtr();
     const InetAddr *netm2 = op2->getNetmaskPtr();
 
-    if (addr1==NULL || addr2==NULL) return res;
+    if (addr1==nullptr || addr2==nullptr) return res;
 
     const InetAddrMask n1( *addr1,
         (Interface::cast(op1)) ? InetAddr(InetAddr::getAllOnes()) : (*netm1) );
@@ -155,7 +155,7 @@ vector<FWObject*> fwcompiler::_find_srv_intersection(Service *op1, Service *op2)
 	    if ( ! _find_portrange_intersection(srs1,sre1,srs2,sre2,srsR,sreR) ) return res;
 	    if ( ! _find_portrange_intersection(drs1,dre1,drs2,dre2,drsR,dreR) ) return res;
 		    
-	    FWObject *nserv;
+        FWObject *nserv = nullptr;
 	    if ( TCPService::cast(op1) ) 
             {
 		nserv=new TCPService();
@@ -304,7 +304,7 @@ bool fwcompiler::operator==(const Address &o1,const Address &o2)
             o2e = o2.getAddressPtr();
         }
 
-    if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) return false;
+    if (o1b==nullptr || o2b==nullptr || o1e==nullptr || o2e==nullptr) return false;
     return ((*o1b) == (*o2b) && (*o1e) == (*o2e));
 }
 
@@ -370,7 +370,7 @@ bool Compiler::checkForShadowing(const Service &o1, const Service &o2)
     {
         const IPService *ip1;
         const IPService *ip2;
-	if ((ip1=IPService::constcast(&o1))!=NULL) 
+	if ((ip1=IPService::constcast(&o1))!=nullptr) 
         {
             ip2 = IPService::constcast(&o2);
 /* 
@@ -562,7 +562,7 @@ bool Compiler::checkForShadowing(const Address &o1,const Address &o2)
     // object. High level compilers should make sure they process rules
     // to the point where no such objects are left before they call
     // this method.
-    if (o1b==NULL || o2b==NULL || o1e==NULL || o2e==NULL) RETURN(false);
+    if (o1b==nullptr || o2b==nullptr || o1e==nullptr || o2e==nullptr) RETURN(false);
 
     if (o1.isAny() && o2.isAny())  RETURN(true);
     if (o1.isAny() && !o2.isAny()) RETURN(false);

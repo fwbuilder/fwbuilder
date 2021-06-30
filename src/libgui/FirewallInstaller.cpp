@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -74,15 +73,11 @@ bool FirewallInstaller::parseManifestLine(const QString &line,
     // generated IOS and PIX scripts use '!' as a comment which places
     // manifest marker at offset of 1 char from the beginning of the
     // line
-    if (line.indexOf(MANIFEST_MARKER) == -1) return false;
+    if (line.indexOf(QString::fromStdString(fwcompiler::BaseCompiler::manifestMarker())) == -1) return false;
 
     if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("Manifest line: '%s'", line.toAscii().constData());
-#else
         qDebug("Manifest line: '%s'", line.toLatin1().constData());
-#endif
-    QString workline = line.split(MANIFEST_MARKER)[1].trimmed();
+    QString workline = line.split(QString::fromStdString(fwcompiler::BaseCompiler::manifestMarker()))[1].trimmed();
     if (workline.startsWith("*"))
     {
         *main_script = true;
@@ -123,17 +118,9 @@ bool FirewallInstaller::parseManifestLine(const QString &line,
 
     if (fwbdebug)
         qDebug() << "local_name:"
-            #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                 << local_file_name->toAscii().constData()
-            #else
                  << local_file_name->toLatin1().constData()
-            #endif
                  << "remote_name:"
-            #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                 << remote_file_name->toAscii().constData()
-            #else
                  << remote_file_name->toLatin1().constData()
-            #endif
                  << "main_script:" 
                  << *main_script;
 
@@ -374,8 +361,13 @@ void FirewallInstaller::packSSHArgs(QStringList &args)
 
 #endif
 
-    if (!cnf->sshArgs.isEmpty())
+    if (!cnf->sshArgs.isEmpty()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        args += cnf->sshArgs.split(" ", Qt::SkipEmptyParts);
+#else
         args += cnf->sshArgs.split(" ", QString::SkipEmptyParts);
+#endif
+    }
 
     if (cnf->verbose) args.push_back("-v");
 
@@ -423,18 +415,10 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
     try
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        InetAddr addr(AF_INET6, cnf->maddr.toAscii().constData());
-#else
         InetAddr addr(AF_INET6, cnf->maddr.toLatin1().constData());
-#endif
         if (fwbdebug)
             qDebug("SCP will talk to the firewall using address %s ( %s )",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                   cnf->maddr.toAscii().constData(),
-#else
                    cnf->maddr.toLatin1().constData(),
-#endif
                    addr.toString().c_str());
         /*
          * It looks like if cnf->maddr is a host name, then InetAddr
@@ -490,8 +474,13 @@ void FirewallInstaller::packSCPArgs(const QString &local_name,
 
 #endif
 
-    if (!cnf->scpArgs.isEmpty())
+    if (!cnf->scpArgs.isEmpty()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        args += cnf->scpArgs.split(" ", Qt::SkipEmptyParts);
+#else
         args += cnf->scpArgs.split(" ", QString::SkipEmptyParts);
+#endif
+    }
 
     args.push_back("-q");
 
@@ -590,17 +579,9 @@ void FirewallInstaller::copyFile(const QString &local_name, const QString &remot
     packSCPArgs(local_name, remote_name, args);
 
     inst_dlg->addToLog( tr("Copying %1 -> %2:%3\n")
-                    #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                        .arg(QString::fromUtf8(local_name.toAscii().constData()))
-                    #else
                         .arg(QString::fromUtf8(local_name.toLatin1().constData()))
-                    #endif
                         .arg(cnf->maddr)
-                    #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                        .arg(QString::fromUtf8(remote_name.toAscii().constData())));
-                    #else
                         .arg(QString::fromUtf8(remote_name.toLatin1().constData())));
-                    #endif
 
     if (cnf->verbose) inst_dlg->displayCommand(args);
     qApp->processEvents();
@@ -633,7 +614,11 @@ void FirewallInstaller::executeExternalInstallScript(const QString &command,
         args.push_back(wdir);
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    args += script_args.trimmed().split(" ", Qt::SkipEmptyParts);
+#else
     args += script_args.trimmed().split(" ", QString::SkipEmptyParts);
+#endif
 
     args.push_back(cnf->fwobj->getName().c_str());
 
@@ -879,7 +864,7 @@ QString FirewallInstaller::getGeneratedFileName(Firewall *fw)
  
 void FirewallInstaller::terminate()
 {
-    if (session != NULL)
+    if (session != nullptr)
     {
         session->terminate();
     }

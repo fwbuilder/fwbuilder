@@ -26,7 +26,6 @@
 #ifndef _OSCONFIGURATOR_BSD_HH
 #define _OSCONFIGURATOR_BSD_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 

@@ -27,7 +27,6 @@
 #ifndef  __OBJECTEDITOR_H_
 #define  __OBJECTEDITOR_H_
 
-#include "config.h"
 #include "global.h"
 
 #include "qdialog.h"

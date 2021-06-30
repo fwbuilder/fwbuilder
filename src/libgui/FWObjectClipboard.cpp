@@ -25,7 +25,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 
 #include "fwbuilder/FWReference.h"
@@ -38,18 +37,18 @@
 using namespace std;
 using namespace libfwbuilder;
 
-FWObjectClipboard* FWObjectClipboard::obj_clipboard=NULL;
+FWObjectClipboard* FWObjectClipboard::obj_clipboard=nullptr;
 
 FWObjectClipboard::FWObjectClipboard()
 {
-    assert(obj_clipboard==NULL);
+    assert(obj_clipboard==nullptr);
     obj_clipboard=this;
 }
 
 FWObjectClipboard::~FWObjectClipboard()
 {
     clear();
-    obj_clipboard=NULL;
+    obj_clipboard=nullptr;
 }
 
 void FWObjectClipboard::clear()
@@ -116,7 +115,7 @@ FWObject* FWObjectClipboard::getObject()
         pair<int,ProjectPanel*> p = ids.back();
         return p.second->db()->findInIndex( p.first );
     } else
-        return NULL;
+        return nullptr;
 }
 
 FWObject* FWObjectClipboard::getObjectByIdx (int idx)
@@ -126,6 +125,6 @@ FWObject* FWObjectClipboard::getObjectByIdx (int idx)
         pair<int,ProjectPanel*> p = ids[idx];
         return p.second->db()->findInIndex( p.first );
     } else
-        return NULL;
+        return nullptr;
 }
 

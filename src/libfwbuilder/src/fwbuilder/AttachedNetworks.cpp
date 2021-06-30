@@ -23,8 +23,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/AttachedNetworks.h"
@@ -53,20 +51,20 @@ AttachedNetworks::AttachedNetworks() : MultiAddress()
 {
 }
 
-void AttachedNetworks::fromXML(xmlNodePtr root) throw(FWException)
+void AttachedNetworks::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 }
 
-xmlNodePtr AttachedNetworks::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr AttachedNetworks::toXML(xmlNodePtr parent)
 {
     remStr("run_time");
 
     xmlNodePtr me = FWObject::toXML(parent, false);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }
@@ -77,7 +75,7 @@ void AttachedNetworks::addNetworkObject(const InetAddrMask &addr_mask)
     const InetAddr *ip_addr = addr_mask.getAddressPtr();
     const InetAddr *ip_netm = addr_mask.getNetmaskPtr();
 
-    FWObject *new_obj = NULL;
+    FWObject *new_obj = nullptr;
 
     if (ip_addr->isV4())
     {
@@ -113,7 +111,6 @@ void AttachedNetworks::addNetworkObject(const InetAddrMask &addr_mask)
  * corresponding networks.
  */
 void AttachedNetworks::loadFromSource(bool ipv6, FWOptions*, bool)
-    throw(FWException)
 {
     Interface *parent_intf = Interface::cast(getParent());
     assert(parent_intf);
@@ -149,7 +146,7 @@ void AttachedNetworks::loadFromSource(bool ipv6, FWOptions*, bool)
 string AttachedNetworks::getSourceName()
 {
     Interface *parent = Interface::cast(getParent());
-    assert(parent!=NULL);
+    assert(parent!=nullptr);
     return parent->getName();
 }
 

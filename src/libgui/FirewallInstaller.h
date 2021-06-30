@@ -28,7 +28,6 @@
 #define __FIREWALLINSTALLER_H_
 
 
-#include "config.h"
 
 #include "instConf.h"
 #include "instDialog.h"
@@ -97,7 +96,7 @@ public:
         inst_dlg = _dlg;
         cnf = _cnf;
         fwb_prompt = prompt;
-        session = NULL;
+        session = nullptr;
     }
 
     void packSSHArgs(QStringList &args);

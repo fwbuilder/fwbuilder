@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -61,7 +60,7 @@ RuleSetDialog::RuleSetDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::RuleSetDialog_q;
     m_dialog->setupUi(this);
-    obj = NULL;
+    obj = nullptr;
     platform = "";
 
     connectSignalsOfAllWidgetsToSlotChange();
@@ -78,7 +77,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     this->setEnabled(!o->isReadOnly());
 
     RuleSet *s = dynamic_cast<RuleSet*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
@@ -101,7 +100,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
     while (fw && (!Firewall::isA(fw) && !Cluster::isA(fw))) fw = fw->getParent();
     // if rule set object is in DeletedObjects library, it does not have parent
     // firewall
-    if (fw!=NULL)
+    if (fw!=nullptr)
     {
         platform = fw->getStr("platform");
         fwopt = Firewall::cast(fw)->getOptionsObject();
@@ -117,11 +116,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                         "rules go into user-defined chain \n"
                                         "with the name the same as the name of \n"
                                         "the rule set.",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                        0, QApplication::UnicodeUTF8));
-#else
                                         0));
-#endif
 
             if (Policy::isA(obj))
             {
@@ -147,11 +142,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                         "If this flag is unchecked, rules go \n"
                                         "into anchor with the name the same as\n"
                                         "the name of the rule set.",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                        0, QApplication::UnicodeUTF8));
-#else
                                         0));
-#endif
 
         if (platform == "iosacl" || platform == "pix" || platform=="fwsm")
             m_dialog->top_rule_set->setToolTip(
@@ -162,11 +153,7 @@ void RuleSetDialog::loadFWObject(FWObject *o)
                                         "command. The name of the rule set will\n"
                                         "be used as a prefix for names of\n"
                                         "access access lists generated for it.",
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                                        0, QApplication::UnicodeUTF8));
-#else
                                         0));
-#endif
 
         if (platform == "ipf" || platform == "ipfw")
             m_dialog->top_rule_set->hide();
@@ -194,7 +181,7 @@ void RuleSetDialog::validate(bool *res)
     if (!rx.exactMatch(m_dialog->obj_name->text()))
     {
         *res = false ;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -213,11 +200,11 @@ void RuleSetDialog::validate(bool *res)
 
 void RuleSetDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     RuleSet *s = dynamic_cast<RuleSet*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     FWOptions *rulesetopt = s->getOptionsObject();
 

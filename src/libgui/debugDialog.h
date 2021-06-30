@@ -27,7 +27,6 @@
 #ifndef __DEBUGDIALOG_H_
 #define __DEBUGDIALOG_H_
 
-#include "config.h"
 #include <ui_debugdialog_q.h>
 #include <QDialog>
 

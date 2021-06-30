@@ -24,7 +24,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "events.h"
@@ -99,7 +98,7 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
 {
     init = true;
 
-    discovered_fw = NULL;
+    discovered_fw = nullptr;
 
     m_dialog = new Ui::DiscoveryDruid_q;
     m_dialog->setupUi(this);
@@ -145,11 +144,11 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     connect(m_dialog->nameserverline, SIGNAL( textChanged(QString) ),
             this, SLOT( changedNameServer() ) );
 
-    thread = NULL;
+    thread = nullptr;
 
     timer = new QTimer(this);
     prg_timer = new QTimer(this);
-    unBar = NULL;
+    unBar = nullptr;
     unProg = 0;
 
     connect(prg_timer,SIGNAL(timeout()),this,SLOT(updatePrg()));
@@ -177,10 +176,8 @@ DiscoveryDruid::DiscoveryDruid(QWidget *parent, bool start_with_import) :
     m_dialog->DNSprogress->hide();
     m_dialog->DNSprogress_2->hide();
 
-#ifndef HAVE_GOODLIBRESOLV
     m_dialog->dm_importdns->hide();
     m_dialog->snmpdnsparameters->hide();
-#endif
 
 #ifndef HAVE_LIBSNMP
     m_dialog->dm_usesnmp->setEnabled(false);
@@ -223,7 +220,7 @@ void DiscoveryDruid::backClicked()
 
 void DiscoveryDruid::finishClicked()
 {
-    if (current_task == BT_IMPORT && discovered_fw != NULL)
+    if (current_task == BT_IMPORT && discovered_fw != nullptr)
     {
         if (selectedPlatform() == "pix" && currentPage() == NETWORK_ZONES_PAGE)
         {
@@ -243,11 +240,11 @@ void DiscoveryDruid::finishClicked()
                 if ( ! ltwi.empty())
                 {
                     QTableWidgetItem *itm2 = ltwi[0];
-                    assert(itm2!=NULL);
+                    assert(itm2!=nullptr);
                     int row = itm2->row();
                     QComboBox *cb = dynamic_cast<QComboBox*>(
                         m_dialog->iface_nz_list->cellWidget(row, 3));
-                    assert(cb!=NULL);
+                    assert(cb!=nullptr);
                     int network_zone_int_id =
                         cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
                     if (network_zone_int_id != 0)
@@ -711,7 +708,7 @@ void DiscoveryDruid::browseForImport()
 
 void DiscoveryDruid::updatePrg()
 {
-    if (unBar!=NULL)
+    if (unBar!=nullptr)
     {
         unBar->setValue(unProg++);
     }
@@ -801,7 +798,7 @@ void DiscoveryDruid::changedDiscoveryMethod(int c)
 
 void DiscoveryDruid::startHostsScan()
 {
-    if (thread!=NULL)
+    if (thread!=nullptr)
     {
         delete thread;
     }
@@ -813,7 +810,7 @@ void DiscoveryDruid::startHostsScan()
 
 void DiscoveryDruid::startConfigImport()
 {
-    if (thread!=NULL)
+    if (thread!=nullptr)
     {
         delete thread;
     }
@@ -1086,9 +1083,9 @@ void DiscoveryDruid::stopBackgroundProcess()
 {
     if (fwbdebug)
         qDebug("stopBackgroundProcess bop=%p  isRunning=%d",
-               bop,(bop!=NULL)?bop->isRunning():-1);
+               bop,(bop!=nullptr)?bop->isRunning():-1);
 
-    if (bop!=NULL && bop->isRunning())
+    if (bop!=nullptr && bop->isRunning())
     {
         addToLog("Terminating task. Please wait...");
 
@@ -1407,7 +1404,7 @@ void DiscoveryDruid::loadDataFromFile()
     m_dialog->objectresultlist->clear();
     int t=0;
     HostsFileImport *himport = dynamic_cast<HostsFileImport*>(thread);
-    assert(himport!=NULL);
+    assert(himport!=nullptr);
     int count = himport->hosts.size();
     if (count > 0)
     {
@@ -1446,14 +1443,14 @@ void DiscoveryDruid::loadDataFromFile()
 void DiscoveryDruid::loadDataFromImporter()
 {
     ConfigImport *confimp = dynamic_cast<ConfigImport*>(thread);
-    assert(confimp!=NULL);
+    assert(confimp!=nullptr);
     Importer *imp = confimp->getImporterObject();
-    if (imp!=NULL)
+    if (imp!=nullptr)
     {
         Firewall *fw = imp->finalize();
         qApp->processEvents(); // to flush the log
 
-        if (fw) // fw can be NULL if import was uncussessful
+        if (fw) // fw can be nullptr if import was uncussessful
         {
             discovered_fw = fw;
 
@@ -1505,11 +1502,7 @@ void DiscoveryDruid::saveScanLog()
         QTextStream strm(&f);
         QString txt = m_dialog->discoverylog->toPlainText();
         strm << txt << endl;
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (fwbdebug) qDebug("%s",txt.toAscii().constData());
-#else
         if (fwbdebug) qDebug("%s",txt.toLatin1().constData());
-#endif
         if (fwbdebug)
             qDebug("--------------------------------");
         f.close();
@@ -1548,7 +1541,7 @@ void DiscoveryDruid::startSNMPScan()
             1000000L*m_dialog->snmptimeout->value(),
             0,
             0,
-            (use_incl) ? &include_networks : NULL);
+            (use_incl) ? &include_networks : nullptr);
 
     m_dialog->discoveryprogress->setMaximum(0);
     unBar = m_dialog->discoveryprogress;
@@ -1568,7 +1561,7 @@ void DiscoveryDruid::startSNMPScan()
     } catch(const FWException &ex)
     {
         delete q;
-        q=NULL;
+        q=nullptr;
     }
 
 
@@ -1779,7 +1772,7 @@ void DiscoveryDruid::customEvent(QEvent *event)
         thread->wait();
         QString er = thread->getError();
         delete thread;
-        thread=NULL;
+        thread=nullptr;
 
         switch (current_task)
         {
@@ -1827,7 +1820,7 @@ void DiscoveryDruid::updateLog()
     if (current_task==BT_HOSTS || current_task==BT_IMPORT)
     {
         QString buf;
-        if (thread!=NULL)
+        if (thread!=nullptr)
         {
             while(thread->Log->ready())
             {
@@ -1855,7 +1848,7 @@ void DiscoveryDruid::updateLog()
             cancelButton->show();
 
             FWException * ex=bop->get_latest_error();
-            if (ex!=NULL)
+            if (ex!=nullptr)
             {
                 QMessageBox::critical(this,
                                       tr("Discovery error"),
@@ -1878,8 +1871,8 @@ void DiscoveryDruid::updateLog()
             m_dialog->logSaveButton->setEnabled(true);
 
             delete bop;
-            bop=NULL;
-            unBar=NULL;
+            bop=nullptr;
+            unBar=nullptr;
             m_dialog->discoveryprogress->setMaximum(100);
             m_dialog->discoveryprogress->setValue(100);
             m_dialog->discoveryStopButton->setEnabled(false);
@@ -1902,7 +1895,7 @@ void DiscoveryDruid::updateLog()
 
             cancelButton->show();
             FWException * ex=bop->get_latest_error();
-            if (ex!=NULL)
+            if (ex!=nullptr)
             {
                 QMessageBox::critical(this, tr("Discovery error"),
                                       ex->toString().c_str());
@@ -1921,8 +1914,8 @@ void DiscoveryDruid::updateLog()
             }
             m_dialog->logSaveButton->setEnabled(true);
             delete bop;
-            bop=NULL;
-            unBar=NULL;
+            bop=nullptr;
+            unBar=nullptr;
             m_dialog->discoveryprogress->setMaximum(100);
             m_dialog->discoveryprogress->setValue(100);
             m_dialog->discoveryStopButton->setEnabled(false);
@@ -2104,7 +2097,7 @@ int DiscoveryDruid::monitorOperation()
     bool fl;
 
     if (fwbdebug) qDebug("monitorOperation  bop=%p  isRunning=%d",
-                         bop,(bop!=NULL)?bop->isRunning():-1);
+                         bop,(bop!=nullptr)?bop->isRunning():-1);
 
 
     fl=false;
@@ -2117,11 +2110,7 @@ int DiscoveryDruid::monitorOperation()
         addToLog(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (1)");
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (fwbdebug) qDebug(buf.toAscii().constData());
-#else
         if (fwbdebug) qDebug(buf.toLatin1().constData());
-#endif
         if (fwbdebug) qDebug("----------------------------------------------");*/
 
         fl=true;
@@ -2130,7 +2119,7 @@ int DiscoveryDruid::monitorOperation()
     {
         return 1;
     }
-    if (bop==NULL)
+    if (bop==nullptr)
     {
 
         return 0; // BackgroundOp has been disconnected
@@ -2153,11 +2142,7 @@ int DiscoveryDruid::monitorOperation()
         addToLog(buf);
 
         /*if (fwbdebug) qDebug("monitorOperation  appending the following buf: (2)");
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (fwbdebug) qDebug(buf.toAscii().constData());
-#else
         if (fwbdebug) qDebug(buf.toLatin1().constData());
-#endif
         if (fwbdebug) qDebug("----------------------------------------------");*/
 
       //  completed(-1);   // this sends signal to another widget
@@ -2276,13 +2261,13 @@ FWObject* DiscoveryDruid::addInterface(FWObject *parent, InterfaceData *in,
 
     if (!m_dialog->snmpincludeunnumbered->isChecked() && !skip_ip_address_check)
     {
-        if (in->addr_mask.size()==0) return NULL;
+        if (in->addr_mask.size()==0) return nullptr;
         if (in->addr_mask.front()->getAddressPtr()->isAny())
-            return NULL;
+            return nullptr;
     }
 
     QString obj_name = in->name.c_str();
-    Interface *itf = NULL;
+    Interface *itf = nullptr;
     itf = Interface::cast(
         mw->createObject(parent,
                          QString(Interface::TYPENAME), obj_name));
@@ -2309,7 +2294,7 @@ FWObject* DiscoveryDruid::addInterface(FWObject *parent, InterfaceData *in,
             itf->getOptionsObject()->setInt("vlan_id", in->vlan_id);
     } else
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent));
         if (int_prop->looksLikeVlanInterface(obj_name))
         {
@@ -2395,7 +2380,7 @@ void DiscoveryDruid::createRealObjects()
 
             Address *net = Address::cast(
                 mw->createObject(type.c_str(), name.c_str()));
-            assert(net!=NULL);
+            assert(net!=nullptr);
             net->setName(name);
             net->setAddress(od.addr);
             net->setNetmask(od.netmask);
@@ -2419,7 +2404,7 @@ void DiscoveryDruid::createRealObjects()
         {
             if (type==Host::TYPENAME || type==Firewall::TYPENAME)
             {
-                FWObject *o=NULL;
+                FWObject *o=nullptr;
 
                 o = mw->createObject(type.c_str(), name.c_str());
                 o->setName(name);
@@ -2508,7 +2493,7 @@ void DiscoveryDruid::createRealObjects()
                     }
 
                     list<InterfaceData*> interface_tree;
-                    std::auto_ptr<interfaceProperties> int_prop(
+                    std::unique_ptr<interfaceProperties> int_prop(
                         interfacePropertiesObjectFactory::getInterfacePropertiesObject(o));
                     int_prop->rearrangeInterfaces(od.interfaces, interface_tree);
 
@@ -2550,7 +2535,7 @@ void DiscoveryDruid::createRealObjects()
 
                         FWObject *intf = addInterface(
                             o, in, in->subinterfaces.size()!=0);
-                        if (intf == NULL) continue;
+                        if (intf == nullptr) continue;
 
                         list<InterfaceData*>::iterator sit;
                         for (sit=in->subinterfaces.begin();
@@ -2577,7 +2562,7 @@ void DiscoveryDruid::createRealObjects()
                 Network *net=dynamic_cast<Network*>(
                     mw->createObject(type.c_str(),name.c_str())
                 );
-                assert(net!=NULL);
+                assert(net!=nullptr);
                 net->setName(name);
                 net->setAddress(InetAddr(a));
                 net->setNetmask(InetAddr(InetAddr(a)));
@@ -2587,7 +2572,7 @@ void DiscoveryDruid::createRealObjects()
                 IPv4 *obj=dynamic_cast<IPv4*>(
                     mw->createObject(type.c_str(),name.c_str())
                 );
-                assert(obj!=NULL);
+                assert(obj!=nullptr);
                 obj->setName(name);
                 obj->setAddress(InetAddr(a));
                 obj->setNetmask(InetAddr(InetAddr::getAllOnes()));
@@ -2770,19 +2755,11 @@ void HostsFileImport::run()
     {
         try
         {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            hf->parse( file_name.toAscii().constData() );
-#else
             hf->parse( file_name.toLatin1().constData() );
-#endif
         } catch ( FWException &ex )
         {
             last_error = ex.toString().c_str();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            *Log << "Exception: " << last_error.toAscii().constData() << "\n";
-#else
             *Log << "Exception: " << last_error.toLatin1().constData() << "\n";
-#endif
             delete hf;
             done();
             return;
@@ -2839,7 +2816,7 @@ void ConfigImport::run()
 
     std::istringstream instream(*buffer);
 
-    imp = NULL;
+    imp = nullptr;
     if (platform == "iosacl") imp = new IOSImporter(mw->getCurrentLib(),
                                                     instream,
                                                     Log, fwname);

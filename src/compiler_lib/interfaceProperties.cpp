@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "interfaceProperties.h"
 
@@ -56,12 +55,12 @@ bool interfaceProperties::parseVlan(const QString&, QString*, int*)
 
 bool interfaceProperties::looksLikeVlanInterface(InterfaceData *intf)
 {
-    return parseVlan(intf->name.c_str(), NULL, NULL);
+    return parseVlan(intf->name.c_str(), nullptr, nullptr);
 }
 
 bool interfaceProperties::looksLikeVlanInterface(const QString &int_name)
 {
-    return parseVlan(int_name, NULL, NULL);
+    return parseVlan(int_name, nullptr, nullptr);
 }
 
 /*
@@ -173,7 +172,7 @@ bool interfaceProperties::manageIpAddresses(Interface *intf,
     FWObject *fw = Host::getParentHost(intf);
     //FWObject *fw = intf->getParentHost();
     Resources *os_res = Resources::os_res[fw->getStr("host_OS")];
-    assert(os_res != NULL);
+    assert(os_res != nullptr);
 
     if (intf->isDyn()) return false;
     if (intf->isBridgePort()) return false;
@@ -448,7 +447,7 @@ bool interfaceProperties::isEligibleForCluster(Interface *intf)
             Interface *iface = Interface::cast(*i);
             assert(iface);
             Interface *parent_iface = Interface::cast(iface->getParent());
-            if (parent_iface == NULL)
+            if (parent_iface == nullptr)
          continue;
             if (parent_iface->getOptionsObject()->getStr("type") == "bonding" &&
                 iface->getName() == intf->getName())
@@ -469,7 +468,7 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
 {
     Interface *parent_intf = Interface::cast(intf->getParent());
 
-    if (parent_intf == NULL)
+    if (parent_intf == nullptr)
         return;
 
     // Do not modify read-only object
@@ -480,7 +479,7 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
 
     // Resources* os_res = Resources::os_res[f->getStr("host_OS")];
     // string os_family = f->getStr("host_OS");
-    // if (os_res!=NULL)
+    // if (os_res!=nullptr)
     //     os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     QString err;
@@ -492,7 +491,7 @@ void interfaceProperties::guessSubInterfaceTypeAndAttributes(Interface *intf)
         InterfaceData *idata = new InterfaceData(*intf);
         //parseVlan(idata);
         idata->interface_type = "8021q";
-        parseVlan(idata->name.c_str(), NULL, &(idata->vlan_id));
+        parseVlan(idata->name.c_str(), nullptr, &(idata->vlan_id));
         if (!idata->interface_type.empty())
         {
             intf->getOptionsObject()->setStr("type", idata->interface_type);

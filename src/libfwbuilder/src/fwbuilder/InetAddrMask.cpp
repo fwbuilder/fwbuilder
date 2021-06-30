@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/InetAddrMask.h"
@@ -71,11 +69,11 @@ InetAddrMask::InetAddrMask(bool)
     // variables. This constructor should only be used by classes that
     // inherit InetAddrMask and create address, netmask themselves,
     // such as Inet6AddrMask
-    address = NULL;
-    netmask = NULL;
-    broadcast_address = NULL;
-    network_address = NULL;
-    last_host = NULL;
+    address = nullptr;
+    netmask = nullptr;
+    broadcast_address = nullptr;
+    network_address = nullptr;
+    last_host = nullptr;
 }
 
 InetAddrMask::InetAddrMask()
@@ -107,7 +105,7 @@ InetAddrMask::InetAddrMask(const InetAddrMask& other)
     setNetworkAndBroadcastAddress();
 }
 
-InetAddrMask::InetAddrMask(const string &s) throw(FWException)
+InetAddrMask::InetAddrMask(const string &s)
 {
     address = new InetAddr();
     netmask = new InetAddr();
@@ -148,11 +146,11 @@ InetAddrMask::InetAddrMask(const string &s) throw(FWException)
 
 InetAddrMask::~InetAddrMask()
 {
-    if (address!=NULL) delete address;
-    if (netmask!=NULL) delete netmask;
-    if (network_address!=NULL) delete network_address;
-    if (broadcast_address!=NULL) delete broadcast_address;
-    if (last_host!=NULL) delete last_host;
+    if (address!=nullptr) delete address;
+    if (netmask!=nullptr) delete netmask;
+    if (network_address!=nullptr) delete network_address;
+    if (broadcast_address!=nullptr) delete broadcast_address;
+    if (last_host!=nullptr) delete last_host;
 }
 
 bool InetAddrMask::isAny()

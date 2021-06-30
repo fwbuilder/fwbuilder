@@ -25,8 +25,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/AddressTable.h"
@@ -64,35 +62,35 @@ void AddressTable::setSourceName(const std::string& source_name)
     setStr("filename", source_name);
 }
 
-void AddressTable::fromXML(xmlNodePtr root) throw(FWException)
+void AddressTable::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     const char *n;
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("filename")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("filename")));
+    assert(n!=nullptr);
     setStr("filename", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("run_time")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("run_time")));
+    assert(n!=nullptr);
     setStr("run_time", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
-xmlNodePtr AddressTable::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr AddressTable::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }
 
 
-string AddressTable::getFilename(FWOptions *options) throw (FWException)
+string AddressTable::getFilename(FWOptions *options)
 {
     string path = getStr("filename");
     size_t found = path.find("%DATADIR%");
@@ -127,7 +125,7 @@ string AddressTable::getFilename(FWOptions *options) throw (FWException)
  * the object tree, something with the name "tmp" or similar.
  */
 void AddressTable::loadFromSource(bool ipv6, FWOptions *options,
-                                  bool test_mode) throw(FWException)
+                                  bool test_mode)
 {
     string path = getFilename(options);
     ifstream fs(path.c_str());
@@ -158,7 +156,7 @@ void AddressTable::loadFromSource(bool ipv6, FWOptions *options,
             }
             if (!buf.empty())
             {
-                new_addr = NULL;
+                new_addr = nullptr;
                 if (ipv6 && buf.find(":")!=string::npos)
                 {
                     try

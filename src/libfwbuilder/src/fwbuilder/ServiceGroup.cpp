@@ -25,8 +25,6 @@
 */
 
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/Service.h"
@@ -61,14 +59,14 @@ ServiceGroup::~ServiceGroup() {}
 
 bool  ServiceGroup::validateChild(FWObject *o)
 { 
-    if (FWServiceReference::cast(o)!=NULL) return true;
+    if (FWServiceReference::cast(o)!=nullptr) return true;
 
     return (FWObject::validateChild(o) && 
-            Address::cast(o)==NULL &&
-            ObjectGroup::cast(o)==NULL &&
-            Interval::cast(o)==NULL &&
-            FWObjectReference::cast(o)==NULL &&
-            RuleSet::cast(o)==NULL);
+            Address::cast(o)==nullptr &&
+            ObjectGroup::cast(o)==nullptr &&
+            Interval::cast(o)==nullptr &&
+            FWObjectReference::cast(o)==nullptr &&
+            RuleSet::cast(o)==nullptr);
 }
 
 FWReference* ServiceGroup::createRef()
@@ -79,12 +77,12 @@ FWReference* ServiceGroup::createRef()
     return ref;
 }
 
-xmlNodePtr ServiceGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr ServiceGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
         (*j)->toXML(me);

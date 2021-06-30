@@ -27,7 +27,6 @@
   they employ number of assumptions that are only valid for PIX <7.0
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_pix.h"
 #include "NATCompiler_pix.h"
@@ -55,7 +54,7 @@ using namespace std;
 
 bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -93,7 +92,7 @@ bool PolicyCompiler_pix::InterfaceAndDirection_v6::processNext()
  */
 bool PolicyCompiler_pix::SplitDirection_v6::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 //    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
     RuleElementItf *intf_re = rule->getItf();
 
@@ -163,7 +162,7 @@ bool PolicyCompiler_pix::SplitDirection_v6::processNext()
 bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
 {
     Helper helper(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 //    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
     RuleElementItf *intf_re = rule->getItf();
     FWObject *rule_iface = FWObjectReference::getObject(intf_re->front());
@@ -173,7 +172,9 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
         if ( compiler->fw->getOptionsObject()->getBool("pix_emulate_out_acl") )
         {
             RuleElementSrc *src = rule->getSrc();    assert(src);
+#ifndef NDEBUG
             RuleElementDst *dst = rule->getDst();    assert(dst);
+#endif
 
             try
             {
@@ -219,7 +220,7 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
 
                         r->duplicate(rule);
 //                        r->setInterfaceId((*i)->getId());
-                        RuleElementItf *itf_re = r->getItf(); assert(itf_re!=NULL);
+                        RuleElementItf *itf_re = r->getItf(); assert(itf_re!=nullptr);
                         itf_re->reset();
                         itf_re->addRef(*i);
 
@@ -281,7 +282,7 @@ bool PolicyCompiler_pix::EmulateOutboundACL_v6::processNext()
  */
 bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     Helper helper(compiler);
 
     RuleElementSrc *src = rule->getSrc();    assert(src);
@@ -331,7 +332,7 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
 
                     r->duplicate(rule);
 //                    r->setInterfaceId(intf->getId());
-                    RuleElementItf *itf_re = r->getItf(); assert(itf_re!=NULL);
+                    RuleElementItf *itf_re = r->getItf(); assert(itf_re!=nullptr);
                     itf_re->reset();
                     itf_re->addRef(intf);
 
@@ -364,14 +365,14 @@ bool PolicyCompiler_pix::assignRuleToInterface_v6::processNext()
 bool PolicyCompiler_pix::pickACL_v6::processNext()
 {
     PolicyCompiler_pix *pix_comp = dynamic_cast<PolicyCompiler_pix*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 //    Interface *rule_iface = Interface::cast(compiler->dbcopy->findInIndex(rule->getInterfaceId()));
 
     RuleElementItf *intf_re = rule->getItf();
     Interface *rule_iface = Interface::cast(
         FWObjectReference::getObject(intf_re->front()));
 
-    if (intf_re->isAny() || rule_iface==NULL)
+    if (intf_re->isAny() || rule_iface==nullptr)
         compiler->abort(rule, "Missing interface assignment");
 
     string acl_name = rule_iface->getLabel() + "_acl_in";

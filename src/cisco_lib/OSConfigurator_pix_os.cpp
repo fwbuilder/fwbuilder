@@ -210,7 +210,7 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
 
         if (iface->getOptionsObject()->getBool("cluster_interface")) continue;
 
-        Configlet *cnf = NULL;
+        Configlet *cnf = nullptr;
         QString configlet_name;
         if (iface->isDedicatedFailover()) 
         {
@@ -278,7 +278,7 @@ string OSConfigurator_pix_os::_printInterfaceConfiguration()
 
             _getAddressConfigurationForInterface(
                 iface, &addr, &netm,
-                (configure_standby_address) ? &standby_addr : NULL);
+                (configure_standby_address) ? &standby_addr : nullptr);
 
             if (!addr.isEmpty() && !netm.isEmpty())
             {
@@ -659,8 +659,10 @@ string OSConfigurator_pix_os::_printSysopt()
     string platform = fw->getStr("platform");
     string version = fw->getStr("version");
 
+#ifndef NDEBUG
     FWOptions *options=fw->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
+#endif
 
     bool tcpmss = fw->getOptionsObject()->getBool("pix_tcpmss");
     int  tcpmss_val = fw->getOptionsObject()->getInt("pix_tcpmss_value");

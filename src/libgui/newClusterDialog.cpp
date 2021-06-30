@@ -55,7 +55,7 @@ using namespace std;
 
 
 newClusterDialog::newClusterDialog(QWidget *parentw, FWObject *_p)
-    : QDialog(parentw), ncl(NULL), fwlist(NULL), tmpldb(NULL)
+    : QDialog(parentw), ncl(nullptr), fwlist(nullptr), tmpldb(nullptr)
 {
     parent = _p;
     db = parent->getRoot();
@@ -307,7 +307,7 @@ void newClusterDialog::finishClicked()
     if (unloadTemplatesLib)
     {
         delete tmpldb;
-        tmpldb = NULL;
+        tmpldb = nullptr;
 
         unloadTemplatesLib = false;
     }
@@ -330,7 +330,7 @@ void newClusterDialog::nextClicked()
             QMessageBox::critical(
             this, "Firewall Builder",
             tr("You should select at least one firewall to create a cluster"),
-            "&Continue", QString::null, QString::null, 0, 1);
+            "&Continue", QString(), QString(), 0, 1);
             return;
         }
     }

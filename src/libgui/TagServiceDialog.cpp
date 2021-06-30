@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -65,7 +64,7 @@ TagServiceDialog::TagServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::TagServiceDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -74,7 +73,7 @@ void TagServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     TagService *s = dynamic_cast<TagService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
 
     init=true;
@@ -98,9 +97,10 @@ void TagServiceDialog::loadFWObject(FWObject *o)
 void TagServiceDialog::validate(bool *res)
 {
     *res=true;
+#ifndef NDEBUG
     TagService *s = dynamic_cast<TagService*>(obj);
-    assert(s!=NULL);
-
+    assert(s!=nullptr);
+#endif
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
@@ -108,11 +108,11 @@ void TagServiceDialog::validate(bool *res)
 
 void TagServiceDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     TagService *s = dynamic_cast<TagService*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

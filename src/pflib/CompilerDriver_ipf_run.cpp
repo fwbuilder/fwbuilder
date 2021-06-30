@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -104,34 +103,34 @@ QString CompilerDriver_ipf::assembleManifest(Cluster*, Firewall* fw, bool )
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << MANIFEST_MARKER
+    script << manifestMarker()
            << "* "
            << this->escapeFileName(file_names[FW_FILE]);
 
     if (remote_name != file_names[FW_FILE])
         script << " " << this->escapeFileName(remote_name);
-    script << endl;
+    script << '\n';
 
     if (have_filter) 
     {
-        script << MANIFEST_MARKER
+        script << manifestMarker()
                << "  "
                << this->escapeFileName(file_names[CONF1_FILE]);
 
         if (remote_ipf_name != file_names[CONF1_FILE])
             script << " " << this->escapeFileName(remote_ipf_name);
-        script << endl;
+        script << '\n';
     }
 
     if (have_nat) 
     {
-        script << MANIFEST_MARKER
+        script << manifestMarker()
                << "  "
                << this->escapeFileName(file_names[CONF2_FILE]);
 
         if (remote_nat_name != file_names[CONF2_FILE])
             script << " " << this->escapeFileName(remote_nat_name);
-        script << endl;
+        script << '\n';
     }
 
     return script_buffer;
@@ -160,8 +159,8 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
@@ -186,25 +185,25 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
         bool debug = options->getBool("debug");
         string ipf_dbg = (debug)?"-v":"";
 
-        std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
+        std::unique_ptr<Preprocessor> prep(new Preprocessor(objdb , fw, false));
         prep->compile();
 
 /*
  * Process firewall options, build OS network configuration script
  */
-        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        std::unique_ptr<OSConfigurator_bsd> oscnf;
         string host_os = fw->getStr("host_OS");
         string family=Resources::os_res[host_os]->Resources::getResourceStr("/FWBuilderResources/Target/family");
         if ( host_os == "solaris" )
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(objdb , fw, false));
 
         if ( host_os == "openbsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(objdb , fw, false));
 
         if ( host_os == "freebsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(objdb , fw, false));
 
-        if (oscnf.get()==NULL)
+        if (oscnf.get()==nullptr)
         {
             abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
             return "";
@@ -333,7 +332,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 {
                     all_errors.push_back(c.getErrors("").c_str());
                     ipf_str << "# Policy compiler errors and warnings:"
-                            << endl;
+                            << '\n';
                     ipf_str << QString::fromUtf8(c.getErrors("# ").c_str());
                 }
                 ipf_str << QString::fromUtf8(c.getCompiledScript().c_str());
@@ -372,7 +371,7 @@ QString CompilerDriver_ipf::run(const std::string &cluster_id,
                 {
                     all_errors.push_back(n.getErrors("").c_str());
                     nat_str << "# NAT compiler errors and warnings:"
-                            << endl;
+                            << '\n';
                     nat_str << QString::fromUtf8(n.getErrors("# ").c_str());
                 }
                 nat_str << QString::fromUtf8(n.getCompiledScript().c_str());

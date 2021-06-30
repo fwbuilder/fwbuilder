@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1263678434" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="24" lastModified="1263678434" id="root">
   <Library id="syslib000" color="#d4f8ff" name="Standard" comment="Standard objects" ro="True">
     <AnyNetwork id="sysid0" name="Any" comment="Any Network" ro="False" address="0.0.0.0" netmask="0.0.0.0"/>
     <AnyIPService id="sysid1" protocol_num="0" name="Any" comment="Any IP Service" ro="False"/>
@@ -51,9 +51,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -69,9 +69,9 @@
             <PolicyInstallScript arguments="" command="" enabled="False"/>
           </Management>
           <HostOptions>
-            <Option name="snmp_contact"></Option>
-            <Option name="snmp_description"></Option>
-            <Option name="snmp_location"></Option>
+            <Option name="snmp_contact"/>
+            <Option name="snmp_description"/>
+            <Option name="snmp_location"/>
             <Option name="use_mac_addr">false</Option>
             <Option name="use_mac_addr_filter">False</Option>
           </HostOptions>
@@ -100,17 +100,17 @@
     </ObjectGroup>
     <ServiceGroup id="stdid05" name="Services" comment="" ro="False">
       <CustomService id="stdid14_1" name="ESTABLISHED" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv4">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
       </CustomService>
       <CustomService id="stdid14_2" name="ESTABLISHED ipv6" comment="This service matches all packets which are part of network connections established through the firewall, or connections 'related' to those established through the firewall. Term 'established' refers to the state tracking mechanism which exists inside iptables and other stateful firewalls and does not mean any particular combination of packet header options. Packet is considered to correspond to the state 'ESTABLISHED' if it belongs to the network session, for which proper initiation has been seen by the firewall, so its stateful inspection module made appropriate record in the state table. Usually stateful firewalls keep track of network connections using not only tcp protocol, but also udp and sometimes even icmp protocols. 'RELATED' describes packet belonging to a separate network connection, related to the session firewall is keeping track of. One example is FTP command and FTP data sessions." ro="False" protocol="any" address_family="ipv6">
-        <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
+        <CustomServiceCommand platform="Undefined"/>
         <CustomServiceCommand platform="iosacl">established</CustomServiceCommand>
-        <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
+        <CustomServiceCommand platform="ipfilter"/>
         <CustomServiceCommand platform="ipfw">established</CustomServiceCommand>
         <CustomServiceCommand platform="iptables">-m state --state ESTABLISHED,RELATED</CustomServiceCommand>
         <CustomServiceCommand platform="procurve_acl">established</CustomServiceCommand>
@@ -352,54 +352,54 @@
       </ServiceGroup>
       <ServiceGroup id="stdid13" name="Custom" comment="" ro="False">
         <CustomService id="id3B64EEA8" name="rpc" comment="works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m record_rpc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF4E" name="irc-conn" comment="IRC connection tracker, supports DCC.&#10;Works on iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/&#10;" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m irc</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF50" name="psd" comment="Port scan detector, works only on iptables and  requires patch-o-matic &#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m psd --psd-weight-threshold 5 --psd-delay-threshold 10000</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF52" name="string" comment="Matches a string in a whole packet, works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m string --string test_pattern</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
         <CustomService id="id3B64EF54" name="talk" comment="Talk protocol support. Works in iptables and requires patch-o-matic.&#10;For more information look for patch-o-matic on http://www.netfilter.org/" ro="False" protocol="any" address_family="ipv4">
-          <CustomServiceCommand platform="Undefined"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipf"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfilter"></CustomServiceCommand>
-          <CustomServiceCommand platform="ipfw"></CustomServiceCommand>
+          <CustomServiceCommand platform="Undefined"/>
+          <CustomServiceCommand platform="ipf"/>
+          <CustomServiceCommand platform="ipfilter"/>
+          <CustomServiceCommand platform="ipfw"/>
           <CustomServiceCommand platform="iptables">-m talk</CustomServiceCommand>
-          <CustomServiceCommand platform="pf"></CustomServiceCommand>
-          <CustomServiceCommand platform="pix"></CustomServiceCommand>
-          <CustomServiceCommand platform="unknown"></CustomServiceCommand>
+          <CustomServiceCommand platform="pf"/>
+          <CustomServiceCommand platform="pix"/>
+          <CustomServiceCommand platform="unknown"/>
         </CustomService>
       </ServiceGroup>
       <ServiceGroup id="stdid19" name="TagServices" comment="" ro="False"/>
@@ -487,7 +487,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16632X3268" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
@@ -507,7 +507,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16660X3268" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
@@ -527,7 +527,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16688X3268" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
@@ -547,7 +547,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16716X3268" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -567,7 +567,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16744X3268" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
@@ -587,7 +587,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id16772X3268" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
@@ -607,7 +607,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
@@ -723,7 +723,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2233X35122" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
@@ -743,7 +743,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2245X35122" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
@@ -763,7 +763,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2257X35122" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
@@ -783,7 +783,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2269X35122" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -803,7 +803,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2281X35122" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
@@ -823,7 +823,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2293X35122" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
@@ -843,7 +843,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
@@ -959,7 +959,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2462X41369" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
@@ -979,7 +979,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2474X41369" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
@@ -999,7 +999,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2486X41369" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
@@ -1019,7 +1019,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2498X41369" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -1039,7 +1039,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2510X41369" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
@@ -1059,7 +1059,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2522X41369" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
@@ -1079,7 +1079,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
@@ -1195,7 +1195,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2595X41369" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
@@ -1215,7 +1215,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2607X41369" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
@@ -1235,7 +1235,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2619X41369" disabled="False" group="" log="True" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
@@ -1255,7 +1255,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2631X41369" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -1275,7 +1275,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2643X41369" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="">
@@ -1295,7 +1295,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id2655X41369" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
@@ -1315,7 +1315,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <RuleSetOptions/>
@@ -1434,7 +1434,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1444,17 +1444,17 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1476,7 +1476,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5439X26004" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network">
@@ -1496,7 +1496,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5467X26004" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="Firewall uses one of the machines&#10;on internal network for DNS">
@@ -1516,7 +1516,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5495X26004" disabled="False" group="" log="True" position="4" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -1539,7 +1539,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1549,17 +1549,17 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1581,7 +1581,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5551X26004" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="">
@@ -1604,7 +1604,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1614,17 +1614,17 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1654,7 +1654,7 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>
@@ -1746,7 +1746,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1756,17 +1756,17 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1788,7 +1788,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5699X26074" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
@@ -1809,7 +1809,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5728X26074" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="DHCP requests are permitted&#10;from internal network">
@@ -1831,7 +1831,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5758X26074" disabled="False" group="" log="False" position="4" action="Accept" direction="Both" comment="DHCP replies">
@@ -1851,7 +1851,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5786X26074" disabled="False" group="" log="False" position="5" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
@@ -1871,7 +1871,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5814X26074" disabled="False" group="" log="True" position="6" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -1894,7 +1894,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1904,17 +1904,17 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -1936,7 +1936,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id5870X26074" disabled="False" group="" log="True" position="8" action="Deny" direction="Both" comment="">
@@ -1959,7 +1959,7 @@
               <Option name="connlimit_above_not">False</Option>
               <Option name="connlimit_masklen">0</Option>
               <Option name="connlimit_value">0</Option>
-              <Option name="firewall_is_part_of_any_and_networks"></Option>
+              <Option name="firewall_is_part_of_any_and_networks"/>
               <Option name="hashlimit_burst">0</Option>
               <Option name="hashlimit_dstlimit">False</Option>
               <Option name="hashlimit_expire">0</Option>
@@ -1969,17 +1969,17 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
-              <Option name="hashlimit_suffix"></Option>
+              <Option name="hashlimit_suffix"/>
               <Option name="hashlimit_value">0</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
               <Option name="limit_value_not">False</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -2009,7 +2009,7 @@
           <Option name="accept_established">true</Option>
           <Option name="accept_new_tcp_with_no_syn">true</Option>
           <Option name="check_shading">true</Option>
-          <Option name="compiler"></Option>
+          <Option name="compiler"/>
           <Option name="configure_interfaces">true</Option>
           <Option name="eliminate_duplicates">true</Option>
           <Option name="firewall_dir">/etc</Option>

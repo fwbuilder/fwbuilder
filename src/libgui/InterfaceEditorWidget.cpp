@@ -43,7 +43,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent) :
     m_ui(new Ui::InterfaceEditorWidget)
 {
     tabw = dynamic_cast<QTabWidget*>(parent);
-    this->interfacep = NULL;
+    this->interfacep = nullptr;
     m_ui->setupUi(this);
     setClusterMode(false);
     this->m_ui->name->setText(""); // blank interface name
@@ -64,7 +64,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent, Interface *iface) 
     this->m_ui->name->setText(interfacep->getName().c_str());
     this->m_ui->label->setText(interfacep->getLabel().c_str());
 
-//    if (iface->getPhysicalAddress() != NULL)
+//    if (iface->getPhysicalAddress() != nullptr)
 //       m_ui->mac->setText(iface->getPhysicalAddress()->getPhysAddress().c_str());
 
     this->m_ui->comment->setPlainText(iface->getComment().c_str());
@@ -101,7 +101,7 @@ InterfaceEditorWidget::InterfaceEditorWidget(QWidget *parent,
     clusterMode = true;
     tabw = dynamic_cast<QTabWidget*>(parent);
     m_ui->setupUi(this);
-    this->interfacep = NULL;
+    this->interfacep = nullptr;
     this->m_ui->name->setText(data.name);
     this->m_ui->label->setText(data.label);
 
@@ -188,7 +188,7 @@ InterfaceEditorWidget::~InterfaceEditorWidget()
 int InterfaceEditorWidget::addNewAddress()
 {
     int row = this->m_ui->addresses->rowCount();
-    fwaddrs[row] = NULL;
+    fwaddrs[row] = nullptr;
     this->m_ui->addresses->insertRow(row);
     QTableWidgetItem *addrItem = new QTableWidgetItem();
     QTableWidgetItem *netItem = new QTableWidgetItem();
@@ -263,7 +263,7 @@ EditedInterfaceData InterfaceEditorWidget::getInterfaceData()
         for ( int i = 0; i < this->m_ui->addresses->rowCount(); i++ )
         {
             AddressInfo info;
-            if (rows[i].first == NULL) continue; // deleted row
+            if (rows[i].first == nullptr) continue; // deleted row
             info.address = rows[i].first->text();
             info.netmask = rows[i].second->text();
             info.ipv4 = types[i]->currentIndex() == 0;
@@ -324,7 +324,7 @@ bool InterfaceEditorWidget::isValid()
             tr("Failover protocol %1 does not require IP address for interface %2")
             .arg(this->m_ui->protocol->currentText())
             .arg(this->m_ui->name->text()),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
         return false;
     }
 
@@ -338,7 +338,7 @@ bool InterfaceEditorWidget::isValid()
                 tr("Failover protocol %1 requires an IP address for interface %2")
                 .arg(this->m_ui->protocol->currentText())
                 .arg(this->m_ui->name->text()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
             return false;
         }
     }
@@ -358,7 +358,7 @@ bool InterfaceEditorWidget::isValid()
 
     for (int i = 0; i < this->m_ui->addresses->rowCount(); i++)
     {
-        if (types[i] == NULL) continue; // deleted row
+        if (types[i] == nullptr) continue; // deleted row
         QString address = this->m_ui->addresses->item(i, 0)->text();
         QString netmask = this->m_ui->addresses->item(i, 1)->text();
         if ( !validateAddress(
@@ -505,10 +505,8 @@ void InterfaceEditorWidget::setHostOS(const QString &s)
     if (fwbdebug)
         qDebug() << "Interface name prompt:" << name_prompt;
 
-#if (QT_VERSION >= 0x040700)
     this->m_ui->name->setPlaceholderText(name_prompt);
     this->m_ui->label->setPlaceholderText("outside, inside, etc (optional)");
-#endif
 
     this->m_ui->name->setToolTip(name_prompt);
     this->m_ui->label->setToolTip("outside, inside, etc (optional)");
@@ -524,5 +522,5 @@ void InterfaceEditorWidget::setError(const QString &title,
 void InterfaceEditorWidget::showError()
 {
     QMessageBox::warning(this, errorTitle, errorText, "&Continue",
-                         QString::null, QString::null, 0, 1);
+                         QString(), QString(), 0, 1);
 }

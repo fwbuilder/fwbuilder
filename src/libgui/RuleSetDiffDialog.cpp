@@ -91,7 +91,7 @@ RuleSetDiffDialog::RuleSetDiffDialog(ProjectPanel *project, QWidget *parent) :
 
 Library* RuleSetDiffDialog::findUserLibrary(FWObjectDatabase *db)
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, db->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -159,7 +159,7 @@ void RuleSetDiffDialog::updateRuleSetView() {
 
     if (!currentRuleSet || !originalRuleSet) return;
 
-    RuleSetModel *currentRuleSetModel, *originalRuleSetModel;
+    RuleSetModel *currentRuleSetModel = nullptr, *originalRuleSetModel = nullptr;
 
     if (Policy::isA(currentRuleSet)) {
         currentRuleSetModel = new PolicyModel(Policy::cast(currentRuleSet), this);

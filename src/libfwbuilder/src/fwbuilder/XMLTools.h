@@ -31,14 +31,13 @@
 #ifndef __XML_TOOLS_HH_FLAG__
 #define __XML_TOOLS_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/FWException.h"
 
 #include <string>
 #include <functional>
+#include <type_traits>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -50,14 +49,19 @@
 namespace libfwbuilder
 {
 
-//TODO: define type cast operators for these
-#define FROMXMLCAST(x) ((const char *)x)
-#define STRTOXMLCAST(x) ((xmlChar *)x.c_str())
-#define TOXMLCAST(x) ((xmlChar *)x)
-
 class XMLTools
 {
     public:
+    static const std::string defaultVersion;
+    static const char * FromXmlCast(xmlChar * c) { return reinterpret_cast<const char *>(c); }
+    static const char * FromXmlCast(const xmlChar * c) { return reinterpret_cast<const char *>(c); }
+    static xmlChar * ToXmlCast(char * c) { return reinterpret_cast<xmlChar *>(c); }
+    static xmlChar * ToXmlCast(const char * c) { return ToXmlCast(const_cast<char *>(c)); }
+    static xmlChar * StrToXmlCast(const std::string s) { return ToXmlCast(s.c_str()); }
+    template<class T>
+    static void FreeXmlBuff(const T t) {
+        xmlFree(reinterpret_cast<void *>(const_cast< typename std::remove_const<T>::type>(t) >(t)));
+    }
 
     static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const char   *path       );
     static xmlNodePtr getXmlNodeByPath(xmlNodePtr r,const std::string &path  );
@@ -79,7 +83,7 @@ class XMLTools
         }
     };
 
-    static std::string readFile(const std::string &file_name) throw(FWException);
+    static std::string readFile(const std::string &file_name);
     
     /**
      * Loads given file, performing version conversion
@@ -90,12 +94,12 @@ class XMLTools
                               const std::string &dtd_file,
                               const UpgradePredicate *upgrade,
                               const std::string &template_dir,
-                              const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
-    ) throw(FWException);
+                              const std::string &current_version = defaultVersion
+    );
 
     static void setDTD(xmlDocPtr doc, 
                        const std::string &type_name, 
-                       const std::string &dtd_file) throw(FWException);
+                       const std::string &dtd_file);
     
     /**
      * Saves to file with setting DTD.
@@ -103,7 +107,7 @@ class XMLTools
     static void saveFile(xmlDocPtr doc, 
                          const std::string &file_name, 
                          const std::string &type_name,
-                         const std::string &dtd_file) throw(FWException);
+                         const std::string &dtd_file);
 
     /**
      * Saves XML document to the memory buffer
@@ -112,7 +116,7 @@ class XMLTools
                              xmlChar **buffer,
                              int      *size,
                              const std::string &type_name,
-                             const std::string &dtd_file) throw(FWException);
+                             const std::string &dtd_file);
         
     static xmlExternalEntityLoader defaultLoader;
 
@@ -126,7 +130,7 @@ class XMLTools
     static xmlDocPtr parseFile(const std::string &file_name,
                                const std::string &buffer, 
                                bool use_dtd, const std::string &template_dir
-    ) throw(FWException);
+    );
     
     /**
      * Performs XSLT transformation of the document in memory
@@ -135,7 +139,7 @@ class XMLTools
     static xmlDocPtr transformDocument(xmlDocPtr doc, 
                                        const std::string &stylesheet_file,
                                        const char **params
-    ) throw(FWException);
+    );
 
     /**
      * Performs XSLT transformation of the document. Results are
@@ -145,7 +149,7 @@ class XMLTools
                                         const std::string &stylesheet_file,
                                         const char **params,
                                         const std::string &dst_file
-    ) throw(FWException);
+    );
 
     /**
      * Performs XSLT transformation of the src file. Results are
@@ -155,7 +159,7 @@ class XMLTools
 				    const std::string &stylesheet_file,
 				    const char **params,
 				    const std::string &dst_file
-    ) throw(FWException);
+    );
 
 
     static std::string quote_linefeeds  (const std::string &s);
@@ -185,7 +189,7 @@ class XMLTools
     
     /**
      * Convert file from older version to current one
-     * @return pointer to new document or NULL if doc is unchanged.
+     * @return pointer to new document or nullptr if doc is unchanged.
      *         if pointer to new document is returned, doc parameter
      *         becomes invalid and should not be used.
      */
@@ -193,8 +197,8 @@ class XMLTools
                              const std::string &file_name, 
                              const std::string &type_name,
                              const std::string &template_dir,
-                             const std::string &current_version = std::string(FWBUILDER_XML_VERSION)
-    ) throw(FWException);
+                             const std::string &current_version = defaultVersion
+    );
 
     /**
      * returns first component of dotted notation.

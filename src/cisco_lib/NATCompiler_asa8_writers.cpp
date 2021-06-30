@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_asa8.h"
 #include "NamedObject.h"
@@ -82,7 +81,7 @@ QString NATCompiler_asa8::PrintRule::printSingleObject(FWObject *obj)
     NamedObject* asa8_object = pix_comp->named_objects_manager->getNamedObject(obj);
     if (asa8_object) return asa8_object->getCommandWord();
 
-    if (BaseObjectGroup::cast(obj)!=NULL) return obj->getName().c_str();
+    if (BaseObjectGroup::cast(obj)!=nullptr) return obj->getName().c_str();
 
     if (Interface::isA(obj) && obj->isChildOf(compiler->fw)) return "interface";
 
@@ -99,25 +98,25 @@ void NATCompiler_asa8::PrintRule::printSDNAT(NATRule *rule)
     QStringList cmd;
 
     RuleElementOSrc *osrc_re = rule->getOSrc();
-    assert(osrc_re!=NULL);
+    assert(osrc_re!=nullptr);
     FWObject *osrc = FWReference::getObject(osrc_re->front());
 
     RuleElementODst *odst_re = rule->getODst();
-    assert(odst_re!=NULL);
+    assert(odst_re!=nullptr);
     FWObject *odst = FWReference::getObject(odst_re->front());
 
     RuleElementOSrv *osrv_re = rule->getOSrv();
-    assert(osrv_re!=NULL);
+    assert(osrv_re!=nullptr);
     FWObject *osrv = FWReference::getObject(osrv_re->front());
 
     RuleElementTSrc *tsrc_re = rule->getTSrc();
-    assert(tsrc_re!=NULL);
+    assert(tsrc_re!=nullptr);
 
     Address  *tdst = compiler->getFirstTDst(rule);  assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  assert(tsrv);
 
-    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=NULL);
-    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=NULL);
+    RuleElementItfInb *itf_in_re = rule->getItfInb(); assert(itf_in_re!=nullptr);
+    RuleElementItfOutb *itf_out_re = rule->getItfOutb(); assert(itf_out_re!=nullptr);
 
     Interface *i_iface = Interface::cast(
         FWObjectReference::getObject(itf_in_re->front()));

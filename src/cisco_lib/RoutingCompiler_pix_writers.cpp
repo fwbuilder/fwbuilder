@@ -47,7 +47,7 @@ RoutingCompiler_pix::PrintRule::PrintRule(const std::string &name) :
 bool RoutingCompiler_pix::PrintRule::processNext()
 {
     RoutingRule *rule = getNext(); 
-    if (rule == NULL) return false;
+    if (rule == nullptr) return false;
 
     tmp_queue.push_back(rule);
     
@@ -106,7 +106,7 @@ string RoutingCompiler_pix::PrintRule::RoutingRuleToString(RoutingRule *rule)
     RuleElementRDst *dstrel = rule->getRDst();
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
-    if(dst == NULL) compiler->abort(rule, "Broken DST");
+    if(dst == nullptr) compiler->abort(rule, "Broken DST");
 
     std::ostringstream command_line;
 

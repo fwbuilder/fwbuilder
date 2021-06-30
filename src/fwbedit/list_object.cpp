@@ -23,8 +23,6 @@
 
 */
 
-#include "../../config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Constants.h"
 
 #include <qsettings.h>
@@ -53,16 +51,6 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdio.h>
-
-#ifdef HAVE_GETOPT_H
-#  include <getopt.h>
-#else
-#  ifdef _WIN32
-#    include <getopt.h>
-#  else
-#    include <stdlib.h>
-#  endif
-#endif
 
 #include "fwbuilder/Resources.h"
 
@@ -159,7 +147,7 @@ string getAttributeValue(FWObject *obj, const string &attr_name)
         return DNSName::cast(obj)->getSourceName();
     }
 
-    if (TCPUDPService::cast(obj)!=NULL)
+    if (TCPUDPService::cast(obj)!=nullptr)
     {
         ostringstream str;
         if (attr_name=="src_range_start") 
@@ -173,7 +161,7 @@ string getAttributeValue(FWObject *obj, const string &attr_name)
         if (str.tellp()>0) return str.str();
     }
 
-    if (ICMPService::cast(obj)!=NULL)
+    if (ICMPService::cast(obj)!=nullptr)
     {
         if (attr_name=="icmp_type") return obj->getStr("type");
         if (attr_name=="icmp_code") return obj->getStr("code");

@@ -24,7 +24,6 @@
 #ifndef _NAMED_OBJECTS_MANAGER_HH
 #define _NAMED_OBJECTS_MANAGER_HH
 
-#include "config.h"
 
 #include "BaseObjectGroup.h"
 

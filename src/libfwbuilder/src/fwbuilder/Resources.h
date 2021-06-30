@@ -28,7 +28,6 @@
 #ifndef _RESOURCES_HH
 #define _RESOURCES_HH
 
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <map>
 #include <string>
@@ -62,18 +61,18 @@ class Resources
     std::string getXmlNodeContent(xmlNodePtr node);
     std::string getXmlNodeProp(xmlNodePtr node,std::string prop);
 
-    void loadRes(const std::string &rfile ) throw(libfwbuilder::FWException);
+    void loadRes(const std::string &rfile );
 
 
 public:
 
-    Resources() throw(libfwbuilder::FWException);
-    Resources(const std::string &resF) throw(libfwbuilder::FWException);
+    Resources();
+    Resources(const std::string &resF);
     ~Resources();
     
     void clear();
     
-    void loadSystemResources() throw(libfwbuilder::FWException);
+    void loadSystemResources();
 
     xmlNodePtr getXmlNode(const std::string& path);
 
@@ -137,14 +136,14 @@ public:
      *  firewall or OS-specific host_OS options. 
      */
     static void    setDefaultTargetOptions(const std::string &target,
-                                           libfwbuilder::Firewall *o) throw (libfwbuilder::FWException);
+                                           libfwbuilder::Firewall *o);
 
     /**
      *  This method sets default values to the platform-specific interface
      *  or OS-specific interface options.
      */
     static void    setDefaultIfaceOptions(const std::string &target,
-                                          libfwbuilder::Interface *iface) throw (libfwbuilder::FWException);
+                                          libfwbuilder::Interface *iface);
 
     /**
      * returns string value of target's capability
@@ -152,9 +151,9 @@ public:
      * in subtree "/FWBuilderResources/Target/capabilities"
      */
     static std::string getTargetCapabilityStr(const std::string &target,
-                                              const std::string &cap_name)  throw (libfwbuilder::FWException);
+                                              const std::string &cap_name);
     static bool        getTargetCapabilityBool(const std::string &target,
-                                               const std::string &cap_name)  throw (libfwbuilder::FWException);
+                                               const std::string &cap_name);
 
     /**
      * returns string value of target's option
@@ -162,9 +161,9 @@ public:
      * in subtree "/FWBuilderResources/Target/options"
      */
     static std::string getTargetOptionStr(const std::string &target,
-                                          const std::string &opt_name)  throw (libfwbuilder::FWException);
+                                          const std::string &opt_name);
     static bool        getTargetOptionBool(const std::string &target,
-                                           const std::string &opt_name)  throw (libfwbuilder::FWException);
+                                           const std::string &opt_name);
     static bool    isTargetActionSupported(const std::string &target,
                                            const std::string &action);
     static std::string    getActionEditor (const std::string &target,

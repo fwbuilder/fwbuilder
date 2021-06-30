@@ -24,11 +24,9 @@
 */
 
 
-#include "config.h"
-
+#include "version.h"
 #include "global.h"
 #include "utils.h"
-#include "VERSION.h"
 
 #include "debugDialog.h"
 #include "RCS.h"
@@ -77,22 +75,18 @@ debugDialog::debugDialog(QWidget *parent) : QDialog(parent)
                                  .arg(Constants::getTemplatesObjectsFilePath().c_str()));
     m_dialog->debugText->append( QString("user name: %1").arg(user_name) );
     m_dialog->debugText->append( "\n" );
-    m_dialog->debugText->append( QString("Path to rcs: %1").arg(RCS_FILE_NAME));
-    m_dialog->debugText->append( QString("Path to rcsdiff: %1").arg(RCSDIFF_FILE_NAME));
-    m_dialog->debugText->append( QString("Path to rlog: %1").arg(RLOG_FILE_NAME));
-    m_dialog->debugText->append( QString("Path to ci: %1").arg(CI_FILE_NAME));
-    m_dialog->debugText->append( QString("Path to co: %1").arg(CO_FILE_NAME));
+    m_dialog->debugText->append( QString("Path to rcs: %1").arg(RCS::getRcsFileName()));
+    m_dialog->debugText->append( QString("Path to rcsdiff: %1").arg(RCS::getRcsdiffFileName()));
+    m_dialog->debugText->append( QString("Path to rlog: %1").arg(RCS::getRlogFileName()));
+    m_dialog->debugText->append( QString("Path to ci: %1").arg(RCS::getCiFileName()));
+    m_dialog->debugText->append( QString("Path to co: %1").arg(RCS::getCoFileName()));
     m_dialog->debugText->append( "\n" );
 
     m_dialog->debugText->append( "RCS timezone setting:" );
     m_dialog->debugText->append( RCS::getRCSEnvFix()->getTZOffset() );
     m_dialog->debugText->append( "\n" );
     m_dialog->debugText->append( "RCS environment:" );
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    m_dialog->debugText->append( RCS::getEnv()->join("\n").toAscii() );
-#else
     m_dialog->debugText->append( RCS::getEnv()->join("\n").toLatin1() );
-#endif
     m_dialog->debugText->append( "\n" );
 
     m_dialog->debugText->append( QString("Current locale: %1")

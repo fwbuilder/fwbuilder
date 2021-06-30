@@ -25,8 +25,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/DNSName.h"
@@ -72,39 +70,39 @@ void DNSName::setDNSRecordType(const string& rectype)
     setStr("dnsrec", rectype);
 }
 
-void DNSName::fromXML(xmlNodePtr root) throw(FWException)
+void DNSName::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     const char *n;
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dnsrec")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("dnsrec")));
+    assert(n!=nullptr);
     setStr("dnsrec", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("dnsrectype")));
-    if (n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("dnsrectype")));
+    if (n!=nullptr)
     {
         setStr("dnsrectype", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     } else
     {
         setStr("dnsrectype", "A");
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("run_time")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("run_time")));
+    assert(n!=nullptr);
     setStr("run_time", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
-xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr DNSName::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
 
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }
@@ -121,7 +119,7 @@ xmlNodePtr DNSName::toXML(xmlNodePtr parent) throw(FWException)
  * the object tree, something with the name "tmp" or similar.
  */
 void DNSName::loadFromSource(bool ipv6, FWOptions *options,
-                             bool test_mode) throw(FWException)
+                             bool test_mode)
 {
     (void) options; // Unused
 
@@ -134,7 +132,7 @@ void DNSName::loadFromSource(bool ipv6, FWOptions *options,
             //Address *a = Address::cast(
             //    getRoot()->create((ipv6)?IPv6::TYPENAME:IPv4::TYPENAME));
             int af = AF_INET;
-            Address *a = NULL;
+            Address *a = nullptr;
             if (ipv6) { a = getRoot()->createIPv6(); af = AF_INET6; }
             else a = getRoot()->createIPv4();
             getRoot()->add(a);
@@ -163,7 +161,7 @@ void DNSName::loadFromSource(bool ipv6, FWOptions *options,
         {
             err << " Using dummy address in test mode";
             int af = AF_INET;
-            Address *a = NULL;
+            Address *a = nullptr;
             if (ipv6)
             {
                 a = getRoot()->createIPv6();

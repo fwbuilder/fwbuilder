@@ -23,7 +23,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 
 #include "ObjectTreeView.h"
@@ -60,17 +59,21 @@ void ListOfLibrariesModel::addStaticItems()
 Qt::ItemFlags ListOfLibrariesModel::flags(const QModelIndex &index) const
 {
     int row = index.row();
-    if (row < 0 || row >= items.size()) return 0;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    if (row < 0 || row >= items.size()) return Qt::ItemFlags();
+#else
+    if (row < 0 || row >= items.size()) return nullptr;
+#endif
     
     FWObject *lib = items.at(index.row()).lib;
-    if (lib == NULL) return Qt::ItemIsEnabled;
+    if (lib == nullptr) return Qt::ItemIsEnabled;
     else return QStringListModel::flags(index);
 }
 
 bool ListOfLibrariesModel::insertRows(int row, int count, const QModelIndex & parent)
 {
     for (int c=0; c < count; ++c)
-        items.insert(row, _item_data("", NULL, NULL));
+        items.insert(row, _item_data("", nullptr, nullptr));
     return QStringListModel::insertRows(row, count, parent);
 }
 
@@ -104,19 +107,19 @@ void ListOfLibrariesModel::sort(int column, Qt::SortOrder order)
     for (int i=0; i<rowCount(); ++i)
     {
         FWObject *l = getLibrary(i);
-        if (l==NULL) continue;
+        if (l==nullptr) continue;
         list.append(items.at(i));
     }
 
     if (order == Qt::AscendingOrder)
-        qSort(list.begin(), list.end(), ascendingLessThan);
+        std::sort(list.begin(), list.end(), ascendingLessThan);
     else
-        qSort(list.begin(), list.end(), decendingLessThan);
+        std::sort(list.begin(), list.end(), decendingLessThan);
 
     int pos = 0;
     foreach(QString itm, top_static_items)
     {
-        list.insert(pos, _item_data(itm, NULL, NULL));
+        list.insert(pos, _item_data(itm, nullptr, nullptr));
         pos++;
     }
 
@@ -128,7 +131,7 @@ void ListOfLibrariesModel::sort(int column, Qt::SortOrder order)
         QString text = list.at(i).name;
         insertRows(i, 1);
         QModelIndex idx = index(i, 0);
-        QStringListModel::setData(idx, indentLibName(text, list.at(i).lib!=NULL), Qt::DisplayRole);
+        QStringListModel::setData(idx, indentLibName(text, list.at(i).lib!=nullptr), Qt::DisplayRole);
         items[i] = list[i];
     }
 }
@@ -158,7 +161,7 @@ FWObject* ListOfLibrariesModel::getLibrary(QModelIndex idx)
 
 FWObject* ListOfLibrariesModel::getLibrary(int row)
 {
-    if (row < 0 || row >= items.size()) return NULL;
+    if (row < 0 || row >= items.size()) return nullptr;
     return items[row].lib;
 }
 
@@ -169,7 +172,7 @@ ObjectTreeView* ListOfLibrariesModel::getTreeWidget(QModelIndex idx)
 
 ObjectTreeView* ListOfLibrariesModel::getTreeWidget(int row)
 {
-    if (row < 0 || row >= items.size()) return NULL;
+    if (row < 0 || row >= items.size()) return nullptr;
     return items[row].tree;
 }
 
@@ -178,7 +181,7 @@ void ListOfLibrariesModel::setData(QModelIndex idx, const QString &name, FWObjec
     int row = idx.row();
     if (row < 0 || row >= items.size()) return ;
     items[row] = _item_data(name, lib, otv);
-    QStringListModel::setData(idx, indentLibName(name, lib!=NULL), Qt::DisplayRole);
+    QStringListModel::setData(idx, indentLibName(name, lib!=nullptr), Qt::DisplayRole);
 }
 
 void ListOfLibrariesModel::setName(QModelIndex idx, const QString &name)
@@ -186,7 +189,7 @@ void ListOfLibrariesModel::setName(QModelIndex idx, const QString &name)
     int row = idx.row();
     if (row < 0 || row >= items.size()) return ;
     items[row].name = name;
-    QStringListModel::setData(idx, indentLibName(name, items.at(row).lib!=NULL), Qt::DisplayRole);
+    QStringListModel::setData(idx, indentLibName(name, items.at(row).lib!=nullptr), Qt::DisplayRole);
 }
 
 QString ListOfLibrariesModel::indentLibName(const QString &name, bool indent)

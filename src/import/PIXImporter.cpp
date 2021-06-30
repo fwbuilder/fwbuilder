@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "PIXImporter.h"
 
@@ -92,11 +91,11 @@ void PIXImporter::clear()
 {
     Importer::clear();
 
-    current_named_object = NULL;
+    current_named_object = nullptr;
     named_object_name = "";
     named_object_comment = "";
 
-    current_object_group = NULL;
+    current_object_group = nullptr;
     object_group_name = "";
     object_group_comment = "";
     object_group_service_protocol = "";
@@ -143,7 +142,7 @@ Interface* PIXImporter::getInterfaceByLabel(const string &label)
             return intf;
         }
     }
-    return NULL;
+    return nullptr;
 }
     
 
@@ -252,8 +251,8 @@ void PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
         // named object/object group)
         if (src_port_spec.empty() || dst_port_spec.empty()) return;
 
-        FWObject *src_port_obj = NULL;
-        FWObject *dst_port_obj = NULL;
+        FWObject *src_port_obj = nullptr;
+        FWObject *dst_port_obj = nullptr;
         
         if (!src_port_spec.empty() &&
             named_objects_registry.count(src_port_spec.c_str()) > 0)
@@ -263,14 +262,14 @@ void PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
             named_objects_registry.count(dst_port_spec.c_str()) > 0)
             dst_port_obj =  named_objects_registry[dst_port_spec.c_str()];
 
-        // if both src_port_obj and dst_port_obj are NULL, this means
+        // if both src_port_obj and dst_port_obj are nullptr, this means
         // both port operations are in-line port matches that will be
         // taken are of in the base class functions
-        if (src_port_obj == NULL && dst_port_obj == NULL) return;
+        if (src_port_obj == nullptr && dst_port_obj == nullptr) return;
 
-        // If only one of the two is NULL, use base class functions to
+        // If only one of the two is nullptr, use base class functions to
         // fill it in from its port_op and port_spec variables
-        if (dst_port_obj == NULL)
+        if (dst_port_obj == nullptr)
         {
             src_port_spec = "";
             src_port_op = "";
@@ -279,7 +278,7 @@ void PIXImporter::fixServiceObjectUsedForBothSrcAndDstPorts()
             else dst_port_obj = createUDPService();
         }
 
-        if (src_port_obj == NULL)
+        if (src_port_obj == nullptr)
         {
             dst_port_spec = "";
             dst_port_op = "";
@@ -308,7 +307,7 @@ void PIXImporter::mixServiceObjects(FWObject *src_ports,
                                     FWObject *dst_ports,
                                     FWObject *service_group)
 {
-    if (Group::cast(src_ports)!=NULL)
+    if (Group::cast(src_ports)!=nullptr)
     {
         for (FWObject::iterator i1=src_ports->begin(); i1!=src_ports->end(); ++i1)
         {
@@ -318,7 +317,7 @@ void PIXImporter::mixServiceObjects(FWObject *src_ports,
         return;
     }
 
-    if (Group::cast(dst_ports)!=NULL)
+    if (Group::cast(dst_ports)!=nullptr)
     {
         for (FWObject::iterator i1=dst_ports->begin(); i1!=dst_ports->end(); ++i1)
         {
@@ -355,10 +354,10 @@ void PIXImporter::mixServiceObjects(FWObject *src_ports,
 
 FWObject* PIXImporter::mirrorServiceObjectRecursively(FWObject *obj)
 {
-    FWObject *res = NULL;
+    FWObject *res = nullptr;
     string new_name = obj->getName() + "-mirror";
 
-    if (Service::cast(obj) != NULL)
+    if (Service::cast(obj) != nullptr)
     {
         FWObject *new_obj = service_maker->getMirroredServiceObject(obj);
         if (new_obj)
@@ -478,7 +477,7 @@ void PIXImporter::pushRule()
     else
         pushNATRule();
 
-    assert(current_rule!=NULL);
+    assert(current_rule!=nullptr);
 
     if (error_tracker->hasWarnings())
     {
@@ -503,7 +502,7 @@ void PIXImporter::pushRule()
         markCurrentRuleBad();
     }
 
-    current_rule = NULL;
+    current_rule = nullptr;
     rule_comment = "";
 
     clear();
@@ -512,8 +511,8 @@ void PIXImporter::pushRule()
 
 void PIXImporter::pushPolicyRule()
 {
-    assert(current_ruleset!=NULL);
-    assert(current_rule!=NULL);
+    assert(current_ruleset!=nullptr);
+    assert(current_rule!=nullptr);
     // populate all elements of the rule
 
     addMessageToLog(
@@ -524,7 +523,7 @@ void PIXImporter::pushPolicyRule()
     PolicyRule *rule = PolicyRule::cast(current_rule);
 
     FWOptions  *ropt = current_rule->getOptionsObject();
-    assert(ropt!=NULL);
+    assert(ropt!=nullptr);
 
     if (action=="permit")
     {
@@ -578,7 +577,7 @@ void PIXImporter::pushPolicyRule()
  */
 void PIXImporter::rearrangeVlanInterfaces()
 {
-    std::auto_ptr<interfaceProperties> int_prop(
+    std::unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             getFirewallObject()));
 
@@ -679,10 +678,10 @@ Firewall* PIXImporter::finalize()
         rearrangeVlanInterfaces();
 
         FWObject *policy = getFirewallObject()->getFirstByType(Policy::TYPENAME);
-        assert( policy!=NULL );
+        assert( policy!=nullptr );
 
         FWObject *nat = getFirewallObject()->getFirstByType(NAT::TYPENAME);
-        assert( nat!=NULL );
+        assert( nat!=nullptr );
 
         if (all_rulesets.size()!=0)
         {
@@ -817,7 +816,7 @@ Firewall* PIXImporter::finalize()
                                      << "dir: " << _dir.c_str();
 
                         // not all access lists are associated with interfaces
-                        if (intf != NULL)
+                        if (intf != nullptr)
                         {
                             if (fwbdebug)
                                 qDebug() << "    interface: " 
@@ -868,7 +867,7 @@ Firewall* PIXImporter::finalize()
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -958,7 +957,7 @@ void PIXImporter::commitNamedICMPServiceObject()
 
 void PIXImporter::commitNamedTCPUDPServiceObject()
 {
-    FWObject *obj;
+    FWObject *obj = nullptr;
     // have to use createTCPService because it processes "neq" port
     // operators and may create a group with two services nstead of
     // just tcp service. Same for udp.
@@ -1002,7 +1001,7 @@ void PIXImporter::setNamedObjectDescription(const std::string &txt)
 {
     named_object_comment = QString::fromUtf8(txt.c_str());
 
-    if (current_named_object != NULL && ! named_object_name.isEmpty())
+    if (current_named_object != nullptr && ! named_object_name.isEmpty())
     {
         current_named_object->setBool(".import-commited", false);
         current_named_object->setComment("");
@@ -1090,7 +1089,7 @@ void PIXImporter::newObjectGroupICMP(const string &name)
 void PIXImporter::setObjectGroupDescription(const std::string &descr)
 {
     object_group_comment = QString::fromUtf8(descr.c_str());
-    if (current_object_group != NULL && ! object_group_name.isEmpty())
+    if (current_object_group != nullptr && ! object_group_name.isEmpty())
     {
         current_object_group->setBool(".import-commited", false);
         current_object_group->setComment("");
@@ -1133,7 +1132,7 @@ void PIXImporter::addIPServiceToObjectGroup()
 
 void PIXImporter::addTCPUDPServiceToObjectGroup()
 {
-    FWObject *new_obj = NULL;
+    FWObject *new_obj = nullptr;
     if (protocol.empty() && ! object_group_service_protocol.isEmpty())
         protocol = object_group_service_protocol.toStdString();
 

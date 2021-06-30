@@ -64,7 +64,7 @@ ImporterThread::ImporterThread(QWidget *ui,
     this->firewallName = firewallName;
     this->fileName = fileName;
     this->deduplicate = deduplicate;
-    importer = NULL;
+    importer = nullptr;
     stopFlag = false;
     addStandardComments = false;
 }
@@ -98,7 +98,7 @@ void ImporterThread::run()
 
     std::istringstream instream(buffer.join("\n").toStdString());
 
-    importer = NULL;
+    importer = nullptr;
 
     if (platform == "iosacl") importer = new IOSImporter(
         lib, instream, logger, firewallName.toUtf8().constData());

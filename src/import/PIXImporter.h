@@ -33,7 +33,6 @@
 
 #include "IOSImporter.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
 #include "fwbuilder/Rule.h"
 #include "fwbuilder/NAT.h"

@@ -66,7 +66,7 @@ public slots:
     void hideCloseButton();
     void keyPressEvent(QKeyEvent *event)
     {
-        if (dynamic_cast<QFrame*>(this->parent()) == NULL)
+        if (dynamic_cast<QFrame*>(this->parent()) == nullptr)
             return QDialog::keyPressEvent(event);
         event->setAccepted(false);
     }

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
@@ -129,7 +128,7 @@ void ActionsDialog::validate(bool *res)
 
 void ActionsDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeAction(m_project, obj));
+    std::unique_ptr<FWCmdRuleChange> cmd( new FWCmdRuleChangeAction(m_project, obj));
 
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
@@ -146,7 +145,7 @@ void ActionsDialog::applyChanges()
             QMessageBox::information(
                 this,"Firewall Builder",
                 tr("Rule name for accounting is converted to the iptables\nchain name and therefore may not contain white space\nand special characters."),
-                tr("&Continue"), QString::null,QString::null,
+                tr("&Continue"), QString(),QString(),
                 0, 1 );
 
             return;
@@ -160,21 +159,21 @@ void ActionsDialog::applyChanges()
     if (editor=="BranchChain")
     {
         RuleSet *ruleset = RuleSet::cast(m_dialog->iptBranchDropArea->getObject());
-        // if ruleset==NULL, setBranch clears setting in the rule
+        // if ruleset==nullptr, setBranch clears setting in the rule
         rule->setBranch(ruleset);
     }
 
     if (editor=="BranchAnchor")
     {
         RuleSet *ruleset = RuleSet::cast(m_dialog->pfBranchDropArea->getObject());
-        // if ruleset==NULL, setBranch clears setting in the rule
+        // if ruleset==nullptr, setBranch clears setting in the rule
         rule->setBranch(ruleset);
     }
 
     if (editor=="NATBranch")
     {
         RuleSet *ruleset = RuleSet::cast(m_dialog->natBranchDropArea->getObject());
-        // if ruleset==NULL, setBranch clears setting in the rule
+        // if ruleset==nullptr, setBranch clears setting in the rule
         rule->setBranch(ruleset);
     }
 
@@ -194,7 +193,7 @@ void ActionsDialog::setRule(Rule *r)
     rule = r;
 
     FWObject *o = r;
-    while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
+    while (o!=nullptr && Firewall::cast(o)==nullptr) o = o->getParent();
 
     Firewall *f = Firewall::cast(o);
     firewall = f;
@@ -205,7 +204,7 @@ void ActionsDialog::setRule(Rule *r)
 
     if (firewall)
     {
-        // firewall can be NULL if rule set is in Deleted Objects library
+        // firewall can be nullptr if rule set is in Deleted Objects library
         platform = firewall->getStr("platform");
         editor = DialogFactory::getActionDialogPageName(firewall, r);
     }
@@ -219,7 +218,7 @@ void ActionsDialog::setRule(Rule *r)
     m_dialog->rejectvalue->clear();
     m_dialog->rejectvalue->addItems( getScreenNames( actionsOnReject ) );
 
-    branchNameInput = NULL;
+    branchNameInput = nullptr;
 
     data.clear();
 

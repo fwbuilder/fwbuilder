@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils_no_qt.h"
@@ -160,11 +159,11 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
             str << "/";
             str << QString("%1").arg(n->getNetmaskPtr()->getLength());
 
-        } else if (ClusterGroup::cast(obj)!=NULL)
+        } else if (ClusterGroup::cast(obj)!=nullptr)
         {
             ClusterGroup *g = ClusterGroup::cast(obj);
             str << QObject::tr("type: ") << g->getStr("type").c_str();
-        } else if (Group::cast(obj)!=NULL)   // just any group
+        } else if (Group::cast(obj)!=nullptr)   // just any group
         {
             Group *g=Group::cast(obj);
             str << g->size() << " " << QObject::tr(" objects");
@@ -256,7 +255,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
         {
             const UserService* user_srv = UserService::constcast(obj);
             str << "User id: \"" << user_srv->getUserId().c_str() << "\"" ;
-        } else if (RuleSet::cast(obj) != NULL)
+        } else if (RuleSet::cast(obj) != nullptr)
         {
             QStringList attrs;
             RuleSet *rs = RuleSet::cast(obj);
@@ -357,10 +356,10 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
                 str << "(no ip address)";
 
             FWObject *co=obj->getFirstByType("Interface");
-            if (co!=NULL) 
+            if (co!=nullptr) 
             {
                 physAddress *paddr=(Interface::cast(co))->getPhysicalAddress();
-                if (paddr!=NULL) 
+                if (paddr!=nullptr) 
                     str << "    " <<  paddr->getPhysAddress().c_str();
             }
 
@@ -378,7 +377,7 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
                 .arg(n->getAddressPtr()->toString().c_str())
                 .arg(n->getNetmaskPtr()->getLength());
 
-        } else if (ClusterGroup::cast(obj)!=NULL)
+        } else if (ClusterGroup::cast(obj)!=nullptr)
         {
             ClusterGroup *g = ClusterGroup::cast(obj);
             str << QObject::tr("Type: ") << g->getStr("type").c_str() << " ";
@@ -400,10 +399,10 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
                 members.push_front(QObject::tr("Members:"));
                 str << members.join(" ");
             }
-        } else if (DynamicGroup::cast(obj) != 0) {
+        } else if (DynamicGroup::cast(obj) != nullptr) {
             DynamicGroup *objGroup = DynamicGroup::cast(obj);
             str << QObject::tr("%1 filters").arg(objGroup->getFilter().size());
-        } else if (Group::cast(obj)!=NULL)   // just any group
+        } else if (Group::cast(obj)!=nullptr)   // just any group
         {
             Group *g=Group::cast(obj);
             str << QObject::tr("%1 objects").arg(g->size());
@@ -697,7 +696,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             str += n->getAddressPtr()->toString().c_str();
             str += "/";
             str += QString("%1").arg(n->getNetmaskPtr()->getLength());
-        } else if (ClusterGroup::cast(obj)!=NULL)
+        } else if (ClusterGroup::cast(obj)!=nullptr)
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             ClusterGroup *g = ClusterGroup::cast(obj);
@@ -713,10 +712,10 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                         arg(fw->getName().c_str()).arg(obj->getName().c_str());
                 }
             }
-        } else if (DynamicGroup::cast(obj) != 0) {
+        } else if (DynamicGroup::cast(obj) != nullptr) {
             DynamicGroup *objGroup = DynamicGroup::cast(obj);
             str += QObject::tr("%1 filters<br>\n").arg(objGroup->getFilter().size());
-        } else if (Group::cast(obj)!=NULL)   // just any group
+        } else if (Group::cast(obj)!=nullptr)   // just any group
         {
             if (showPath && !tooltip) str += "<b>Path: </b>" + path + "<br>\n";
             Group *g = Group::cast(obj);
@@ -734,7 +733,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
                 } else 
                 {
                     FWObject *o1=*i;
-                    if (FWReference::cast(o1)!=NULL)
+                    if (FWReference::cast(o1)!=nullptr)
                         o1=FWReference::cast(o1)->getPointer();
                     str += QString(o1->getTypeName().c_str())
                         + "  <b>" + QString::fromUtf8(o1->getName().c_str()) + "</b><br>\n";
@@ -792,10 +791,10 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             do
             {
                 parent_host = parent_host->getParent();
-                if (parent_host == NULL) break;
+                if (parent_host == nullptr) break;
                 short_path.push_front(QString::fromUtf8(parent_host->getName().c_str()));
             }
-            while (Host::cast(parent_host) == NULL);
+            while (Host::cast(parent_host) == nullptr);
 
             str += QString("<b>Parent: </b>%1<br>\n").arg(short_path.join("/"));
 
@@ -825,7 +824,7 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             }
 
             physAddress *paddr = intf->getPhysicalAddress();
-            if (paddr!=NULL) 
+            if (paddr!=nullptr) 
             {
                 str += "MAC: ";
                 str +=  paddr->getPhysAddress().c_str() ;
@@ -838,8 +837,8 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             if (intf->isBridgePort()) q=" bridge port";
             
             FWObject *p=obj;
-            while (p!=NULL && !Firewall::cast(p)) p=p->getParent();
-            if (p!=NULL && (p->getStr("platform")=="pix" || p->getStr("platform")=="fwsm"))
+            while (p!=nullptr && !Firewall::cast(p)) p=p->getParent();
+            if (p!=nullptr && (p->getStr("platform")=="pix" || p->getStr("platform")=="fwsm"))
             {
                 int sl = intf->getSecurityLevel();
                 q=q+QString("sec.level %1").arg(sl);
@@ -933,13 +932,13 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
 {
     QString par = "";
 
-    if (rule!=NULL)
+    if (rule!=nullptr)
     {
         QString act = getRuleAction(rule);
         
         FWObject *o = rule;
-        while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
-        if (o==NULL) return "";
+        while (o!=nullptr && Firewall::cast(o)==nullptr) o=o->getParent();
+        if (o==nullptr) return "";
 
         Firewall *f=Firewall::cast(o);
         string platform=f->getStr("platform");
@@ -1004,8 +1003,8 @@ QString FWObjectPropertiesFactory::getRuleActionProperties(Rule *rule)
 QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
 {
     FWObject *p=rule;
-    while (p!=NULL && !Firewall::cast(p)) p=p->getParent();
-    if (p==NULL)
+    while (p!=nullptr && !Firewall::cast(p)) p=p->getParent();
+    if (p==nullptr)
     {
         qDebug() << "FWObjectPropertiesFactory::getRuleActionPropertiesRich(): "
                  << "Can not locate parent firewall for the rule:";
@@ -1026,14 +1025,14 @@ QString FWObjectPropertiesFactory::getRuleActionPropertiesRich(Rule *rule)
 
 QString FWObjectPropertiesFactory::getPolicyRuleOptions(Rule *rule)
 {
-    if (rule == NULL) return "";
+    if (rule == nullptr) return "";
 
     QList<QPair<QString,QString> > options;
 
     PolicyRule *prule = PolicyRule::cast(rule);
     FWObject *o = rule;
-    while (o!=NULL && Firewall::cast(o)==NULL) o = o->getParent();
-    assert(o!=NULL);
+    while (o!=nullptr && Firewall::cast(o)==nullptr) o = o->getParent();
+    assert(o!=nullptr);
     Firewall *f = Firewall::cast(o);
     string platform = f->getStr("platform");
     FWOptions *ropt = rule->getOptionsObject();
@@ -1318,12 +1317,12 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
 {
     QString res;
     
-    if (rule!=NULL)
+    if (rule!=nullptr)
     {
         res="";
         FWObject *o = rule;
-        while (o!=NULL && Firewall::cast(o)==NULL) o=o->getParent();
-        assert(o!=NULL);
+        while (o!=nullptr && Firewall::cast(o)==nullptr) o=o->getParent();
+        assert(o!=nullptr);
         Firewall *f=Firewall::cast(o);
         string platform=f->getStr("platform");
         FWOptions *ropt = rule->getOptionsObject();
@@ -1335,6 +1334,8 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
         {
             if (ropt->getBool("ipt_use_snat_instead_of_masq"))
                 res += QObject::tr("use SNAT instead of MASQ<br>");
+            if (ropt->getBool("ipt_use_masq"))
+                res += QObject::tr("always use MASQUERADE<br>");
             if (ropt->getBool("ipt_nat_random"))      res += QObject::tr("random<br>");
             if (ropt->getBool("ipt_nat_persistent"))  res += QObject::tr("persistent<br>");
         }
@@ -1356,7 +1357,7 @@ QString FWObjectPropertiesFactory::getNATRuleOptions(Rule *rule)
 QString FWObjectPropertiesFactory::getInterfaceNameExamplesForHostOS(const QString &host_os)
 {
     Resources *os_resources = Resources::os_res[host_os.toStdString()];
-    if (os_resources == NULL) return "";
+    if (os_resources == nullptr) return "";
     string os_family = os_resources-> getResourceStr("/FWBuilderResources/Target/family");
 
     if (os_family == "linux24" ||

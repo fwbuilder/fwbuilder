@@ -25,8 +25,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/physAddress.h"
@@ -47,22 +45,22 @@ physAddress::physAddress() :  Address()
     setPhysAddress("00:00:00:00:00:00");
 }
 
-void physAddress::fromXML(xmlNodePtr root) throw(FWException)
+void physAddress::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-    assert(n!=NULL);
+    const char* n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address")));
+    assert(n!=nullptr);
     setStr("address", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
-xmlNodePtr physAddress::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr physAddress::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     return me;
 }

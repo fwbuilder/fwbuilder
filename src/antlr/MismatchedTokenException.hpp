@@ -81,7 +81,7 @@ public:
 		bool matchNot,
 		const ANTLR_USE_NAMESPACE(std)string& fileName_
 	);
-	~MismatchedTokenException() throw() {}
+	~MismatchedTokenException() {}
 
 	/**
 	 * Returns a clean error message (no line number/column information)

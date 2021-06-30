@@ -54,7 +54,7 @@ using namespace std;
 
 static unsigned long calculateDimension(FWObject* obj)
 {
-    if (Group::cast(obj)!=NULL)
+    if (Group::cast(obj)!=nullptr)
     {
         unsigned long res=0;
 	for (FWObject::iterator i1=obj->begin(); i1!=obj->end(); ++i1) 
@@ -68,7 +68,7 @@ static unsigned long calculateDimension(FWObject* obj)
     } else
     {
         Address *a=Address::cast(obj);
-        if (a!=NULL) 
+        if (a!=nullptr) 
         {
             if (a->isAny()) return LONG_MAX;
             return a->dimension();
@@ -79,12 +79,12 @@ static unsigned long calculateDimension(FWObject* obj)
 
 void Helper::expand_group_recursive(FWObject *o,list<FWObject*> &ol)
 {
-    if (Group::cast( o )!=NULL)
+    if (Group::cast( o )!=nullptr)
     {
         for (FWObject::iterator i2=o->begin(); i2!=o->end(); ++i2) 
         {
             FWObject *o1= *i2;
-            if (FWReference::cast(o1)!=NULL) o1=FWReference::cast(o1)->getPointer();
+            if (FWReference::cast(o1)!=nullptr) o1=FWReference::cast(o1)->getPointer();
             assert(o1);
 
             expand_group_recursive(o1,ol);
@@ -112,7 +112,7 @@ int  Helper::findInterfaceByAddress(Address *obj)
 int  Helper::findInterfaceByAddress(const InetAddr *addr,
                                     const InetAddr *nm)
 {
-    if (addr==NULL) return -1;
+    if (addr==nullptr) return -1;
 
 #if DEBUG_NETZONE_OPS
     cerr << "Helper::findInterfaceByAddress";
@@ -150,7 +150,7 @@ int  Helper::findInterfaceByAddress(const InetAddr *addr,
             cerr << endl;
 #endif
 
-            if (nm != NULL)
+            if (nm != nullptr)
             {
                 InetAddrMask interface_subnet(*(i_addr->getAddressPtr()),
                                               *(i_addr->getNetmaskPtr()));
@@ -212,7 +212,6 @@ int  Helper::findInterfaceByNetzone(Address *obj)
  *
  */
 int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
-    throw(FWException)
 {
 #if DEBUG_NETZONE_OPS
     cerr << "Helper::findInterfaceByNetzone";
@@ -255,7 +254,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
             {
                 Address *netzone_addr = Address::cast(*j);
                 
-                if (netzone_addr == NULL) continue;
+                if (netzone_addr == nullptr) continue;
 
 #if DEBUG_NETZONE_OPS
                 cerr << "Helper::findInterfaceByNetzone";
@@ -264,9 +263,9 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
                      << endl;
 #endif
 
-                // if addr==NULL, return id of the interfacce that has
+                // if addr==nullptr, return id of the interfacce that has
                 // net_zone=="any"
-                if (addr==NULL)
+                if (addr==nullptr)
                 {
                     if (netzone_addr->getId()==FWObjectDatabase::ANY_ADDRESS_ID)
                         return iface->getId(); // id of the interface
@@ -279,7 +278,7 @@ int  Helper::findInterfaceByNetzone(const InetAddr *addr, const InetAddr *nm)
 
                     const InetAddr *nz_addr = netzone_addr->getAddressPtr();
                     const InetAddr *nz_netm = netzone_addr->getNetmaskPtr();
-                    if (nm != NULL && nz_netm != NULL)
+                    if (nm != nullptr && nz_netm != nullptr)
                     {
                         InetAddrMask nz_subnet(*nz_addr, *nz_netm);
                         InetAddrMask other_subnet(*addr, *nm);
@@ -409,9 +408,9 @@ list<int> Helper::findInterfaceByNetzoneOrAll(RuleElement *re)
     } else
     {
         FWObject *fo = re->front();
-        if (FWReference::cast(fo)!=NULL) fo=FWReference::cast(fo)->getPointer();
+        if (FWReference::cast(fo)!=nullptr) fo=FWReference::cast(fo)->getPointer();
         Address  *a = Address::cast(fo);
-        if (a==NULL)
+        if (a==nullptr)
         {
             Rule *rule = Rule::cast(re->getParent());
             Q_UNUSED(rule);

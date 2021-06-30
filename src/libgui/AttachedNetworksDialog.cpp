@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -60,7 +59,7 @@ AttachedNetworksDialog::AttachedNetworksDialog(QWidget *parent) : BaseObjectDial
 {
     m_dialog = new Ui::AttachedNetworksDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -71,7 +70,7 @@ void AttachedNetworksDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     
     init=true;
 
@@ -129,8 +128,11 @@ void AttachedNetworksDialog::validate(bool *result)
     if (fwbdebug) qDebug() << "AttachedNetworksDialog::validate";
 
     *result = true;
+
+#ifndef NDEBUG
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
 
     if (!validateName(this, obj, m_dialog->obj_name->text()))
     {
@@ -141,11 +143,13 @@ void AttachedNetworksDialog::validate(bool *result)
 
 void AttachedNetworksDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
+#ifndef NDEBUG
     AttachedNetworks *s = dynamic_cast<AttachedNetworks*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
 
     string oldname = obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));

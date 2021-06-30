@@ -30,41 +30,34 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
 #include <map>
 
+#include <QObject>
 #include <QString>
 
 
-class ImporterTest : public CppUnit::TestFixture
+class ImporterTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
     libfwbuilder::QueueLogger *logger;
     int predictable_id_tracker;
     std::map<std::string, std::string> id_mapping;
-    
+
     void compareResults(libfwbuilder::QueueLogger* logger,
                         QString expected_result_file_name,
                         QString obtained_result_file_name);
     void compareFwbFiles(QString expected_result_file_name,
                          QString obtained_result_file_name);
 
-public:
-    void setUp();
+private slots:
+    void init();
     void IOSImporterTest();
     void IPTImporterTest();
     void IPTImporterNoNatTest();
     void IPTImporterParseVersionsTest();
-    
-    CPPUNIT_TEST_SUITE(ImporterTest);
-    CPPUNIT_TEST(IOSImporterTest);
-    CPPUNIT_TEST(IPTImporterTest);
-    CPPUNIT_TEST(IPTImporterNoNatTest);
-    CPPUNIT_TEST(IPTImporterParseVersionsTest);
-    
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

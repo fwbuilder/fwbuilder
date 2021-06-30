@@ -1,0 +1,5 @@
+NETWORKING=yes
+GATEWAY=""
+GATEWAYDEV=""
+HOSTNAME="secuwall-1"
+FORWARD_IPV4="yes"

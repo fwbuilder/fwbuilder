@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,13 +17,12 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-#include "../../config.h"
 
 #include "generatedScriptTestsPF.h"
 
@@ -35,6 +34,7 @@
 #include "fwbuilder/IPService.h"
 #include "fwbuilder/Constants.h"
 
+#include <QTest>
 #include <QApplication>
 #include <QStringList>
 #include <QFileInfo>
@@ -51,27 +51,28 @@ using namespace fwcompiler;
 class UpgradePredicate: public XMLTools::UpgradePredicate
 {
     public:
-    virtual bool operator()(const string&) const 
-    { 
+    virtual bool operator()(const string&) const
+    {
 	cout << "Data file has been created in the old version of Firewall Builder. Use fwbuilder GUI to convert it." << std::endl;
 	return false;
     }
 };
 
 
-void GeneratedScriptTest::setUp()
+void GeneratedScriptTest::init()
 {
     Configlet::setDebugging(true);
+    QDir().mkdir("tmp");
 }
 
-void GeneratedScriptTest::tearDown()
+void GeneratedScriptTest::cleanup()
 {
 }
 
 void GeneratedScriptTest::loadDataFile(const string &file_name)
 {
     /* load the data file */
-    UpgradePredicate upgrade_predicate; 
+    UpgradePredicate upgrade_predicate;
 
     objdb->setReadOnly( false );
     objdb->load(file_name, &upgrade_predicate, Constants::getDTDDirectory());
@@ -98,13 +99,13 @@ void GeneratedScriptTest::runCompiler(const std::string &test_file,
     CompilerDriver_pf driver(objdb);
 
     driver.setEmbeddedMode();
-    CPPUNIT_ASSERT_MESSAGE("CompilerDriver_pf initialization failed",
-                           driver.prepare(args) == true);
+    QVERIFY2(driver.prepare(args) == true,
+             "CompilerDriver_pf initialization failed");
     driver.compile();
     // compiler should have created file generate_file_name
     QFileInfo fi(generate_file_name.c_str());
-    CPPUNIT_ASSERT_MESSAGE("Generated file " + generate_file_name + " not found",
-                           fi.exists() == true);
+    QVERIFY2(fi.exists() == true,
+             std::string("Generated file " + generate_file_name + " not found").data());
 }
 
 // I can check only certain parts of the top comment. Can't
@@ -119,8 +120,8 @@ void GeneratedScriptTest::ManifestTest_1()
     runCompiler("test1.fwb", "pf1", "pf1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "pf1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * pf1.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * pf1.fw") != -1);
+    QVERIFY(res.indexOf("# files:   pf1.conf") != -1);
     delete objdb;
 }
 
@@ -136,8 +137,8 @@ void GeneratedScriptTest::ManifestTest_2()
     runCompiler("test1.fwb", "pf2", "ipf2-1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipf2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2-1.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * ipf2-1.fw") != -1);
+    QVERIFY(res.indexOf("# files:   ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -151,8 +152,8 @@ void GeneratedScriptTest::ManifestTest_3()
     runCompiler("test1.fwb", "pf2a", "ipf2-1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "ipf2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2-1.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * ipf2-1.fw") != -1);
+    QVERIFY(res.indexOf("# files:   ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -168,20 +169,22 @@ void GeneratedScriptTest::ManifestTest_4()
     runCompiler("test1.fwb", "pf2", "pf2-1.fw", option_o.toStdString());
     QString res = Configlet::findConfigletInFile("top_comment", "pf2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * " + option_o) != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * " + option_o) != -1);
+    QVERIFY(res.indexOf("# files:   ipf2-1.conf") != -1);
     delete objdb;
 }
 
 void GeneratedScriptTest::ManifestTest_5()
 {
+    QSKIP("This test was disabled in the original code");
+
     objdb = new FWObjectDatabase();
     QString option_o = QDir::currentPath() + "/pf2-1";
     runCompiler("test1.fwb", "pf2a", "pf2-1.fw", option_o.toStdString());
     QString res = Configlet::findConfigletInFile("top_comment", "pf2-1.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * ipf2-1.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * ipf2-1.fw") != -1);
+    QVERIFY(res.indexOf("# files:   ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -194,8 +197,8 @@ void GeneratedScriptTest::ManifestTest_6()
     runCompiler("test1.fwb", "pf3", "pf3.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "pf3.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * pf3.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf3.conf /etc/fw/pf3.conf") != -1);
+    QVERIFY(res.indexOf("# files: * pf3.fw") != -1);
+    QVERIFY(res.indexOf("# files:   pf3.conf /etc/fw/pf3.conf") != -1);
     delete objdb;
 }
 
@@ -208,8 +211,8 @@ void GeneratedScriptTest::ManifestTest_7()
     runCompiler("test1.fwb", "pf4", "pf4.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "pf4.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * pf4.fw /etc/path\\ with\\ space/pf4.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf4.conf") != -1);
+    QVERIFY(res.indexOf("# files: * pf4.fw /etc/path\\ with\\ space/pf4.fw") != -1);
+    QVERIFY(res.indexOf("# files:   pf4.conf") != -1);
     delete objdb;
 }
 
@@ -222,8 +225,8 @@ void GeneratedScriptTest::ManifestTest_8()
     runCompiler("test1.fwb", "pf5", "pf5.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "pf5.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * pf5.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf5.conf") != -1);
+    QVERIFY(res.indexOf("# files: * pf5.fw") != -1);
+    QVERIFY(res.indexOf("# files:   pf5.conf") != -1);
     delete objdb;
 }
 
@@ -236,8 +239,8 @@ void GeneratedScriptTest::ManifestTest_9()
     runCompiler("test1.fwb", "pf6", "/tmp/pf6.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "/tmp/pf6.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * /tmp/pf6.fw /etc/fw/pf6.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   /tmp/pf6.conf /etc/pf.conf") != -1);
+    QVERIFY(res.indexOf("# files: * /tmp/pf6.fw /etc/fw/pf6.fw") != -1);
+    QVERIFY(res.indexOf("# files:   /tmp/pf6.conf /etc/pf.conf") != -1);
     delete objdb;
 }
 
@@ -250,8 +253,8 @@ void GeneratedScriptTest::ManifestTest_10()
     runCompiler("test1.fwb", "pf7", "tmp/pf7.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "tmp/pf7.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * tmp/pf7.fw /etc/fw/pf7.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   tmp/pf.conf /etc/pf.conf") != -1);
+    QVERIFY(res.indexOf("# files: * tmp/pf7.fw /etc/fw/pf7.fw") != -1);
+    QVERIFY(res.indexOf("# files:   tmp/pf.conf /etc/pf.conf") != -1);
     delete objdb;
 }
 
@@ -273,9 +276,9 @@ void GeneratedScriptTest::ManifestTest_11()
     runCompiler("test1.fwb", "pf8", "tmp/pf8.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "tmp/pf8.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * tmp/pf8.fw /etc/fw/pf8.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   tmp/pf.conf /etc/pf.conf") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   tmp/pf-anchor_1.conf /etc/pf-anchor_1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * tmp/pf8.fw /etc/fw/pf8.fw") != -1);
+    QVERIFY(res.indexOf("# files:   tmp/pf.conf /etc/pf.conf") != -1);
+    QVERIFY(res.indexOf("# files:   tmp/pf-anchor_1.conf /etc/pf-anchor_1.conf") != -1);
     delete objdb;
 }
 
@@ -297,9 +300,9 @@ void GeneratedScriptTest::ManifestTest_12()
     runCompiler("test1.fwb", "pf9", "pf9.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "pf9.fw");
     // find manifest and compare
-    CPPUNIT_ASSERT(res.indexOf("# files: * pf9.fw /etc/pf9.fw") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf9.conf /etc/pf9.conf") != -1);
-    CPPUNIT_ASSERT(res.indexOf("# files:   pf9-anchor_1.conf /etc/pf9-anchor_1.conf") != -1);
+    QVERIFY(res.indexOf("# files: * pf9.fw /etc/pf9.fw") != -1);
+    QVERIFY(res.indexOf("# files:   pf9.conf /etc/pf9.conf") != -1);
+    QVERIFY(res.indexOf("# files:   pf9-anchor_1.conf /etc/pf9-anchor_1.conf") != -1);
     delete objdb;
 }
 
@@ -311,7 +314,7 @@ void GeneratedScriptTest::FwCommentTest()
     runCompiler("test1.fwb", "pf1", "pf1.fw");
     QString res = Configlet::findConfigletInFile("top_comment", "pf1.fw");
     // find string from the firewall object comment and compare
-    CPPUNIT_ASSERT(res.indexOf("# Firewall object test1 comment") != -1);
+    QVERIFY(res.indexOf("# Firewall object test1 comment") != -1);
     delete objdb;
 }
 
@@ -326,7 +329,7 @@ void GeneratedScriptTest::ActivationCommandsTest_1()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf1.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf1.conf") != -1);
     delete objdb;
 }
 
@@ -335,7 +338,7 @@ void GeneratedScriptTest::ActivationCommandsTest_2()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -344,7 +347,7 @@ void GeneratedScriptTest::ActivationCommandsTest_3()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -353,7 +356,7 @@ void GeneratedScriptTest::ActivationCommandsTest_4()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf2-1.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
 
@@ -362,7 +365,7 @@ void GeneratedScriptTest::ActivationCommandsTest_6()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf3.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/fw/pf3.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/fw/pf3.conf") != -1);
     delete objdb;
 }
 
@@ -377,7 +380,7 @@ void GeneratedScriptTest::ActivationCommandsTest_7()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf4.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf4.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf4.conf") != -1);
     delete objdb;
 }
 
@@ -386,7 +389,7 @@ void GeneratedScriptTest::ActivationCommandsTest_8()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf5.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf5.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf5.conf") != -1);
     delete objdb;
 }
 
@@ -395,7 +398,7 @@ void GeneratedScriptTest::ActivationCommandsTest_9()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "/tmp/pf6.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
     delete objdb;
 }
 
@@ -404,7 +407,7 @@ void GeneratedScriptTest::ActivationCommandsTest_10()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "tmp/pf7.fw")
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
     delete objdb;
 }
 
@@ -414,7 +417,7 @@ void GeneratedScriptTest::ActivationCommandsTest_11()
     QString res = Configlet::findConfigletInFile("activation", "tmp/pf8.fw", 1)
         .split(QRegExp("\\s+")).join(" ");
 
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
 
     delete objdb;
 }
@@ -424,7 +427,7 @@ void GeneratedScriptTest::ActivationCommandsTest_12()
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf9.fw", 1)
         .split(QRegExp("\\s+")).join(" ");
-    CPPUNIT_ASSERT(res.indexOf("$PFCTL -f /etc/pf9.conf") != -1);
+    QVERIFY(res.indexOf("$PFCTL -f /etc/pf9.conf") != -1);
 
     delete objdb;
 }

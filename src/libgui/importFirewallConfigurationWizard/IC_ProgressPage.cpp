@@ -48,7 +48,7 @@ IC_ProgressPage::IC_ProgressPage(QWidget *parent) : QWizardPage(parent)
 {
     m_dialog = new Ui::IC_ProgressPage_q;
     m_dialog->setupUi(this);
-    importer = NULL;
+    importer = nullptr;
 
     errors_count = 0;
     warnings_count = 0;
@@ -76,7 +76,7 @@ IC_ProgressPage::~IC_ProgressPage()
 {
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(importerFinished()));
-    if (importer != NULL && importer->isRunning()) importer->stop();
+    if (importer != nullptr && importer->isRunning()) importer->stop();
 }
 
 int IC_ProgressPage::nextId() const
@@ -103,20 +103,20 @@ bool IC_ProgressPage::validatePage()
                  << "importer=" << importer
                  << "isRunning=" << ((importer) ? importer->isRunning() : 0);
 
-    if (importer != NULL && importer->isRunning()) return false;
+    if (importer != nullptr && importer->isRunning()) return false;
     return true;
 }
 
 bool IC_ProgressPage::isComplete() const
 {
-    if (importer != NULL && importer->isRunning()) return false;
+    if (importer != nullptr && importer->isRunning()) return false;
     return true;
 }
 
 void IC_ProgressPage::importerDestroyed(QObject *obj)
 {
     if (fwbdebug_ic) qDebug() << "IC_ProgressPage::importerDestroyed() obj=" << obj;
-    if (obj == importer) importer = NULL;
+    if (obj == importer) importer = nullptr;
 }
 
 void IC_ProgressPage::initializePage()
@@ -124,7 +124,7 @@ void IC_ProgressPage::initializePage()
     if (fwbdebug_ic)
         qDebug() << "IC_ProgressPage::initializePage()";
 
-    if (importer != NULL && importer->isRunning())
+    if (importer != nullptr && importer->isRunning())
     {
         if (fwbdebug_ic) qDebug() << "importer is still runnig; stopping";
         importer->stop();
@@ -178,8 +178,8 @@ void IC_ProgressPage::cleanupPage()
     if (fwbdebug_ic) qDebug() << "IC_ProgressPage::cleanupPage()";
     disconnect(this, SLOT(logLine(QString)));
     disconnect(this, SLOT(importerFinished()));
-    if (importer != NULL && importer->isRunning()) importer->stop();
-//    if (importer != NULL && importer->isRunning()) importer->wait();
+    if (importer != nullptr && importer->isRunning()) importer->stop();
+//    if (importer != nullptr && importer->isRunning()) importer->wait();
 }
 
 void IC_ProgressPage::importerFinished()
@@ -195,7 +195,7 @@ void IC_ProgressPage::importerFinished()
 
     QString platform = wz->platform;
 
-    if (fw) // fw can be NULL if import was uncussessful
+    if (fw) // fw can be nullptr if import was uncussessful
     {
         QString fwName = field("firewallName").toString();
         fw->setName(fwName.toUtf8().constData());
@@ -219,7 +219,7 @@ void IC_ProgressPage::importerFinished()
 
     } else
     {
-        // fw == NULL
+        // fw == nullptr
         // normally, wizard would have one more page, but since fw was not
         // created, this page should be the last
         setFinalPage(true);
@@ -309,14 +309,10 @@ void IC_ProgressPage::saveLog()
             }
             QTextStream strm(&f);
             QString txt = m_dialog->importLog->toPlainText();
-            strm << txt << endl;
+            strm << txt << '\n';
             if (fwbdebug)
             {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                qDebug("%s",txt.toAscii().constData());
-#else
                 qDebug("%s",txt.toLatin1().constData());
-#endif
                 qDebug("--------------------------------");
             }
             f.close();

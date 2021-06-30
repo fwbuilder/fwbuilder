@@ -38,8 +38,6 @@
 
  */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <assert.h>
 #include <iostream>
@@ -63,12 +61,12 @@ IPv4::~IPv4()
 {
 }
 
-void IPv4::fromXML(xmlNodePtr root) throw(FWException)
+void IPv4::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
-    const char* n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-    assert(n!=NULL);
+    const char* n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address")));
+    assert(n!=nullptr);
 
     // strip whitespace and other non-numeric characters at the beginng and end
     string addr(n);
@@ -82,10 +80,10 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
         addr = "0.0.0.0";
     }
     setAddress(InetAddr(addr));
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("netmask")));
+    assert(n!=nullptr);
 
     string netm(n);
     first = netm.find_first_of("0123456789");
@@ -100,25 +98,25 @@ void IPv4::fromXML(xmlNodePtr root) throw(FWException)
 
     if (!netm.empty()) setNetmask(InetAddr(netm));
     else               setNetmask(InetAddr(0));
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
-xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr IPv4::toXML(xmlNodePtr xml_parent_node)
 {
     if (getName().empty()) setName(getTypeName());
 
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
     
     xmlNewProp(me, 
-               TOXMLCAST("address"),
-               STRTOXMLCAST(inet_addr_mask->getAddressPtr()->toString()));
+               XMLTools::ToXmlCast("address"),
+               XMLTools::StrToXmlCast(inet_addr_mask->getAddressPtr()->toString()));
     
     xmlNewProp(me, 
-               TOXMLCAST("netmask"),
-               STRTOXMLCAST(inet_addr_mask->getNetmaskPtr()->toString()));
+               XMLTools::ToXmlCast("netmask"),
+               XMLTools::StrToXmlCast(inet_addr_mask->getNetmaskPtr()->toString()));
     
     return me;
 }

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "MangleTableCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
@@ -52,7 +51,7 @@ int MangleTableCompiler_ipt::prolog()
 
 bool MangleTableCompiler_ipt::keepMangleTableRules::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     FWOptions *ruleopt = rule->getOptionsObject();
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 

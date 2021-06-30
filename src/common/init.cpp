@@ -1,6 +1,5 @@
 
 
-#include "../../config.h"
 
 #include <string>
 #include <assert.h>
@@ -9,7 +8,6 @@
 #include <QString>
 #include <QtDebug>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"
@@ -46,20 +44,20 @@ using namespace libfwbuilder;
 
 void init(char * const*)
 {
-    appRootDir = string(PREFIX) + FS_SEPARATOR + "bin";
+    appRootDir = string(PREFIX) + "/" + "bin";
 
 /* On Unix RES_DIR and LIBFWBUILDER_TEMPLATE_DIR are absolute paths */
 
     libfwbuilder::init();
 
 /* need argv0 for built-in installer on unix and mac */
-    argv0 = appRootDir + FS_SEPARATOR + "fwbuilder";
+    argv0 = appRootDir + "/" + "fwbuilder";
 
 /* default directory where the user may want to save files */
     userDataDir = string(getenv("HOME"));
 
     char *lname = getenv("LOGNAME");
-    if (lname!=NULL)
+    if (lname!=nullptr)
         user_name = QString(lname);
     else
     {

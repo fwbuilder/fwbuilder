@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 #include "global.h"
 
 #include <QWidget>
@@ -52,7 +51,7 @@ SNMPCrawlerThread::SNMPCrawlerThread(QWidget *ui,
 {
     this->ui = ui;
 
-    stop_flag = new SyncFlag();
+    stop_flag = new std::atomic<bool>();
 
     QString seedHostAddress = getAddrByName(seedHostName, AF_INET);
     InetAddr seedHostInetAddr = InetAddr( seedHostAddress.toLatin1().constData());
@@ -68,7 +67,7 @@ SNMPCrawlerThread::SNMPCrawlerThread(QWidget *ui,
             1000000L * snmpTimeout,
             0,
             0,
-            (include_net->size() > 0) ? include_net : NULL);
+            (include_net->size() > 0) ? include_net : nullptr);
 
 }
 
@@ -94,7 +93,7 @@ void SNMPCrawlerThread::run()
 
 void SNMPCrawlerThread::stop()
 {
-    stop_flag->set(true);
+    stop_flag->store(true);
 }
 
 map<InetAddr, CrawlerFind>  SNMPCrawlerThread::getAllIPs()

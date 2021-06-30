@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -56,7 +55,7 @@ UDPServiceDialog::UDPServiceDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::UDPServiceDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -70,7 +69,7 @@ void UDPServiceDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     UDPService *s = dynamic_cast<UDPService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -112,7 +111,7 @@ void UDPServiceDialog::validate(bool *res)
 
 void UDPServiceDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     string oldname = obj->getName();

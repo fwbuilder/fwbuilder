@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "platforms.h"
@@ -77,7 +76,7 @@ void FWWindow::filePrint()
     bool  newPageForSection = false;
     int   tableResolution = 100;
 
-    FWObject *firewall_to_print = NULL;
+    FWObject *firewall_to_print = nullptr;
     FWObject *current_ruleset = activeProject()->getCurrentRuleSet();
     if (current_ruleset)
         firewall_to_print = current_ruleset->getParent();
@@ -179,7 +178,7 @@ void FWWindow::filePrint()
 
 #if defined(Q_OS_MACX)
             printerStream pr(printer, table_scaling, margin,
-                             print_header, headerText, NULL);
+                             print_header, headerText, nullptr);
 #else
             printerStream pr(printer, table_scaling, margin,
                              print_header, headerText, ppd);
@@ -215,7 +214,7 @@ void FWWindow::filePrint()
                 QMessageBox::information(
                     this,"Firewall Builder",
                     tr("Printing aborted"),
-                    tr("&Continue"), QString::null,QString::null,
+                    tr("&Continue"), QString(),QString(),
                     0, 1 );
             } else
                 showStatusBarMessage(tr("Printing completed"));
@@ -230,7 +229,7 @@ void FWWindow::filePrint()
     }
 
     delete psd;
-    psd = NULL;
+    psd = nullptr;
 }
 
 void FWWindow::tableResolutionSettingChanged(int )
@@ -289,14 +288,9 @@ void FWWindow::printFirewallFromFile(QString fileName,
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,
-                                            firewallName.toAscii().data());
-#else
     FWObject* obj = objdb->findObjectByName(Firewall::TYPENAME,
                                             firewallName.toLatin1().data());
-#endif
-    if (obj!=NULL)
+    if (obj!=nullptr)
     {
         int pageWidth = 0;
         int pageHeight = 0;
@@ -337,7 +331,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
 
         QString headerText = fileName; //mw->printHeader();
         printerStream pr(printer, table_scaling,
-                         margin, print_header, headerText, NULL);
+                         margin, print_header, headerText, nullptr);
 
         pr.setFromTo(fromPage,toPage);
 
@@ -345,7 +339,7 @@ void FWWindow::printFirewallFromFile(QString fileName,
 
         PrintingController prcontr(&pr);
 
-        prcontr.printFirewall(obj, NULL);
+        prcontr.printFirewall(obj, nullptr);
 
         if (print_legend) prcontr.printLegend(newPageForSection);
         if (print_objects) prcontr.printObjects(obj, newPageForSection);

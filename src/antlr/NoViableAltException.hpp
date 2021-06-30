@@ -25,7 +25,7 @@ public:
 	NoViableAltException(RefAST t);
 	NoViableAltException(RefToken t,const ANTLR_USE_NAMESPACE(std)string& fileName_);
 
-	~NoViableAltException() throw() {}
+	~NoViableAltException() {}
 
 	/**
 	 * Returns a clean error message (no line number/column information)

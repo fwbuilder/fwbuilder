@@ -63,7 +63,7 @@ string OSConfigurator_pix_os::_printPolicyMapTypeInspect()
     string version = fw->getStr("version");
     string vers = "version_" + version;
     FWOptions *options = fw->getOptionsObject();
-    assert(options!=NULL);
+    assert(options!=nullptr);
 
     // first, generate commands for ip-options
 
@@ -76,12 +76,7 @@ string OSConfigurator_pix_os::_printPolicyMapTypeInspect()
 
     foreach (QString fixup_xml_element, allowed_fixups)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        string f = options->getStr(fixup_xml_element.toAscii().constData());
-#else
         string f = options->getStr(fixup_xml_element.toLatin1().constData());
-#endif
-
 
         if (!f.empty())
         {
@@ -97,11 +92,7 @@ string OSConfigurator_pix_os::_printPolicyMapTypeInspect()
 
             if (fixup_name.startsWith("ip_options") && status != FIXUP_SKIP)
             {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                InspectionClassMap cm(fixup_name.toAscii().constData(),
-#else
                 InspectionClassMap cm(fixup_name.toLatin1().constData(),
-#endif
                                       status, p1, p2, an, av);
                 ip_options_matches.push_back(cm);
             }

@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
@@ -82,7 +81,7 @@ RuleOptionsDialog::RuleOptionsDialog(QWidget *parent) :
 
     connectSignalsOfAllWidgetsToSlotChange();
 
-    firewall = NULL;
+    firewall = nullptr;
     init=false;
 }
 
@@ -328,15 +327,9 @@ void RuleOptionsDialog::loadFWObject(FWObject *o)
     if (platform=="pix" || platform=="fwsm")
     {
         string vers = "version_" + version;
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (Resources::platform_res[platform.toAscii().constData()]->getResourceBool(
-              "/FWBuilderResources/Target/options/" +
-              vers + "/pix_rule_syslog_settings"))
-#else
         if (Resources::platform_res[platform.toLatin1().constData()]->getResourceBool(
               "/FWBuilderResources/Target/options/" +
               vers + "/pix_rule_syslog_settings"))
-#endif
         {
             m_dialog->pix_disable_rule_log->setEnabled(true);
             m_dialog->pix_logLevel->setEnabled(true);
@@ -412,7 +405,7 @@ void RuleOptionsDialog::validate(bool *res)
 void RuleOptionsDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdRuleChangeOptions(m_project, obj));
     // new_state  is a copy of the rule object
     FWObject* new_state = cmd->getNewState();
     FWOptions* new_rule_options = Rule::cast(new_state)->getOptionsObject();
@@ -431,8 +424,8 @@ void RuleOptionsDialog::applyChanges()
         if (platform=="iptables")
         {
             FWObject *tag_object = m_dialog->iptTagDropArea->getObject();
-            // if tag_object==NULL, setTagObject clears setting in the rule
-            policy_rule->setTagging(tag_object != NULL);
+            // if tag_object==nullptr, setTagObject clears setting in the rule
+            policy_rule->setTagging(tag_object != nullptr);
             policy_rule->setTagObject(tag_object);
 
             policy_rule->setClassification(
@@ -446,8 +439,8 @@ void RuleOptionsDialog::applyChanges()
         if (platform=="pf")
         {
             FWObject *tag_object = m_dialog->pfTagDropArea->getObject();
-            // if tag_object==NULL, setTagObject clears setting in the rule
-            policy_rule->setTagging(tag_object != NULL);
+            // if tag_object==nullptr, setTagObject clears setting in the rule
+            policy_rule->setTagging(tag_object != nullptr);
             policy_rule->setTagObject(tag_object);
 
             policy_rule->setClassification(

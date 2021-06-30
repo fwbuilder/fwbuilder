@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -58,7 +57,7 @@ HostDialog::HostDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::HostDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -72,12 +71,14 @@ void HostDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Host *s = dynamic_cast<Host*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init = true;
 
+#ifndef NDEBUG
     Management *mgmt=s->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
+#endif
 
     FWOptions  *opt =s->getOptionsObject();
 
@@ -136,20 +137,22 @@ void HostDialog::applyChanges()
         blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
-                                  tr("&Yes"), tr("&No"), QString::null,
+                                  tr("&Yes"), tr("&No"), QString(),
                                   0, 1 )==0 );
         blockSignals(false);
     }
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));
     FWObject* new_state = cmd->getNewState();
 
     Host *s = dynamic_cast<Host*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
+#ifndef NDEBUG
     Management *mgmt = s->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
+#endif
 
     FWOptions  *opt =s->getOptionsObject();
 

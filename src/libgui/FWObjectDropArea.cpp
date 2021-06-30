@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
@@ -63,18 +62,14 @@ FWObjectDropArea::~FWObjectDropArea()
     delete m_objectDropArea;
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WFlags f):
-#else
 FWObjectDropArea::FWObjectDropArea(QWidget*p, const char * n, Qt::WindowFlags f):
-#endif
     QWidget(p)
 {
     setObjectName( QString(n) );
     setWindowFlags( f );
     m_objectDropArea = new Ui::FWObjectDropArea_q;
     m_objectDropArea->setupUi(this);
-    object=NULL;
+    object=nullptr;
     helperText = tr("Drop object here.");
 
 }
@@ -98,13 +93,13 @@ void FWObjectDropArea::paintEvent(QPaintEvent *)
     tp.drawLine(0,h-1,0,0);
     tp.fillRect(1, 1, w-2, h-2, Qt::white);
 
-    if (object!=NULL)
+    if (object!=nullptr)
     {
 
         QPixmap pm;
         QString icn_file = (":/Icons/"+object->getTypeName()+"/icon").c_str();
 
-        if ( ! QPixmapCache::find( icn_file, pm) )
+        if ( ! QPixmapCache::find( icn_file, &pm) )
         {
             pm.load( icn_file );
             QPixmapCache::insert( icn_file, pm);
@@ -152,7 +147,7 @@ void FWObjectDropArea::insertObject(libfwbuilder::FWObject *o)
 
 void FWObjectDropArea::deleteObject()
 {
-    object=NULL;
+    object=nullptr;
     update();
     emit objectDeleted();
 }
@@ -171,9 +166,9 @@ void FWObjectDropArea::contextMenuEvent (QContextMenuEvent * e)
     popup->addSeparator();
     QAction *dlAct = popup->addAction( tr("Delete") ,   this , SLOT( deleteObject( )) );
 
-    sitAct->setEnabled(object!=NULL);
-    editAct->setEnabled(object!=NULL);
-    dlAct->setEnabled(object!=NULL);
+    sitAct->setEnabled(object!=nullptr);
+    editAct->setEnabled(object!=nullptr);
+    dlAct->setEnabled(object!=nullptr);
     psAct->setEnabled(FWObjectClipboard::obj_clipboard->size()>0);
 
     popup->exec(e->globalPos ());
@@ -244,7 +239,7 @@ void FWObjectDropArea::pasteObject()
 void FWObjectDropArea::showInTreeObject()
 {
     ProjectPanel * pp = mw->activeProject();
-    if (pp!=NULL)
+    if (pp!=nullptr)
     {
         QCoreApplication::postEvent(
             pp, new showObjectInTreeEvent(pp->getFileName(), object->getId()));
@@ -254,9 +249,9 @@ void FWObjectDropArea::showInTreeObject()
 void FWObjectDropArea::editObject()
 {
     ProjectPanel * pp = mw->activeProject();
-    if (pp!=NULL)
+    if (pp!=nullptr)
     {
-        if (RuleSet::cast(object)!=NULL)
+        if (RuleSet::cast(object)!=nullptr)
             QCoreApplication::postEvent(
                 pp, new openRulesetEvent(pp->getFileName(), object->getId()));
 
@@ -269,5 +264,5 @@ void FWObjectDropArea::editObject()
 
 void FWObjectDropArea::mouseDoubleClickEvent(QMouseEvent *)
 {
-    if (object!=NULL) editObject();
+    if (object!=nullptr) editObject();
 }

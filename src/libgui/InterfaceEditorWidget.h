@@ -26,7 +26,6 @@
 #ifndef INTERFACEEDITORWIDGET_H
 #define INTERFACEEDITORWIDGET_H
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -35,15 +34,9 @@
 #include "InterfacesTabWidget.h"
 #include "FWBSettings.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QtGui/QWidget>
-#   include <QtGui/QTabWidget>
-#   include <QtGui/QToolButton>
-#else
-#   include <QtWidgets/QWidget>
-#   include <QtWidgets/QTabWidget>
-#   include <QtWidgets/QToolButton>
-#endif
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QToolButton>
 
 #include <QTableWidgetItem>
 #include <QMap>

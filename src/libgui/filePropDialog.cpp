@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -133,11 +132,9 @@ void filePropDialog::printRevHistory()
 
     QPrintDialog printDialog(printer, this);
 
-#if (QT_VERSION > 0x030200)
     printDialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
     printDialog.setPrintRange(QAbstractPrintDialog::AllPages);
     printDialog.setMinMax(1,9999);
-#endif
 
     printer->setResolution(resolution);
     printer->setFullPage(fullPage);
@@ -153,7 +150,7 @@ void filePropDialog::printRevHistory()
 	QString headerText = "Revision History:";
 
 #if defined(Q_OS_MACX)
-	printerStream pr(printer,1.0,margin,printHeader,headerText,NULL);
+	printerStream pr(printer,1.0,margin,printHeader,headerText,nullptr);
 #else
 	printerStream pr(printer,1.0,margin,printHeader,headerText,ppd);
 	ppd->show();

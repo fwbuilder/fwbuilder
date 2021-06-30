@@ -49,7 +49,7 @@ void splitByNetworkZonesForRE::AddToInterface(
     RuleElement *new_re;
 
     new_rule = rules[interface_id];
-    if (new_rule==NULL) 
+    if (new_rule==nullptr) 
     {
         new_rule = Rule::cast(compiler->dbcopy->create(rule->getTypeName()));
         compiler->temp_ruleset->add(new_rule);
@@ -66,7 +66,7 @@ void splitByNetworkZonesForRE::AddToInterface(
 bool splitByNetworkZonesForRE::processNext()
 {
     Helper helper(compiler);
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
 
     if (re->size()==1) 
@@ -81,7 +81,7 @@ bool splitByNetworkZonesForRE::processNext()
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
         Address *a = Address::cast(FWReference::getObject(*i1));
-        assert(a!=NULL);
+        assert(a!=nullptr);
 
         try
         {

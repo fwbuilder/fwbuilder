@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include <QtDebug>
@@ -444,34 +443,34 @@ bool FWBTree::validateForInsertion(FWObject *target, FWObject *obj, QString &err
     Firewall *fw = Firewall::cast(ta);
     Interface *intf = Interface::cast(ta);
     FWObject *parent_fw = ta;
-    while (parent_fw && Firewall::cast(parent_fw)==NULL)
+    while (parent_fw && Firewall::cast(parent_fw)==nullptr)
         parent_fw = parent_fw->getParent();
 
     if (parent_fw && Interface::isA(obj))
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent_fw));
 
         return int_prop->validateInterface(ta, obj, false, err);
     }
 
-    if (fw!=NULL)
+    if (fw!=nullptr)
     {
         // inserting some object into firewall or cluster
         if (!fw->validateChild(obj)) return false;
         return true;
     }
 
-    if (hst!=NULL)  return (hst->validateChild(obj));
+    if (hst!=nullptr)  return (hst->validateChild(obj));
 
-    if (intf!=NULL)
+    if (intf!=nullptr)
     {
         if (!intf->validateChild(obj)) return false;
         return true;
     }
 
     Group *grp=Group::cast(ta);
-    if (grp!=NULL) return grp->validateChild(obj);
+    if (grp!=nullptr) return grp->validateChild(obj);
 
     return false;
 }
@@ -498,26 +497,16 @@ FWObject* FWBTree::getStandardSlotForObject(FWObject* lib,const QString &objType
     QString level1 = path.section('/',0,0);
     QString level2 = path.section('/',1,1);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    FWObject::iterator i=std::find_if(lib->begin(),lib->end(),
-        FWObjectNameEQPredicate(static_cast<const char*>(level1.toAscii())));
-#else
     FWObject::iterator i=std::find_if(lib->begin(),lib->end(),
         FWObjectNameEQPredicate(static_cast<const char*>(level1.toLatin1())));
-#endif
-    if (i==lib->end()) return NULL;
+    if (i==lib->end()) return nullptr;
     FWObject *l1obj = *i;
     if (level2.isEmpty()) return l1obj;
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    i=std::find_if(l1obj->begin(),l1obj->end(),
-        FWObjectNameEQPredicate(static_cast<const char*>(level2.toAscii())));
-#else
     i=std::find_if(l1obj->begin(),l1obj->end(),
         FWObjectNameEQPredicate(static_cast<const char*>(level2.toLatin1())));
-#endif
 
-    if (i==l1obj->end()) return NULL;
+    if (i==l1obj->end()) return nullptr;
     return (*i);
 }
 

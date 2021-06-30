@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -152,7 +151,7 @@ QString CompilerDriver_pf::assembleManifest(Cluster*, Firewall* , bool )
         QString master_file_marker = (idx==0) ? "* " : "  ";
         QString local_file_name = file_names[idx];
         QString remote_file_name = remote_file_names[idx];
-        script << MANIFEST_MARKER << master_file_marker
+        script << manifestMarker() << master_file_marker
                << escapeFileName(local_file_name);
         if (!remote_file_name.isEmpty() && remote_file_name != local_file_name)
             script << " " << escapeFileName(remote_file_name);
@@ -207,8 +206,8 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                                const std::string &firewall_id,
                                const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
@@ -243,7 +242,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 /*
  * Process firewall options, build OS network configuration script
  */
-        std::auto_ptr<OSConfigurator_bsd> oscnf;
+        std::unique_ptr<OSConfigurator_bsd> oscnf;
         string platform = fw->getStr("platform");
         string fw_version = fw->getStr("version");
         string host_os = fw->getStr("host_OS");
@@ -251,18 +250,18 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             Resources::getResourceStr("/FWBuilderResources/Target/family");
 
         if (host_os == "solaris")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_solaris(
                                                           objdb , fw, false));
 
         if (host_os == "openbsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_openbsd(
                                                           objdb , fw, false));
     
         if (host_os == "freebsd")
-            oscnf = std::auto_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(
+            oscnf = std::unique_ptr<OSConfigurator_bsd>(new OSConfigurator_freebsd(
                                                           objdb , fw, false));
 
-        if (oscnf.get()==NULL)
+        if (oscnf.get()==nullptr)
         {
             abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
             return "";
@@ -347,7 +346,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
                 QString err("The name of the %1 ruleset %2"
                             " ends with '/*', assuming it is externally"
                             " controlled and skipping it.");
-                warning(fw, rs, NULL,
+                warning(fw, rs, nullptr,
                         err.arg(rs->getTypeName().c_str())
                         .arg(ruleset_name).toStdString());
                 rs->setBool(".skip_ruleset", true);
@@ -610,17 +609,17 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
 
         }
 
-        std::auto_ptr<RoutingCompiler> routing_compiler;
+        std::unique_ptr<RoutingCompiler> routing_compiler;
 
         if (host_os == "openbsd")
-            routing_compiler = std::auto_ptr<RoutingCompiler>(
+            routing_compiler = std::unique_ptr<RoutingCompiler>(
                 new RoutingCompiler_openbsd(objdb, fw, false, oscnf.get()));
 
         if (host_os == "freebsd")
-            routing_compiler = std::auto_ptr<RoutingCompiler>(
+            routing_compiler = std::unique_ptr<RoutingCompiler>(
                 new RoutingCompiler_freebsd(objdb, fw, false, oscnf.get()));
 
-        if (routing_compiler.get() == NULL)
+        if (routing_compiler.get() == nullptr)
         {
             abort("Unrecognized host OS " + host_os + "  (family " + family + ")");
             return "";
@@ -696,9 +695,9 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             if (ruleset_name == "__main__") continue;
             QString remote_file_name = it.value();
             ostringstream *ostr = generated_scripts["__main__"];
-            // note that ostr can be NULL if the firewall we are
+            // note that ostr can be nullptr if the firewall we are
             // trying to compile has no top-level rule sets
-            if (ostr == NULL) continue;
+            if (ostr == nullptr) continue;
             *ostr << QString("load anchor %1 from \"%2\"")
                 .arg(ruleset_name).arg(remote_file_name).toUtf8().constData()
                                              << endl;
@@ -717,7 +716,7 @@ QString CompilerDriver_pf::run(const std::string &cluster_id,
             QString file_name = rulesets_to_file_names[ruleset_name]; // file_names[idx];
             ostringstream *strm = fi->second;
 
-            if (strm==NULL) continue;
+            if (strm==nullptr) continue;
 
             if (ruleset_name.contains("/*")) continue;
 

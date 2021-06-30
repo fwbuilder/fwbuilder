@@ -26,11 +26,10 @@
 #ifndef _OSCONFIGURATOR_LINUX24_HH
 #define _OSCONFIGURATOR_LINUX24_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 
-#include "OSData.h"
+#include "OSData_ipt.h"
  
 class QString;
 class QStringList;
@@ -46,7 +45,7 @@ namespace fwcompiler {
 
     class OSConfigurator_linux24 : public OSConfigurator {
 
-        OSData os_data;
+        OSData_ipt os_data;
         Configlet *command_wrappers;
         bool using_ipset;
         
@@ -61,7 +60,7 @@ namespace fwcompiler {
         std::string getInterfaceVarName(libfwbuilder::FWObject *iface,
                                         bool v6=false);
 
-        std::string getPathForATool(const std::string &os_variant, OSData::tools tool_name);
+        std::string getPathForATool(const std::string &os_variant, OSData_ipt::tools tool_name);
         void setConfigletMacroForOptionStr(const std::string &opt,
                                            Configlet *c,
                                            const char *option_name);

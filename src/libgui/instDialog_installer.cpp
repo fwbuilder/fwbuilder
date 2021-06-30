@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -99,7 +98,7 @@ bool instDialog::runInstaller(Firewall *fw, bool installing_many_firewalls)
         currentProgressBar->setFormat("%v/%m");
 
         QTreeWidgetItem* item = opListMapping[fw->getId()];
-        assert(item!=NULL);
+        assert(item!=nullptr);
 
         currentFWLabel->setText(QString::fromUtf8(fw->getName().c_str()));
         m_dialog->fwWorkList->scrollToItem(item);
@@ -114,7 +113,7 @@ bool instDialog::runInstaller(Firewall *fw, bool installing_many_firewalls)
         if (fwbdebug)
             qDebug() << "instDialog::runInstaller:" << " cnf.user=" << cnf.user;
 
-        if (installer!=NULL)
+        if (installer!=nullptr)
             delete installer;
 
         if (isCiscoFamily())
@@ -162,13 +161,13 @@ void instDialog::stopInstall()
     proc.terminate(); // try to close proc.
     QTimer::singleShot(1000, &proc, SLOT(kill())); //if it doesn't respond, kill it
 
-    if (installer != NULL)
+    if (installer != nullptr)
     {
         if (fwbdebug)
             qDebug() << "instDialog::stopInstall  killing installer";
         installer->terminate();
         delete installer;
-        installer = NULL;
+        installer = nullptr;
     }
 
     // to terminate whole install sequence rather than just current

@@ -35,14 +35,14 @@
 #include "fwbuilder/Library.h"
 #include "FWBTree.h"
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <QObject>
 
-
-class UsageResolverTest : public CppUnit::TestFixture
+class UsageResolverTest : public QObject
 {
+    Q_OBJECT
+
     void addToLib(libfwbuilder::FWObject* obj);
 
-public:
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
     libfwbuilder::IPv4 *addr1;
@@ -50,19 +50,13 @@ public:
     libfwbuilder::IPv4 *addr3;
     libfwbuilder::PolicyRule *r1, *r2, *r3, *r4;
 
-    void setUp();
+private slots:
+    void init();
 
     void findWhereObjectIsUsed();
     void findFirewallsForObject();
     void humanizeSearchResults();
 
-
-    CPPUNIT_TEST_SUITE(UsageResolverTest);
-    CPPUNIT_TEST(findWhereObjectIsUsed);
-    CPPUNIT_TEST(findFirewallsForObject);
-    CPPUNIT_TEST(humanizeSearchResults);
-    CPPUNIT_TEST_SUITE_END();
-    
 };
 
 #endif // FWOBJECTDATABASETEST_H

@@ -1,4 +1,3 @@
-
 /* 
 
                           Firewall Builder
@@ -61,15 +60,14 @@ class RuleSet : public FWObject
 
     DECLARE_DISPATCH_METHODS(RuleSet);
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr parent);
 
     virtual FWOptions* getOptionsObject();
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                       bool preserve_id = true)
-        throw(FWException);
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+                                       bool preserve_id = true);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
 
     // Both ipv4 and ipv6 variables can be set to true, which means
     // this is "dual" rule set. When both are false, this is ipv4-only
@@ -134,7 +132,7 @@ class RuleSet : public FWObject
         void operator()(FWObject *o)
         {
             RuleSet *rs = RuleSet::cast(o);
-            if (rs != NULL) rs->assignUniqueRuleIds();
+            if (rs != nullptr) rs->assignUniqueRuleIds();
         }
     };
 

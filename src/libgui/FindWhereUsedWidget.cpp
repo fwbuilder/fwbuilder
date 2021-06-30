@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
@@ -122,13 +121,9 @@ void FindWhereUsedWidget::setShowObject(bool fl)
  */
 void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item, int)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
-#else
     FWObject *container = (FWObject*)(item->data(1, Qt::UserRole).value<void*>());
-#endif
 
-    if (flShowObject && container!=NULL)
+    if (flShowObject && container!=nullptr)
     {
         showObject(container);
     }
@@ -144,12 +139,8 @@ void FindWhereUsedWidget::itemActivated(QTreeWidgetItem* item, int)
  */
 void FindWhereUsedWidget::itemClicked(QTreeWidgetItem* item, int)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-FWObject *container = (FWObject*)(qVariantValue<void*>(item->data(1, Qt::UserRole)));
-#else
     FWObject *container = (FWObject*)(item->data(1, Qt::UserRole).value<void*>());
-#endif
-    if (flShowObject && container!=NULL)
+    if (flShowObject && container!=nullptr)
     {
         showObject(container);
     }
@@ -180,7 +171,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
                  << "  project_panel "
                  << project_panel;
 
-    if (project_panel==NULL) return;
+    if (project_panel==nullptr) return;
 
     FWObjectDatabase *db = obj->getRoot();
     map<int, set<FWObject*> > reference_holders;
@@ -199,7 +190,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
         foreach(FWObject *container, it->second)
         {
             QTreeWidgetItem *item = createQTWidgetItem(c_obj, container);
-            if (item==NULL) continue;
+            if (item==nullptr) continue;
             QStringList item_str;
             item_str << item->text(0) << item->text(1) << item->text(2);
             widget_items[item_str.join("/")] = item;
@@ -209,7 +200,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
     // TODO: This is not ideal because lines are sorted alphabetically.
     // Rules should be sorted by their numbers numerically.
     QStringList keys = widget_items.keys();
-    qSort(keys);
+    std::sort(begin(keys), end(keys));
     foreach(QString k, keys)
     {
         QTreeWidgetItem *item = widget_items[k];
@@ -223,7 +214,7 @@ void FindWhereUsedWidget::_find(FWObject *obj)
 
 void FindWhereUsedWidget::init()
 {
-    object = NULL;
+    object = nullptr;
     m_widget->resListView->clear();
     resset.clear();
 }
@@ -243,9 +234,9 @@ void FindWhereUsedWidget::showObject(FWObject* o)
     if (fwbdebug) qDebug("FindWhereUsedWidget::showObject  o=%s (%s)",
                          o->getName().c_str(), o->getTypeName().c_str());
 
-    if (object==NULL || o==NULL) return;
+    if (object==nullptr || o==nullptr) return;
 
-    if (RuleElement::cast(o)!=NULL || RuleElement::cast(o->getParent())!=NULL)
+    if (RuleElement::cast(o)!=nullptr || RuleElement::cast(o->getParent())!=nullptr)
     {
         QCoreApplication::postEvent(
             project_panel,
@@ -253,7 +244,7 @@ void FindWhereUsedWidget::showObject(FWObject* o)
         return;
     }
 
-    if (Rule::cast(o)!=NULL)
+    if (Rule::cast(o)!=nullptr)
     {
         QCoreApplication::postEvent(
             project_panel,
@@ -268,7 +259,7 @@ void FindWhereUsedWidget::showObject(FWObject* o)
 
     project_panel->unselectRules();
 
-    if (Group::cast(o)!=NULL)
+    if (Group::cast(o)!=nullptr)
     {
         QCoreApplication::postEvent(
             project_panel,
@@ -292,26 +283,26 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject *o,
                  << "(" << container->getTypeName().c_str() << ")";
 
     QString c1, c2;
-    FWObject *fw = NULL;
-    Rule *r = NULL;
-    RuleSet *rs = NULL;
+    FWObject *fw = nullptr;
+    Rule *r = nullptr;
+    RuleSet *rs = nullptr;
     QPixmap object_icon;
     QPixmap parent_icon;
     FWBTree tree_format;
 
-    if (tree_format.isSystem(container) || Library::cast(container)) return NULL;
+    if (tree_format.isSystem(container) || Library::cast(container)) return nullptr;
 
     // container can be a Rule if user searched for an object used in action
-    if (RuleElement::cast(container)!=NULL || Rule::cast(container)!=NULL)
+    if (RuleElement::cast(container)!=nullptr || Rule::cast(container)!=nullptr)
     {
         fw = container;
-        while (fw!=NULL && Firewall::cast(fw)==NULL) // Firewall::cast matches also Cluster
+        while (fw!=nullptr && Firewall::cast(fw)==nullptr) // Firewall::cast matches also Cluster
         {
             if (Rule::cast(fw)) r = Rule::cast(fw);
             if (RuleSet::cast(fw)) rs = RuleSet::cast(fw);
             fw = fw->getParent();
         }
-        if (fw==NULL || r==NULL || rs==NULL) return NULL;
+        if (fw==nullptr || r==nullptr || rs==nullptr) return nullptr;
 
         c1 = QString::fromUtf8(fw->getName().c_str());
         QString ruleset_kind;
@@ -332,12 +323,12 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject *o,
 
         QString rule_element_name;
 
-        if (RuleElement::cast(container)!=NULL)
+        if (RuleElement::cast(container)!=nullptr)
             rule_element_name =
                 getReadableRuleElementName(
                     fw->getStr("platform"), container->getParent()->getTypeName());
 
-        if (Rule::cast(container)!=NULL)
+        if (Rule::cast(container)!=nullptr)
             rule_element_name = "Action";
 
         c2 += tr("%1 \"%2\" / Rule %3 / %4").
@@ -364,7 +355,7 @@ QTreeWidgetItem* FindWhereUsedWidget::createQTWidgetItem(FWObject *o,
     item->setIcon(1, QIcon(parent_icon));
     item->setIcon(0, QIcon(object_icon));
 
-    item->setData(1, Qt::UserRole, qVariantFromValue((void*)container));
+    item->setData(1, Qt::UserRole, QVariant::fromValue((void*)container));
 
     return item;
 }

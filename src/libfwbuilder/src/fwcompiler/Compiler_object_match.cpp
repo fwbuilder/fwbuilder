@@ -25,8 +25,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "Compiler.h"
 
@@ -58,7 +56,7 @@ bool Compiler::complexMatch(Address *obj1, Address *obj2,
                             bool recognize_broadcasts,
                             bool recognize_multicasts)
 {
-    if (obj1==NULL || obj2==NULL) return false;
+    if (obj1==nullptr || obj2==nullptr) return false;
     ObjectMatcher om;
     om.setRecognizeBroadcasts(recognize_broadcasts);
     om.setRecognizeMulticasts(recognize_multicasts);
@@ -82,7 +80,7 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
 
         if (iface->getId() == obj1->getId()) return iface;
 
-        if ( iface->isRegular() && obj1->getAddressPtr() != NULL)
+        if ( iface->isRegular() && obj1->getAddressPtr() != nullptr)
         {
             if (obj1->getAddressPtr()->isV4())
             {
@@ -106,7 +104,7 @@ Interface* Compiler::findInterfaceFor(const Address *obj1, const Address *obj2)
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 FWObject* Compiler::findAddressFor(const Address *obj1, const Address *obj2)
@@ -144,19 +142,19 @@ FWObject* Compiler::findAddressFor(const Address *obj1, const Address *obj2)
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
         
 bool Compiler::checkIfAddressesMatch(const Address *a1, const Address *a2)
 {
     if (a1->getId() == a2->getId()) return true;
     if (*(a1->getAddressPtr()) == *(a2->getAddressPtr()) ) return true;
-    if ((Network::constcast(a2)!=NULL ||
-         NetworkIPv6::constcast(a2)!=NULL ||
+    if ((Network::constcast(a2)!=nullptr ||
+         NetworkIPv6::constcast(a2)!=nullptr ||
          Interface::constcast(a2->getParent())) &&
         a2->belongs(*(a1->getAddressPtr()))) return true;
-    if ((Network::constcast(a1)!=NULL ||
-         NetworkIPv6::constcast(a1)!=NULL ||
+    if ((Network::constcast(a1)!=nullptr ||
+         NetworkIPv6::constcast(a1)!=nullptr ||
          Interface::constcast(a1->getParent())) &&
         a1->belongs(*(a2->getAddressPtr()))) return true;
     return false;

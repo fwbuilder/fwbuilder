@@ -14,7 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "config.h"
 
 #include "OSConfigurator_secuwall.h"
 
@@ -94,9 +93,9 @@ OSConfigurator_secuwall::OSConfigurator_secuwall(FWObjectDatabase *_db,
     for (list<FWObject *>::iterator it = fw_ifaces.begin(); it != fw_ifaces.end(); it++)
     {
         Interface *iface = Interface::cast(*it);
-        assert(NULL != iface);
+        assert(nullptr != iface);
         /* Check if it is a management interface */
-        if (!iface->getName().empty() && (NULL != iface->getAddressObject()))
+        if (!iface->getName().empty() && (nullptr != iface->getAddressObject()))
         {
             m_ifaces.push_back(iface);
         }
@@ -118,7 +117,7 @@ void OSConfigurator_secuwall::processFirewallOptions()
         abort("Unable to create directory structure");
 
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     /* Do ssh key generation if not disabled. */
     if (!options->getBool("secuwall_no_ssh_key_generation"))
@@ -179,7 +178,7 @@ bool OSConfigurator_secuwall::createDirStructure() const
 int OSConfigurator_secuwall::generateManagementFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, mgm_ip, vrrp_secret, stream_string, snmp_ip;
     bool vrrp_master = false;
@@ -200,7 +199,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 
     stream << "MGM_DEV=\"";
     stream << stringify(mgm_iface, " ").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* lookup Management IP address */
     mgm_ip = options->getStr("secuwall_mgmt_mgmtaddr").c_str();
@@ -222,7 +221,7 @@ int OSConfigurator_secuwall::generateManagementFile()
             tmp_v.clear();
             tokenize(mgm_ip.toStdString(), tmp_v, ",");
             stream << stringify(tmp_v, " ").c_str();
-            stream << s << "\"" << endl;
+            stream << s << "\"" << '\n';
         }
     }
 
@@ -231,7 +230,7 @@ int OSConfigurator_secuwall::generateManagementFile()
     tmp_v.clear();
     tokenize(options->getStr("secuwall_mgmt_loggingaddr"), tmp_v, ",");
     stream << stringify(tmp_v, " ").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* SNMP-Server IP address */
     snmp_ip = options->getStr("secuwall_mgmt_snmpaddr").c_str();
@@ -247,12 +246,12 @@ int OSConfigurator_secuwall::generateManagementFile()
             tmp_v.clear();
             tokenize(options->getStr("secuwall_mgmt_snmpaddr"), tmp_v, ",");
             stream << stringify(tmp_v, " ").c_str();
-            stream << "\"" << endl;
+            stream << "\"" << '\n';
 
             /* SNMP Community string */
             stream << "SNMP_COM=\"";
             stream << options->getStr("secuwall_mgmt_rosnmp").c_str();
-            stream << "\"" << endl;
+            stream << "\"" << '\n';
         }
     }
 
@@ -261,17 +260,17 @@ int OSConfigurator_secuwall::generateManagementFile()
     tmp_v.clear();
     tokenize(options->getStr("secuwall_mgmt_ntpaddr"), tmp_v, ",");
     stream << stringify(tmp_v, " ").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* /var partition */
     stream << "VARPART=\"";
     stream << options->getStr("secuwall_mgmt_varpart").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Configuration partition */
     stream << "CFGPART=\"";
     stream << options->getStr("secuwall_mgmt_confpart").c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Activate Nagios */
     stream << "NRPE=";
@@ -279,18 +278,18 @@ int OSConfigurator_secuwall::generateManagementFile()
     s = options->getStr("secuwall_mgmt_nagiosaddr").c_str();
     if (!s.isEmpty())
     {
-        stream << "yes" << endl;
+        stream << "yes" << '\n';
 
         /* Nagios-Server IP-Address */
         stream << "NRPE_IP=\"";
         tmp_v.clear();
         tokenize(s.toStdString(), tmp_v, ",");
         stream << stringify(tmp_v, " ").c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
     }
     else
     {
-        stream << "no" << endl;
+        stream << "no" << '\n';
     }
 
     /* VRRP interfaces */
@@ -306,7 +305,7 @@ int OSConfigurator_secuwall::generateManagementFile()
         {
             FWOptions *failover_opts =
                 FailoverClusterGroup::cast(failover_group)->getOptionsObject();
-            if (failover_group->getStr("type") == "vrrp" && failover_opts != NULL)
+            if (failover_group->getStr("type") == "vrrp" && failover_opts != nullptr)
             {
                 vrrp_secret = failover_opts->getStr("vrrp_secret").c_str();
                 vrrp_master = iface->getOptionsObject()->getBool("failover_master");;
@@ -318,20 +317,20 @@ int OSConfigurator_secuwall::generateManagementFile()
     stream << "VRRPD=";
     if (options->getBool("cluster_member"))
     {
-        stream << "yes" << endl;
+        stream << "yes" << '\n';
         /* VRRP secret */
         stream << "VRRPSECRET=\"";
         stream << vrrp_secret;
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* VRRP Master/Slave */
         stream << "MASTER=";
         stream << (vrrp_master ? "yes" : "no");
-        stream << endl;
+        stream << '\n';
     }
     else
     {
-        stream << "no" << endl;
+        stream << "no" << '\n';
     }
 
     /* conntrackd */
@@ -340,15 +339,15 @@ int OSConfigurator_secuwall::generateManagementFile()
     stream << "CONNTRACKD=";
     if (!s.isEmpty())
     {
-        stream << "yes" << endl;
+        stream << "yes" << '\n';
         /* conntrack device */
         stream << "CONN_DEV=\"";
         stream << s;
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
     }
     else
     {
-        stream << "no" << endl;
+        stream << "no" << '\n';
     }
 
     /* Write actual management file */
@@ -364,7 +363,7 @@ int OSConfigurator_secuwall::generateManagementFile()
 int OSConfigurator_secuwall::generateNetworkFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     FWObject *routes = fw->getFirstByType(Routing::TYPENAME);
     assert(routes);
@@ -375,10 +374,10 @@ int OSConfigurator_secuwall::generateNetworkFile()
     QTextStream stream (&stream_string);
 
     /* Default route */
-    RoutingRule* defaultRoute = NULL;
+    RoutingRule* defaultRoute = nullptr;
 
     /* Prepend static content */
-    stream << "NETWORKING=yes" << endl;
+    stream << "NETWORKING=yes" << '\n';
 
     /* Find default route */
     FWObjectTypedChildIterator routing_rules = routes->findByType(RoutingRule::TYPENAME);
@@ -394,23 +393,23 @@ int OSConfigurator_secuwall::generateNetworkFile()
 
     }
 
-    if (defaultRoute != NULL)
+    if (defaultRoute != nullptr)
     {
         RuleElementRItf* itfrel = defaultRoute->getRItf();
         RuleElementRGtw* gtwrel = defaultRoute->getRGtw();
 
         FWObject *oRGtw = FWReference::cast(gtwrel->front())->getPointer();
-        assert(oRGtw != NULL);
+        assert(oRGtw != nullptr);
         FWObject *oRItf = FWReference::cast(itfrel->front())->getPointer();
-        assert(oRItf != NULL);
+        assert(oRItf != nullptr);
 
         /* Extract Gateway IP address */
-        if (Host::cast(oRGtw) != NULL)
+        if (Host::cast(oRGtw) != nullptr)
         {
             Host *host=Host::cast(oRGtw);
             gwAddress = host->getAddressPtr()->toString().c_str();
         }
-        else if (Interface::cast(oRGtw) != NULL)
+        else if (Interface::cast(oRGtw) != nullptr)
         {
             Interface *intf=Interface::cast(oRGtw);
             gwAddress = intf->getAddressPtr()->toString().c_str();
@@ -431,7 +430,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
     {
     // stream << s;
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Gateway interface */
     stream << "GATEWAYDEV=\"";
@@ -439,12 +438,12 @@ int OSConfigurator_secuwall::generateNetworkFile()
     {
     // stream << s;
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Hostname */
     stream << "HOSTNAME=\"";
     stream << fw->getName().c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Routing */
     stream << "FORWARD_IPV4=\"";
@@ -456,7 +455,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
     {
         stream << "no";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Write actual network file */
     string filename = fw->getName() + "/" + network_filename;
@@ -470,7 +469,7 @@ int OSConfigurator_secuwall::generateNetworkFile()
 int OSConfigurator_secuwall::generateHostsFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, stream_string;
 
@@ -478,12 +477,12 @@ int OSConfigurator_secuwall::generateHostsFile()
     QTextStream stream (&stream_string);
 
     /* Prepend static content */
-    stream << "127.0.0.1\tlocalhost\n\n# Secuwall hosts" << endl;
+    stream << "127.0.0.1\tlocalhost\n\n# Secuwall hosts" << '\n';
 
     /* TODO: Should entries of every fw interface address be appended?  */
 
     stream << options->getStr("secuwall_dns_hosts").c_str();
-    stream << endl;
+    stream << '\n';
 
     /* Write actual hosts file */
     string filename = fw->getName() + "/" + hosts_filename;
@@ -497,7 +496,7 @@ int OSConfigurator_secuwall::generateHostsFile()
 int OSConfigurator_secuwall::generateDNSFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, stream_string;
 
@@ -510,21 +509,21 @@ int OSConfigurator_secuwall::generateDNSFile()
     {
         /* Replace \n with " " */
         s.replace(QString("\n"), QString(" "));
-        stream << "search\t\t" << s << endl;
+        stream << "search\t\t" << s << '\n';
     }
 
     /* DNS-Server entries */
     s = options->getStr("secuwall_dns_srv1").c_str();
     if (!s.isEmpty())
-        stream << "nameserver\t" << s << endl;
+        stream << "nameserver\t" << s << '\n';
 
     s = options->getStr("secuwall_dns_srv2").c_str();
     if (!s.isEmpty())
-        stream << "nameserver\t" << s << endl;
+        stream << "nameserver\t" << s << '\n';
 
     s = options->getStr("secuwall_dns_srv3").c_str();
     if (!s.isEmpty())
-        stream << "nameserver\t" << s << endl;
+        stream << "nameserver\t" << s << '\n';
 
     /* Write actual DNS file */
     string filename = fw->getName() + "/" + dns_filename;
@@ -538,7 +537,7 @@ int OSConfigurator_secuwall::generateDNSFile()
 int OSConfigurator_secuwall::generateNsswitchFile()
 {
     FWOptions* options = fw->getOptionsObject();
-    assert(options != NULL);
+    assert(options != nullptr);
 
     QString s, stream_string;
 
@@ -546,7 +545,7 @@ int OSConfigurator_secuwall::generateNsswitchFile()
     QTextStream stream(&stream_string);
 
     /* Prepend static content */
-    stream << "passwd:\t\tfiles\nshadow:\t\tfiles\ngroup:\t\tfiles\n" << endl;
+    stream << "passwd:\t\tfiles\nshadow:\t\tfiles\ngroup:\t\tfiles\n" << '\n';
 
     /* hosts entries */
     stream << "hosts:\t\t";
@@ -577,10 +576,10 @@ int OSConfigurator_secuwall::generateNsswitchFile()
     s = options->getStr("secuwall_dns_reso5").c_str();
     if (!s.isEmpty() && s != "none")
     {
-        stream << " " << s << endl;
+        stream << " " << s << '\n';
     }
 
-    stream << endl;
+    stream << '\n';
 
     /* Append static content */
     stream << "ethers:\t\tfiles\nnetmasks:\tfiles\nnetworks:\tfiles\nprotocols:\tfiles\nrpc:\t\tfiles\nservices:\tfiles\n";
@@ -596,7 +595,7 @@ int OSConfigurator_secuwall::generateNsswitchFile()
 
 int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string name, IPv4 * ip_address, int iface_number)
 {
-    FWOptions* options = NULL;
+    FWOptions* options = nullptr;
     ifaceType itype = ifNotDefined;
     QString s;
 
@@ -604,7 +603,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     QString stream_string;
     QTextStream stream(&stream_string);
 
-    assert(iface != NULL);
+    assert(iface != nullptr);
 
     /* fallback for name of the interface */
     if (name.empty())
@@ -621,7 +620,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         itype = ALIAS;
     }
-    else if (options == NULL || options->getStr("type").empty())
+    else if (options == nullptr || options->getStr("type").empty())
     {
         itype = ETHERNET;
     }
@@ -631,7 +630,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     }
 
     /* shortcut: unconfigured ethernet devices just exist, they don't need a config file */
-    if ((itype == ETHERNET) && (ip_address == NULL) && (iface->getAddressObject() == NULL))
+    if ((itype == ETHERNET) && (ip_address == nullptr) && (iface->getAddressObject() == nullptr))
         return 0;
 
     /* Interface name */
@@ -639,7 +638,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     stream << name.c_str();
     if (iface_number > 0)
         stream << ":" << iface_number;
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Boot-Protocol */
     stream << "BOOTPROTO=\"";
@@ -651,39 +650,39 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << "none";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Address object contains host, network and broadcast address plus netmask */
-    const Address* ipAddr = NULL;
-    if (ip_address != NULL)
+    const Address* ipAddr = nullptr;
+    if (ip_address != nullptr)
         ipAddr = ip_address->getAddressObject();
 
-    if (ipAddr != NULL)
+    if (ipAddr != nullptr)
     {
         /* Interface IP Address */
         stream << "IPADDR=\"";
         stream << ipAddr->getAddressPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* Netmask */
         stream << "NETMASK=\"";
         stream << ipAddr->getNetmaskPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* Network IP Address */
         stream << "NETWORK=\"";
         stream << ipAddr->getNetworkAddressPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         /* Broadcast IP Address */
         stream << "BROADCAST=\"";
         stream << ipAddr->getBroadcastAddressPtr()->toString().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
     }
 
     /* Activate on bootup */
     stream << "ONBOOT=\"";
-    if (options != NULL && options->getBool("iface_disableboot"))
+    if (options != nullptr && options->getBool("iface_disableboot"))
     {
         stream << "no";
     }
@@ -691,40 +690,40 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << "yes";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Link */
     stream << "LINK=\"";
-    if (options != NULL)
+    if (options != nullptr)
     {
         stream << options->getStr("iface_options").c_str();
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* MAC-Address */
     stream << "MACADDR=\"";
     physAddress* macAddr = iface->getPhysicalAddress();
-    if (macAddr != NULL)
+    if (macAddr != nullptr)
     {
         stream << macAddr->getPhysAddress().c_str();
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* MTU */
     s.clear();
     stream << "MTU=\"";
-    if (options == NULL || (s = options->getStr("iface_mtu").c_str()).isEmpty())
+    if (options == nullptr || (s = options->getStr("iface_mtu").c_str()).isEmpty())
     {
         /* TODO: Extract magic value */
         /* Set to "sane" default: "1500" */
         s = "1500";
     }
     stream << s;
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Activate ARP */
     stream << "ARP=\"";
-    if (options != NULL && options->getBool("iface_disablearp"))
+    if (options != nullptr && options->getBool("iface_disablearp"))
     {
         stream << "no";
     }
@@ -732,12 +731,12 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
     {
         stream << "yes";
     }
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* Interface type */
     stream << "TYPE=\"";
     stream << s_mapIfaceStrings[itype].c_str();
-    stream << "\"" << endl;
+    stream << "\"" << '\n';
 
     /* get all direct children of type interface */
     list<FWObject *> basedevs = iface->getByType(Interface::TYPENAME);
@@ -759,7 +758,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
             for (list<FWObject *>::iterator it = basedevs.begin(); it != basedevs.end(); it++)
             {
                 Interface *iface = Interface::cast(*it);
-                assert(NULL != iface);
+                assert(nullptr != iface);
                 if (!(iface->getName().empty()))
                 {
                     devs.push_back(iface->getName());
@@ -770,21 +769,21 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
             /* Base Device */
             stream << "BASEDEV=\"";
             stream << stringify(devs," ").c_str();
-            stream << "\"" << endl;
+            stream << "\"" << '\n';
         }
         break;
 
     case VLAN:
-        if (options == NULL || options->getStr("vlan_id").empty())
+        if (options == nullptr || options->getStr("vlan_id").empty())
         {
             abort("No VLAN id specified for " + name);
         }
 
         stream << "VLANID=\"";
         stream << options->getStr("vlan_id").c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
-        if (iface->getParent() == NULL || iface->getParent()->getName().empty())
+        if (iface->getParent() == nullptr || iface->getParent()->getName().empty())
         {
             /* No base device provided */
             abort("No base device specified for " + name);
@@ -792,7 +791,7 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
         stream << "BASEDEV=\"";
         stream << iface->getParent()->getName().c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
 
         generateInterfaceFile(Interface::cast(iface->getParent()));
         break;
@@ -806,14 +805,14 @@ int OSConfigurator_secuwall::generateInterfaceFile (Interface * iface, string na
 
         stream << "BASEDEV=\"";
         stream << options->getStr("base_device").c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
         break;
 
     case ALIAS:
         /* Base Device for secondary interfaces*/
         stream << "BASEDEV=\"";
         stream << name.c_str();
-        stream << "\"" << endl;
+        stream << "\"" << '\n';
         break;
 
     default:
@@ -869,7 +868,7 @@ int OSConfigurator_secuwall::generateInterfaces()
         FWOptions *options = (*it)->getOptionsObject();
 
         /* rename handling for our vrrp "devices" */
-        if ((options != NULL) && options->getBool("cluster_interface"))
+        if ((options != nullptr) && options->getBool("cluster_interface"))
         {
             ifname = "vrrp" + ::toString(vrrp_count++);
         }

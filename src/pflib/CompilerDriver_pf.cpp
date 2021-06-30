@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -143,14 +142,14 @@ string CompilerDriver_pf::printTimeout(FWOptions* options,
 
 void CompilerDriver_pf::printProlog(QTextStream &file, const string &prolog_code)
 {
-    file << endl;
-    file << "#" << endl;
-    file << "# Prolog script" << endl;
-    file << "#" << endl;
-    file << prolog_code << endl;
-    file << "#" << endl;
-    file << "# End of prolog script" << endl;
-    file << "#" << endl;
+    file << '\n';
+    file << "#" << '\n';
+    file << "# Prolog script" << '\n';
+    file << "#" << '\n';
+    file << prolog_code << '\n';
+    file << "#" << '\n';
+    file << "# End of prolog script" << '\n';
+    file << "#" << '\n';
 }
 
 void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
@@ -164,24 +163,24 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
     if (prolog_place == "pf_file_top")
         printProlog(file, pre_hook);
 
-    file << endl;
+    file << '\n';
 
     string set_debug = options->getStr("pf_set_debug");
     if (!set_debug.empty())
     {
-        file << "set debug " << set_debug << endl;
+        file << "set debug " << set_debug << '\n';
     }
 
     string state_policy = options->getStr("pf_state_policy");
     if (!state_policy.empty())
     {
-        file << "set state-policy " << state_policy << endl;
+        file << "set state-policy " << state_policy << '\n';
     }
 
     string block_policy = options->getStr("pf_block_policy");
     if (!block_policy.empty())
     {
-        file << "set block-policy " << block_policy << endl;
+        file << "set block-policy " << block_policy << '\n';
     }
 
     QStringList limits;
@@ -216,12 +215,12 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
         if (limits.size() > 1 ) file << "{ ";
         file << limits.join(", ");
         if (limits.size() > 1 ) file << " }";
-        file << endl;
+        file << '\n';
     }
 
     if ( ! options->getStr("pf_optimization").empty() )
         file << "set optimization "
-             << options->getStr("pf_optimization") << endl;
+             << options->getStr("pf_optimization") << '\n';
 
     file << printTimeout(options,
                          "pf_do_timeout_interval","pf_timeout_interval",
@@ -294,11 +293,11 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
             assert(iface);
 
             if ( iface->isUnprotected())  
-                file << "set skip on " << iface->getName() << endl;
+                file << "set skip on " << iface->getName() << '\n';
         }
     }
 
-    file << endl;
+    file << '\n';
 
     if (prolog_place == "pf_file_after_set")
         printProlog(file, pre_hook);
@@ -330,9 +329,9 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 
     if (!scrub_options.empty())
     {
-        file << "#" << endl;
-        file << "# Scrub rules" << endl;
-        file << "#" << endl;
+        file << "#" << '\n';
+        file << "# Scrub rules" << '\n';
+        file << "#" << '\n';
 
         if (XMLTools::version_compare(fw->getStr("version"), "4.6")>=0)
         {
@@ -340,14 +339,14 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
                  << scrub_rule_direction
                  << "all scrub ("
                  << scrub_options.join(" ").toStdString() << ")"
-                 << endl;
+                 << '\n';
         } else
         {
             file << "scrub "
                  << scrub_rule_direction
                  << "all "
                  << scrub_options.join(" ").toStdString()
-                 << endl;
+                 << '\n';
         }
     }
 
@@ -367,21 +366,21 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
         if (XMLTools::version_compare(fw->getStr("version"), "4.6")>=0)
         {
             file << "match out all scrub ("
-                 << scrub_options.join(" ").toStdString() << ")" << endl;
+                 << scrub_options.join(" ").toStdString() << ")" << '\n';
         } else
         {
             file << "scrub out all "
-                 << scrub_options.join(" ").toStdString() << endl;
+                 << scrub_options.join(" ").toStdString() << '\n';
         }
     }
 
-    file << endl;
+    file << '\n';
 
     if (prolog_place == "pf_file_after_scrub")
         printProlog(file, pre_hook);
 
     //file << table_factory->PrintTables();
-    //file << endl;
+    //file << '\n';
 
     //if (prolog_place == "pf_file_after_tables")
     //    printProlog(file, pre_hook);
@@ -391,10 +390,10 @@ void CompilerDriver_pf::printStaticOptions(QTextStream &file, Firewall* fw)
 void CompilerDriver_pf::setToolPathVar(Firewall* fw,
                                        const string &os,
                                        const string &var_path_suffix,
-                                       OSData::tools osdata_tool_type,
+                                       OSData_pf::tools osdata_tool_type,
                                        Configlet *configlet)
 {
-    OSData os_data;
+    OSData_pf os_data;
     FWOptions* options = fw->getOptionsObject();
     string s;
     string path;
@@ -409,13 +408,13 @@ QString CompilerDriver_pf::printPathForAllTools(Firewall* fw, const string &os)
     Configlet tools = Configlet(fw, "bsd", "tools");
     tools.removeComments();
 
-    setToolPathVar(fw, os, "path_ifconfig", OSData::IFCONFIG, &tools);
-    setToolPathVar(fw, os, "path_ipf", OSData::IPF, &tools);
-    setToolPathVar(fw, os, "path_ipnat", OSData::IPNAT, &tools);
-    setToolPathVar(fw, os, "path_ipfw", OSData::IPFW, &tools);
-    setToolPathVar(fw, os, "path_pfctl", OSData::PFCTL, &tools);
-    setToolPathVar(fw, os, "path_sysctl", OSData::SYSCTL, &tools);
-    setToolPathVar(fw, os, "path_logger", OSData::LOGGER, &tools);
+    setToolPathVar(fw, os, "path_ifconfig", OSData_pf::IFCONFIG, &tools);
+    setToolPathVar(fw, os, "path_ipf", OSData_pf::IPF, &tools);
+    setToolPathVar(fw, os, "path_ipnat", OSData_pf::IPNAT, &tools);
+    setToolPathVar(fw, os, "path_ipfw", OSData_pf::IPFW, &tools);
+    setToolPathVar(fw, os, "path_pfctl", OSData_pf::PFCTL, &tools);
+    setToolPathVar(fw, os, "path_sysctl", OSData_pf::SYSCTL, &tools);
+    setToolPathVar(fw, os, "path_logger", OSData_pf::LOGGER, &tools);
     return tools.expand();
 }
 

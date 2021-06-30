@@ -58,7 +58,7 @@ ClusterGroupDialog::ClusterGroupDialog(QWidget *parent)
 {
     m_dialog = new Ui::ClusterGroupDialog_q;
     m_dialog->setupUi(this);
-    obj = NULL;
+    obj = nullptr;
     reload = false;
 
     connectSignalsOfAllWidgetsToSlotChange();
@@ -68,7 +68,7 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
 {
     obj = o;
     ClusterGroup *g = dynamic_cast<ClusterGroup*>(obj);
-    assert(g != NULL);
+    assert(g != nullptr);
 
     init = true;
 
@@ -76,9 +76,9 @@ void ClusterGroupDialog::loadFWObject(FWObject *o)
     // Parent is either 'Cluster' or 'Interface', call getParent() approprietly
     FWObject *parent = obj;
     while (parent && !Cluster::isA(parent)) parent = parent->getParent();
-    if (parent == NULL)
+    if (parent == nullptr)
     {
-        throw FWException("ClusterGroupDialog: parent is NULL!");
+        throw FWException("ClusterGroupDialog: parent is nullptr!");
     }
     cluster = Cluster::cast(parent);
     string host_os = cluster->getStr("host_OS");
@@ -199,7 +199,7 @@ void ClusterGroupDialog::saveGroupType(FWObject *group)
 void ClusterGroupDialog::addIcon(FWObject *o, bool master)
 {
     FWObject *iface = o;
-    assert(Interface::cast(iface)!=NULL);
+    assert(Interface::cast(iface)!=nullptr);
     FWObject *fw = Host::getParentHost(iface);
 //    FWObject *fw = Interface::cast(iface)->getParentHost(); // because iface can be subinterface
     bool valid = cluster->validateMember(Firewall::cast(fw));
@@ -212,13 +212,13 @@ void ClusterGroupDialog::addIcon(FWObject *o, bool master)
                            "/icon-ref").c_str();
 
     QPixmap iface_pm;
-    if (!QPixmapCache::find(iface_icn_file, iface_pm))
+    if (!QPixmapCache::find(iface_icn_file, &iface_pm))
     {
         iface_pm.load(iface_icn_file);
         QPixmapCache::insert(iface_icn_file, iface_pm);
     }
     QPixmap fw_pm;
-    if (!QPixmapCache::find(fw_icn_file, fw_pm))
+    if (!QPixmapCache::find(fw_icn_file, &fw_pm))
     {
         fw_pm.load(fw_icn_file);
         QPixmapCache::insert(fw_icn_file, fw_pm);
@@ -251,7 +251,7 @@ void ClusterGroupDialog::addIcon(FWObject *o, bool master)
         item->setText(col, tr("Invalid"));
         item->setToolTip(
             col, tr("Firewall %1 can not be used as a member of this cluster\n because its host OS or platform does not match those of the cluster.").arg(fw->getName().c_str()));
-        item->setBackgroundColor(col, QColor(255, 0, 0, 100));
+        item->setBackground(col, QBrush(QColor(255, 0, 0, 100)));
     }
 
     item->setProperty("type", iface->getTypeName().c_str());
@@ -276,11 +276,13 @@ void ClusterGroupDialog::validate(bool *res)
 
 void ClusterGroupDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
+#ifndef NDEBUG
     ClusterGroup *g = dynamic_cast<ClusterGroup*>(new_state);
-    assert(g != NULL);
+    assert(g != nullptr);
+#endif
 
     QString oldname = obj->getName().c_str();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));
@@ -304,12 +306,12 @@ void ClusterGroupDialog::openClusterConfDialog()
     try
     {
         QWidget *w = DialogFactory::createClusterConfDialog(this, obj);
-        if (w == NULL)
+        if (w == nullptr)
         {
             return;   // some dialogs may not be implemented yet
         }
         QDialog *d = dynamic_cast<QDialog*>(w);
-        assert(d != NULL);
+        assert(d != nullptr);
 
         // connect obj changed signal
         //connect(d, SIGNAL(membersChanged()), this, SLOT(objectChanged()));
@@ -335,7 +337,7 @@ void ClusterGroupDialog::openClusterConfDialog()
         QMessageBox::critical(
             this, "Firewall Builder",
             tr("FWBuilder API error: %1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString::null, QString::null, 0, 1);
+            tr("&Continue"), QString(), QString(), 0, 1);
         return;
     }
 }
@@ -343,10 +345,10 @@ void ClusterGroupDialog::openClusterConfDialog()
 void ClusterGroupDialog::openObject(QTreeWidgetItem *item)
 {
     ObjectListViewItem *otvi = dynamic_cast<ObjectListViewItem*>(item);
-    assert(otvi != NULL);
+    assert(otvi != nullptr);
 
     FWObject *o = otvi->getFWObject();
-    if (o != NULL)
+    if (o != nullptr)
     {
         QCoreApplication::postEvent(
             mw, new showObjectInTreeEvent(o->getRoot()->getFileName().c_str(),

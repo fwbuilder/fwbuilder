@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "RoutingCompiler_nxosacl.h"
 
@@ -66,7 +65,7 @@ void RoutingCompiler_nxosacl::epilog()
  */
 bool RoutingCompiler_nxosacl::ExpandMultipleAddressesExceptInterface::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementRDst *dst = rule->getRDst();    assert(dst);
@@ -75,7 +74,7 @@ bool RoutingCompiler_nxosacl::ExpandMultipleAddressesExceptInterface::processNex
     RuleElementRGtw *gtwrel = rule->getRGtw();    assert(gtwrel);
     Address *gtw = Address::cast(
         FWReference::cast(gtwrel->front())->getPointer());
-    if (gtw == NULL)
+    if (gtw == nullptr)
         compiler->abort(rule, "Broken GTW");
     if (Interface::isA(gtw) && gtw->isChildOf(compiler->fw)) return true;
     compiler->_expand_addr(rule, gtwrel, false);
@@ -85,7 +84,7 @@ bool RoutingCompiler_nxosacl::ExpandMultipleAddressesExceptInterface::processNex
 
 bool RoutingCompiler_nxosacl::checkRItfAndGw::processNext()
 {
-    RoutingRule *rule=getNext(); if (rule==NULL) return false;
+    RoutingRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
     RuleElementRItf *itfrel = rule->getRItf();    assert(itfrel);

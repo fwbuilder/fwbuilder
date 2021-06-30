@@ -78,7 +78,7 @@ int RoutingCompiler_ipt::prolog()
 bool RoutingCompiler_ipt::optimize3::processNext()
 {
     RoutingRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {
@@ -86,7 +86,7 @@ bool RoutingCompiler_ipt::optimize3::processNext()
         return true;
     }
 
-    if (printRule==NULL)
+    if (printRule==nullptr)
     {
         printRule = new PrintRule("");
         printRule->setContext(compiler);
@@ -108,7 +108,7 @@ bool RoutingCompiler_ipt::optimize3::processNext()
 bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
 {
     RoutingRule *rule;
-    rule = getNext(); if (rule==NULL) return false;
+    rule = getNext(); if (rule==nullptr) return false;
 
     if (rule->isFallback() || rule->isHidden())
     {
@@ -116,7 +116,7 @@ bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
         return true;
     }
 
-    if (printRule==NULL)
+    if (printRule==nullptr)
     {
         printRule = new PrintRule("");
         printRule->setContext(compiler);
@@ -149,7 +149,7 @@ bool RoutingCompiler_ipt::eliminateDuplicateRules::processNext()
 bool RoutingCompiler_ipt::addressRangesInDst::processNext()
 {
     RoutingRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementRDst *dstrel = rule->getRDst();
     compiler->_expandAddressRanges(rule, dstrel);
@@ -163,7 +163,7 @@ bool RoutingCompiler_ipt::FindDefaultRoute::processNext()
 {
     RoutingCompiler_ipt *ipt_comp = dynamic_cast<RoutingCompiler_ipt*>(compiler);
     RoutingRule *rule;
-    rule=getNext(); if (rule==NULL) return false;
+    rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementRDst *dstrel = rule->getRDst();
     FWObject *ref = dstrel->front();

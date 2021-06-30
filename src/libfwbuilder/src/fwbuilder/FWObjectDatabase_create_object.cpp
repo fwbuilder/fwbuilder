@@ -29,8 +29,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include <sys/types.h>
@@ -275,12 +273,12 @@ void FWObjectDatabase::init_create_methods_table()
 FWObject *FWObjectDatabase::create(const string &type_name, int id, bool init)
 {
     create_function_ptr fn = create_methods[type_name];
-    if (fn == NULL)
+    if (fn == nullptr)
     {
         const char *type_name_cptr = type_name.c_str();
         FWObject   *nobj;
 
-        if (strcmp("comment", type_name_cptr)==SAME) return NULL;
+        if (strcmp("comment", type_name_cptr)==SAME) return nullptr;
         if (strcmp("SelectionCriteria", type_name_cptr) == 0) return 0;
 
         if (strcmp("AnyNetwork", type_name_cptr)==SAME)
@@ -339,7 +337,7 @@ FWObject *FWObjectDatabase::create(const string &type_name, int id, bool init)
 
         cerr << "Do not have method to create object of type "
              << type_name << endl;
-        return NULL;
+        return nullptr;
     }
 
     FWObject *nobj = (*fn)(id);
@@ -355,15 +353,15 @@ FWObject *FWObjectDatabase::createFromXML(xmlNodePtr data)
     string typen;
     int id = -1;
 
-    n = FROMXMLCAST(data->name);
-    if (!n) return NULL;
+    n = XMLTools::FromXmlCast(data->name);
+    if (!n) return nullptr;
     typen = n;
 
-    n = FROMXMLCAST(xmlGetProp(data, TOXMLCAST("id")));
+    n = XMLTools::FromXmlCast(xmlGetProp(data, XMLTools::ToXmlCast("id")));
     if (n)
     {
         id = registerStringId(n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
 // create new object but do not prepopulate objects that

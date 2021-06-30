@@ -48,8 +48,8 @@ public:
 
         DECLARE_DISPATCH_METHODS(ClusterGroup);
 
-        virtual void fromXML(xmlNodePtr parent) throw(FWException);
-        virtual xmlNodePtr toXML(xmlNodePtr parent) throw(FWException);
+        virtual void fromXML(xmlNodePtr parent);
+        virtual xmlNodePtr toXML(xmlNodePtr parent);
 
         /*
          * verify whether given object type is approppriate as a child
@@ -63,13 +63,13 @@ public:
          * child objects and the options object to reproduce accurate
          * state of this.
          */
-        virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+        virtual FWObject& duplicateForUndo(const FWObject *obj);
 
         /**
          * If @this is cluster interface and it is correctly
          * configured with member interfaces, this method returns
          * pointer to interface that belongs to the given member
-         * firewall. Otherwise it returns NULL.
+         * firewall. Otherwise it returns nullptr.
          */
         Interface* getInterfaceForMemberFirewall(Firewall *fw);
     };

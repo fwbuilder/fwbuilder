@@ -65,6 +65,9 @@ namespace libfwbuilder
                                     const InetAddr &end,
                                     std::vector<InetAddrMask> &res);
 
+    bool operator==(const InetAddrMask &a, const InetAddrMask &b);
+    bool operator<(const InetAddrMask &a, const InetAddrMask &b);
+
 class InetAddrMask
 {
     
@@ -82,7 +85,7 @@ public:
 
     InetAddrMask();
     InetAddrMask(const InetAddr&, const InetAddr&);
-    InetAddrMask(const std::string &s) throw(FWException);
+    InetAddrMask(const std::string &s);
     InetAddrMask(const InetAddrMask&);
     virtual ~InetAddrMask();
     void setNetworkAndBroadcastAddress();

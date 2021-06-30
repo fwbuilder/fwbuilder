@@ -25,15 +25,18 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <iostream>
-#include <pthread.h>
+#include <string>
+#include <sstream>
+
+#ifndef USE_PTHREADS
+    #include <thread>
+#endif
 
 // #include <unistd.h>
 #include <sys/types.h>
@@ -48,10 +51,12 @@ using namespace libfwbuilder;
 
 BackgroundOp::BackgroundOp():running(false),connected(true)
 {
-    error        = NULL;
-    stop_program = new SyncFlag(false);
-    iamdead      = new SyncFlag(false);
+    error        = nullptr;
+    stop_program = new std::atomic<bool>(false);
+    iamdead      = new std::atomic<bool>(false);
+#ifdef USE_PTHREADS
     pthread_attr_init(&tattr);
+#endif
 }
 
 /*
@@ -65,15 +70,12 @@ BackgroundOp::BackgroundOp():running(false),connected(true)
  */
 BackgroundOp::~BackgroundOp()
 {
-    stop_program->lock();
-    stop_program->modify(true);
-    stop_program->unlock();
+    stop_program->store(true);
+    iamdead->store(true);
 
-    iamdead->lock();
-    iamdead->modify(true);
-    iamdead->unlock();
-
+#ifdef USE_PTHREADS
     pthread_attr_destroy(&tattr);
+#endif
 }
 
 /* replaced by a macro
@@ -83,22 +85,22 @@ void BackgroundOp::check_stop()
     if ( stop_program->peek() )
     {
         stop_program->unlock();
-        pthread_exit(NULL);
+        pthread_exit(nullptr);
     }
     stop_program->unlock();
 }
 */
 
-bool BackgroundOp::isRunning()     { return running;  }
-void BackgroundOp::setRunning()    { running=true;    }
-void BackgroundOp::clearRunning()  { running=false;   }
+bool BackgroundOp::isRunning()     { return running.load();  }
+void BackgroundOp::setRunning()    { running.store(true);    }
+void BackgroundOp::clearRunning()  { running.store(false);   }
 
-bool BackgroundOp::isConnected()   { return connected; }
-void BackgroundOp::disconnect()    { connected=false;  }
+bool BackgroundOp::isConnected()   { return connected.load(); }
+void BackgroundOp::disconnect()    { connected.store(false);  }
 
 
 
-Logger* BackgroundOp::start_operation() throw(FWException)
+Logger* BackgroundOp::start_operation()
 {
     /*
      * Suppose calling program wants to stop background operation. It
@@ -111,11 +113,8 @@ Logger* BackgroundOp::start_operation() throw(FWException)
      * BackgroundOp object is destoryed, this flag is still available
      * and can be properly checked.
      */
-    stop_program->lock();
-    stop_program->modify(false);
-    stop_program->unlock();
-
-    running = true;
+    stop_program->store(false);
+    running.store(true);
 
     Logger *logger  = new QueueLogger();
 
@@ -125,73 +124,78 @@ Logger* BackgroundOp::start_operation() throw(FWException)
     void_pair[2] = iamdead;
     void_pair[3] = stop_program;
 
-    pthread_t tid;
-    pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
-    int err = pthread_create(&tid, &tattr, background_thread, void_pair);
-    switch (err)
-    {
-    case EAGAIN:
-        throw FWException("Not enough system resources to create new thread");
-    case EINVAL:
-        throw FWException("The value specified by attr is invalid.");
+#ifdef USE_PTHREADS
+        pthread_t tid;
+        pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
+        int err = pthread_create(&tid, &tattr, background_thread, void_pair);
+        switch (err)
+        {
+        case EAGAIN:
+            throw FWException("Not enough system resources to create new thread");
+        case EINVAL:
+            throw FWException("The value specified by attr is invalid.");
+        }
+#else
+    try {
+        thread opThread(background_thread, void_pair);
+        opThread.detach();
+    } catch(const std::system_error& e) {
+        ostringstream oss;
+        oss << "Error creating thread. "
+            << "Caught system_error with code " << e.code()
+            << " meaning " << e.what() << '\n';
+        throw FWException(oss.str());
     }
+#endif
+
     return logger;
 }
 
 void BackgroundOp::stop_operation()
 {
     error = new FWException("Interrupted by user");
-    stop_program->lock();
-    stop_program->modify(true);
-    stop_program->unlock();
+    stop_program->store(true);
 }
 
 namespace libfwbuilder
 {
 void *background_thread(void *args)
 {
-    void **void_pair=(void**)args;
+    void **void_pair = static_cast<void**>(args);
 
-    BackgroundOp *bop          = (BackgroundOp*)void_pair[0];
-    Logger       *logger       = (Logger *)     void_pair[1];
-    SyncFlag     *isdead       = (SyncFlag*)    void_pair[2];
-    SyncFlag     *stop_program = (SyncFlag*)    void_pair[3];
+    BackgroundOp *bop          = static_cast<BackgroundOp*>(void_pair[0]);
+    Logger       *logger       = static_cast<Logger *>(void_pair[1]);
+    std::atomic<bool>     *isdead       = static_cast<std::atomic<bool>*>(void_pair[2]);
+    std::atomic<bool>     *stop_program = static_cast<std::atomic<bool>*>(void_pair[3]);
 
     try 
     {
 	bop->run_impl(logger,stop_program);
     } catch (FWException &ex) 
     {
-        isdead->lock();
-        if (isdead->peek())
+        if (isdead->load())
         { 
-            isdead->unlock(); 
             delete logger;
             delete isdead; 
             delete void_pair;
-            return(NULL); 
+            return(nullptr); 
         }
         *logger << "Exception: " << ex.toString().c_str() << '\n';
         bop->error=new FWException(ex);
-        isdead->unlock();
     }
 
     *logger << "Background process has finished\n";
 
-    isdead->lock();
-    if (isdead->peek())
-    { 
-        isdead->unlock(); 
+    if (isdead->load())
+    {
         delete logger;
         delete isdead; 
         delete void_pair;
-        return(NULL); 
+        return(nullptr); 
     }
 
 /* operation completed - clear "running" flag */
     bop->clearRunning();
-
-    isdead->unlock();
 
 /* wait till the other thread reads all the lines from logger. If
  * widget that was reading lines from this logger has been destroyed,
@@ -200,14 +204,10 @@ void *background_thread(void *args)
  */
 
     while (true) {
-        
-        isdead->lock();
-        if (isdead->peek() ||  !bop->isConnected())
+        if (isdead->load() ||  !bop->isConnected())
         {
-            isdead->unlock();
             break;
         }
-        isdead->unlock();
 
         libfwbuilder::cxx_sleep(1);
     }
@@ -215,7 +215,7 @@ void *background_thread(void *args)
     delete logger;
     delete void_pair;
 
-    return(NULL);
+    return(nullptr);
 }
 
 }

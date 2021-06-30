@@ -111,7 +111,7 @@ void IC_NetworkZonesPage::setNetworkZones()
     Firewall *fw = 
         dynamic_cast<ImportFirewallConfigurationWizard*>(wizard())->getFirewall();
 
-    if (fw == NULL) return;
+    if (fw == nullptr) return;
 
     // read and configure network zones
     list<FWObject*> all_interfaces = fw->getByTypeDeep(Interface::TYPENAME);
@@ -128,11 +128,11 @@ void IC_NetworkZonesPage::setNetworkZones()
         if ( ! ltwi.empty())
         {
             QTableWidgetItem *itm2 = ltwi[0];
-            assert(itm2!=NULL);
+            assert(itm2!=nullptr);
             int row = itm2->row();
             QComboBox *cb = dynamic_cast<QComboBox*>(
                 m_dialog->iface_nz_list->cellWidget(row, 3));
-            assert(cb!=NULL);
+            assert(cb!=nullptr);
             int network_zone_int_id =
                 cb->itemData(cb->currentIndex(), Qt::UserRole).toInt();
             if (network_zone_int_id != 0)

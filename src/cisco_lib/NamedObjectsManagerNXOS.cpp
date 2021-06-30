@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObjectsManagerNXOS.h"
 #include "NamedObject.h"
@@ -57,7 +56,7 @@ string NamedObjectsManagerNXOS::getClearCommands()
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-        assert(og!=NULL);
+        assert(og!=nullptr);
         output << "no "  << og->getObjectGroupHeader() << endl;
     }
 

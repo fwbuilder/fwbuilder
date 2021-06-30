@@ -31,21 +31,21 @@ using namespace std;
 bool InspectionClassMap::isDefault()
 {
     InspectionProtocol *ip = InspectionProtocol::protocols[fixup_name];
-    if (ip!=NULL) return (ip->par1==port1 && ip->par2==port2);
+    if (ip!=nullptr) return (ip->par1==port1 && ip->par2==port2);
     return false;
 }
 
 string InspectionClassMap::getIPProtocol()
 {
     InspectionProtocol *ip = InspectionProtocol::protocols[fixup_name];
-    if (ip!=NULL) return ip->ip_proto;
+    if (ip!=nullptr) return ip->ip_proto;
     return "";
 }
 
 string InspectionClassMap::getPrintableName()
 {
     InspectionProtocol *ip = InspectionProtocol::protocols[fixup_name];
-    if (ip!=NULL) return ip->printable_name;
+    if (ip!=nullptr) return ip->printable_name;
     return "";
 }
 

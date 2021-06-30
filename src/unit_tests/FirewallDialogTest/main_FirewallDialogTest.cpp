@@ -38,10 +38,9 @@ using namespace std;
 using namespace libfwbuilder;
 
 int fwbdebug = 0;
-FWWindow *mw = NULL; 
-FWBSettings *st = NULL; 
-FWBApplication *app = NULL; 
-int sig = FWB_SIG; 
+FWWindow *mw = nullptr;
+FWBSettings *st = nullptr;
+FWBApplication *app = nullptr;
 
 
 extern void build_app(int argc, char** argv,
@@ -49,16 +48,18 @@ extern void build_app(int argc, char** argv,
                       FWBSettings** st);
 
 int main(int argc, char** argv)
-{ 
-    app = new FWBApplication(argc, argv); 
-    app->setOrganizationName(QLatin1String("NetCitadel")); 
-    app->setApplicationName(QLatin1String("Firewall Builder")); 
+{
+    app = new FWBApplication(argc, argv);
+    app->setOrganizationName(QLatin1String("NetCitadel"));
+    app->setApplicationName(QLatin1String("Firewall Builder"));
 
     build_app(argc, argv, &app, &st);
 
 
-    QTest::qExec(new FirewallDialogTest()); 
+    int testResult = QTest::qExec(new FirewallDialogTest());
 
-    if (QFile::exists("test_work.fwb")) 
-        QFile::remove("test_work.fwb"); 
+    if (QFile::exists("test_work.fwb"))
+        QFile::remove("test_work.fwb");
+
+    return testResult;
 }

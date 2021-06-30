@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="ND_SetupPage_gridLayout_2">
    <item row="0" column="0">
     <widget class="QLabel" name="textLabel3_2">
      <property name="text">
@@ -145,7 +145,7 @@
      <property name="title">
       <string>Confine scan to this network:</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="ND_SetupPage_gridLayout">
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label">
         <property name="text">

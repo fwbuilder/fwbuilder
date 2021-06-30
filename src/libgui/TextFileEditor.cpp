@@ -23,7 +23,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 
 #include "TextFileEditor.h"
@@ -64,7 +63,7 @@ bool TextFileEditor::load()
                 this, "Firewall Builder",
                 tr("The file %1 does not exist but it will be created "
                    "when you save your changes.").arg(file_name),
-                tr("&Open the file"), tr("&Cancel"), QString::null, 0, 1 ) == 1)
+                tr("&Open the file"), tr("&Cancel"), QString(), 0, 1 ) == 1)
             return false;
 
         return true;
@@ -77,7 +76,7 @@ bool TextFileEditor::load()
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("The file is read-only, you can't save the changes."),
-                tr("&View the file"), tr("&Cancel"), QString::null, 0, 1 ))
+                tr("&View the file"), tr("&Cancel"), QString(), 0, 1 ))
         {
         case 0:  // open read-only
             m_dialog->editor->setReadOnly(true);
@@ -113,13 +112,8 @@ void TextFileEditor::save()
     QFile owf(file_name);
     if ( ! owf.exists())
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (owf.open(QIODevice::WriteOnly) &&
-            owf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
-#else
         if (owf.open(QIODevice::WriteOnly) &&
             owf.write(m_dialog->editor->toPlainText().toLatin1().constData()) >= 0)
-#endif
         {
             owf.close();
             QDialog::accept();
@@ -129,20 +123,15 @@ void TextFileEditor::save()
                 this,"Firewall Builder",
                 tr("Error saving data to file '%1': %2")
                 .arg(file_name).arg(owf.errorString()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
         return;
     }
     
     QString tmp_file_name = file_name + ".tmp";
 
     QFile wf(tmp_file_name);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    if (wf.open(QIODevice::WriteOnly) &&
-        wf.write(m_dialog->editor->toPlainText().toAscii().constData()) >= 0)
-#else
     if (wf.open(QIODevice::WriteOnly) &&
         wf.write(m_dialog->editor->toPlainText().toLatin1().constData()) >= 0)
-#endif
     {
         wf.close();
         QFile old_file(file_name);
@@ -155,14 +144,14 @@ void TextFileEditor::save()
                 this,"Firewall Builder",
                 tr("Can not rename file %1 to %2: %3")
                 .arg(tmp_file_name).arg(file_name).arg(wf.errorString()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
 
     } else
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error saving data to a temporary file '%1': %2")
             .arg(tmp_file_name).arg(wf.errorString()),
-            "&Continue", QString::null, QString::null, 0, 1 );
+            "&Continue", QString(), QString(), 0, 1 );
 }
 
 void TextFileEditor::closeEvent(QCloseEvent* ev)

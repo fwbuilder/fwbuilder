@@ -25,17 +25,13 @@
 */
 
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
-
+#include "version.h"
 #include "fwbuilder/XMLTools.h"
 #include "fwbuilder/ThreadTools.h"
 
 #include <zlib.h>
-
 #include <string.h>
-
 #include <stdio.h>
 #include <stdarg.h>     // for va_start and friends
 #include <sys/stat.h>
@@ -51,9 +47,7 @@
 #endif
 
 
-#ifdef HAVE_LIBXSLT_XSLTCONFIG_H
-# include <libxslt/xsltconfig.h>
-#endif 
+#include <libxslt/xsltconfig.h>
 
 #include <libxslt/xslt.h>
 #include <libxslt/xsltInternals.h>
@@ -65,6 +59,7 @@
 #include <zlib.h>
 
 #include <iostream>
+#include <memory>
 
 #undef FW_XMLTOOLS_VERBOSE
 // #define FW_XMLTOOLS_VERBOSE 1
@@ -74,7 +69,7 @@
 using namespace std;
 using namespace libfwbuilder;
 
-#ifndef __MINGW32__
+#if !defined(__MINGW32__) || defined(IN_LIBXML)
 extern int xmlDoValidityCheckingDefaultValue ;
 extern int xmlLoadExtDtdDefaultValue         ;
 #else
@@ -102,9 +97,15 @@ static void xslt_error_handler(void *ctx, const char *msg, ...)
     char buf[4096];
     va_list args;
 
-    assert(ctx!=NULL);
+    assert(ctx!=nullptr);
     va_start(args, msg);
-    VSNPRINTF(buf, sizeof(buf)-1, msg, args);
+
+#ifdef _WIN32
+    _vsnprintf(buf, sizeof(buf)-1, msg, args);
+#else
+    vsnprintf(buf, sizeof(buf)-1, msg, args);
+#endif
+
     va_end(args);
     
 #ifdef FW_XMLTOOLS_VERBOSE
@@ -114,16 +115,18 @@ static void xslt_error_handler(void *ctx, const char *msg, ...)
     *((string*)ctx)+=buf;
 }
 
+const std::string XMLTools::defaultVersion = std::string(FWBUILDER_XML_VERSION);
+
 xmlNodePtr XMLTools::getXmlChildNode(xmlNodePtr r,const char *child_name)
 {
     xmlNodePtr  cur;
 
     for(cur=r->xmlChildrenNode; cur; cur=cur->next) {
 	if ( xmlIsBlankNode(cur) ) continue;
-	if (strcmp(child_name,FROMXMLCAST(cur->name))==SAME)
+	if (strcmp(child_name,XMLTools::FromXmlCast(cur->name))==SAME)
 	    return cur;
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -138,7 +141,7 @@ xmlNodePtr XMLTools::getXmlNodeByPath(xmlNodePtr r, const char *path)
     char *path_copy;
     xmlNodePtr  cur, res;
 
-    res=NULL;
+    res=nullptr;
     
     path_copy= cxx_strdup( path );
 
@@ -153,11 +156,11 @@ xmlNodePtr XMLTools::getXmlNodeByPath(xmlNodePtr r, const char *path)
     }
 
     cptr=strchr(s1,'/');
-    if (cptr!=NULL) {
+    if (cptr!=nullptr) {
 	*cptr='\0';
 	cptr++;
     }
-    if (strcmp(FROMXMLCAST(r->name), s1)==0) {
+    if (strcmp(XMLTools::FromXmlCast(r->name), s1)==0) {
 	if (cptr) {
 	    for(cur=r->xmlChildrenNode; cur; cur=cur->next) {
 		if ( xmlIsBlankNode(cur) ) continue;
@@ -175,14 +178,14 @@ xmlNodePtr XMLTools::getXmlNodeByPath(xmlNodePtr r, const char *path)
 }
 
 
-xmlExternalEntityLoader XMLTools::defaultLoader = NULL;
+xmlExternalEntityLoader XMLTools::defaultLoader = nullptr;
 
 /** 
  * This is global variable used in 'fwbExternalEntityLoader'
  * parser callback. It is protected by 'xml_parser_mutex'.
  */
 
-static char* current_template_dir=NULL;
+static char* current_template_dir=nullptr;
 
 xmlParserInputPtr fwbExternalEntityLoader(const char *URL, 
                                           const char *ID,
@@ -196,7 +199,7 @@ xmlParserInputPtr fwbExternalEntityLoader(const char *URL,
 
     string fname;
 
-    fname=string(current_template_dir) + FS_SEPARATOR;
+    fname=string(current_template_dir) + "/";
 
     string url=URL;
     string::size_type pos=url.find_last_of("/\\");
@@ -211,13 +214,11 @@ xmlParserInputPtr fwbExternalEntityLoader(const char *URL,
     else if(XMLTools::defaultLoader)
         return XMLTools::defaultLoader(URL, ID, ctxt);
     else
-        return NULL;
+        return nullptr;
 }
 
 void XMLTools::initXMLTools()
 {
-//    xml_parser_mutex     = PTHREAD_MUTEX_INITIALIZER;
-//    xslt_processor_mutex = PTHREAD_MUTEX_INITIALIZER;
     xmlInitMemory();
     xmlInitParser();
     defaultLoader = xmlGetExternalEntityLoader();
@@ -230,7 +231,7 @@ void XMLTools::close()
     xmlCleanupParser();
 }
 
-string XMLTools::readFile(const std::string &rfile) throw(FWException)
+string XMLTools::readFile(const std::string &rfile)
 {
     string buf;
 
@@ -247,10 +248,11 @@ string XMLTools::readFile(const std::string &rfile) throw(FWException)
     }
 
     gzFile gzf = gzopen(rfile.c_str(), "rb9");
-    if (gzf == NULL) throw FWException("Could not read file "+rfile);
+    if (gzf == nullptr) throw FWException("Could not read file "+rfile);
 
-    int chunk_size = 65536;
-    char *chunk = (char*)malloc(chunk_size);
+    unsigned int chunk_size = 65536;
+    std::unique_ptr<char[]> chunk_storage(new char[chunk_size]);
+    char *chunk = chunk_storage.get();
     if (!chunk) throw FWException("Out of memory");
 
     int  n = 0;
@@ -262,7 +264,6 @@ string XMLTools::readFile(const std::string &rfile) throw(FWException)
         buf = buf + chunk;
     }
     int errn = errno;
-    free(chunk);
     gzclose(gzf);
 
     if (n<0)
@@ -278,11 +279,11 @@ string XMLTools::readFile(const std::string &rfile) throw(FWException)
 xmlDocPtr XMLTools::parseFile(const string &file_name, 
                               const string &buffer,
                               bool use_dtd,
-                              const string &template_dir) throw(FWException)
+                              const string &template_dir)
 {
-    xml_parser_mutex.lock();
+    LockGuard lock(xml_parser_mutex);
 
-    if (current_template_dir!=NULL) delete[] current_template_dir;
+    if (current_template_dir!=nullptr) delete[] current_template_dir;
     current_template_dir = cxx_strdup(template_dir.c_str());
     
     xmlDoValidityCheckingDefaultValue = use_dtd ? 1 : 0;
@@ -294,9 +295,8 @@ xmlDocPtr XMLTools::parseFile(const string &file_name,
 
     xmlDocPtr doc = xmlParseMemory(buffer.c_str(), buffer.length());
 
-    xmlSetGenericErrorFunc(NULL, NULL);
+    xmlSetGenericErrorFunc(nullptr, nullptr);
 
-    xml_parser_mutex.unlock();
     if (!doc || errors.length())
     {
         throw FWException(
@@ -316,7 +316,7 @@ xmlDocPtr XMLTools::loadFile(const string &data_file ,
                              const UpgradePredicate *upgrade,
                              const string &template_dir,
                              const string &current_version
-                             ) throw(FWException)
+                             )
 {
 #ifdef FW_XMLTOOLS_VERBOSE
     cerr << "Loading file:        " << data_file      << endl
@@ -420,7 +420,7 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
                 throw;
         }
     } 
-    assert(doc!=NULL);
+    assert(doc!=nullptr);
     xmlFreeDoc(doc);
     //xmlCleanupParser();
 
@@ -433,20 +433,19 @@ in the same directory with extension '.bak'. Are you sure you want to open it?";
 
 void XMLTools::setDTD(xmlDocPtr doc, 
                       const string &type_name, 
-                      const string &dtd_file) throw(FWException)
+                      const string &dtd_file)
 {
 #ifdef FW_XMLTOOLS_VERBOSE
     cerr << "XMLTools::setDTD: type_name=" << type_name << " dtd_file=" << dtd_file << endl;
 #endif
   
 
-    xmlCreateIntSubset(doc, STRTOXMLCAST(type_name), 
-                       NULL, 
-                       STRTOXMLCAST(dtd_file)
+    xmlCreateIntSubset(doc, XMLTools::StrToXmlCast(type_name), 
+                       nullptr, 
+                       XMLTools::StrToXmlCast(dtd_file)
     );
     
-
-    xml_parser_mutex.lock();    
+    LockGuard lock(xml_parser_mutex);
 
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue         = DTD_LOAD_BITS;
@@ -475,13 +474,10 @@ void XMLTools::setDTD(xmlDocPtr doc,
         if(xmlValidateDocument(&vctxt, doc)!=1)
             throw FWException(string("DTD validation stage 2 failed with following errors:\n")+errors);
 */
-        xmlSetGenericErrorFunc (NULL, NULL);
-        xml_parser_mutex.unlock();    
-
+        xmlSetGenericErrorFunc (nullptr, nullptr);
     } catch(...)
     {
-        xmlSetGenericErrorFunc (NULL, NULL);
-        xml_parser_mutex.unlock();    
+        xmlSetGenericErrorFunc (nullptr, nullptr);  
         throw;
     }
 }
@@ -489,7 +485,7 @@ void XMLTools::setDTD(xmlDocPtr doc,
 void XMLTools::saveFile(xmlDocPtr doc, 
                         const string &file_name, 
                         const string &type_name,
-                        const string &dtd_file) throw(FWException)
+                        const string &dtd_file)
 {
     
 #ifdef FW_XMLTOOLS_VERBOSE
@@ -498,11 +494,7 @@ void XMLTools::saveFile(xmlDocPtr doc,
     
     setDTD(doc, type_name, dtd_file);
 
-#ifdef HAVE_XMLSAVEFORMATFILEENC
     if(xmlSaveFormatFileEnc(file_name.c_str(), doc, "utf-8", 1)==-1)
-#else
-    if(xmlSaveFileEnc(file_name.c_str(), doc, "utf-8")==-1)
-#endif
         throw FWException("Error saving XML file: "+file_name);
 }
 
@@ -511,7 +503,7 @@ void XMLTools::dumpToMemory(xmlDocPtr doc,
                             xmlChar **buffer,
                             int      *size,
                             const string &type_name,
-                            const string &dtd_file) throw(FWException)
+                            const string &dtd_file)
 {
     setDTD(doc, type_name, dtd_file);
 
@@ -527,15 +519,13 @@ void XMLTools::transformFileToFile(const string &src_file,
 				   const string &stylesheet_file,
 				   const char **params,
 				   const string &dst_file)
-    throw(FWException)
 {
     string xslt_errors;
-    xsltStylesheetPtr ss = NULL;
+    xsltStylesheetPtr ss = nullptr;
     xmlDocPtr doc, res;
 
-
-    xslt_processor_mutex.lock();
-    xml_parser_mutex.lock();    
+    LockGuard xslt_processor_mutex_lock(xslt_processor_mutex);
+    LockGuard xml_parser_mutex_lock(xml_parser_mutex);
     
     xsltSetGenericErrorFunc(&xslt_errors, xslt_error_handler);
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
@@ -546,18 +536,16 @@ void XMLTools::transformFileToFile(const string &src_file,
 
     xmlSubstituteEntitiesDefault(1);
     xmlLoadExtDtdDefaultValue = DTD_LOAD_BITS;
-    ss = xsltParseStylesheetFile(STRTOXMLCAST(stylesheet_file));
+    ss = xsltParseStylesheetFile(XMLTools::StrToXmlCast(stylesheet_file));
 
     if(!ss)
     {
-        xsltSetGenericErrorFunc(NULL, NULL);
-        xmlSetGenericErrorFunc (NULL, NULL);
+        xsltSetGenericErrorFunc(nullptr, nullptr);
+        xmlSetGenericErrorFunc (nullptr, nullptr);
 
         // Following line is workaround for bug #73088 in Gnome
         // bugzilla. To be removed than it will be fixed.
-        xsltSetGenericDebugFunc (NULL, NULL);
-        xml_parser_mutex.unlock();    
-        xslt_processor_mutex.unlock();
+        xsltSetGenericDebugFunc (nullptr, nullptr);
         throw FWException("File conversion error: Error loading stylesheet: " + 
                           stylesheet_file+
                           (xslt_errors.length()?(string("\nXSLT reports: \n") +
@@ -571,15 +559,12 @@ void XMLTools::transformFileToFile(const string &src_file,
     res = xsltApplyStylesheet(ss, doc, params);
     xsltSaveResultToFilename(dst_file.c_str(), res, ss, 0);
 
-    xsltSetGenericErrorFunc(NULL, NULL);
-    xmlSetGenericErrorFunc (NULL, NULL);
+    xsltSetGenericErrorFunc(nullptr, nullptr);
+    xmlSetGenericErrorFunc (nullptr, nullptr);
 
     // Following line is workaround for bug #73088 in Gnome
     // bugzilla. To be removed than it will be fixed.
-    xsltSetGenericDebugFunc (NULL, NULL);
-
-    xml_parser_mutex.unlock();    
-    xslt_processor_mutex.unlock();    
+    xsltSetGenericDebugFunc (nullptr, nullptr);
     
     if(!res)
     {
@@ -603,12 +588,12 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
                                        const string &stylesheet_file,
                                        const char **params,
                                        const string &dst_file
-) throw(FWException)
+)
 {
     string xslt_errors;
 
-    xslt_processor_mutex.lock();    
-    xml_parser_mutex.lock();    
+    LockGuard xslt_processor_mutex_lock(xslt_processor_mutex);
+    LockGuard xml_parser_mutex_lock(xml_parser_mutex);
     
     xsltSetGenericErrorFunc(&xslt_errors, xslt_error_handler);
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
@@ -625,20 +610,18 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
     xmlDoValidityCheckingDefaultValue = 0;
     xmlLoadExtDtdDefaultValue = 0;
     xsltStylesheetPtr ss = xsltParseStylesheetFile(
-        STRTOXMLCAST(stylesheet_file));
+        XMLTools::StrToXmlCast(stylesheet_file));
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue = DTD_LOAD_BITS;
 
     if (!ss)
     {
-        xsltSetGenericErrorFunc(NULL, NULL);
-        xmlSetGenericErrorFunc (NULL, NULL);
+        xsltSetGenericErrorFunc(nullptr, nullptr);
+        xmlSetGenericErrorFunc (nullptr, nullptr);
 
         // Following line is workaround for bug #73088 in Gnome
         // bugzilla. To be removed than it will be fixed.
-        xsltSetGenericDebugFunc (NULL, NULL);
-        xml_parser_mutex.unlock();    
-        xslt_processor_mutex.unlock();    
+        xsltSetGenericDebugFunc (nullptr, nullptr);  
         throw FWException("File conversion error: Error loading stylesheet: " + 
                           stylesheet_file+
                           (xslt_errors.length()?(string("\nXSLT reports: \n") +
@@ -648,16 +631,13 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
     
     xmlDocPtr res = xsltApplyStylesheet(ss, doc, params);
 
-    xsltSetGenericErrorFunc(NULL, NULL);
-    xmlSetGenericErrorFunc (NULL, NULL);
+    xsltSetGenericErrorFunc(nullptr, nullptr);
+    xmlSetGenericErrorFunc (nullptr, nullptr);
 
     // Following line is workaround for bug #73088 in Gnome
     // bugzilla. To be removed than it will be fixed.
-    xsltSetGenericDebugFunc (NULL, NULL);
+    xsltSetGenericDebugFunc (nullptr, nullptr);  
 
-    xml_parser_mutex.unlock();    
-    xslt_processor_mutex.unlock();    
-    
     if (!res)
     {
         xsltFreeStylesheet(ss);
@@ -681,12 +661,11 @@ void XMLTools::transformDocumentToFile(xmlDocPtr doc,
 xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc, 
                                       const string &stylesheet_file,
                                       const char **params)
-    throw(FWException)
 {
     string xslt_errors;
 
-    xslt_processor_mutex.lock();   
-    xml_parser_mutex.lock();    
+    LockGuard xslt_processor_mutex_lock(xslt_processor_mutex);
+    LockGuard xml_parser_mutex_lock(xml_parser_mutex);
         
     xsltSetGenericErrorFunc(&xslt_errors, xslt_error_handler);
     xmlSetGenericErrorFunc (&xslt_errors, xslt_error_handler);
@@ -698,20 +677,17 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
     xmlDoValidityCheckingDefaultValue = 0;
     xmlLoadExtDtdDefaultValue         = 0;
     xsltStylesheetPtr ss = xsltParseStylesheetFile(
-        STRTOXMLCAST(stylesheet_file));
+        XMLTools::StrToXmlCast(stylesheet_file));
     xmlDoValidityCheckingDefaultValue = 1;
     xmlLoadExtDtdDefaultValue         = DTD_LOAD_BITS;
 
     if (!ss)
     {
-        xsltSetGenericErrorFunc(NULL, NULL);
-        xmlSetGenericErrorFunc (NULL, NULL);
+        xsltSetGenericErrorFunc(nullptr, nullptr);
+        xmlSetGenericErrorFunc (nullptr, nullptr);
         // Following line is workaround for bug #73088 in Gnome
         // bugzilla. To be removed than it will be fixed.
-        xsltSetGenericDebugFunc (NULL, NULL);
-    
-        xml_parser_mutex.unlock();    
-        xslt_processor_mutex.unlock();    
+        xsltSetGenericDebugFunc (nullptr, nullptr);  
         throw FWException("File conversion error: Error loading stylesheet: "+stylesheet_file+
                           (xslt_errors.length()?(string("\nXSLT reports: \n")+xslt_errors):string(""))
         );
@@ -720,15 +696,12 @@ xmlDocPtr XMLTools::transformDocument(xmlDocPtr doc,
     xmlDocPtr res = xsltApplyStylesheet(ss, doc, params);
 
     xsltFreeStylesheet(ss);
-    xsltSetGenericErrorFunc(NULL, NULL);
-    xmlSetGenericErrorFunc (NULL, NULL);
+    xsltSetGenericErrorFunc(nullptr, nullptr);
+    xmlSetGenericErrorFunc (nullptr, nullptr);
     // Following line is workaround for bug #73088 in Gnome
     // bugzilla. To be removed than it will be fixed.
-    xsltSetGenericDebugFunc (NULL, NULL);
-    
-    xml_parser_mutex.unlock();    
-    xslt_processor_mutex.unlock();    
-    
+    xsltSetGenericDebugFunc (nullptr, nullptr);   
+
     if (!res)
     {
         throw FWException("File conversion Error: Error during conversion: "+stylesheet_file+
@@ -743,12 +716,12 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
                             const string &file_name, 
                             const string &type_name, 
                             const string &template_dir,
-                            const string &current_version) throw(FWException)
+                            const string &current_version)
 {
-    xmlDocPtr  res = NULL;
+    xmlDocPtr  res = nullptr;
     
     xmlNodePtr root = xmlDocGetRootElement(doc);
-    if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
+    if (!root || !root->name || type_name!=XMLTools::FromXmlCast(root->name))
     {
         xmlFreeDoc(doc);
         //xmlCleanupParser();
@@ -756,20 +729,20 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
     }
 
     string vers;
-    const char *v = FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
-    if (v==NULL)
+    const char *v = XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("version")));
+    if (v==nullptr)
     {
         // no version.
         v="0.8.7"; // at this version attribute has been introduced
         xmlNewProp(root, 
-                   TOXMLCAST("version") , 
-                   TOXMLCAST(v));
+                   XMLTools::ToXmlCast("version") , 
+                   XMLTools::ToXmlCast(v));
         res=doc; // changed
         vers=v;
     } else
     {
         vers=v;
-        FREEXMLBUFF(v);
+        XMLTools::FreeXmlBuff(v);
     }
 
 #ifdef FW_XMLTOOLS_VERBOSE
@@ -807,7 +780,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
 
         fname = template_dir;
 
-        fname = fname+FS_SEPARATOR+"migration"+FS_SEPARATOR+type_name+"_"+vers+".xslt";
+        fname = fname+"/migration/"+type_name+"_"+vers+".xslt";
 
         if (access(fname.c_str() , R_OK )!=0) 
         {
@@ -821,7 +794,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         
         try
         {
-            res = transformDocument(doc, fname, NULL);
+            res = transformDocument(doc, fname, nullptr);
         } catch(FWException &ex)
         {
             ex.getProperties()["failed_transformation"]=fname;
@@ -834,7 +807,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         doc = res;
         
         root = xmlDocGetRootElement(doc);
-        if (!root || !root->name || type_name!=FROMXMLCAST(root->name))
+        if (!root || !root->name || type_name!=XMLTools::FromXmlCast(root->name))
         {
             xmlFreeDoc(doc);
             //xmlCleanupParser();
@@ -842,8 +815,8 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
                               "' conversion Error: conversion produced file with invalid structure.");
         }
 
-        v = FROMXMLCAST(xmlGetProp(root, TOXMLCAST("version")));
-        if (v==NULL)
+        v = XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("version")));
+        if (v==nullptr)
         {
             xmlFreeDoc(doc);
             //xmlCleanupParser();
@@ -852,7 +825,7 @@ xmlDocPtr XMLTools::convert(xmlDocPtr doc,
         } 
 
         vers=v;
-        FREEXMLBUFF(v);
+        XMLTools::FreeXmlBuff(v);
         
         if (version_compare(vers, oldversion) <= 0)
         {
@@ -941,14 +914,14 @@ string XMLTools::cleanForUTF8(const string &str)
 {
     string res;
     
-    if ( xmlCheckUTF8(TOXMLCAST(str.c_str()))==0 )
+    if ( xmlCheckUTF8(XMLTools::ToXmlCast(str.c_str()))==0 )
     {
         for (string::size_type i=0; i<str.size(); ++i)
         {
             char c[2];
             c[1]='\0';
             c[0]=str[i];
-            if ( xmlCheckUTF8(TOXMLCAST(c))==0 )
+            if ( xmlCheckUTF8(XMLTools::ToXmlCast(c))==0 )
             {
                 res += "?";
             } else  res += c;

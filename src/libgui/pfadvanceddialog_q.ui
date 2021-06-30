@@ -100,7 +100,7 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_10">
+      <layout class="QGridLayout" name="pfAdvanced_gridLayout_10">
        <item row="0" column="0">
         <widget class="QLabel" name="compilerLabel">
          <property name="text">
@@ -158,7 +158,7 @@
          <property name="title">
           <string>Names of generated files</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_7">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_7">
           <item row="0" column="0">
            <widget class="QLabel" name="label_6">
             <property name="text">
@@ -229,7 +229,7 @@
          <property name="flat">
           <bool>false</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout">
           <item row="0" column="0" colspan="2">
            <widget class="QLabel" name="label_4">
             <property name="text">
@@ -285,7 +285,7 @@
          <property name="flat">
           <bool>false</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_6">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_6">
           <item row="0" column="0">
            <widget class="QCheckBox" name="pf_accept_new_tcp_with_no_syn">
             <property name="text">
@@ -416,7 +416,7 @@ with this address:</string>
       <attribute name="title">
        <string>Scrub</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_9">
+      <layout class="QGridLayout" name="pfAdvanced_gridLayout_9">
        <item row="0" column="0">
         <spacer>
          <property name="orientation">
@@ -567,7 +567,7 @@ with this address:</string>
          <property name="title">
           <string/>
          </property>
-         <layout class="QGridLayout" name="gridLayout_5">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_5">
           <property name="verticalSpacing">
            <number>6</number>
           </property>
@@ -654,13 +654,13 @@ with this address:</string>
       <attribute name="title">
        <string>Options</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_17">
+      <layout class="QGridLayout" name="pfAdvanced_gridLayout_17">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_6">
          <property name="title">
           <string>Limits</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_15">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_15">
           <item row="0" column="0">
            <widget class="QCheckBox" name="pf_do_limit_frags">
             <property name="text">
@@ -829,7 +829,7 @@ with this address:</string>
          <property name="title">
           <string>Options</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_16">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_16">
           <item row="0" column="0">
            <widget class="QLabel" name="textLabel3">
             <property name="text">
@@ -937,7 +937,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
       <attribute name="title">
        <string>Timeouts</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_14">
+      <layout class="QGridLayout" name="pfAdvanced_gridLayout_14">
        <item row="0" column="0" colspan="3">
         <widget class="QLabel" name="textLabel2">
          <property name="text">
@@ -1431,7 +1431,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
          <property name="title">
           <string>Adaptive scaling</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_12">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_12">
           <item row="0" column="0">
            <widget class="QLabel" name="textLabel1_11">
             <property name="text">
@@ -1556,7 +1556,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
          <property name="title">
           <string>Fragments</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_13">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_13">
           <item row="0" column="0">
            <widget class="QCheckBox" name="pf_do_timeout_interval">
             <property name="toolTip">
@@ -1659,7 +1659,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
       <attribute name="title">
        <string>Installer</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
+      <layout class="QGridLayout" name="pfAdvanced_gridLayout_3">
        <property name="spacing">
         <number>20</number>
        </property>
@@ -1668,7 +1668,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
          <property name="title">
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_128">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_128">
           <item row="0" column="0">
            <widget class="QLabel" name="label556">
             <property name="text">
@@ -1829,7 +1829,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
          <property name="title">
           <string>External install script</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_2">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
@@ -2226,7 +2226,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
       <attribute name="title">
        <string>Script</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_11">
+      <layout class="QGridLayout" name="pfAdvanced_gridLayout_11">
        <item row="0" column="1">
         <spacer>
          <property name="orientation">
@@ -2251,7 +2251,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
          <property name="flat">
           <bool>false</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_4">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_4">
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
@@ -2284,7 +2284,7 @@ return    A TCP RST is returned for blocked TCP packets, an ICMP
          <property name="title">
           <string>Enable auxiliary sections in the generated script</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_8">
+         <layout class="QGridLayout" name="pfAdvanced_gridLayout_8">
           <item row="0" column="0">
            <widget class="QCheckBox" name="pf_debug">
             <property name="text">

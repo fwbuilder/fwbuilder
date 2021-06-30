@@ -32,11 +32,7 @@
 #define RULESETVIEW_H
 
 #include <qglobal.h>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QtGui/QTreeView>
-#else
-#   include <QtWidgets/QTreeView>
-#endif
+#include <QtWidgets/QTreeView>
 #include <QUndoCommand>
 
 #include "fwbuilder/Rule.h"

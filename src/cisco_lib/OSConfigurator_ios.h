@@ -27,7 +27,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_IOS_HH
 #define _OSNETWORKCONFIGURATOR_IOS_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 

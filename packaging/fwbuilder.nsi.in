@@ -1,3 +1,4 @@
+setCompressor lzma
 ; fwbuilder.nsi
 ;
 ;
@@ -11,123 +12,17 @@ Var STARTMENU_FOLDER
 ; GENERATION is used to build the path in the registry, it should be coordinated
 ; with the path defined in FWBSettings class
 ;
-!define GENERATION "@GENERATION@"
-!define GENERATION_SHORT "@GENERATION_SHORT@"
-!define VERSION "@VERSION@"
+!define GENERATION "@PROJECT_GENERATION@"
+!define VERSION "@PROJECT_VERSION@"
+!define APPNAME "FirewallBuilder"
 
-
-
-!define APPNAME "FirewallBuilder-${GENERATION}"
-
-;------------------------------------------------------------------------------
-; GetWindowsVersion
-;
-; Based on Yazno's function, http://yazno.tripod.com/powerpimpit/
-; Returns on top of stack
-;
-; Windows Version (95, 98, ME, NT x.x, 2000)
-; or
-; '' (Unknown Windows Version)
-;
-; Usage:
-;   Call GetWindowsVersion
-;   Pop $0
-;   ; at this point $0 is "NT 4.0" or whatnot
-
-Function GetWindowsVersion
-  Push $0
-  Push $9
-  ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-  StrCmp $0 "" 0 lbl_winnt
-  ; we are not NT.
-  ReadRegStr $0 HKLM SOFTWARE\Microsoft\Windows\CurrentVersion VersionNumber
- 
-  StrCpy $9 $0 1
-  StrCmp $9 '4' 0 lbl_error
-
-  StrCpy $9 $0 3
-
-  StrCmp $9 '4.0' lbl_win32_95
-  StrCmp $9 '4.9' lbl_win32_ME lbl_win32_98
-
-  lbl_win32_95:
-    StrCpy $0 '95'
-  Goto lbl_done
-
-  lbl_win32_98:
-    StrCpy $0 '98'
-  Goto lbl_done
-
-  lbl_win32_ME:
-    StrCpy $0 'ME'
-  Goto lbl_done
-
-  lbl_winnt: 
-
-    StrCpy $9 $0 1
-    StrCmp $9 '3' lbl_winnt_x
-    StrCmp $9 '4' lbl_winnt_x
-    StrCmp $9 '5' lbl_winnt_5
-    StrCmp $9 '6' lbl_winnt_6 lbl_error
-
-    lbl_winnt_x:
-      StrCpy $0 "NT $0" 6
-    Goto lbl_done
-
-    lbl_winnt_5:
-      Strcpy $0 '2000'
-    Goto lbl_done
-
-    lbl_winnt_6:
-      Strcpy $0 'Vista'
-    Goto lbl_done
-
-  lbl_error:
-    Strcpy $0 ''
-  lbl_done:
-  Pop $9
-  Exch $0
-FunctionEnd
-
-
+!include WinVer.nsh
 Function .onInit
-
-  Call GetWindowsVersion
-  Pop $0
-
-  StrCmp $0 "NT 4.0" lbl_done check_2000
-  check_2000:
-      StrCmp $0 "2000" lbl_done check_vista
-  check_vista:
-      StrCmp $0 "Vista" lbl_done lbl_error
-  lbl_error:
-      MessageBox MB_OK  "Firewall Builder supports only Windows 2000, Windows XP and Vista platform."
-      Abort
-
-lbl_done:
-
+  ${IfNot} ${AtLeastWin7}
+    MessageBox MB_OK  "Firewall Builder require at least Windows 7."
+    Abort
+  ${EndIf}
 FunctionEnd
-
-
-Function un.UninstallSurveyPageText
-
-  IfFileExists $PROFILE\fwb4*license* +4 0
-  IfFileExists $PROFILE\Documents\fwb4*license* +3 0
-
-  MessageBox MB_YESNO "Help us improve Firewall Builder!  If you are \
-uninstalling because you don't plan to use the software please fill out \
-a short survey to tell us why you are leaving and what we can do better.\
-$\n\
-$\n\
-Click Yes to open the survey in your web browser, click No to exit the \
-uninstaller." IDNO +2
-
-  ExecShell open "http://www.fwbuilder.org/uninstall_survey.html" 
-
-;  MessageBox MB_ICONSTOP "Continuing uninstaller"
-
-FunctionEnd
-
 
 ;****************************************************************************
 ;Include Modern UI
@@ -136,33 +31,22 @@ FunctionEnd
 
 ;****************************************************************************
 
-  setCompressor lzma
 
-  Name "Firewall Builder ${GENERATION}"
+  Name "Firewall Builder ${VERSION}"
   Caption "Firewall Builder installation"
   OutFile "fwbuilder-${VERSION}.exe"
 
 ;  Default installation folder
-  InstallDir "$PROGRAMFILES\FWBuilder-${GENERATION}"
+  InstallDir "$PROGRAMFILES\FWBuilder${GENERATION}"
 
 ;****************************************************************************
 ; We need to keep installation data and program settings in
 ; registry folders with different names. QSettings always looks into
-; Current User registry first, so if the folders have the same names,
-; then we store evaluation key in Current User, while it is better
-; to put it in the Local Machine branch.
-;
-; So, installation data goes to HKLM Software\NetCitadel\FirewallBuilder\2.1
-; and settings to HKCU Software\NetCitadel\FirewallBuilder2_1
-;
-; fwbuilder-lm determines folder path for the license file by
-; reading key Install_Dir under HKLM Software\NetCitadel\FirewallBuilder\2.1
-;
 ;****************************************************************************
 ;
 ;  Get installation folder from registry if available
 
-  InstallDirRegKey HKLM Software\NetCitadel\${APPNAME} "Install_Dir"
+  InstallDirRegKey HKLM Software\firewallbuilder.org\${APPNAME}\${GENERATION} "Install_Dir"
 
 ;****************************************************************************
 ;Interface Settings
@@ -171,15 +55,15 @@ FunctionEnd
 
   ;Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\NetCitadel\${APPNAME}" 
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\firewallbuilder.org\${APPNAME}\${GENERATION}"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
   LicenseText "GNU GENERAL PUBLIC LICENSE"
   LicenseData "doc\COPYING"
 
   !define MUI_HEADERIMAGE
-  !define MUI_HEADERIMAGE_BITMAP       packaging\fwbuilder-160x60.bmp
-  !define MUI_WELCOMEFINISHPAGE_BITMAP packaging\fwbuilder-164x314.bmp
+  !define MUI_HEADERIMAGE_BITMAP       fwbuilder-160x60.bmp
+  !define MUI_WELCOMEFINISHPAGE_BITMAP fwbuilder-164x314.bmp
 
 ;****************************************************************************
 ; The following macros add PageEx statements
@@ -213,21 +97,16 @@ Section "FWBuilder (required)"
 
   SetOutPath $INSTDIR\resources
 
-  File src\res\resources.xml
-  File src\res\templates.xml
-  File src\res\objects_init.xml
-  File src\libfwbuilder\etc\fwbuilder.dtd
+  File resources\resources.xml
+  File resources\templates.xml
+  File resources\objects_init.xml
+  File resources\fwbuilder.dtd
 
-  File /r src\res\configlets
-  File /r src\res\help
-  File /r src\res\os
-  File /r src\res\platform
-  File /r src\libfwbuilder\migration
-
-  SetOutPath $INSTDIR\resources\locale
-
-; we have no working translations for v4 and v5
-;  File src\libgui\*.qm
+  File /r resources\configlets
+  File /r resources\help
+  File /r resources\os
+  File /r resources\platform
+  File /r resources\migration
 
   SetOutPath $INSTDIR
 
@@ -244,46 +123,46 @@ Section "FWBuilder (required)"
   File "doc\README.nxosacl"
   File "doc\README.junos"
 
-  File /oname=fwbuilder.ico "src\gui\fwbuilder-windows.ico"
-
-  File /a "src\gui\release\fwbuilder.exe"
-  File /a "src\fwbedit\release\fwbedit.exe"
-  File /a "src\iosacl\release\fwb_iosacl.exe"
-  File /a "src\ipt\release\fwb_ipt.exe"
-  File /a "src\ipf\release\fwb_ipf.exe"
-  File /a "src\ipfw\release\fwb_ipfw.exe"
-  File /a "src\pf\release\fwb_pf.exe"
-  File /a "src\pix\release\fwb_pix.exe"
-  File /a "src\procurve_acl\release\fwb_procurve_acl.exe"
-  File /a "src\nxosacl\release\fwb_nxosacl.exe"
-  File /a "src\junosacl\release\fwb_junosacl.exe"
+  File /a "fwbuilder.exe"
+  File /a "fwbedit.exe"
+  File /a "fwb_iosacl.exe"
+  File /a "fwb_ipt.exe"
+  File /a "fwb_ipf.exe"
+  File /a "fwb_ipfw.exe"
+  File /a "fwb_pf.exe"
+  File /a "fwb_pix.exe"
+  File /a "fwb_procurve_acl.exe"
+  File /a "fwb_nxosacl.exe"
+  File /a "fwb_junosacl.exe"
 
 ; Install Qt and its dependencies
 
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Core.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Gui.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Network.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5PrintSupport.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Widgets.dll"
-  File /r "/usr/lib/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libbz2.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libgcc_s_sjlj-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libglib-2.0-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libiconv-2.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libintl-8.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpcre16-0.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libpng16-16.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libstdc++-6.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libwinpthread-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libxml2-2.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libxslt-1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/ssleay32.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/zlib1.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libeay32.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/libfreetype-6.dll"
-  File "/usr/lib/mxe/usr/i686-w64-mingw32.shared/bin/liblzma-5.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Core.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Gui.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Network.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5PrintSupport.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Widgets.dll"
+  File /r "/opt/mxe/usr/i686-w64-mingw32.shared/qt5/plugins/platforms"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libbz2.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libgcc_s_sjlj-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libglib-2.0-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libharfbuzz-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libiconv-2.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libintl-8.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpcre-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpcre16-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpcre2-16-0.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libpng16-16.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libstdc++-6.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libwinpthread-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libxml2-2.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libxslt-1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/zlib1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libssl-1_1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libcrypto-1_1.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libfreetype-6.dll"
+  File "/opt/mxe/usr/i686-w64-mingw32.shared/bin/liblzma-5.dll"
+  File /nonfatal "/opt/mxe/usr/i686-w64-mingw32.shared/bin/libzstd.dll"
 
 ; Install RCS for these files
 ;
@@ -301,10 +180,10 @@ Section "FWBuilder (required)"
 
 
 ; Write the installation path into the registry
-  WriteRegStr HKLM Software\NetCitadel\${APPNAME} "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM Software\firewallbuilder.org\${APPNAME}\${GENERATION} "Install_Dir" "$INSTDIR"
 
 ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayName"     "Firewall Builder ${GENERATION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayName"     "Firewall Builder ${VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "Publisher"       "https://github.com/fwbuilder"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}" "DisplayVersion"  "${VERSION}"
@@ -313,12 +192,12 @@ Section "FWBuilder (required)"
 ; Write file associations and icons
 
   WriteRegStr HKLM "Software\Classes\.fwb" "" "fwbfile"
-  WriteRegStr HKLM "Software\Classes\fwbfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe -noexec %1"
-  WriteRegStr HKLM "Software\Classes\fwbfile\DefaultIcon"        "" "$INSTDIR\fwbuilder.exe,0"
+  WriteRegStr HKLM "Software\Classes\fwbfile\shell\open\command" "" '"$INSTDIR\fwbuilder.exe" "%1"'
+  WriteRegStr HKLM "Software\Classes\fwbfile\DefaultIcon"        "" '"$INSTDIR\fwbuilder.exe,0"'
 
   WriteRegStr HKLM "Software\Classes\.fwl" "" "fwlfile"
-  WriteRegStr HKLM "Software\Classes\fwlfile\shell\open\command" "" "$INSTDIR\fwbuilder.exe -noexec %1"
-  WriteRegStr HKLM "Software\Classes\fwlfile\DefaultIcon"        "" "$INSTDIR\fwbuilder.exe,0"
+  WriteRegStr HKLM "Software\Classes\fwlfile\shell\open\command" "" '"$INSTDIR\fwbuilder.exe" "%1"'
+  WriteRegStr HKLM "Software\Classes\fwlfile\DefaultIcon"        "" '"$INSTDIR\fwbuilder.exe,0"'
 
 
 ; Create registry entry for putty session with ssh keepalive
@@ -328,23 +207,20 @@ Section "FWBuilder (required)"
 ; ========================================================================
 ; Configure installer to use our prepackaged plink.exe and pscp.exe but only if it was not configured before
 ;
-; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings 
+; ******** THESE KEYS MUST MATCH THOSE USED BY the class FWBSettings
 ;
-  ReadRegStr $0 HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SSHPath"
+  ReadRegStr $0 HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SSHPath"
   StrCmp $0 "" 0 +3
-    WriteRegStr HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SSHPath" "$INSTDIR\plink.exe"
-    WriteRegStr HKCU "Software\netcitadel.com\${APPNAME}\${GENERATION}\SSH" "SCPPath" "$INSTDIR\pscp.exe"
+    WriteRegStr HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SSHPath" "$INSTDIR\plink.exe"
+    WriteRegStr HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}\SSH" "SCPPath" "$INSTDIR\pscp.exe"
 ; ========================================================================
 
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
-; Setting var context to "all" makes Start menu shortcuts appear for all
-; users
-
-;  SetShellVarContext all
+  SetShellVarContext all
 
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk" "$INSTDIR\fwbuilder.exe" "" "$INSTDIR\fwbuilder.ico"
+  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk" "$INSTDIR\fwbuilder.exe" "" "$INSTDIR\fwbuilder.exe"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
 
   !insertmacro MUI_STARTMENU_WRITE_END
@@ -364,14 +240,13 @@ Section "Uninstall"
 
   ; remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FWBuilder ${GENERATION}"
-  DeleteRegKey HKLM "Software\NetCitadel\${APPNAME}"
+  DeleteRegKey HKLM "Software\firewallbuilder.org\${APPNAME}\${GENERATION}"
+  DeleteRegKey /ifempty HKLM "Software\firewallbuilder.org\${APPNAME}"
+  DeleteRegKey /ifempty HKLM "Software\firewallbuilder.org"
 
-  ; delete obsolete registry folder, not used in v3.x but could be left over from older versions
-  DeleteRegKey HKCU "Software\NetCitadel LLC\Firewall Builder"
-
-  DeleteRegKey HKCU "Software\netcitadel.com\${APPNAME}"
-  DeleteRegKey /ifempty HKCU "Software\netcitadel.com\${APPNAME}"
-  DeleteRegKey /ifempty HKCU "Software\netcitadel.com"
+  DeleteRegKey HKCU "Software\firewallbuilder.org\${APPNAME}\${GENERATION}"
+  DeleteRegKey /ifempty HKCU "Software\firewallbuilder.org\${APPNAME}"
+  DeleteRegKey /ifempty HKCU "Software\firewallbuilder.org"
 
   DeleteRegKey HKCR ".fwb"
   DeleteRegKey HKCR ".fwl"
@@ -393,10 +268,6 @@ Section "Uninstall"
 
   RMDir /r "$INSTDIR"
 
-;  !insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
-;  Delete  "$SMPROGRAMS\$MUI_TEMP\*.*"
-;  StrCpy $MUI_TEMP "$SMPROGRAMS\$MUI_TEMP"
-
 ;  Remove Start menu shortcuts
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $STARTMENU_FOLDER
@@ -406,10 +277,6 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\$STARTMENU_FOLDER\FWBuilder.lnk"
   Delete "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk"
   RMDir  "$SMPROGRAMS\$STARTMENU_FOLDER"
-
-  ; delete only if empty because there could be registry folders
-  ; for our other products
-  DeleteRegKey /ifempty HKLM "Software\NetCitadel"
 
 SectionEnd
 

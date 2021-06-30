@@ -29,7 +29,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -58,7 +57,7 @@
 #include "FirewallCodeViewer.h"
 
 #include "RuleSetDiffDialog.h"
-#include "temporarydir.h"
+#include <QTemporaryDir>
 
 #include <QtDebug>
 #include <QMdiSubWindow>
@@ -84,7 +83,7 @@ using namespace std;
 void ProjectPanel::initMain(FWWindow *main)
 {
     mainW = main;
-    mdiWindow = NULL;
+    mdiWindow = nullptr;
     treeReloadPending = false;
 
     // mdiWindow changes state several times right after it is opened,
@@ -122,10 +121,10 @@ void ProjectPanel::reset()
 {
     undoStack->clear();
     delete rcs;
-    rcs = NULL;
+    rcs = nullptr;
     firewalls.clear();
-    visibleFirewall = NULL;
-    visibleRuleSet = NULL;
+    visibleFirewall = nullptr;
+    visibleRuleSet = nullptr;
     clearFirewallTabs();
     clearObjects();
     FWObjectClipboard::obj_clipboard->clear();
@@ -263,15 +262,15 @@ void ProjectPanel::closeRuleSetPanel()
 {
     if (fwbdebug) qDebug() << "ProjectPanel::closeRuleSetPanel";
     clearFirewallTabs();
-    visibleRuleSet = NULL;
+    visibleRuleSet = nullptr;
 }
 
 void ProjectPanel::ensureObjectVisibleInRules(FWReference *obj)
 {
     if (fwbdebug) qDebug() << "ProjectPanel::ensureObjectVisibleInRules";
     FWObject *p=obj;
-    while (p && RuleSet::cast(p)==NULL ) p=p->getParent();
-    if (p==NULL) return;  // something is broken
+    while (p && RuleSet::cast(p)==nullptr ) p=p->getParent();
+    if (p==nullptr) return;  // something is broken
     // p is a pointer to RuleSet object @obj belongs to
     if (p != getCurrentRuleSet()) openRuleSet(p);
     getCurrentRuleSetView()->setFocus();
@@ -325,7 +324,7 @@ void ProjectPanel::reopenFirewall()
                "dirty=%d last_modified=%s",
                db()->isDirty(), ctime(&last_modified));
 
-    if (visibleRuleSet==NULL) return ;
+    if (visibleRuleSet==nullptr) return ;
 
     for (int i =0 ; i < m_panel->ruleSets->count (); i++)
         m_panel->ruleSets->removeWidget(m_panel->ruleSets->widget(i));
@@ -340,7 +339,7 @@ void ProjectPanel::reopenFirewall()
                db()->isDirty(), ctime(&last_modified));
 
     RuleSetView* rulesetview =
-        RuleSetView::getRuleSetViewByType(this, visibleRuleSet, NULL);
+        RuleSetView::getRuleSetViewByType(this, visibleRuleSet, nullptr);
     if (rulesetview)
     {
         m_panel->ruleSets->addWidget(rulesetview);
@@ -378,10 +377,10 @@ int  ProjectPanel::findFirewallInList(FWObject *f)
 
 void ProjectPanel::updateFirewallName()
 {
-    if (visibleRuleSet==NULL) return ;
+    if (visibleRuleSet==nullptr) return ;
     QString name;
 //     mw->buildEditorTitleAndIcon(visibleRuleSet, ObjectEditor::optNone,
-//                                 &name, NULL, false);
+//                                 &name, nullptr, false);
 //    name = "<b>" + name  + "</b>";
     FWObject *fw = visibleRuleSet->getParent();
     name = QString("%1 / %2")
@@ -637,67 +636,67 @@ void ProjectPanel::resetFD()
 
 void ProjectPanel::insertRule()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->insertRule();
 }
 
 void ProjectPanel::addRuleAfterCurrent()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->addRuleAfterCurrent();
 }
 
 void ProjectPanel::removeRule()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->removeRule();
 }
 
 void ProjectPanel::moveRule()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->moveRule();
 }
 
 void ProjectPanel::moveRuleUp()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->moveRuleUp();
 }
 
 void ProjectPanel::moveRuleDown()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->moveRuleDown();
 }
 
 void ProjectPanel::copyRule()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->copyRule();
 }
 
 void ProjectPanel::cutRule()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->cutRule();
 }
 
 void ProjectPanel::pasteRuleAbove()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->pasteRuleAbove();
 }
 
 void ProjectPanel::pasteRuleBelow()
 {
-    if (visibleRuleSet==NULL || m_panel->ruleSets->count()==0) return;
+    if (visibleRuleSet==nullptr || m_panel->ruleSets->count()==0) return;
     getCurrentRuleSetView()->pasteRuleBelow();
 }
 
 bool ProjectPanel::editingLibrary()
 {
-    return (rcs!=NULL &&
+    return (rcs!=nullptr &&
         ( rcs->getFileName().endsWith(".fwl")) );
 }
 
@@ -718,7 +717,7 @@ RCS * ProjectPanel::getRCS()
  */
 void ProjectPanel::addRule()
 {
-    if (visibleRuleSet==NULL || getCurrentRuleSetView()==NULL) return ;
+    if (visibleRuleSet==nullptr || getCurrentRuleSetView()==nullptr) return ;
     getCurrentRuleSetView()->insertRule();
 }
 
@@ -734,7 +733,7 @@ void ProjectPanel::diffThis()
 
 void ProjectPanel::compileThis()
 {
-    if (visibleRuleSet==NULL) return ;
+    if (visibleRuleSet==nullptr) return ;
 
     save();
     // see comment in FWWindow::compile()
@@ -751,7 +750,7 @@ void ProjectPanel::compileThis()
 
 void ProjectPanel::installThis()
 {
-    if (visibleRuleSet==NULL) return ;
+    if (visibleRuleSet==nullptr) return ;
 
     save();
     // see comment in FWWindow::compile()
@@ -768,7 +767,7 @@ void ProjectPanel::installThis()
 
 void ProjectPanel::inspectThis()
 {
-    if (visibleRuleSet==NULL) return;
+    if (visibleRuleSet==nullptr) return;
 
     save();
     // see comment in FWWindow::compile()
@@ -818,7 +817,7 @@ void ProjectPanel::inspectAll()
 void ProjectPanel::compile()
 {
     if (mw->isEditorVisible() &&
-        !mw->requestEditorOwnership(NULL,NULL,ObjectEditor::optNone,true))
+        !mw->requestEditorOwnership(nullptr,nullptr,ObjectEditor::optNone,true))
         return;
 
     save();
@@ -832,7 +831,7 @@ void ProjectPanel::compile()
 void ProjectPanel::compile(set<Firewall*> vf)
 {
     if (mw->isEditorVisible() &&
-        !mw->requestEditorOwnership(NULL, NULL, ObjectEditor::optNone, true))
+        !mw->requestEditorOwnership(nullptr, nullptr, ObjectEditor::optNone, true))
         return;
 
     save();
@@ -911,10 +910,10 @@ void ProjectPanel::inspect(set<Firewall *> fws)
     QStringList files;
 
     QSet<Firewall*> filesMissing;
-    Firewall *first_fw = NULL;
+    Firewall *first_fw = nullptr;
     foreach(Firewall *fw, fws)
     {
-        if (first_fw == NULL) first_fw = fw;
+        if (first_fw == nullptr) first_fw = fw;
 
         /*
          * get full path to the generated file. The path is built from
@@ -933,7 +932,7 @@ void ProjectPanel::inspect(set<Firewall *> fws)
             cnf.fwobj = fw;
             cnf.script = mainFile;
             QMap<QString, QString> res;
-            FirewallInstaller(NULL, &cnf, "").readManifest(mainFile, &res);
+            FirewallInstaller(nullptr, &cnf, "").readManifest(mainFile, &res);
             QStringList current_files = res.keys();
             foreach(QString file, current_files)
             {
@@ -1063,7 +1062,7 @@ void ProjectPanel::closeEvent(QCloseEvent * ev)
 
 QString ProjectPanel::getFileName()
 {
-    if (rcs!=NULL) return rcs->getFileName();
+    if (rcs!=nullptr) return rcs->getFileName();
     else  return "";
 }
 
@@ -1148,7 +1147,7 @@ void ProjectPanel::registerModifiedObject(FWObject *o)
 
     if (RuleElement::cast(o))
     {
-        while (RuleSet::cast(modified_object) == NULL)
+        while (RuleSet::cast(modified_object) == nullptr)
             modified_object = modified_object->getParent();
     }
 

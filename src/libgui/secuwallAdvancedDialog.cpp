@@ -14,7 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "../../config.h"
 #include "global.h"
 #include "platforms.h"
 
@@ -63,10 +62,10 @@ secuwallAdvancedDialog::secuwallAdvancedDialog(QWidget *parent, FWObject *o)
     setWindowTitle(QObject::tr("%1 advanced settings").arg(description.c_str()));
 
     FWOptions *fwoptions=(Firewall::cast(obj))->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt=(Firewall::cast(obj))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.registerOption(m_dialog->logTCPseq, fwoptions, "log_tcp_seq");
     data.registerOption(m_dialog->logTCPopt, fwoptions, "log_tcp_opt");
@@ -194,15 +193,15 @@ void secuwallAdvancedDialog::switchLOG_ULOG()
 void secuwallAdvancedDialog::accept()
 {
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd(new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd(new FWCmdChange(project, obj));
 
     // new_state  is a copy of the fw object
     FWObject* new_state = cmd->getNewState();
     FWOptions* fwoptions = Firewall::cast(new_state)->getOptionsObject();
-    assert(fwoptions!=NULL);
+    assert(fwoptions!=nullptr);
 
     Management *mgmt = (Firewall::cast(new_state))->getManagementObject();
-    assert(mgmt!=NULL);
+    assert(mgmt!=nullptr);
 
     data.saveAll(fwoptions);
 

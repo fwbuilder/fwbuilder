@@ -100,7 +100,7 @@ void ND_ChooseObjectTypePage::changeTargetObject(const QString &buf)
 {
     QTreeWidgetItem* item = m_dialog->typeChangingList->topLevelItem(0);
 
-    while (item!=0)
+    while (item!=nullptr)
     {
         if (item->isSelected())
         {

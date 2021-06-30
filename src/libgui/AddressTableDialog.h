@@ -27,7 +27,6 @@
 #ifndef __ADDRESSTABLEDIALOG_H_
 #define __ADDRESSTABLEDIALOG_H_
 
-#include "config.h"
 #include <ui_addresstabledialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

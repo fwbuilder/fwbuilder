@@ -26,16 +26,14 @@
 #ifndef RCSTEST_H
 #define RCSTEST_H
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <QTest>
 
-class parseCommandLineTest : public CppUnit::TestFixture
+class parseCommandLineTest : public QObject
 {
-public:
-    void parseCommandLines();
+    Q_OBJECT
 
-    CPPUNIT_TEST_SUITE(parseCommandLineTest);
-    CPPUNIT_TEST(parseCommandLines);
-    CPPUNIT_TEST_SUITE_END();
+private slots:
+    void parseCommandLines();
 
 };
 

@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/NAT.h"
@@ -49,7 +47,7 @@ NAT::~NAT()  {}
 Rule* NAT::createRule()
 {
     FWObjectDatabase* db=getRoot();
-    assert(db!=NULL);
+    assert(db!=nullptr);
     return db->createNATRule();
 }
 

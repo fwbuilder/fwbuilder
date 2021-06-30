@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "BaseObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"
@@ -54,7 +53,7 @@ map<QString,int>  BaseObjectGroup::name_disambiguation;
 const char *BaseObjectGroup::TYPENAME={"BaseObjectGroup"};
 
 FWObject& BaseObjectGroup::shallowDuplicate(const FWObject *other,
-                                            bool preserve_id) throw(FWException)
+                                            bool preserve_id)
 {
     gt = BaseObjectGroup::constcast(other)->gt;
     return FWObject::shallowDuplicate(other, preserve_id);
@@ -97,11 +96,11 @@ QString BaseObjectGroup::registerGroupName(const QString &prefix,
 BaseObjectGroup::object_group_type BaseObjectGroup::getObjectGroupTypeFromFWObject(
     const FWObject *obj)
 {
-    if (Address::constcast(obj)!=NULL)     return NETWORK;
-    if (IPService::constcast(obj)!=NULL)   return PROTO;
-    if (ICMPService::constcast(obj)!=NULL) return ICMP_TYPE;
-    if (TCPService::constcast(obj)!=NULL)  return TCP_SERVICE;
-    if (UDPService::constcast(obj)!=NULL)  return UDP_SERVICE;
+    if (Address::constcast(obj)!=nullptr)     return NETWORK;
+    if (IPService::constcast(obj)!=nullptr)   return PROTO;
+    if (ICMPService::constcast(obj)!=nullptr) return ICMP_TYPE;
+    if (TCPService::constcast(obj)!=nullptr)  return TCP_SERVICE;
+    if (UDPService::constcast(obj)!=nullptr)  return UDP_SERVICE;
     return UNKNOWN;
 }
 
@@ -223,12 +222,11 @@ string BaseObjectGroup::getObjectGroupClass()
 }
 
 QString BaseObjectGroup::groupMemberToString(FWObject*, NamedObjectsManager*)
-    throw(libfwbuilder::FWException)
 {
     return "";
 }
 
-QString BaseObjectGroup::toString(NamedObjectsManager *nm)  throw(FWException)
+QString BaseObjectGroup::toString(NamedObjectsManager *nm)
 {
     QStringList res;
     if (this->size()==0) return "";

@@ -27,8 +27,6 @@
 #ifndef  __FWOBJECT_HH_FLAG__
 #define  __FWOBJECT_HH_FLAG__
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include <time.h>
 #include <string>
@@ -189,7 +187,7 @@ public:
         FWObject *node;
 
       public:
-        tree_iterator()                        { node=NULL;    }
+        tree_iterator()                        { node=nullptr;    }
         tree_iterator(FWObject *_n)            { node=_n;      }
         tree_iterator(const tree_iterator &ti) { node=ti.node; }
         FWObject* operator*() { return node; }
@@ -229,10 +227,9 @@ public:
      */
     bool getRO() const { return ro; }
     
-    virtual void fromXML(xmlNodePtr xml_parent_node) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
-    xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children)
-        throw(FWException);
+    virtual void fromXML(xmlNodePtr xml_parent_node);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
+    xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children);
 
     /**
      *  Rarely used feature: we can change the name of XML element
@@ -252,7 +249,7 @@ public:
     /**
      * It is same as calling duplicate(x, FALSE);
      */
-    virtual FWObject& operator=(const FWObject &) throw(FWException);
+    virtual FWObject& operator=(const FWObject &);
 
     /**
      * This method copies content of object 'x' in the object 'this'.
@@ -261,14 +258,13 @@ public:
      * are created recursively as copies of corresponding children of obj.
      */
     virtual FWObject& duplicate(const FWObject *obj,
-                                bool preserve_id = true) throw(FWException);
+                                bool preserve_id = true);
     
     /**
      * This method works just like  duplicate, except it does not destroy
      * or change children of 'this'.
      */
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true)
-        throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id = true);
 
     /**
      * This method copies all attributes of obj into this, plus
@@ -279,21 +275,20 @@ public:
      * Changes done to its children should be undone or redone using
      * corresponding objects.
      */
-    virtual FWObject& duplicateForUndo(const FWObject *obj) throw(FWException);
+    virtual FWObject& duplicateForUndo(const FWObject *obj);
 
     /**
      * This method creates a copy of object 'x' and adds it to 'this'.
      * Depending on 'preserve_id' flag, Id are either copied or new
      * ones are issued.
      */
-    virtual FWObject* addCopyOf(const FWObject *obj, bool preserve_id = true)
-        throw(FWException);
+    virtual FWObject* addCopyOf(const FWObject *obj, bool preserve_id = true);
     
     /**
      * compares objects. Ignores ID and always looks at
      * attributes. Returns true if objects are equal.
      */
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
     
     void Show();
     void Hide();
@@ -321,7 +316,7 @@ public:
     const std::string &getComment() const;
     void setComment(const std::string& c);
 
-    void storeCreationTime() { creation_time = time(NULL); }
+    void storeCreationTime() { creation_time = time(nullptr); }
     time_t getCreationTime() { return creation_time; }
 
     void setPrivateData(const std::string &key, void *data);
@@ -445,7 +440,7 @@ public:
     
     /**
      * Walks the tree, looking for objects that are referenced by two parents
-     * or those with this->parent == NULL. Prints report to stderr and
+     * or those with this->parent == nullptr. Prints report to stderr and
      * returns true if such objects have been found.
      */
     bool verifyTree();
@@ -506,7 +501,7 @@ public:
 
     /**
      * Returns first of direct children of current object
-     * whose getTypeName() same as given or NULL if not found.
+     * whose getTypeName() same as given or nullptr if not found.
      */
     virtual FWObject* getFirstByType(const std::string &type_name) const;
 
@@ -514,13 +509,13 @@ public:
      * finds a child object of a given type with a given name
      */
     FWObject* findObjectByName(const std::string &type,
-                               const std::string &name) throw(FWException);
+                               const std::string &name);
 
     /**
      * finds a child object of a given type with an attribute attr
      */
     FWObject* findObjectByAttribute(const std::string &attr,
-                                    const std::string &val) throw(FWException);
+                                    const std::string &val);
 
     /**
      * Generic find function, finds all objects in the tree rooted at
@@ -554,7 +549,7 @@ public:
      */
     virtual void setReadOnly(bool f);
     virtual bool isReadOnly();
-    virtual void checkReadOnly() throw(FWException);
+    virtual void checkReadOnly();
 
     /**
      * return true if this object can be copied around and put in the
@@ -588,7 +583,8 @@ class FWObjectTypedChildIterator
     FWObjectTypedChildIterator();
     FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);   
     FWObjectTypedChildIterator(const FWObject *o, const std::string &_type_name);
-    
+    FWObjectTypedChildIterator& operator=(const FWObjectTypedChildIterator&) = default;
+
     bool operator==(const FWObject::const_iterator& __x) const;
     bool operator!=(const FWObject::const_iterator& __x) const;
     FWObject *operator*() const;

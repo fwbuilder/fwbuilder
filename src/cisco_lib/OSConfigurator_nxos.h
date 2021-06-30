@@ -27,7 +27,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_NXOS_HH
 #define _OSNETWORKCONFIGURATOR_NXOS_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 

@@ -30,8 +30,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Routing.h"
 #include "fwbuilder/Rule.h"
@@ -52,7 +50,7 @@ Routing::~Routing()  {}
 Rule* Routing::createRule()
 {
     FWObjectDatabase* db=getRoot();
-    assert(db!=NULL);
+    assert(db!=nullptr);
     return db->createRoutingRule();
 }
 

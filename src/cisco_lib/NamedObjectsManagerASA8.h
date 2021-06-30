@@ -24,7 +24,6 @@
 #ifndef _NAMED_OBJECTS_MANAGER_ASA8_HH
 #define _NAMED_OBJECTS_MANAGER_ASA8_HH
 
-#include "config.h"
 
 #include "NamedObjectsManagerPIX.h"
 

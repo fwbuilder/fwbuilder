@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
  
 #ifdef HAVE_LOCALE_H
 #include <locale.h>
@@ -51,6 +50,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "version.h"
 #include "CompilerDriver_ipf.h"
 
 #include "fwbuilder/Resources.h"
@@ -74,7 +74,7 @@ using namespace fwcompiler;
 
 int fwbdebug = 0;
 
-FWObjectDatabase       *objdb = NULL;
+FWObjectDatabase       *objdb = nullptr;
 
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
@@ -101,9 +101,6 @@ int main(int argc, char **argv)
    QCoreApplication app(argc, argv, false);
 
     // compilers always write file names into manifest in Utf8
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
-#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
     
     QStringList args = app.arguments();
@@ -159,7 +156,7 @@ int main(int argc, char **argv)
         objdb->setFileName("");
         FWObjectDatabase *ndb = new FWObjectDatabase();
         ndb->load(filename, &upgrade_predicate,  Constants::getDTDDirectory());
-        objdb->merge(ndb, NULL);
+        objdb->merge(ndb, nullptr);
         delete ndb;
         objdb->setFileName(filename);
         objdb->reIndex();

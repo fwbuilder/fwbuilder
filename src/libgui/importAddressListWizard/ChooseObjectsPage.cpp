@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 #include "global.h"
 
 #include "ChooseObjectsPage.h"
@@ -72,9 +71,9 @@ void ChooseObjectsPage::initializePage()
 
     } catch (FWException &ex)
     {
-        QMessageBox::critical( NULL , "Firewall Builder",
+        QMessageBox::critical( nullptr , "Firewall Builder",
                                ex.toString().c_str(),
-                               QString::null,QString::null);
+                               QString(),QString());
     }
 }
 

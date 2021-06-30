@@ -56,16 +56,16 @@ namespace fwcompiler
         
         BasicRuleProcessor()
         {
-            compiler=NULL;
-            prev_processor=NULL;
+            compiler=nullptr;
+            prev_processor=nullptr;
             name="";
             do_once=false;
         }
 
         BasicRuleProcessor(const std::string &_name)
         {
-            compiler=NULL;
-            prev_processor=NULL;
+            compiler=nullptr;
+            prev_processor=nullptr;
             name=_name;
             do_once=false;
         }
@@ -106,7 +106,7 @@ namespace fwcompiler
         std::string getName() { return name; }
 
         /**
-         * Returns next rule or NULL if no more is availiable.
+         * Returns next rule or nullptr if no more is availiable.
          */
         libfwbuilder::Rule *getNextRule()
         {
@@ -114,7 +114,7 @@ namespace fwcompiler
 
             if(tmp_queue.empty())
             {
-                return NULL;
+                return nullptr;
             } else
             {
                 libfwbuilder::Rule *res = tmp_queue.front();
@@ -137,7 +137,7 @@ namespace fwcompiler
         {
             if (!do_once) {
                 libfwbuilder::Rule *rule;
-                while ( (rule=prev_processor->getNextRule())!=NULL) tmp_queue.push_back(rule);
+                while ( (rule=prev_processor->getNextRule())!=nullptr) tmp_queue.push_back(rule);
                 do_once=true;
                 return (tmp_queue.size()!=0);
             }
@@ -174,7 +174,7 @@ namespace fwcompiler
         PolicyRuleProcessor() : BasicRuleProcessor() {}
         PolicyRuleProcessor(const std::string &_name) : BasicRuleProcessor(_name) {}
         /**
-         * Returns next rule to be processed or NULL if no more is availiable.
+         * Returns next rule to be processed or nullptr if no more is availiable.
          */
         virtual libfwbuilder::PolicyRule* getNext()
         {
@@ -194,7 +194,7 @@ namespace fwcompiler
         NATRuleProcessor() : BasicRuleProcessor() {}
         NATRuleProcessor(const std::string &_name) : BasicRuleProcessor(_name) {}
         /**
-         * Returns next rule to be processed or NULL if no more is availiable.
+         * Returns next rule to be processed or nullptr if no more is availiable.
          */
         virtual libfwbuilder::NATRule* getNext()
         {
@@ -214,7 +214,7 @@ namespace fwcompiler
         RoutingRuleProcessor() : BasicRuleProcessor() {}
         RoutingRuleProcessor(const std::string &_name) : BasicRuleProcessor(_name) {}
         /**
-         * Returns next rule to be processed or NULL if no more is availiable.
+         * Returns next rule to be processed or nullptr if no more is availiable.
          */
         virtual libfwbuilder::RoutingRule* getNext()
         {

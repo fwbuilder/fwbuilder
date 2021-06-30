@@ -14,8 +14,6 @@
  * o The terms of NetCitadel End User License Agreement
  */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/ClusterGroup.h"
@@ -37,7 +35,7 @@ ClusterGroup::ClusterGroup() : ObjectGroup()
 void ClusterGroup::init(FWObjectDatabase *root)
 {
     FWObject *gopt = getFirstByType(ClusterGroupOptions::TYPENAME);
-    if (gopt == NULL)
+    if (gopt == nullptr)
     {
         gopt = root->create(ClusterGroupOptions::TYPENAME);
         add(gopt);
@@ -72,30 +70,30 @@ void ClusterGroup::replaceReferenceInternal(int old_id, int new_id, int &counter
     }
 }
 
-void ClusterGroup::fromXML(xmlNodePtr parent) throw(FWException)
+void ClusterGroup::fromXML(xmlNodePtr parent)
 {
     FWObject::fromXML(parent);
 
     const char *n;
-    n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("type")));
-    if (n != NULL)
+    n = XMLTools::FromXmlCast(xmlGetProp(parent, XMLTools::ToXmlCast("type")));
+    if (n != nullptr)
     {
         setStr("type", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
-    n = FROMXMLCAST(xmlGetProp(parent, TOXMLCAST("master_iface")));
-    if (n != NULL)
+    n = XMLTools::FromXmlCast(xmlGetProp(parent, XMLTools::ToXmlCast("master_iface")));
+    if (n != nullptr)
     {
         setStr("master_iface", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
-xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr ClusterGroup::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
 
     FWObject *o;
     for (FWObjectTypedChildIterator it = findByType(FWObjectReference::TYPENAME);
@@ -118,7 +116,7 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
     ClusterGroupOptions *gopt = ClusterGroupOptions::cast(
         getFirstByType(ClusterGroupOptions::TYPENAME));
 
-    if (gopt == NULL)
+    if (gopt == nullptr)
     {
         gopt = ClusterGroupOptions::cast(
             getRoot()->create(ClusterGroupOptions::TYPENAME));
@@ -127,9 +125,9 @@ ClusterGroupOptions* ClusterGroup::getOptionsObject()
     return gopt;
 }
 
-FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj)
 {
-    if (ClusterGroup::constcast(obj)==NULL) return *this;
+    if (ClusterGroup::constcast(obj)==nullptr) return *this;
 
     setRO(false);
 
@@ -154,7 +152,7 @@ FWObject& ClusterGroup::duplicateForUndo(const FWObject *obj) throw(FWException)
         }
     }
     if (their_opts && mine_opts) mine_opts->duplicate(their_opts);
-    if (their_opts && mine_opts==NULL) addCopyOf(their_opts);
+    if (their_opts && mine_opts==nullptr) addCopyOf(their_opts);
 
     shallowDuplicate(obj);
     return *this;
@@ -184,6 +182,6 @@ Interface* ClusterGroup::getInterfaceForMemberFirewall(Firewall *fw)
 
         if (other_iface->isChildOf(fw)) return other_iface;
     }
-    return NULL;
+    return nullptr;
 }
 

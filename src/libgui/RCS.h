@@ -27,7 +27,6 @@
 #ifndef __RCS_H_FLAG__
 #define __RCS_H_FLAG__
 
-#include "config.h"
 
 #include <qobject.h>
 #include <qprocess.h>
@@ -116,7 +115,7 @@ class RCS : public QObject {
     /**
      * Retrieves RCS log.
      */
-    QString rlog() throw(libfwbuilder::FWException);
+    QString rlog();
 
 
  public:
@@ -135,7 +134,7 @@ class RCS : public QObject {
     QList<Revision>::iterator begin() { return revisions.begin(); }
     QList<Revision>::iterator end()   { return revisions.end();   }
 
-    void  add() throw(libfwbuilder::FWException);
+    void  add();
 
     /**
      * this makes RCS object "forget" about the file
@@ -151,23 +150,23 @@ class RCS : public QObject {
      * RCS checkout. Returns true if successfull and false if file is
      * not in RCS. In case of error throws exception
      */
-    bool  co(const QString &rev,bool force=false) throw(libfwbuilder::FWException);
+    bool  co(const QString &rev,bool force=false);
 
     /**
      * checks out currently selected revision (set using setSelectedRev)
      */
-    bool  co(bool force=false) throw(libfwbuilder::FWException);
+    bool  co(bool force=false);
 
     /**
      * RCS checkin. Returns true if successfull and false if file is
      * not in RCS. In case of error throws exception
      */
-    bool  ci(const QString &logmsg =" ", bool unlock=false) throw(libfwbuilder::FWException);
+    bool  ci(const QString &logmsg =" ", bool unlock=false);
 
     /**
      * Retrieves RCS diff.
      */
-    QStringList rcsdiff(const QString &rev="") throw(libfwbuilder::FWException);
+    QStringList rcsdiff(const QString &rev="");
 
     /**
      * checks if the working copy of the file is different from RCS
@@ -178,7 +177,7 @@ class RCS : public QObject {
      * This is essentially just a code returned by rcsdiff with all
      * its output ignored.
      */
-    bool isDiff(const QString &rev="") throw(libfwbuilder::FWException);
+    bool isDiff(const QString &rev="");
 
     /**
      * these two methods just return status
@@ -217,6 +216,12 @@ class RCS : public QObject {
 
     static QStringList* getEnv();
     static RCSEnvFix*   getRCSEnvFix();
+
+    static const QString & getRcsFileName() { return rcs_file_name; }
+    static const QString & getRcsdiffFileName() { return rcsdiff_file_name; }
+    static const QString & getRlogFileName() { return rlog_file_name; }
+    static const QString & getCiFileName() { return ci_file_name; }
+    static const QString & getCoFileName() { return co_file_name; }
 
  public slots:
 

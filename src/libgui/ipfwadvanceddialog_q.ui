@@ -78,7 +78,7 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="ipfwAdvanced_gridLayout">
        <item row="0" column="0">
         <widget class="QLabel" name="compilerLabel">
          <property name="text">
@@ -321,13 +321,13 @@ known sessions on top of the policy (action 'check-state')</string>
       <attribute name="title">
        <string>Installer</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
+      <layout class="QGridLayout" name="ipfwAdvanced_gridLayout_3">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox2">
          <property name="title">
           <string>Built-in installer</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_104">
+         <layout class="QGridLayout" name="ipfwAdvanced_gridLayout_104">
           <item row="0" column="0">
            <widget class="QLabel" name="label556">
             <property name="text">
@@ -488,7 +488,7 @@ known sessions on top of the policy (action 'check-state')</string>
          <property name="title">
           <string>External install script</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QGridLayout" name="ipfwAdvanced_gridLayout_2">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>

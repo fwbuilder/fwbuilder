@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "networkZoneManager.h"
@@ -75,10 +74,10 @@ void NetworkZoneManager::load(FWObjectDatabase *_db)
         if ( library->getId()==FWObjectDatabase::DELETED_OBJECTS_ID ) continue;
 
         o1 = library->findObjectByName(ObjectGroup::TYPENAME, "Objects");
-        assert(o1!=NULL);
+        assert(o1!=nullptr);
 
         o2 = o1->findObjectByName(ObjectGroup::TYPENAME, "Groups");
-        if (o2==NULL)
+        if (o2==nullptr)
         {
             if (fwbdebug)
                 qDebug() << "NetworkZoneManager::NetworkZoneManager():"
@@ -97,7 +96,7 @@ void NetworkZoneManager::load(FWObjectDatabase *_db)
         }
 
         o2=o1->findObjectByName(ObjectGroup::TYPENAME,"Networks");
-        if (o2==NULL)
+        if (o2==nullptr)
         {
             if (fwbdebug)
                 qDebug() << "NetworkZoneManager::NetworkZoneManager():"

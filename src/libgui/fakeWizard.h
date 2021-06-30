@@ -66,7 +66,7 @@ public :
                            QPushButton    *_finishButton,
                            QPushButton    *_backButton,
                            QPushButton    *_cancelButton,
-                           QLabel         *_titleLabel = NULL);
+                           QLabel         *_titleLabel = nullptr);
 
     int  pageCount() const;
     int  currentPage() const;

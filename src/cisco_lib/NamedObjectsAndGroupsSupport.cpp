@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObjectsAndGroupsSupport.h"
 #include "NamedObjectsManager.h"
@@ -81,7 +80,7 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
     for (FWObject::iterator i=object_groups->begin(); i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-        assert(og!=NULL);
+        assert(og!=nullptr);
 
         if (og->size()==0 || (og->size()!=re->size()) ) continue;
 
@@ -97,12 +96,12 @@ BaseObjectGroup* CreateObjectGroups::findObjectGroup(RuleElement *re)
         }
         if (match) return og;
     }
-    return NULL;
+    return nullptr;
 }
 
 bool CreateObjectGroups::processNext()
 {
-    Rule *rule = prev_processor->getNextRule(); if (rule==NULL) return false;
+    Rule *rule = prev_processor->getNextRule(); if (rule==nullptr) return false;
     string version = compiler->fw->getStr("version");
     string platform = compiler->fw->getStr("platform");
 
@@ -123,7 +122,7 @@ bool CreateObjectGroups::processNext()
     }
 
     BaseObjectGroup *obj_group = findObjectGroup(re);
-    if (obj_group==NULL)
+    if (obj_group==nullptr)
     {
         obj_group = named_objects_manager->createObjectGroup();
         named_objects_manager->getObjectGroupsGroup()->add(obj_group);
@@ -170,12 +169,12 @@ void CreateObjectGroupsForTSrc::packObjects(RuleElement *re,
     {
         // put all objects inside of the group, except for the interface
         // if it belongs to the firewall
-        FWObject *re_interface = NULL;
+        FWObject *re_interface = nullptr;
         for (FWObject::iterator i1=re->begin(); i1!=re->end(); ++i1) 
         {
             FWObject *o = *i1;
             FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL)
+            if (FWReference::cast(o)!=nullptr)
                 obj = FWReference::cast(o)->getPointer();
             if (Interface::isA(obj) && obj->isChildOf(compiler->fw))
             {
@@ -199,13 +198,13 @@ void CreateObjectGroupsForTSrc::packObjects(RuleElement *re,
 
 void createNamedObjectsCommon::printObjectsForRE(FWObject *re)
 {
-    if (RuleElement::cast(re)!=NULL && RuleElement::cast(re)->isAny()) return;
+    if (RuleElement::cast(re)!=nullptr && RuleElement::cast(re)->isAny()) return;
 
     for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
     {
         FWObject *obj = FWReference::getObject(*it);
         if (Interface::isA(obj)) continue;
-        if (BaseObjectGroup::cast(obj)!=NULL) printObjectsForRE(obj);
+        if (BaseObjectGroup::cast(obj)!=nullptr) printObjectsForRE(obj);
         else named_objects_manager->addNamedObject(obj);
     }
 }
@@ -217,13 +216,13 @@ void createNamedObjectsCommon::printObjectsForRE(FWObject *re)
  */
 void createNamedObjectsForPolicy::printObjectsForRE(FWObject *re)
 {
-    if (RuleElement::cast(re)!=NULL && RuleElement::cast(re)->isAny()) return;
+    if (RuleElement::cast(re)!=nullptr && RuleElement::cast(re)->isAny()) return;
 
     for (FWObject::iterator it=re->begin(); it!=re->end(); ++it)
     {
         FWObject *obj = FWReference::getObject(*it);
         if (Interface::isA(obj)) continue;
-        if (BaseObjectGroup::cast(obj)!=NULL) printObjectsForRE(obj);
+        if (BaseObjectGroup::cast(obj)!=nullptr) printObjectsForRE(obj);
         if (AddressRange::isA(obj)) named_objects_manager->addNamedObject(obj);
     }
 }

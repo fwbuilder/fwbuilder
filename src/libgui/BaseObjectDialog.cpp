@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "FWObjectDropArea.h"

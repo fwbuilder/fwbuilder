@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "events.h"
 #include "FWWindow.h"
@@ -61,7 +60,7 @@ void newClusterDialog::createNewCluster()
         this->m_dialog->interfaceSelector->getInterfaces();
     
     typedef QPair<Firewall*, bool> fwpair;
-    Firewall *master = NULL;
+    Firewall *master = nullptr;
     QList<QPair<Firewall*, bool> > member_firewalls = 
         this->m_dialog->firewallSelector->getSelectedFirewalls();
     foreach(fwpair member, member_firewalls)
@@ -72,7 +71,7 @@ void newClusterDialog::createNewCluster()
     FWObject *o;
     o = db->create(Cluster::TYPENAME);
 
-    if (o == NULL)
+    if (o == nullptr)
     {
         QDialog::accept();
         return;
@@ -179,13 +178,8 @@ void newClusterDialog::createNewCluster()
         oi->add(failover_grp);
 
         QString failover_protocol_name = data.protocol.toLower();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        failover_grp->setStr("type",
-                             failover_protocol_name.toAscii().constData());
-#else
         failover_grp->setStr("type",
                              failover_protocol_name.toLatin1().constData());
-#endif
 
         typedef QPair<Firewall*, Interface*> intfpair;
         foreach(intfpair intf, member_interfaces)
@@ -202,7 +196,7 @@ void newClusterDialog::createNewCluster()
 
             failover_grp->addRef(member_intf);
 
-            if (master!=NULL && member_fw == master)
+            if (master!=nullptr && member_fw == master)
             {
                 std::string masteriface_id =
                     FWObjectDatabase::getStringId(member_intf->getId());
@@ -226,7 +220,7 @@ void newClusterDialog::createNewCluster()
         StateSyncClusterGroup::cast(state_sync_members));
 
     // Copy rule sets if requested
-    Firewall *source = NULL;
+    Firewall *source = nullptr;
     foreach (QRadioButton* btn, copy_rules_from_buttons.keys())
     {
         if (btn->isChecked() && btn != noPolicy)
@@ -242,7 +236,7 @@ void newClusterDialog::createNewCluster()
     QString filename = pp->getFileName();
 
 
-    if (source == NULL)
+    if (source == nullptr)
     {
         if (fwbdebug)
             qDebug() << "newClusterDialog::createNewCluster() checkpoint 5";
@@ -262,9 +256,9 @@ void newClusterDialog::createNewCluster()
     // <source>, need to close it because we are about to delete that
     // rule set object
 
-    RuleSet* current_ruleset = NULL;
+    RuleSet* current_ruleset = nullptr;
     RuleSetView* rsv = pp->getCurrentRuleSetView();
-    RuleSetModel* md = NULL;
+    RuleSetModel* md = nullptr;
     if (rsv)
     {
         md = (RuleSetModel*)rsv->model();
@@ -289,7 +283,7 @@ void newClusterDialog::createNewCluster()
 
         string name_bak = fw->getName() + "-bak";
         FWCmdAddObject *cmd = new FWCmdAddObject(
-            mw->activeProject(), fwgroup, NULL,
+            mw->activeProject(), fwgroup, nullptr,
             QString("Create new Firewall %1")
             .arg(QString::fromUtf8(name_bak.c_str())));
         cmd->setNeedTreeReload(true);

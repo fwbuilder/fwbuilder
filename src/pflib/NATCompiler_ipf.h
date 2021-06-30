@@ -26,7 +26,6 @@
 #ifndef __NATCOMPILER_IPF_HH
 #define __NATCOMPILER_IPF_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "NATCompiler_pf.h"
 
 #include <map>

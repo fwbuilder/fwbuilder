@@ -78,7 +78,7 @@
       <attribute name="title">
        <string>NTP</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="pixosAdvanced_gridLayout">
        <item row="0" column="0">
         <widget class="QLabel" name="fwsm_ntp_warning">
          <property name="text">

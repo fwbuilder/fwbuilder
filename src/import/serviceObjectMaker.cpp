@@ -67,7 +67,7 @@ ServiceObjectMaker::ServiceObjectMaker(Library *l, ObjectMakerErrorTracker *et) 
     sig.type_name = IPService::TYPENAME;
     sig.protocol = 0;
     sig.fragments = false;
-    registerAnonymousObject(sig, NULL);  // "any"
+    registerAnonymousObject(sig, nullptr);  // "any"
 }
 
 ServiceObjectMaker::~ServiceObjectMaker() {}
@@ -249,13 +249,13 @@ FWObject* ServiceObjectMaker::getUDPService(int srs, int sre, int drs, int dre)
 
 FWObject* ServiceObjectMaker::getTagService(const QString &tagcode)
 {
-    TagService *s = NULL;
+    TagService *s = nullptr;
 
     QString name = QString("tag-%1").arg(tagcode);
 
     s = TagService::cast(
         ObjectMaker::createObject(TagService::TYPENAME, name.toStdString()));
-    assert(s!=NULL);
+    assert(s!=nullptr);
     s->setCode(tagcode.toStdString());
 
     return s;
@@ -265,18 +265,18 @@ FWObject* ServiceObjectMaker::getMirroredServiceObject(FWObject *obj)
 {
     string new_name = obj->getName() + "-mirror";
     QString qs_new_name = QString::fromUtf8(new_name.c_str());
-    FWObject *new_obj = NULL;
+    FWObject *new_obj = nullptr;
     if (TCPService::isA(obj) || UDPService::isA(obj))
     {
         ObjectMirror mirror;
         new_obj = mirror.getMirroredService(Service::cast(obj));
-        if (new_obj!=NULL)
+        if (new_obj!=nullptr)
         {
             if (TCPService::isA(new_obj))
                 TCPService::cast(new_obj)->setEstablished(false);
 
             ObjectSignature sig(error_tracker);
-            new_obj->dispatch(&sig, (void*)(NULL));
+            new_obj->dispatch(&sig, (void*)(nullptr));
             sig.object_name = "";
 
             FWObject *matching_obj = findMatchingObject(sig);

@@ -26,7 +26,6 @@
 #ifndef __PREPROCESSOR_PF_HH
 #define __PREPROCESSOR_PF_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 #include "fwcompiler/Preprocessor.h"
 
 namespace libfwbuilder {

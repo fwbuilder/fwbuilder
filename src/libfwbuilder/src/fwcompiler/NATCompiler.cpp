@@ -56,7 +56,7 @@ int NATCompiler::prolog()
     NAT *nat = NAT::cast(fw->getFirstByType(NAT::TYPENAME));
     assert(nat);
 
-    if (source_ruleset == NULL) source_ruleset = nat;
+    if (source_ruleset == nullptr) source_ruleset = nat;
 
     source_ruleset->renumberRules();
 
@@ -74,7 +74,7 @@ int NATCompiler::prolog()
     for (FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
 	Rule *r = Rule::cast(*i);
-        if (r == NULL) continue; // skip RuleSetOptions object
+        if (r == nullptr) continue; // skip RuleSetOptions object
 
         /*
          * do not remove disabled rules just yet because some
@@ -126,10 +126,10 @@ bool NATCompiler::checkForShadowing(NATRule &r1, NATRule &r2)
     i1++;
     osrv2 = Service::cast(FWReference::cast((*i1)->front())->getPointer());
 
-    if (osrc1==NULL || odst1==NULL || osrv1==NULL)
+    if (osrc1==nullptr || odst1==nullptr || osrv1==nullptr)
         throw FWException("Can not compare rules because rule "+r1.getLabel()+" has a group in one of its elements. Aborting.");
 
-    if (osrc2==NULL || odst2==NULL || osrv2==NULL)
+    if (osrc2==nullptr || odst2==nullptr || osrv2==nullptr)
         throw FWException("Can not compare rules because rule "+r2.getLabel()+" has a group in one of its elements. Aborting.");
 
     return ( Compiler::checkForShadowing(*osrc1, *osrc2) && 
@@ -152,7 +152,7 @@ bool NATCompiler::cmpRules(NATRule&, NATRule&)
 
 bool NATCompiler::classifyNATRule::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -320,7 +320,7 @@ bool NATCompiler::classifyNATRule::processNext()
 
 bool NATCompiler::ExpandMultipleAddresses::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -383,7 +383,7 @@ bool NATCompiler::ExpandMultipleAddresses::processNext()
 
 bool NATCompiler::ExpandAddressRanges::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -406,7 +406,7 @@ bool NATCompiler::ExpandAddressRanges::processNext()
 
 bool NATCompiler::ExpandGroups::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -429,7 +429,7 @@ bool NATCompiler::ExpandGroups::processNext()
 
 bool NATCompiler::expandGroupsInItfInb::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElementItfInb *itf = rule->getItfInb();
     compiler->expandGroupsInRuleElement(itf);
     tmp_queue.push_back(rule);
@@ -438,7 +438,7 @@ bool NATCompiler::expandGroupsInItfInb::processNext()
 
 bool NATCompiler::expandGroupsInItfOutb::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElementItfOutb *itf = rule->getItfOutb();
     compiler->expandGroupsInRuleElement(itf);
     tmp_queue.push_back(rule);
@@ -448,7 +448,7 @@ bool NATCompiler::expandGroupsInItfOutb::processNext()
 
 bool NATCompiler::checkForUnnumbered::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( compiler->catchUnnumberedIfaceInRE( rule->getOSrc() ) ||
          compiler->catchUnnumberedIfaceInRE( rule->getODst() ) ||
@@ -465,7 +465,7 @@ bool NATCompiler::checkForUnnumbered::processNext()
 
 bool NATCompiler::ConvertToAtomicForOriginal::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementOSrc *osrc=rule->getOSrc();    assert(osrc);
     RuleElementODst *odst=rule->getODst();    assert(odst);
@@ -507,15 +507,19 @@ bool NATCompiler::ConvertToAtomicForOriginal::processNext()
 
 bool NATCompiler::ConvertToAtomicForAddresses::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementOSrc *osrc=rule->getOSrc();    assert(osrc);
     RuleElementODst *odst=rule->getODst();    assert(odst);
+#ifndef NDEBUG
     RuleElementOSrv *osrv=rule->getOSrv();    assert(osrv);
+#endif
 
     RuleElementTSrc *tsrc=rule->getTSrc();    assert(tsrc);
     RuleElementTDst *tdst=rule->getTDst();    assert(tdst);
+#ifndef NDEBUG
     RuleElementTSrv *tsrv=rule->getTSrv();    assert(tsrv);
+#endif
 
     for (FWObject::iterator i1=osrc->begin(); i1!=osrc->end(); ++i1) 
     {
@@ -564,7 +568,7 @@ bool NATCompiler::ConvertToAtomicForAddresses::processNext()
 
 bool NATCompiler::ConvertToAtomicForOSrv::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementOSrv *osrv=rule->getOSrv();    assert(osrv);
 
@@ -588,7 +592,7 @@ bool NATCompiler::ConvertToAtomicForOSrv::processNext()
 
 bool NATCompiler::ConvertToAtomicForTSrc::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementTSrc *tsrc=rule->getTSrc();    assert(tsrc);
 
@@ -613,7 +617,7 @@ bool NATCompiler::ConvertToAtomicForTSrc::processNext()
 
 bool NATCompiler::ConvertToAtomicForTDst::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementTDst *tsrc=rule->getTDst();    assert(tsrc);
 
@@ -638,7 +642,7 @@ bool NATCompiler::ConvertToAtomicForTDst::processNext()
 
 bool NATCompiler::ConvertToAtomicForTSrv::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementTSrv *tsrc=rule->getTSrv();    assert(tsrc);
 
@@ -662,7 +666,7 @@ bool NATCompiler::ConvertToAtomicForTSrv::processNext()
 
 bool NATCompiler::ConvertToAtomicForItfInb::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementItfInb *itf_inb_re=rule->getItfInb();    assert(itf_inb_re);
 
@@ -686,7 +690,7 @@ bool NATCompiler::ConvertToAtomicForItfInb::processNext()
 
 bool NATCompiler::ConvertToAtomicForItfOutb::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementItfOutb *itf_outb_re=rule->getItfOutb();    assert(itf_outb_re);
 
@@ -714,7 +718,7 @@ bool NATCompiler::ConvertToAtomicForItfOutb::processNext()
 
 bool NATCompiler::ConvertToAtomic::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementOSrc *osrc=rule->getOSrc();    assert(osrc);
     RuleElementODst *odst=rule->getODst();    assert(odst);
@@ -797,7 +801,7 @@ bool NATCompiler::MACFiltering::checkRuleElement(RuleElement *re)
 
 bool NATCompiler::MACFiltering::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
 
 
@@ -846,7 +850,7 @@ bool NATCompiler::MACFiltering::processNext()
  */
 bool NATCompiler::splitODstForSNAT::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getRuleType()==NATRule::SNAT)
     {
@@ -860,7 +864,7 @@ bool NATCompiler::splitODstForSNAT::processNext()
                 Address *a=Address::cast(o);
                 string iid="";
                 Interface *iface=compiler->findInterfaceFor( a , compiler->fw );
-                if (iface!=NULL) iid=iface->getId();
+                if (iface!=nullptr) iid=iface->getId();
                 il[iid].push_back( a );
             }
             if (il.size()>1)

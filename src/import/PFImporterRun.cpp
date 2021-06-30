@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "fwbuilder/InetAddr.h"
 
@@ -149,8 +148,11 @@ void PFImporter::run()
              */
             QString list_str = list_of_items.cap(1);
             list_str.replace(",", "");
-            QStringList items = list_str.split(QRegExp("\\s"),
-                                               QString::SkipEmptyParts);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+            QStringList items = list_str.split(QRegExp("\\s"), Qt::SkipEmptyParts);
+#else
+            QStringList items = list_str.split(QRegExp("\\s"), QString::SkipEmptyParts);
+#endif
             qDebug() << items;
 
             bool has_address = false;

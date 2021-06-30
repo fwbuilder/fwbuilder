@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -52,7 +51,7 @@ void PrototypeDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Prototype *s = dynamic_cast<Prototype*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -80,7 +79,7 @@ void PrototypeDialog::validate(bool *res)
 void PrototypeDialog::applyChanges()
 {
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     new_state->setName( string(obj_name->text().utf8()) );

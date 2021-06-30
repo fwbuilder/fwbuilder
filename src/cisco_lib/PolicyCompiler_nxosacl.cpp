@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_nxosacl.h"
 #include "NamedObjectsAndGroupsSupport.h"
@@ -92,10 +91,10 @@ bool PolicyCompiler_nxosacl::checkForDynamicInterface::findDynamicInterface(
     for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
 	FWObject *o   = *i1;
-	FWObject *obj = NULL;
-	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+	FWObject *obj = nullptr;
+	if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface *iface=Interface::cast(obj);
-        if (iface!=NULL && iface->isDyn())
+        if (iface!=nullptr && iface->isDyn())
             compiler->abort(
                 rule, 
                 "Dynamic interface can not be used in the NXOS ACL rules.");
@@ -106,7 +105,7 @@ bool PolicyCompiler_nxosacl::checkForDynamicInterface::findDynamicInterface(
 
 bool PolicyCompiler_nxosacl::checkForDynamicInterface::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     findDynamicInterface(rule,rule->getSrc());
     findDynamicInterface(rule,rule->getDst());
@@ -132,7 +131,7 @@ void PolicyCompiler_nxosacl::mirrorRule::duplicateRuleElement(
 bool PolicyCompiler_nxosacl::mirrorRule::processNext()
 {
     //PolicyCompiler_nxosacl *nxosacl_comp=dynamic_cast<PolicyCompiler_nxosacl*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     if (rule->getOptionsObject()->getBool("nxosacl_add_mirror_rule"))
     {
         PolicyRule *r= compiler->dbcopy->createPolicyRule();
@@ -170,7 +169,7 @@ bool PolicyCompiler_nxosacl::mirrorRule::processNext()
             {
                 Service *nobj = mirror.getMirroredService(
                     Service::cast(FWReference::getObject(*i1)));
-                if (nobj->getParent() == NULL)
+                if (nobj->getParent() == nullptr)
                     compiler->persistent_objects->add(nobj, false);
                 nsrv->addRef(nobj);
             }
@@ -185,10 +184,10 @@ bool PolicyCompiler_nxosacl::mirrorRule::processNext()
 bool PolicyCompiler_nxosacl::SpecialServices::processNext()
 {
     //PolicyCompiler_nxosacl *nxosacl_comp=dynamic_cast<PolicyCompiler_nxosacl*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     Service *s = compiler->getFirstSrv(rule);
 
-    if (IPService::cast(s)!=NULL)
+    if (IPService::cast(s)!=nullptr)
     {
 	if (s->getBool("rr")        ||
 	    s->getBool("ssrr")      ||
@@ -197,7 +196,7 @@ bool PolicyCompiler_nxosacl::SpecialServices::processNext()
                     rule, 
                     "NXOS ACL does not support checking for IP options in ACLs.");
     }
-    if (TCPService::cast(s)!=NULL && TCPService::cast(s)->inspectFlags())
+    if (TCPService::cast(s)!=nullptr && TCPService::cast(s)->inspectFlags())
     {
         string version = compiler->fw->getStr("version");
         if (XMLTools::version_compare(version, "12.4")<0)
@@ -214,7 +213,7 @@ bool PolicyCompiler_nxosacl::SpecialServices::processNext()
  */
 bool PolicyCompiler_nxosacl::splitTCPServiceWithFlags::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrv *srv = rule->getSrv();
 
     if (srv->size() > 1)
@@ -223,10 +222,10 @@ bool PolicyCompiler_nxosacl::splitTCPServiceWithFlags::processNext()
         for (list<FWObject*>::iterator i1=srv->begin(); i1!=srv->end(); ++i1) 
         {
             FWObject *o   = *i1;
-            FWObject *obj = NULL;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+            FWObject *obj = nullptr;
+            if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
             Service *s=Service::cast(obj);
-            assert(s!=NULL);
+            assert(s!=nullptr);
 
             TCPService *tcp_srv = TCPService::cast(s);
             if (tcp_srv && (tcp_srv->inspectFlags() || tcp_srv->getEstablished()))

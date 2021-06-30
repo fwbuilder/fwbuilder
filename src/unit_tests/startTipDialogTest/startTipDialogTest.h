@@ -26,7 +26,7 @@
 #ifndef FWWINDOWTEST_H
 #define FWWINDOWTEST_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #include <QTest>
 #include <QMessageBox>
 

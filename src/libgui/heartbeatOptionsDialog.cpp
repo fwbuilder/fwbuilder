@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "heartbeatOptionsDialog.h"
@@ -51,13 +50,13 @@ heartbeatOptionsDialog::heartbeatOptionsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *gropt = FWOptions::cast(obj);
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
     FWObject *p = obj;
-    while (p && Cluster::cast(p)==NULL) p = p->getParent();
-    assert(p != NULL);
+    while (p && Cluster::cast(p)==nullptr) p = p->getParent();
+    assert(p != nullptr);
     Cluster *cluster = Cluster::cast(p);
     Resources *os_res = Resources::os_res[cluster->getStr("host_OS")];
-    assert(os_res != NULL);
+    assert(os_res != nullptr);
 
     string default_address =
         os_res->getResourceStr(
@@ -96,7 +95,7 @@ void heartbeatOptionsDialog::accept()
     if (!validate()) return;
     // the parent of this dialog is InterfaceDialog, not ProjectPanel
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     data.saveAll(new_state);
@@ -127,7 +126,7 @@ bool heartbeatOptionsDialog::validate()
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("Invalid IP address '%1'").arg(m_dialog->heartbeat_address->text()),
-                tr("&Continue"), 0, 0,
+                tr("&Continue"), nullptr, nullptr,
                 0 );
             return false;
         }

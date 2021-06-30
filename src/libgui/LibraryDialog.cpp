@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "ProjectPanel.h"
@@ -63,7 +62,7 @@ LibraryDialog::LibraryDialog(QWidget *parent) : BaseObjectDialog(parent)
     m_dialog = new Ui::LibraryDialog_q;
     m_dialog->setupUi(this);
 
-    obj=NULL;
+    obj=nullptr;
     //layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     Qt::WindowFlags flags = windowFlags();
@@ -83,7 +82,7 @@ void LibraryDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     Library *s = dynamic_cast<Library*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
     m_dialog->obj_name->setText( QString::fromUtf8(s->getName().c_str()) );
@@ -121,7 +120,7 @@ void LibraryDialog::applyChanges()
 {
     if (FWBTree().isSystem(obj)) return;
 
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     QString oldcolor = new_state->getStr("color").c_str();

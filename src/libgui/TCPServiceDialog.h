@@ -27,7 +27,6 @@
 #ifndef __TCPSERVICEDIALOG_H_
 #define __TCPSERVICEDIALOG_H_
 
-#include "config.h"
 #include <ui_tcpservicedialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

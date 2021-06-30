@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -105,8 +104,8 @@ QString CompilerDriver_pix::assembleManifest(Cluster*, Firewall*, bool)
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << "!" << MANIFEST_MARKER
-           << "* " << this->escapeFileName(file_names[FW_FILE]) << endl;
+    script << "!" << manifestMarker()
+           << "* " << this->escapeFileName(file_names[FW_FILE]) << '\n';
 
     return script_buffer;
 }
@@ -192,8 +191,8 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                                 const std::string &firewall_id,
                                 const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
@@ -225,7 +224,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                     (*cl_iface)->getFirstByType(FailoverClusterGroup::TYPENAME));
             if (failover_group)
             {
-                //FWObject *this_member_interface = NULL; //UNUSED
+                //FWObject *this_member_interface = nullptr; //UNUSED
                 list<FWObject*> other_member_interfaces;
                 for (FWObjectTypedChildIterator it =
                          failover_group->findByType(FWObjectReference::TYPENAME);
@@ -267,9 +266,9 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
 
     QString script_buffer;
 
-    std::auto_ptr<NATCompiler_pix> n;
-    std::auto_ptr<PolicyCompiler_pix> c;
-    std::auto_ptr<RoutingCompiler_pix> r;
+    std::unique_ptr<NATCompiler_pix> n;
+    std::unique_ptr<PolicyCompiler_pix> c;
+    std::unique_ptr<RoutingCompiler_pix> r;
 
 
     try
@@ -391,13 +390,13 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
             abort(ex.toString());
         }
 
-        std::auto_ptr<Preprocessor> prep(
+        std::unique_ptr<Preprocessor> prep(
             new Preprocessor(objdb , fw, false));
         if (inTestMode()) prep->setTestMode();
         if (inEmbeddedMode()) prep->setEmbeddedMode();
         prep->compile();
 
-        std::auto_ptr<OSConfigurator> oscnf(
+        std::unique_ptr<OSConfigurator> oscnf(
             new OSConfigurator_pix_os(objdb , fw, false));
         if (inTestMode()) oscnf->setTestMode();
         if (inEmbeddedMode()) oscnf->setEmbeddedMode();
@@ -412,10 +411,10 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
         string version = fw->getStr("version");
 
         if (XMLTools::version_compare(version, "8.3")>=0)
-            n = std::auto_ptr<NATCompiler_pix>(
+            n = std::unique_ptr<NATCompiler_pix>(
                 new NATCompiler_asa8(objdb, fw, false, oscnf.get()));
         else
-            n = std::auto_ptr<NATCompiler_pix>(
+            n = std::unique_ptr<NATCompiler_pix>(
                 new NATCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *nat = RuleSet::cast(fw->getFirstByType(NAT::TYPENAME));
@@ -451,7 +450,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in NAT");
         }
 
-        c = std::auto_ptr<PolicyCompiler_pix>(
+        c = std::unique_ptr<PolicyCompiler_pix>(
             new PolicyCompiler_pix(objdb, fw, false, oscnf.get() , n.get()));
 
         RuleSet *policy = RuleSet::cast(fw->getFirstByType(Policy::TYPENAME));
@@ -487,7 +486,7 @@ QString CompilerDriver_pix::run(const std::string &cluster_id,
                 info(" Nothing to compile in Policy");
         }
 
-        r = std::auto_ptr<RoutingCompiler_pix>(
+        r = std::unique_ptr<RoutingCompiler_pix>(
             new RoutingCompiler_pix(objdb, fw, false, oscnf.get()));
 
         RuleSet *routing = RuleSet::cast(fw->getFirstByType(Routing::TYPENAME));
@@ -619,7 +618,7 @@ void CompilerDriver_pix::pixSecurityLevelChecks(Firewall *fw,
                     "be used for ACL. Marking this interface \"unprotected\" "
                     "to exclude it."
                 );
-                warning(fw, NULL, NULL,
+                warning(fw, nullptr, nullptr,
                         err.arg(iface->getName().c_str())
                         .toStdString());
                 iface->setUnprotected(true);
@@ -658,7 +657,7 @@ void CompilerDriver_pix::pixSecurityLevelChecks(Firewall *fw,
             //         "however interfaces %1 (%2) and %3 (%4)"
             //         " have the same security level."
             //     );
-            //     abort(fw, NULL, NULL,
+            //     abort(fw, nullptr, nullptr,
             //           err.arg(iface->getName().c_str())
             //           .arg(iface->getLabel().c_str())
             //           .arg(iface2->getName().c_str())
@@ -673,7 +672,7 @@ void CompilerDriver_pix::pixSecurityLevelChecks(Firewall *fw,
                     "however interfaces %1 (%2) and %3 (%4)"
                     " have the same."
                 );
-                abort(fw, NULL, NULL,
+                abort(fw, nullptr, nullptr,
                       err.arg(iface->getName().c_str())
                       .arg(iface->getLabel().c_str())
                       .arg(iface2->getName().c_str())
@@ -696,7 +695,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
                                               list<FWObject*> &all_interfaces)
 {
     multimap<string, FWObject*> netzone_objects;
-    Helper helper(NULL);
+    Helper helper(nullptr);
 
     for (std::list<FWObject*>::iterator i=all_interfaces.begin(); i!=all_interfaces.end(); ++i)
     {
@@ -716,7 +715,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
         if (netzone_id=="")
         {
             QString err("Network zone definition is missing for interface '%1' (%2)");
-            abort(fw, NULL, NULL,
+            abort(fw, nullptr, nullptr,
                   err.arg(iface->getName().c_str())
                   .arg(iface->getLabel().c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
@@ -724,11 +723,11 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
 
         FWObject *netzone = objdb->findInIndex(
             FWObjectDatabase::getIntId(netzone_id));
-        if (netzone==NULL) 
+        if (netzone==nullptr) 
         {
             QString err("Network zone points at nonexisting object for "
                         "interface '%1' (%2)");
-            abort(fw, NULL, NULL,
+            abort(fw, nullptr, nullptr,
                   err.arg(iface->getName().c_str())
                   .arg(iface->getLabel().c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
@@ -759,18 +758,18 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
         helper.expand_group_recursive(netzone, ol);
 
         FWObject *nz = objdb->createObjectGroup();
-        assert(nz!=NULL);
+        assert(nz!=nullptr);
         nz->setName("netzone_" + iface->getLabel());
         objdb->add(nz);
 
         for (list<FWObject*>::iterator j=ol.begin(); j!=ol.end(); ++j)
         {
             Address *addr = Address::cast(*j);
-            if (addr == NULL || addr->getAddressPtr() == NULL)
+            if (addr == nullptr || addr->getAddressPtr() == nullptr)
             {
                 QString err("Network zone of interface '%1' uses object '%2' "
                             "that is not an address");
-                abort(fw, NULL, NULL,
+                abort(fw, nullptr, nullptr,
                       err.arg(iface->getLabel().c_str())
                       .arg((*j)->getName().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
@@ -795,7 +794,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
             {
                 QString err("Network zone of interface '%1' uses object '%2' "
                             "that is IPv6 address");
-                abort(fw, NULL, NULL,
+                abort(fw, nullptr, nullptr,
                       err.arg(iface->getLabel().c_str())
                       .arg((*j)->getName().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
@@ -831,7 +830,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
                 {
                     QString err("Object %1 is used more than once in network "
                                 "zone of interface '%2'");
-                    abort(fw, NULL, NULL,
+                    abort(fw, nullptr, nullptr,
                           err.arg(l->second->getName().c_str())
                           .arg(k->first.c_str()).toStdString());
                     throw FatalErrorInSingleRuleCompileMode();
@@ -839,7 +838,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
                 {
                     QString err("Object %1 is used in network zones of "
                                 "interfaces '%2' and '%3'");
-                    abort(fw, NULL, NULL,
+                    abort(fw, nullptr, nullptr,
                           err.arg(l->second->getName().c_str())
                           .arg(k->first.c_str())
                           .arg(l->first.c_str()).toStdString());
@@ -885,7 +884,7 @@ void CompilerDriver_pix::pixNetworkZoneChecks(Firewall *fw,
 void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
                                                        Firewall*)
 {
-    if (cluster==NULL) return;
+    if (cluster==nullptr) return;
 
     FWObjectTypedChildIterator it = cluster->findByType(StateSyncClusterGroup::TYPENAME);
     StateSyncClusterGroup *state_sync_group = StateSyncClusterGroup::cast(*it);
@@ -894,7 +893,7 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
     {
         QString err("One of the interfaces in the state synchronization group "
                     "must be marked as 'Master'");
-        abort(cluster, NULL, NULL, err.toStdString());
+        abort(cluster, nullptr, nullptr, err.toStdString());
         throw FatalErrorInSingleRuleCompileMode();
     }
 
@@ -916,8 +915,10 @@ void CompilerDriver_pix::pixClusterConfigurationChecks(Cluster *cluster,
                      failover_group->findByType(FWObjectReference::TYPENAME);
                  it != it.end(); ++it)
             {
+#ifndef NDEBUG
                 Interface *member_iface = Interface::cast(FWObjectReference::getObject(*it));
                 assert(member_iface);
+#endif
 
                 pixClusterGroupChecks(failover_group);
 
@@ -935,7 +936,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
     FWObject *cluster = cluster_group;
     while (cluster && !Cluster::isA(cluster)) cluster = cluster->getParent();
 
-    FWObject *cluster_interface = NULL;
+    FWObject *cluster_interface = nullptr;
     FWObject *p = cluster_group->getParent();
     if (Interface::isA(p)) cluster_interface = p;
 
@@ -961,7 +962,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                             "cluster inetrface. Interface %1:%2 has the name "
                             "that is different from the cluster interface name %3");
 
-                abort(cluster, NULL, NULL,
+                abort(cluster, nullptr, nullptr,
                       err.arg(member->getName().c_str())
                       .arg(member_iface->getName().c_str())
                       .arg(cluster_interface->getName().c_str()).toStdString());
@@ -978,7 +979,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                         "synchronization or failover must be marked "
                         "'Dedicated Failover'. ");
 
-            abort(member, NULL, NULL,
+            abort(member, nullptr, nullptr,
                   err.arg(member_iface->getName().c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
         }
@@ -990,7 +991,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                         "All interfaces used for the state "
                         "synchronization or failover must have ip addresses.");
 
-            abort(member, NULL, NULL,
+            abort(member, nullptr, nullptr,
                   err.arg(member_iface->getName().c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
         }
@@ -1005,13 +1006,13 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
     if (addresses_and_masks.size() >= 2)
     {
         QString first_key;
-        const InetAddr *first_network_addr = NULL;
+        const InetAddr *first_network_addr = nullptr;
         map<QString, const InetAddrMask*>::iterator it;
         for (it=addresses_and_masks.begin(); it!=addresses_and_masks.end(); ++it)
         {
             QString key = it->first;
             const InetAddrMask *am = it->second;
-            if (first_network_addr == NULL)
+            if (first_network_addr == nullptr)
             {
                 first_key = key;
                 first_network_addr = am->getNetworkAddressPtr();
@@ -1025,7 +1026,7 @@ void CompilerDriver_pix::pixClusterGroupChecks(ClusterGroup *cluster_group)
                                 "the same subnet. Interfaces %1 and %2 have "
                                 "addresses on different subnets: %3 , %4");
 
-                    abort(cluster, NULL, NULL,
+                    abort(cluster, nullptr, nullptr,
                           err.arg(first_key).arg(key)
                           .arg(first_network_addr->toString().c_str())
                           .arg(network_addr->toString().c_str()).toStdString());

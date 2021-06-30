@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -92,13 +91,13 @@ QAction* addPopupMenuItem(QObject *res,
     string icn;
     QPixmap pm;
     //int    itmID = -1;
-    QAction *act = NULL;
+    QAction *act = nullptr;
 
     icn = Resources::global_res->getResourceStr(static_cast<const char*>(resourceIconPath.toLatin1()));
     if(icn!="")
     {
 //        pm = QPixmap::fromMimeSource( icn.c_str() );
-        if ( ! QPixmapCache::find( icn.c_str(), pm) )
+        if ( ! QPixmapCache::find( icn.c_str(), &pm) )
         {
             pm.load( (":/"+icn).c_str() );//fromMimeSource( icn.c_str() );
             QPixmapCache::insert( icn.c_str(), pm);
@@ -119,7 +118,7 @@ void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj, bool rw)
     if ( ! FWObjectDatabase::isA(obj))
     {
         FWObject *libobj = obj->getLibrary();
-        assert(libobj!=NULL);
+        assert(libobj!=nullptr);
         lib = libobj->getName().c_str();
         standardObj = (libobj->getId()==FWObjectDatabase::STANDARD_LIB_ID);
         templateObj = (libobj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID);
@@ -167,7 +166,7 @@ void fillLibraries(QListWidget *libs, libfwbuilder::FWObject *obj, bool rw)
     if ( ! FWObjectDatabase::isA(obj))
     {
         FWObject *libobj = obj->getLibrary();
-        assert(libobj!=NULL);
+        assert(libobj!=nullptr);
         lib = libobj->getName().c_str();
         standardObj = (libobj->getId()==FWObjectDatabase::STANDARD_LIB_ID);
         templateObj = (libobj->getId()==FWObjectDatabase::TEMPLATE_LIB_ID);
@@ -230,14 +229,14 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
     if (newname.isEmpty())
     {
         // show warning dialog only if app has focus
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             parent->blockSignals(true);
             
             QMessageBox::warning(
                 parent, "Firewall Builder",
                 QObject::tr("Object name should not be blank"),
-                QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+                QObject::tr("&Continue"), nullptr, nullptr, 0, 2 );
                 
             parent->blockSignals(false);
         }
@@ -270,7 +269,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
              */
 
             // show warning dialog only if app has focus
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 parent->blockSignals(true);
             
@@ -279,7 +278,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
                     QObject::tr("Object with name '%1' already exists, "
                                 "please choose different name.").
                     arg(o1->getName().c_str()),
-                    QObject::tr("&Continue"), NULL, NULL, 0, 2 );
+                    QObject::tr("&Continue"), nullptr, nullptr, 0, 2 );
                 
                 parent->blockSignals(false);
             }
@@ -309,14 +308,21 @@ void setDisabledPalette(QWidget *w)
 {
     QPalette    pal=w->palette();
 
+    pal.setCurrentColorGroup( QPalette::Normal );
+
+    QColor textColor = Qt::black;
+    if ( qGray(pal.color(QPalette::Window).rgba()) < 100) {
+        textColor = Qt::white;
+    }
+
     pal.setCurrentColorGroup( QPalette::Active );
-    pal.setColor( QPalette::Text, Qt::black );
+    pal.setColor( QPalette::Text, textColor );
 
     pal.setCurrentColorGroup( QPalette::Inactive );
-    pal.setColor( QPalette::Text, Qt::black );
+    pal.setColor( QPalette::Text, textColor );
 
     pal.setCurrentColorGroup( QPalette::Disabled );
-    pal.setColor( QPalette::Text, Qt::black );
+    pal.setColor( QPalette::Text, textColor );
 
     w->setPalette( pal );
 }
@@ -326,11 +332,7 @@ QString getAddrByName(const QString &name, int af_type)
     list<InetAddr> results;
     try
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        results = DNS::getHostByName(name.toAscii().constData(), af_type);
-#else
         results = DNS::getHostByName(name.toLatin1().constData(), af_type);
-#endif
     } catch (FWException &e)
     {
         if (fwbdebug) qDebug("utils::getAddrByName: DNS lookup error: %s",
@@ -411,20 +413,20 @@ QString wordWrap(const QString& s, int maxchinline)
             {
                 if (linestart<lastwdpos)
                 {
-                    res.append(s.mid(linestart,lastwdpos-linestart));
+                    res.append(s.midRef(linestart,lastwdpos-linestart));
                     linestart=lastwdpos;
                     pos=lastwdpos;
 
                 }else
                 {
-                    res.append(s.mid(linestart,pos-linestart));
+                    res.append(s.midRef(linestart,pos-linestart));
                     linestart=pos;
                     lastwdpos=pos;
                 }
             }
             else
             {
-                res.append(s.mid(linestart,pos-linestart));
+                res.append(s.midRef(linestart,pos-linestart));
                 while (++pos< s.length() && s.at(pos).isSpace()) ;
                 if (pos<s.length())
                 {
@@ -440,7 +442,7 @@ QString wordWrap(const QString& s, int maxchinline)
             chcount=0;
         }
     }
-    res.append(s.mid(linestart,pos-linestart));
+    res.append(s.midRef(linestart,pos-linestart));
     return res;
 }
 
@@ -458,15 +460,11 @@ void loadIcon(QPixmap &pm, FWObject *obj)
 
 void LoadPixmap(const QString &path, QPixmap &pm)
 {
-    if ( ! QPixmapCache::find( path, pm ) )
+    if ( ! QPixmapCache::find( path, &pm ) )
     {
         pm.load( path );
         if (pm.width() == 0)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("pixmap load failed: %s", path.toAscii().constData());
-#else
             qDebug("pixmap load failed: %s", path.toLatin1().constData());
-#endif
         QPixmapCache::insert( path, pm );
     }
 }
@@ -546,7 +544,7 @@ QString _parseTokens(QStringList &args, const QChar closing_quote='\0')
     QString a = _getNextToken(args);
     if (args.size() == 0) return a;
 
-    if (closing_quote != '\0' && a.endsWith(closing_quote))
+    if (closing_quote != QChar('\0') && a.endsWith(closing_quote))
         return a;
 
     if (a.startsWith("\"") || a.startsWith("'"))
@@ -633,6 +631,6 @@ static bool stringsCompare(const QString &a, const QString &b)
 QStringList sortStrings(const QStringList &list)
 {
     QStringList ret = list;
-    qSort(ret.begin(), ret.end(), stringsCompare);
+    std::sort(ret.begin(), ret.end(), stringsCompare);
     return ret;
 }

@@ -38,10 +38,9 @@ using namespace std;
 using namespace libfwbuilder;
 
 int fwbdebug = 0;
-FWWindow *mw = NULL; 
-FWBSettings *st = NULL; 
-FWBApplication *app = NULL; 
-int sig = FWB_SIG; 
+FWWindow *mw = nullptr; 
+FWBSettings *st = nullptr; 
+FWBApplication *app = nullptr; 
 
 
 extern void build_app(int argc, char** argv,

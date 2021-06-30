@@ -23,6 +23,8 @@
 
 */
 
+#include <QTest>
+
 #include "interfacePropertiesTest.h"
 
 #include "fwbuilder/Firewall.h"
@@ -35,7 +37,6 @@
 
 using namespace std;
 using namespace libfwbuilder;
-using namespace CppUnit;
 
 
 class UpgradePredicate: public XMLTools::UpgradePredicate
@@ -53,12 +54,12 @@ interfaceProperties* interfacePropertiesTest::getIntProps(const QString &os)
 {
     Resources* os_res = Resources::os_res[os.toStdString()];
     string os_family = os.toStdString();
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
     return interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 }
 
-void interfacePropertiesTest::setUp()
+void interfacePropertiesTest::init()
 {
     db = new FWObjectDatabase();
 }
@@ -79,49 +80,49 @@ void interfacePropertiesTest::validateInterfaceNameCommon()
 
     interfaceProperties * int_prop = getIntProps("unknown");
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    QVERIFY(int_prop != nullptr);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "eth0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "bar0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "vlan100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "Vlan100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "VlAn100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo 0", err) == false);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo-1", err) == false);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo 12345", err) == false);
 
     iface->getOptionsObject()->setStr("type", "bridge");
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "br0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "Br0", err) == true);
 
     // all OS except Linux and possibly some other do not permit
     // interface name with "-"
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "br-lan", err) == false);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "br 200", err) == false);
 
 }
@@ -142,51 +143,51 @@ void interfacePropertiesTest::validateInterfaceNameLinux()
 
     interfaceProperties * int_prop = getIntProps("linux24");
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "eth0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "bar0", err) == true);
     
     // we do not have special type for p2p interfaces yet
     // Linux permits "-" in interface names (see #1856)
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "ppp-dsl", err) == true);
 
     iface->getOptionsObject()->setStr("type", "8021q");
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "vlan100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "Vlan100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "VlAn100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo 0", err) == false);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "foo 12345", err) == false);
 
     iface->getOptionsObject()->setStr("type", "bridge");
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "br0", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "Br0", err) == true);
 
     // Linux permits "-" in interface names (see #1856)
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "br-lan", err) == true);
 
     // spaces are not permitted
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "br 200", err) == false);
 
 }
@@ -207,37 +208,37 @@ void interfacePropertiesTest::validateInterfaceNameProCurve()
 
     interfaceProperties * int_prop = getIntProps("procurve");
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "a1", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "b1", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "A1", err) == true);
 
     // basicValidateInterfaceName() only checks name format,
     // it does not check if port number makes sense
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "A1234567890", err) == true);
 
     // "-" is not permitted
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "vlan-100", err) == false);
 
     // but space is permitted
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "vlan 100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "Vlan 100", err) == true);
 
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "VlAn 100", err) == true);
 
     // basicValidateInterfaceName() only checks name format,
     // it does not check if vlan ID is valid.
-    CPPUNIT_ASSERT(int_prop->basicValidateInterfaceName(
+    QVERIFY(int_prop->basicValidateInterfaceName(
                        iface, "VlAn 1000000000", err) == true);
 }
 
@@ -247,12 +248,12 @@ void interfacePropertiesTest::validateInterface()
 
     Resources* os_res = Resources::os_res[host_OS];
     string os_family = host_OS;
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    QVERIFY(int_prop != nullptr);
 
     QString err;
 
@@ -269,21 +270,21 @@ void interfacePropertiesTest::validateInterface()
     iface1->getOptionsObject()->setStr("type", "ethernet");
     cluster1->setStr("host_OS", host_OS);
 
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
                                            dynamic_cast<FWObject*>(iface1), false, err) == true );
 
     iface1->setUnnumbered(true);
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
                                            dynamic_cast<FWObject*>(iface1), false, err) == true );
 
     parent1->getOptionsObject()->setStr("type", "bonding");
     iface1->setUnnumbered(false);
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
                                            dynamic_cast<FWObject*>(iface1), false, err) == false );
 
     parent1->getOptionsObject()->setStr("type", "bridge");
     iface1->setUnnumbered(false);
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster1),
                                            dynamic_cast<FWObject*>(iface1), false, err) == false );
 
 
@@ -297,20 +298,20 @@ void interfacePropertiesTest::validateInterface()
 
     fw.add(parent);
 
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                dynamic_cast<FWObject*>(iface), true, err)
                    == false);
 
     parent->getOptionsObject()->setStr("type", "bridge");
     iface->getOptionsObject()->setStr("type", "ethernet");
 
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                FWObject::cast(iface), true, err)
                    == true);
 
     iface->getOptionsObject()->setStr("type", "ethernet");
     iface->add(subiface);
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                dynamic_cast<FWObject*>(iface), false, err)
                    == false);
     iface->remove(subiface);
@@ -318,37 +319,37 @@ void interfacePropertiesTest::validateInterface()
     Cluster *cluster = Cluster::cast(db->create(Cluster::TYPENAME));
 
     iface->setName("vlan0");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster),
                                                dynamic_cast<FWObject*>(iface), false, err)
                    == true);
 
     iface->setName("vlan34324");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(cluster),
                                                dynamic_cast<FWObject*>(iface), false, err)
                    == false);
 
     parent->setName("vlan");
     parent->getOptionsObject()->setStr("type", "bridge");
     iface->setName("vlan1");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                dynamic_cast<FWObject*>(iface), false, err)
                        == true);
 
     IPv4 *adr = IPv4::cast(db->create(IPv4::TYPENAME));
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(adr),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(adr),
                                                dynamic_cast<FWObject*>(iface), false, err)
                        == false);
 
     parent->setName("notAVlan");
     parent->getOptionsObject()->setStr("type", "ethernet");
     iface->setName("vlan1");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                dynamic_cast<FWObject*>(iface), false, err)
                        == true);
 
 
     iface->setName("eth0");
-    CPPUNIT_ASSERT(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
+    QVERIFY(int_prop->validateInterface(dynamic_cast<FWObject*>(parent),
                                                dynamic_cast<FWObject*>(iface), false, err)
                        == false);
 
@@ -358,12 +359,12 @@ void interfacePropertiesTest::isEligibleForCluster()
 {
     Resources* os_res = Resources::os_res["linux24"];
     string os_family = "linux24";
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    QVERIFY(int_prop != nullptr);
 
     Firewall *fw1 = Firewall::cast(db->create(Firewall::TYPENAME));
     fw1->setName("iface");
@@ -378,27 +379,27 @@ void interfacePropertiesTest::isEligibleForCluster()
 
     iface1->getOptionsObject()->setStr("type", "ethernet");
     parent1->getOptionsObject()->setStr("type", "ethernet");
-    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
+    QVERIFY(int_prop->isEligibleForCluster(iface1) == true);
 
     iface1->getOptionsObject()->setStr("type", "ethernet");
     parent1->getOptionsObject()->setStr("type", "bridge");
-    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == false);
+    QVERIFY(int_prop->isEligibleForCluster(iface1) == false);
 
     iface1->getOptionsObject()->setStr("type", "bonding");
     parent1->getOptionsObject()->setStr("type", "ethernet");
-    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
+    QVERIFY(int_prop->isEligibleForCluster(iface1) == true);
 
     iface1->getOptionsObject()->setStr("type", "bridge");
     parent1->getOptionsObject()->setStr("type", "ethernet");
-    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
+    QVERIFY(int_prop->isEligibleForCluster(iface1) == true);
 
     iface1->getOptionsObject()->setStr("type", "8021q");
     parent1->getOptionsObject()->setStr("type", "ethernet");
-    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == true);
+    QVERIFY(int_prop->isEligibleForCluster(iface1) == true);
 
     iface1->getOptionsObject()->setStr("type", "ethernet");
     parent1->getOptionsObject()->setStr("type", "bridge");
-    CPPUNIT_ASSERT(int_prop->isEligibleForCluster(iface1) == false);
+    QVERIFY(int_prop->isEligibleForCluster(iface1) == false);
 
     Firewall *fw = Firewall::cast(db->create(Firewall::TYPENAME));
     fw->setName("iface");
@@ -409,10 +410,10 @@ void interfacePropertiesTest::isEligibleForCluster()
     fw->add(iface);
     iface->getOptionsObject()->setStr("type", "bonding");
     iface->add(subface);
-    CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(subface) == false );
+    QVERIFY ( interfaceProperties().isEligibleForCluster(subface) == false );
 
     iface->getOptionsObject()->setStr("type", "ethernet");
-    CPPUNIT_ASSERT ( interfaceProperties().isEligibleForCluster(iface) == false );
+    QVERIFY ( interfaceProperties().isEligibleForCluster(iface) == false );
 
 }
 
@@ -430,18 +431,18 @@ eth0.bar	 eth0	 false
 eth0.99999	 eth0	 false
 eth1.101	 eth0	 false
 */
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.bar", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.99999", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth1.101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("eth0.bar", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("eth0.99999", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("eth1.101", parent, err) == false);
 
     parent = "bond1";
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("bond1.15", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("bond1.515", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("bond1.1205", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("bond1.15", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("bond1.515", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("bond1.1205", parent, err) == true);
 }
 
 
@@ -481,17 +482,17 @@ en0.101	 en0	 false
 foo	 en0	 false
 foo101	 en0	 false
 */
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
 
 
     int_prop = getIntProps("freebsd");
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("eth0.101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("foo", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("foo101", parent, err) == false);
 }
 
 void interfacePropertiesTest::isValidVlanInterfaceNameIOS()
@@ -506,11 +507,11 @@ Ethernet0/0.99999	 Ethernet0/0             false
 */
     interfaceProperties *int_prop = getIntProps("ios");
     parent = "FastEthernet0/1";
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("FastEthernet0/1.101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("FastEthernet0/1.101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
     parent = "Ethernet0/0";
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
 }
 
 void interfacePropertiesTest::isValidVlanInterfaceNamePIX()
@@ -518,11 +519,11 @@ void interfacePropertiesTest::isValidVlanInterfaceNamePIX()
     QString err, parent;
     interfaceProperties *int_prop = getIntProps("pix_os");
     parent = "FastEthernet0/1";
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("FastEthernet0/1.101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("FastEthernet0/1.101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
     parent = "Ethernet0/0";
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("Ethernet0/0.99999", parent, err) == false);
 }
 
 void interfacePropertiesTest::isValidVlanInterfaceNameProCurve()
@@ -540,15 +541,15 @@ void interfacePropertiesTest::isValidVlanInterfaceNameProCurve()
 */
     interfaceProperties *int_prop = getIntProps("procurve");
     parent = "FastEthernet0/1";
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan 2", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("VLAN 2", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Vlan 2", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan2", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan 2", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("VLAN 2", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("Vlan 2", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan2", parent, err) == true);
 
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan 101", parent, err) == true);
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan 101", parent, err) == true);
+    QVERIFY (int_prop->isValidVlanInterfaceName("vlan101", parent, err) == true);
 
-    CPPUNIT_ASSERT (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
+    QVERIFY (int_prop->isValidVlanInterfaceName("Ethernet0/0.101", parent, err) == false);
 }
 
 void interfacePropertiesTest::validateInterfaceProCurve()
@@ -557,12 +558,12 @@ void interfacePropertiesTest::validateInterfaceProCurve()
 
     Resources* os_res = Resources::os_res[host_OS];
     string os_family = host_OS;
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
     interfaceProperties * int_prop = interfacePropertiesObjectFactory::getInterfacePropertiesObject(os_family);
 
-    CPPUNIT_ASSERT(int_prop != NULL);
+    QVERIFY(int_prop != nullptr);
 
     QString err;
 
@@ -577,10 +578,10 @@ void interfacePropertiesTest::validateInterfaceProCurve()
     fw.add(parent);
 
     iface->setName("vlan 2");
-    CPPUNIT_ASSERT(int_prop->validateInterface(&fw, iface, false, err) == true);
+    QVERIFY(int_prop->validateInterface(&fw, iface, false, err) == true);
 
     iface->setName("vlan 34324");
-    CPPUNIT_ASSERT(int_prop->validateInterface(&fw, iface, false, err) == false);
+    QVERIFY(int_prop->validateInterface(&fw, iface, false, err) == true);
 }
 
 void interfacePropertiesTest::testManageIpAddresses()
@@ -594,7 +595,7 @@ void interfacePropertiesTest::testManageIpAddresses()
     db->reIndex();
 
     FWObject *fw = db->findObjectByName(Firewall::TYPENAME, "fw1");
-    CPPUNIT_ASSERT(fw != NULL);
+    QVERIFY(fw != nullptr);
 
     Interface *intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "eth0"));
@@ -604,35 +605,35 @@ void interfacePropertiesTest::testManageIpAddresses()
     QStringList update_addresses;
     QStringList ignore_addresses;
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == true);
 
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "lo"));
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == true);
 
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "eth1")); // dyn
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == false);
 
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "eth2")); // bridge port
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == false);
 
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "eth3")); // bonding intf slave
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == false);
 
@@ -640,14 +641,14 @@ void interfacePropertiesTest::testManageIpAddresses()
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "tun0")); // unnumbered
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == false);
 
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "tun*")); // unnumbered
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == false);
 
@@ -664,7 +665,7 @@ void interfacePropertiesTest::testManageIpAddressesCluster()
     db->reIndex();
 
     FWObject *fw = db->findObjectByName(Cluster::TYPENAME, "cluster1");
-    CPPUNIT_ASSERT(fw != NULL);
+    QVERIFY(fw != nullptr);
 
     Interface *intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "lo"));
@@ -676,14 +677,14 @@ void interfacePropertiesTest::testManageIpAddressesCluster()
     QStringList update_addresses;
     QStringList ignore_addresses;
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == false);
 
     intf = Interface::cast(
         fw->findObjectByName(Interface::TYPENAME, "eth0"));
 
-    CPPUNIT_ASSERT(
+    QVERIFY(
         int_prop->manageIpAddresses(
             intf, update_addresses, ignore_addresses) == true);
 

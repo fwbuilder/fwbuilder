@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -86,7 +85,7 @@ SSHUnx::SSHUnx(QWidget *_par,
     shell_errors << "error in parsing address";
     shell_errors << "can't set";
     shell_errors << ".* malformed";
-    shell_errors << ".* failed";
+    shell_errors << ".*(?<!PEM_read_PrivateKey) failed";
     shell_errors << ".* not allowed for the AF";
     shell_errors << "internal error";
     shell_errors << "unable to allocate .*";
@@ -122,15 +121,9 @@ bool SSHUnx::checkForErrors(QStringList *errptr)
 {
 #if STATE_MACHINE_DEBUG
     if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug(
-            QString("SSHUnx::stateMachine:  Checking for errors. Buffer='%1'").
-            arg(stdoutBuffer).toAscii().constData());
-#else
         qDebug(
             QString("SSHUnx::stateMachine:  Checking for errors. Buffer='%1'").
             arg(stdoutBuffer).toLatin1().constData());
-#endif // QT_VERSION
 
 #endif
 
@@ -196,11 +189,7 @@ void SSHUnx::stateMachine()
         )
         {
             stdoutBuffer="";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            proc->write( pwd.toAscii() );
-#else
             proc->write( pwd.toLatin1() );
-#endif
             proc->write( "\n" );
             break;
         }
@@ -289,11 +278,7 @@ void SSHUnx::stateMachine()
         )
         {
             stdoutBuffer="";
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            proc->write( pwd.toAscii() );
-#else
             proc->write( pwd.toLatin1() );
-#endif
             proc->write( "\n" );
             break;
         }
@@ -325,7 +310,7 @@ void SSHUnx::stateMachine()
             emit printStdout_sign( "\n");
 
             delete proc;
-            proc=NULL;
+            proc=nullptr;
 
             state=NONE;
 
@@ -338,7 +323,7 @@ void SSHUnx::stateMachine()
 
 //            terminate();
             sessionComplete(true);   // finish with error status
-            proc=NULL;
+            proc=nullptr;
         }
 
         emit sessionFinished_sign();

@@ -27,8 +27,6 @@
 #ifndef __ROUTINGCOMPILER_PROCURVE_ACL_HH__
 #define __ROUTINGCOMPILER_PROCURVE_ACL_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
-#include "config.h"
 
 #include "RoutingCompiler_iosacl.h"
 

@@ -28,8 +28,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -75,42 +73,42 @@ void RuleElement::init(FWObjectDatabase *root)
 */
     int any_id = getAnyElementId();
     FWObject *any_obj = getById(any_id);
-    if (any_obj == NULL)
+    if (any_obj == nullptr)
     {
         any_obj = root->checkIndex( any_id );
         if (any_obj) FWObject::addRef( any_obj );
     }
 }
 
-void RuleElement::fromXML(xmlNodePtr root) throw(FWException)
+void RuleElement::fromXML(xmlNodePtr root)
 {
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("neg")));
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("neg")));
     if (n)
     {
         negation = (cxx_strcasecmp(n, "1")==0 || cxx_strcasecmp(n , "true")==0);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     FWObject::fromXML(root);
 }
 
-xmlNodePtr RuleElement::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr RuleElement::toXML(xmlNodePtr xml_parent_node)
 {
     int my_id = getId();
     setId(-1);
     // FWObject::toXML() skips id if it is == -1. RuleElement objects
     // have no ID as per DTD (why?)
     xmlNodePtr me = FWObject::toXML(xml_parent_node, false);
-    xmlNewProp(me, TOXMLCAST("neg"),
-               TOXMLCAST(((getNeg()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("neg"),
+               XMLTools::ToXmlCast(((getNeg()) ? "True" : "False")));
     setId(my_id);
     return me;
 }
 
 FWObject& RuleElement::shallowDuplicate(const FWObject *other,
-                                        bool preserve_id) throw(FWException)
+                                        bool preserve_id)
 {
     setNeg(RuleElement::constcast(other)->getNeg());
     return FWObject::shallowDuplicate(other, preserve_id);
@@ -119,14 +117,14 @@ FWObject& RuleElement::shallowDuplicate(const FWObject *other,
 
 void RuleElement::addRef(FWObject *obj)
 {
-    FWObject *o=NULL;
+    FWObject *o=nullptr;
     if (isAny())
     {
 	o=(*(begin()));
 	o=(FWReference::cast(o))->getPointer();
     }
     FWObject::addRef(obj);
-    if (o!=NULL) removeRef(o);
+    if (o!=nullptr) removeRef(o);
 }
 
 void RuleElement::removeRef(FWObject *obj)
@@ -175,7 +173,7 @@ int RuleElementSrc::getAnyElementId() const
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
-xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -187,7 +185,7 @@ xmlNodePtr RuleElementSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementSrc::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -218,7 +216,7 @@ int RuleElementDst::getAnyElementId() const
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
-xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -230,7 +228,7 @@ xmlNodePtr RuleElementDst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementDst::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -261,7 +259,7 @@ int RuleElementSrv::getAnyElementId() const
     return FWObjectDatabase::ANY_SERVICE_ID;
 }
 
-xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -273,7 +271,7 @@ xmlNodePtr RuleElementSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementSrv::validateChild(FWObject *o)
 {
-    if (FWServiceReference::cast(o)!=NULL) return true;
+    if (FWServiceReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ServiceGroup::validateChild(o);
 }
@@ -303,7 +301,7 @@ int RuleElementItf::getAnyElementId() const
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
-xmlNodePtr RuleElementItf::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementItf::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -316,13 +314,13 @@ xmlNodePtr RuleElementItf::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementItf::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
 
     if (o->getId() == getAnyElementId()) return true;
 
-    if (Interface::cast(o)!=NULL) return true;
+    if (Interface::cast(o)!=nullptr) return true;
 
-    if (ObjectGroup::cast(o)!=NULL && o->size() > 0)
+    if (ObjectGroup::cast(o)!=nullptr && o->size() > 0)
     {
         bool all_intf = true;
         for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
@@ -378,7 +376,7 @@ bool RuleElementItf::isDummy() const
  */
 bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
 {
-    if (Group::cast(o) != NULL)
+    if (Group::cast(o) != nullptr)
     {
         for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
         {
@@ -392,11 +390,11 @@ bool RuleElementItf::checkItfChildOfThisFw(FWObject *o)
     FWObject* o_tmp2 = getRoot()->findInIndex(this->getId());
 
     FWObject *fw1 = o_tmp;
-    while (fw1 && Firewall::cast(fw1) == NULL) fw1 = fw1->getParent();
+    while (fw1 && Firewall::cast(fw1) == nullptr) fw1 = fw1->getParent();
     FWObject *fw2 = o_tmp2;
-    while (fw2 && Firewall::cast(fw2) == NULL) fw2 = fw2->getParent();
+    while (fw2 && Firewall::cast(fw2) == nullptr) fw2 = fw2->getParent();
 
-    return (fw1 != NULL && fw1 == fw2);
+    return (fw1 != nullptr && fw1 == fw2);
 }
 
 const char *RuleElementItfInb::TYPENAME={"ItfInb"};
@@ -415,7 +413,7 @@ int RuleElementOSrc::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -427,7 +425,7 @@ xmlNodePtr RuleElementOSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementOSrc::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -442,7 +440,7 @@ int RuleElementODst::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -454,7 +452,7 @@ xmlNodePtr RuleElementODst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementODst::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -469,7 +467,7 @@ int RuleElementOSrv::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -481,7 +479,7 @@ xmlNodePtr RuleElementOSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementOSrv::validateChild(FWObject *o)
 {
-    if (FWServiceReference::cast(o)!=NULL) return true;
+    if (FWServiceReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ServiceGroup::validateChild(o);
 }
@@ -498,7 +496,7 @@ int RuleElementTSrc::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -510,7 +508,7 @@ xmlNodePtr RuleElementTSrc::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementTSrc::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -525,7 +523,7 @@ int RuleElementTDst::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -537,7 +535,7 @@ xmlNodePtr RuleElementTDst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementTDst::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -552,7 +550,7 @@ int RuleElementTSrv::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -564,13 +562,13 @@ xmlNodePtr RuleElementTSrv::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementTSrv::validateChild(FWObject *o)
 {
-    if (FWServiceReference::cast(o)!=NULL) return true;
+    if (FWServiceReference::cast(o)!=nullptr) return true;
 
     if ( o->getId() == getAnyElementId()) return true;
 
     // TagService is not allowed in translated service
     if (TagService::isA(o)) return false;
-    if (ServiceGroup::cast(o)!=NULL)
+    if (ServiceGroup::cast(o)!=nullptr)
     {
         for (FWObject::iterator i=o->begin(); i!=o->end(); ++i)
         {
@@ -593,7 +591,7 @@ int RuleElementInterval::getAnyElementId() const
 }
 
 
-xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -605,9 +603,9 @@ xmlNodePtr RuleElementInterval::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementInterval::validateChild(FWObject *o)
 {
-    if (FWIntervalReference::cast(o)!=NULL)  return true;
+    if (FWIntervalReference::cast(o)!=nullptr)  return true;
     if ( o->getId() == getAnyElementId()) return true;
-    return (Interval::cast(o)!=NULL || IntervalGroup::cast(o)!=NULL);
+    return (Interval::cast(o)!=nullptr || IntervalGroup::cast(o)!=nullptr);
 }
 
 
@@ -620,7 +618,7 @@ int RuleElementRDst::getAnyElementId() const
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
-xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -632,7 +630,7 @@ xmlNodePtr RuleElementRDst::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementRDst::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if ( o->getId() == getAnyElementId()) return true;
     return ObjectGroup::validateChild(o);
 }
@@ -646,7 +644,7 @@ int RuleElementRGtw::getAnyElementId() const
     return FWObjectDatabase::ANY_ADDRESS_ID;
 }
 
-xmlNodePtr RuleElementRGtw::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleElementRGtw::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = RuleElement::toXML(parent);
 
@@ -659,7 +657,7 @@ xmlNodePtr RuleElementRGtw::toXML(xmlNodePtr parent) throw(FWException)
 
 bool RuleElementRGtw::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
     if( getChildrenCount() > 0 && !isAny()) return false;
     return checkSingleIPAdress(o);
 }
@@ -667,7 +665,7 @@ bool RuleElementRGtw::validateChild(FWObject *o)
 // check if the gateway has only one interface with only one ipv4 adress
 bool RuleElementRGtw::checkSingleIPAdress(FWObject *o)
 {
-    if( Host::cast(o) != NULL)
+    if( Host::cast(o) != nullptr)
     {
         list<FWObject*> obj_list = o->getByType("Interface");
         if( obj_list.size() == 1)
@@ -678,7 +676,7 @@ bool RuleElementRGtw::checkSingleIPAdress(FWObject *o)
                 return true;
             } else return false;
         } else return false;
-    } else if( Interface::cast(o) != NULL)
+    } else if( Interface::cast(o) != nullptr)
     {
         list<FWObject*> obj_list = o->getByType("IPv4");
         if( obj_list.size() == 1)
@@ -688,7 +686,7 @@ bool RuleElementRGtw::checkSingleIPAdress(FWObject *o)
     }
     return ( o->getId() == getAnyElementId() ||
             (FWObject::validateChild(o) && 
-            (IPv4::cast(o)!=NULL || FWObjectReference::cast(o)!=NULL)));
+            (IPv4::cast(o)!=nullptr || FWObjectReference::cast(o)!=nullptr)));
 }
 
 const char *RuleElementRItf::TYPENAME={"RItf"};
@@ -696,12 +694,12 @@ RuleElementRItf::RuleElementRItf()  {}
 
 bool RuleElementRItf::validateChild(FWObject *o)
 {
-    if (FWObjectReference::cast(o)!=NULL) return true;
+    if (FWObjectReference::cast(o)!=nullptr) return true;
 
     if (getChildrenCount() > 0 && !isAny()) return false;
 
     if ( o->getId() == getAnyElementId()) return true;
 
-    return (Interface::cast(o)!=NULL);
+    return (Interface::cast(o)!=nullptr);
 }
 

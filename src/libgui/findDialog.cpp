@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -67,7 +66,7 @@ findDialog::findDialog(QWidget *p, ProjectPanel *project) : QDialog(p), treeSeek
     m_dialog = new Ui::findDialog_q;
     m_dialog->setupUi(this);
 
-    lastFound=NULL;
+    lastFound=nullptr;
     lastTextSearch="";
     lastAttrSearch="";
 
@@ -82,7 +81,7 @@ void findDialog::setObject(FWObject *o)
 
 void findDialog::reset()
 {
-    lastFound=NULL;
+    lastFound=nullptr;
     lastTextSearch="";
     treeSeeker=m_project->db()->tree_begin();
 }
@@ -157,7 +156,7 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
     case 0:   // Address
     {
         Address *a = Address::cast(obj);
-        if (a!=NULL)
+        if (a!=nullptr)
         {
             QString addr = a->getAddressPtr()->toString().c_str();
             if (m_dialog->useRegexp->isChecked()) res= ( addr.indexOf( QRegExp(s) )!=-1 );
@@ -166,7 +165,7 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
         break;
     }
     case 1:   // port
-        if (TCPService::cast(obj)!=NULL || UDPService::cast(obj)!=NULL)
+        if (TCPService::cast(obj)!=nullptr || UDPService::cast(obj)!=nullptr)
         {
             if (m_dialog->useRegexp->isChecked())
             {
@@ -189,8 +188,9 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
             }
             break;
         }
+    /* FALLTHRU */
     case 2:   // protocol num.
-        if (IPService::cast(obj)!=NULL)
+        if (IPService::cast(obj)!=nullptr)
         {
             if (m_dialog->useRegexp->isChecked())
             {
@@ -204,8 +204,9 @@ bool findDialog::matchAttr(libfwbuilder::FWObject *obj)
             }
             break;
         }
+    /* FALLTHRU */
     case 3:   // icmp type
-        if (ICMPService::cast(obj)!=NULL)
+        if (ICMPService::cast(obj)!=nullptr)
         {
             if (m_dialog->useRegexp->isChecked())
             {
@@ -232,7 +233,7 @@ void findDialog::findNext()
     if (m_dialog->findText->count()>10)  m_dialog->findText->removeItem(0);
     if (m_dialog->findAttr->count()>10)  m_dialog->findAttr->removeItem(0);
 
-    FWObject *o=NULL;
+    FWObject *o=nullptr;
 
 loop:
     QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
@@ -241,7 +242,7 @@ loop:
     {
         o = *treeSeeker;
 
-        if( RuleElement::cast(o->getParent())!=NULL)
+        if( RuleElement::cast(o->getParent())!=nullptr)
         {
             if (! m_dialog->searchInRules->isChecked()) continue;
         } else
@@ -250,7 +251,7 @@ loop:
             if (! m_dialog->searchInTree->isChecked()) continue;
         }
 
-        if (FWReference::cast(o)!=NULL)
+        if (FWReference::cast(o)!=nullptr)
         {
             FWReference *r=FWReference::cast(o);
             if ( matchName( QString::fromUtf8(r->getPointer()->getName().c_str()) ) &&
@@ -271,11 +272,11 @@ loop:
         if ( QMessageBox::warning(
               this,"Firewall Builder",
               tr("Search hit the end of the object tree."),
-              tr("&Continue at top"), tr("&Stop"), QString::null, 0, 1 )==0 ) goto loop;
+              tr("&Continue at top"), tr("&Stop"), QString(), 0, 1 )==0 ) goto loop;
 
         return;
     }
-    assert(o!=NULL);
+    assert(o!=nullptr);
 
 /* found object. Shift iterator so it does not return the same object
  * when user hits 'find next'
@@ -283,14 +284,14 @@ loop:
 
     ++treeSeeker;
 
-    if (FWReference::cast(o)!=NULL && RuleElement::cast(o->getParent())!=NULL)
+    if (FWReference::cast(o)!=nullptr && RuleElement::cast(o->getParent())!=nullptr)
     {
         m_project->ensureObjectVisibleInRules( FWReference::cast(o) );
         QTimer::singleShot(200, this, SLOT(makeActive()) );
         return;
     }
 
-    if (Group::cast(o->getParent())!=NULL &&
+    if (Group::cast(o->getParent())!=nullptr &&
         !FWBTree().isSystem(o->getParent()))
     {
         QCoreApplication::postEvent(

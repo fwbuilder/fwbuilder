@@ -53,7 +53,7 @@ using namespace libfwbuilder;
 ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(
     QWidget *parent, FWObjectDatabase *_db) : QWizard(parent)
 {
-    fw = NULL;
+    fw = nullptr;
     db_orig = _db;
     db_copy = new FWObjectDatabase();
     db_copy->duplicate(_db, false);
@@ -104,7 +104,7 @@ void ImportFirewallConfigurationWizard::accept()
     if (fwbdebug) qDebug() << "ImportFirewallConfigurationWizard::accept()"
                            << "fw=" << fw;
 
-    if (fw != NULL && (platform == "pix" || platform == "fwsm"))
+    if (fw != nullptr && (platform == "pix" || platform == "fwsm"))
         dynamic_cast<IC_NetworkZonesPage*>(
             page(Page_NetworkZones))->setNetworkZones();
 

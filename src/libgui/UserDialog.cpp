@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -57,7 +56,7 @@ UserDialog::UserDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::UserDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -68,7 +67,7 @@ void UserDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     UserService *s = dynamic_cast<UserService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     
     init=true;
 
@@ -94,19 +93,21 @@ void UserDialog::validate(bool *res)
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
+#ifndef NDEBUG
     UserService *s = dynamic_cast<UserService*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
 }
 
 
 
 void UserDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     UserService *s = dynamic_cast<UserService*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     s->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

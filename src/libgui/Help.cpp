@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -42,21 +41,15 @@ using namespace std;
 using namespace libfwbuilder;
 
 
-Help* Help::help_window = NULL;
+Help* Help::help_window = nullptr;
 
-Help::Help(QWidget *, const QString &title, bool _load_links_in_browser) :
-    QDialog(NULL)
+Help::Help(QWidget *, const QString &title) :
+    QDialog(nullptr)
 {
-    load_links_in_browser = _load_links_in_browser;
     m_dialog = new Ui::HelpView_q;
     m_dialog->setupUi(this);
     setWindowTitle("Firewall Builder Help");
     setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint);
-    delayed_open = false;
-
-    http_getter = new HttpGet();
-    connect(http_getter, SIGNAL(done(const QString&)),
-            this, SLOT(downloadComplete(const QString&)));
 
     connect(m_dialog->comboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(showReleaseNotesSelected()));
@@ -87,13 +80,10 @@ Help::~Help()
 
 Help* Help::getHelpWindow(QWidget* w)
 {
-    if (help_window == NULL)
+    if (help_window == nullptr)
     {
         help_window = new Help(w, "Firewall Builder");
-        help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint);
-#if QT_VERSION >= 0x040500
-        help_window->setWindowFlags(help_window->windowFlags() | Qt::WindowCloseButtonHint);
-#endif
+        help_window->setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     }
 
     return help_window;
@@ -106,53 +96,7 @@ void Help::setName(const QString &name)
 
 void Help::setSource(const QUrl &url)
 {
-    if (url.toString().startsWith("http:"))
-    {
-        delayed_open = true;
-        if (!http_getter->get(QUrl(url)) && fwbdebug)
-        {
-            qDebug() << "HttpGet error: " << http_getter->getLastError();
-            qDebug() << "Url: " << url;
-        }
-    } else
-    {
-        delayed_open = false;
         m_dialog->textview->setSource(url);
-    }
-}
-
-void Help::downloadComplete(const QString& server_response)
-{
-    if (fwbdebug)
-        qDebug() << "Help::downloadComplete"
-                 << "status=" << http_getter->getStatus();
-    /*
-     * getStatus() returns error status if server esponded with 302 or
-     * 301 redirect. Only "200" is considered success.
-     */
-    if (http_getter->getStatus())
-    {
-        m_dialog->textview->setHtml(server_response);
-        
-        /* here is additional layer of protection: if I make a mistake
-         * and feed empty page as an announcement, do not show it to
-         * the user.  If the user is behind captive portal or dns
-         * intercept that feeds them fancy page that consists of only
-         * a chunk of javascript and empty body, do not show it
-         * either. One example of such case is dnsadvantage.com
-         */
-
-        QString c = m_dialog->textview->toPlainText();
-
-        if (fwbdebug) qDebug() << "Announcement in plain text:"
-                               << c;
-
-        if (!c.isEmpty() && delayed_open)
-        {
-            raise();
-            show();
-        }
-    }
 }
 
 QString Help::findHelpFile(const QString &file_base_name)

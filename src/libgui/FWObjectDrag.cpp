@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "FWObjectDrag.h"
@@ -96,12 +95,7 @@ QByteArray FWObjectDrag::encodedData() const
 
 bool FWObjectDrag::decode( QDropEvent *ev, list<FWObject*> &ol)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QByteArray rawdata = ev->encodedData( static_cast<const char*>(FWB_MIME_TYPE.toLatin1()) );
-#else
     QByteArray rawdata = ev->mimeData()->data(FWB_MIME_TYPE);
-#endif
-
 
     ol.clear();
     QDataStream stream(&rawdata, QIODevice::ReadOnly);
@@ -122,11 +116,7 @@ bool FWObjectDrag::decode( QDropEvent *ev, list<FWObject*> &ol)
 
 bool FWObjectDrag::decode( QDragEnterEvent *ev, list<FWObject*> &ol)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QByteArray rawdata = ev->encodedData( static_cast<const char*>(FWB_MIME_TYPE.toLatin1()) );
-#else
     QByteArray rawdata = ev->mimeData()->data(FWB_MIME_TYPE);
-#endif
 
     ol.clear();
     QDataStream stream(&rawdata, QIODevice::ReadOnly);
@@ -148,5 +138,5 @@ bool FWObjectDrag::decode( QDragEnterEvent *ev, list<FWObject*> &ol)
 Qt::DropAction FWObjectDrag::start(Qt::DropActions action)
 {
     if (fwbdebug)  qDebug("FWObjectDrag::start"/*, action*/);
-    return QDrag::start(action);
+    return QDrag::exec(action);
 }

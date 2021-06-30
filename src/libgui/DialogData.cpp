@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "utils.h"
 #include "global.h"
 
@@ -54,12 +53,12 @@ DialogOption::DialogOption(QWidget *_w, FWObject *_o, const char* _a)
 
     dtype   = Unknown;
 
-    if (dynamic_cast<QComboBox*>(w)!=NULL)    dtype=String;
-    if (dynamic_cast<QCheckBox*>(w)!=NULL)    dtype=Bool;
-    if (dynamic_cast<QLineEdit*>(w)!=NULL)    dtype=String;
-    if (dynamic_cast<QTextEdit*>(w)!=NULL)    dtype=String;
-    if (dynamic_cast<QRadioButton*>(w)!=NULL) dtype=Bool;
-    if (dynamic_cast<QSpinBox*>(w)!=NULL)     dtype=Int;
+    if (dynamic_cast<QComboBox*>(w)!=nullptr)    dtype=String;
+    if (dynamic_cast<QCheckBox*>(w)!=nullptr)    dtype=Bool;
+    if (dynamic_cast<QLineEdit*>(w)!=nullptr)    dtype=String;
+    if (dynamic_cast<QTextEdit*>(w)!=nullptr)    dtype=String;
+    if (dynamic_cast<QRadioButton*>(w)!=nullptr) dtype=Bool;
+    if (dynamic_cast<QSpinBox*>(w)!=nullptr)     dtype=Int;
 }
 
 DialogOption::DialogOption(QWidget *_w, FWObject *_o, const char* _a,QStringList _m)
@@ -71,12 +70,12 @@ DialogOption::DialogOption(QWidget *_w, FWObject *_o, const char* _a,QStringList
 
     dtype   = Unknown;
 
-    if (dynamic_cast<QComboBox*>(w)!=NULL)    dtype=String;
-    if (dynamic_cast<QCheckBox*>(w)!=NULL)    dtype=Bool;
-    if (dynamic_cast<QLineEdit*>(w)!=NULL)    dtype=String;
-    if (dynamic_cast<QTextEdit*>(w)!=NULL)    dtype=String;
-    if (dynamic_cast<QRadioButton*>(w)!=NULL) dtype=Bool;
-    if (dynamic_cast<QSpinBox*>(w)!=NULL)     dtype=Int;
+    if (dynamic_cast<QComboBox*>(w)!=nullptr)    dtype=String;
+    if (dynamic_cast<QCheckBox*>(w)!=nullptr)    dtype=Bool;
+    if (dynamic_cast<QLineEdit*>(w)!=nullptr)    dtype=String;
+    if (dynamic_cast<QTextEdit*>(w)!=nullptr)    dtype=String;
+    if (dynamic_cast<QRadioButton*>(w)!=nullptr) dtype=Bool;
+    if (dynamic_cast<QSpinBox*>(w)!=nullptr)     dtype=Int;
 }
 
 
@@ -103,7 +102,7 @@ void DialogData::registerOption(QWidget *widget, libfwbuilder::FWObject *obj, co
 
 void DialogData::loadToWidget( DialogOption &dopt , bool override)
 {
-    if (dynamic_cast<QComboBox*>(dopt.w)!=NULL)
+    if (dynamic_cast<QComboBox*>(dopt.w)!=nullptr)
     {
         QComboBox *cbx = dynamic_cast<QComboBox*>(dopt.w);
         QString      s = (override) ? dopt.override_str_val : QString(dopt.obj->getStr(dopt.attr.toLatin1().constData()).c_str());
@@ -118,7 +117,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
  *     "Linux 2.4" , "linux24",
  *     "IPFilter"  , "ipf",
  *     "Cisco PIX" , "pix",
- *     NULL,         NULL
+ *     nullptr,         nullptr
  *
  *  Odd strings correspond to the data in the widget, while even
  *  strings define what is stored in the object (counting strings in
@@ -132,24 +131,15 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
             if (fwbdebug)
             {
                 qDebug("loadToWidget -- QComboBox  dopt.mapping.count()=%d",dopt.mapping.count());
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                qDebug("loadToWidget -- QComboBox  s=%s",s.toAscii().constData());
-#else
                 qDebug("loadToWidget -- QComboBox  s=%s",s.toLatin1().constData());
-#endif
             }
 
             while ( idx < dopt.mapping.count()/2 )
             {
                 if (fwbdebug)
                 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                    qDebug("loadToWidget -- QComboBox  (*i1)=%s",(*i1).toAscii().constData());
-                    qDebug("loadToWidget -- QComboBox  (*i2)=%s",(*i2).toAscii().constData());
-#else
                     qDebug("loadToWidget -- QComboBox  (*i1)=%s",(*i1).toLatin1().constData());
                     qDebug("loadToWidget -- QComboBox  (*i2)=%s",(*i2).toLatin1().constData());
-#endif
                 }
 
                 if (s== (*i2)) { current_item = idx; }
@@ -163,27 +153,27 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
         }
         cbx->setCurrentIndex( current_item );
     }
-    if (dynamic_cast<QCheckBox*>(dopt.w)!=NULL)
+    if (dynamic_cast<QCheckBox*>(dopt.w)!=nullptr)
     {
         QCheckBox *cbx=dynamic_cast<QCheckBox*>(dopt.w);
         cbx->setChecked( (override)?dopt.override_int_val:dopt.obj->getBool(dopt.attr.toLatin1().constData()) );
     }
-    if (dynamic_cast<QLineEdit*>(dopt.w)!=NULL)
+    if (dynamic_cast<QLineEdit*>(dopt.w)!=nullptr)
     {
         QLineEdit *edit=dynamic_cast<QLineEdit*>(dopt.w);
         edit->setText( (override) ? dopt.override_str_val : QString(dopt.obj->getStr(dopt.attr.toLatin1().constData()).c_str()) );
     }
-    if (dynamic_cast<QTextEdit*>(dopt.w)!=NULL)
+    if (dynamic_cast<QTextEdit*>(dopt.w)!=nullptr)
     {
         QTextEdit *edit=dynamic_cast<QTextEdit*>(dopt.w);
         edit->setText( (override) ? dopt.override_str_val : QString(dopt.obj->getStr(dopt.attr.toLatin1().constData()).c_str()) );
     }
-    if (dynamic_cast<QRadioButton*>(dopt.w)!=NULL)
+    if (dynamic_cast<QRadioButton*>(dopt.w)!=nullptr)
     {
         QRadioButton *rbtn=dynamic_cast<QRadioButton*>(dopt.w);
         rbtn->setChecked( (override)?dopt.override_int_val:dopt.obj->getBool(dopt.attr.toLatin1().constData()) );
     }
-    if (dynamic_cast<QSpinBox*>(dopt.w)!=NULL)
+    if (dynamic_cast<QSpinBox*>(dopt.w)!=nullptr)
     {
         QSpinBox *sbx = dynamic_cast<QSpinBox*>(dopt.w);
         sbx->setValue( (override)?dopt.override_int_val:dopt.obj->getInt(dopt.attr.toLatin1().constData()) );
@@ -201,9 +191,9 @@ void DialogData::saveAll(FWObject *new_obj)
 {
     for (list<DialogOption>::iterator i=options.begin(); i!=options.end(); ++i)
     {
-        FWObject *use_obj = (new_obj!=NULL) ? new_obj : i->obj;
+        FWObject *use_obj = (new_obj!=nullptr) ? new_obj : i->obj;
 
-        if (dynamic_cast<QComboBox*>(i->w)!=NULL)
+        if (dynamic_cast<QComboBox*>(i->w)!=nullptr)
         {
             QComboBox *cbx = dynamic_cast<QComboBox*>(i->w);
             QString s = cbx->currentText();
@@ -223,7 +213,7 @@ void DialogData::saveAll(FWObject *new_obj)
  *     "Linux 2.4" , "linux24",
  *     "IPFilter"  , "ipf",
  *     "Cisco PIX" , "pix",
- *     NULL,         NULL
+ *     nullptr,         nullptr
  *  };
  *
  *  Odd strings correspond to the data in the widget, while even
@@ -247,29 +237,29 @@ void DialogData::saveAll(FWObject *new_obj)
             if (s.isEmpty()) s="";
             use_obj->setStr(i->attr.toLatin1().constData(), s.toLatin1().constData());
         }
-        if (dynamic_cast<QCheckBox*>(i->w)!=NULL)
+        if (dynamic_cast<QCheckBox*>(i->w)!=nullptr)
         {
             QCheckBox *cbx=dynamic_cast<QCheckBox*>(i->w);
             use_obj->setBool(i->attr.toLatin1().constData(), cbx->isChecked() );
         }
-        if (dynamic_cast<QLineEdit*>(i->w)!=NULL)
+        if (dynamic_cast<QLineEdit*>(i->w)!=nullptr)
         {
             QLineEdit *edit=dynamic_cast<QLineEdit*>(i->w);
             use_obj->setStr(i->attr.toLatin1().constData(),
                             edit->text().toLatin1().constData() );
         }
-        if (dynamic_cast<QTextEdit*>(i->w)!=NULL)
+        if (dynamic_cast<QTextEdit*>(i->w)!=nullptr)
         {
             QTextEdit *edit=dynamic_cast<QTextEdit*>(i->w);
             use_obj->setStr(i->attr.toLatin1().constData(),
                             edit->toPlainText().toLatin1().constData() );
         }
-        if (dynamic_cast<QRadioButton*>(i->w)!=NULL)
+        if (dynamic_cast<QRadioButton*>(i->w)!=nullptr)
         {
             QRadioButton *rbtn=dynamic_cast<QRadioButton*>(i->w);
             use_obj->setBool(i->attr.toLatin1().constData(), rbtn->isChecked() );
         }
-        if (dynamic_cast<QSpinBox*>(i->w)!=NULL)
+        if (dynamic_cast<QSpinBox*>(i->w)!=nullptr)
         {
             QSpinBox *sbx = dynamic_cast<QSpinBox*>(i->w);
             use_obj->setInt( i->attr.toLatin1().constData(), sbx->value() );

@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
@@ -64,7 +63,7 @@ instOptionsDialog::instOptionsDialog(QWidget *parent, instConf *_cnf, bool insta
     int fw_id = -1;
     if (cnf->fwobj)
     {
-        // Note cnf->fwobj == NULL during batch install
+        // Note cnf->fwobj == nullptr during batch install
         fw_id = cnf->fwobj->getId();
     }
 
@@ -188,7 +187,7 @@ void instOptionsDialog::savePassword()
     int fw_id = -1;
     if (cnf->fwobj)
     {
-        // Note cnf->fwobj == NULL during batch install
+        // Note cnf->fwobj == nullptr during batch install
         fw_id = cnf->fwobj->getId();
     }
 

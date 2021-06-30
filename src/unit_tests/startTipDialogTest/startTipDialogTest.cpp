@@ -26,6 +26,7 @@
 #include "startTipDialogTest.h"
 #include "FWWindow.h"
 #include "FWBApplication.h"
+#include "FWObjectClipboard.h"
 #include "StartTipDialog.h"
 #include <QFile>
 #include "global.h"
@@ -46,17 +47,18 @@ void startTipDialogTest::testDialogAppear()
 {
     st->setBool("UI/NoStartTip", false);
     st->setBool("UI/FirstRun", true);
+    new FWObjectClipboard();
     mw = new FWWindow();
     mw->show();
     mw->startupLoad();
 
-    StartTipDialog *dialog = NULL;
+    StartTipDialog *dialog = nullptr;
     for(int i=0; i<10; i++)
     {
         qDebug() << "app->topLevelWidgets():";
         foreach (QWidget *widget, QApplication::topLevelWidgets())
         {
-            if (dynamic_cast<StartTipDialog*>(widget) != NULL)
+            if (dynamic_cast<StartTipDialog*>(widget) != nullptr)
             {
                 qDebug() << widget << "isHidden()=" << widget->isHidden();
                 if (widget->objectName() == "StartTipDialog_q")
@@ -68,10 +70,10 @@ void startTipDialogTest::testDialogAppear()
 
         qDebug() << "--";
 
-        if (dialog == NULL) QTest::qWait(1000);
+        if (dialog == nullptr) QTest::qWait(1000);
         else break;
     }
-    Q_ASSERT(dialog != NULL);
+    Q_ASSERT(dialog != nullptr);
 
     QPushButton *prevTip = dialog->findChild<QPushButton*>("prevTipButton");
     QPushButton *nextTip = dialog->findChild<QPushButton*>("nextTipButton");
@@ -96,16 +98,16 @@ void startTipDialogTest::testDialogNotAppear()
     mw->show();
     mw->startupLoad();
 
-    StartTipDialog *dialog = NULL;
+    StartTipDialog *dialog = nullptr;
     for(int i=0; i<10; i++)
     {
         dialog = dynamic_cast<StartTipDialog*>(app->activeWindow());
-        if (dialog == NULL)
+        if (dialog == nullptr)
             QTest::qWait(1000);
         else
             break;
     }
-    Q_ASSERT(dialog == NULL);
+    Q_ASSERT(dialog == nullptr);
 }
 
 void startTipDialogTest::cleanupTestCase()

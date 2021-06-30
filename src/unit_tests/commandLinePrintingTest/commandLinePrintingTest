@@ -1,5 +1,7 @@
 #!/bin/sh
 
+pushd "$( dirname "${BASH_SOURCE[0]}" )"
+
 rm -f print.pdf >/dev/null 2>/dev/null
 
 QTVERSION=$(${QMAKE:-qmake} --version 2>&1 | tail -n1| cut -d' ' -f4)

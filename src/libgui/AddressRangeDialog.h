@@ -27,7 +27,6 @@
 #ifndef __ADDRESSRANGEDIALOG_H_
 #define __ADDRESSRANGEDIALOG_H_
 
-#include "config.h"
 #include <ui_addressrangedialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>
@@ -51,6 +50,7 @@ public slots:
     virtual void applyChanges();
     virtual void loadFWObject(libfwbuilder::FWObject *obj);
     virtual void validate(bool*);
+    virtual void addressEntered();
 };
 
 #endif // ADDRESSRANGEDIALOG_H

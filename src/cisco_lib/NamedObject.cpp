@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObject.h"
 
@@ -207,7 +206,7 @@ const char* rw[] = {
     "icmp-traceroute",
     "icmp-conversion-error",
     "icmp-mobile-redirect",
-    NULL
+    nullptr
     };
 
 QSet<QString> NamedObject::reserved_words;
@@ -221,7 +220,7 @@ NamedObject::NamedObject(const FWObject *_obj, const QString &_platform)
     if (reserved_words.empty())
     {
         const char** cptr = rw;
-        while (*cptr!=NULL)
+        while (*cptr!=nullptr)
         {
             reserved_words.insert(QString(*cptr));
             cptr++;
@@ -232,10 +231,10 @@ NamedObject::NamedObject(const FWObject *_obj, const QString &_platform)
 
 QString NamedObject::getCommandWord()
 {
-    if (Address::constcast(obj)!=NULL && Address::constcast(obj)->isAny())
+    if (Address::constcast(obj)!=nullptr && Address::constcast(obj)->isAny())
         return "any";
 
-    if (Service::constcast(obj)!=NULL && Service::constcast(obj)->isAny())
+    if (Service::constcast(obj)!=nullptr && Service::constcast(obj)->isAny())
         return "any";
 
     if (Interface::constcast(obj))
@@ -263,7 +262,7 @@ QString NamedObject::sanitizeObjectName(const QString &name)
 
 QString NamedObject::createNetworkObjectCommand(const Address *addr_obj)
 {
-    if (addr_obj == NULL) return "";
+    if (addr_obj == nullptr) return "";
     if (addr_obj->isAny()) return "";
     if (Interface::constcast(obj)) return "";
 
@@ -324,7 +323,7 @@ QString NamedObject::printPorts(int rs, int re)
 
 QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
 {
-    if (serv_obj == NULL) return "";
+    if (serv_obj == nullptr) return "";
     if (serv_obj->isAny()) return "";
 
     QStringList res;
@@ -378,10 +377,10 @@ QString NamedObject::createServiceObjectCommand(const Service *serv_obj)
 
 QString NamedObject::getCommand()
 {
-    if (Address::constcast(obj)!=NULL)
+    if (Address::constcast(obj)!=nullptr)
         return createNetworkObjectCommand(Address::constcast(obj));
 
-    if (Service::constcast(obj)!=NULL)
+    if (Service::constcast(obj)!=nullptr)
         return createServiceObjectCommand(Service::constcast(obj));
 
     return "";
@@ -389,8 +388,8 @@ QString NamedObject::getCommand()
 
 QString NamedObject::getCommandWhenObjectGroupMember()
 {
-    if (Address::constcast(obj)!=NULL) return "network-object object " + name;
-    if (Service::constcast(obj)!=NULL) return "service-object object " + name;
+    if (Address::constcast(obj)!=nullptr) return "network-object object " + name;
+    if (Service::constcast(obj)!=nullptr) return "service-object object " + name;
     return "";
 }
 

@@ -25,6 +25,9 @@
 
 #include "InetAddrMaskTest.h"
 #include <fwbuilder/InetAddrMask.h>
+#include "fwbuilder/FWException.h"
+
+#include <QTest>
 
 using namespace libfwbuilder;
 using namespace std;
@@ -33,90 +36,111 @@ using namespace std;
 void InetAddrMaskTest::testIntToInetAddr()
 {
     InetAddr *sa1 = new InetAddr(0);
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "0.0.0.0");
-        
+    QVERIFY2(sa1->toString() == "0.0.0.0", sa1->toString().data());
+
     sa1 = new InetAddr(AF_INET, 0);
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "0.0.0.0");
-        
+    QVERIFY2(sa1->toString() == "0.0.0.0", sa1->toString().data());
+
     sa1 = new InetAddr(1);
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "128.0.0.0");
+    QVERIFY2(sa1->toString() == "128.0.0.0", sa1->toString().data());
 
     sa1 = new InetAddr(24);
-    CPPUNIT_ASSERT_MESSAGE(sa1->toString(),  sa1->toString() == "255.255.255.0");
+    QVERIFY2(sa1->toString() == "255.255.255.0", sa1->toString().data());
 }
 
 void InetAddrMaskTest::testStringToInetAddr()
 {
     InetAddr *sa1 = new InetAddr("0.0.0.1");
-    CPPUNIT_ASSERT_MESSAGE("0.0.0.1 -> " + sa1->toString(),  sa1->toString() == "0.0.0.1");
-        
+    QVERIFY2(sa1->toString() == "0.0.0.1", std::string("0.0.0.1 -> " + sa1->toString()).data());
+
     sa1 = new InetAddr("0.0.0.0");
-    CPPUNIT_ASSERT_MESSAGE("0.0.0.0 -> " + sa1->toString(),  sa1->toString() == "0.0.0.0");
-        
+    QVERIFY2(sa1->toString() == "0.0.0.0", std::string("0.0.0.0 -> " + sa1->toString()).data());
+
     sa1 = new InetAddr("1.2.3.4");
-    CPPUNIT_ASSERT_MESSAGE("1.2.3.4 -> " + sa1->toString(),  sa1->toString() == "1.2.3.4");
+    QVERIFY2(sa1->toString() == "1.2.3.4", std::string("1.2.3.4 -> " + sa1->toString()).data());
 
     sa1 = new InetAddr("0.0.1");
-    CPPUNIT_ASSERT_MESSAGE("0.0.1 -> " + sa1->toString(), sa1->toString() == "0.0.1.0");
+    QVERIFY2(sa1->toString() == "0.0.1.0", std::string("0.0.1 -> " + sa1->toString()).data());
 
     sa1 = new InetAddr("0.1");
-    CPPUNIT_ASSERT_MESSAGE("0.1 -> " + sa1->toString(), sa1->toString() == "0.1.0.0");
-        
+    QVERIFY2(sa1->toString() == "0.1.0.0", std::string("0.1 -> " + sa1->toString()).data());
+
     // "1" ---> "128.0.0.0"   I am not sure this is correct
     sa1 = new InetAddr("1");
-    CPPUNIT_ASSERT_MESSAGE("1 -> " + sa1->toString(), sa1->toString() == "128.0.0.0");
+    QVERIFY2(sa1->toString() == "128.0.0.0", std::string("1 -> " + sa1->toString()).data());
 
     sa1 = new InetAddr("1.0");
-    CPPUNIT_ASSERT_MESSAGE("1.0 -> " + sa1->toString(), sa1->toString() == "1.0.0.0");
-        
+    QVERIFY2(sa1->toString() == "1.0.0.0", std::string("1.0 -> " + sa1->toString()).data());
+
     sa1 = new InetAddr("1.0.0");
-    CPPUNIT_ASSERT_MESSAGE("1.0.0 -> " + sa1->toString(), sa1->toString() == "1.0.0.0");
+    QVERIFY2(sa1->toString() == "1.0.0.0", std::string("1.0.0 -> " + sa1->toString()).data());
 
     sa1 = new InetAddr("255.255.255.255");
-    CPPUNIT_ASSERT_MESSAGE("255.255.255.255 -> " + sa1->toString(), sa1->toString() == "255.255.255.255");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+    QVERIFY2(sa1->toString() == "255.255.255.255", std::string("255.255.255.255 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == true);
 
     sa1 = new InetAddr("255.255.255.128");
-    CPPUNIT_ASSERT_MESSAGE("255.255.255.128 -> " + sa1->toString(), sa1->toString() == "255.255.255.128");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+    QVERIFY2(sa1->toString() == "255.255.255.128", std::string("255.255.255.128 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == true);
 
     sa1 = new InetAddr("255.255.255.0");
-    CPPUNIT_ASSERT_MESSAGE("255.255.255.0 -> " + sa1->toString(), sa1->toString() == "255.255.255.0");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+    QVERIFY2(sa1->toString() == "255.255.255.0", std::string("255.255.255.0 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == true);
 
     sa1 = new InetAddr("255.255.0.0");
-    CPPUNIT_ASSERT_MESSAGE("255.255.0.0 -> " + sa1->toString(), sa1->toString() == "255.255.0.0");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+    QVERIFY2(sa1->toString() == "255.255.0.0", std::string("255.255.0.0 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == true);
 
     sa1 = new InetAddr("255.0.0.0");
-    CPPUNIT_ASSERT_MESSAGE("255.0.0.0 -> " + sa1->toString(), sa1->toString() == "255.0.0.0");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+    QVERIFY2(sa1->toString() == "255.0.0.0", std::string("255.0.0.0 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == true);
 
     sa1 = new InetAddr("0.0.0.0");
-    CPPUNIT_ASSERT_MESSAGE("0.0.0.0 -> " + sa1->toString(), sa1->toString() == "0.0.0.0");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == true);
+    QVERIFY2(sa1->toString() == "0.0.0.0", std::string("0.0.0.0 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == true);
 
     sa1 = new InetAddr("255.0.255.0");
-    CPPUNIT_ASSERT_MESSAGE("255.0.255.0 -> " + sa1->toString(), sa1->toString() == "255.0.255.0");
-    CPPUNIT_ASSERT(sa1->isValidV4Netmask() == false);
+    QVERIFY2(sa1->toString() == "255.0.255.0", std::string("255.0.255.0 -> " + sa1->toString()).data());
+    QVERIFY(sa1->isValidV4Netmask() == false);
 
 }
 
 void InetAddrMaskTest::testStringToInetAddrExceptions()
 {
-    CPPUNIT_ASSERT_NO_THROW(new InetAddr("1.2.3.4"));
-    CPPUNIT_ASSERT_NO_THROW(new InetAddr("1.2.3.4/24"));
-    CPPUNIT_ASSERT_THROW(new InetAddr("1.2.3.4/40"), FWException);
+    try {
+        new InetAddr("1.2.3.4");
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
+    }
 
-    CPPUNIT_ASSERT_THROW(new InetAddr("300.300.300.300"), FWException);
-    CPPUNIT_ASSERT_THROW(new InetAddr("1.2.3.4.5"), FWException);
-    CPPUNIT_ASSERT_THROW(new InetAddr("foo.bar"), FWException);
-    CPPUNIT_ASSERT_THROW(new InetAddr("1.2.foo.bar"), FWException);
+    try {
+        new InetAddr("1.2.3.4/24");
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
+    }
 
-    CPPUNIT_ASSERT_THROW(new InetAddr(40), FWException);
-    CPPUNIT_ASSERT_NO_THROW(new InetAddr(24));
-    CPPUNIT_ASSERT_THROW(new InetAddr((char*)(NULL)), FWException);
-    CPPUNIT_ASSERT_NO_THROW(new InetAddr(0));
+    QVERIFY_EXCEPTION_THROWN(new InetAddr("1.2.3.4/40"), FWException);
+
+    QVERIFY_EXCEPTION_THROWN(new InetAddr("300.300.300.300"), FWException);
+    QVERIFY_EXCEPTION_THROWN(new InetAddr("1.2.3.4.5"), FWException);
+    QVERIFY_EXCEPTION_THROWN(new InetAddr("foo.bar"), FWException);
+    QVERIFY_EXCEPTION_THROWN(new InetAddr("1.2.foo.bar"), FWException);
+
+    QVERIFY_EXCEPTION_THROWN(new InetAddr(40), FWException);
+    try {
+        new InetAddr(24);
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
+    }
+
+    QVERIFY_EXCEPTION_THROWN(new InetAddr((char*)(nullptr)), FWException);
+
+    try {
+        new InetAddr(0);
+    } catch (const FWException &e) {
+        QFAIL(std::string("Exception thrown: ").append(e.toString()).data());
+    }
+
 }
 
 void InetAddrMaskTest::testInetAddressOps()
@@ -125,30 +149,30 @@ void InetAddrMaskTest::testInetAddressOps()
     InetAddr y1(24);
     InetAddr z1 = x1 & y1;
 
-    CPPUNIT_ASSERT(z1.toString() == "1.2.3.0");
-    CPPUNIT_ASSERT( (~y1).toString() == "0.0.0.255");
+    QVERIFY(z1.toString() == "1.2.3.0");
+    QVERIFY( (~y1).toString() == "0.0.0.255");
 
     InetAddr z2 = z1 | ~y1;
-    CPPUNIT_ASSERT(z2.toString() == "1.2.3.255");
+    QVERIFY(z2.toString() == "1.2.3.255");
 
     InetAddr z3 = z1 | ~y1;
-    CPPUNIT_ASSERT(z3.toString() == "1.2.3.255");
+    QVERIFY(z3.toString() == "1.2.3.255");
 
     InetAddr z4 = x1 + 1;
-    CPPUNIT_ASSERT(z4.toString() == "1.2.3.5");
+    QVERIFY(z4.toString() == "1.2.3.5");
 
     InetAddr z5 = z4 - 1;
-    CPPUNIT_ASSERT(z5.toString() == "1.2.3.4");
+    QVERIFY(z5.toString() == "1.2.3.4");
 
-    CPPUNIT_ASSERT(z5 == x1);
+    QVERIFY(z5 == x1);
 
     InetAddr x2("255.255.255.255");
     InetAddr z6 = x2 + 1;
-    CPPUNIT_ASSERT(z6.toString() == "0.0.0.0");
+    QVERIFY(z6.toString() == "0.0.0.0");
 
     InetAddr x3("1.2.2.4");
-    CPPUNIT_ASSERT(x3 < x1);
-    CPPUNIT_ASSERT(x1 > x3);
+    QVERIFY(x3 < x1);
+    QVERIFY(x1 > x3);
 
 }
 
@@ -157,73 +181,73 @@ void InetAddrMaskTest::testStringToInetAddrMask()
     string sa;
 
     InetAddrMask *a1 = new InetAddrMask();
-    CPPUNIT_ASSERT(a1->toString() == "0.0.0.0/0.0.0.0");
+    QVERIFY(a1->toString() == "0.0.0.0/0.0.0.0");
     sa = a1->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="0.0.0.0");
+    QVERIFY(sa=="0.0.0.0");
     // 0.0.0.0/0.0.0.0 has maximum dimension (represents all possible addresses)
-    CPPUNIT_ASSERT(a1->dimension() == (((unsigned int)1)<<31)-1);
+    QVERIFY(a1->dimension() == (((unsigned int)1)<<31)-1);
 
     InetAddrMask *a2 = new InetAddrMask(InetAddr("1.1.1.1"), InetAddr("255.255.255.0"));
     sa = a2->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="1.1.1.0");
+    QVERIFY(sa=="1.1.1.0");
     sa = a2->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.255.255.0");
-    CPPUNIT_ASSERT(a2->dimension()==256);
-    CPPUNIT_ASSERT(a2->toString()=="1.1.1.0/255.255.255.0");
+    QVERIFY(sa=="255.255.255.0");
+    QVERIFY(a2->dimension()==256);
+    QVERIFY(a2->toString()=="1.1.1.0/255.255.255.0");
 
 
     InetAddrMask *a3 = new InetAddrMask(string("1.1.1.1"));
     sa = a3->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="1.1.1.1");
+    QVERIFY(sa=="1.1.1.1");
     sa = a3->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.255.255.255");
-    CPPUNIT_ASSERT(a3->dimension()==1);
+    QVERIFY(sa=="255.255.255.255");
+    QVERIFY(a3->dimension()==1);
 
-    CPPUNIT_ASSERT(a2->belongs( *(a3->getAddressPtr()) ));
+    QVERIFY(a2->belongs( *(a3->getAddressPtr()) ));
 
     InetAddrMask *a4 = new InetAddrMask(*a3);
     sa = a4->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="1.1.1.1");
+    QVERIFY(sa=="1.1.1.1");
     sa = a4->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.255.255.255");
-    CPPUNIT_ASSERT(a4->dimension()==1);
+    QVERIFY(sa=="255.255.255.255");
+    QVERIFY(a4->dimension()==1);
 
     a4->setAddress(InetAddr("2.2.2.2"));
     sa = a4->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="2.2.2.2");
+    QVERIFY(sa=="2.2.2.2");
     sa = a4->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.255.255.255");
-    CPPUNIT_ASSERT(a4->dimension()==1);
+    QVERIFY(sa=="255.255.255.255");
+    QVERIFY(a4->dimension()==1);
 
     a4->setNetmask(InetAddr("255.255.0.0"));
     sa = a4->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="2.2.2.2");
+    QVERIFY(sa=="2.2.2.2");
     sa = a4->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.255.0.0");
-    CPPUNIT_ASSERT(a4->dimension()==256*256);
+    QVERIFY(sa=="255.255.0.0");
+    QVERIFY(a4->dimension()==256*256);
 
     a4->setNetmask(InetAddr("8"));
     sa = a4->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="2.2.2.2");
+    QVERIFY(sa=="2.2.2.2");
     sa = a4->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.0.0.0");
-    CPPUNIT_ASSERT(a4->dimension()==256*256*256);
+    QVERIFY(sa=="255.0.0.0");
+    QVERIFY(a4->dimension()==256*256*256);
 
-    CPPUNIT_ASSERT_THROW(a4->setNetmask(InetAddr("40")), FWException);
+    QVERIFY_EXCEPTION_THROWN(a4->setNetmask(InetAddr("40")), FWException);
 
     // a4 should not have changed
     sa = a4->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="2.2.2.2");
+    QVERIFY(sa=="2.2.2.2");
     sa = a4->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.0.0.0");
-    CPPUNIT_ASSERT(a4->dimension()==256*256*256);
+    QVERIFY(sa=="255.0.0.0");
+    QVERIFY(a4->dimension()==256*256*256);
 
     InetAddrMask *a5 = new InetAddrMask(string("1.1.1.1/24"));
     sa = a5->getAddressPtr()->toString();
-    CPPUNIT_ASSERT(sa=="1.1.1.1");
+    QVERIFY(sa=="1.1.1.1");
     sa = a5->getNetmaskPtr()->toString();
-    CPPUNIT_ASSERT(sa=="255.255.255.0");
-    CPPUNIT_ASSERT(a5->dimension()==256);
+    QVERIFY(sa=="255.255.255.0");
+    QVERIFY(a5->dimension()==256);
 
 }
 
@@ -248,7 +272,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.0/255.255.255.0 ");
+    QVERIFY(res=="10.0.0.0/255.255.255.0 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -256,7 +280,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.255"), InetAddr("255.255.255.255"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.255/255.255.255.255 ");
+    QVERIFY(res=="10.0.0.255/255.255.255.255 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -264,7 +288,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.255/255.255.255.255 ");
+    QVERIFY(res=="10.0.0.255/255.255.255.255 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -272,7 +296,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.0/255.255.255.254 ");
+    QVERIFY(res=="10.0.0.0/255.255.255.254 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -280,7 +304,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.254"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.0/255.255.255.254 ");
+    QVERIFY(res=="10.0.0.0/255.255.255.254 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -288,7 +312,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.252/255.255.255.252 ");
+    QVERIFY(res=="10.0.0.252/255.255.255.252 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -296,7 +320,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.252"), InetAddr("255.255.255.252"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.252/255.255.255.252 ");
+    QVERIFY(res=="10.0.0.252/255.255.255.252 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -304,7 +328,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.128/255.255.255.252 ");
+    QVERIFY(res=="10.0.0.128/255.255.255.252 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
@@ -312,7 +336,7 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.128"), InetAddr("255.255.255.252"))
         )
     );
-    CPPUNIT_ASSERT(res=="10.0.0.128/255.255.255.252 ");
+    QVERIFY(res=="10.0.0.128/255.255.255.252 ");
 
     // test specifically for #1934
     res = vectorInetAddrMaskToString(
@@ -320,13 +344,13 @@ void InetAddrMaskTest::testIPv4Overlap()
             InetAddrMask(InetAddr("10.0.0.2"), InetAddr("255.255.255.254")),
             InetAddrMask(InetAddr("10.0.0.0"), InetAddr("255.255.255.0")))
     );
-    CPPUNIT_ASSERT(res=="10.0.0.2/255.255.255.254 ");
+    QVERIFY(res=="10.0.0.2/255.255.255.254 ");
 
     res = vectorInetAddrMaskToString(
         libfwbuilder::getOverlap(
             InetAddrMask(InetAddr("10.0.0.2"), InetAddr("255.255.255.254")),
             InetAddrMask(InetAddr("0.0.0.0"), InetAddr("0.0.0.0")))
     );
-    CPPUNIT_ASSERT(res=="10.0.0.2/255.255.255.254 ");
+    QVERIFY(res=="10.0.0.2/255.255.255.254 ");
 
 }

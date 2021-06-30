@@ -1,5 +1,4 @@
 
-#include "../../config.h"
 
 #include <qglobal.h>
 
@@ -25,7 +24,6 @@
 
 #include <string>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/Resources.h"
 #include "fwbuilder/Constants.h"
@@ -52,19 +50,14 @@ void init_win()
  */
 #if defined(Q_OS_WIN32) || defined(Q_OS_MACX)
 
-//    if (QCoreApplication::instance()==NULL)
+//    if (QCoreApplication::instance()==nullptr)
 //    {
 //        int ac = 0;
-//        char **av = { NULL };
+//        char **av = { nullptr };
 //        new QApplication( ac, av );
 //    }
     QDir dir(QCoreApplication::applicationDirPath());
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    appRootDir = string(dir.absolutePath().toAscii().constData());
-#else
     appRootDir = string(dir.absolutePath().toLatin1().constData());
-#endif
 
 /* On windows and mac we install API resources (DTD etc) in the 
  * dir right above the one where we install resources for the GUI and compilers
@@ -113,7 +106,7 @@ void init_win()
 #elif defined(Q_OS_MACX)
 
     char *lname = getenv("LOGNAME");
-    if (lname!=NULL)
+    if (lname!=nullptr)
         user_name = QString(lname);
     else
     {

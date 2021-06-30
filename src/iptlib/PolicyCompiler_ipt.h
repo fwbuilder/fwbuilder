@@ -26,11 +26,9 @@
 #ifndef __POLICYCOMPILER_IPT_HH__
 #define __POLICYCOMPILER_IPT_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "fwcompiler/PolicyCompiler.h"
 #include "fwbuilder/RuleElement.h"
-#include "config.h"
 #include "Configlet.h"
 
 #include <QMap>
@@ -904,7 +902,7 @@ protected:
             public:
             optimize3(const std::string &name) : PolicyRuleProcessor(name)
             {
-                printRule = NULL;
+                printRule = nullptr;
             }
             virtual ~optimize3() { if (printRule) delete printRule; }
             virtual bool processNext();

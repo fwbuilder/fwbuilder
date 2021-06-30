@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -102,7 +101,7 @@ void LibExportDialog::init()
         QPixmap pm;
         QString icn = (":/Icons/" + (*i)->getTypeName() + "/icon-tree").c_str();
         //QString icn = libicn.c_str();
-        if ( ! QPixmapCache::find( icn, pm) )
+        if ( ! QPixmapCache::find( icn, &pm) )
         {
             pm.load( icn );
             QPixmapCache::insert( icn, pm);

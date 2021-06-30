@@ -49,7 +49,7 @@ ClusterDialog::ClusterDialog(QWidget *parent)
 {
     m_dialog = new Ui::ClusterDialog_q;
     m_dialog->setupUi(this);
-    obj = NULL;
+    obj = nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -58,7 +58,7 @@ void ClusterDialog::loadFWObject(FWObject *o)
 {
     obj = o;
     Cluster *s = dynamic_cast<Cluster*>(obj);
-    assert(s != NULL);
+    assert(s != nullptr);
 
     QString platform = obj->getStr("platform").c_str();
     // fill in platform
@@ -71,7 +71,7 @@ void ClusterDialog::loadFWObject(FWObject *o)
 
     /*
       Management *mgmt = s->getManagementObject();
-      assert(mgmt != NULL);
+      assert(mgmt != nullptr);
     */
 
     m_dialog->obj_name->setText(QString::fromUtf8(s->getName().c_str()));
@@ -191,13 +191,13 @@ void ClusterDialog::validate(bool *res)
     if (m_dialog->obj_name->text().contains("/"))
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Character \"/\" is not allowed in cluster object name"),
-                tr("&Continue"), QString::null,QString::null,
+                tr("&Continue"), QString(),QString(),
                 0, 1 );
             blockSignals(false);
         }
@@ -229,17 +229,17 @@ void ClusterDialog::applyChanges()
         blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
-                                  tr("&Yes"), tr("&No"), QString::null,
+                                  tr("&Yes"), tr("&No"), QString(),
                                   0, 1 )==0 );
         blockSignals(false);
     }
 
-    std::auto_ptr<FWCmdChange> cmd(
+    std::unique_ptr<FWCmdChange> cmd(
         new FWCmdChange(m_project, obj, "", autorename_chidren));
     FWObject* new_state = cmd->getNewState();
 
     Cluster *s = dynamic_cast<Cluster*>(new_state);
-    assert(s != NULL);
+    assert(s != nullptr);
 
     string oldname = obj->getName();
     string newname = string(m_dialog->obj_name->text().toUtf8().constData());

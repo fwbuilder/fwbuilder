@@ -58,10 +58,10 @@ KeywordsDialog::KeywordsDialog(FWObject *obj, QWidget *parent)
         m_allKeywords.insert(QString::fromUtf8((*iter).c_str()));
     }
 
-    m_allModel = new QStringListModel(sortStrings(m_allKeywords.toList()));
+    m_allModel = new QStringListModel(sortStrings(m_allKeywords.values()));
     m_ui.allKeywordsListView->setModel(m_allModel);
 
-    m_currModel = new QStringListModel(sortStrings(m_currKeywords.toList()));
+    m_currModel = new QStringListModel(sortStrings(m_currKeywords.values()));
     m_ui.currKeywordsListView->setModel(m_currModel);
 }
 
@@ -91,7 +91,7 @@ void KeywordsDialog::gotAddClick()
         }
     }
 
-    m_currModel->setStringList(sortStrings(m_currKeywords.toList()));
+    m_currModel->setStringList(sortStrings(m_currKeywords.values()));
 }
 
 void KeywordsDialog::gotRemoveClick()
@@ -106,7 +106,7 @@ void KeywordsDialog::gotRemoveClick()
         }
     }
 
-    m_currModel->setStringList(sortStrings(m_currKeywords.toList()));
+    m_currModel->setStringList(sortStrings(m_currKeywords.values()));
 }
 
 
@@ -124,8 +124,8 @@ void KeywordsDialog::gotNewKeywordClick()
     m_currKeywords.insert(newKeyword);
     m_allKeywords.insert(newKeyword);
 
-    m_currModel->setStringList(sortStrings(m_currKeywords.toList()));
-    m_allModel->setStringList(sortStrings(m_allKeywords.toList()));
+    m_currModel->setStringList(sortStrings(m_currKeywords.values()));
+    m_allModel->setStringList(sortStrings(m_allKeywords.values()));
 
     m_ui.newKeywordLineEdit->clear();
 }
@@ -137,7 +137,7 @@ bool KeywordsDialog::validateKeyword(QWidget *parent, const QString &keyword)
     if (keyword.contains(',')) {
         QMessageBox::warning(parent, "Firewall Builder",
                              tr("Keyword cannot contain a comma"), "&OK",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         return false;
     }
 

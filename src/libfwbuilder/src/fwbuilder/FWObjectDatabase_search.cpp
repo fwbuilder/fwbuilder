@@ -25,8 +25,6 @@
 
 #include <stdlib.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObject.h"
@@ -78,7 +76,7 @@ void FWObjectDatabase::_findObjectsInGroup(Group *g, set<FWObject *> &res)
     {
         
        ref=FWObjectReference::cast(*i);
-       if (ref==NULL) 
+       if (ref==nullptr) 
        {
            res.insert(*i);
            continue;
@@ -87,7 +85,7 @@ void FWObjectDatabase::_findObjectsInGroup(Group *g, set<FWObject *> &res)
        obj=ref->getPointer();
        sg=Group::cast(obj);
        
-       if (sg==NULL)
+       if (sg==nullptr)
        {
            res.insert(obj);
            continue;
@@ -105,7 +103,7 @@ void FWObjectDatabase::_findObjectsInGroup(Group *g, set<FWObject *> &res)
  * Find firewall object by name. Finds Firewall and Cluster objects.
  */
 Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
-                                         const string &name) throw(FWException)
+                                         const string &name)
 {
     // use Firewall::cast so that both Firewall and Cluster objects match
     if (Firewall::cast(db) &&
@@ -123,10 +121,10 @@ Firewall* FWObjectDatabase::_findFirewallByNameRecursive(FWObject* db,
     }
     if (db==this)
         throw FWException("Firewall object '"+name+"' not found");
-    return NULL; // not found
+    return nullptr; // not found
 }
 
-Firewall* FWObjectDatabase::findFirewallByName(const string &name) throw(FWException)
+Firewall* FWObjectDatabase::findFirewallByName(const string &name)
 {
     return _findFirewallByNameRecursive(this, name);
 }
@@ -135,7 +133,7 @@ Firewall* FWObjectDatabase::findFirewallByName(const string &name) throw(FWExcep
 
 bool FWObjectDatabase::_isInIgnoreList(FWObject *o)
 {
-    if (FWOptions::cast(o)!=NULL) return true;
+    if (FWOptions::cast(o)!=nullptr) return true;
     if (o->getId()==FWObjectDatabase::DELETED_OBJECTS_ID)  return true;
     return false;
 }
@@ -243,7 +241,7 @@ bool FWObjectDatabase::_findWhereObjectIsUsed(FWObject *o,
     for ( ; i1!=p->end(); ++i1)
     {
         FWReference  *ref = FWReference::cast(*i1);
-        if (ref!=NULL)
+        if (ref!=nullptr)
         {  // child is a reference
             FWObject *g = ref->getPointer();
             if (o->getId() == g->getId())

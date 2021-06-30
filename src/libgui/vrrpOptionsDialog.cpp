@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 #include "global.h"
 
 #include "vrrpOptionsDialog.h"
@@ -51,7 +50,7 @@ vrrpOptionsDialog::vrrpOptionsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *gropt = FWOptions::cast(obj);
-    assert(gropt != NULL);
+    assert(gropt != nullptr);
 
     data.registerOption(m_dialog->vrrp_secret,
                         gropt,
@@ -81,7 +80,7 @@ void vrrpOptionsDialog::accept()
     if (!validate()) return;
     // the parent of this dialog is InterfaceDialog, not ProjectPanel
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChangeOptionsObject(project, obj));
     FWObject* new_state = cmd->getNewState();
 
     data.saveAll(new_state);
@@ -100,7 +99,7 @@ void vrrpOptionsDialog::reject()
 bool vrrpOptionsDialog::validate()
 {
     bool valid = true;
-    QWidget *focus = NULL;
+    QWidget *focus = nullptr;
     QString message;
 
     // vrrp secret must be set
@@ -115,7 +114,7 @@ bool vrrpOptionsDialog::validate()
     {
         QMessageBox::warning(this, "Firewall Builder",
                              tr("Input not valid: %1").arg(message), "&Continue",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         focus->setFocus();
     }
     return valid;

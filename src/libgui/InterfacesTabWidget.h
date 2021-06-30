@@ -26,21 +26,14 @@
 #ifndef INTERFACESTABWIDGET_H
 #define INTERFACESTABWIDGET_H
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
 #include "platforms.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QtGui/QTabWidget>
-#   include <QtGui/QToolButton>
-#   include <QtGui/QHBoxLayout>
-#else
-#   include <QtWidgets/QTabWidget>
-#   include <QtWidgets/QToolButton>
-#   include <QtWidgets/QHBoxLayout>
-#endif
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QHBoxLayout>
 
 #include "fwbuilder/Interface.h"
 #include "fwbuilder/InterfaceData.h"

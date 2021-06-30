@@ -21,8 +21,6 @@
 
 */
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "PIXImporterTest.h"
 #include "fwbuilder/Resources.h"
 
@@ -30,18 +28,17 @@
 #include "FWBSettings.h"
 #include "FWBApplication.h"
 
+#include <QTest>
 #include <QApplication>
 #include <QString>
 #include <string>
 
-#include "../../../common/init.cpp"
+#include "common/init.cpp"
 
 int fwbdebug = 0;
-//QString user_name;
-FWWindow *mw = NULL; 
-FWBSettings *st = NULL; 
-FWBApplication *app = NULL; 
-int sig = FWB_SIG; 
+FWWindow *mw = nullptr;
+FWBSettings *st = nullptr;
+FWBApplication *app = nullptr;
 std::string platform;
 
 int main(int argc, char** argv)
@@ -50,11 +47,6 @@ int main(int argc, char** argv)
 
     init(argv);
     Resources res(Constants::getResourcesFilePath());
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( PIXImporterTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
 
-    runner.run();
-    return 0;
+    return QTest::qExec(new PIXImporterTest());
 }

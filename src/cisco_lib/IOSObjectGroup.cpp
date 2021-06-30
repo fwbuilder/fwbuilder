@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "IOSObjectGroup.h"
 
@@ -47,7 +46,6 @@ const char *IOSObjectGroup::TYPENAME={"IOSObjectGroup"};
 
 QString IOSObjectGroup::groupMemberToString(FWObject *obj,
                                            NamedObjectsManager*)
-    throw(libfwbuilder::FWException)
 {
     ostringstream ostr;
 
@@ -56,7 +54,7 @@ QString IOSObjectGroup::groupMemberToString(FWObject *obj,
     case NETWORK:
     {
         Address *a = Address::cast(obj);
-        assert(a!=NULL);
+        assert(a!=nullptr);
         if (AddressRange::cast(a))
         {
             const InetAddr &start = AddressRange::cast(a)->getRangeStart();
@@ -65,7 +63,7 @@ QString IOSObjectGroup::groupMemberToString(FWObject *obj,
         } else
         {
             const InetAddr *addr = a->getAddressPtr();
-            if (Network::cast(obj)!=NULL)
+            if (Network::cast(obj)!=nullptr)
             {
                 const InetAddr *mask = a->getNetmaskPtr();
                 // Note: the syntax is "A.B.C.D /NN" (there must be space before /)
@@ -80,7 +78,7 @@ QString IOSObjectGroup::groupMemberToString(FWObject *obj,
     case PROTO:
     {
         Service *s = Service::cast(obj);
-        assert(s!=NULL);
+        assert(s!=nullptr);
         ostr << s->getProtocolNumber();
         break;
     }
@@ -89,7 +87,7 @@ QString IOSObjectGroup::groupMemberToString(FWObject *obj,
     {
         ostr << "icmp ";
         ICMPService *s = ICMPService::cast(obj);
-        assert(s!=NULL);
+        assert(s!=nullptr);
         if ( s->getInt("type")== -1) ostr << "";
         else ostr << s->getInt("type");
         break;
@@ -102,7 +100,7 @@ QString IOSObjectGroup::groupMemberToString(FWObject *obj,
         else ostr << "udp ";
 
         TCPUDPService *s = TCPUDPService::cast(obj);
-        assert(s!=NULL);
+        assert(s!=nullptr);
 
         int rs = s->getDstRangeStart();
         int re = s->getDstRangeEnd();

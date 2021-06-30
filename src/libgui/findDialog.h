@@ -27,7 +27,6 @@
 #ifndef __FINDDIALOG_H_
 #define __FINDDIALOG_H_
 
-#include "config.h"
 #include <ui_finddialog_q.h>
 
 #include "fwbuilder/FWObject.h"

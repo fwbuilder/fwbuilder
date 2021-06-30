@@ -93,7 +93,7 @@ void NATCompiler_pf::PrintRule::_printInterface(NATRule *rule)
 
 bool NATCompiler_pf::PrintRule::processNext()
 {
-    NATRule *rule=getNext(); if (rule==NULL) return false;
+    NATRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -109,11 +109,11 @@ bool NATCompiler_pf::PrintRule::processNext()
     FWObject *osrc, *odst;
 
     osrc = osrcrel->front();
-    if (osrc && FWReference::cast(osrc)!=NULL)
+    if (osrc && FWReference::cast(osrc)!=nullptr)
         osrc = FWReference::cast(osrc)->getPointer();
 
     odst = odstrel->front();
-    if (odst && FWReference::cast(odst)!=NULL)
+    if (odst && FWReference::cast(odst)!=nullptr)
         odst = FWReference::cast(odst)->getPointer();
 
     //Address  *osrc=compiler->getFirstOSrc(rule);  //assert(osrc);
@@ -124,16 +124,16 @@ bool NATCompiler_pf::PrintRule::processNext()
     Address  *tdst = compiler->getFirstTDst(rule);  //assert(tdst);
     Service  *tsrv = compiler->getFirstTSrv(rule);  //assert(tsrv);
 
-    if (osrc==NULL || odst==NULL || osrv==NULL ||
-        tsrc==NULL || tdst==NULL || tsrv==NULL) 
+    if (osrc==nullptr || odst==nullptr || osrv==nullptr ||
+        tsrc==nullptr || tdst==nullptr || tsrv==nullptr) 
     {
         QString err;
-        if (osrc==NULL) err = QString("NAT rule %1: osrc==NULL");
-        if (odst==NULL) err = QString("NAT rule %1: odst==NULL");
-        if (osrv==NULL) err = QString("NAT rule %1: osrv==NULL");
-        if (tsrc==NULL) err = QString("NAT rule %1: tsrc==NULL");
-        if (tdst==NULL) err = QString("NAT rule %1: tdst==NULL");
-        if (tsrv==NULL) err = QString("NAT rule %1: tsrv==NULL");
+        if (osrc==nullptr) err = QString("NAT rule %1: osrc==nullptr");
+        if (odst==nullptr) err = QString("NAT rule %1: odst==nullptr");
+        if (osrv==nullptr) err = QString("NAT rule %1: osrv==nullptr");
+        if (tsrc==nullptr) err = QString("NAT rule %1: tsrc==nullptr");
+        if (tdst==nullptr) err = QString("NAT rule %1: tdst==nullptr");
+        if (tsrv==nullptr) err = QString("NAT rule %1: tsrv==nullptr");
         compiler->abort(rule, err.arg(rule->getLabel().c_str()).toStdString());
     }
 
@@ -322,7 +322,7 @@ bool NATCompiler_pf::PrintRule::processNext()
     {
         RuleSet *ruleset = rule->getBranch();
         string ruleset_name;
-        if (ruleset!=NULL)
+        if (ruleset!=nullptr)
         {
              ruleset_name = ruleset->getName();
         } else
@@ -469,7 +469,7 @@ void NATCompiler_pf::PrintRule::_printNegation(RuleElement  *rel)
 void NATCompiler_pf::PrintRule::_printREAddr(RuleElement *rel)
 {
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
 //    Address *addr= Address::cast(o);
 
@@ -492,7 +492,7 @@ void NATCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool )
     {
         if (i!=grp->begin())  compiler->output << ", ";
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         _printAddr(o);
     }
     compiler->output << "} ";
@@ -501,7 +501,7 @@ void NATCompiler_pf::PrintRule::_printAddrList(FWObject  *grp,bool )
 void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
 {
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-    if (atrt!=NULL)
+    if (atrt!=nullptr)
     {
         if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
         {
@@ -519,10 +519,10 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
             return ;
         }
 
-        assert(atrt==NULL);
+        assert(atrt==nullptr);
     }
 
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
         compiler->output << "(" << o->getName() << ") ";
         return;
@@ -535,14 +535,14 @@ void NATCompiler_pf::PrintRule::_printAddr(FWObject *o)
     }
 
     Address *addr_obj = Address::cast(o);
-    assert(addr_obj!=NULL);
+    assert(addr_obj!=nullptr);
 
     const InetAddr *addr = addr_obj->getAddressPtr();
     if (addr)
     {
         InetAddr mask = *(addr_obj->getNetmaskPtr());
 
-        if (Interface::cast(o)!=NULL || Address::cast(o)->dimension()==1)
+        if (Interface::cast(o)!=nullptr || Address::cast(o)->dimension()==1)
         {
             mask = InetAddr(InetAddr::getAllOnes());
         }

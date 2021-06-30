@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "platforms.h"
 #include "events.h"
@@ -91,11 +90,13 @@ void ObjectManipulator::autoRenameChildren(FWObject *obj,
     
     if (oldName == QString::fromUtf8(obj->getName().c_str())) return;
     
+#ifndef NDEBUG
     QTreeWidgetItem *itm = allItems[obj];
-    assert(itm!=NULL);
-    
+    assert(itm!=nullptr);
+#endif
+
     if ((QString::fromUtf8(obj->getName().c_str())!=oldName) &&
-        (Host::isA(obj) || Firewall::cast(obj)!=NULL || Interface::isA(obj)))
+        (Host::isA(obj) || Firewall::cast(obj)!=nullptr || Interface::isA(obj)))
     {
         autorename(obj);
     }
@@ -106,7 +107,7 @@ void ObjectManipulator::autorename(FWObject *obj)
     if (fwbdebug)
         qDebug() << "ObjectManipulator::autorename  obj=" << obj->getName().c_str();
 
-    if (Host::isA(obj) || Firewall::cast(obj)!=NULL || Cluster::isA(obj))
+    if (Host::isA(obj) || Firewall::cast(obj)!=nullptr || Cluster::isA(obj))
     {
         list<FWObject*> il = obj->getByType(Interface::TYPENAME);
         for (list<FWObject*>::iterator i=il.begin(); i!=il.end(); ++i)
@@ -180,11 +181,11 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
         FWObject *obj = *j;
         FWObject *parent = obj->getParent();
         FWObject *fw = parent;
-        while (fw && Firewall::cast(fw)==NULL) fw = fw->getParent();
+        while (fw && Firewall::cast(fw)==nullptr) fw = fw->getParent();
         assert(fw);
         QString obj_name = QString::fromUtf8(obj->getName().c_str());
 
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(fw));
 
         if (int_prop->looksLikeVlanInterface(obj_name))
@@ -217,24 +218,24 @@ void ObjectManipulator::autorenameVlans(list<FWObject*> &obj_list)
 
 FWObject* ObjectManipulator::duplicateObject(FWObject *targetLib, FWObject *obj)
 {
-    if (!isTreeReadWrite(this, targetLib)) return NULL;
+    if (!isTreeReadWrite(this, targetLib)) return nullptr;
 
     // we disable copy/cut/paste/duplicate menu items for objects that
     // can't be copied or duplicated in
     // ObjectManipulator::getMenuState() but will check here just in
     // case
-    if (AttachedNetworks::isA(obj)) return NULL;
+    if (AttachedNetworks::isA(obj)) return nullptr;
 
     openLib(targetLib);
     FWObject *new_parent = FWBTree().getStandardSlotForObject(
         targetLib, obj->getTypeName().c_str());
-    if (new_parent == NULL) new_parent = obj->getParent();
+    if (new_parent == nullptr) new_parent = obj->getParent();
     QString newName =
         makeNameUnique(new_parent,
                        QString::fromUtf8(obj->getName().c_str()),
                        obj->getTypeName().c_str());
 
-    if (!isObjectAllowed(new_parent, obj)) return NULL;
+    if (!isObjectAllowed(new_parent, obj)) return nullptr;
 
     return createObject(obj->getTypeName().c_str(), newName, obj);
 }
@@ -244,7 +245,7 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
     FWObject *cl=getCurrentLib();
     if (cl==targetLib) return;
 
-    FWObject *grp = NULL;
+    FWObject *grp = nullptr;
 
     if (FWObjectDatabase::isA(targetLib)) grp = targetLib;
     else
@@ -252,7 +253,7 @@ void ObjectManipulator::moveObject(FWObject *targetLib, FWObject *obj)
         grp = FWBTree().getStandardSlotForObject(
             targetLib, obj->getTypeName().c_str());
     }
-    if (grp==NULL) grp=targetLib;
+    if (grp==nullptr) grp=targetLib;
 
     if (!grp->isReadOnly())
     {
@@ -299,18 +300,18 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                                               FWObject *obj,
                                               std::map<int,int> &map_ids)
 {
-    //FWObject *res = NULL;
+    //FWObject *res = nullptr;
 
     FWObject *ta = prepareForInsertion(target, obj);
-    if (ta == NULL) return NULL;
+    if (ta == nullptr) return nullptr;
 
-    if (!isObjectAllowed(ta, obj)) return NULL;
+    if (!isObjectAllowed(ta, obj)) return nullptr;
 
     // we disable copy/cut/paste/duplicate menu items for objects that
     // can't be copied or duplicated in
     // ObjectManipulator::getMenuState() but will check here just in
     // case
-    if (AttachedNetworks::isA(obj)) return NULL;
+    if (AttachedNetworks::isA(obj)) return nullptr;
 
     if (fwbdebug)
         qDebug() << "ObjectManipulator::actuallyPasteTo"
@@ -327,7 +328,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
         {
             if (fwbdebug) qDebug("Copy object %s (%d) to a different object tree",
                                  obj->getName().c_str(), obj->getId());
-            FWCmdAddObject *cmd = new FWCmdAddObject(m_project, target, NULL,
+            FWCmdAddObject *cmd = new FWCmdAddObject(m_project, target, nullptr,
                                                      QObject::tr("Paste object"));
             FWObject *new_state = cmd->getNewState();
             cmd->setNeedTreeReload(true);
@@ -344,7 +345,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
         }
 
         Group *grp = Group::cast(ta);
-        if (grp!=NULL && !FWBTree().isSystem(ta))
+        if (grp!=nullptr && !FWBTree().isSystem(ta))
         {
             if (fwbdebug) qDebug("Copy object %s (%d) to a regular group",
                                  obj->getName().c_str(), obj->getId());
@@ -357,7 +358,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                 if(cp_id==o1->getId()) return o1;
 
                 FWReference *ref;
-                if( (ref=FWReference::cast(o1))!=NULL &&
+                if( (ref=FWReference::cast(o1))!=nullptr &&
                     cp_id==ref->getPointerId()) return o1;
             }
             FWCmdChange *cmd = new FWCmdChange(
@@ -380,7 +381,7 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
                        obj->getName().c_str(), obj->getId());
 
             FWObject *nobj = m_project->db()->create(obj->getTypeName());
-            assert(nobj!=NULL);
+            assert(nobj!=nullptr);
             //nobj->ref();
             nobj->duplicate(obj, true);
             if (new_name != nobj->getName().c_str())
@@ -414,11 +415,11 @@ FWObject* ObjectManipulator::actuallyPasteTo(FWObject *target,
         QMessageBox::warning(
             this,"Firewall Builder",
             ex.toString().c_str(),
-            "&Continue", QString::null,QString::null,
+            "&Continue", QString(),QString(),
             0, 1 );
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ObjectManipulator::lockObject()
@@ -442,7 +443,7 @@ void ObjectManipulator::lockObject()
             // lock objects inside because they won't be able to unlock them.
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
-                std::auto_ptr<FWCmdLockObject> cmd(
+                std::unique_ptr<FWCmdLockObject> cmd(
                     new FWCmdLockObject(m_project, obj, tr("Lock object ") +
                                         QString::fromUtf8(obj->getName().c_str())));
                 FWObject* new_state = cmd->getNewState();
@@ -480,7 +481,7 @@ void ObjectManipulator::unlockObject()
             FWObject *lib = obj->getLibrary();
             if (lib->getId()!=FWObjectDatabase::STANDARD_LIB_ID)
             {
-                std::auto_ptr<FWCmdLockObject> cmd(
+                std::unique_ptr<FWCmdLockObject> cmd(
                     new FWCmdLockObject(m_project, obj, tr("Unlock object ") +
                                         QString::fromUtf8(obj->getName().c_str())));
                 FWObject* new_state = cmd->getNewState();
@@ -511,7 +512,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
     FWObject *deleted_objects_lib = m_project->db()->findInIndex(
         FWObjectDatabase::DELETED_OBJECTS_ID );
 
-    if (deleted_objects_lib == NULL)
+    if (deleted_objects_lib == nullptr)
     {
         FWObject *dobj = m_project->db()->createLibrary();
         dobj->setId(FWObjectDatabase::DELETED_OBJECTS_ID);
@@ -530,8 +531,8 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
         obj->getId() == FWObjectDatabase::DELETED_OBJECTS_ID) return;
     
     bool is_library = Library::isA(obj);
-    bool is_firewall = Firewall::cast(obj) != NULL; // includes Cluster too
-    bool is_deleted_object = (deleted_objects_lib!=NULL && obj->isChildOf(deleted_objects_lib));
+    bool is_firewall = Firewall::cast(obj) != nullptr; // includes Cluster too
+    bool is_deleted_object = (deleted_objects_lib!=nullptr && obj->isChildOf(deleted_objects_lib));
 
     // ruleset_visible == true if 1) we delete firewall object and one of its
     // rulesets is visible in the project panel, or 2) we delete ruleset object
@@ -569,7 +570,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
                 obj,
                 QString("Delete object"),
                 macro);
-            if (macro==0)
+            if (macro==nullptr)
                 m_project->undoStack->push(cmd);
             return;
         }
@@ -591,7 +592,7 @@ void ObjectManipulator::deleteObject(FWObject *obj, QUndoCommand* macro)
         QMessageBox::warning(
             this,"Firewall Builder",
             ex.toString().c_str(),
-            "&Continue", QString::null,QString::null,
+            "&Continue", QString(),QString(),
             0, 1 );
         throw(ex);
     }
@@ -623,7 +624,7 @@ void ObjectManipulator::actuallyDeleteObject(FWObject *obj, QUndoCommand* macro)
         QString("Delete object"),
         macro);
 
-    if (macro == 0)
+    if (macro == nullptr)
         m_project->undoStack->push(cmd);
 }
 
@@ -646,11 +647,11 @@ void ObjectManipulator::groupObjects()
         QString libName = ngd.m_dialog->libs->currentText();
 
         QString type = ObjectGroup::TYPENAME;
-        if (Service::cast(co)!=NULL)  type=ServiceGroup::TYPENAME;
-        if (Interval::cast(co)!=NULL) type=IntervalGroup::TYPENAME;
+        if (Service::cast(co)!=nullptr)  type=ServiceGroup::TYPENAME;
+        if (Interval::cast(co)!=nullptr) type=IntervalGroup::TYPENAME;
 
-        FWObject *parent = NULL;
-        FWObject *newgrp = NULL;
+        FWObject *parent = nullptr;
+        FWObject *newgrp = nullptr;
 
         list<FWObject*> ll = m_project->db()->getByType( Library::TYPENAME );
         for (FWObject::iterator i=ll.begin(); i!=ll.end(); i++)
@@ -664,19 +665,12 @@ void ObjectManipulator::groupObjects()
  */
                 if (lib->isReadOnly()) return;
                 parent = FWBTree().getStandardSlotForObject(lib,type);
-                if (parent==NULL)
+                if (parent==nullptr)
                 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                    if (fwbdebug)
-                        qDebug("ObjectManipulator::groupObjects(): could not find standard slot for object of type %s in library %s",
-                               type.toAscii().constData(),lib->getName().c_str());
-
-#else
                     if (fwbdebug)
                         qDebug("ObjectManipulator::groupObjects(): could not find standard slot for object of type %s in library %s",
                                type.toLatin1().constData(),lib->getName().c_str());
 
-#endif
                     return;
                 }
                 newgrp = m_project->db()->create(type.toStdString());
@@ -684,7 +678,7 @@ void ObjectManipulator::groupObjects()
                 break;
             }
         }
-        if (newgrp==NULL) return;
+        if (newgrp==nullptr) return;
 
         FWCmdAddObject *cmd = new FWCmdAddObject(
             m_project, parent, newgrp, QObject::tr("Create new group"));
@@ -726,14 +720,14 @@ static void doKeyword(vector<FWObject *> objs, bool doAdd,
 
 void ObjectManipulator::addNewKeywordSlot()
 {
-    QString keyword = QInputDialog::getText(0, tr("Add New Keyword"),
+    QString keyword = QInputDialog::getText(nullptr, tr("Add New Keyword"),
                           tr("Enter new keyword to add to selected objects"));
     keyword = keyword.simplified();
     if (fwbdebug) {
         qDebug() << "ObjectManipulator::addNewKeyword: " << keyword;
     }
 
-    if (!KeywordsDialog::validateKeyword(0, keyword)) return;
+    if (!KeywordsDialog::validateKeyword(nullptr, keyword)) return;
 
     doKeyword(getCurrentObjectTree()->getSelectedObjects(), true, 
               keyword.toUtf8().constData(), m_project);
@@ -743,7 +737,7 @@ void ObjectManipulator::addNewKeywordSlot()
 void ObjectManipulator::processKeywordSlot()
 {
     const QObject *qObj = sender();
-    if (qObj == 0) return;
+    if (qObj == nullptr) return;
     const QAction *qAct = dynamic_cast<const QAction *>(qObj);
     QStringList list = qAct->data().toStringList();
     if (list.size() != 2) return;
@@ -760,19 +754,19 @@ void ObjectManipulator::processKeywordSlot()
 void ObjectManipulator::addSubfolderSlot()
 {
     const QAction *qAct = dynamic_cast<const QAction *>(sender());
-    if (qAct == 0) return;
+    if (qAct == nullptr) return;
 
     FWObject *obj = getCurrentObjectTree()->getCurrentObject();
     assert(obj->getId() == qAct->data().toInt());
 
-    QString folder = QInputDialog::getText(0, tr("Add Subfolder"),
+    QString folder = QInputDialog::getText(nullptr, tr("Add Subfolder"),
                                            tr("Enter new subfolder name"));
     folder = folder.simplified();
     if (folder.isEmpty()) return;
     if (folder.contains(',')) {
         QMessageBox::warning(this, "Firewall Builder",
                              tr("Subfolder cannot contain a comma"), "&OK",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         return;
     }
 
@@ -799,10 +793,10 @@ void ObjectManipulator::removeUserFolder()
 {
     ObjectTreeViewItem *item = dynamic_cast<ObjectTreeViewItem *>
         (getCurrentObjectTree()->currentItem());
-    if (item == 0 || item->getUserFolderParent() == 0) return;
+    if (item == nullptr || item->getUserFolderParent() == nullptr) return;
     ObjectTreeViewItem *parent = dynamic_cast<ObjectTreeViewItem *>
         (item->parent());
-    assert(parent != 0);
+    assert(parent != nullptr);
 
     vector<FWObject *> objs;
     for (int ii = 0; ii < item->childCount(); ii++) {
@@ -834,7 +828,7 @@ void ObjectManipulator::removeUserFolder()
     while (!children.isEmpty()) {
         ObjectTreeViewItem *child = dynamic_cast<ObjectTreeViewItem *>
             (children.takeFirst());
-        assert(child != 0);
+        assert(child != nullptr);
 
         FWObject *obj = child->getFWObject();
         if (mw->isEditorVisible() && mw->getOpenedEditor() == obj) {
@@ -851,6 +845,69 @@ void ObjectManipulator::removeUserFolder()
     set<string> folders = stringToSet(newObj->getStr("subfolders"));
     folders.erase(item->getUserFolderName().toUtf8().constData());
     newObj->setStr("subfolders", setToString(folders));
+
+    m_project->undoStack->push(macro);
+}
+
+void ObjectManipulator::renameUserFolder()
+{
+    ObjectTreeViewItem *item = dynamic_cast<ObjectTreeViewItem *>(getCurrentObjectTree()->currentItem());
+
+    if (item == nullptr || item->getUserFolderParent() == nullptr) return;
+
+    ObjectTreeViewItem *parent = dynamic_cast<ObjectTreeViewItem *>(item->parent());
+    assert(parent != nullptr);
+
+    QString oldFolderName = item->getUserFolderName();
+    QString newFolderName = QInputDialog::getText(nullptr, tr("Rename Subfolder"),
+                                                  tr("Enter new name for subfolder"),
+                                                  QLineEdit::Normal,
+                                                  oldFolderName);
+
+    if (newFolderName == oldFolderName) return;
+
+    newFolderName = newFolderName.simplified();
+    if (newFolderName.isEmpty()) return;
+    if (newFolderName.contains(',')) {
+        QMessageBox::warning(this, "Firewall Builder",
+                             tr("Subfolder cannot contain a comma"), "&OK",
+                             QString(), QString(), 0, 1);
+        return;
+    }
+
+    FWObject *obj = parent->getFWObject();
+    assert(obj != nullptr);
+
+    FWCmdMacro *macro = new FWCmdMacro("Rename subfolder");
+
+    set<string> subfolders = stringToSet(obj->getStr("subfolders"));
+    subfolders.insert(newFolderName.toStdString());
+
+    FWCmdAddUserFolder *addCmd = new FWCmdAddUserFolder(m_project, obj, newFolderName,
+                                                        "", macro);
+    FWObject *newObj = addCmd->getNewState();
+    newObj->setStr("subfolders", setToString(subfolders));
+
+    list<FWObject *>::const_iterator iter;
+    for (iter = obj->begin(); iter != obj->end(); ++iter) {
+        FWObject *childObj = *iter;
+
+        if (childObj->getStr("folder") != oldFolderName.toStdString()) continue;
+
+        FWCmdMoveToFromUserFolder *moveCmd = new FWCmdMoveToFromUserFolder(
+                    m_project, childObj->getParent(), childObj,
+                    oldFolderName.toStdString().c_str(), newFolderName.toStdString().c_str(),
+                    "", macro);
+        FWObject *newChild = moveCmd->getNewState();
+        newChild->setStr("folder", newFolderName.toStdString());
+    }
+
+    subfolders.erase(oldFolderName.toStdString());
+
+    FWCmdRemoveUserFolder *removeCmd = new FWCmdRemoveUserFolder(m_project, obj, oldFolderName,
+                                                                 "", macro);
+    newObj = removeCmd->getNewState();
+    newObj->setStr("subfolders", setToString(subfolders));
 
     m_project->undoStack->push(macro);
 }

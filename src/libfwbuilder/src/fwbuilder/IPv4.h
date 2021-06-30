@@ -44,8 +44,8 @@ public:
     IPv4();
     virtual ~IPv4();
 
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
 
     virtual unsigned int dimension()  const { return 1; }
     

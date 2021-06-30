@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -60,7 +59,7 @@ NetworkDialog::NetworkDialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::NetworkDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -71,7 +70,7 @@ void NetworkDialog::loadFWObject(FWObject *o)
 {
     obj = o;
     Network *s = dynamic_cast<Network*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
     
     init = true;
 
@@ -128,15 +127,18 @@ void NetworkDialog::validate(bool *result)
         return;
     }
 
+#ifndef NDEBUG
     Network *s = dynamic_cast<Network*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
+
     try
     {
         InetAddr( m_dialog->address->text().toStdString() );
     } catch (FWException &ex)
     {
         *result = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -186,7 +188,7 @@ void NetworkDialog::validate(bool *result)
             else
             {
                 *result = false;
-                if (QApplication::focusWidget() != NULL)
+                if (QApplication::focusWidget() != nullptr)
                 {
                     blockSignals(true);
                     // Do not allow netmask of 0 bits See #251
@@ -204,7 +206,7 @@ void NetworkDialog::validate(bool *result)
         if (!nm.isValidV4Netmask())
         {
             *result = false;
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 blockSignals(true);
                 // Do not allow netmask with zeroes inside.
@@ -222,7 +224,7 @@ void NetworkDialog::validate(bool *result)
     {
 
         *result = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(
@@ -239,11 +241,11 @@ void NetworkDialog::validate(bool *result)
 
 void NetworkDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     Network *s = dynamic_cast<Network*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName(string(m_dialog->obj_name->text().toUtf8().constData()));

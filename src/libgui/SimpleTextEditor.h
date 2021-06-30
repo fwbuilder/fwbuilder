@@ -26,7 +26,6 @@
 #ifndef __SIMPLETEXTEDITOR_H__
 #define __SIMPLETEXTEDITOR_H__
 
-#include "config.h"
 #include <ui_simpletexteditor_q.h>
 
 class SimpleTextEditor : public QDialog

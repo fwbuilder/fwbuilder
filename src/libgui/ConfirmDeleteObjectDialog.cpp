@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -108,7 +107,7 @@ void ConfirmDeleteObjectDialog::findForObject(FWObject *obj)
     foreach(FWObject *o, simplified_holders)
     {
         QTreeWidgetItem *item = FindWhereUsedWidget::createQTWidgetItem(obj, o);
-        if (item==NULL) continue;
+        if (item==nullptr) continue;
         m_dialog->objectsView->addTopLevelItem(item);
         itemCounter++;
     }

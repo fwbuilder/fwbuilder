@@ -41,8 +41,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/ObjectMatcher.h"
 
@@ -96,7 +94,7 @@ bool ObjectMatcher::complexMatch(Address *obj1, Address *obj2)
     }
 
     void* res = obj1->dispatch(this, obj2);
-    return (res != NULL);
+    return (res != nullptr);
 }
 
 /**
@@ -237,7 +235,7 @@ bool ObjectMatcher::checkComplexMatchForSingleAddress(Address *obj1,
                                                       FWObject *obj2)
 {
     const InetAddr *obj1_addr = obj1->getAddressPtr();
-    // obj1_addr may be NULL if obj1 does not have any real address,
+    // obj1_addr may be nullptr if obj1 does not have any real address,
     // one case when this happens is when obj1 is physAddress
     if (obj1_addr)
         return checkComplexMatchForSingleAddress(obj1_addr, obj2);
@@ -281,11 +279,11 @@ void* ObjectMatcher::dispatch(Interface* obj1, void* _obj2)
 
     if (obj1->getParent()->getId() == obj2->getId()) return obj1;
 
-    if (!obj1->isRegular()) return NULL;
-    if ((obj1->getByType(IPv4::TYPENAME)).size()>1) return NULL;
-    if ((obj1->getByType(IPv6::TYPENAME)).size()>1) return NULL;
+    if (!obj1->isRegular()) return nullptr;
+    if ((obj1->getByType(IPv4::TYPENAME)).size()>1) return nullptr;
+    if ((obj1->getByType(IPv6::TYPENAME)).size()>1) return nullptr;
 
-    return (checkComplexMatchForSingleAddress(obj1, obj2)) ? obj1 : NULL;
+    return (checkComplexMatchForSingleAddress(obj1, obj2)) ? obj1 : nullptr;
 }
 
 void* ObjectMatcher::dispatch(Network *obj1, void *_obj2)
@@ -308,10 +306,10 @@ void* ObjectMatcher::dispatch(Network *obj1, void *_obj2)
          * ranges, and some often used ranges trigger that (like
          * "255.255.255.255-255.255.255.255" or "0.0.0.0-0.0.0.0")
          */
-        if (!obj1->getNetmaskPtr()->isHostMask()) return NULL;
+        if (!obj1->getNetmaskPtr()->isHostMask()) return nullptr;
     } else
-        return NULL;
-    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : NULL;
+        return nullptr;
+    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : nullptr;
 }
 
 void* ObjectMatcher::dispatch(NetworkIPv6 *obj1, void *_obj2)
@@ -322,23 +320,23 @@ void* ObjectMatcher::dispatch(NetworkIPv6 *obj1, void *_obj2)
     {
         if (recognize_multicasts && inet_addr->isMulticast() &&
             Firewall::isA(obj2)) return obj1;
-        if (!obj1->getNetmaskPtr()->isHostMask()) return NULL;
+        if (!obj1->getNetmaskPtr()->isHostMask()) return nullptr;
     } else
-        return NULL;
+        return nullptr;
 
-    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : NULL;
+    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : nullptr;
 }
 
 void* ObjectMatcher::dispatch(IPv4 *obj1, void *_obj2)
 {
     FWObject *obj2 = (FWObject*)(_obj2);
-    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : NULL;
+    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : nullptr;
 }
 
 void* ObjectMatcher::dispatch(IPv6 *obj1, void *_obj2)
 {
     FWObject *obj2 = (FWObject*)(_obj2);
-    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : NULL;
+    return checkComplexMatchForSingleAddress(obj1, obj2) ? obj1 : nullptr;
 }
 
 void* ObjectMatcher::dispatch(physAddress *obj1, void *_obj2)
@@ -350,7 +348,7 @@ void* ObjectMatcher::dispatch(physAddress *obj1, void *_obj2)
         physAddress *iface_pa = physAddress::cast(*i);
         if (obj1->getPhysAddress() == iface_pa->getPhysAddress()) return obj1;
     }
-    return NULL;
+    return nullptr;
 }
 
 void* ObjectMatcher::dispatch(AddressRange *obj1, void *_obj2)
@@ -427,14 +425,14 @@ void* ObjectMatcher::dispatch(AddressRange *obj1, void *_obj2)
             if (f_b <= 0  && f_e >= 0) return obj1;
         }
     }
-    return NULL;
+    return nullptr;
 
     bool f_b = checkComplexMatchForSingleAddress(&range_start, obj2);
     bool f_e = checkComplexMatchForSingleAddress(&range_end, obj2);
 
     if (address_range_match_mode == EXACT && f_b && f_e) return obj1;
     if (address_range_match_mode == PARTIAL && (f_b || f_e)) return obj1;
-    return NULL;
+    return nullptr;
 }
 
 /*
@@ -449,7 +447,7 @@ void* ObjectMatcher::dispatch(MultiAddressRunTime *obj1, void *_obj2)
         obj1->getSourceName() == "self" && Firewall::isA(obj2))
         return obj1;
 
-    return NULL;  // never matches in this implementation
+    return nullptr;  // never matches in this implementation
 }
 
 void* ObjectMatcher::dispatch(Host *obj1, void *_obj2)
@@ -466,7 +464,7 @@ void* ObjectMatcher::dispatch(Host *obj1, void *_obj2)
     {
         res &= checkComplexMatchForSingleAddress(Interface::cast(*it), obj2);
     }
-    return res ? obj1 : NULL;
+    return res ? obj1 : nullptr;
 }
 
 void* ObjectMatcher::dispatch(Firewall *obj1, void *_obj2)
@@ -501,7 +499,7 @@ void* ObjectMatcher::dispatch(Cluster *obj1, void *_obj2)
     list<Firewall*>::iterator it;
     for (it=members.begin(); it!=members.end(); ++it)
     {
-        if (dispatch(*it, obj2) != NULL) return obj1;
+        if (dispatch(*it, obj2) != nullptr) return obj1;
     }
 /*
  *  match only if all interfaces of obj1 match obj2

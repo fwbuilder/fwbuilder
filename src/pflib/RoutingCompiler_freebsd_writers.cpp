@@ -128,16 +128,16 @@ string RoutingCompiler_freebsd::PrintRule::RoutingRuleToString(RoutingRule *rule
         RuleElementRGtw *gtwrel = rule->getRGtw();
         Address *gtw = Address::cast(FWReference::getObject(gtwrel->front()));
 
-        if(dst==NULL) compiler->abort(rule, "Broken DST");
+        if(dst==nullptr) compiler->abort(rule, "Broken DST");
         
         QStringList command_line;
 
-        if (gtwrel->isAny() && itf != NULL) command_line << "-interface";
+        if (gtwrel->isAny() && itf != nullptr) command_line << "-interface";
 
         command_line << _printRDst(rule).c_str();
 
-        if (gtw != NULL) command_line << _printRGtw(rule).c_str();
-        if (itf != NULL) command_line << _printRItf(rule).c_str();
+        if (gtw != nullptr) command_line << _printRGtw(rule).c_str();
+        if (itf != nullptr) command_line << _printRItf(rule).c_str();
 
         QString rule_code = command_line.join(" ");
 

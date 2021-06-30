@@ -29,10 +29,7 @@
 */
 
 
-#include "config.h"
 #include "global.h"
-#include "check_update_url.h"
-#include "../../VERSION.h"
 
 #include "utils.h"
 #include "platforms.h"
@@ -41,7 +38,6 @@
 #include "FWBSettings.h"
 #include "FWWindow.h"
 #include "ProjectPanel.h"
-#include "HttpGet.h"
 #include "RuleSetView.h"
 
 #include "fwbuilder/Resources.h"
@@ -103,9 +99,6 @@ void PrefsDialog::setButtonColor(QPushButton *btn,const QString &colorCode)
 
 PrefsDialog::~PrefsDialog()
 {
-    disconnect(&current_version_http_getter, SIGNAL(done(const QString&)),
-               this, SLOT(checkForUpgrade(const QString&)));
-
     delete m_dialog;
 }
 
@@ -644,7 +637,7 @@ void PrefsDialog::accept()
     st->setDiffPath( m_dialog->diffPath->text() );
 
     st->setBool("Environment/RememberSshPassEnabled", m_dialog->rememberSshPass->isChecked());
-    
+
     st->setCheckUpdates(m_dialog->checkUpdates->isChecked());
 
     st->setDiffColor(FWBSettings::ADD_COLOR,    colors[FWBSettings::ADD_COLOR]);
@@ -692,49 +685,6 @@ void PrefsDialog::accept()
 
 
     QDialog::accept();
-}
-
-void PrefsDialog::checkSwUpdates()
-{
-    st->setCheckUpdatesProxy(m_dialog->checkUpdatesProxy->text());
-
-    connect(&current_version_http_getter, SIGNAL(done(const QString&)),
-            this, SLOT(checkForUpgrade(const QString&)));
-    QString url = QString(CHECK_UPDATE_URL).arg(VERSION).arg(st->getAppGUID());
-    current_version_http_getter.get(QUrl(url));
-}
-
-void PrefsDialog::checkForUpgrade(const QString& server_response)
-{
-    disconnect(&current_version_http_getter, SIGNAL(done(const QString&)),
-               this, SLOT(checkForUpgrade(const QString&)));
-
-    if (current_version_http_getter.getStatus())
-    {
-        /*
-         * server response may be some html or other data in case
-         * connection goes via proxy, esp. with captive portals. We
-         * should not interpret that as "new version is available"
-         */
-        if (server_response.trimmed() == "update = 1")
-        {
-            QMessageBox::warning(
-                this,"Firewall Builder",
-                tr("A new version of Firewall Builder is available at"
-                   " http://www.fwbuilder.org"));
-        } else
-        {
-            QMessageBox::information(
-                this,"Firewall Builder",
-                tr("Your version of Firewall Builder is up to date."));
-        }
-    } else
-    {
-        QMessageBox::critical(
-            this,"Firewall Builder",
-            tr("Error checking for software updates:\n%1").
-            arg(current_version_http_getter.getLastError()));
-    }
 }
 
 void PrefsDialog::objTooltipsEnabled(bool enabled)

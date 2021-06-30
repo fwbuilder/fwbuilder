@@ -25,8 +25,6 @@
 */
 
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -52,12 +50,12 @@ RuleSet::RuleSet()
 void RuleSet::init(FWObjectDatabase *root)
 {
     FWObject *opt = getFirstByType(RuleSetOptions::TYPENAME);
-    if (opt == NULL) add(root->createRuleSetOptions());
+    if (opt == nullptr) add(root->createRuleSetOptions());
 }
 
 RuleSet::~RuleSet() {}
 
-void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
+void RuleSet::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
 
@@ -68,51 +66,51 @@ void RuleSet::fromXML(xmlNodePtr root) throw(FWException)
     // this is ipv4-only rule set (for backwards compatibility and to
     // avoid having to increment DTD version number)
 
-    n=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ipv4_rule_set")));
-    if (n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("ipv4_rule_set")));
+    if (n!=nullptr)
     {
         ipv4 = (string(n)=="True" || string(n)=="true");
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root, TOXMLCAST("ipv6_rule_set")));
-    if (n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root, XMLTools::ToXmlCast("ipv6_rule_set")));
+    if (n!=nullptr)
     {
         ipv6 = (string(n)=="True" || string(n)=="true");
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("top_rule_set")));
-    if (n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("top_rule_set")));
+    if (n!=nullptr)
     {
         top = (string(n)=="True" || string(n)=="true");
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 }
 
-xmlNodePtr RuleSet::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr RuleSet::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
-    xmlNewProp(me, TOXMLCAST("ipv4_rule_set"),
-               TOXMLCAST(((ipv4) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("ipv4_rule_set"),
+               XMLTools::ToXmlCast(((ipv4) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("ipv6_rule_set"),
-               TOXMLCAST(((ipv6) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("ipv6_rule_set"),
+               XMLTools::ToXmlCast(((ipv6) ? "True" : "False")));
 
-    xmlNewProp(me, TOXMLCAST("top_rule_set"), 
-               TOXMLCAST(((top) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("top_rule_set"), 
+               XMLTools::ToXmlCast(((top) ? "True" : "False")));
 
     // First all rules, skip options
     for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
     {
-        if (FWOptions::cast(*j) == NULL) (*j)->toXML(me);
+        if (FWOptions::cast(*j) == nullptr) (*j)->toXML(me);
     }
 
     FWObject *o;
-    if ( (o=getFirstByType( RuleSetOptions::TYPENAME ))!=NULL )
+    if ( (o=getFirstByType( RuleSetOptions::TYPENAME ))!=nullptr )
 	o->toXML(me);
 
     return me;
@@ -124,7 +122,6 @@ FWOptions* RuleSet::getOptionsObject()
 }
 
 FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
-    throw(FWException)
 {
     const RuleSet *other = RuleSet::constcast(o);
 
@@ -137,10 +134,10 @@ FWObject& RuleSet::shallowDuplicate(const FWObject *o, bool preserve_id)
     return *this;
 }
 
-bool RuleSet::cmp(const FWObject *obj, bool recursive) throw(FWException)
+bool RuleSet::cmp(const FWObject *obj, bool recursive)
 {
     const RuleSet *other = RuleSet::constcast(obj);
-    if (other == NULL) return false;
+    if (other == nullptr) return false;
     if (ipv4 != other->ipv4 || ipv6 != other->ipv6 || top != other->top)
         return false;
     return FWObject::cmp(obj, recursive);
@@ -174,7 +171,7 @@ Rule* RuleSet::insertRuleBefore(int rule_n)
 {
     Rule *old_rule = getRuleByNum(rule_n);
     Rule *r = createRule();
-    if (old_rule==NULL) add(r);
+    if (old_rule==nullptr) add(r);
     else insert_before(old_rule, r);
     renumberRules();
     return(r);
@@ -186,7 +183,7 @@ Rule* RuleSet::appendRuleAtBottom(bool hidden_rule)
     r->setHidden(hidden_rule);
     int last_rule_position;
     Rule *last_rule = Rule::cast(back());
-    if (last_rule != NULL)
+    if (last_rule != nullptr)
     {
         last_rule_position = last_rule->getPosition() + 1000;
     } else
@@ -201,7 +198,7 @@ Rule* RuleSet::appendRuleAfter(int rule_n)
 {
     Rule *old_rule = getRuleByNum(rule_n);
     Rule *r = createRule();
-    if (old_rule==NULL) add(r);
+    if (old_rule==nullptr) add(r);
     else insert_after(old_rule,r);
     renumberRules();
     return(r);
@@ -214,7 +211,7 @@ bool RuleSet::deleteRule(int rule_n)
 
 bool RuleSet::deleteRule(Rule *r) 
 {
-    if (r!=NULL)
+    if (r!=nullptr)
     {
 	remove(r, true); // and delete the rule if ref counter == 0
 	renumberRules();
@@ -287,17 +284,17 @@ bool RuleSet::moveRule(int src_rule_n, int dst_rule_n)
       FWObject* src =getRuleByNum( src_rule_n );
       FWObject* dst =getRuleByNum( dst_rule_n );
 
-      if (src!=NULL &&  dst!=NULL && src!=dst ) {
+      if (src!=nullptr &&  dst!=nullptr && src!=dst ) {
 
   	FWObject *o;
   	list<FWObject*>::iterator m, m1, m2;
   	for (m=begin(); m!=end(); ++m) {
-  	    if ( (o=(*m))!=NULL ) {
+  	    if ( (o=(*m))!=nullptr ) {
   		if ( o==src ) m1=m;
   		if ( o==dst ) m2=m;
   	    }
   	}
-  	if ( (*m1)!=NULL && (*m2)!=NULL ) {
+  	if ( (*m1)!=nullptr && (*m2)!=nullptr ) {
   	    erase(m1);
   	    insert(m2,src);
   	}
@@ -357,14 +354,14 @@ Rule* RuleSet::getRuleByNum(int n)
     for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
     {
         FWObject *o;
-	if ( (o=(*m))!=NULL ) 
+	if ( (o=(*m))!=nullptr ) 
         {
 	    Rule *r = Rule::cast(o);
 	    if (r && r->getPosition()==n) 
                 return r;
 	}
     }
-    return NULL;
+    return nullptr;
 }
 
 int RuleSet::getRuleSetSize()
@@ -377,7 +374,7 @@ void RuleSet::assignUniqueRuleIds()
     for (FWObject::iterator it=begin(); it!=end(); ++it)
     {
         Rule *r = Rule::cast(*it);
-        if (r != NULL && r->getUniqueId().empty())
+        if (r != nullptr && r->getUniqueId().empty())
             r->setUniqueId(FWObjectDatabase::getStringId((*it)->getId()) );
 
     }

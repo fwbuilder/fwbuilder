@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NATCompiler_asa8.h"
 #include "NamedObject.h"
@@ -77,7 +76,7 @@ NATCompiler_asa8::~NATCompiler_asa8()
  */
 bool NATCompiler_asa8::VerifyValidityOfDNSOption::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     FWOptions *ropt = rule->getOptionsObject();
 
     if (ropt->getBool("asa8_nat_dns"))
@@ -119,7 +118,7 @@ bool NATCompiler_asa8::VerifyValidityOfDNSOption::processNext()
  */
 bool NATCompiler_asa8::VerifyValidityOfTSrc::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -128,15 +127,15 @@ bool NATCompiler_asa8::VerifyValidityOfTSrc::processNext()
     if (tsrc_re->size()==1) return true;
     if (tsrc_re->size()==2)
     {
-        FWObject *obj1 = NULL;
-        FWObject *obj2 = NULL;
+        FWObject *obj1 = nullptr;
+        FWObject *obj2 = nullptr;
         for (FWObject::iterator it=tsrc_re->begin(); it!=tsrc_re->end(); ++it)
         {
-            if (obj1 == NULL) obj1 = FWReference::getObject(*it);
-            if (obj2 == NULL) obj2 = FWReference::getObject(*it);
+            if (obj1 == nullptr) obj1 = FWReference::getObject(*it);
+            if (obj2 == nullptr) obj2 = FWReference::getObject(*it);
         }
-        if (Interface::isA(obj1) && Address::cast(obj2)!=NULL) return true;
-        if (Interface::isA(obj1) && Group::cast(obj2)!=NULL) return true;
+        if (Interface::isA(obj1) && Address::cast(obj2)!=nullptr) return true;
+        if (Interface::isA(obj1) && Group::cast(obj2)!=nullptr) return true;
         QString err("Invalid combination of objects in TSrc: %1 (%2) and %3 (%4) ");
         compiler->abort(
             rule,
@@ -152,7 +151,7 @@ bool NATCompiler_asa8::VerifyValidityOfTSrc::processNext()
 
 bool NATCompiler_asa8::VerifyRules::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     string version = compiler->fw->getStr("version");
 
     RuleElementOSrc  *osrc=rule->getOSrc();  assert(osrc);
@@ -209,7 +208,7 @@ bool NATCompiler_asa8::VerifyRules::processNext()
         return true;
     }
 
-    if ( Group::cast( compiler->getFirstTSrv(rule) )!=NULL)
+    if ( Group::cast( compiler->getFirstTSrv(rule) )!=nullptr)
     {
         compiler->abort(
                 rule, 
@@ -221,7 +220,7 @@ bool NATCompiler_asa8::VerifyRules::processNext()
     {
         Network *a1=Network::cast(compiler->getFirstOSrc(rule));
         Network *a2=Network::cast(compiler->getFirstTSrc(rule));
-        if ( a1==NULL || a2==NULL ||
+        if ( a1==nullptr || a2==nullptr ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
         {
             compiler->abort(
@@ -236,7 +235,7 @@ bool NATCompiler_asa8::VerifyRules::processNext()
     {
         Network *a1=Network::cast(compiler->getFirstODst(rule));
         Network *a2=Network::cast(compiler->getFirstTDst(rule));
-        if ( a1==NULL || a2==NULL ||
+        if ( a1==nullptr || a2==nullptr ||
              a1->getNetmaskPtr()->getLength()!=a2->getNetmaskPtr()->getLength() )
         {
             compiler->abort(
@@ -268,7 +267,7 @@ bool NATCompiler_asa8::VerifyRules::processNext()
 
 bool NATCompiler_asa8::verifyInterfacesInNatRule::processNext()
 {
-    NATRule *rule = getNext(); if (rule==NULL) return false;
+    NATRule *rule = getNext(); if (rule==nullptr) return false;
     tmp_queue.push_back(rule);
     return true;
 }

@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 
 #include "OSConfigurator_linux24.h"
 
@@ -211,7 +210,7 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Network *nw)
                  *(nw->getAddressPtr())) == virtual_addresses.end())
         {
             Interface *iface = findInterfaceFor( nw, fw );
-            if (iface!=NULL)
+            if (iface!=nullptr)
             {
                 const InetAddr *addr = nw->getAddressPtr();
                 InetAddr first, last;
@@ -254,10 +253,10 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
                  virtual_addresses.end(), *addr_addr) == virtual_addresses.end())
         {
             FWObject *vaddr = findAddressFor(addr, fw );
-            if (vaddr!=NULL)
+            if (vaddr!=nullptr)
             {
                 Interface *iface = Interface::cast(vaddr->getParent());
-                assert(iface!=NULL);
+                assert(iface!=nullptr);
 
                 QStringList addresses;
                 const InetAddr *vaddr_netm =
@@ -422,7 +421,7 @@ string OSConfigurator_linux24::printRunTimeAddressTablesCode()
     return conf.expand().toStdString();
 }
 
-string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData::tools tool_name)
+string OSConfigurator_linux24::getPathForATool(const std::string &os_variant, OSData_ipt::tools tool_name)
 {
     FWOptions* options = fw->getOptionsObject();
     string attr = os_data.getAttributeNameForTool(tool_name);
@@ -445,9 +444,9 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
     list<int>::const_iterator i;
     const list<int> &all_tools = os_data.getAllTools(); 
     for (i=all_tools.begin(); i!=all_tools.end(); ++i)
-        res << os_data.getVariableName(OSData::tools(*i))
+        res << os_data.getVariableName(OSData_ipt::tools(*i))
             << "=\""
-            << getPathForATool(os, OSData::tools(*i))
+            << getPathForATool(os, OSData_ipt::tools(*i))
             << "\""
             << endl;
     return res.str();
@@ -484,7 +483,11 @@ QString OSConfigurator_linux24::addressTableWrapper(FWObject *rule,
     int pos = address_table_re.indexIn(command);
     if (pos > -1)
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        QStringList command_lines = QString(command).split("\n", Qt::SkipEmptyParts);
+#else
         QStringList command_lines = QString(command).split("\n", QString::SkipEmptyParts);
+#endif
         if (command_lines.size() > 1)
         {
             command_lines.push_front("{");
@@ -571,8 +574,11 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 
     if (!no_wrapper)
     {
-        QStringList command_lines = 
-            QString(combined_command).split("\n", QString::SkipEmptyParts);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        QStringList command_lines = QString(combined_command).split("\n", Qt::SkipEmptyParts);
+#else
+        QStringList command_lines = QString(combined_command).split("\n", QString::SkipEmptyParts);
+#endif
         if (command_lines.size() > 1)
         {
             command_lines.push_front("{");

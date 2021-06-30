@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE FWObjectDatabase SYSTEM "fwbuilder.dtd">
-<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="22" lastModified="1261881957" id="root">
+<FWObjectDatabase xmlns="http://www.fwbuilder.org/1.0/" version="24" lastModified="1261881957" id="root">
   <Library id="sysid99" name="Deleted Objects" comment="" ro="False"/>
   <Library id="id6821X7237" color="#FFFFFF" name="new_cluster_test" comment="" ro="False">
     <ObjectGroup id="id6822X7237" name="Objects" comment="" ro="False">
@@ -60,16 +60,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
               <Option name="hashlimit_suffix">/second</Option>
               <Option name="hashlimit_value">10</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -104,17 +104,17 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
           <Option name="add_rules_for_ipv6_neighbor_discovery">False</Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -122,47 +122,47 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc/rc.d/</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
-          <Option name="linux24_accept_redirects"></Option>
-          <Option name="linux24_accept_source_route"></Option>
+          <Option name="linux24_accept_redirects"/>
+          <Option name="linux24_accept_source_route"/>
           <Option name="linux24_conntrack_hashsize">1000</Option>
           <Option name="linux24_conntrack_max">1000</Option>
           <Option name="linux24_conntrack_tcp_be_liberal">1</Option>
-          <Option name="linux24_icmp_echo_ignore_all"></Option>
-          <Option name="linux24_icmp_echo_ignore_broadcasts"></Option>
-          <Option name="linux24_icmp_ignore_bogus_error_responses"></Option>
-          <Option name="linux24_ip_dynaddr"></Option>
+          <Option name="linux24_icmp_echo_ignore_all"/>
+          <Option name="linux24_icmp_echo_ignore_broadcasts"/>
+          <Option name="linux24_icmp_ignore_bogus_error_responses"/>
+          <Option name="linux24_ip_dynaddr"/>
           <Option name="linux24_ip_forward">1</Option>
-          <Option name="linux24_ipv6_forward"></Option>
-          <Option name="linux24_log_martians"></Option>
-          <Option name="linux24_path_brctl"></Option>
-          <Option name="linux24_path_ifenslave"></Option>
-          <Option name="linux24_path_ip"></Option>
-          <Option name="linux24_path_ip6tables"></Option>
-          <Option name="linux24_path_ip6tables_restore"></Option>
-          <Option name="linux24_path_iptables"></Option>
-          <Option name="linux24_path_iptables_restore"></Option>
-          <Option name="linux24_path_logger"></Option>
-          <Option name="linux24_path_lsmod"></Option>
-          <Option name="linux24_path_modprobe"></Option>
-          <Option name="linux24_path_vconfig"></Option>
-          <Option name="linux24_rp_filter"></Option>
-          <Option name="linux24_tcp_ecn"></Option>
-          <Option name="linux24_tcp_fack"></Option>
+          <Option name="linux24_ipv6_forward"/>
+          <Option name="linux24_log_martians"/>
+          <Option name="linux24_path_brctl"/>
+          <Option name="linux24_path_ifenslave"/>
+          <Option name="linux24_path_ip"/>
+          <Option name="linux24_path_ip6tables"/>
+          <Option name="linux24_path_ip6tables_restore"/>
+          <Option name="linux24_path_iptables"/>
+          <Option name="linux24_path_iptables_restore"/>
+          <Option name="linux24_path_logger"/>
+          <Option name="linux24_path_lsmod"/>
+          <Option name="linux24_path_modprobe"/>
+          <Option name="linux24_path_vconfig"/>
+          <Option name="linux24_rp_filter"/>
+          <Option name="linux24_tcp_ecn"/>
+          <Option name="linux24_tcp_fack"/>
           <Option name="linux24_tcp_fin_timeout">0</Option>
           <Option name="linux24_tcp_keepalive_interval">0</Option>
-          <Option name="linux24_tcp_sack"></Option>
-          <Option name="linux24_tcp_syncookies"></Option>
-          <Option name="linux24_tcp_timestamps"></Option>
+          <Option name="linux24_tcp_sack"/>
+          <Option name="linux24_tcp_syncookies"/>
+          <Option name="linux24_tcp_timestamps"/>
           <Option name="linux24_tcp_window_scaling">1</Option>
           <Option name="load_modules">True</Option>
           <Option name="local_nat">False</Option>
@@ -176,11 +176,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -198,11 +198,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">rc.firewall.local</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>
@@ -262,7 +262,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6937X7237" disabled="False" group="" log="False" position="1" action="Accept" direction="Both" comment="">
@@ -282,7 +282,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6949X7237" disabled="False" group="" log="False" position="2" action="Accept" direction="Both" comment="SSH Access to firewall is permitted&#10;only from internal network&#10;Also firewall serves DNS for internal&#10;network">
@@ -303,7 +303,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id6989X7237" disabled="False" group="" log="False" position="3" action="Accept" direction="Both" comment="DHCP replies">
@@ -323,7 +323,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7001X7237" disabled="False" group="" log="True" position="4" action="Accept" direction="Both" comment="Firewall should be able to send&#10;DNS queries to the Internet">
@@ -343,7 +343,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7013X7237" disabled="False" group="" log="True" position="5" action="Deny" direction="Both" comment="All other attempts to connect to&#10;the firewall are denied and logged">
@@ -363,7 +363,7 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
             </PolicyRuleOptions>
           </PolicyRule>
           <PolicyRule id="id7025X7237" disabled="False" group="" log="False" position="6" action="Branch" direction="Both" comment="">
@@ -383,30 +383,30 @@
               <IntervalRef ref="sysid2"/>
             </When>
             <PolicyRuleOptions>
-              <Option name="action_on_reject"></Option>
+              <Option name="action_on_reject"/>
               <Option name="branch_id">id7050X7237</Option>
-              <Option name="classify_str"></Option>
-              <Option name="custom_str"></Option>
-              <Option name="ipf_route_opt_addr"></Option>
-              <Option name="ipf_route_opt_if"></Option>
+              <Option name="classify_str"/>
+              <Option name="custom_str"/>
+              <Option name="ipf_route_opt_addr"/>
+              <Option name="ipf_route_opt_if"/>
               <Option name="ipf_route_option">route_through</Option>
               <Option name="ipfw_classify_method">2</Option>
               <Option name="ipfw_pipe_port_num">0</Option>
               <Option name="ipfw_pipe_queue_num">0</Option>
               <Option name="ipt_branch_in_mangle">False</Option>
               <Option name="ipt_continue">False</Option>
-              <Option name="ipt_gw"></Option>
-              <Option name="ipt_iif"></Option>
+              <Option name="ipt_gw"/>
+              <Option name="ipt_iif"/>
               <Option name="ipt_mark_connections">False</Option>
-              <Option name="ipt_oif"></Option>
+              <Option name="ipt_oif"/>
               <Option name="ipt_tee">False</Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="pf_fastroute">False</Option>
               <Option name="pf_route_load_option">none</Option>
-              <Option name="pf_route_opt_addr"></Option>
-              <Option name="pf_route_opt_if"></Option>
+              <Option name="pf_route_opt_addr"/>
+              <Option name="pf_route_opt_if"/>
               <Option name="pf_route_option">none</Option>
-              <Option name="rule_name_accounting"></Option>
+              <Option name="rule_name_accounting"/>
               <Option name="stateless">True</Option>
             </PolicyRuleOptions>
           </PolicyRule>
@@ -428,7 +428,7 @@
             </When>
             <PolicyRuleOptions>
               <Option name="classification">False</Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="pf_classify_str"/>
               <Option name="routing">False</Option>
               <Option name="stateless">False</Option>
               <Option name="tagging">True</Option>
@@ -466,16 +466,16 @@
               <Option name="hashlimit_mode_dstport">False</Option>
               <Option name="hashlimit_mode_srcip">False</Option>
               <Option name="hashlimit_mode_srcport">False</Option>
-              <Option name="hashlimit_name"></Option>
+              <Option name="hashlimit_name"/>
               <Option name="hashlimit_size">0</Option>
               <Option name="hashlimit_suffix">/second</Option>
               <Option name="hashlimit_value">20</Option>
               <Option name="limit_burst">0</Option>
-              <Option name="limit_suffix"></Option>
+              <Option name="limit_suffix"/>
               <Option name="limit_value">0</Option>
-              <Option name="log_level"></Option>
-              <Option name="log_prefix"></Option>
-              <Option name="pf_classify_str"></Option>
+              <Option name="log_level"/>
+              <Option name="log_prefix"/>
+              <Option name="pf_classify_str"/>
               <Option name="stateless">True</Option>
               <Option name="ulog_nlgroup">1</Option>
             </PolicyRuleOptions>
@@ -510,16 +510,16 @@
         <FirewallOptions>
           <Option name="accept_established">True</Option>
           <Option name="accept_new_tcp_with_no_syn">True</Option>
-          <Option name="action_on_reject"></Option>
-          <Option name="activationCmd"></Option>
-          <Option name="admUser"></Option>
-          <Option name="altAddress"></Option>
+          <Option name="action_on_reject"/>
+          <Option name="activationCmd"/>
+          <Option name="admUser"/>
+          <Option name="altAddress"/>
           <Option name="bridging_fw">False</Option>
           <Option name="check_shading">False</Option>
           <Option name="clamp_mss_to_mtu">False</Option>
           <Option name="classify_mark_terminating">False</Option>
-          <Option name="cmdline"></Option>
-          <Option name="compiler"></Option>
+          <Option name="cmdline"/>
+          <Option name="compiler"/>
           <Option name="configure_bonding_interfaces">False</Option>
           <Option name="configure_bridge_interfaces">False</Option>
           <Option name="configure_interfaces">True</Option>
@@ -527,15 +527,15 @@
           <Option name="debug">False</Option>
           <Option name="drop_invalid">False</Option>
           <Option name="eliminate_duplicates">true</Option>
-          <Option name="epilog_script"></Option>
+          <Option name="epilog_script"/>
           <Option name="firewall_dir">/etc/rc.d</Option>
           <Option name="firewall_is_part_of_any_and_networks">True</Option>
           <Option name="flush_and_set_default_policy">True</Option>
           <Option name="freebsd_ip_forward">1</Option>
           <Option name="ignore_empty_groups">False</Option>
-          <Option name="ipt_mangle_only_rulesets"></Option>
+          <Option name="ipt_mangle_only_rulesets"/>
           <Option name="ipv4_6_order">ipv4_first</Option>
-          <Option name="limit_suffix"></Option>
+          <Option name="limit_suffix"/>
           <Option name="limit_value">0</Option>
           <Option name="linux24_ip_forward">1</Option>
           <Option name="load_modules">True</Option>
@@ -550,11 +550,11 @@
           <Option name="loopback_interface">lo</Option>
           <Option name="macosx_ip_forward">1</Option>
           <Option name="manage_virtual_addr">True</Option>
-          <Option name="mgmt_addr"></Option>
+          <Option name="mgmt_addr"/>
           <Option name="mgmt_ssh">False</Option>
           <Option name="modules_dir">/lib/modules/`uname -r`/kernel/net/</Option>
           <Option name="openbsd_ip_forward">1</Option>
-          <Option name="output_file"></Option>
+          <Option name="output_file"/>
           <Option name="pf_limit_frags">5000</Option>
           <Option name="pf_limit_states">10000</Option>
           <Option name="pf_timeout_frag">30</Option>
@@ -572,11 +572,11 @@
           <Option name="pix_syslog_device_id_supported">false</Option>
           <Option name="pix_use_acl_remarks">true</Option>
           <Option name="prolog_place">top</Option>
-          <Option name="prolog_script"></Option>
-          <Option name="scpArgs"></Option>
+          <Option name="prolog_script"/>
+          <Option name="scpArgs"/>
           <Option name="script_name_on_firewall">rc.firewall.local</Option>
           <Option name="solaris_ip_forward">1</Option>
-          <Option name="sshArgs"></Option>
+          <Option name="sshArgs"/>
           <Option name="ulog_cprange">0</Option>
           <Option name="ulog_nlgroup">1</Option>
           <Option name="ulog_qthreshold">1</Option>

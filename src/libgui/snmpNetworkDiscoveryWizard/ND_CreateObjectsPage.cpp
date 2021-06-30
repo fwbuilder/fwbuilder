@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 #include "global.h"
 #include "events.h"
 #include "FWWindow.h"
@@ -78,7 +77,7 @@ void ND_CreateObjectsPage::initializePage()
 
     m_dialog->progressBar->setFormat("%v / %m");
     m_dialog->progressBar->setMaximum(objectsToUse->size() / 2 + networks->size());
-    FWObject *last_object = NULL;
+    FWObject *last_object = nullptr;
     string type, name, a;
     int counter = 0;
 
@@ -91,7 +90,7 @@ void ND_CreateObjectsPage::initializePage()
         Address *net = Address::cast(
             mw->createObject(type.c_str(), name.c_str()));
 
-        assert(net!=NULL);
+        assert(net!=nullptr);
 
         net->setName(name);
         net->setAddress(od.addr);
@@ -124,7 +123,7 @@ void ND_CreateObjectsPage::initializePage()
 
             if (type==Host::TYPENAME || type==Firewall::TYPENAME)
             {
-                FWObject *o=NULL;
+                FWObject *o=nullptr;
 
                 o = mw->createObject(type.c_str(), name.c_str());
                 o->setName(name);
@@ -213,7 +212,7 @@ void ND_CreateObjectsPage::initializePage()
                     }
 
                     list<InterfaceData*> interface_tree;
-                    std::auto_ptr<interfaceProperties> int_prop(
+                    std::unique_ptr<interfaceProperties> int_prop(
                         interfacePropertiesObjectFactory::getInterfacePropertiesObject(o));
                     int_prop->rearrangeInterfaces(od.interfaces, interface_tree);
 
@@ -240,7 +239,7 @@ void ND_CreateObjectsPage::initializePage()
 "important to review and fix generated objects if you "
 "use MAC address spoofing."
 ),
-                            tr("&Continue"), 0, 0,
+                            tr("&Continue"), nullptr, nullptr,
                             0 );
 
 
@@ -255,7 +254,7 @@ void ND_CreateObjectsPage::initializePage()
 
                         FWObject *intf = addInterface(
                             o, in, in->subinterfaces.size()!=0);
-                        if (intf == NULL) continue;
+                        if (intf == nullptr) continue;
 
                         list<InterfaceData*>::iterator sit;
                         for (sit=in->subinterfaces.begin();
@@ -282,7 +281,7 @@ void ND_CreateObjectsPage::initializePage()
                 Network *net=dynamic_cast<Network*>(
                     mw->createObject(type.c_str(),name.c_str())
                 );
-                assert(net!=NULL);
+                assert(net!=nullptr);
                 net->setName(name);
                 net->setAddress(InetAddr(a));
                 net->setNetmask(InetAddr(InetAddr(a)));
@@ -292,7 +291,7 @@ void ND_CreateObjectsPage::initializePage()
                 IPv4 *obj=dynamic_cast<IPv4*>(
                     mw->createObject(type.c_str(),name.c_str())
                 );
-                assert(obj!=NULL);
+                assert(obj!=nullptr);
                 obj->setName(name);
                 obj->setAddress(InetAddr(a));
                 obj->setNetmask(InetAddr(InetAddr::getAllOnes()));
@@ -323,13 +322,13 @@ FWObject* ND_CreateObjectsPage::addInterface(FWObject *parent, InterfaceData *in
 
     if ( ! includeUnnumbered && ! skip_ip_address_check)
     {
-        if (in->addr_mask.size()==0) return NULL;
+        if (in->addr_mask.size()==0) return nullptr;
         if (in->addr_mask.front()->getAddressPtr()->isAny())
-            return NULL;
+            return nullptr;
     }
 
     QString obj_name = in->name.c_str();
-    Interface *itf = NULL;
+    Interface *itf = nullptr;
     itf = Interface::cast(
         mw->createObject(parent,
                          QString(Interface::TYPENAME), obj_name));
@@ -356,7 +355,7 @@ FWObject* ND_CreateObjectsPage::addInterface(FWObject *parent, InterfaceData *in
             itf->getOptionsObject()->setInt("vlan_id", in->vlan_id);
     } else
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(parent));
         if (int_prop->looksLikeVlanInterface(obj_name))
         {

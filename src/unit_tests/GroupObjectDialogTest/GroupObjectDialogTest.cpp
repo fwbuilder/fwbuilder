@@ -25,12 +25,11 @@
 
 #include "GroupObjectDialogTest.h"
 
-#include "../../../../config.h"
 //#include "../../global.h"
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTest>
 #include <iostream>
 
@@ -71,7 +70,7 @@ void GroupObjectDialogTest::initTestCase()
     mw->show();
     mw->startupLoad();
     StartTipDialog *d = mw->findChild<StartTipDialog*>();
-    if (d!=NULL) d->close();
+    if (d!=nullptr) d->close();
     om = dynamic_cast<ObjectManipulator*>(mw->getCurrentObjectTree()->parent()->parent());
     QTest::qWait(1000);
 
@@ -137,7 +136,7 @@ void setLineEditText(QLineEdit *line, QString text)
 
 Library* GroupObjectDialogTest::findUserLibrary()
 {
-    Library *lib = NULL;
+    Library *lib = nullptr;
     foreach (FWObject *obj, mw->db()->getByType(Library::TYPENAME))
     {
         if (obj->getName() == "User")
@@ -153,10 +152,10 @@ template <class TYPE> ObjectTreeViewItem* findItemForType(ObjectTreeView *tree)
 {
     foreach(QTreeWidgetItem* item, tree->findItems("", Qt::MatchRecursive | Qt::MatchContains, 0))
     {
-        if (TYPE::isA(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()) != NULL)
+        if (TYPE::isA(dynamic_cast<ObjectTreeViewItem*>(item)->getFWObject()) != nullptr)
             return dynamic_cast<ObjectTreeViewItem*>(item);
     }
-    return NULL;
+    return nullptr;
 }
 
 template <class FWTYPE> FWTYPE* GroupObjectDialogTest::createObject(QString name)
@@ -192,21 +191,21 @@ void GroupObjectDialogTest::testObjectGroup()
         mw->getCurrentObjectTree()->findItems(
             "Object Group", Qt::MatchRecursive, 0).first());
 
-    QVERIFY(groupItem != NULL);
+    QVERIFY(groupItem != nullptr);
 
     mw->getCurrentObjectTree()->setCurrentItem(
         groupItem, 0,
         QItemSelectionModel::SelectCurrent | QItemSelectionModel::Clear);
 
     ObjectGroup *group = ObjectGroup::cast(groupItem->getFWObject());
-    QVERIFY(group != NULL);
+    QVERIFY(group != nullptr);
     om->editObject(group);
     QTest::qWait(50);
 
     GroupObjectDialog *groupdialog = mw->findChild<GroupObjectDialog*>(
         "w_ObjectGroupDialog");
 
-    QVERIFY(groupdialog != NULL);
+    QVERIFY(groupdialog != nullptr);
 
     QVERIFY(checkObjectInsertion(groupdialog, group, address));
     QVERIFY(checkObjectInsertion(groupdialog, group, address6));
@@ -227,7 +226,7 @@ void GroupObjectDialogTest::testObjectGroup()
 
     QPushButton *newButton = mw->findChild<GroupObjectDialog*>(
         "w_ObjectGroupDialog")->findChild<QPushButton*>("newButton");
-    QVERIFY(newButton != NULL);
+    QVERIFY(newButton != nullptr);
 
     QTimer::singleShot(50, this, SLOT(checkObjectGroupMenu()));
     QTest::mouseClick(newButton, Qt::LeftButton);
@@ -294,15 +293,15 @@ void GroupObjectDialogTest::testServiceGroup()
         groupItem, 0,
         QItemSelectionModel::SelectCurrent | QItemSelectionModel::Clear);
 
-    QVERIFY(groupItem != NULL);
+    QVERIFY(groupItem != nullptr);
     ServiceGroup *group = ServiceGroup::cast(groupItem->getFWObject());
-    QVERIFY(group != NULL);
+    QVERIFY(group != nullptr);
     om->editObject(group);
     QTest::qWait(50);
 
     GroupObjectDialog *groupdialog = mw->findChild<GroupObjectDialog*>(
         "w_ServiceGroupDialog");
-    QVERIFY(groupdialog != NULL);
+    QVERIFY(groupdialog != nullptr);
 
     QVERIFY(!checkObjectInsertion(groupdialog, group, address));
     QVERIFY(!checkObjectInsertion(groupdialog, group, address6));
@@ -324,7 +323,7 @@ void GroupObjectDialogTest::testServiceGroup()
 
 
     QPushButton *newButton = mw->findChild<GroupObjectDialog*>("w_ServiceGroupDialog")->findChild<QPushButton*>("newButton");
-    QVERIFY(newButton != NULL);
+    QVERIFY(newButton != nullptr);
     QTimer::singleShot(50, this, SLOT(checkObjectServiceGroupMenu()));
     QTest::mouseClick(newButton, Qt::LeftButton);
 }

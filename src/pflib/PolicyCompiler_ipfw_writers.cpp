@@ -26,7 +26,7 @@
 #include "definitions.h"
 
 #include "PolicyCompiler_ipfw.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 
 #include "fwbuilder/AddressRange.h"
 #include "fwbuilder/RuleElement.h"
@@ -259,10 +259,10 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(FWObject *o, bool neg)
     }
 
     Address *addr_obj = Address::cast(o);
-    assert(addr_obj!=NULL);
+    assert(addr_obj!=nullptr);
 
     MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-    if (atrt!=NULL)
+    if (atrt!=nullptr)
     {
         if (atrt->getSubstitutionTypeName()==DNSName::TYPENAME)
         {
@@ -274,11 +274,11 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(FWObject *o, bool neg)
         // to MultiAddressRunTime at this point. If we get some other
         // kind of MultiAddressRunTime object, we do not know what to do
         // with it so we stop.
-        assert(atrt==NULL);
+        assert(atrt==nullptr);
     }
 
     const InetAddr *addr = addr_obj->getAddressPtr();
-    if (Interface::cast(o)!=NULL && addr==NULL)
+    if (Interface::cast(o)!=nullptr && addr==nullptr)
     {
         compiler->output << "me ";
     }
@@ -286,7 +286,7 @@ void PolicyCompiler_ipfw::PrintRule::_printAddr(FWObject *o, bool neg)
     {
         InetAddr mask = *(addr_obj->getNetmaskPtr());
 
-        if (Interface::cast(o)!=NULL)
+        if (Interface::cast(o)!=nullptr)
             mask = InetAddr(InetAddr::getAllOnes());
 
         if (addr_obj->dimension()==1)
@@ -352,7 +352,7 @@ void PolicyCompiler_ipfw::PrintRule::_printSrcService(RuleElement  *rel)
  * find the object. I'd rather use a cached copy in the compiler
  */
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
     Service *s1= Service::cast(o);
 
@@ -363,7 +363,7 @@ void PolicyCompiler_ipfw::PrintRule::_printSrcService(RuleElement  *rel)
     for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
         FWObject *o   = *i1;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         Service *srv=Service::cast(o);
 
         if (tcpudp)
@@ -395,7 +395,7 @@ string PolicyCompiler_ipfw::PrintRule::_printSrcService(Service *srv,bool neg)
 void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElement  *rel)
 {
     FWObject *o=rel->front();
-    if (o && FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (o && FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
     Service *s1= Service::cast(o);
 
@@ -410,7 +410,7 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElement  *rel)
     for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
         FWObject *o   = *i1;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         Service *srv=Service::cast(o);
 
         if (tcpudp || custom)
@@ -458,7 +458,7 @@ void PolicyCompiler_ipfw::PrintRule::_printDstService(RuleElement  *rel)
                 compiler->warning(rule, "ipfw can not match \"any IP option\" ");
             else
             {
-                const char *option_names[] = {"lsrr", "ssrr", "rr", "ts", NULL};
+                const char *option_names[] = {"lsrr", "ssrr", "rr", "ts", nullptr};
                 for (const char* *cptr=option_names; *cptr; cptr++)
                     if  (ip_srv->getBool(*cptr)) options.push_back(*cptr);
             }
@@ -502,7 +502,7 @@ PolicyCompiler_ipfw::PrintRule::PrintRule(const std::string &name) :
 
 bool PolicyCompiler_ipfw::PrintRule::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     tmp_queue.push_back(rule);
@@ -515,9 +515,11 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
     compiler->output << compiler->printComment(rule, current_rule_label, "#");
 
     RuleElementSrc *srcrel=rule->getSrc();
+#ifndef NDEBUG
     Address        *src   =compiler->getFirstSrc(rule);  assert(src);
-    RuleElementDst *dstrel=rule->getDst();
     Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
+#endif
+    RuleElementDst *dstrel=rule->getDst();
     RuleElementSrv *srvrel=rule->getSrv();
     Service        *srv   =compiler->getFirstSrv(rule);  assert(srv);
 
@@ -553,7 +555,7 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
         if ( ! ruleopt->getBool("stateless"))
         {  
             TCPService *tcpsrv = TCPService::cast(srv);
-            if ( tcpsrv!=NULL &&
+            if ( tcpsrv!=nullptr &&
                  !tcpsrv->inspectFlags() &&
                  !tcpsrv->getEstablished()  ) compiler->output << "established ";
 
@@ -598,7 +600,7 @@ bool PolicyCompiler_ipfw::PrintRule::processNext()
  *
  */
         TCPService *tcpsrv=TCPService::cast(srv);
-        if ( tcpsrv!=NULL &&
+        if ( tcpsrv!=nullptr &&
              !tcpsrv->inspectFlags() &&
              !tcpsrv->getEstablished()  ) compiler->output << "setup ";
 

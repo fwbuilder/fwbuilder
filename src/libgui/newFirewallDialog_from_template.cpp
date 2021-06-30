@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "events.h"
 #include "platforms.h"
@@ -76,15 +75,10 @@ void newFirewallDialog::createFirewallFromTemplate()
 {
     QListWidgetItem *itm = m_dialog->templateList->currentItem();
     FWObject *template_fw = templates[itm];
-    assert (template_fw!=NULL);
+    assert (template_fw!=nullptr);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    string platform = readPlatform(m_dialog->platform).toAscii().constData();
-    string host_os = readHostOS(m_dialog->hostOS).toAscii().constData();
-#else
     string platform = readPlatform(m_dialog->platform).toLatin1().constData();
     string host_os = readHostOS(m_dialog->hostOS).toLatin1().constData();
-#endif
 
     map<int, int> map_ids;
     FWObject *no = db_copy->recursivelyCopySubtree(parent, template_fw, map_ids);
@@ -137,7 +131,7 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                 this, "Firewall Builder",
                 tr("Can not find interface %1 in the interface editor data")
                 .arg(intf->getName().c_str()),
-                "&Continue", QString::null, QString::null, 0, 1 );
+                "&Continue", QString(), QString(), 0, 1 );
         } else
         {
             EditedInterfaceData new_data = new_configuration[intf];
@@ -150,9 +144,9 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                  * Substitute interface addresses.
                  * 
                  * EditedInterfaceData::addresses uses Address* as a
-                 * key. If it is not NULL, then this points to the
+                 * key. If it is not nullptr, then this points to the
                  * updated information for existing Address object
-                 * which we should modify. If it is NULL, then the
+                 * which we should modify. If it is nullptr, then the
                  * user created new address and we need to create new
                  * IPv4 or IPv6 object.
                  * 

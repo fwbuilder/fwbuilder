@@ -44,7 +44,7 @@ bool freebsdInterfaces::manageIpAddresses(Interface *intf,
     if (intf->isDyn())
     {
         FWObject *p = intf;
-        while (Firewall::cast(p) == NULL) p = p->getParent();
+        while (Firewall::cast(p) == nullptr) p = p->getParent();
         Firewall *fw = Firewall::cast(p);
         FWOptions* options = fw->getOptionsObject();
         return options->getBool("generate_rc_conf_file");

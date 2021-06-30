@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 
 #include "fwbuilder/FWObject.h"
@@ -59,20 +58,15 @@ using namespace libfwbuilder;
 ObjectListView::ObjectListView(QWidget* parent, const char*, Qt::WindowFlags f) :
     QTreeWidget(parent)
 {
-    db = NULL;
+    db = nullptr;
     setWindowFlags(f);
     /*setColumnWidthMode(0, QTreeWidget::Maximum);
     setColumnWidthMode(1, QTreeWidget::Maximum);
     setItemMargin( 2 );*/
     setFocusPolicy( Qt::StrongFocus  );
     setFocus();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    header()->setClickable(true);
-    header()->setMovable(false);
-#else
     header()->setSectionsClickable(true);
     header()->setSectionsMovable(false);
-#endif
     setSortingEnabled(true);
     sortByColumn ( 0, Qt::AscendingOrder );
     connect(header(), SIGNAL(sectionClicked (int)),
@@ -92,14 +86,14 @@ bool ObjectListView::event(QEvent *event)
 
             //viewportToContents(pos.x(),pos.y(),cx,cy);
 
-            FWObject  *obj=NULL;
+            FWObject  *obj=nullptr;
             QRect      cr;
 
             QTreeWidgetItem *itm = itemAt(QPoint(cx,cy - header()->height()));
-            if (itm==NULL) return false;
+            if (itm==nullptr) return false;
             int obj_id = itm->data(0, Qt::UserRole).toInt();
             obj = db->findInIndex(obj_id);
-            if (obj==NULL) return false;
+            if (obj==nullptr) return false;
 
             cr = visualItemRect(itm);
 
@@ -127,8 +121,8 @@ bool ObjectListView::event(QEvent *event)
 QDrag* ObjectListView::dragObject()
 {
     QTreeWidgetItem *ovi = currentItem();
-    // currentItem returns NULL if the list is empty
-    if (ovi==NULL) return NULL;
+    // currentItem returns nullptr if the list is empty
+    if (ovi==nullptr) return nullptr;
 
     int obj_id = ovi->data(0, Qt::UserRole).toInt();
     FWObject *obj = db->findInIndex(obj_id);
@@ -142,7 +136,7 @@ QDrag* ObjectListView::dragObject()
     //QPixmap          pm   = QPixmap::fromMimeSource( icn_filename );
 
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn, pm) )
+    if ( ! QPixmapCache::find( icn, &pm) )
     {
         pm.load( icn );
         QPixmapCache::insert( icn, pm);
@@ -168,11 +162,7 @@ void ObjectListView::dragEnterEvent( QDragEnterEvent *ev)
         qDebug("ObjectListView::dragEnterEvent");
     //ev->setAccepted( ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) );
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QWidget *fromWidget = ev->source();
-#else
     QWidget *fromWidget = qobject_cast<QWidget*>(ev->source());
-#endif
 
     // The source of DnD object must be the same instance of fwbuilder
     if (!fromWidget)
@@ -193,7 +183,7 @@ void ObjectListView::dragEnterEvent( QDragEnterEvent *ev)
     for (list<FWObject*>::iterator i=dragol.begin();i!=dragol.end(); ++i)
     {
         FWObject *dragobj = *i;
-        assert(dragobj!=NULL);
+        assert(dragobj!=nullptr);
 
         if (FWBTree().isSystem(dragobj))
         {
@@ -240,7 +230,7 @@ void ObjectListView::mouseMoveEvent(QMouseEvent *event)
     if (startingDrag)
     {
         QDrag *dr = dragObject();
-        if (dr) dr->start();
+        if (dr) dr->exec();
         startingDrag = false;
     }
     QTreeWidget::mouseMoveEvent(event);

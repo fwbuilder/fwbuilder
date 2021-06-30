@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -58,7 +57,7 @@ PhysicalAddressDialog::PhysicalAddressDialog(QWidget *parent) : BaseObjectDialog
 {
     m_dialog = new Ui::PhysAddressDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -72,7 +71,7 @@ void PhysicalAddressDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     physAddress *s = dynamic_cast<physAddress*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     init=true;
 
@@ -102,11 +101,11 @@ void PhysicalAddressDialog::validate(bool *res)
 
 void PhysicalAddressDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     physAddress *s = dynamic_cast<physAddress*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );

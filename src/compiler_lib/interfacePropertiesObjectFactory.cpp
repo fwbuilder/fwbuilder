@@ -47,7 +47,7 @@ interfaceProperties* interfacePropertiesObjectFactory::getInterfacePropertiesObj
 {
     Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
     string os_family = fw->getStr("host_OS");
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
     return getInterfacePropertiesObject(os_family);
 }

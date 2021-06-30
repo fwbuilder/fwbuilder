@@ -15,26 +15,40 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
+#include "version.h"
 #include "fwbuilder/Constants.h"
+
+#if defined (__linux__) || defined (__FreeBSD_kernel__) || defined (__OpenBSD__) || defined (__MINGW64__) || defined (__MINGW32__) || defined (__APPLE__)
+#   include <sys/stat.h>
+#endif
+
+#include <cstdlib>
 
 using namespace std;
 using namespace libfwbuilder;
 
 string Constants::res_dir;
 
+const char* EnvResDirVariable = "FWB_RES_DIR";
+
 void Constants::init(const std::string &app_root_dir)
 {
-    if (app_root_dir.empty()) res_dir = string(RES_DIR);
-    else res_dir = app_root_dir + FS_SEPARATOR + string(RES_DIR);
+    if (app_root_dir.empty()) {
+        if (const char* env_res_dir = std::getenv(EnvResDirVariable)) {
+            res_dir = string(env_res_dir);
+        } else {
+            res_dir = string(RES_DIR);
+        }
+    } else {
+        res_dir = app_root_dir + "/" + string(RES_DIR);
+    }
 }
 
 const string Constants::getLibraryDescription()
@@ -71,21 +85,50 @@ string Constants::getResourcesDirectory()
 
 string Constants::getResourcesFilePath()
 {
-    return getResourcesDirectory() + FS_SEPARATOR + "resources.xml";
+    return getResourcesDirectory() + "/resources.xml";
 }
 
 string Constants::getStandardObjectsFilePath()
 {
-    return getResourcesDirectory() + FS_SEPARATOR  + "objects_init.xml";
+    return getResourcesDirectory() + "/objects_init.xml";
 }
 
 string Constants::getTemplatesObjectsFilePath()
 {
-    return getResourcesDirectory() + FS_SEPARATOR  + "templates.xml";
+    return getResourcesDirectory() + "/templates.xml";
 }
 
 string Constants::getLocaleDirectory()
 {
     return getResourcesDirectory() + "/locale";
+}
+
+string Constants::getDistro()
+{
+#if defined (__linux__)
+    if (fileExists("/etc/debian_version"))
+        return "Debian";
+    if (fileExists("/etc/mandrake-release"))
+        return "Mandrake";
+    if (fileExists("/etc/slackware-version"))
+        return "Slackware";
+    if (fileExists("/etc/SuSE-release"))
+        return "SuSE";
+    if (fileExists("/etc/redhat-release"))
+        return "RedHat";
+    return "Unknown";
+#elif defined (__FreeBSD_kernel__) && defined (__GLIBC__)
+    if (fileExists("/etc/debian_version"))
+        return "Debian";
+    return "Unknown";
+#else
+    return "";
+#endif
+}
+
+bool Constants::fileExists(const string &file)
+{
+    struct stat sb;
+    return (stat(file.c_str(), &sb) == 0);
 }
 

@@ -44,7 +44,7 @@ AutomaticRules::AutomaticRules(Firewall *fw, Library *persistent_objects)
 {
     this->fw = fw;
     this->persistent_objects = persistent_objects;
-    ruleset = NULL;
+    ruleset = nullptr;
 
     list<FWObject*> all_policies = fw->getByType(Policy::TYPENAME);
     for (FWObject::iterator it=all_policies.begin(); it!=all_policies.end(); ++it)
@@ -74,7 +74,7 @@ PolicyRule* AutomaticRules::addMgmtRule(
 {
     (void) related; // Unused
 
-    if (ruleset == NULL) return NULL;
+    if (ruleset == nullptr) return nullptr;
 
     /* Insert PolicyRules at top so they do not get shadowed by other
      * rules. Call insertRuleAtTop() with hidden_rule argument true to
@@ -84,34 +84,34 @@ PolicyRule* AutomaticRules::addMgmtRule(
      */
 
     PolicyRule* rule = PolicyRule::cast(ruleset->insertRuleAtTop(true));
-    assert(rule != NULL);
+    assert(rule != nullptr);
 
     ostringstream str;
     str << rule->getPosition() << " " << label << " (automatic)" ;
     rule->setLabel(str.str());
 
     FWObject *re;
-    re = rule->getSrc();  assert(re!=NULL);
+    re = rule->getSrc();  assert(re!=nullptr);
     RuleElementSrc::cast(re)->reset();
-    if(src != NULL)
+    if(src != nullptr)
         re->addRef(src);
 
-    re = rule->getDst();  assert(re!=NULL);
+    re = rule->getDst();  assert(re!=nullptr);
     RuleElementDst::cast(re)->reset();
-    if(dst != NULL)
+    if(dst != nullptr)
         re->addRef(dst);
 
-    re = rule->getSrv();  assert(re!=NULL);
+    re = rule->getSrv();  assert(re!=nullptr);
     RuleElementSrv::cast(re)->reset();
-    if(service != NULL)
+    if(service != nullptr)
         re->addRef(service);
 
-    re = rule->getWhen(); assert(re!=NULL);
+    re = rule->getWhen(); assert(re!=nullptr);
     RuleElementInterval::cast(re)->reset();
 
-    re = rule->getItf(); assert(re!=NULL);
+    re = rule->getItf(); assert(re!=nullptr);
     RuleElementItf::cast(re)->reset();
-    if(iface != NULL)
+    if(iface != nullptr)
     {
         re->addRef(iface);
 //        rule->setInterfaceId(iface->getId());

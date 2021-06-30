@@ -26,10 +26,9 @@
 #ifndef _OSCONFIGURATOR_FREEBSD_HH
 #define _OSCONFIGURATOR_FREEBSD_HH
 
-#include "config.h"
 
 #include "OSConfigurator_bsd.h"
-#include "OSData.h"
+#include "OSData_pf.h"
 
 #include <QMap>
 #include <QStringList>

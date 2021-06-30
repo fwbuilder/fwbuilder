@@ -1,0 +1,42 @@
+name: w32-mxe
+
+on: [push]
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - {
+              id: "mxe-qt-5.15",
+              name: "MXE Qt 5.15",
+              docker_image: "fwbuilder/mxe:qt-5.15"
+            }
+          - {
+              id: "mxe-qt-5.12",
+              name: "MXE Qt 5.12",
+              docker_image: "fwbuilder/mxe:qt-5.12"
+            }
+    container:
+      image: ${{ matrix.config.docker_image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Compilation cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.ccache
+          key: ${{ matrix.config.id }}-ccache-${{ github.sha }}
+          restore-keys: |
+            ${{ matrix.config.id }}-ccache
+      - name: Configure
+        run: |
+          export PATH=$PATH:/opt/mxe/usr/bin
+          mkdir -p build && cd build
+          i686-w64-mingw32.shared-cmake ..
+      - name: Build
+        run: |
+          export PATH=$PATH:/opt/mxe/usr/bin
+          cd build
+          make -j$(nproc)

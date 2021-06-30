@@ -28,10 +28,10 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include "FWBSettings.h"
+#include "FWBSettings_config.h"
 #include "FWWindow.h"
 #include "ObjectManipulator.h"
 
@@ -110,7 +110,7 @@ const char* iconsInRulesSize = SETTINGS_PATH_PREFIX "/UI/Icons/IconsInRulesSize"
 const char* rulesFont = SETTINGS_PATH_PREFIX "/UI/Fonts/RulesFont";
 const char* treeFont = SETTINGS_PATH_PREFIX "/UI/Fonts/TreeFont";
 const char* uiFont = SETTINGS_PATH_PREFIX "/UI/Fonts/UiFont";
-const char* compilerOutputFont = 
+const char* compilerOutputFont =
     SETTINGS_PATH_PREFIX "/UI/Fonts/CompilerOutputFont";
 const char* clipComment = SETTINGS_PATH_PREFIX "/UI/ClipComment";
 const char* checkUpdates = SETTINGS_PATH_PREFIX "/UI/CheckUpdates";
@@ -146,6 +146,8 @@ const char* SSHTimeout = SETTINGS_PATH_PREFIX "/SSH/SSHTimeout";
 
 const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodifiedRules";
 
+const QString FWBSettings::ApplicationName = QStringLiteral("FirewallBuilder");
+const QString FWBSettings::OrganizationName = QStringLiteral("firewallbuilder.org");
 
 /**
  * Settings path defined here should match Windows registry paths used
@@ -156,15 +158,15 @@ const char * displayUnmodifiedRules = SETTINGS_PATH_PREFIX "/Diff/displayUnmodif
  */
 FWBSettings::FWBSettings(bool testData) :
     QSettings(QSettings::UserScope,
-              "netcitadel.com",
-              testData?"fwb_test_data":getApplicationNameForSettings())
+              OrganizationName,
+              testData ? "fwb_test_data" : ApplicationName)
 {
     if (testData)
     {
         this->clear();
     }
     uuid_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
-                                  "netcitadel.com", "FirewallBuilder");
+                                  OrganizationName, ApplicationName);
 #ifdef _WIN32
     ssh_timeout_setings_object = new QSettings(QSettings::UserScope,
                                                  "SimonTatham", "PuTTY");
@@ -209,14 +211,16 @@ void FWBSettings::init(bool force_first_time_run)
         } else
         {
             ok = uuid_settings->contains(appGUID_4_0);
-            if (ok) 
+            if (ok)
             {
                 uuid_settings->setValue(
                     appGUID, uuid_settings->value(appGUID_4_0).toString());
                 uuid_settings->remove(appGUID_4_0);
             } else
             {
-                qsrand(time(NULL));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+                qsrand(time(nullptr));
+#endif
                 uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
                 first_run = true;
             }
@@ -280,7 +284,9 @@ void FWBSettings::init(bool force_first_time_run)
     if (my_uuid == "b7203c47-06bf-4878-9ff5-6afffb2db546" ||
         my_uuid == "46759a87-7956-431f-a171-ccb754ef239e")
     {
-        qsrand(time(NULL));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+        qsrand(time(nullptr));
+#endif
         uuid_settings->setValue(appGUID, QUuid::createUuid().toString());
     }
 
@@ -316,7 +322,7 @@ void FWBSettings::init(bool force_first_time_run)
         {
             QString err = QString(QObject::tr("Working directory %1 does not exist and could not be created.\nIgnoring this setting.")).arg(wd);;
 
-            if (app != NULL)
+            if (app != nullptr)
             {
                 QMessageBox::critical( 0,"Firewall Builder", err,
                                        "&Continue", 0, 0, 0 );
@@ -713,13 +719,8 @@ void FWBSettings::restoreGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
-                   name.toAscii().constData(), w->isVisible(), x,y);
-#else
         qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
                    name.toLatin1().constData(), w->isVisible(), x,y);
-#endif
     }
 
     w->resize( QSize(width,height) );
@@ -754,13 +755,8 @@ void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
-                   name.toAscii().constData(), w->isVisible(), x,y);
-#else
         qDebug("FWBSettings::restoreGeometry  widget '%s' vis=%d x=%d y=%d",
                    name.toLatin1().constData(), w->isVisible(), x,y);
-#endif
     }
 
     w->resize( QSize(width,height) );
@@ -787,13 +783,8 @@ void FWBSettings::saveGeometry(QWidget *w)
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
-                   name.toAscii().constData(), w->isVisible(), val.toAscii().constData());
-#else
         qDebug("FWBSettings::saveGeometry  widget '%s' vis=%d val=%s",
                    name.toLatin1().constData(), w->isVisible(), val.toLatin1().constData());
-#endif
     }
 
     setValue(QString(WindowGeometrySetpath)+name, val);
@@ -927,10 +918,10 @@ void FWBSettings::getPrinterOptions(QPrinter *printer,
 #ifndef Q_OS_MAC
     printer->setOutputFileName(getStr("PrintSetup/outputFileName"));
 #endif
-    printer->setOrientation(
-        QPrinter::Orientation(getInt("PrintSetup/orientation")));
+    printer->setPageOrientation(
+        QPageLayout::Orientation(getInt("PrintSetup/orientation")));
     printer->setPageSize(
-        QPrinter::PageSize(getInt("PrintSetup/pageSize")));
+        QPageSize(QPageSize::PageSizeId(getInt("PrintSetup/pageSize"))));
     printer->setPageOrder(
         QPrinter::PageOrder(getInt("PrintSetup/pageOrder")));
 //    int res = getInt("PrintSetup/resolution");
@@ -956,8 +947,8 @@ void FWBSettings::setPrinterOptions(QPrinter *printer,
            printer->printerSelectionOption());
 #endif
     setStr("PrintSetup/outputFileName",printer->outputFileName());
-    setInt("PrintSetup/orientation",printer->orientation());
-    setInt("PrintSetup/pageSize",printer->pageSize());
+    setInt("PrintSetup/orientation",printer->pageLayout().orientation());
+    setInt("PrintSetup/pageSize",printer->pageLayout().pageSize().id());
     setInt("PrintSetup/pageOrder",printer->pageOrder());
 //    setInt("PrintSetup/resolution",printer->resolution());
     setInt("PrintSetup/colorMode",printer->colorMode());
@@ -1087,26 +1078,15 @@ void FWBSettings::setTimeOfLastUpdateAvailableWarning(uint v)
 
 uint FWBSettings::getTimeOfLastAnnouncement(const QString &announcement)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
-                                            QCryptographicHash::Md5).toHex();
-#else
     QByteArray h = QCryptographicHash::hash(announcement.toLatin1().constData(),
                                             QCryptographicHash::Md5).toHex();
-#endif
     return value(QString(announcementLastTime).arg(h.constData())).toUInt();
 }
 
 void FWBSettings::setTimeOfLastAnnouncement(const QString &announcement, uint v)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QByteArray h = QCryptographicHash::hash(announcement.toAscii().constData(),
-                                            QCryptographicHash::Md5).toHex();
-#else
     QByteArray h = QCryptographicHash::hash(announcement.toLatin1().constData(),
                                             QCryptographicHash::Md5).toHex();
-#endif
-
     setValue(QString(announcementLastTime).arg(h.constData()), v);
 }
 

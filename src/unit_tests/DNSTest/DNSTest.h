@@ -26,31 +26,28 @@
 #ifndef DNSTEST_H
 #define DNSTEST_H
 
-#include <cppunit/TestCase.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <QObject>
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/FWObject.h"
 
-
-class DNSTest : public CppUnit::TestCase
+class DNSTest : public QObject
 {
+    Q_OBJECT
 
-    libfwbuilder::FWObjectDatabase *objdb;
+    libfwbuilder::FWObjectDatabase *objdb = nullptr;
+    libfwbuilder::FWObject *root = nullptr;
+
     bool testDNSNameObject(libfwbuilder::FWObjectDatabase *objdb,
                            libfwbuilder::FWObject *root,
                            const std::string &dnsrec,
-                           char* results[]);
-public:
-    void runTest();
-
-    static CppUnit::Test *suite()
-    {
-      CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "ObjectMatcherTest" );
-      suiteOfTests->addTest( new CppUnit::TestCaller<DNSTest>( "runTest", &DNSTest::runTest ) );
-      return suiteOfTests;
-    }
+                           const char* results[]);
+private slots:
+    void init();
+    void cleanup();
+    void testLocalhost();
+    void testSingleIP();
+    void testMultipleIPs();
 };
 
 #endif // DNSTEST_H

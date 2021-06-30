@@ -42,7 +42,7 @@ public:
 
     HostsFile(const QString &file_name) { this->file_name = file_name; }
     
-    void parse() throw(libfwbuilder::FWException);
+    void parse();
     
     // Returns all hosts found
     std::map<libfwbuilder::InetAddr, QStringList> getAll() { return data; }

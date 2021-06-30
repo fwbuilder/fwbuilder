@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/InetAddr.h"
@@ -63,7 +61,7 @@ Inet6AddrMask::Inet6AddrMask() : InetAddrMask()
     setNetworkAndBroadcastAddress();
 }
 
-Inet6AddrMask::Inet6AddrMask(const string &s) throw(FWException) :
+Inet6AddrMask::Inet6AddrMask(const string &s) :
     InetAddrMask(true)
 {
     struct in6_addr a_ipv6;
@@ -105,7 +103,7 @@ std::string Inet6AddrMask::toString() const
     cp = inet_net_ntop(AF_INET6, (const void*)(&(address->ipv6)),
                        netmask->getLength(),
                        ntop_buf, sizeof(ntop_buf));
-    if (cp==NULL)
+    if (cp==nullptr)
     {
         ostringstream err;
         switch (errno)

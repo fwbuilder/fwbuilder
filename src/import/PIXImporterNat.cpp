@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "PIXImporter.h"
 
@@ -96,7 +95,7 @@ void PIXImporter::addGlobalPool()
 
 void PIXImporter::pushNATRule()
 {
-    assert(current_ruleset!=NULL);
+    assert(current_ruleset!=nullptr);
 
     switch (rule_type)
     {
@@ -141,7 +140,7 @@ void PIXImporter::buildDNATRule()
         if (mapped_a == "interface")
         {
             RuleElementODst* odst = rule->getODst();
-            assert(odst!=NULL);
+            assert(odst!=nullptr);
             odst->addRef(post_intf);
         } else
         {
@@ -157,7 +156,7 @@ void PIXImporter::buildDNATRule()
         dst_nm = real_nm;
 
         RuleElement* tdst = rule->getTDst();
-        assert(tdst!=NULL);
+        assert(tdst!=nullptr);
         FWObject *s = makeDstObj();
         if (s) tdst->addRef( s );
     }
@@ -169,7 +168,7 @@ void PIXImporter::buildDNATRule()
         dst_port_spec = mapped_port_spec;
 
         RuleElement* osrv = rule->getOSrv();
-        assert(osrv!=NULL);
+        assert(osrv!=nullptr);
         FWObject *s = Importer::makeSrvObj();
 
         if (s) osrv->addRef( s );
@@ -182,18 +181,18 @@ void PIXImporter::buildDNATRule()
         dst_port_spec = real_port_spec;
 
         RuleElement* tsrv = rule->getTSrv();
-        assert(tsrv!=NULL);
+        assert(tsrv!=nullptr);
         FWObject *s = Importer::makeSrvObj();
 
         if (s) tsrv->addRef( s );
     }
 
     RuleElement *itf_i_re = rule->getItfInb();
-    assert(itf_i_re!=NULL);
+    assert(itf_i_re!=nullptr);
     itf_i_re->addRef(post_intf);
 
     RuleElement *itf_o_re = rule->getItfOutb();
-    assert(itf_o_re!=NULL);
+    assert(itf_o_re!=nullptr);
     itf_o_re->addRef(pre_intf);
 
     if ( ! real_addr_acl.empty())
@@ -245,7 +244,7 @@ void PIXImporter::buildDNATRule()
                         FWObject *old_obj = FWReference::getObject(*it);
                         TCPUDPService *tcpudp = TCPUDPService::cast(
                             mirrorServiceObjectRecursively(old_obj));
-                        if (tcpudp == NULL) tsrv->addRef(old_obj);
+                        if (tcpudp == nullptr) tsrv->addRef(old_obj);
                         else
                         {
                             if (tcpudp->getSrcRangeEnd() > 0)
@@ -319,13 +318,13 @@ void PIXImporter::buildSNATRule()
                 src_nm = nat_nm;
 
                 RuleElement* osrc = rule->getOSrc();
-                assert(osrc!=NULL);
+                assert(osrc!=nullptr);
                 FWObject *s = makeSrcObj();
                 if (s) osrc->addRef( s );
             }
 
             ObjectSignature sig(error_tracker);
-            FWObject *addr = NULL;
+            FWObject *addr = nullptr;
 
             if (pool.start == "interface")
             {
@@ -347,20 +346,20 @@ void PIXImporter::buildSNATRule()
             }
 
             RuleElement* tsrc = rule->getTSrc();
-            assert(tsrc!=NULL);
+            assert(tsrc!=nullptr);
             if (addr) tsrc->addRef( addr );
 
             if (pre_intf)
             {
                 RuleElement *itf_i_re = rule->getItfInb();
-                assert(itf_i_re!=NULL);
+                assert(itf_i_re!=nullptr);
                 itf_i_re->addRef(pre_intf);
             }
 
             if (post_intf)
             {
                 RuleElement *itf_o_re = rule->getItfOutb();
-                assert(itf_o_re!=NULL);
+                assert(itf_o_re!=nullptr);
                 itf_o_re->addRef(post_intf);
             }
 
@@ -405,13 +404,13 @@ void PIXImporter::buildNoNATRule()
         src_nm = nat_nm;
 
         RuleElement* osrc = rule->getOSrc();
-        assert(osrc!=NULL);
+        assert(osrc!=nullptr);
         FWObject *s = makeSrcObj();
         if (s) osrc->addRef( s );
     }
 
     RuleElement *itf_i_re = rule->getItfInb();
-    assert(itf_i_re!=NULL);
+    assert(itf_i_re!=nullptr);
     itf_i_re->addRef(pre_intf);
 
     if ( ! nat_acl.empty())

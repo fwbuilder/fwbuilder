@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "definitions.h"
 #include "global.h"
 #include "utils.h"
@@ -37,6 +36,7 @@
 #include <QRegExp>
 #include <QMessageBox>
 #include <QTime>
+#include <QElapsedTimer>
 #include <QtAlgorithms>
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -177,12 +177,12 @@ void RuleSetModel::initModel()
     RuleNode* node;
     RuleNode* group;
 
-    QTime t; t.start();
+    QElapsedTimer t; t.start();
     for (FWObject::iterator i=ruleset->begin(); i!=ruleset->end(); i++, row++)
     {
 
         Rule *r = Rule::cast( *i );
-        if (r == NULL) continue;  // skip RuleSetOptions
+        if (r == nullptr) continue;  // skip RuleSetOptions
 
 //        rulesByPosition[r->getPosition()] = r;
 
@@ -213,7 +213,7 @@ void RuleSetModel::initModel()
         }
 
     }
-    //if (fwbdebug) qDebug("Model init: %d ms", t.elapsed());
+    if (fwbdebug) qDebug("Model init: %lld ms", t.elapsed());
 }
 
 int RuleSetModel::rowCount(const QModelIndex &parent) const
@@ -424,7 +424,7 @@ QModelIndex RuleSetModel::index(Rule *rule, int col) const
     }
     RuleNode *parentNode = nodeFromIndex(parent);
     int row = 0;
-    RuleNode* child = NULL;
+    RuleNode* child = nullptr;
     foreach(RuleNode *node, parentNode->children)
     {
         if (node->type == RuleNode::Rule && node->rule == rule)
@@ -434,7 +434,7 @@ QModelIndex RuleSetModel::index(Rule *rule, int col) const
         }
         row++;
     }
-    if (child == NULL) return QModelIndex();
+    if (child == nullptr) return QModelIndex();
     return createIndex(row, col, child);
 }
 
@@ -506,8 +506,8 @@ bool RuleSetModel::isEmpty()
 Firewall* RuleSetModel::getFirewall() const
 {
     FWObject *f=ruleset;
-    while (f!=NULL && (!Firewall::isA(f) && !Cluster::isA(f))) f=f->getParent();
-    // f can be NULL if user is looking at deleted ruleset which is a child
+    while (f!=nullptr && (!Firewall::isA(f) && !Cluster::isA(f))) f=f->getParent();
+    // f can be nullptr if user is looking at deleted ruleset which is a child
     // of the library DeletedObjects
     return Firewall::cast(f);
 }
@@ -590,7 +590,7 @@ Rule* RuleSetModel::insertRule(Rule *rule, QModelIndex &index, bool isAfter)
 void RuleSetModel::insertRule(Rule *rule) {
     Rule * targetRule = ruleset->getRuleByNum(rule->getPosition());
 
-    if (targetRule==NULL)
+    if (targetRule==nullptr)
     {
         ruleset->add(rule);
         if (isEmpty())
@@ -1100,7 +1100,7 @@ void RuleSetModel::deleteObject(QModelIndex &index, FWObject* obj)
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
 
-    if (re==NULL || re->isAny()) return;
+    if (re==nullptr || re->isAny()) return;
 //    int id = obj->getId();
 
     // if (fwbdebug)
@@ -1136,29 +1136,29 @@ bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
     if (colDesc.type != ColDesc::Object && colDesc.type != ColDesc::Time) return false;
 
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-    assert (re!=NULL);
+    assert (re!=nullptr);
 
     if (! re->validateChild(obj) )
     {
         if (RuleElementRItf::cast(re))
         {
             QMessageBox::information(
-                NULL , "Firewall Builder",
+                nullptr , "Firewall Builder",
                 QObject::tr(
                     "A single interface belonging to "
                     "this firewall is expected in this field."),
-                QString::null,QString::null);
+                QString(),QString());
         }
         else if (RuleElementRGtw::cast(re))
         {
             QMessageBox::information(
-                NULL , "Firewall Builder",
+                nullptr , "Firewall Builder",
                 QObject::tr(
                     "A single ip address is expected "
                     "here. You may also insert a host "
                     "or a network adapter leading to "
                     "a single ip adress."),
-                QString::null,QString::null);
+                QString(),QString());
         }
         return false;
     }
@@ -1176,7 +1176,7 @@ bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
             if(cp_id==o->getId()) return false;
 
             FWReference *ref;
-            if( (ref=FWReference::cast(o))!=NULL &&
+            if( (ref=FWReference::cast(o))!=nullptr &&
                  cp_id==ref->getPointerId()) return false;
         }
     }
@@ -1224,7 +1224,7 @@ bool RuleSetModel::isGroup(const QModelIndex &index) const
 {
     RuleNode* node = nodeFromIndex(index);
 
-    return node != NULL && node->type == RuleNode::Group;
+    return node != nullptr && node->type == RuleNode::Group;
 }
 
 void RuleSetModel::resetAllSizes()
@@ -1331,9 +1331,9 @@ QModelIndexList RuleSetModel::findObject(FWObject* object)
                 for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
                 {
                     FWObject *obj= *i;
-                    if (FWReference::cast(obj)!=NULL)
+                    if (FWReference::cast(obj)!=nullptr)
                         obj=FWReference::cast(obj)->getPointer();
-                    if (obj==NULL)
+                    if (obj==nullptr)
                         continue ;
                     if (object == obj)
                     {
@@ -1372,7 +1372,7 @@ QModelIndexList RuleSetModel::findObject(FWObject* object)
 
 void RuleSetModel::copyRuleWithoutId(Rule* fromRule, Rule* toRule)
 {
-    if (fromRule!=NULL && toRule!=NULL)
+    if (fromRule!=nullptr && toRule!=nullptr)
     {
         int oldPos = toRule->getPosition();
         toRule->duplicate(fromRule);

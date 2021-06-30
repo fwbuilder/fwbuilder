@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -43,11 +42,7 @@
 #include <string>
 
 #include <QtDebug>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#   include <QtGui>
-#else
-#   include <QtWidgets>
-#endif
+#include <QtWidgets>
 #include<QStringList>
 
 
@@ -214,7 +209,7 @@ void RuleSetViewDelegate::paintRule(QPainter *painter,
     QVariant v = index.data(Qt::DisplayRole);
     if (!v.isValid()) return;
 
-    if (node != 0)
+    if (node != nullptr)
     {
         QString color = getRuleColor(node);
         if (!color.isEmpty())
@@ -357,7 +352,7 @@ void RuleSetViewDelegate::paintObject(
     //if (fwbdebug) qDebug() << "RuleSetViewDelegate::paintObject";
     RuleElement *re = (RuleElement *)v.value<void *>();
 
-    if (re==NULL) return;
+    if (re==nullptr) return;
 
     DrawingContext ctx = initContext(option.rect, true);
 
@@ -366,7 +361,7 @@ void RuleSetViewDelegate::paintObject(
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o1 = FWReference::getObject(*i);
-        if (o1==NULL) continue ;
+        if (o1==nullptr) continue ;
 
         QRect itemRect = QRect(ctx.objectRect.left(), y, ctx.objectRect.width(), ctx.itemHeight);
 
@@ -583,7 +578,7 @@ QSize RuleSetViewDelegate::calculateCellSizeForComment(const QModelIndex & index
 QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index) const
 {
     RuleElement *re = (RuleElement *)index.data(Qt::DisplayRole).value<void *>();
-    if (re == 0) return QSize(0,0);
+    if (re == nullptr) return QSize(0,0);
 
     int itemHeight = getItemHeight();
     QSize iconSize = getIconSize();
@@ -596,12 +591,12 @@ QSize RuleSetViewDelegate::calculateCellSizeForObject(const QModelIndex & index)
         FWObject *o1= *j;
         FWObject *o2 = o1;
         string o1ref = "";
-        if (FWReference::cast(o1)!=NULL)
+        if (FWReference::cast(o1)!=nullptr)
         {
             o1ref = FWReference::cast(o1)->getPointerId();
             o2=FWReference::cast(o1)->getPointer();
         }
-        if (o2!=NULL)
+        if (o2!=nullptr)
         {
             QString ot = objectText(re,o2);
 

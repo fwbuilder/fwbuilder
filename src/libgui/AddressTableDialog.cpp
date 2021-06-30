@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "ProjectPanel.h"
@@ -67,7 +66,7 @@ AddressTableDialog::AddressTableDialog(QWidget *parent) : BaseObjectDialog(paren
 {
     m_dialog = new Ui::AddressTableDialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -81,7 +80,7 @@ void AddressTableDialog::loadFWObject(FWObject *o)
 {
     obj=o;
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
 
     init = true;
@@ -116,19 +115,22 @@ void AddressTableDialog::updateButtons()
 void AddressTableDialog::validate(bool *res)
 {
     *res=true;
+
+#ifndef NDEBUG
     AddressTable *s = dynamic_cast<AddressTable*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 }
 
 void AddressTableDialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     AddressTable *s = dynamic_cast<AddressTable*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname = obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
@@ -163,10 +165,7 @@ static void doReminderAboutDataDir()
     msgBox.setWindowFlags(Qt::Window |
                           Qt::WindowTitleHint |
                           Qt::CustomizeWindowHint |
-#if QT_VERSION >= 0x040500
-                          Qt::WindowCloseButtonHint |
-#endif
-                          Qt::WindowSystemMenuHint);
+                          Qt::WindowCloseButtonHint);
 
     msgBox.setWindowTitle("Data directory conversion");
 

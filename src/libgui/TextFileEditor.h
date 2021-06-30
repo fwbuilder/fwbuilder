@@ -24,7 +24,6 @@
 #ifndef __ADDRESSTABLEEDITOR_H__
 #define __ADDRESSTABLEEDITOR_H__
 
-#include "config.h"
 #include <ui_textfileeditor_q.h>
 
 class TextFileEditor : public QDialog

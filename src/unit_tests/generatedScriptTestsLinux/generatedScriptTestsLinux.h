@@ -32,13 +32,14 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
+#include <QObject>
 #include <QStringList>
 
 
-class GeneratedScriptTest : public CppUnit::TestFixture
+class GeneratedScriptTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *objdb;
 
     void loadDataFile(const std::string &file_name);
@@ -46,9 +47,10 @@ class GeneratedScriptTest : public CppUnit::TestFixture
                      const std::string &firewall_object_name,
                      const std::string &generate_file_name);
 
-public:
-    void setUp();
-    void tearDown();
+private slots:
+    void init();
+    void cleanup();
+
     void ManifestTest();
     void FwCommentTest();
     void CheckUtilitiesTest();
@@ -66,28 +68,7 @@ public:
     void outputFileNameOptionTest1();
     void outputFileNameOptionTest2();
     void outputFileNameOptionTest3();
-    
-    CPPUNIT_TEST_SUITE(GeneratedScriptTest);
-    CPPUNIT_TEST(ManifestTest);
-    CPPUNIT_TEST(FwCommentTest);
-    CPPUNIT_TEST(CheckUtilitiesTest);
-    CPPUNIT_TEST(verifyInterfacesTest);
-    CPPUNIT_TEST(configureInterfacesTest);
-    CPPUNIT_TEST(configureInterfacesClusterTest);
-    CPPUNIT_TEST(virtualAddressesForNat1Test);
-    CPPUNIT_TEST(virtualAddressesForNat2Test);
-    CPPUNIT_TEST(runTimeAddressTablesWithIpSet1Test);
-    CPPUNIT_TEST(runTimeAddressTablesWithIpSet2Test);
-    CPPUNIT_TEST(minusDTest);
-    CPPUNIT_TEST(minusOTest1);
-    CPPUNIT_TEST(minusOTest2);
-    CPPUNIT_TEST(minusDminusOTest);
-    CPPUNIT_TEST(outputFileNameOptionTest1);
-    CPPUNIT_TEST(outputFileNameOptionTest2);
-    CPPUNIT_TEST(outputFileNameOptionTest3);
-    
-    CPPUNIT_TEST_SUITE_END();
-
+    void vlanNamingTest();
 };
 
 #endif // GENERATEDSCRIPTTESTS_LINUX_H

@@ -25,8 +25,6 @@
 */
 
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/TCPService.h"
@@ -76,43 +74,43 @@ void TCPService::_init_flags()
     }
 }
 
-void TCPService::fromXML(xmlNodePtr root) throw(FWException)
+void TCPService::fromXML(xmlNodePtr root)
 {
     TCPUDPService::fromXML(root);
 
     const char *n;
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("established")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("established")));
+    if(n!=nullptr)
     {
         setStr("established", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
     std::map<TCPFlag,std::string>::iterator i;
     for (i=flags.begin(); i!=flags.end(); ++i)
     {
-        n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST( (i->second).c_str() )));
-        if(n!=NULL)
+        n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast( (i->second).c_str() )));
+        if(n!=nullptr)
         {
             setStr( i->second , n);
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         }
     }
 
     for (i=flags_masks.begin(); i!=flags_masks.end(); ++i)
     {
-        n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST( (i->second).c_str() )));
-        if(n!=NULL)
+        n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast( (i->second).c_str() )));
+        if(n!=nullptr)
         {
             setStr( i->second , n);
-            FREEXMLBUFF(n);
+            XMLTools::FreeXmlBuff(n);
         }
     }
 
 }
 
-xmlNodePtr TCPService::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr TCPService::toXML(xmlNodePtr xml_parent_node)
 {
     xmlNodePtr me = TCPUDPService::toXML(xml_parent_node);
    

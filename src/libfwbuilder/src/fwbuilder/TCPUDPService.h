@@ -48,12 +48,11 @@ class TCPUDPService : public Service
     TCPUDPService();
     virtual ~TCPUDPService();
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
 
     virtual FWObject& shallowDuplicate(const FWObject *obj,
-                                       bool preserve_id = true)
-        throw(FWException);
+                                       bool preserve_id = true);
 
     
     DECLARE_FWOBJECT_SUBTYPE(TCPUDPService);
@@ -73,7 +72,7 @@ class TCPUDPService : public Service
     void setDstRangeStart(int p) { dst_range_start = p; }
     void setDstRangeEnd(int p) { dst_range_end = p; }
     
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
 };
     
 }

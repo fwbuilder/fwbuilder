@@ -47,12 +47,12 @@ string Preprocessor::myPlatformName() { return "generic_preprocessor"; }
 
 Preprocessor::~Preprocessor()
 {
-    dbcopy = NULL;
+    dbcopy = nullptr;
 }
 
 Preprocessor::Preprocessor(FWObjectDatabase *_db,
                            Firewall *_fw, bool ipv6_policy) :
-    Compiler(NULL, _fw, ipv6_policy)
+    Compiler(nullptr, _fw, ipv6_policy)
 {
     // This is the main difference between Preprocessor and other
     // compilers.  All compilers create a copy of the whole database
@@ -71,7 +71,7 @@ Preprocessor::Preprocessor(FWObjectDatabase *_db,
 void Preprocessor::convertObject(FWObject *obj)
 {
     MultiAddress *adt = MultiAddress::cast(obj);
-    if (adt!=NULL && adt->isCompileTime())
+    if (adt!=nullptr && adt->isCompileTime())
     {
         adt->loadFromSource(ipv6, getCachedFwOpt(), inTestMode());
     }
@@ -100,7 +100,7 @@ void Preprocessor::findMultiAddressObjectsUsedInRules(FWObject *top)
         }
 
         FWReference *ref = FWReference::cast(obj);
-        if (ref == NULL)
+        if (ref == nullptr)
             findMultiAddressObjectsUsedInRules(obj);
         else
         {
@@ -132,7 +132,7 @@ void Preprocessor::compile()
 
     // Note: fw belongs to the original object tree rather than dbcopy
     infinite_recursion_breaker++;
-    FWObject *rule_copy = NULL;
+    FWObject *rule_copy = nullptr;
 
     if (single_rule_mode)
     {

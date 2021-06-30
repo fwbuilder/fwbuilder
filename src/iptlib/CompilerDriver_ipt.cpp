@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "Configlet.h"
 #include "CompilerDriver_ipt.h"
@@ -80,7 +79,7 @@ void CompilerDriver_ipt::assignRuleSetChain(RuleSet *ruleset)
     for (FWObject::iterator r=ruleset->begin(); r!=ruleset->end(); r++)
     {
         Rule *rule = Rule::cast(*r);
-        if (rule == NULL) continue; // skip RuleSetOptions object
+        if (rule == nullptr) continue; // skip RuleSetOptions object
         if (rule->isDisabled()) continue;
 
         if (!ruleset->isTop())
@@ -105,13 +104,13 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
                  r!=(*i)->end(); ++r)
             {
                 PolicyRule *rule = PolicyRule::cast(*r);
-                if (rule == NULL) continue; // skip RuleSetOptions object
+                if (rule == nullptr) continue; // skip RuleSetOptions object
                 FWOptions *ruleopt = rule->getOptionsObject();
                 if (rule->getAction() == PolicyRule::Branch &&
                     ! ruleopt->getBool("ipt_branch_in_mangle"))
                 {
                     RuleSet *ruleset = rule->getBranch();
-                    if (ruleset == NULL)
+                    if (ruleset == nullptr)
                     {
                         abort(fw, *i, rule,
                               "Action branch does not point to any rule set");
@@ -121,7 +120,7 @@ void CompilerDriver_ipt::findBranchesInMangleTable(Firewall *fw,
                          br!=ruleset->end(); ++br)
                     {
                         PolicyRule *b_rule = PolicyRule::cast(*br);
-                        if (b_rule == NULL) continue;
+                        if (b_rule == nullptr) continue;
                         if (b_rule->getTagging() || b_rule->getClassification())
                             ruleopt->setBool("ipt_branch_in_mangle", true);
                     }
@@ -158,7 +157,7 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     ostringstream script;
     string prolog_place = fw->getOptionsObject()->getStr("prolog_place");
 
-    Configlet *conf = NULL;
+    Configlet *conf = nullptr;
     bool have_auto = !automatic_rules_script.empty() || !automatic_mangle_script.empty();
 
     if (single_rule_compile_on)
@@ -208,7 +207,7 @@ string CompilerDriver_ipt::dumpScript(Firewall *fw,
     return res.str();
 }
 
-std::auto_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
+std::unique_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
     Firewall *fw,
     bool ipv6_policy,
     OSConfigurator *oscnf,
@@ -218,19 +217,19 @@ std::auto_ptr<PolicyCompiler_ipt> CompilerDriver_ipt::createPolicyCompiler(
     string platform_family = Resources::platform_res[platform]->
         getResourceStr("/FWBuilderResources/Target/family");
 
-    std::auto_ptr<PolicyCompiler_ipt> policy_compiler;
+    std::unique_ptr<PolicyCompiler_ipt> policy_compiler;
 
     if (fw->getStr("host_OS") == "secuwall") {
-        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
+        policy_compiler = std::unique_ptr<PolicyCompiler_ipt>(
             new PolicyCompiler_secuwall(objdb,fw, ipv6_policy, oscnf,
                                         minus_n_commands_filter));
     } else {
-        policy_compiler = std::auto_ptr<PolicyCompiler_ipt>(
+        policy_compiler = std::unique_ptr<PolicyCompiler_ipt>(
             new PolicyCompiler_ipt(objdb,fw, ipv6_policy, oscnf,
                                    minus_n_commands_filter));
     }
 
-    if (policy_compiler.get()==NULL)
+    if (policy_compiler.get()==nullptr)
         abort("Unrecognized firewall platform " +
               fw->getStr("platform") +
               "  (family " + platform_family+")");

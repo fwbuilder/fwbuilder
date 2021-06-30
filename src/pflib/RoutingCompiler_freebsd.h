@@ -24,12 +24,10 @@
 #ifndef __ROUTINGCOMPILER_FREEBSD_HH__
 #define __ROUTINGCOMPILER_FREEBSD_HH__
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "RoutingCompiler_openbsd.h"
 
 #include "fwbuilder/RuleElement.h"
-#include "config.h"
 
 #include <QMap>
 #include <QString>

@@ -26,7 +26,6 @@
 #ifndef __POLICYCOMPILER_PROCURVE_ACL_HH
 #define __POLICYCOMPILER_PROCURVE_ACL_HH
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "PolicyCompiler_iosacl.h"
 

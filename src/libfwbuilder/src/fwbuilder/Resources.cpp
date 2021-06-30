@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include <sys/types.h>
@@ -61,22 +59,22 @@ using namespace std;
 const string Resources::PLATFORM_RES_DIR_NAME = "platform";
 const string Resources::OS_RES_DIR_NAME = "os";
 
-Resources*  Resources::global_res = NULL;
+Resources*  Resources::global_res = nullptr;
 map<string,Resources*>  Resources::platform_res;
 map<string,Resources*>  Resources::os_res;
 
 
-Resources::Resources() throw(FWException)
+Resources::Resources()
 {
-    doc=NULL;
+    doc=nullptr;
 }
 
-Resources::Resources(const string &_resF) throw(FWException)
+Resources::Resources(const string &_resF)
 {
-    doc = NULL;
+    doc = nullptr;
     resfile = _resF;
 
-    if (global_res==NULL) 
+    if (global_res==nullptr) 
     {
         global_res = this;
         loadRes(_resF);
@@ -111,10 +109,10 @@ string Resources::getXmlNodeContent(xmlNodePtr node)
 {
     string res;
     char* cptr= (char*)( xmlNodeGetContent(node) );
-    if (cptr!=NULL) 
+    if (cptr!=nullptr) 
     {
         res=cptr;
-        FREEXMLBUFF(cptr);
+        XMLTools::FreeXmlBuff(cptr);
     }
     return res;
 }
@@ -122,16 +120,16 @@ string Resources::getXmlNodeContent(xmlNodePtr node)
 string Resources::getXmlNodeProp(xmlNodePtr node,string prop)
 {
     string res;
-    char* cptr=(char*)( xmlGetProp(node,TOXMLCAST(prop.c_str())));
-    if (cptr!=NULL) 
+    char* cptr=(char*)( xmlGetProp(node,XMLTools::ToXmlCast(prop.c_str())));
+    if (cptr!=nullptr) 
     {
         res=cptr;
-        FREEXMLBUFF(cptr);
+        XMLTools::FreeXmlBuff(cptr);
     }
     return res;
 }
 
-void Resources::loadRes(const std::string &rfile ) throw(FWException)
+void Resources::loadRes(const std::string &rfile )
 {
 
     string buffer = XMLTools::readFile(rfile);
@@ -144,14 +142,14 @@ void Resources::loadRes(const std::string &rfile ) throw(FWException)
 
     root = xmlDocGetRootElement(doc);
    
-    if(!root || !root->name || strcmp(FROMXMLCAST(root->name), "FWBuilderResources")!=0) 
+    if(!root || !root->name || strcmp(XMLTools::FromXmlCast(root->name), "FWBuilderResources")!=0) 
     {
         xmlFreeDoc(doc);
         throw FWException("Invalid resources file "+rfile);
     }
 }
 
-void Resources::loadSystemResources() throw(FWException)
+void Resources::loadSystemResources()
 {
 /*
  * Find and open resources for individual firewall platforms and OS.
@@ -164,25 +162,25 @@ void Resources::loadSystemResources() throw(FWException)
     string::size_type n=resfile.find_last_of("/\\");
     string resDir = resfile.substr(0,n);
 
-    list<string> pllist = getDirList( resDir + FS_SEPARATOR +PLATFORM_RES_DIR_NAME,
+    list<string> pllist = getDirList( resDir + "/" +PLATFORM_RES_DIR_NAME,
                                       "xml" );
 
     for (list<string>::iterator lsi1=pllist.begin(); lsi1!=pllist.end(); lsi1++)
     {
         string::size_type n=lsi1->find_last_of("/\\")+1;
         string platform=lsi1->substr(n, lsi1->rfind(".xml")-n);
-        Resources *tr=new Resources(*lsi1);	
+        Resources *tr=new Resources(*lsi1);
         platform_res[platform]=tr;
     }
 
 
-    list<string> oslist = getDirList( resDir + FS_SEPARATOR +OS_RES_DIR_NAME,
+    list<string> oslist = getDirList( resDir + "/" +OS_RES_DIR_NAME,
                                       "xml" );
     for (list<string>::iterator lsi2=oslist.begin(); lsi2!=oslist.end(); lsi2++)
     {
         string::size_type n=lsi2->find_last_of("/\\")+1;
         string os=lsi2->substr(n, lsi2->rfind(".xml")-n);
-        Resources *tr=new Resources(*lsi2);	
+        Resources *tr=new Resources(*lsi2);
         os_res[os]=tr;
     }
 
@@ -396,7 +394,7 @@ string Resources::getRuleElementResourceStr(const string &rel,
 
     xmlNodePtr  dptr=Resources::global_res->getXmlNode("FWBuilderResources/RuleElements");
 
-    assert (dptr!=NULL);
+    assert (dptr!=nullptr);
 
     for(c=dptr->xmlChildrenNode; c; c=c->next) 
     {
@@ -465,9 +463,9 @@ string  Resources::getTreeIconFileName(const FWObject *o)
 void    Resources::setDefaultOption(FWObject *o,const string &xml_node)
 {
     xmlNodePtr pn = XMLTools::getXmlNodeByPath(root,xml_node.c_str());
-    if (pn==NULL) return;
+    if (pn==nullptr) return;
 
-    string optname=FROMXMLCAST(pn->name);
+    string optname=XMLTools::FromXmlCast(pn->name);
     string optval =getXmlNodeContent(pn);
     o->setStr(optname , optval);
 }
@@ -475,46 +473,45 @@ void    Resources::setDefaultOption(FWObject *o,const string &xml_node)
 void    Resources::setDefaultOptionsAll(FWObject *o,const string &xml_node)
 {
     xmlNodePtr pn = XMLTools::getXmlNodeByPath(root , xml_node.c_str() );
-    if (pn==NULL) return;
+    if (pn==nullptr) return;
 
     xmlNodePtr opt;
 
     for(opt=pn->xmlChildrenNode; opt; opt=opt->next) 
     {
         if ( xmlIsBlankNode(opt) ) continue;
-        setDefaultOption(o,xml_node+"/"+FROMXMLCAST(opt->name));
+        setDefaultOption(o,xml_node+"/"+XMLTools::FromXmlCast(opt->name));
     }
 }
 
 
-void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)  throw (FWException)
+void    Resources::setDefaultTargetOptions(const string &target,Firewall *fw)
 {
     FWOptions *opt=fw->getOptionsObject();
-    Resources *r=NULL;
+    Resources *r=nullptr;
 
     if (platform_res.count(target)!=0)      r=platform_res[target];
-    if (r==NULL && os_res.count(target)!=0) r=os_res[target];
-    if (r==NULL)
+    if (r==nullptr && os_res.count(target)!=0) r=os_res[target];
+    if (r==nullptr)
         throw FWException("Support module for target '"+target+"' is not available");
 
     r->setDefaultOptionsAll(opt,"/FWBuilderResources/Target/options/default");
 }
 
 void    Resources::setDefaultIfaceOptions(const string &target,Interface *iface)
-        throw (FWException)
 {
     FWOptions *opt=iface->getOptionsObject();
     /* if InterfaceOptions object does not yet exist -> create one */
-    if (opt == NULL) {
+    if (opt == nullptr) {
         iface->add(iface->getRoot()->create(InterfaceOptions::TYPENAME));
         opt = iface->getOptionsObject();
     }
 
-    Resources *r=NULL;
+    Resources *r=nullptr;
 
     if (platform_res.count(target)!=0)      r=platform_res[target];
-    if (r==NULL && os_res.count(target)!=0) r=os_res[target];
-    if (r==NULL)
+    if (r==nullptr && os_res.count(target)!=0) r=os_res[target];
+    if (r==nullptr)
         throw FWException("Support module for target '"+target+"' is not available");
 
     r->setDefaultOptionsAll(opt,"/FWBuilderResources/Target/options/interface");
@@ -535,20 +532,20 @@ void    Resources::setDefaultProperties(FWObject *obj)
 }
 
 string Resources::getTargetCapabilityStr(const string &target,
-                                         const string &cap_name)  throw (FWException)
+                                         const string &cap_name)
 {
-    Resources *r=NULL;
+    Resources *r=nullptr;
 
     if (platform_res.count(target)!=0)      r=platform_res[target];
-    if (r==NULL && os_res.count(target)!=0) r=os_res[target];
-    if (r==NULL)
+    if (r==nullptr && os_res.count(target)!=0) r=os_res[target];
+    if (r==nullptr)
         throw FWException("Support module for target '"+target+"' is not available");
 
     return r->getResourceStr("/FWBuilderResources/Target/capabilities/"+cap_name);
 }
 
 bool Resources::getTargetCapabilityBool(const string &target,
-                                        const string &cap_name)  throw (FWException)
+                                        const string &cap_name)
 {
     string s=getTargetCapabilityStr(target,cap_name);
     return (s=="true" || s=="True");
@@ -575,20 +572,20 @@ string Resources::getActionEditor(const string &target, const string &action)
 }
 
 string Resources::getTargetOptionStr(const string &target,
-                                     const string &opt_name)  throw (FWException)
+                                     const string &opt_name)
 {
-    Resources *r=NULL;
+    Resources *r=nullptr;
 
     if (platform_res.count(target)!=0)      r=platform_res[target];
-    if (r==NULL && os_res.count(target)!=0) r=os_res[target];
-    if (r==NULL)
+    if (r==nullptr && os_res.count(target)!=0) r=os_res[target];
+    if (r==nullptr)
         throw FWException("Support module for target '"+target+"' is not available");
 
     return r->getResourceStr("/FWBuilderResources/Target/options/"+opt_name);
 }
 
 bool  Resources::getTargetOptionBool(const string &target,
-                                     const string &opt_name)  throw (FWException)
+                                     const string &opt_name)
 {
     string s=getTargetOptionStr(target,opt_name);
     return (s=="true" || s=="True");

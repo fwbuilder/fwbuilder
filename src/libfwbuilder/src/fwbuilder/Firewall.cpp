@@ -27,8 +27,6 @@
 #include <time.h>
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObjectDatabase.h"
@@ -68,7 +66,7 @@ Firewall::Firewall()
 void Firewall::init(FWObjectDatabase *root)
 {
     FWObject *opt = getFirstByType(FirewallOptions::TYPENAME);
-    if (opt == NULL)
+    if (opt == nullptr)
     {
         add( root->createFirewallOptions() );
         RuleSet *p;
@@ -86,63 +84,63 @@ void Firewall::init(FWObjectDatabase *root)
 
 Firewall::~Firewall()  {}
 
-void Firewall::fromXML(xmlNodePtr root) throw(FWException)
+void Firewall::fromXML(xmlNodePtr root)
 {
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("platform")));
-    assert(n!=NULL);
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("platform")));
+    assert(n!=nullptr);
     setStr("platform", n);
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("version")));
-    if (n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("version")));
+    if (n!=nullptr)
     {
         setStr("version", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("host_OS")));
-    if (n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("host_OS")));
+    if (n!=nullptr)
     {
         setStr("host_OS", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastModified")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lastModified")));
+    if(n!=nullptr)
     {
         setStr("lastModified", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastInstalled")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lastInstalled")));
+    if(n!=nullptr)
     {
         setStr("lastInstalled", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("lastCompiled")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("lastCompiled")));
+    if(n!=nullptr)
     {
         setStr("lastCompiled", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("inactive")));
-    if(n!=NULL)
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("inactive")));
+    if(n!=nullptr)
     {
         setStr("inactive", n);
-        FREEXMLBUFF(n);
+        XMLTools::FreeXmlBuff(n);
     }
     
     Host::fromXML(root);
 
 }
 
-xmlNodePtr Firewall::toXML(xmlNodePtr parent) throw(FWException)
+xmlNodePtr Firewall::toXML(xmlNodePtr parent)
 {
     xmlNodePtr me = FWObject::toXML(parent, false);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
 
     FWObject *o;
 
@@ -257,7 +255,7 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
                 FWObject *dst_subinterface_copy =
                     dst_interface_copy->addCopyOf(src_subinterface, preserve_id);
 
-                if (src_subinterface!=NULL && dst_subinterface_copy!=NULL)
+                if (src_subinterface!=nullptr && dst_subinterface_copy!=nullptr)
                     id_mapping[src_subinterface->getId()] = dst_subinterface_copy->getId();
             }
 
@@ -270,7 +268,7 @@ void Firewall::duplicateInterfaces(FWObject *target, const FWObject *source,
 }
 
 FWObject& Firewall::duplicate(const FWObject *obj,
-                              bool preserve_id) throw(FWException)
+                              bool preserve_id)
 {
     string err="Error creating object with type: ";
 
@@ -331,7 +329,7 @@ FWObject& Firewall::duplicate(const FWObject *obj,
     return *this;
 }
 
-FWObject& Firewall::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& Firewall::duplicateForUndo(const FWObject *obj)
 {
     setRO(false);
     FWObject *their_mgmt = obj->getFirstByType(Management::TYPENAME);
@@ -346,12 +344,12 @@ FWObject& Firewall::duplicateForUndo(const FWObject *obj) throw(FWException)
 
 void  Firewall::updateLastInstalledTimestamp()
 {
-    setInt("lastInstalled",time(NULL));
+    setInt("lastInstalled",time(nullptr));
 }
 
 void Firewall::updateLastModifiedTimestamp()
 {
-    setInt("lastModified",time(NULL));
+    setInt("lastModified",time(nullptr));
 }
 
 bool Firewall::needsInstall()
@@ -384,7 +382,7 @@ time_t Firewall::getLastCompiled()
 }
 void   Firewall::updateLastCompiledTimestamp()
 {
-    setInt("lastCompiled",time(NULL));
+    setInt("lastCompiled",time(nullptr));
 }
 
 bool   Firewall::getInactive()

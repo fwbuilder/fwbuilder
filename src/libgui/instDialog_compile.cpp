@@ -28,7 +28,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -82,7 +81,7 @@ bool instDialog::runCompiler(Firewall *fw)
     currentProgressBar->setFormat("%v/%m");
 
     QTreeWidgetItem* item = opListMapping[fw->getId()];
-    assert(item!=NULL);
+    assert(item!=nullptr);
 
     currentFWLabel->setText(QString::fromUtf8(fw->getName().c_str()));
     m_dialog->fwWorkList->scrollToItem(item);
@@ -104,9 +103,6 @@ bool instDialog::runCompiler(Firewall *fw)
     addToLog( args.join(" ") + "\n" );
 
     // compilers always write file names into manifest in Utf8
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Utf8"));
-#endif
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
 
     // Launch compiler in the background
@@ -173,7 +169,7 @@ QStringList instDialog::prepareArgForCompiler(Firewall *fw)
             this,"Firewall Builder",
             tr("Firewall platform is not specified in this object.\n\
 Can't compile firewall policy."),
-            tr("&Continue"), QString::null,QString::null,
+            tr("&Continue"), QString(),QString(),
             0, 1 );
         return args; // still empty list
     }
@@ -214,7 +210,12 @@ Can't compile firewall policy."),
     args.push_back(compiler.c_str());
 
     QString qs = fwopt->getStr("cmdline").c_str();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    args += qs.split(" ", Qt::SkipEmptyParts);
+#else
     args += qs.split(" ", QString::SkipEmptyParts);
+#endif
 
     args.push_back("-v");
     args.push_back("-f");

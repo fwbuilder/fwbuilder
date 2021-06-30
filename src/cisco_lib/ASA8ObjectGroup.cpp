@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "ASA8ObjectGroup.h"
 #include "NamedObjectsAndGroupsSupport.h"
@@ -65,7 +64,6 @@ const char *ASA8ObjectGroup::TYPENAME={"ASA8ObjectGroup"};
 
 QString ASA8ObjectGroup::groupMemberToString(
     FWObject *obj, NamedObjectsManager *named_objects_manager)
-    throw(libfwbuilder::FWException)
 {
     if (this->getObjectGroupType() == NETWORK)
     {

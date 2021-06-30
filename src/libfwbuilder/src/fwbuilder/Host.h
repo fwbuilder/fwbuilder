@@ -56,8 +56,8 @@ class Host : public Address
      */
     virtual void init(FWObjectDatabase *root);
     
-    virtual void fromXML(xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML      (xmlNodePtr parent) throw(FWException);
+    virtual void fromXML(xmlNodePtr parent);
+    virtual xmlNodePtr toXML      (xmlNodePtr parent);
 
 
     DECLARE_FWOBJECT_SUBTYPE(Host);
@@ -73,7 +73,7 @@ class Host : public Address
     void addInterface(Interface *i);
     void removeInterface(Interface *i);
 
-    const InetAddr* getManagementAddress()  throw(FWException);
+    const InetAddr* getManagementAddress();
 
     /**
      *  This method returns reference to the object representing

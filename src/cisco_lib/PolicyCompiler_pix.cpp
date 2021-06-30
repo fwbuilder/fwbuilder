@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "Helper.h"
 
@@ -102,10 +101,10 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::findDynamicInterface(
     for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
 	FWObject *o   = *i1;
-	FWObject *obj = NULL;
-	if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+	FWObject *obj = nullptr;
+	if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface *iface=Interface::cast(obj);
-        if (iface!=NULL && iface->isDyn() && (vers=="6.1" || vers=="6.2"))
+        if (iface!=nullptr && iface->isDyn() && (vers=="6.1" || vers=="6.2"))
         {
             compiler->abort(
                 rule, 
@@ -120,7 +119,7 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::findDynamicInterface(
 
 bool PolicyCompiler_pix::checkVersionAndDynamicInterface::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     Service *s = compiler->getFirstSrv(rule);
 
@@ -160,7 +159,7 @@ bool PolicyCompiler_pix::checkVersionAndDynamicInterface::processNext()
  */
 bool PolicyCompiler_pix::PrepareForICMPCmd::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     Address   *dst=compiler->getFirstDst(rule);
     Service   *srv=compiler->getFirstSrv(rule);
@@ -177,7 +176,7 @@ bool PolicyCompiler_pix::PrepareForICMPCmd::processNext()
 
 bool PolicyCompiler_pix::SplitSRCForICMPCmd::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getBool("icmp_cmd"))
     {
@@ -192,10 +191,10 @@ bool PolicyCompiler_pix::SplitSRCForICMPCmd::processNext()
         for (FWObject::iterator i=src->begin(); i!=src->end(); ++i)
         {
             FWObject *o   = *i;
-            FWObject *obj = NULL;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+            FWObject *obj = nullptr;
+            if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
             Address *a=Address::cast(obj);
-            assert(a!=NULL);
+            assert(a!=nullptr);
 
             PolicyRule *new_rule= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(new_rule);
@@ -223,7 +222,7 @@ bool PolicyCompiler_pix::SplitSRCForICMPCmd::processNext()
 bool PolicyCompiler_pix::RejectAction::processNext()
 {
     PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getAction()==PolicyRule::Reject) 
         pix_comp->resetinbound=true;
@@ -237,7 +236,7 @@ bool PolicyCompiler_pix::RejectAction::processNext()
  */
 bool PolicyCompiler_pix::splitIfTelnetSSHICMPtoFw::processNext()
 {
-    PolicyRule     *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule     *rule=getNext(); if (rule==nullptr) return false;
 //    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
 
     Address *dst=compiler->getFirstDst(rule);
@@ -248,7 +247,7 @@ bool PolicyCompiler_pix::splitIfTelnetSSHICMPtoFw::processNext()
         {
             FWObject *o   = *i1;
             FWObject *obj = o;
-            if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
 
             PolicyRule  *r= compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
@@ -276,7 +275,7 @@ bool PolicyCompiler_pix::splitIfTelnetSSHICMPtoFw::processNext()
  */
 bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
 {
-    PolicyRule     *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule     *rule=getNext(); if (rule==nullptr) return false;
 //    PolicyCompiler_pix *pix_comp=dynamic_cast<PolicyCompiler_pix*>(compiler);
 
     RuleElement    *srv=RuleElement::cast(rule->getFirstByType(RuleElementSrv::TYPENAME));
@@ -287,7 +286,7 @@ bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
     }
 
     FWObject *o = srv->front();
-    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+    if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
     if (ICMPService::isA(o))
     {
 /* we have a rule with multiple icmp services in Srv. We do not want
@@ -328,7 +327,7 @@ bool PolicyCompiler_pix::AvoidObjectGroup::processNext()
  */
 bool PolicyCompiler_pix::AddressRangesIfTcpServiceToFW::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     if (rule->getBool("tcp_service_to_fw"))
     {
@@ -782,7 +781,7 @@ string PolicyCompiler_pix::printPreambleCommands()
 
         try
         {
-            InetAddr(addr);
+            (void) InetAddr(addr);
         } catch(FWException &ex)
         {
             abort("Invalid address for management subnet: '"+addr+"'");

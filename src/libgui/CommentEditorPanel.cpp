@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 
 #include "CommentEditorPanel.h"
@@ -56,7 +55,7 @@ CommentEditorPanel::CommentEditorPanel(QWidget *p) : BaseObjectDialog(p)
 {
     m_widget = new Ui::CommentEditorPanel_q;
     m_widget->setupUi(this);
-    rule=NULL;
+    rule=nullptr;
 }
 
 QString CommentEditorPanel::text()
@@ -76,7 +75,7 @@ void CommentEditorPanel::changed()
 
 void CommentEditorPanel::applyChanges()
 {
-    std::auto_ptr<FWCmdRuleChange> cmd(
+    std::unique_ptr<FWCmdRuleChange> cmd(
         new FWCmdRuleChangeComment(m_project, rule));
 
     // new_state  is a copy of the rule object

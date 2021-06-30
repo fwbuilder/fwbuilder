@@ -1,0 +1,54 @@
+name: Linux
+
+on: [push]
+
+jobs:
+  debug-unit_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - {
+              id: 'ubuntu-20.04',
+              name: "Ubuntu 20.04",
+              docker_image: "fwbuilder/ubuntu:20.04",
+              unit_tests: true
+            }
+          - {
+              id: 'ubuntu-18.04',
+              name: "Ubuntu 18.04",
+              docker_image: "fwbuilder/ubuntu:18.04",
+              unit_tests: true
+            }
+          - {
+              id: 'ubuntu-16.04',
+              name: "Ubuntu 16.04",
+              docker_image: "fwbuilder/ubuntu:16.04",
+              unit_tests: false
+            }
+    container:
+      image: ${{ matrix.config.docker_image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Compilation cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.ccache
+          key: ${{ matrix.config.id }}-ccache-${{ github.sha }}
+          restore-keys: |
+            ${{ matrix.config.id }}-ccache
+      - name: Configure
+        run: |
+          mkdir -p build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: |
+          cd build
+          make -j$(nproc)
+          make install
+      - name: Run unit tests
+        if: ${{ matrix.config.unit_tests == true }}
+        run: |
+          cd build
+          QT_QPA_PLATFORM=vnc ctest --verbose

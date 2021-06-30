@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 
 #include <fwbuilder/Library.h>
@@ -71,17 +70,17 @@ bool ProjectPanel::event(QEvent *event)
                      << "rcs:"
                      << rcs
                      << "rcs->getFileName():"
-                     << QString((rcs!=NULL) ? rcs->getFileName() : "")
+                     << QString((rcs!=nullptr) ? rcs->getFileName() : "")
                      << "file:"
                      << data_file
                      << "event:"
                      << ev->getEventName()
                      << "object:"
-                     << ((obj!=NULL) ? QString::fromUtf8(obj->getName().c_str()) : "")
-                     << "(" << ((obj!=NULL) ? obj->getTypeName().c_str() : "") << ")"
-                     << "id=" << ((obj!=NULL) ? obj->getId() : -1);
+                     << ((obj!=nullptr) ? QString::fromUtf8(obj->getName().c_str()) : "")
+                     << "(" << ((obj!=nullptr) ? obj->getTypeName().c_str() : "") << ")"
+                     << "id=" << ((obj!=nullptr) ? obj->getId() : -1);
 
-        if (event_code == UPDATE_GUI_STATE_EVENT && mdiWindow != NULL)
+        if (event_code == UPDATE_GUI_STATE_EVENT && mdiWindow != nullptr)
         {
             m_panel->om->updateCreateObjectMenu(getCurrentLib());
             ev->accept();
@@ -127,7 +126,7 @@ bool ProjectPanel::event(QEvent *event)
                 return true;
             }
 
-            if (obj == NULL) return false;
+            if (obj == nullptr) return false;
 
             switch (event_code)
             {
@@ -137,7 +136,7 @@ bool ProjectPanel::event(QEvent *event)
                 // this purely data structure update event. 
 
                 FWObject *p = obj;
-                while (p && Firewall::cast(p)==NULL) p = p->getParent();
+                while (p && Firewall::cast(p)==nullptr) p = p->getParent();
                 Firewall *f = Firewall::cast(p);
                 // when user locks firewall object, this code tries to
                 // update last_modified timestamp in it because it
@@ -158,10 +157,10 @@ bool ProjectPanel::event(QEvent *event)
 
             case UPDATE_OBJECT_EVERYWHERE_EVENT:
             {
-                Rule *rule = NULL;
-                RuleSet* current_ruleset = NULL;
+                Rule *rule = nullptr;
+                RuleSet* current_ruleset = nullptr;
                 RuleSetView* rsv = getCurrentRuleSetView();
-                RuleSetModel* md = NULL;
+                RuleSetModel* md = nullptr;
                 if (rsv)
                 {
                     md = (RuleSetModel*)rsv->model();
@@ -251,7 +250,7 @@ bool ProjectPanel::event(QEvent *event)
             // update events below will only be processed if MDI
             // window exists.
 
-            if (mdiWindow == NULL) return false;
+            if (mdiWindow == nullptr) return false;
 
             switch (event->type() - QEvent::User)
             {
@@ -327,9 +326,9 @@ bool ProjectPanel::event(QEvent *event)
                 FWReference *ref = FWReference::cast(obj);
                 if (ref)
                 {
-                    RuleSet* current_ruleset = NULL;
+                    RuleSet* current_ruleset = nullptr;
                     RuleSetView* rsv = getCurrentRuleSetView();
-                    RuleSetModel* md = NULL;
+                    RuleSetModel* md = nullptr;
                     if (rsv)
                     {
                         md = (RuleSetModel*)rsv->model();
@@ -344,7 +343,7 @@ bool ProjectPanel::event(QEvent *event)
                     } else
                     {
                         FWObject *rs = obj;
-                        while (rs && RuleSet::cast(rs)==NULL) rs = rs->getParent();
+                        while (rs && RuleSet::cast(rs)==nullptr) rs = rs->getParent();
                         if (rs)
                         {
                             // reopen rule set right now, before we post event
@@ -372,9 +371,9 @@ bool ProjectPanel::event(QEvent *event)
                 Rule *rule = Rule::cast(obj);
                 if (rule)
                 {
-                    RuleSet* current_ruleset = NULL;
+                    RuleSet* current_ruleset = nullptr;
                     RuleSetView* rsv = getCurrentRuleSetView();
-                    RuleSetModel* md = NULL;
+                    RuleSetModel* md = nullptr;
                     if (rsv)
                     {
                         md = (RuleSetModel*)rsv->model();

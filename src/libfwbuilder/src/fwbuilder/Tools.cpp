@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 #include "fwbuilder/Tools.h"
 #include "fwbuilder/XMLTools.h"
@@ -70,7 +68,7 @@ char *cxx_strdup(const string &x)
 char *cxx_strdup(const char *x)
 {
     if(!x)
-        return (char*)NULL;
+        return (char*)nullptr;
 
     char *res=new char[strlen(x)+1];
     strcpy(res,x);
@@ -132,16 +130,16 @@ list<string> getDirList(const std::string &dir,
 
 #ifndef _WIN32
     DIR *d=opendir(dir.c_str());
-    if (d!=NULL)
+    if (d!=nullptr)
     {
         struct dirent *de;
-        while ( (de=readdir(d))!=NULL ) 
+        while ( (de=readdir(d))!=nullptr ) 
         {
             if (strcmp(de->d_name,".")==SAME || strcmp(de->d_name,"..")==SAME)
                 continue;
 
             string pfile=de->d_name;
-            string rfile=dir+FS_SEPARATOR+pfile;
+            string rfile=dir+"/"+pfile;
             if (rfile.rfind(string(".")+ext)==rfile.size()-ext.size()-1)
                 res.push_back(rfile);
         }
@@ -150,17 +148,17 @@ list<string> getDirList(const std::string &dir,
 #else
 
     struct _finddata_t c_file;
-    long hFile;
-    string filepath=dir + FS_SEPARATOR + "*." + ext;
+    intptr_t hFile;
+    string filepath=dir + "/*." + ext;
     /* Find first file in current directory */
     if( (hFile = _findfirst( filepath.c_str(), &c_file )) != -1L )
     {
-        string rfile=dir+FS_SEPARATOR+c_file.name;
+        string rfile=dir+"/"+c_file.name;
         res.push_back(rfile);
         /* Find the rest of the files */
         while( _findnext( hFile, &c_file ) == 0 )
         {
-            string rfile=dir+FS_SEPARATOR+c_file.name;
+            string rfile=dir+"/"+c_file.name;
             res.push_back(rfile);
         }
     }

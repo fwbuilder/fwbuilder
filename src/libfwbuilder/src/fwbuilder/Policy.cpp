@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 
@@ -52,7 +50,7 @@ Policy::~Policy() {}
 Rule* Policy::createRule()
 {
     FWObjectDatabase* db=getRoot();
-    assert(db!=NULL);
+    assert(db!=nullptr);
     return db->createPolicyRule();
 }
 

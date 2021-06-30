@@ -23,30 +23,18 @@
 
 */
 
-#include <cppunit/ui/text/TestRunner.h>
-#include <cppunit/CompilerOutputter.h>
 #include "parseCommandLineTest.h"
+#include <QTest>
 #include <QString>
 #include <string>
 
-//int fwbdebug = 0;
-//QString user_name;
-
-
 int fwbdebug = 0;
-void *mw = NULL;
-void *st = NULL;
-void *app = NULL;
+void *mw = nullptr;
+void *st = nullptr;
+void *app = nullptr;
 void *wfl;
-int sig = FWB_SIG;
 
 int main( int, char** )
 {
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest( parseCommandLineTest::suite() );
-    runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(),
-                                                         std::cerr ) );
-
-    runner.run();
-    return 0;
+    return QTest::qExec(new parseCommandLineTest());
 }

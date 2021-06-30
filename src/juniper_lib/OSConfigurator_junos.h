@@ -27,7 +27,6 @@
 #ifndef _OSNETWORKCONFIGURATOR_JUNOS_HH
 #define _OSNETWORKCONFIGURATOR_JUNOS_HH
 
-#include "config.h"
 
 #include "fwcompiler/OSConfigurator.h"
 

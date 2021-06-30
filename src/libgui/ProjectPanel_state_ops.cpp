@@ -24,7 +24,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 #include "utils_no_qt.h"
@@ -51,7 +50,7 @@ using namespace std;
 void ProjectPanel::saveState()
 {
     QString file_name ;
-    if (rcs!=NULL) file_name = rcs->getFileName();
+    if (rcs!=nullptr) file_name = rcs->getFileName();
     if (fwbdebug)
         qDebug( ) << "ProjectPanel::saveState " << this 
                   << "title " << mdiWindow->windowTitle()
@@ -84,7 +83,7 @@ void ProjectPanel::saveState()
 
 void ProjectPanel::loadState(bool)
 {
-    if (rcs==NULL) return;
+    if (rcs==nullptr) return;
     QString filename = rcs->getFileName();
 
     // This function can end up being called recursively because some
@@ -107,7 +106,11 @@ void ProjectPanel::loadState(bool)
     if (!mdiWindow->isMaximized() && mdiWindow)
     {
         if (fwbdebug) qDebug("ProjectPanel::loadState  show normal");
-        setWindowState(0);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        setWindowState(Qt::WindowStates());
+#else
+        setWindowState(nullptr);
+#endif
         int x = st->getInt("Window/"+filename+"/x");
         int y = st->getInt("Window/"+filename+"/y");
         int width = st->getInt("Window/"+filename+"/width");
@@ -145,7 +148,7 @@ void ProjectPanel::loadState(bool)
 void ProjectPanel::saveMainSplitter()
 {
     QString fileName ;
-    if (rcs!=NULL) fileName = rcs->getFileName();
+    if (rcs!=nullptr) fileName = rcs->getFileName();
 
 #ifdef TREE_IS_DOCKABLE
     // Save position of splitters regardless of the window state
@@ -183,7 +186,7 @@ void ProjectPanel::saveMainSplitter()
 void ProjectPanel::loadMainSplitter()
 {
     QString fileName ;
-    if (rcs!=NULL) fileName = rcs->getFileName();
+    if (rcs!=nullptr) fileName = rcs->getFileName();
 
     if (fwbdebug)
         qDebug() << QString("ProjectPanel::loadMainSplitter() filename=%1")
@@ -243,10 +246,10 @@ void ProjectPanel::collapseRules()
 
 void ProjectPanel::loadOpenedRuleSet()
 {
-    if (rcs==NULL) return;
+    if (rcs==nullptr) return;
     QString filename = rcs->getFileName();
 
-    if (m_panel->om->getCurrentLib() == NULL) return;
+    if (m_panel->om->getCurrentLib() == nullptr) return;
 
     int id = st->getVisibleRuleSetId(
         filename, m_panel->om->getCurrentLib()->getName().c_str());
@@ -277,10 +280,10 @@ void ProjectPanel::loadOpenedRuleSet()
 
 void ProjectPanel::saveOpenedRuleSet()
 {
-    if (rcs==NULL) return;
+    if (rcs==nullptr) return;
     QString filename = rcs->getFileName();
 
-    if (visibleRuleSet!=NULL)
+    if (visibleRuleSet!=nullptr)
     {
         st->setVisibleRuleSet(filename,
                               visibleRuleSet->getLibrary()->getName().c_str(),
@@ -292,10 +295,10 @@ void ProjectPanel::saveOpenedRuleSet()
 void ProjectPanel::saveLastOpenedLib()
 {
     QString filename = "";
-    if (rcs!=NULL) filename = rcs->getFileName();
+    if (rcs!=nullptr) filename = rcs->getFileName();
 
     FWObject*  obj = m_panel->om->getCurrentLib();
-    if (obj!=NULL)
+    if (obj!=nullptr)
     {
         std::string sid = FWObjectDatabase::getStringId(obj->getId());
         st->setStr("Window/" + filename + "/LastLib", sid.c_str() );
@@ -308,22 +311,15 @@ void ProjectPanel::loadLastOpenedLib()
     if (fwbdebug) qDebug("ProjectPanel::loadLastOpenedLib()");
 
     QString filename = "";
-    if (rcs!=NULL) filename = rcs->getFileName();
+    if (rcs!=nullptr) filename = rcs->getFileName();
     QString sid = st->getStr("Window/" + filename + "/LastLib");
     if (filename!="" && sid!="")
     {
         if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("ProjectPanel::loadLastOpenedLib(): filename=%s "
-                   "opening lib id=%s",
-                   filename.toAscii().constData(),
-                   sid.toAscii().constData());
-#else
             qDebug("ProjectPanel::loadLastOpenedLib(): filename=%s "
                    "opening lib id=%s",
                    filename.toLatin1().constData(),
                    sid.toLatin1().constData());
-#endif
 
         int last_lib_id = FWObjectDatabase::getIntId(sid.toStdString());
 
@@ -342,7 +338,7 @@ void ProjectPanel::loadLastOpenedLib()
 void ProjectPanel::loadFirstNonStandardLib()
 {
     list<FWObject*> all_libs = db()->getByType(Library::TYPENAME);
-    FWObject *first_non_system_lib = NULL;
+    FWObject *first_non_system_lib = nullptr;
     for (list<FWObject*>::iterator i=all_libs.begin(); i!=all_libs.end(); ++i)
     {
         int lib_id = (*i)->getId();
@@ -350,7 +346,7 @@ void ProjectPanel::loadFirstNonStandardLib()
         if (lib_id == FWObjectDatabase::STANDARD_LIB_ID) continue;
         if (lib_id == FWObjectDatabase::TEMPLATE_LIB_ID) continue;
 
-        if (first_non_system_lib==NULL) first_non_system_lib = (*i);
+        if (first_non_system_lib==nullptr) first_non_system_lib = (*i);
         if ((*i)->getName()=="User")
         {
             first_non_system_lib = *i;

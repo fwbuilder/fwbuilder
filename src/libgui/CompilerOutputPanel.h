@@ -26,7 +26,6 @@
 #ifndef __COMPILEROUTPUTPANEL_H__
 #define __COMPILEROUTPUTPANEL_H__
 
-#include "config.h"
 #include "BaseObjectDialog.h"
 #include <ui_compileroutputpanel_q.h>
 

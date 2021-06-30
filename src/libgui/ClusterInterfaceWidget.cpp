@@ -99,7 +99,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
             Interface *iface = Interface::cast(*iter);
             //if (iface->isLoopback()) continue;
             QTreeWidgetItem *ifaceitem = new QTreeWidgetItem(firewall, QStringList() << QString::fromUtf8(iface->getName().c_str()));
-            ifaceitem->setData(0, Qt::UserRole, qVariantFromValue(iface));//QVariant(QVariant::UserType, iface));
+            ifaceitem->setData(0, Qt::UserRole, QVariant::fromValue(iface));//QVariant(QVariant::UserType, iface));
             ifaceitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
             ifaceitem->setDisabled(!interfaceSelectable(iface));
             if (!interfaceSelectable(iface))
@@ -113,7 +113,7 @@ void ClusterInterfaceWidget::setFirewallList(QList<Firewall*> firewalls)
                 //if (iface->isLoopback()) return;
                 Interface *subiface = Interface::cast(*iter2);
                 QTreeWidgetItem *subitem = new QTreeWidgetItem(ifaceitem, QStringList() << QString::fromUtf8(subiface->getName().c_str()));
-                subitem->setData(0, Qt::UserRole, qVariantFromValue(subiface));//QVariant(QVariant::UserType, subitem));
+                subitem->setData(0, Qt::UserRole, QVariant::fromValue(subiface));//QVariant(QVariant::UserType, subitem));
                 subitem->setDisabled(!interfaceSelectable(subiface));
                 subitem->setIcon(0, QIcon(":/Icons/Interface/icon-tree"));
                 if (!interfaceSelectable(subiface))
@@ -145,7 +145,7 @@ bool ClusterInterfaceWidget::setCurrentInterface(const QString& name)
         foreach(QTreeWidgetItem *item, list.list->findItems(name, Qt::MatchCaseSensitive | Qt::MatchExactly | Qt::MatchRecursive))
         {
             Interface *iface = item->data(0, Qt::UserRole).value<Interface*>();
-            if (iface == NULL) continue;
+            if (iface == nullptr) continue;
             if ( item == roots[list.list] ) continue; // skip firewall object
             if ( interfaceSelectable(iface) ) // interface is good for use in cluster
             {
@@ -195,10 +195,10 @@ bool ClusterInterfaceWidget::interfaceSelectable(Interface* iface)
 
     Resources* os_res = Resources::os_res[os.toStdString()];
     string os_family = os.toStdString();
-    if (os_res!=NULL)
+    if (os_res!=nullptr)
         os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
-    auto_ptr<interfaceProperties> int_prop(
+    unique_ptr<interfaceProperties> int_prop(
         interfacePropertiesObjectFactory::getInterfacePropertiesObject(
             os_family));
     QString err;
@@ -232,7 +232,7 @@ bool ClusterInterfaceWidget::isValid()
             QMessageBox::warning(this,"Firewall Builder",
                      tr("Some of the cluster interfaces do not have any "
                         "member firewall interface selected"),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+                    "&Continue", QString(), QString(), 0, 1 );
             return false;
         }
         if (roots.values().contains(items.first()))
@@ -242,7 +242,7 @@ bool ClusterInterfaceWidget::isValid()
                      tr("Please select interface of the member firewall "
                         "rather than the firewall object to be used "
                         "with cluster interface"),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+                    "&Continue", QString(), QString(), 0, 1 );
             return false;
         }
         if (!interfaceSelectable(ifacelist.list->selectedItems().first()->data(0, Qt::UserRole).value<Interface*>()))
@@ -251,7 +251,7 @@ bool ClusterInterfaceWidget::isValid()
             QMessageBox::warning(this,"Firewall Builder",
                      tr("%1 can not be used as cluster interface.")
                         .arg(ifacelist.list->selectedItems().first()->text(0)),
-                    "&Continue", QString::null, QString::null, 0, 1 );
+                    "&Continue", QString(), QString(), 0, 1 );
             return false;
         }
     }

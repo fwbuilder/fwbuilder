@@ -27,7 +27,6 @@
 #ifndef __USERDIALOG_H_
 #define __USERDIALOG_H_
 
-#include "config.h"
 #include <ui_userdialog_q.h>
 #include "BaseObjectDialog.h"
 

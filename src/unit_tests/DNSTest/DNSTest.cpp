@@ -23,10 +23,11 @@
 
 */
 
+#include <QTest>
+
 #include "DNSTest.h"
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/XMLTools.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/ObjectMatcher.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Interface.h"
@@ -44,14 +45,14 @@ using namespace std;
 
 bool DNSTest::testDNSNameObject(FWObjectDatabase *objdb, FWObject *root,
                        const string &dnsrec,
-                       char* results[])
+                       const char* results[])
 {
     list<std::string> expected_results;
-    for (char** cptr=results; *cptr!=NULL; ++cptr)
+    for (const char** cptr=results; *cptr!=nullptr; ++cptr)
         expected_results.push_back(*cptr);
 
     FWObject *nobj = objdb->create(DNSName::TYPENAME);
-    if (root != NULL)
+    if (root != nullptr)
     {
         root->add(nobj);
     }
@@ -85,7 +86,7 @@ bool DNSTest::testDNSNameObject(FWObjectDatabase *objdb, FWObject *root,
     return true;
 }
 
-void DNSTest::runTest()
+void DNSTest::init()
 {
     libfwbuilder::init();
 
@@ -99,25 +100,38 @@ void DNSTest::runTest()
     o1->setName("Objects");
     nlib->add(o1);
 
-    FWObject *root = objdb->create(ObjectGroup::TYPENAME);
+    root = objdb->create(ObjectGroup::TYPENAME);
     root->setName("DNS Names");
     o1->add(root);
+}
 
-    InetAddr addr;
-    char* test1[] = {"localhost", "127.0.0.1", NULL};
-    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
+void DNSTest::cleanup()
+{
+    delete objdb;
+}
 
-    char* test2[] = {"www.fwbuilder.org","70.85.175.170", NULL};
-    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
+void DNSTest::testLocalhost()
+{
+    const char* test1[] = {"localhost", "127.0.0.1", nullptr};
+    QVERIFY(testDNSNameObject(objdb, root, test1[0], &(test1[1])));
+}
 
-    char* test3[] = {"www.microsoft.com",
+void DNSTest::testSingleIP()
+{
+    const char* test2[] = {"www.fwbuilder.org","70.85.175.170", nullptr};
+    QVERIFY(testDNSNameObject(objdb, root, test2[0], &(test2[1])));
+}
+
+void DNSTest::testMultipleIPs()
+{
+    const char* test3[] = {"www.microsoft.com",
                      "65.55.21.250",
                      "207.46.232.182",
                      "207.46.197.32",
                      "207.46.19.254",
                      "207.46.192.254",
                      "207.46.193.254",
-                     NULL};
+                     nullptr};
 
-    CPPUNIT_ASSERT(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
+    QVERIFY(testDNSNameObject(objdb, root, test3[0], &(test3[1])));
 }

@@ -1,4 +1,3 @@
-#include "../../config.h"
 
 #include "CompilerDriver_junosacl.h"
 #include "OSConfigurator_junos.h"
@@ -39,8 +38,8 @@ QString CompilerDriver_junosacl::assembleManifest(Cluster*, Firewall*, bool)
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << "/* " << MANIFEST_MARKER
-           << " * " << this->escapeFileName(file_names[FW_FILE]) << " */" << endl;
+    script << "/* " << manifestMarker()
+           << " * " << this->escapeFileName(file_names[FW_FILE]) << " */" << '\n';
     return script_buffer;
 }
 
@@ -81,8 +80,8 @@ QString CompilerDriver_junosacl::run(const string &cluster_id,
                                      const string &firewall_id,
                                      const string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
@@ -131,7 +130,7 @@ QString CompilerDriver_junosacl::run(const string &cluster_id,
 
         string platform = fw->getStr("platform");
 
-        std::auto_ptr<OSConfigurator_junos> oscnf(new OSConfigurator_junos(objdb, fw, false));
+        std::unique_ptr<OSConfigurator_junos> oscnf(new OSConfigurator_junos(objdb, fw, false));
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
@@ -186,7 +185,7 @@ QString CompilerDriver_junosacl::run(const string &cluster_id,
             }
             if (policy_count)
             {
-                std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
+                std::unique_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
                 if (inTestMode()) prep->setTestMode();
                 if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();

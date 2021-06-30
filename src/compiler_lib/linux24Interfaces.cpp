@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "interfaceProperties.h"
 #include "linux24Interfaces.h"
@@ -42,14 +41,14 @@ using namespace libfwbuilder;
 bool linux24Interfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
 {
     QList<QRegExp> vlan_name_patterns;
-    vlan_name_patterns.append(QRegExp("([a-zA-Z-]+\\d{1,})\\.(\\d{1,})"));
+    vlan_name_patterns.append(QRegExp("([a-zA-Z0-9-]+\\d{1,})\\.(\\d{1,})"));
     vlan_name_patterns.append(QRegExp("(vlan)(\\d{1,})"));
     for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
     {
         if (vlan_name_patterns[idx].indexIn(name) != -1)
         {
-            if (base_name!=NULL) *base_name = vlan_name_patterns[idx].cap(1);
-            if (vlan_id!=NULL) *vlan_id = vlan_name_patterns[idx].cap(2).toInt();
+            if (base_name!=nullptr) *base_name = vlan_name_patterns[idx].cap(1);
+            if (vlan_id!=nullptr) *vlan_id = vlan_name_patterns[idx].cap(2).toInt();
             return true;
         }
     }
@@ -155,9 +154,9 @@ eth4      Link encap:Ethernet  HWaddr 00:0C:29:F6:BE:BE
             list<InterfaceData*> vlan_subinterfaces;
             list<InterfaceData*> bond_subinterfaces;
             list<InterfaceData*> bridge_subinterfaces;
-            InterfaceData *vlan_parent_interface = NULL;
-            InterfaceData *bond_parent_interface = NULL;
-            InterfaceData *bridge_parent_interface = NULL;
+            InterfaceData *vlan_parent_interface = nullptr;
+            InterfaceData *bond_parent_interface = nullptr;
+            InterfaceData *bridge_parent_interface = nullptr;
             list<InterfaceData*>::iterator intf;
 
             bool bonding = false;
@@ -181,7 +180,7 @@ eth4      Link encap:Ethernet  HWaddr 00:0C:29:F6:BE:BE
 
             for (intf=it->second.begin(); intf!=it->second.end(); ++intf)
             {
-                linux24Interfaces::interface_type itype;
+                linux24Interfaces::interface_type itype{};
 
                 if ((*intf)->name.find("bond") == 0 &&
                     (*intf)->name.find(".") == string::npos)
@@ -222,7 +221,7 @@ eth4      Link encap:Ethernet  HWaddr 00:0C:29:F6:BE:BE
                     case VLAN_INTERFACE:
                     {
                         (*intf)->interface_type = "8021q";
-                        parseVlan((*intf)->name.c_str(), NULL, &((*intf)->vlan_id));
+                        parseVlan((*intf)->name.c_str(), nullptr, &((*intf)->vlan_id));
                         //parseVlan(*intf);
                         bond_subinterfaces.push_back(*intf);
                         continue;
@@ -259,7 +258,7 @@ eth4      Link encap:Ethernet  HWaddr 00:0C:29:F6:BE:BE
                     case VLAN_INTERFACE:
                     {
                         (*intf)->interface_type = "8021q";
-                        parseVlan((*intf)->name.c_str(), NULL, &((*intf)->vlan_id));
+                        parseVlan((*intf)->name.c_str(), nullptr, &((*intf)->vlan_id));
                         //parseVlan(*intf);
                         bridge_subinterfaces.push_back(*intf);
                         // special case: vlan interface can be part of
@@ -288,7 +287,7 @@ eth4      Link encap:Ethernet  HWaddr 00:0C:29:F6:BE:BE
                     case VLAN_INTERFACE:
                     {
                         (*intf)->interface_type = "8021q";
-                        parseVlan((*intf)->name.c_str(), NULL, &((*intf)->vlan_id));
+                        parseVlan((*intf)->name.c_str(), nullptr, &((*intf)->vlan_id));
                         //parseVlan(*intf);
                         vlan_subinterfaces.push_back(*intf);
                         continue;

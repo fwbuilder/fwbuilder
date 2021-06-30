@@ -129,8 +129,9 @@ void TokenStreamRewriteEngine::toStream( std::ostream& out,
 
 	size_t tokenCursor = firstToken;
 	// make sure we don't run out of the tokens we have...
-	if( lastToken > (tokens.size() - 1) )
+	if( lastToken > (tokens.size() - 1) ) {
 		lastToken = tokens.size() - 1;
+    }
 
 		while ( tokenCursor <= lastToken )
 		{

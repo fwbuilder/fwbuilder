@@ -26,7 +26,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include <fwbuilder/libfwbuilder-config.h>
 
 #include "combinedAddress.h"
 
@@ -57,7 +56,7 @@ bool combinedAddress::isAny() const
 }
 
 FWObject& combinedAddress::shallowDuplicate(const FWObject *other,
-                                            bool preserve_id) throw(FWException)
+                                            bool preserve_id)
 {
     physAddress = dynamic_cast<const combinedAddress*>(other)->physAddress;
     return IPv4::shallowDuplicate(other, preserve_id);

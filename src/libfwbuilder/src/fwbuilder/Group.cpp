@@ -26,8 +26,6 @@
 
 #include <iostream>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObject.h"
@@ -95,11 +93,11 @@ bool Group::hasMember(FWObject *o)
  * that is broken when objects are added or removed from groups in the
  * middle of iteration.
  */
-FWObject& Group::duplicateForUndo(const FWObject *obj) throw(FWException)
+FWObject& Group::duplicateForUndo(const FWObject *obj)
 {
     setRO(false);
-    if ((obj->size() && FWReference::cast(obj->front())!=NULL) ||
-        (this->size() && FWReference::cast(this->front())!=NULL))
+    if ((obj->size() && FWReference::cast(obj->front())!=nullptr) ||
+        (this->size() && FWReference::cast(this->front())!=nullptr))
     {
         destroyChildren();
         for(list<FWObject*>::const_iterator m=obj->begin(); m!=obj->end(); ++m)

@@ -26,8 +26,6 @@
 
 #include <assert.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/Network.h"
@@ -61,37 +59,37 @@ Network::Network (const string &s) : Address()
                                      
 Network::~Network() {}
 
-void Network::fromXML(xmlNodePtr root) throw(FWException)
+void Network::fromXML(xmlNodePtr root)
 {
     FWObject::fromXML(root);
     
-    const char *n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("address")));
-    assert(n!=NULL);
+    const char *n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("address")));
+    assert(n!=nullptr);
     setAddress(InetAddr(n));
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 
-    n=FROMXMLCAST(xmlGetProp(root,TOXMLCAST("netmask")));
-    assert(n!=NULL);
+    n=XMLTools::FromXmlCast(xmlGetProp(root,XMLTools::ToXmlCast("netmask")));
+    assert(n!=nullptr);
     setNetmask(InetAddr(n));
-    FREEXMLBUFF(n);
+    XMLTools::FreeXmlBuff(n);
 }
 
-xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node) throw(FWException)
+xmlNodePtr Network::toXML(xmlNodePtr xml_parent_node)
 {
     if (getName().empty()) setName(getTypeName());
 
     xmlNodePtr me = FWObject::toXML(xml_parent_node);
-    xmlNewProp(me, TOXMLCAST("name"), STRTOXMLCAST(getName()));
-    xmlNewProp(me, TOXMLCAST("comment"), STRTOXMLCAST(getComment()));
-    xmlNewProp(me, TOXMLCAST("ro"), TOXMLCAST(((getRO()) ? "True" : "False")));
+    xmlNewProp(me, XMLTools::ToXmlCast("name"), XMLTools::StrToXmlCast(getName()));
+    xmlNewProp(me, XMLTools::ToXmlCast("comment"), XMLTools::StrToXmlCast(getComment()));
+    xmlNewProp(me, XMLTools::ToXmlCast("ro"), XMLTools::ToXmlCast(((getRO()) ? "True" : "False")));
     
     xmlNewProp(me, 
-               TOXMLCAST("address"),
-               STRTOXMLCAST(getAddressPtr()->toString()));
+               XMLTools::ToXmlCast("address"),
+               XMLTools::StrToXmlCast(getAddressPtr()->toString()));
     
     xmlNewProp(me, 
-               TOXMLCAST("netmask"),
-               STRTOXMLCAST(getNetmaskPtr()->toString()));
+               XMLTools::ToXmlCast("netmask"),
+               XMLTools::StrToXmlCast(getNetmaskPtr()->toString()));
     
     return me;
 }
@@ -122,12 +120,12 @@ const InetAddr* Network::getFirstHostPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getFirstHostPtr();
-    return NULL;
+    return nullptr;
 }
 
 const InetAddr* Network::getLastHostPtr() const
 {
     const InetAddrMask *inet_addr_mask = getInetAddrMaskObjectPtr();
     if (inet_addr_mask) return inet_addr_mask->getLastHostPtr();
-    return NULL;
+    return nullptr;
 }

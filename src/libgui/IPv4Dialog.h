@@ -27,7 +27,6 @@
 #ifndef __IPV4DIALOG_H_
 #define __IPV4DIALOG_H_
 
-#include "config.h"
 #include <ui_ipv4dialog_q.h>
 #include "BaseObjectDialog.h"
 #include <QWidget>

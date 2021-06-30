@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -81,7 +80,7 @@ void instConf::clear()
     backup = false;
     backup_file = "";
     wdir = "./";
-    fwobj = NULL;
+    fwobj = nullptr;
     maddr = "";
     user = "";
     batchInstall = false;

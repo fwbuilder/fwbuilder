@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_ipt.h"
 #include "OSConfigurator_linux24.h"
@@ -450,7 +449,7 @@ int PolicyCompiler_ipt::prolog()
     for(FWObject::iterator i=source_ruleset->begin(); i!=source_ruleset->end(); i++)
     {
 	Rule *r = Rule::cast( *i );
-        if (r == NULL) continue;
+        if (r == nullptr) continue;
 	if (r->isDisabled()) continue;
 
         FWOptions *ruleopt = r->getOptionsObject();
@@ -508,7 +507,7 @@ void PolicyCompiler_ipt::addPredefinedPolicyRules()
 
 bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( ! rule->getStr("ipt_target").empty() &&
          rule->getStr("ipt_target") == ".CONTINUE" &&
@@ -527,7 +526,7 @@ bool  PolicyCompiler_ipt::SkipActionContinueWithNoLogging::processNext()
  */
 bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     string tgt = rule->getStr("ipt_target");
 
     if (tgt=="CLASSIFY" || tgt=="MARK") tmp_queue.push_back(rule);
@@ -537,7 +536,7 @@ bool  PolicyCompiler_ipt::dropTerminatingTargets::processNext()
 bool PolicyCompiler_ipt::clearTagClassifyInFilter::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     if (ipt_comp->my_table != "mangle")
     {
@@ -553,7 +552,7 @@ bool PolicyCompiler_ipt::clearTagClassifyInFilter::processNext()
 bool PolicyCompiler_ipt::clearActionInTagClassifyIfMangle::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     if (ipt_comp->my_table == "mangle" &&
         (rule->getTagging() || rule->getClassification())
@@ -573,7 +572,7 @@ bool PolicyCompiler_ipt::clearActionInTagClassifyIfMangle::processNext()
 bool PolicyCompiler_ipt::clearLogInMangle::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     FWOptions *rulesetopts = ipt_comp->getSourceRuleSet()->getOptionsObject();
     if (rulesetopts->getBool("mangle_only_rule_set"))
@@ -589,7 +588,7 @@ bool PolicyCompiler_ipt::clearLogInMangle::processNext()
 
 bool PolicyCompiler_ipt::splitIfTagClassifyOrRoute::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     FWOptions *ruleopt = rule->getOptionsObject();
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     PolicyRule *r;
@@ -704,7 +703,7 @@ bool PolicyCompiler_ipt::splitIfTagClassifyOrRoute::processNext()
 
 bool PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     RuleElementItf *itfre = rule->getItf(); assert(itfre);
 
@@ -738,7 +737,7 @@ bool PolicyCompiler_ipt::InterfacePolicyRulesWithOptimization::processNext()
 bool PolicyCompiler_ipt::Route::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions *ruleopt =rule->getOptionsObject();
     
     if (rule->getRouting())
@@ -783,7 +782,7 @@ bool PolicyCompiler_ipt::Route::processNext()
 
 bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
 
     string ruleset_name = compiler->getRuleSetName();
@@ -804,7 +803,7 @@ bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
         ruleopt->getBool("ipt_branch_in_mangle"))
     {
         RuleSet *ruleset = rule->getBranch();
-        assert(ruleset!=NULL);
+        assert(ruleset!=nullptr);
         rulesetopts = ruleset->getOptionsObject();
         if (rulesetopts->getBool("mangle_only_rule_set")) return true;
     }
@@ -819,7 +818,7 @@ bool PolicyCompiler_ipt::dropMangleTableRules::processNext()
  */
 bool PolicyCompiler_ipt::checkActionInMangleTable::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getAction() == PolicyRule::Reject)
     {
@@ -844,7 +843,7 @@ bool PolicyCompiler_ipt::checkActionInMangleTable::processNext()
 bool PolicyCompiler_ipt::checkForUnsupportedCombinationsInMangle::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     if (ipt_comp->my_table=="mangle" &&
         rule->getAction() != PolicyRule::Continue &&
@@ -864,7 +863,7 @@ bool PolicyCompiler_ipt::checkForUnsupportedCombinationsInMangle::processNext()
 
 bool PolicyCompiler_ipt::deprecateOptionRoute::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getRouting())
     {
@@ -882,7 +881,7 @@ bool PolicyCompiler_ipt::deprecateOptionRoute::processNext()
 
 bool PolicyCompiler_ipt::Logging1::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( compiler->getCachedFwOpt()->getBool("log_all") )
         rule->setLogging(true);
@@ -894,7 +893,7 @@ bool PolicyCompiler_ipt::Logging1::processNext()
 
 bool PolicyCompiler_ipt::storeAction::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     rule->setStr("stored_action", rule->getActionAsString() );
 
@@ -914,9 +913,11 @@ bool PolicyCompiler_ipt::storeAction::processNext()
 bool PolicyCompiler_ipt::Logging2::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
-    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+#ifndef NDEBUG
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=nullptr);
+#endif
 
     RuleElementSrc      *nsrc;
     RuleElementDst      *ndst;
@@ -945,7 +946,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
  * chain could have been assigned if we split this rule before
  */
         string this_chain = rule->getStr("ipt_chain");
-	string new_chain  = ipt_comp->getNewChainName(rule, NULL); //rule_iface);
+	string new_chain  = ipt_comp->getNewChainName(rule, nullptr); //rule_iface);
 
 	PolicyRule *r;
         FWOptions  *ruleopt;
@@ -961,7 +962,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
             rule->getSrc()->isAny() &&
             rule->getDst()->isAny() &&
             rule->getSrv()->isAny() &&
-            (rule->getWhen())!=NULL && rule->getWhen()->isAny())
+            (rule->getWhen())!=nullptr && rule->getWhen()->isAny())
         {
             need_new_chain = false;
         }
@@ -1005,7 +1006,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
 	ndst=r->getDst();      ndst->reset();
 	nsrv=r->getSrv();      nsrv->reset();
         nitfre=r->getItf();    nitfre->reset();
-	if ( (nint=r->getWhen())!=NULL )  nint->reset();
+	if ( (nint=r->getWhen())!=nullptr )  nint->reset();
 	r->setStr("ipt_chain",new_chain);
         r->setStr("upstream_rule_chain",this_chain);
         ipt_comp->registerChain(new_chain);
@@ -1031,7 +1032,7 @@ bool PolicyCompiler_ipt::Logging2::processNext()
         ruleopt =r->getOptionsObject();
 	nsrc=r->getSrc();   nsrc->reset();
 	ndst=r->getDst();   ndst->reset();
-	if ( (nint=r->getWhen())!=NULL )  nint->reset();
+	if ( (nint=r->getWhen())!=nullptr )  nint->reset();
         nitfre=r->getItf(); nitfre->reset();
 /*
  * special case: need to preserve information about service protocol in case
@@ -1086,7 +1087,7 @@ string PolicyCompiler_ipt::printRuleElements::printRE(RuleElement *re)
 
 bool PolicyCompiler_ipt::printRuleElements::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrc *srcrel = rule->getSrc();
     RuleElementDst *dstrel = rule->getDst();
     RuleElementSrv *srvrel = rule->getSrv();
@@ -1117,9 +1118,9 @@ void PolicyCompiler_ipt::SingleRENegation::processSingleObjectNegationInRE(
     }
 
     Address *src = Address::cast(obj);
-    // note: src can be NULL if object in this rule element is a group
+    // note: src can be nullptr if object in this rule element is a group
     // or MultiAddress
-    if (src!=NULL && src->countInetAddresses(true)==1 &&
+    if (src!=nullptr && src->countInetAddresses(true)==1 &&
         !compiler->complexMatch(src, compiler->fw)) 
     {
         rel->setNeg(false);
@@ -1140,7 +1141,7 @@ void PolicyCompiler_ipt::SingleRENegation::processSingleObjectNegationInRE(
 
 bool PolicyCompiler_ipt::SingleRENegation::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElement *rel = RuleElement::cast(rule->getFirstByType(type_name));
 
 /*   ! A  B  C  ACTION  */
@@ -1156,7 +1157,7 @@ bool PolicyCompiler_ipt::SingleRENegation::processNext()
 bool PolicyCompiler_ipt::SrcNegation::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule         *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule         *rule=getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     string afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
 
@@ -1211,7 +1212,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
             ndst=r->getDst();    ndst->reset();
             nsrv=r->getSrv();    nsrv->reset();
             nitf=r->getItf();    nitf->reset();
-            if ( (nint=r->getWhen())!=NULL )  nint->reset();
+            if ( (nint=r->getWhen())!=nullptr )  nint->reset();
         }
 
 	r->setAction( PolicyRule::Return );
@@ -1245,7 +1246,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
         {
             ndst = r->getDst();   ndst->reset();
             nitf = r->getItf();   nitf->reset();
-            if ( (nint=r->getWhen())!=NULL )  nint->reset();
+            if ( (nint=r->getWhen())!=nullptr )  nint->reset();
 /*
  * special case: need to preserve information about service protocol in case
  * action_on_reject is TCP RST
@@ -1286,7 +1287,7 @@ bool PolicyCompiler_ipt::SrcNegation::processNext()
 bool PolicyCompiler_ipt::DstNegation::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     string afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
 
@@ -1341,7 +1342,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
             nsrc=r->getSrc();   nsrc->reset();
             nsrv=r->getSrv();   nsrv->reset();
             nitf=r->getItf();   nitf->reset();
-            if ( (nint=r->getWhen())!=NULL )  nint->reset();
+            if ( (nint=r->getWhen())!=nullptr )  nint->reset();
         }
 
 	r->setAction( PolicyRule::Return );
@@ -1377,7 +1378,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
         {
             nsrc=r->getSrc();   nsrc->reset();
             nitf=r->getItf();   nitf->reset();
-            if ( (nint=r->getWhen())!=NULL )  nint->reset();
+            if ( (nint=r->getWhen())!=nullptr )  nint->reset();
 /*
  * special case: need to preserve information about service protocol in case
  * action_on_reject is TCP RST
@@ -1422,7 +1423,7 @@ bool PolicyCompiler_ipt::DstNegation::processNext()
 bool PolicyCompiler_ipt::SrvNegation::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srvrel=rule->getSrv();
 
@@ -1473,7 +1474,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
             nsrc=r->getSrc();   nsrc->reset();
             ndst=r->getDst();   ndst->reset();
             nitf=r->getItf();   nitf->reset();
-            if ( (nint=r->getWhen())!=NULL )  nint->reset();
+            if ( (nint=r->getWhen())!=nullptr )  nint->reset();
         }
 
 	r->setAction( PolicyRule::Return );
@@ -1510,7 +1511,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
             nsrc=r->getSrc();   nsrc->reset();
             ndst=r->getDst();   ndst->reset();
             nitf=r->getItf();   nitf->reset();
-            if ( (nint=r->getWhen())!=NULL )  nint->reset();
+            if ( (nint=r->getWhen())!=nullptr )  nint->reset();
         }
 
 	r->setStr("ipt_chain",new_chain);
@@ -1538,7 +1539,7 @@ bool PolicyCompiler_ipt::SrvNegation::processNext()
 bool PolicyCompiler_ipt::TimeNegation::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     string afpa = ruleopt->getStr("firewall_is_part_of_any_and_networks");
 
@@ -1546,7 +1547,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 
 /*   A  B  C !D  ACTION  */
 
-    if (intrel!=NULL && intrel->getNeg()) 
+    if (intrel!=nullptr && intrel->getNeg()) 
     {
 	PolicyRule          *r;
 	RuleElementSrc      *nsrc;
@@ -1568,7 +1569,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	compiler->temp_ruleset->add(r);
 	r->duplicate(rule);
         r->setStr("subrule_suffix","1");
-	if ( (nint=r->getWhen())!=NULL )  nint->reset();
+	if ( (nint=r->getWhen())!=nullptr )  nint->reset();
         r->setClassification(false);
         r->setRouting(false);
         r->setTagging(false);
@@ -1623,7 +1624,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 	r->duplicate(rule);
         r->setStr("subrule_suffix","3");
 
-        if ( (nint=r->getWhen())!=NULL )  nint->reset();
+        if ( (nint=r->getWhen())!=nullptr )  nint->reset();
 
         if (!shadowing_mode)
         {
@@ -1678,7 +1679,7 @@ bool PolicyCompiler_ipt::TimeNegation::processNext()
 bool PolicyCompiler_ipt::InterfaceAndDirection::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -1709,7 +1710,7 @@ bool PolicyCompiler_ipt::InterfaceAndDirection::processNext()
 bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     /*
      * About setting chain for rules with action Tag
@@ -1742,7 +1743,7 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
      * not been assigned yet, direction is Both and there is no
      * interface.
      */
-    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=nullptr);
 
     if ( (rule->getTagging() || rule->getBool("originated_from_a_rule_with_tagging")) &&
           rule->getStr("ipt_chain").empty() &&
@@ -1761,8 +1762,8 @@ bool PolicyCompiler_ipt::setChainPreroutingForTag::processNext()
 bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
-    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=nullptr);
 
     if ( (rule->getTagging()  || rule->getBool("originated_from_a_rule_with_tagging")) &&
           rule->getStr("ipt_chain").empty() &&
@@ -1778,7 +1779,7 @@ bool PolicyCompiler_ipt::setChainPostroutingForTag::processNext()
 bool PolicyCompiler_ipt::checkForRestoreMarkInOutput::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt = rule->getOptionsObject();
 
     if ( (rule->getTagging()  || rule->getBool("originated_from_a_rule_with_tagging")) &&
@@ -1794,7 +1795,7 @@ bool PolicyCompiler_ipt::checkForRestoreMarkInOutput::processNext()
 bool PolicyCompiler_ipt::setChainForMangle::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (ipt_comp->my_table=="mangle" && rule->getStr("ipt_chain").empty())
     {
@@ -1823,7 +1824,7 @@ bool PolicyCompiler_ipt::setChainForMangle::processNext()
 
 bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
     FWOptions *ruleopt = rule->getOptionsObject();
 
@@ -1855,7 +1856,7 @@ bool PolicyCompiler_ipt::splitIfTagAndConnmark::processNext()
 
 bool PolicyCompiler_ipt::splitIfIfaceAndDirectionBoth::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementItf *itfre=rule->getItf();   assert(itfre);
 
@@ -1960,7 +1961,7 @@ bool PolicyCompiler_ipt::bridgingFw::checkForMatchingBroadcastAndMulticast(
 bool PolicyCompiler_ipt::bridgingFw::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
 //    Address        *src=compiler->getFirstSrc(rule);
     Address *dst = compiler->getFirstDst(rule);
@@ -1976,17 +1977,20 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
  * this only if the rule is not associated with any bridging
  * interfaces
  */
+
+#ifndef NDEBUG
             RuleElementItf *itfre = rule->getItf();
             assert(itfre);
+#endif
 
-            RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+            RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=nullptr);
             Interface *rule_iface = 
                 Interface::cast(FWObjectReference::getObject(itf_re->front()));
 
 //            Interface *rule_iface = Interface::cast(
 //                compiler->dbcopy->findInIndex(rule->getInterfaceId()));
 
-            if (rule_iface!=NULL && 
+            if (rule_iface!=nullptr && 
                 (rule_iface->isUnnumbered() || rule_iface->isBridgePort() ))
             {
                 ipt_comp->setChain(rule, "FORWARD");
@@ -2009,7 +2013,7 @@ bool PolicyCompiler_ipt::bridgingFw::processNext()
 bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() ) 
     {
@@ -2044,7 +2048,7 @@ bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
         for (list<FWObject*>::iterator i1=srcrel->begin(); i1!=srcrel->end(); ++i1) 
         {
             FWObject *o   = *i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
             Address *a = Address::cast(o);
             if (a && compiler->complexMatch(a,compiler->fw))
@@ -2087,7 +2091,7 @@ bool PolicyCompiler_ipt::splitIfSrcNegAndFw::processNext()
 bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() ) 
     {
@@ -2122,7 +2126,7 @@ bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
         for (list<FWObject*>::iterator i1=dstrel->begin(); i1!=dstrel->end(); ++i1) 
         {
             FWObject *o   = *i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 
             Address *a = Address::cast(o);
             if (a && compiler->complexMatch(a,compiler->fw))
@@ -2168,7 +2172,7 @@ bool PolicyCompiler_ipt::splitIfDstNegAndFw::processNext()
 bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     FWOptions  *ruleopt = rule->getOptionsObject();
     FWOptions *fwopt = compiler->getCachedFwOpt();
@@ -2190,7 +2194,9 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
     /* See #2008. It appears "--physdev-out" is not allowed in OUTPUT
      * chain.
      */
+#ifndef NDEBUG
     RuleElementItf *itfre = rule->getItf(); assert(itfre);
+#endif
     Interface *itf = compiler->getFirstItf(rule);
 
     if (fwopt->getBool("bridging_fw") && itf && itf->isBridgePort())
@@ -2211,7 +2217,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
     if ( rule->getDirection()!=PolicyRule::Inbound &&
          ( 
              srcrel->isAny() ||
-             ( srcrel->size()==1 && src!=NULL &&
+             ( srcrel->size()==1 && src!=nullptr &&
                !compiler->complexMatch(src,compiler->fw) &&
                srcrel->getBool("single_object_negation")) 
          ) 
@@ -2251,7 +2257,7 @@ bool PolicyCompiler_ipt::splitIfSrcAny::processNext()
 bool PolicyCompiler_ipt::splitIfDstAny::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
 //    FWOptions *fwopt = compiler->getCachedFwOpt();
     FWOptions  *ruleopt = rule->getOptionsObject();
@@ -2281,7 +2287,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
          ( 
              dstrel->isAny() ||
 
-             ( dstrel->size()==1 && dst!=NULL &&
+             ( dstrel->size()==1 && dst!=nullptr &&
                !compiler->complexMatch(dst,compiler->fw) &&
                dstrel->getBool("single_object_negation")) 
          ) 
@@ -2323,7 +2329,7 @@ bool PolicyCompiler_ipt::splitIfDstAny::processNext()
  */
 bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
 
     list<FWObject*> new_children;
 
@@ -2332,7 +2338,7 @@ bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
     for (list<FWObject*>::iterator i1=rel->begin(); i1!=rel->end(); ++i1) 
     {
         Address *addr_obj = Address::cast(FWReference::getObject(*i1));
-        if (addr_obj == NULL) continue;
+        if (addr_obj == nullptr) continue;
 /*
  * commented out for SF bug 3468358
  * Why did I need to replace cluster interface with member interface if
@@ -2343,10 +2349,16 @@ bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
         if (addr_obj && !addr_obj->isAny() && AddressRange::isA(addr_obj) &&
             addr_obj->dimension() == 1)
         {
-            Address *new_addr = compiler->dbcopy->createIPv4();
+            bool IPv4 = AddressRange::cast(addr_obj)->isV4();
+            int address_family = IPv4 ? AF_INET : AF_INET6;
+
+            Address *new_addr = IPv4
+                    ? static_cast<Address*>(compiler->dbcopy->createIPv4())
+                    : static_cast<Address*>(compiler->dbcopy->createIPv6());
+
             new_addr->setName(addr_obj->getName() + "_addr");
             new_addr->setAddress(AddressRange::cast(addr_obj)->getRangeStart());
-            new_addr->setNetmask(InetAddr(InetAddr::getAllOnes()));
+            new_addr->setNetmask(InetAddr(InetAddr::getAllOnes(address_family)));
             compiler->persistent_objects->add(new_addr);
             new_children.push_back(new_addr);
         } else
@@ -2378,7 +2390,7 @@ bool PolicyCompiler_ipt::specialCaseAddressRangeInRE::processNext()
 bool PolicyCompiler_ipt::splitIfSrcMatchingAddressRange::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     Address *src = compiler->correctForCluster(compiler->getFirstSrc(rule));
 
@@ -2419,7 +2431,7 @@ bool PolicyCompiler_ipt::splitIfSrcMatchingAddressRange::processNext()
 bool PolicyCompiler_ipt::splitIfDstMatchingAddressRange::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     Address *dst = compiler->correctForCluster(compiler->getFirstDst(rule));
 
@@ -2451,7 +2463,7 @@ bool PolicyCompiler_ipt::splitIfDstMatchingAddressRange::processNext()
 bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getClassification())
     {
@@ -2484,7 +2496,7 @@ bool PolicyCompiler_ipt::splitIfSrcAnyForShadowing::processNext()
 bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getClassification())
     {
@@ -2518,7 +2530,7 @@ bool PolicyCompiler_ipt::splitIfDstAnyForShadowing::processNext()
 bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getClassification())
     {
@@ -2551,11 +2563,11 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
         for (list<FWObject*>::iterator i1=srcrel->begin(); i1!=srcrel->end(); ++i1) 
         {
             FWObject *o   = *i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
             Address *a = Address::cast(o);
             FWObject *na;
             if ((Network::isA(o) || NetworkIPv6::isA(o)) &&
-                (na=compiler->findAddressFor(a, compiler->fw ))!=NULL)
+                (na=compiler->findAddressFor(a, compiler->fw ))!=nullptr)
             {
                 obj_subst[a]=na;
             }
@@ -2591,7 +2603,7 @@ bool PolicyCompiler_ipt::splitIfSrcFWNetwork::processNext()
 bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getClassification())
     {
@@ -2624,11 +2636,11 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
         for (list<FWObject*>::iterator i1=dstrel->begin(); i1!=dstrel->end(); ++i1) 
         {
             FWObject *o   = *i1;
-            if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+            if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
             Address *a = Address::cast(o);
             FWObject *na;
             if ((Network::isA(a) || NetworkIPv6::isA(a)) &&
-                (na=compiler->findAddressFor(a, compiler->fw))!=NULL)
+                (na=compiler->findAddressFor(a, compiler->fw))!=nullptr)
             {
                 obj_subst[a]=na;
             }
@@ -2668,7 +2680,7 @@ bool PolicyCompiler_ipt::splitIfDstFWNetwork::processNext()
 bool PolicyCompiler_ipt::checkSrcAndDst1::processNext()
 {
     PolicyRule *rule = getNext();
-    if (rule==NULL) return false;
+    if (rule==nullptr) return false;
     Address *src = compiler->getFirstSrc(rule);  assert(src);
     Address *dst = compiler->getFirstDst(rule);  assert(dst);
 
@@ -2689,7 +2701,7 @@ bool PolicyCompiler_ipt::checkSrcAndDst1::processNext()
 bool PolicyCompiler_ipt::checkSrcAndDst2::processNext()
 {
     PolicyRule *rule = getNext();
-    if (rule==NULL) return false;
+    if (rule==nullptr) return false;
     Address *src = compiler->getFirstSrc(rule);  assert(src);
     Address *dst = compiler->getFirstDst(rule);  assert(dst);
 
@@ -2709,7 +2721,7 @@ bool PolicyCompiler_ipt::checkSrcAndDst2::processNext()
 
 bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (rule->getClassification())
     {
@@ -2719,10 +2731,10 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
 
 //    RuleElementSrc *srcrel=rule->getSrc();
     Address        *src = compiler->getFirstSrc(rule);  
-    if(src==NULL) compiler->abort(rule, "Broken SRC ");
+    if(src==nullptr) compiler->abort(rule, "Broken SRC ");
 //    RuleElementDst *dstrel=rule->getDst();
     Address        *dst = compiler->getFirstDst(rule);
-    if(dst==NULL) compiler->abort(rule, "Broken DST");
+    if(dst==nullptr) compiler->abort(rule, "Broken DST");
 
     if (!src->isAny() && !dst->isAny() &&
         compiler->complexMatch(src,compiler->fw) &&
@@ -2750,17 +2762,17 @@ bool PolicyCompiler_ipt::specialCaseWithFW1::processNext()
 
 bool PolicyCompiler_ipt::specialCaseWithFWInDstAndOutbound::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     Interface *itf = compiler->getFirstItf(rule);
-    // note: itf can be NULL if object in this rule element is a group
+    // note: itf can be nullptr if object in this rule element is a group
     RuleElementSrc *srcrel = rule->getSrc();
     Address *src =compiler->getFirstSrc(rule);
     Address *dst =compiler->getFirstDst(rule);
     string chain  = rule->getStr("ipt_chain");
 
     if (rule->getDirection()== PolicyRule::Outbound &&
-        itf!=NULL && itf->isChildOf(compiler->fw) &&
+        itf!=nullptr && itf->isChildOf(compiler->fw) &&
         chain!="OUTPUT")
     {
         // If dst is broadcast, drop the rule if this is not bridging
@@ -2842,7 +2854,7 @@ bool PolicyCompiler_ipt::specialCaseWithFWInDstAndOutbound::processNext()
  */
 bool PolicyCompiler_ipt::specialCaseWithFW2::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     Address        *src   =compiler->getFirstSrc(rule);  
@@ -2884,10 +2896,10 @@ bool PolicyCompiler_ipt::specialCaseWithUnnumberedInterface::dropUnnumberedInter
     {
         FWObject *o   = *i1;
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface  *ifs   =Interface::cast( obj );
 
-        if (ifs!=NULL && 
+        if (ifs!=nullptr && 
             (ifs->isUnnumbered() || ifs->isBridgePort())) cl.push_back(obj);
     }
 
@@ -2920,7 +2932,7 @@ bool PolicyCompiler_ipt::specialCaseWithUnnumberedInterface::dropUnnumberedInter
  */
 bool PolicyCompiler_ipt::specialCaseWithUnnumberedInterface::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     bool keep_rule=true;
     switch ( rule->getDirection() ) 
     {
@@ -2949,10 +2961,10 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
     {
         FWObject *o   = *i1;
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Interface  *ifs = Interface::cast( obj );
 
-        if (ifs != NULL && ifs->isDyn())
+        if (ifs != nullptr && ifs->isDyn())
         {
             if ( ! ifs->isChildOf(compiler->fw))        
             {
@@ -2966,7 +2978,7 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
                     FailoverClusterGroup *fg = FailoverClusterGroup::cast(
                         ifs->getFirstByType(FailoverClusterGroup::TYPENAME));
                     if (fg &&
-                        fg->getInterfaceForMemberFirewall(compiler->fw)!=NULL)
+                        fg->getInterfaceForMemberFirewall(compiler->fw)!=nullptr)
                         continue;
                 }
                 QString err(
@@ -2987,7 +2999,7 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::findDynamicInt
 
 bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (findDynamicInterfaces( rule->getSrc() , rule ) &&
         findDynamicInterfaces( rule->getDst() , rule ))
@@ -3002,21 +3014,21 @@ bool PolicyCompiler_ipt::checkForDynamicInterfacesOfOtherObjects::processNext()
  */
 bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinSrc::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementSrc *srcrel = rule->getSrc();
     Address *src =compiler->getFirstSrc(rule);
     assert(src);
-    if (Firewall::cast(src)==NULL)  compiler->_expand_addr(rule, srcrel, true);
+    if (Firewall::cast(src)==nullptr)  compiler->_expand_addr(rule, srcrel, true);
     tmp_queue.push_back(rule);
     return true;
 }
 
 bool PolicyCompiler_ipt::expandMultipleAddressesIfNotFWinDst::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     RuleElementDst *dstrel=rule->getDst();
     Address        *dst   =compiler->getFirstDst(rule);  assert(dst);
-    if (Firewall::cast(dst)==NULL)  compiler->_expand_addr(rule, dstrel, true);
+    if (Firewall::cast(dst)==nullptr)  compiler->_expand_addr(rule, dstrel, true);
     tmp_queue.push_back(rule);
     return true;
 }
@@ -3030,12 +3042,12 @@ void PolicyCompiler_ipt::expandLoopbackInterfaceAddress::replaceLoopbackWithItsA
     {
         FWObject *o   = *i1;
         FWObject *obj = o;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
 
-        if (Interface::cast(obj)!=NULL && Interface::cast(obj)->isLoopback())
+        if (Interface::cast(obj)!=nullptr && Interface::cast(obj)->isLoopback())
         {
             FWObject *addr = obj->getFirstByType(IPv4::TYPENAME);
-            if (addr==NULL)
+            if (addr==nullptr)
                 compiler->abort(
                     rule, 
                     "Loopback interface of the firewall object does not "
@@ -3049,7 +3061,7 @@ void PolicyCompiler_ipt::expandLoopbackInterfaceAddress::replaceLoopbackWithItsA
 
 bool PolicyCompiler_ipt::expandLoopbackInterfaceAddress::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     RuleElementDst *dstrel=rule->getDst();
@@ -3071,7 +3083,7 @@ bool PolicyCompiler_ipt::expandLoopbackInterfaceAddress::processNext()
 bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() || rule->getClassification())
     {
@@ -3112,7 +3124,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
          */
 
         Interface *rule_iface = compiler->getFirstItf(rule);
-        if (rule_iface == NULL || rule_iface->isBridgePort())
+        if (rule_iface == nullptr || rule_iface->isBridgePort())
         {
             PolicyRule *r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
@@ -3172,7 +3184,7 @@ bool PolicyCompiler_ipt::decideOnChainIfSrcFW::processNext()
 bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( ! rule->getStr("ipt_chain").empty() || rule->getClassification())
     {
@@ -3214,7 +3226,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
          */
 
         Interface *rule_iface = compiler->getFirstItf(rule);
-        if (rule_iface == NULL || rule_iface->isBridgePort())
+        if (rule_iface == nullptr || rule_iface->isBridgePort())
         {
             PolicyRule *r = compiler->dbcopy->createPolicyRule();
             compiler->temp_ruleset->add(r);
@@ -3297,7 +3309,7 @@ bool PolicyCompiler_ipt::decideOnChainIfDstFW::processNext()
 bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementItf *itfre=rule->getItf();
     assert(itfre);
@@ -3318,7 +3330,7 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
 
     if (srcrel->isAny() && dstrel->isAny() && 
         rule->getStr("ipt_chain").empty()  &&
-        rule_iface!=NULL &&
+        rule_iface!=nullptr &&
         rule_iface->isLoopback() )
     {
         switch (rule->getDirection())
@@ -3341,7 +3353,7 @@ bool PolicyCompiler_ipt::decideOnChainIfLoopback::processNext()
 bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( ! rule->getClassification())
     {
@@ -3374,7 +3386,7 @@ bool PolicyCompiler_ipt::decideOnChainForClassify::processNext()
 bool PolicyCompiler_ipt::finalizeChain::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
 //    tmp_queue.push_back(rule);
 
@@ -3495,7 +3507,7 @@ bool PolicyCompiler_ipt::finalizeChain::processNext()
 
 bool PolicyCompiler_ipt::decideOnTarget::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
 
@@ -3519,7 +3531,7 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
     case PolicyRule::Branch:
     {
         RuleSet *ruleset = rule->getBranch();
-        if (ruleset==NULL)
+        if (ruleset==nullptr)
             compiler->abort(
                 rule, 
                 string("Branching rule ") + rule->getLabel() +
@@ -3556,14 +3568,14 @@ bool PolicyCompiler_ipt::decideOnTarget::processNext()
 bool PolicyCompiler_ipt::removeFW::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if (compiler->osconfigurator->getNumOfVirtualAddressesForNat()==0 &&
         ! rule->getBool("upstream_rule_neg") )
     {
         RuleElementSrc *srcrel = rule->getSrc();
         Address        *src    = compiler->getFirstSrc(rule);
-        if (src==NULL)
+        if (src==nullptr)
         {
             compiler->abort(
             rule, "removeFW: Empty Source rule element in rule");
@@ -3572,7 +3584,7 @@ bool PolicyCompiler_ipt::removeFW::processNext()
 
         RuleElementDst *dstrel = rule->getDst();
         Address        *dst    = compiler->getFirstDst(rule);
-        if (dst==NULL)
+        if (dst==nullptr)
         {
             compiler->abort(
             rule, "removeFW: Empty Destination rule element in rule");
@@ -3602,7 +3614,7 @@ bool PolicyCompiler_ipt::removeFW::processNext()
 
 bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( rule->getStr("ipt_chain")=="OUTPUT" )
     {
@@ -3635,11 +3647,11 @@ bool PolicyCompiler_ipt::checkMACinOUTPUTChain::processNext()
 bool PolicyCompiler_ipt::checkUserServiceInWrongChains::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     Service *srv = compiler->getFirstSrv(rule);  assert(srv);
     string chain = rule->getStr("ipt_chain");
 
-    if (UserService::cast(srv) != NULL &&
+    if (UserService::cast(srv) != nullptr &&
         chain != "OUTPUT" &&
         !ipt_comp->isChainDescendantOfOutput(chain))
     {
@@ -3658,7 +3670,7 @@ bool PolicyCompiler_ipt::checkUserServiceInWrongChains::processNext()
 bool PolicyCompiler_ipt::fillActionOnReject::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     FWOptions  *ruleopt =rule->getOptionsObject();
     string s=ruleopt->getStr("action_on_reject");
@@ -3673,7 +3685,7 @@ bool PolicyCompiler_ipt::fillActionOnReject::processNext()
 bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv= rule->getSrv();
 
@@ -3706,7 +3718,7 @@ bool PolicyCompiler_ipt::splitRuleIfSrvAnyActionReject::processNext()
  */
 bool PolicyCompiler_ipt::checkForStatefulICMP6Rules::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     FWOptions *ruleopt = rule->getOptionsObject();
 
     RuleElementSrv *srv = rule->getSrv();
@@ -3745,7 +3757,7 @@ bool PolicyCompiler_ipt::checkForStatefulICMP6Rules::processNext()
 bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
 {
     PolicyCompiler_ipt *ipt_comp=dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv= rule->getSrv();
 
@@ -3826,7 +3838,7 @@ bool PolicyCompiler_ipt::splitServicesIfRejectWithTCPReset::processNext()
  */
 bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *rel= rule->getSrv();
     Service        *srv= compiler->getFirstSrv(rule);
@@ -3844,7 +3856,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
 	for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
         {
 	    FWObject *o= *i;
-	    if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+	    if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
 	    
 	    Service *s=Service::cast( o );
 	    assert(s);
@@ -3869,11 +3881,11 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
         {
             int n=0;
             PolicyRule *r;
-            RuleElementSrv *nsrv = NULL;
+            RuleElementSrv *nsrv = nullptr;
             for (FWObject::iterator i=rel->begin(); i!=rel->end(); i++) 
             {
                 FWObject *o= *i;
-                if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+                if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
                 Service *s=Service::cast( o );
                 assert(s);
                 if (n==0)
@@ -3885,7 +3897,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
                     nsrv->clearChildren();
                     tmp_queue.push_back(r);
                 }
-                assert(nsrv!=NULL);
+                assert(nsrv!=nullptr);
                 nsrv->addRef( s );
                 if (++n>=15) n=0;
             }
@@ -3909,7 +3921,7 @@ bool PolicyCompiler_ipt::prepareForMultiport::processNext()
  */
 bool PolicyCompiler_ipt::specialCasesWithCustomServices::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srv= rule->getSrv();
 
@@ -3923,8 +3935,8 @@ bool PolicyCompiler_ipt::specialCasesWithCustomServices::processNext()
     for (FWObject::iterator i=srv->begin(); i!=srv->end(); i++) 
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
-        assert(o!=NULL);
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
+        assert(o!=nullptr);
         if (CustomService::isA(o)) 
         {
             string code=CustomService::cast(o)->getCodeForPlatform(compiler->myPlatformName());
@@ -3962,7 +3974,7 @@ bool PolicyCompiler_ipt::specialCasesWithCustomServices::processNext()
 
 bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     FWOptions  *ruleopt =rule->getOptionsObject();
     PolicyRule *r;
 
@@ -4007,7 +4019,7 @@ bool PolicyCompiler_ipt::convertAnyToNotFWForShadowing::processNext()
 
 bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     OSConfigurator_linux24 *osconf = 
         dynamic_cast<OSConfigurator_linux24*>(compiler->osconfigurator);
@@ -4017,9 +4029,9 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
     if (re->size()==1) 
     {
         FWObject *o = re->front();
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-        if (atrt!=NULL)
+        if (atrt!=nullptr)
         {
             // we have just one object in RE and this object is MutiAddressRunTime
             if (atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
@@ -4047,9 +4059,9 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o= *i;
-        if (FWReference::cast(o)!=NULL) o=FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o=FWReference::cast(o)->getPointer();
         MultiAddressRunTime *atrt = MultiAddressRunTime::cast(o);
-        if (atrt!=NULL && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
+        if (atrt!=nullptr && atrt->getSubstitutionTypeName()==AddressTable::TYPENAME)
             cl.push_back(atrt);
     }
 
@@ -4101,8 +4113,8 @@ bool PolicyCompiler_ipt::processMultiAddressObjectsInRE::processNext()
 bool PolicyCompiler_ipt::accounting::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
-    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=NULL);
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
+    RuleElementItf *itf_re = rule->getItf(); assert(itf_re!=nullptr);
     Interface *rule_iface = 
         Interface::cast(FWObjectReference::getObject(itf_re->front()));
 
@@ -4188,7 +4200,7 @@ bool PolicyCompiler_ipt::countChainUsage::processNext()
 bool PolicyCompiler_ipt::checkInterfaceAgainstAddressFamily::processNext()
 {
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     /*
      * If interface is "regular", compiler expects its addresses to
@@ -4202,7 +4214,7 @@ bool PolicyCompiler_ipt::checkInterfaceAgainstAddressFamily::processNext()
 
     Interface *rule_iface = compiler->getFirstItf(rule);
 
-    if (rule_iface==NULL || !rule_iface->isRegular()) 
+    if (rule_iface==nullptr || !rule_iface->isRegular()) 
     {
         tmp_queue.push_back(rule);
         return true;
@@ -4228,7 +4240,7 @@ bool PolicyCompiler_ipt::checkInterfaceAgainstAddressFamily::processNext()
             rule_iface->getFirstByType(FailoverClusterGroup::TYPENAME));
         Interface *other_iface = fg->getInterfaceForMemberFirewall(compiler->fw);
 
-        if (other_iface == NULL)
+        if (other_iface == nullptr)
         {
             // if we get here, this cluster interface does not have
             // any corresponding interface of the firewall we are
@@ -4264,7 +4276,7 @@ bool PolicyCompiler_ipt::checkInterfaceAgainstAddressFamily::processNext()
 
 bool PolicyCompiler_ipt::addPredefinedRules::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     tmp_queue.push_back(rule);
     return true;
@@ -4727,9 +4739,9 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
         {
             FWObject *o = FWReference::getObject(*i1);
             src << o->getName();
-            if (Group::cast(o)!=NULL)
+            if (Group::cast(o)!=nullptr)
                 src << "[" << o->size() << "]";
-            if ( MultiAddress::cast(o)!=NULL)
+            if ( MultiAddress::cast(o)!=nullptr)
                 src << string((MultiAddress::cast(o)->isRunTime()) ? "(r)" : "(c)");
         }
 
@@ -4737,9 +4749,9 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
         {
             FWObject *o = FWReference::getObject(*i2);
             dst << o->getName();
-            if (Group::cast(o)!=NULL)
+            if (Group::cast(o)!=nullptr)
                 dst << "[" << o->size() << "]";
-            if ( MultiAddress::cast(o)!=NULL)
+            if ( MultiAddress::cast(o)!=nullptr)
                 dst << string((MultiAddress::cast(o)->isRunTime()) ? "(r)" : "(c)");
         }
 
@@ -4818,19 +4830,19 @@ string PolicyCompiler_ipt::debugPrintRule(Rule *r)
     if (rule->getAction()==PolicyRule::Reject)
         str << " " + ruleopt->getStr("action_on_reject");
 
-    if (ruleopt!=NULL && ruleopt->getInt("limit_value")>0)
+    if (ruleopt!=nullptr && ruleopt->getInt("limit_value")>0)
         str << " limit";
 
-    if (ruleopt!=NULL && ruleopt->getInt("connlimit_value")>0)
+    if (ruleopt!=nullptr && ruleopt->getInt("connlimit_value")>0)
         str << " connlimit";
 
-    if (ruleopt!=NULL && ruleopt->getInt("hashlimit_value")>0)
+    if (ruleopt!=nullptr && ruleopt->getInt("hashlimit_value")>0)
         str << " hashlimit";
 
-    if (ruleopt!=NULL && ruleopt->getBool("no_input_chain"))
+    if (ruleopt!=nullptr && ruleopt->getBool("no_input_chain"))
         str << " no_input";
 
-    if (ruleopt!=NULL && ruleopt->getBool("no_output_chain"))
+    if (ruleopt!=nullptr && ruleopt->getBool("no_output_chain"))
         str << " no_output";
 
     //ruleopt->dump(str, false, false);
@@ -4850,7 +4862,7 @@ void PolicyCompiler_ipt::epilog()
 
 PolicyCompiler_ipt::PrintRule* PolicyCompiler_ipt::createPrintRuleProcessor()
 {
-    PolicyCompiler_ipt::PrintRule* print_rule = NULL;
+    PolicyCompiler_ipt::PrintRule* print_rule = nullptr;
     if (fw->getOptionsObject()->getBool("use_iptables_restore"))
     {
         // bug #1812295: we should use PrintRuleIptRstEcho not only

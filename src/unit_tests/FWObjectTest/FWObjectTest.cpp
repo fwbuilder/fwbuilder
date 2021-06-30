@@ -22,12 +22,12 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
+#include <QTest>
 
 #include "FWObjectTest.h"
 
 #include "fwbuilder/FWObjectDatabase.h"
 #include "fwbuilder/XMLTools.h"
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/ObjectMatcher.h"
 #include "fwbuilder/FWObject.h"
 #include "fwbuilder/Interface.h"
@@ -50,14 +50,14 @@ void FWObjectTest::cmpTest()
     FWObject *obj2 = db.create(Firewall::TYPENAME);
     obj2->duplicate(obj1);
     obj1->setStr("key", "value1");
-    CPPUNIT_ASSERT(obj1->cmp(obj2) == false);
+    QVERIFY(obj1->cmp(obj2) == false);
     obj2->setStr("key", "value2");
-    CPPUNIT_ASSERT(obj1->cmp(obj2) == false);
+    QVERIFY(obj1->cmp(obj2) == false);
     obj2->remStr("key");
     obj1->setStr("key", "");
-    CPPUNIT_ASSERT(obj1->cmp(obj2) == false);
+    QVERIFY(obj1->cmp(obj2) == false);
     obj1->remStr("key");
-    CPPUNIT_ASSERT(obj2->cmp(obj1) == true);
+    QVERIFY(obj2->cmp(obj1) == true);
 
 
     FWObject *ch1 = db.create(Interface::TYPENAME);
@@ -67,12 +67,12 @@ void FWObjectTest::cmpTest()
 
     ch1->setStr("key", "value1");
     ch2->duplicate(ch1);
-    CPPUNIT_ASSERT(ch1->cmp(ch2) == true);
+    QVERIFY(ch1->cmp(ch2) == true);
     ch3->duplicate(ch1);
-    CPPUNIT_ASSERT(ch1->cmp(ch3) == true);
+    QVERIFY(ch1->cmp(ch3) == true);
     ch4->duplicate(ch1);
     ch4->setStr("key", "value2");
-    CPPUNIT_ASSERT(ch1->cmp(ch4) == false);
+    QVERIFY(ch1->cmp(ch4) == false);
 
     obj1->add(ch1);
     obj1->add(ch2);
@@ -80,9 +80,9 @@ void FWObjectTest::cmpTest()
     obj2->add(ch3);
     obj2->add(ch4);
 
-    CPPUNIT_ASSERT(obj1->cmp(obj2, true) == false);
+    QVERIFY(obj1->cmp(obj2, true) == false);
 
     ch4->setStr("key", "value1");
 
-    CPPUNIT_ASSERT(obj1->cmp(obj2, true) == true);
+    QVERIFY(obj1->cmp(obj2, true) == true);
 }

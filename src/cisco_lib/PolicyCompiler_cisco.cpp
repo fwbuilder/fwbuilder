@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 
 #include "PolicyCompiler_cisco.h"
 #include "NamedObjectsManager.h"
@@ -81,7 +80,7 @@ string PolicyCompiler_cisco::createRuleLabel(const string &txt,
     ostringstream  str;
     
     str << rule_num;
-    if (iface!=NULL) str << "(" << iface->getLabel() << ")";
+    if (iface!=nullptr) str << "(" << iface->getLabel() << ")";
     else             str << "(" << txt << ")";
     return str.str();
 }
@@ -135,7 +134,7 @@ string PolicyCompiler_cisco::debugPrintRule(Rule *r)
     PolicyRule *rule = PolicyRule::cast(r);
 
 //    FWObject *rule_iface = dbcopy->findInIndex(rule->getInterfaceId());
-//    string iname = (rule_iface!=NULL)?rule_iface->getName():"";
+//    string iname = (rule_iface!=nullptr)?rule_iface->getName():"";
 
     string dir = rule->getDirectionAsString();
 
@@ -151,7 +150,7 @@ string PolicyCompiler_cisco::debugPrintRule(Rule *r)
 
 bool PolicyCompiler_cisco::splitIfSrcAny::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrc *srcrel=rule->getSrc();
     Address *src = compiler->getFirstSrc(rule);
@@ -160,7 +159,7 @@ bool PolicyCompiler_cisco::splitIfSrcAny::processNext()
          ( 
              srcrel->isAny()  ||
 
-             ( srcrel->size()==1 && src!=NULL &&
+             ( srcrel->size()==1 && src!=nullptr &&
                !compiler->complexMatch(src,compiler->fw) &&
                srcrel->getBool("single_object_negation")) 
          ) 
@@ -190,7 +189,7 @@ bool PolicyCompiler_cisco::splitIfSrcAny::processNext()
  */
 bool PolicyCompiler_cisco::splitIfDstAny::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElementSrv *srvrel=rule->getSrv();
     RuleElementDst *dstrel=rule->getDst();
@@ -201,10 +200,10 @@ bool PolicyCompiler_cisco::splitIfDstAny::processNext()
     for (list<FWObject*>::iterator i1=srvrel->begin(); i1!=srvrel->end(); ++i1) 
     {
         FWObject *o   = *i1;
-        FWObject *obj = NULL;
-        if (FWReference::cast(o)!=NULL) obj=FWReference::cast(o)->getPointer();
+        FWObject *obj = nullptr;
+        if (FWReference::cast(o)!=nullptr) obj=FWReference::cast(o)->getPointer();
         Service *s=Service::cast(obj);
-        assert(s!=NULL);
+        assert(s!=nullptr);
 
         if (ICMPService::isA(s))  cl.push_back(s);
 
@@ -221,7 +220,7 @@ bool PolicyCompiler_cisco::splitIfDstAny::processNext()
          ( 
              dstrel->isAny()  ||
 
-             ( dstrel->size()==1 && dst!=NULL &&
+             ( dstrel->size()==1 && dst!=nullptr &&
                !compiler->complexMatch(dst,compiler->fw) &&
                dstrel->getBool("single_object_negation")) 
          )
@@ -252,7 +251,7 @@ bool PolicyCompiler_cisco::splitIfDstAny::processNext()
 
 bool PolicyCompiler_cisco::NegationPhase1::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
     return true;
 
 #ifdef DO_NEGATION
@@ -374,7 +373,7 @@ bool PolicyCompiler_cisco::NegationPhase1::processNext()
  */
 bool PolicyCompiler_cisco::splitIfRuleElementMatchesFW::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     PolicyCompiler_cisco *cisco_comp = dynamic_cast<PolicyCompiler_cisco*>(compiler);
 
     RuleElement *re = RuleElement::cast(rule->getFirstByType(re_type));
@@ -386,7 +385,7 @@ bool PolicyCompiler_cisco::splitIfRuleElementMatchesFW::processNext()
     {
 	FWObject *obj = FWReference::getObject(*i1);
         Address *a = Address::cast(obj);
-        assert(a!=NULL);
+        assert(a!=nullptr);
 
         if (cisco_comp->complexMatch(a,cisco_comp->fw))
         {
@@ -432,7 +431,7 @@ bool PolicyCompiler_cisco::specialCaseWithDynInterface::dropDynamicInterface(
         FWObject *obj = FWObjectReference::getObject(*i1);
         Interface  *ifs = Interface::cast( obj );
 
-        if (ifs!=NULL && ifs->isDyn()) 
+        if (ifs!=nullptr && ifs->isDyn()) 
         {
             if (ifs->getId()==rule_iface->getId() &&  dir==cmp_dir)
                 cl.push_back(obj);   // keep it
@@ -478,7 +477,7 @@ bool PolicyCompiler_cisco::specialCaseWithDynInterface::dropDynamicInterface(
  */
 bool PolicyCompiler_cisco::specialCaseWithDynInterface::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     if ( dropDynamicInterface( rule, PolicyRule::Outbound, rule->getSrc() ) &&
          dropDynamicInterface( rule, PolicyRule::Inbound,  rule->getDst() ) )
@@ -494,19 +493,19 @@ bool PolicyCompiler_cisco::specialCaseWithDynInterface::processNext()
  */
 bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     PolicyCompiler_cisco *cisco_comp =
         dynamic_cast<PolicyCompiler_cisco*>(compiler);
     Q_UNUSED(cisco_comp);
 
     RuleElementSrv *srv = rule->getSrv();
     Address *a = compiler->getFirstDst(rule);
-    assert(a!=NULL);
+    assert(a!=nullptr);
 
     if (rule->getAction()==PolicyRule::Accept
         &&
         (
-            (Cluster::cast(a) != NULL && Cluster::cast(a)->hasMember(compiler->fw))
+            (Cluster::cast(a) != nullptr && Cluster::cast(a)->hasMember(compiler->fw))
             ||
             a->getId() == compiler->fw->getId()
         )
@@ -517,7 +516,7 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
         {
             FWObject *obj = FWReference::getObject(*i1);
             Service *s = Service::cast(obj);
-            assert(s!=NULL);
+            assert(s!=nullptr);
 
             if (TCPService::isA(s) && 
                 TCPUDPService::cast(s)->getDstRangeStart()==port && 
@@ -559,13 +558,13 @@ bool PolicyCompiler_cisco::tcpServiceToFW::processNext()
  */
 bool PolicyCompiler_cisco::replaceFWinSRCInterfacePolicy::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 //    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
     RuleElementItf *intf_re = rule->getItf();
     Interface *rule_iface = Interface::cast(
         FWObjectReference::getObject(intf_re->front()));
 
-    if ( rule_iface!=NULL && rule->getDirection()==PolicyRule::Outbound)
+    if ( rule_iface!=nullptr && rule->getDirection()==PolicyRule::Outbound)
     {
         RuleElementSrc *src = rule->getSrc();
         
@@ -582,13 +581,13 @@ bool PolicyCompiler_cisco::replaceFWinSRCInterfacePolicy::processNext()
 
 bool PolicyCompiler_cisco::replaceFWinDSTInterfacePolicy::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 //    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
     RuleElementItf *intf_re = rule->getItf();
     Interface *rule_iface = Interface::cast(
         FWObjectReference::getObject(intf_re->front()));
 
-    if ( rule_iface!=NULL && rule->getDirection()==PolicyRule::Inbound)
+    if ( rule_iface!=nullptr && rule->getDirection()==PolicyRule::Inbound)
     {
         RuleElementDst *dst = rule->getDst();
 
@@ -610,7 +609,7 @@ bool PolicyCompiler_cisco::replaceFWinDSTInterfacePolicy::processNext()
 bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
 {
     Helper helper(compiler);
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 //    FWObject *rule_iface = compiler->dbcopy->findInIndex(rule->getInterfaceId());
     RuleElementItf *intf_re = rule->getItf();
 
@@ -646,7 +645,7 @@ bool PolicyCompiler_cisco::replaceFWinDSTPolicy::processNext()
 
 bool PolicyCompiler_cisco::equalObjCISCO::operator()(FWObject *o)
 {
-    if (ICMPService::cast(obj)!=NULL && ICMPService::cast(o)!=NULL)
+    if (ICMPService::cast(obj)!=nullptr && ICMPService::cast(o)!=nullptr)
     {
         return (obj->getInt("type")==o->getInt("type"));
     } else
@@ -656,7 +655,7 @@ bool PolicyCompiler_cisco::equalObjCISCO::operator()(FWObject *o)
 /*  re_type can be either RuleElementSrc::TYPENAME or RuleElementDst::TYPENAME */
 bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
 {
-    PolicyRule *rule=getNext(); if (rule==NULL) return false;
+    PolicyRule *rule=getNext(); if (rule==nullptr) return false;
 
     RuleElement *re=RuleElement::cast(rule->getFirstByType(re_type));
     if (re->size()==1) 
@@ -669,7 +668,7 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
     for (list<FWObject*>::iterator i1=re->begin(); i1!=re->end(); ++i1) 
     {
         Address *a = Address::cast(FWReference::getObject(*i1));
-        assert(a!=NULL);   // assuming all objects are addresses.
+        assert(a!=nullptr);   // assuming all objects are addresses.
         status[a] = false;
     }
 
@@ -705,15 +704,15 @@ bool PolicyCompiler_cisco::removeRedundantAddresses::processNext()
 
 bool PolicyCompiler_cisco::processMultiAddressObjectsInRE::processNext()
 {
-    PolicyRule *rule = getNext(); if (rule==NULL) return false;
+    PolicyRule *rule = getNext(); if (rule==nullptr) return false;
     RuleElement *re = RuleElement::cast( rule->getFirstByType(re_type) );
 
     for (FWObject::iterator i=re->begin(); i!=re->end(); i++)
     {
         FWObject *o = *i;
-        if (FWReference::cast(o)!=NULL) o = FWReference::cast(o)->getPointer();
+        if (FWReference::cast(o)!=nullptr) o = FWReference::cast(o)->getPointer();
         MultiAddress *atrt = MultiAddress::cast(o);
-        if (atrt!=NULL && atrt->isRunTime())
+        if (atrt!=nullptr && atrt->isRunTime())
         {
             compiler->abort(
                     rule, 

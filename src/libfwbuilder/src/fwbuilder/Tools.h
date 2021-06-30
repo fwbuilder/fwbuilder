@@ -36,10 +36,9 @@
 #endif
 
 #ifndef nil
-# define nil NULL
+# define nil nullptr
 #endif
 
-#include "config.h"
 
 #include <string>
 #include <map>

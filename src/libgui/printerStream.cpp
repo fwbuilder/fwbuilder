@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -152,7 +151,7 @@ int printerStream::getWorkspaceHeight()
 void printerStream::beginPage()
 {
     yPos=0;
-    if (ppd!=NULL) ppd->setCurrentPageNo(pageNo);
+    if (ppd!=nullptr) ppd->setCurrentPageNo(pageNo);
 
     if (printHeader)
     {
@@ -367,7 +366,7 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
 
         int top_hdr_h = 0;
         Q_UNUSED(top_hdr_h);
-        if (top_margin && tbl->header() != NULL)
+        if (top_margin && tbl->header() != nullptr)
             top_hdr_h = tbl->header()->height();
 
         int tblWidth = columnsWidth + left_hdr_w;
@@ -381,11 +380,7 @@ void printerStream::printRuleSetView(RuleSetView *tbl, bool top_margin)
 
         tbl->scrollTo(it.index(), QAbstractItemView::PositionAtTop);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        printPixmap(QPixmap::grabWidget(tbl));
-#else
         printPixmap(tbl->grab());
-#endif
 
         if (bottomIt == end) break;
 
@@ -475,12 +470,12 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
         bottom_row = row;
 
         int left_hdr_w = 0;
-        if (left_margin && tbl->verticalHeader() != NULL)
+        if (left_margin && tbl->verticalHeader() != nullptr)
             left_hdr_w = tbl->verticalHeader()->width();
 
         int top_hdr_h = 0;
         Q_UNUSED(top_hdr_h);
-        if (top_margin && tbl->horizontalHeader() != NULL)
+        if (top_margin && tbl->horizontalHeader() != nullptr)
             top_hdr_h = tbl->horizontalHeader()->height();
 
         int tblWidth = columnsWidth + left_hdr_w;
@@ -511,12 +506,7 @@ void printerStream::printQTable(QTableView *tbl, bool left_margin,
 
         tbl->update();
 
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        printPixmap(QPixmap::grabWidget(tbl));  //,0,0,-1,pixMapHeight));
-#else
         printPixmap(tbl->grab());  //,0,0,-1,pixMapHeight));
-#endif
 
         if (bottom_row>=(rowCount-1)) break;
 

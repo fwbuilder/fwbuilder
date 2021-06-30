@@ -23,7 +23,6 @@
 
 */
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -64,7 +63,7 @@ IPv6Dialog::IPv6Dialog(QWidget *parent) : BaseObjectDialog(parent)
 {
     m_dialog = new Ui::IPv6Dialog_q;
     m_dialog->setupUi(this);
-    obj=NULL;
+    obj=nullptr;
 
     connectSignalsOfAllWidgetsToSlotChange();
 }
@@ -78,7 +77,7 @@ void IPv6Dialog::loadFWObject(FWObject *o)
 {
     obj=o;
     IPv6 *s = dynamic_cast<IPv6*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     dnsBusy=false;
     init=true;
@@ -140,15 +139,18 @@ void IPv6Dialog::validate(bool *res)
 
     if (!validateName(this,obj,m_dialog->obj_name->text())) { *res=false; return; }
 
+#ifndef NDEBUG
     IPv6 *s = dynamic_cast<IPv6*>(obj);
-    assert(s!=NULL);
+    assert(s!=nullptr);
+#endif
+
     try
     {
         InetAddr(AF_INET6, m_dialog->address->text().trimmed().toLatin1().constData() );
     } catch (FWException &ex)
     {
         *res = false;
-        if (QApplication::focusWidget() != NULL)
+        if (QApplication::focusWidget() != nullptr)
         {
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
@@ -169,7 +171,7 @@ void IPv6Dialog::validate(bool *res)
         } catch (FWException &ex)
         {
             *res = false;
-            if (QApplication::focusWidget() != NULL)
+            if (QApplication::focusWidget() != nullptr)
             {
                 blockSignals(true);
                 QMessageBox::critical(this, "Firewall Builder",
@@ -186,11 +188,11 @@ void IPv6Dialog::validate(bool *res)
 
 void IPv6Dialog::applyChanges()
 {
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(m_project, obj));
     FWObject* new_state = cmd->getNewState();
 
     IPv6 *s = dynamic_cast<IPv6*>(new_state);
-    assert(s!=NULL);
+    assert(s!=nullptr);
 
     string oldname=obj->getName();
     new_state->setName( string(m_dialog->obj_name->text().toUtf8().constData()) );
@@ -229,16 +231,10 @@ void IPv6Dialog::DNSlookup()
     if (!dnsBusy)
     {
         QString name = m_dialog->obj_name->text().trimmed();
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (fwbdebug)
-            qDebug("IPv6Dialog::DNSlookup()  name=%s",
-                   name.toAscii().constData());
 
-#else
         if (fwbdebug)
             qDebug("IPv6Dialog::DNSlookup()  name=%s",
                    name.toLatin1().constData());
-#endif
 
         dnsBusy=true;
         QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
@@ -260,16 +256,11 @@ void IPv6Dialog::DNSlookup()
         if ( Interface::isA(obj->getParent()) )
         {
             FWObject *host = obj->getParent()->getParent();
-            assert(host!=NULL);
+            assert(host!=nullptr);
             name = host->getName().c_str();
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  name=%s",
-                name.toAscii().constData());
-#else
             if (fwbdebug) qDebug("IPv6Dialog::DNSlookup()  name=%s",
                 name.toLatin1().constData());
-#endif
             dnsBusy=true;
             QApplication::setOverrideCursor( QCursor( Qt::WaitCursor) );
 
@@ -288,14 +279,14 @@ void IPv6Dialog::DNSlookup()
                 this,"Firewall Builder",
                 tr("DNS lookup failed for both names of the address object '%1' and the name of the host '%2'.")
                 .arg(m_dialog->obj_name->text()).arg(name),
-                "&Continue", QString::null,QString::null, 0, 1 );
+                "&Continue", QString(),QString(), 0, 1 );
             return;
         }
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("DNS lookup failed for name of the address object '%1'.")
             .arg(name),
-            "&Continue", QString::null,QString::null, 0, 1 );
+            "&Continue", QString(),QString(), 0, 1 );
         return;
     }
 }

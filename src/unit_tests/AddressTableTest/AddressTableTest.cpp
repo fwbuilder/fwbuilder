@@ -23,9 +23,9 @@
 
 */
 
-#include "AddressTableTest.h"
+#include <QTest>
 
-#include "fwbuilder/libfwbuilder-config.h"
+#include "AddressTableTest.h"
 
 #include "fwbuilder/Resources.h"
 
@@ -47,7 +47,7 @@ using namespace libfwbuilder;
 
 
 
-void AddressTableTest::setUp()
+void AddressTableTest::init()
 {
     objdb = new FWObjectDatabase();
 
@@ -62,6 +62,11 @@ void AddressTableTest::setUp()
     address_tables_group = objdb->create(ObjectGroup::TYPENAME,true);
     address_tables_group->setName("Address Tables");
     o1->add(address_tables_group);
+}
+
+void AddressTableTest::cleanup()
+{
+    delete objdb;
 }
 
 void AddressTableTest::positiveTest()
@@ -83,14 +88,14 @@ void AddressTableTest::positiveTest()
     addrset.insert("192.168.100.0/255.255.255.0");
     addrset.insert("192.168.11.0/255.255.255.0");
 
-    CPPUNIT_ASSERT(address_tables_group!=NULL);
+    QVERIFY(address_tables_group!=nullptr);
 
 
     AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
     address_tables_group->add(nobj);
     nobj->setName("TestADT");
     nobj->setSourceName("addresstable-1.txt");
-    nobj->loadFromSource(false, NULL, true);
+    nobj->loadFromSource(false, nullptr, true);
 
     list<FWObject*>::const_iterator t = nobj->begin();
     Network *net;
@@ -99,13 +104,13 @@ void AddressTableTest::positiveTest()
     for ( ; t != nobj->end(); ++t )
     {
         ref = FWReference::cast(*t);
-        CPPUNIT_ASSERT(ref!=NULL);
+        QVERIFY(ref!=nullptr);
         net = Network::cast(ref->getPointer());
-        CPPUNIT_ASSERT(net!=NULL);
+        QVERIFY(net!=nullptr);
         addrres.insert(net->getAddressPtr()->toString() + "/" + net->getNetmaskPtr()->toString());
     }
 
-    CPPUNIT_ASSERT(addrset==addrres);
+    QVERIFY(addrset==addrres);
 }
 
 
@@ -113,27 +118,27 @@ void AddressTableTest::negativeTest1()
 {
     setStrings addrres;
 
-    CPPUNIT_ASSERT(address_tables_group!=NULL);
+    QVERIFY(address_tables_group!=nullptr);
 
 
     AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
     address_tables_group->add(nobj);
     nobj->setName("TestADT2");
     nobj->setSourceName("addresstable-2.txt");
-    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, NULL, true), FWException);
+    QVERIFY_EXCEPTION_THROWN(nobj->loadFromSource(false, nullptr, true), FWException);
 }
 
 void AddressTableTest::negativeTest2()
 {
     setStrings addrres;
 
-    CPPUNIT_ASSERT(address_tables_group!=NULL);
+    QVERIFY(address_tables_group!=nullptr);
 
 
     AddressTable *nobj = AddressTable::cast(objdb->create(AddressTable::TYPENAME, true));
     address_tables_group->add(nobj);
     nobj->setName("TestADT3");
     nobj->setSourceName("addresstable-not-found.txt");
-    CPPUNIT_ASSERT_THROW(nobj->loadFromSource(false, NULL, true), FWException);
+    QVERIFY_EXCEPTION_THROWN(nobj->loadFromSource(false, nullptr, true), FWException);
 }
 

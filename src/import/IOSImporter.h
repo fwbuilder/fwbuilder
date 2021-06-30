@@ -35,7 +35,6 @@
 
 #include "Importer.h"
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Logger.h"
 #include "fwbuilder/Policy.h"
 

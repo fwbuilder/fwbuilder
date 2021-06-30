@@ -52,6 +52,16 @@ class AddressRange : public Address
     void setRangeStart(const InetAddr &o) { start_address = o; }
     void setRangeEnd(const InetAddr &o)   { end_address = o;   }
 
+    bool isV4() const {
+        return start_address.addressFamily() == AF_INET
+                && end_address.addressFamily() == AF_INET;
+    }
+
+    bool isV6() const {
+        return start_address.addressFamily() == AF_INET6
+                && end_address.addressFamily() == AF_INET6;
+    }
+
     /**
      * virtual methods inherited from Address
      */
@@ -63,12 +73,11 @@ class AddressRange : public Address
     virtual void setNetmask(const InetAddr &nm);
 
     
-    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id)
-        throw(FWException);
-    virtual bool cmp(const FWObject *obj, bool recursive=false) throw(FWException);
+    virtual FWObject& shallowDuplicate(const FWObject *obj, bool preserve_id);
+    virtual bool cmp(const FWObject *obj, bool recursive=false);
    
-    virtual void       fromXML (xmlNodePtr parent) throw(FWException);
-    virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node) throw(FWException);
+    virtual void       fromXML (xmlNodePtr parent);
+    virtual xmlNodePtr toXML   (xmlNodePtr xml_parent_node);
 
     virtual bool isPrimaryObject() const { return true; }
 

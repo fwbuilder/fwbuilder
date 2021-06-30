@@ -38,10 +38,10 @@ globalNATPool::globalNATPool(int id,Interface *ifs,Address *a)
     nat_id=id;
     iface=ifs;
     addr= a;
-    if (Interface::cast(a)!=NULL || iface->isDyn()) {
+    if (Interface::cast(a)!=nullptr || iface->isDyn()) {
         type=INTERFACE;
     } else {
-        type= (AddressRange::cast(a)!=NULL)?ADDRESS_RANGE:SINGLE_ADDRESS;
+        type= (AddressRange::cast(a)!=nullptr)?ADDRESS_RANGE:SINGLE_ADDRESS;
     }
 }
 

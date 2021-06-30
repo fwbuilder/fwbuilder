@@ -24,8 +24,6 @@
 
 */
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #ifndef _WIN32
@@ -45,45 +43,32 @@
 #  include <windows.h>
 #endif
 
-#include <pthread.h>
-
+#include "fwbuilder/ThreadTools.h"
 #include <memory>
 #include <sstream>
 #include <cstdlib>
 #include <cstring>
 
 #include "fwbuilder/dns.h"
-#include "fwbuilder/ThreadTools.h"
 
 using namespace std;
 using namespace libfwbuilder;
 
 #undef DEBUG_DNS
 
-Mutex *DNS::gethostbyname_mutex = NULL;
-Mutex *DNS::gethostbyaddr_mutex = NULL;
-
-// use this function for delayed initialization
-void DNS::init()
-{
-    if (gethostbyname_mutex==NULL) gethostbyname_mutex = new Mutex();
-    if (gethostbyaddr_mutex==NULL) gethostbyaddr_mutex = new Mutex();
-}
+Mutex DNS::gethostbyaddr_mutex;
+Mutex DNS::gethostbyname_mutex;
 
 /*
  * gethostbyaddr and gethostbyname return pointers to a static structure.
  * Since this is not thread safe, need to use mutex to protect calls to
  * these functions.
  */
-HostEnt DNS::getHostByAddr(const InetAddr &addr, int type) throw(FWException)
+HostEnt DNS::getHostByAddr(const InetAddr &addr, int type)
 {
-    DNS::init();
-
     struct hostent *hp;
-    size_t hstbuflen = 1024; 
-    char *tmphstbuf = (char *)malloc(hstbuflen);
+    LockGuard lock(gethostbyaddr_mutex);
 
-    gethostbyaddr_mutex->lock();
     if (type==AF_INET)
     {
         hp = gethostbyaddr((const char *)addr.getV4(),
@@ -96,10 +81,8 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type) throw(FWException)
                            type);
     }
 
-    if(hp==NULL)
+    if(hp==nullptr)
     {
-        gethostbyaddr_mutex->unlock();
-        free(tmphstbuf);
         throw FWException(string("Hostname of address: '") + 
                           addr.toString() + "' not found");
     } 
@@ -108,27 +91,23 @@ HostEnt DNS::getHostByAddr(const InetAddr &addr, int type) throw(FWException)
     if (hp->h_aliases)
         for(char **p = hp->h_aliases; *p; p++) v.aliases.insert(string(*p));
 
-    free(tmphstbuf);
-
-    gethostbyaddr_mutex->unlock();
     return v;
 }
 
 list<InetAddr> DNS::getHostByName(const string &name, int type)
-    throw(FWException)
 {
-    DNS::init();
-
     list<InetAddr> v;
     
-    struct addrinfo *aiList = NULL;
+    struct addrinfo *aiList = nullptr;
     int retVal;
 
 #ifdef DEBUG_DNS
     cerr << "DNS::getHostByName " << name << "  type=" << type << endl;
 #endif
 
-    if ((retVal = getaddrinfo(name.c_str(), NULL, NULL, &aiList)) != 0)
+    LockGuard lock(gethostbyname_mutex);
+
+    if ((retVal = getaddrinfo(name.c_str(), nullptr, nullptr, &aiList)) != 0)
     {
         std::ostringstream strerr;
         strerr << "Host or network '" + name + "' not found; last error: ";
@@ -143,7 +122,7 @@ list<InetAddr> DNS::getHostByName(const string &name, int type)
     struct addrinfo *ai;
     try
     {
-        for (ai=aiList; ai!=NULL; ai=ai->ai_next)
+        for (ai=aiList; ai!=nullptr; ai=ai->ai_next)
         {
 #ifdef DEBUG_DNS
             cerr << "DNS::getHostByName " << name

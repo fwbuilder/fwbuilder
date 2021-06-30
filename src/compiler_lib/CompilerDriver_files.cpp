@@ -21,7 +21,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "CompilerDriver.h"
 
@@ -187,7 +186,7 @@ void CompilerDriver::determineOutputFileNames(Cluster *cluster,
 
     }
 
-    if (prepend_cluster_name_to_output_file && cluster_member && cluster!=NULL)
+    if (prepend_cluster_name_to_output_file && cluster_member && cluster!=nullptr)
     {
         for (int i=0; i<file_names.size(); ++i)
         {

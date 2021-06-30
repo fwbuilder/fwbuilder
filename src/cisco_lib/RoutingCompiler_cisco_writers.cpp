@@ -49,7 +49,7 @@ RoutingCompiler_cisco::PrintRule::PrintRule(const std::string &name) :
 bool RoutingCompiler_cisco::PrintRule::processNext()
 {
     RoutingRule *rule = getNext(); 
-    if (rule == NULL) return false;
+    if (rule == nullptr) return false;
 
     tmp_queue.push_back(rule);
     
@@ -60,7 +60,7 @@ string RoutingCompiler_cisco::PrintRule::_printAddr(Address  *o)
 {
     std::ostringstream  ostr;
 
-    if (Interface::cast(o)!=NULL)
+    if (Interface::cast(o)!=nullptr)
     {
         Interface *iface=Interface::cast(o);
         if (iface->isDyn())
@@ -73,7 +73,7 @@ string RoutingCompiler_cisco::PrintRule::_printAddr(Address  *o)
     addr = o->getAddressPtr();
     mask = o->getNetmaskPtr();
 
-    if (addr==NULL)
+    if (addr==nullptr)
     {
         FWObject *obj=o;
 /*
@@ -82,7 +82,7 @@ string RoutingCompiler_cisco::PrintRule::_printAddr(Address  *o)
  * Interface are inherited from Address, we can't use cast. Use isA
  * instead
  */
-        while (obj!=NULL && 
+        while (obj!=nullptr && 
                !Host::isA(obj) && 
                !Firewall::isA(obj)  && 
                !Network::isA(obj))  obj=obj->getParent();
@@ -99,7 +99,7 @@ string RoutingCompiler_cisco::PrintRule::_printAddr(Address  *o)
     {
         ostr << addr->toString();
 
-        if (Interface::cast(o)==NULL &&
+        if (Interface::cast(o)==nullptr &&
             Address::cast(o)->dimension() > 1 &&
             !mask->isHostMask())
         {
@@ -124,7 +124,7 @@ string RoutingCompiler_cisco::PrintRule::_printRGtw(RoutingRule *rule)
     RuleElementRGtw *gtwrel = rule->getRGtw();
     ref = gtwrel->front();
     Address *gtw = Address::cast(FWReference::cast(ref)->getPointer());
-    if (gtw == NULL) compiler->abort(rule, "Broken GTW");
+    if (gtw == nullptr) compiler->abort(rule, "Broken GTW");
 
     string gateway = _printAddr(gtw);
     if (gateway != "default ") return gateway;
@@ -139,7 +139,7 @@ string RoutingCompiler_cisco::PrintRule::_printRItf(RoutingRule *rule)
     ref = itfrel->front();
     Interface *itf = Interface::cast(FWReference::cast(ref)->getPointer());
     
-    if (itf != NULL) return itf->getLabel() + " ";
+    if (itf != nullptr) return itf->getLabel() + " ";
     else return "";
 }
 
@@ -150,7 +150,7 @@ string RoutingCompiler_cisco::PrintRule::_printRDst(RoutingRule *rule)
     RuleElementRDst *dstrel = rule->getRDst();
     ref = dstrel->front();
     Address *dst = Address::cast(FWReference::cast(ref)->getPointer());
-    if (dst==NULL) compiler->abort(rule, "Broken DST");
+    if (dst==nullptr) compiler->abort(rule, "Broken DST");
     
     string dest = _printAddr(dst);
 

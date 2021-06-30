@@ -54,7 +54,7 @@ linux24IfaceOptsDialog::linux24IfaceOptsDialog(QWidget *parent, FWObject *o)
     obj = o;
 
     FWOptions *ifopt = (Interface::cast(obj))->getOptionsObject();
-    cluster_interface = (Cluster::cast(obj->getParent()) != NULL);
+    cluster_interface = (Cluster::cast(obj->getParent()) != nullptr);
 
     setInterfaceTypes(m_dialog->iface_type, Interface::cast(obj),
                       ifopt->getStr("type").c_str());
@@ -100,12 +100,12 @@ void linux24IfaceOptsDialog::accept()
     if (!validate())  return;
 
     ProjectPanel *project = mw->activeProject();
-    std::auto_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
+    std::unique_ptr<FWCmdChange> cmd( new FWCmdChange(project, obj));
 
     // new_state  is a copy of the interface object
     FWObject* new_state = cmd->getNewState();
     FWOptions* ifopt = Interface::cast(new_state)->getOptionsObject();
-    assert(ifopt!=NULL);
+    assert(ifopt!=nullptr);
 
     if (cluster_interface)
     {
@@ -182,7 +182,7 @@ bool linux24IfaceOptsDialog::validate()
     QString combobox = m_dialog->iface_type->currentText();
     QString type = m_dialog->iface_type->itemData(
         m_dialog->iface_type->currentIndex()).toString();
-    QWidget *focus = NULL;
+    QWidget *focus = nullptr;
     QString message;
 
     if (type == "vrrp")
@@ -202,7 +202,7 @@ bool linux24IfaceOptsDialog::validate()
     {
         QMessageBox::warning(this, "Firewall Builder",
                              tr("Input not valid: %1").arg(message), "&Continue",
-                             QString::null, QString::null, 0, 1);
+                             QString(), QString(), 0, 1);
         focus->setFocus();
     }
     return valid;

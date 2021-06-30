@@ -41,7 +41,7 @@ FWObject *AskLibForCopyDialog::askLibForCopyDialog( QWidget *parent,
     AskLibForCopyDialog dlg(parent, db, curr);
     if ( dlg.exec() == QDialog::Accepted )
         return dlg.getChoosenLib();
-    return 0;
+    return nullptr;
 }
 
 AskLibForCopyDialog::~AskLibForCopyDialog()
@@ -91,7 +91,7 @@ int AskLibForCopyDialog::addLib( FWObject *lib)
     string icn=":/Icons/"+lib->getTypeName()+"/icon-tree";
             //Resources::global_res->getObjResourceStr(lib,"icon-tree").c_str();
     QPixmap pm;
-    if ( ! QPixmapCache::find( icn.c_str(), pm) )
+    if ( ! QPixmapCache::find( icn.c_str(), &pm) )
     {
         pm.load( icn.c_str() );
         QPixmapCache::insert( icn.c_str(), pm);
@@ -110,5 +110,5 @@ FWObject *AskLibForCopyDialog::getChoosenLib()
     int ind = m_dialog->libs->currentIndex();
     if (0 <= ind)
         return idxToLibs[ind];
-    return 0;
+    return nullptr;
 }

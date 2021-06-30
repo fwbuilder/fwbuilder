@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -79,8 +78,8 @@ QString CompilerDriver_procurve_acl::assembleManifest(Cluster*, Firewall*, bool)
     QString script_buffer;
     QTextStream script(&script_buffer, QIODevice::WriteOnly);
 
-    script << ";" << MANIFEST_MARKER
-           << "* " << this->escapeFileName(file_names[FW_FILE]) << endl;
+    script << ";" << manifestMarker()
+           << "* " << this->escapeFileName(file_names[FW_FILE]) << '\n';
 
     return script_buffer;
 }
@@ -115,8 +114,8 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                                          const std::string &firewall_id,
                                          const std::string &single_rule_id)
 {
-    Cluster *cluster = NULL;
-    Firewall *fw = NULL;
+    Cluster *cluster = nullptr;
+    Firewall *fw = nullptr;
 
     getFirewallAndClusterObjects(cluster_id, firewall_id, &cluster, &fw);
 
@@ -159,7 +158,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
                 options->setBool("procurve_acl_acl_no_clear",true);
         }
 
-        std::auto_ptr<OSConfigurator_procurve> oscnf(new OSConfigurator_procurve(objdb, fw, false));
+        std::unique_ptr<OSConfigurator_procurve> oscnf(new OSConfigurator_procurve(objdb, fw, false));
 
         oscnf->prolog();
         oscnf->processFirewallOptions();
@@ -227,7 +226,7 @@ QString CompilerDriver_procurve_acl::run(const std::string &cluster_id,
             }
             if (policy_count)
             {
-                std::auto_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
+                std::unique_ptr<Preprocessor> prep(new Preprocessor(objdb, fw, false));
                 if (inTestMode()) prep->setTestMode();
                 if (inEmbeddedMode()) prep->setEmbeddedMode();
                 prep->compile();

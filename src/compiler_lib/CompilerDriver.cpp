@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -116,7 +115,7 @@ CompilerDriver::CompilerDriver(FWObjectDatabase *db) : BaseCompiler()
 
 CompilerDriver::~CompilerDriver()
 {
-    if (persistent_objects->getParent() == NULL)
+    if (persistent_objects->getParent() == nullptr)
         delete persistent_objects;
     else
     {
@@ -127,7 +126,7 @@ CompilerDriver::~CompilerDriver()
         }
     }
     
-    if (workspace->getParent() == NULL)
+    if (workspace->getParent() == nullptr)
         delete workspace;
     else
     {
@@ -365,7 +364,7 @@ void CompilerDriver::commonChecks(Firewall *fw)
             if (output_file_names.count(ofname) > 0)
             {
                 QString err("Member firewalls use the same output file name %1");
-                error(cluster, NULL, NULL, err.arg(ofname.c_str()).toStdString());
+                error(cluster, nullptr, nullptr, err.arg(ofname.c_str()).toStdString());
             }
             output_file_names.insert(ofname);
         }
@@ -428,7 +427,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
         }
     }
     if ( ! have_top )
-        warning(fw, NULL, NULL,"Missing top level NAT ruleset");
+        warning(fw, nullptr, nullptr,"Missing top level NAT ruleset");
 
     have_top = false;
     for (list<FWObject*>::iterator p=all_policies.begin(); p!=all_policies.end(); ++p)
@@ -440,7 +439,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
         }
     }
     if ( ! have_top )
-        warning(fw, NULL, NULL,"Missing top level Policy ruleset");
+        warning(fw, nullptr, nullptr,"Missing top level Policy ruleset");
 
 
     list<FWObject*> interfaces = fw->getByTypeDeep(Interface::TYPENAME);
@@ -460,7 +459,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
             {
                 QString err("'*' must be the last character in "
                             "the wildcard's interface name: '%1'.");
-                abort(fw, NULL, NULL,
+                abort(fw, nullptr, nullptr,
                       err.arg(iface->getName().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
@@ -481,7 +480,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 QString err("Wildcard interface '%1' should not have "
                             "physcal address object attached to it. "
                             "The physical address object will be ignored.");
-                error(fw, NULL, NULL,
+                error(fw, nullptr, nullptr,
                       err.arg(iface->getName().c_str()).toStdString());
                 for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
                     iface->remove(*j);
@@ -502,7 +501,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                     {
                         QString err("Dynamic interface %1 has IP address "
                                     "that is used in the firewall policy rule.");
-                        abort(fw, NULL, NULL,
+                        abort(fw, nullptr, nullptr,
                               err.arg(iface->getName().c_str()).toStdString());
                         throw FatalErrorInSingleRuleCompileMode();
                     }
@@ -510,7 +509,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 QString err("Dynamic interface %1 should not have an "
                             "IP address object attached to it. "
                             "This IP address object will be ignored.");
-                error(fw, NULL, NULL,
+                error(fw, nullptr, nullptr,
                       err.arg(iface->getName().c_str()).toStdString());
                 for (list<FWObject*>::iterator j=l3.begin(); j!=l3.end(); ++j) 
                     iface->remove(*j);
@@ -547,7 +546,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 all_ipv6.empty())
             {
                 QString err("Missing IP address for interface %1");
-                abort(fw, NULL, NULL,
+                abort(fw, nullptr, nullptr,
                       err.arg(iface->getName().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
@@ -561,7 +560,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 if (ip_addr && ip_addr->isAny())
                 {
                     QString err("Interface %1 (id=%2) has IP address %3.");
-                    abort(fw, NULL, NULL,
+                    abort(fw, nullptr, nullptr,
                           err.arg(iface->getName().c_str())
                           .arg(FWObjectDatabase::getStringId(
                                    iface->getId()).c_str())
@@ -572,7 +571,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                 if (ip_addr && netmask && netmask->isAny())
                 {
                     QString err("Interface %1 (id=%2) has invalid netmask %3.");
-                    abort(fw, NULL, NULL,
+                    abort(fw, nullptr, nullptr,
                           err.arg(iface->getName().c_str())
                           .arg(FWObjectDatabase::getStringId(
                                    iface->getId()).c_str())
@@ -588,10 +587,10 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
         {
             Resources* os_res = Resources::os_res[fw->getStr("host_OS")];
             string os_family = fw->getStr("host_OS");
-            if (os_res!=NULL)
+            if (os_res!=nullptr)
                 os_family = os_res->getResourceStr("/FWBuilderResources/Target/family");
 
-            std::auto_ptr<interfaceProperties> int_prop(
+            std::unique_ptr<interfaceProperties> int_prop(
                 interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                     os_family));
 
@@ -601,7 +600,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
             QString err;
             if (!int_prop->validateInterface(parent, iface, true, err))
             {
-                abort(fw, NULL, NULL, err.toStdString());
+                abort(fw, nullptr, nullptr, err.toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
 #endif
@@ -640,7 +639,7 @@ void CompilerDriver::commonChecks2(Cluster *cluster, Firewall *fw)
                                 "is only allowed if this object is a copy of another "
                                 "top-level interface with the same name"
                     );
-                    abort(fw, NULL, NULL,
+                    abort(fw, nullptr, nullptr,
                           err.arg(iface->getName().c_str()).toStdString());
                     throw FatalErrorInSingleRuleCompileMode();
                 }
@@ -663,11 +662,7 @@ Firewall* CompilerDriver::locateObject()
         // fwobjectname is actually object id
         obj = Firewall::cast(
             objdb->findInIndex(
-                #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                objdb->getIntId(fwobjectname.toAscii().constData())));
-                #else
                 objdb->getIntId(fwobjectname.toLatin1().constData())));
-                #endif
         //fwobjectname = obj->getName().c_str();
     }
     else
@@ -700,15 +695,15 @@ void CompilerDriver::findImportedRuleSets(Firewall *fw,
     for (list<FWObject*>::iterator i=all_policies.begin(); i!=all_policies.end(); ++i)
     {
         RuleSet *ruleset = RuleSet::cast(*i);
-        if (ruleset == NULL) continue; // should not happen
+        if (ruleset == nullptr) continue; // should not happen
 
         for (list<FWObject*>::iterator r=ruleset->begin(); r!=ruleset->end(); ++r)
         {
             Rule *rule = Rule::cast(*r);
-            if (rule == NULL) continue; // skip RuleSetOptions object
+            if (rule == nullptr) continue; // skip RuleSetOptions object
 
             RuleSet *branch_ruleset = rule->getBranch();
-            if (branch_ruleset!=NULL)
+            if (branch_ruleset!=nullptr)
             {
                 // qDebug() << "ruleset=" << ruleset->getName().c_str()
                 //          << "branch=" << branch_ruleset->getName().c_str();
@@ -781,10 +776,10 @@ void CompilerDriver::_findImportedRuleSetsRecursively(
     for (list<FWObject*>::iterator r=branch_ruleset->begin(); r!=branch_ruleset->end(); ++r)
     {
         Rule *rule = Rule::cast(*r);
-        if (rule == NULL) continue; // skip RuleSetOptions object
+        if (rule == nullptr) continue; // skip RuleSetOptions object
 
         RuleSet *next_branch_ruleset = rule->getBranch();
-        if (next_branch_ruleset!=NULL &&
+        if (next_branch_ruleset!=nullptr &&
             local_branch_ruleset_counters.count(next_branch_ruleset)==0)
         {
             local_branch_ruleset_counters[next_branch_ruleset] = 1;
@@ -809,7 +804,7 @@ void CompilerDriver::validateClusterGroups(Cluster *cluster)
 {
     string host_os = cluster->getStr("host_OS");
     Resources* os_res = Resources::os_res[host_os];
-    if (os_res==NULL) return;
+    if (os_res==nullptr) return;
 
     // check if state sync groups are of supported type
     list<string> state_sync_protocols;
@@ -823,7 +818,7 @@ void CompilerDriver::validateClusterGroups(Cluster *cluster)
         if (!isSupported(&state_sync_protocols, state_sync_type))
         {
             QString err("State sync group type '%1' is not supported");
-            abort(cluster, NULL, NULL, err.arg(state_sync_type.c_str()).toStdString());
+            abort(cluster, nullptr, nullptr, err.arg(state_sync_type.c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
         }
     }
@@ -842,7 +837,7 @@ void CompilerDriver::validateClusterGroups(Cluster *cluster)
         if (!isSupported(&failover_protocols, failover_type))
         {
             QString err("Failover group type '%1' is not supported");
-            abort(cluster, NULL, NULL, err.arg(failover_type.c_str()).toStdString());
+            abort(cluster, nullptr, nullptr, err.arg(failover_type.c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
         }
 
@@ -850,7 +845,7 @@ void CompilerDriver::validateClusterGroups(Cluster *cluster)
         if (l2.size() == 0)
         {
             QString err("Failover group of cluster interface '%1' is empty");
-            abort(cluster, NULL, NULL,
+            abort(cluster, nullptr, nullptr,
                   err.arg(parent->getName().c_str()).toStdString());
             throw FatalErrorInSingleRuleCompileMode();
         }
@@ -953,7 +948,7 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
             list<FWObject*>::iterator it = fw_ruleset->begin();
             for ( ; it!=fw_ruleset->end(); ++it)
             {
-                if (Rule::cast(*it)!=NULL) rule_cntr++;
+                if (Rule::cast(*it)!=nullptr) rule_cntr++;
             }
 
             if (rule_cntr > 0)
@@ -961,7 +956,7 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
                 QString err("ignoring cluster rule set \"%1\" "
                             "because member firewall \"%2\" "
                             "has rule set with the same name.");
-                warning(fw, fw_ruleset, NULL,
+                warning(fw, fw_ruleset, nullptr,
                         err.arg(fw_ruleset->getName().c_str())
                         .arg(fw->getName().c_str()).toStdString());
             } else
@@ -990,7 +985,7 @@ void CompilerDriver::mergeRuleSets(Cluster *cluster, Firewall *fw,
  */
 void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
 {
-    if (cluster==NULL) return;
+    if (cluster==nullptr) return;
 
 #ifdef DEBUG_CLUSTER_INTERFACES
     cerr << "CompilerDriver::populateClusterElements " << endl;
@@ -1062,9 +1057,9 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
         {
             Interface *member_iface =
                 failover_group->getInterfaceForMemberFirewall(fw);
-            if (member_iface == NULL) continue;
+            if (member_iface == nullptr) continue;
 
-            assert(fw->getOptionsObject() != NULL);
+            assert(fw->getOptionsObject() != nullptr);
 
             member_iface->getOptionsObject()->setStr(
                 "failover_group_id",
@@ -1091,7 +1086,7 @@ void CompilerDriver::populateClusterElements(Cluster *cluster, Firewall *fw)
                  * belongs to the firewall and is therefore valid.
                  */
                 Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_interface, true));
-                assert(new_cl_if != NULL);
+                assert(new_cl_if != nullptr);
                 new_cl_if->getOptionsObject()->setBool("cluster_interface", true);
             }
         }
@@ -1132,7 +1127,7 @@ void CompilerDriver::copyFailoverInterface(Cluster * /*UNUSED cluster */,
                                            Interface *iface)
 {
     Interface* cluster_if = Interface::cast(cluster_group->getParent());
-    assert(cluster_if != NULL);
+    assert(cluster_if != nullptr);
 
     /* Add copy of the cluster interface to the firewall object
      *
@@ -1144,7 +1139,7 @@ void CompilerDriver::copyFailoverInterface(Cluster * /*UNUSED cluster */,
      * rejected.
      */
     Interface* new_cl_if = Interface::cast(fw->addCopyOf(cluster_if, true));
-    assert(new_cl_if != NULL);
+    assert(new_cl_if != nullptr);
     new_cl_if->getOptionsObject()->setBool("cluster_interface", true);
     new_cl_if->getOptionsObject()->setStr("base_device", iface->getName());
     new_cl_if->getOptionsObject()->setStr(
@@ -1211,12 +1206,12 @@ void CompilerDriver::processStateSyncGroups(Cluster *cluster, Firewall *member_f
  */
 int CompilerDriver::checkCluster(Cluster* cluster)
 {
-    assert(cluster != NULL);
+    assert(cluster != nullptr);
     FWObjectTypedChildIterator cluster_ifaces = cluster->findByType(Interface::TYPENAME);
     if (cluster_ifaces == cluster_ifaces.end())
     {
         /* No configured cluster interface found */
-        abort(cluster, NULL, NULL, "The cluster has no interfaces.");
+        abort(cluster, nullptr, nullptr, "The cluster has no interfaces.");
         throw FatalErrorInSingleRuleCompileMode();
     }
 
@@ -1224,22 +1219,22 @@ int CompilerDriver::checkCluster(Cluster* cluster)
     {
         string iface_name = Interface::cast(*cluster_ifaces)->getName();
         const InetAddr* iface_address = Interface::cast(*cluster_ifaces)->getAddressPtr();
-        if (iface_address==NULL) continue; // cluster interface with no address
+        if (iface_address==nullptr) continue; // cluster interface with no address
         FWObjectTypedChildIterator other_ifaces = cluster_ifaces;
         for (++other_ifaces; other_ifaces != cluster_ifaces.end(); ++other_ifaces)
         {
             if (iface_name == Interface::cast(*other_ifaces)->getName())
             {
                 QString err("Found duplicate cluster interface %1");
-                abort(cluster, NULL, NULL, err.arg(iface_name.c_str()).toStdString());
+                abort(cluster, nullptr, nullptr, err.arg(iface_name.c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
             const InetAddr *other_iface_address = Interface::cast(*other_ifaces)->getAddressPtr();
-            if (other_iface_address==NULL) continue; // cluster interface with no address
+            if (other_iface_address==nullptr) continue; // cluster interface with no address
             if (*iface_address == *other_iface_address)
             {
                 QString err("Found duplicate cluster interface address %1");
-                abort(cluster, NULL, NULL, err.arg(iface_address->toString().c_str()).toStdString());
+                abort(cluster, nullptr, nullptr, err.arg(iface_address->toString().c_str()).toStdString());
                 throw FatalErrorInSingleRuleCompileMode();
             }
         }
@@ -1261,7 +1256,11 @@ QString CompilerDriver::formSingleRuleCompileOutput(const QString &generated_cod
     // compilers we assemble here may consist of a bunch of
     // empty lines separated by LF. Need to account for that.
     QString res = generated_code;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    QString res2 = res.split("\n", Qt::SkipEmptyParts).join("").replace(" ", "");
+#else
     QString res2 = res.split("\n", QString::SkipEmptyParts).join("").replace(" ", "");
+#endif
     if (res2.isEmpty()) res = all_errors.join("\n");
     return res;
 }
@@ -1298,7 +1297,7 @@ void CompilerDriver::getFirewallAndClusterObjects(const string &cluster_id,
     workspace->add(*fw);
     (*fw)->duplicate(orig_fw);
 
-    if (*cl != NULL)
+    if (*cl != nullptr)
     {
         const map<int, int> &id_map = (*fw)->getIDMappingTable();
         map<int, int>::const_iterator it;

@@ -32,19 +32,16 @@
 #include <QFile>
 #include "FWBApplication.h"
 
-TutorialDialog * TutorialDialog::dialog = NULL;
+TutorialDialog * TutorialDialog::dialog = nullptr;
 
 TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
-    QDialog(NULL),
+    QDialog(nullptr),
     ui(new Ui::TutorialDialog_q)
 {
     Q_UNUSED(parent)
 
     ui->setupUi(this);
-    setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint);
-#if QT_VERSION >= 0x040500
-    setWindowFlags(windowFlags() | Qt::WindowCloseButtonHint);
-#endif
+    setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     ui->contents->setOpenExternalLinks(true);
 
     dialog = this;
@@ -53,7 +50,7 @@ TutorialDialog::TutorialDialog(QString tutorial, QWidget *parent) :
 
 void TutorialDialog::showTutorial(QString tutorial)
 {
-    if (dialog != NULL)
+    if (dialog != nullptr)
     {
         dialog->initializeTutorial(tutorial);
         dialog->showNormal();

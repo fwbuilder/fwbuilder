@@ -194,7 +194,7 @@ string OSConfigurator_bsd::configureInterfaces()
 
     if ( options->getBool("configure_interfaces") ) 
     {
-        std::auto_ptr<interfaceProperties> int_prop(
+        std::unique_ptr<interfaceProperties> int_prop(
             interfacePropertiesObjectFactory::getInterfacePropertiesObject(
                 fw->getStr("host_OS")));
 
@@ -254,7 +254,7 @@ string OSConfigurator_bsd::configureInterfaces()
                     const Address *addr = Address::constcast(dbcopy->findInIndex(*it));
                     const InetAddr *ipaddr = addr->getAddressPtr();
                     FWObject *iaddr = findAddressFor(addr, fw );
-                    if (iaddr!=NULL)
+                    if (iaddr!=nullptr)
                     {
                         Interface *iface_2 = Interface::cast(iaddr->getParent());
                         if (iface_2 == iface)
@@ -343,7 +343,7 @@ string OSConfigurator_bsd::configureInterfaces()
                 iface->getOptionsObject()->getStr("state_sync_group_id"));
             StateSyncClusterGroup *state_sync_group =
                 StateSyncClusterGroup::cast(dbcopy->findInIndex(state_sync_group_id));
-            assert(state_sync_group!=NULL);
+            assert(state_sync_group!=nullptr);
 
             // Interface can be state sync group member, but of a different type
             if (state_sync_group->getStr("type") != "pfsync") continue;
@@ -392,7 +392,7 @@ QString OSConfigurator_bsd::interfaceIfconfigLineInternal(Interface *iface,
     configlet->setVariable("interface_name", iface_name);
 
     FWOptions *ifopt = iface->getOptionsObject();
-    assert(ifopt != NULL);
+    assert(ifopt != nullptr);
 
     bool need_additional_ifconfig = false;
     QStringList ifconfig_options;
@@ -516,7 +516,7 @@ void OSConfigurator_bsd::interfaceConfigLineBridge(Interface *iface,
 {
     QString iface_name = iface->getName().c_str();
     FWOptions *ifopt = iface->getOptionsObject();
-    assert(ifopt != NULL);
+    assert(ifopt != nullptr);
     bool enable_stp = ifopt->getBool("enable_stp");
 
     Configlet bridge_configlet(fw, "bsd", "bridge_interface");
@@ -557,7 +557,7 @@ void OSConfigurator_bsd::interfaceConfigLineCARPInternal(
 {
     // failover_master and base_device are set in Compiler::processFailoverGroup
     FWOptions *ifopt = (Interface::cast(iface))->getOptionsObject();
-    assert(ifopt != NULL);
+    assert(ifopt != nullptr);
 
     bool master = ifopt->getBool("failover_master");
     string base_interface = ifopt->getStr("base_device");
@@ -670,7 +670,7 @@ QString OSConfigurator_bsd::printAllInterfaceConfigurationLines()
 {
     QStringList keys = interface_configuration_lines.keys();
     //keys.sort();
-    qSort(keys.begin(), keys.end(), sort_interface_names);
+    std::sort(keys.begin(), keys.end(), sort_interface_names);
     QStringList res;
     foreach (QString iface, keys)
         res << interface_configuration_lines[iface].join("\n");

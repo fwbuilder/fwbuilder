@@ -25,7 +25,6 @@
 
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -87,7 +86,7 @@ SSHSession::SSHSession(QWidget *_par,
     send_keepalive = false;
     session_completed = false;
 
-    proc = NULL;
+    proc = nullptr;
     retcode = 0;
     heartBeatTimer = new QTimer(this);
     connect(heartBeatTimer, SIGNAL(timeout()), this, SLOT(heartBeat()) );
@@ -146,10 +145,6 @@ void SSHSession::startSession()
     connect(proc,SIGNAL(finished( int, QProcess::ExitStatus )),
             this,  SLOT(finished( int ) ) );
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("latin1"));
-#endif
-
     assert(args.size() > 0);
 
     QStringList arguments;
@@ -196,19 +191,11 @@ void SSHSession::startSession()
 
     if (fwbdebug)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("Launch external ssh client %s", program.toAscii().constData());
-#else
         qDebug("Launch external ssh client %s", program.toLatin1().constData());
-#endif
         qDebug("Arguments:");
         QStringList::const_iterator i;
         for (i=arguments.begin(); i!=arguments.end(); ++i)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            qDebug("    %s", (*i).toAscii().constData());
-#else
             qDebug("    %s", (*i).toLatin1().constData());
-#endif
     }
 
     proc->start(program, arguments);
@@ -291,7 +278,7 @@ void SSHSession::terminate()
 
     stopHeartBeat();
 
-    if (proc != NULL)
+    if (proc != nullptr)
     {
         if (proc->state() == QProcess::Running)
         {
@@ -301,7 +288,7 @@ void SSHSession::terminate()
             // this processes events and lets QProcess send signal finished()
             // in case user hit Cancel at just right time when background process
             // already exited but QProcess has not noticed this yet.
-            if (proc != NULL)
+            if (proc != nullptr)
                 proc->waitForFinished(100);
         }
 
@@ -309,21 +296,18 @@ void SSHSession::terminate()
         // waitForFinished(), the signal has been processed in
         // SSHSession::finished and proc has already been deleted.
 
-        if (proc == NULL)
+        if (proc == nullptr)
         {
-            if (fwbdebug) qDebug("SSHSession::terminate   proc==NULL");
+            if (fwbdebug) qDebug("SSHSession::terminate   proc==nullptr");
             return;
         }
 
-#ifdef _WIN32
-        if (proc->pid() != NULL)
-#else
-        if (proc->pid() != -1)
-#endif
+
+        if (proc->processId() != 0)
         {
             if (proc->state() == QProcess::Running)
             {
-                Q_PID pid = proc->pid();
+                qint64 pid = proc->processId();
                 if (fwbdebug)
                     qDebug() << "SSHSession::terminate   "
                              << "terminating child process pid="  << pid;
@@ -349,7 +333,7 @@ void SSHSession::terminate()
                              << "waiting for it to finish";
 
                 int time_to_wait = 20;
-                for (int timeout = 0; proc != NULL &&
+                for (int timeout = 0; proc != nullptr &&
                          proc->state() == QProcess::Running &&
                          timeout < time_to_wait;
                      timeout++)
@@ -372,14 +356,14 @@ void SSHSession::terminate()
                         QEventLoop::ExcludeUserInputEvents,1);
 
                     // check if proc is still running after we processed events
-                    if (proc != NULL) proc->waitForFinished(1000);
+                    if (proc != nullptr) proc->waitForFinished(1000);
                 }
 
-                // proc can be NULL at this point if it had sent signal finished()
+                // proc can be nullptr at this point if it had sent signal finished()
                 // which we processed in the call to waitForFinished() above
-                if (proc == NULL)
+                if (proc == nullptr)
                 {
-                    if (fwbdebug) qDebug("SSHSession::terminate   proc==NULL");
+                    if (fwbdebug) qDebug("SSHSession::terminate   proc==nullptr");
                     return;
                 }
 
@@ -414,7 +398,7 @@ void SSHSession::terminate()
             }
 
             delete proc;
-            proc = NULL;
+            proc = nullptr;
             retcode = -1;
         }
     }
@@ -572,17 +556,17 @@ void SSHSession::readFromStdout()
 
         stdoutBuffer.append(buf);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        if (fwbdebug) qDebug() << buf.toAscii().constData() << "\n";
-#else
         if (fwbdebug) qDebug() << buf.toLatin1().constData() << "\n";
-#endif
 
         bool endsWithLF = buf.endsWith("\n");
         QString lastLine = "";
 
         // split on LF
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        QStringList bufLines = buf.split("\n", Qt::KeepEmptyParts);
+#else
         QStringList bufLines = buf.split("\n", QString::KeepEmptyParts);
+#endif
 
         // if buf ends with a LF character, the last element in the list is
         // an empty string
@@ -647,13 +631,8 @@ void SSHSession::readFromStderr()
         if (ba.size()!=0)
         {
             QString s=QString(ba);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-            if (fwbdebug) qDebug("SSHSession::readFromStderr  buf=%s",
-                                 s.toAscii().constData());
-#else
             if (fwbdebug) qDebug("SSHSession::readFromStderr  buf=%s",
                                  s.toLatin1().constData());
-#endif
             emit printStdout_sign(s);
             stdoutBuffer.append(s);
             stateMachine();
@@ -709,7 +688,7 @@ void SSHSession::cleanUp()
                this, SLOT(finished(int) ) );
 
     delete proc;
-    proc = NULL;
+    proc = nullptr;
 }
 
 void SSHSession::finished(int retcode)
@@ -733,13 +712,8 @@ bool SSHSession::cmpPrompt(const QString &str, const QString &prompt)
 {
 #if STATE_MACHINE_DEBUG
     if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s'",
-               str.toAscii().constData(),prompt.toAscii().constData());
-#else
         qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s'",
                str.toLatin1().constData(),prompt.toLatin1().constData());
-#endif // QT_VERSION
 
 #endif
 
@@ -763,13 +737,8 @@ bool SSHSession::cmpPrompt(const QString &str,const QRegExp &prompt)
 {
 #if STATE_MACHINE_DEBUG
     if (fwbdebug)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s' (regexp)",
-               str.toAscii().constData(),prompt.pattern().toAscii().constData());
-#else
         qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s' (regexp)",
                str.toLatin1().constData(),prompt.pattern().toLatin1().constData());
-#endif // QT_VERSION
 
 #endif
     if (str.isEmpty()) return false;
@@ -788,11 +757,7 @@ void SSHSession::sendCommand(const QString &cmd)
     stdoutBuffer = "";
     if (!dry_run)
     {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        proc->write((cmd + "\n").toAscii());
-#else
         proc->write((cmd + "\n").toLatin1());
-#endif
     } else
     {
         emit printStdout_sign(QString("[DRY RUN] %1\n").arg(cmd));

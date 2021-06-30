@@ -21,7 +21,6 @@
 
 */
 
-#include "config.h"
 
 #include "NamedObjectsManager.h"
 #include "NamedObject.h"
@@ -131,13 +130,13 @@ NamedObjectsManager::~NamedObjectsManager()
 
 void NamedObjectsManager::addNamedObject(const FWObject *obj)
 {
-    if (getNamedObject(obj) == NULL)
+    if (getNamedObject(obj) == nullptr)
         named_objects[obj->getId()] = new NamedObject(obj, platform.c_str());
 }
 
 NamedObject* NamedObjectsManager::getNamedObject(const FWObject *obj)
 {
-    if (named_objects.count(obj->getId()) == 0) return NULL;
+    if (named_objects.count(obj->getId()) == 0) return nullptr;
     else   
         return named_objects[obj->getId()];
 }
@@ -162,7 +161,7 @@ string NamedObjectsManager::getNamedObjectsDefinitions()
     for (it=named_objects.begin(); it!=named_objects.end(); ++it)
     {
         NamedObject *nobj = it->second;
-        if (nobj==NULL) continue;
+        if (nobj==nullptr) continue;
         output << nobj->getCommand();
     }
 
@@ -173,7 +172,7 @@ string NamedObjectsManager::getNamedObjectsDefinitions()
          i!=object_groups->end(); ++i)
     {
         BaseObjectGroup *og = dynamic_cast<BaseObjectGroup*>(*i);
-        assert(og!=NULL);
+        assert(og!=nullptr);
         if (og->size()==0) continue;
         output << og->toString(this); // ends with an empty line
     }
@@ -188,7 +187,7 @@ string NamedObjectsManager::getClearCommands()
 
 BaseObjectGroup* NamedObjectsManager::createObjectGroup()
 {
-    BaseObjectGroup *grp = NULL;
+    BaseObjectGroup *grp = nullptr;
     if (platform == "pix")
     {
         if (XMLTools::version_compare(version, "8.0")<0)
@@ -201,7 +200,7 @@ BaseObjectGroup* NamedObjectsManager::createObjectGroup()
 
     if (platform == "iosacl") grp = new IOSObjectGroup();
 
-    assert(grp!=NULL);
+    assert(grp!=nullptr);
     
     return grp;
 }

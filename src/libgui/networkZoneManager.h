@@ -25,7 +25,6 @@
 #ifndef __NETWORK_ZONE_MANAGER_H_
 #define __NETWORK_ZONE_MANAGER_H_
 
-#include "config.h"
 
 #include <QStringList>
 #include <QMap>

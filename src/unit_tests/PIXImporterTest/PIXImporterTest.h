@@ -30,23 +30,25 @@
 #include "fwbuilder/FWException.h"
 #include "fwbuilder/Logger.h"
 
-#include <cppunit/extensions/HelperMacros.h>
-
 #include <map>
 #include <fstream>
 #include <iostream>
 
+#include <QObject>
 #include <QString>
 
 
-class PIXImporterTest : public CppUnit::TestFixture
+
+class PIXImporterTest : public QObject
 {
+    Q_OBJECT
+
     libfwbuilder::FWObjectDatabase *db;
     libfwbuilder::Library *lib;
     libfwbuilder::QueueLogger *logger;
     int predictable_id_tracker;
     std::map<std::string, std::string> id_mapping;
-    
+
     void compareResults(libfwbuilder::QueueLogger* logger,
                         QString expected_result_file_name,
                         QString obtained_result_file_name);
@@ -54,9 +56,9 @@ class PIXImporterTest : public CppUnit::TestFixture
                          QString obtained_result_file_name);
 
     std::string openTestFile(const QString &file_name);
-    
-public:
-    void setUp();
+
+private slots:
+    void init();
 
     void PIX_6_Test();
     void PIX_7_Test();
@@ -68,20 +70,6 @@ public:
     void ACLObjectsAndGroupsTest();
     void ACLTest();
     void NamesTest();
-
-    CPPUNIT_TEST_SUITE(PIXImporterTest);
-    CPPUNIT_TEST(PIX_6_Test);
-    CPPUNIT_TEST(PIX_7_Test);
-    CPPUNIT_TEST(PIX_7_NAT_Test);
-    CPPUNIT_TEST(ASA_8_0_Test);
-    CPPUNIT_TEST(ASA_8_3_Test);
-    CPPUNIT_TEST(ObjectsAndGroupsTest);
-    CPPUNIT_TEST(ACLObjectsAndGroupsTest);
-    CPPUNIT_TEST(ACLTest);
-    CPPUNIT_TEST(NamesTest);
-    CPPUNIT_TEST(FWSM_4_1_Test);
-    
-    CPPUNIT_TEST_SUITE_END();
 
 };
 

@@ -24,7 +24,6 @@
 */
 
 
-#include "config.h"
 #include "global.h"
 #include "utils.h"
 
@@ -144,7 +143,7 @@ int ObjConflictResolutionDialog::run(FWObject *o1, FWObject *o2)
     FWObject *delObjLib2 = o2->getRoot()->getById(
         FWObjectDatabase::DELETED_OBJECTS_ID );
 
-    if (delObjLib1!=NULL && o1->isChildOf(delObjLib1))
+    if (delObjLib1!=nullptr && o1->isChildOf(delObjLib1))
     {
         /* This is the case when an object present in the file we are
          * trying to load has been deleted in the tree. We can not
@@ -163,7 +162,7 @@ int ObjConflictResolutionDialog::run(FWObject *o1, FWObject *o2)
                                                                    false,
                                                                    false);
 
-    if (delObjLib2!=NULL && o2->isChildOf(delObjLib2))
+    if (delObjLib2!=nullptr && o2->isChildOf(delObjLib2))
     {
         /* This is the case where object o2 has been deleted in the
          * file we are trying to load but is present in the tree.  One

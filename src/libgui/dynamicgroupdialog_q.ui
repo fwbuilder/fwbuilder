@@ -120,7 +120,6 @@
   </layout>
   <zorder>commentKeywords</zorder>
   <zorder>frame</zorder>
-  <zorder></zorder>
  </widget>
  <customwidgets>
   <customwidget>

@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include "CompilerDriver_ipt.h"
 #include "MangleTableCompiler_ipt.h"
@@ -87,7 +86,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
 
     bool ipv6_policy = (policy_af == AF_INET6);
 
-    std::auto_ptr<MangleTableCompiler_ipt> mangle_compiler(
+    std::unique_ptr<MangleTableCompiler_ipt> mangle_compiler(
         new MangleTableCompiler_ipt(objdb , fw,
                                     ipv6_policy , oscnf,
                                     &minus_n_commands_mangle ));
@@ -159,7 +158,7 @@ bool CompilerDriver_ipt::processPolicyRuleSet(
 
     }
 
-    std::auto_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
+    std::unique_ptr<PolicyCompiler_ipt> policy_compiler = createPolicyCompiler(
         fw, ipv6_policy, oscnf,  &minus_n_commands_filter);
 
     policy_compiler->setSingleRuleCompileMode(single_rule_id);

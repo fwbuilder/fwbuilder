@@ -172,5 +172,41 @@
  <resources>
   <include location="MainRes.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>rangeStart</sender>
+   <signal>editingFinished()</signal>
+   <receiver>AddressRangeDialog_q</receiver>
+   <slot>addressEntered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>220</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>364</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rangeStart</sender>
+   <signal>returnPressed()</signal>
+   <receiver>AddressRangeDialog_q</receiver>
+   <slot>addressEntered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>220</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>364</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>addressEntered()</slot>
+ </slots>
 </ui>

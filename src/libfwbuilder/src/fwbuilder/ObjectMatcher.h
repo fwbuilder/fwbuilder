@@ -30,7 +30,6 @@
 #include <string>
 #include <list>
 
-#include "fwbuilder/libfwbuilder-config.h"
 #include "fwbuilder/Dispatch.h"
 
 

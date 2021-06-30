@@ -25,8 +25,6 @@
 
 #include <stdlib.h>
 
-#include "config.h"
-#include "fwbuilder/libfwbuilder-config.h"
 
 
 #include "fwbuilder/FWObject.h"
@@ -65,12 +63,12 @@ class FWObjectTreeScanner {
     public:
 
     FWObjectTreeScanner(FWObject *r,
-                        FWObjectDatabase::ConflictResolutionPredicate *_crp=NULL)
+                        FWObjectDatabase::ConflictResolutionPredicate *_crp=nullptr)
     {
         reference_object_id_offset = 1000000;
         treeRoot=FWObjectDatabase::cast(r);
         defaultCrp=false;
-        if (_crp==NULL)
+        if (_crp==nullptr)
         {
             crp=new FWObjectDatabase::ConflictResolutionPredicate();
             defaultCrp=true;
@@ -95,7 +93,7 @@ void FWObjectTreeScanner::walkTree(map<int,FWObject*> &m,
 {
     if (root->haveId())  m[root->getId()]=root;
 
-    if (FWReference::cast(root)!=NULL)
+    if (FWReference::cast(root)!=nullptr)
     {
         FWReference *r=FWReference::cast(root);
         // need to add reference to the map, but references do not have
@@ -114,19 +112,19 @@ void FWObjectTreeScanner::walkTree(map<int,FWObject*> &m,
 
 void FWObjectTreeScanner::addRecursively(FWObject *src)
 {
-    if (src==NULL) return;
+    if (src==nullptr) return;
 
     if (treeRoot->getId()==src->getId()) return ;
 
     addRecursively(src->getParent());
 
-    if (dstMap[src->getId()]==NULL)
+    if (dstMap[src->getId()]==nullptr)
     {
         // last arg.==false : do not call method init() of the new object to
         // make sure it doesn't create its children
         FWObject *o1 = treeRoot->create(src->getTypeName(), -1, false);
         FWObject *pdst = dstMap[src->getParent()->getId()];
-        assert(pdst!=NULL);
+        assert(pdst!=nullptr);
 
         // no validation is necessary - this copies existing tree
         pdst->add(o1, false);
@@ -145,7 +143,7 @@ void FWObjectTreeScanner::addRecursively(FWObject *src)
                 * that user groups contain references * while system
                 * groups contain objects.
                 */
-                if (Group::cast(src)!=NULL && FWReference::cast(src->front())!=NULL)
+                if (Group::cast(src)!=nullptr && FWReference::cast(src->front())!=nullptr)
                     o1->duplicate(src, false);
                 else
                     o1->shallowDuplicate(src, false);
@@ -173,7 +171,7 @@ void FWObjectTreeScanner::addRecursively(FWObject *src)
  */
 void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
 {
-    if (dst==NULL)
+    if (dst==nullptr)
     {
         dst=treeRoot;
         walkTree(dstMap,treeRoot);
@@ -183,15 +181,15 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
     for (FWObject::iterator i=dst->begin(); i!=dst->end(); i++)
     {
         FWObject *o1=*i;
-        if (FWReference::cast(o1)!=NULL)
+        if (FWReference::cast(o1)!=nullptr)
         {
             int pid   = FWReference::cast(o1)->getPointerId();
             FWObject *o2   = dstMap[pid];
 
-            if (o2==NULL)
+            if (o2==nullptr)
             {
                 FWObject *osrc = srcMap[ pid ];
-                if (osrc==NULL)
+                if (osrc==nullptr)
                     cerr << "Object with ID=" << pid
                          << " (" << FWObjectDatabase::getStringId(pid) << ") "
                          << " disappeared" << endl;
@@ -214,7 +212,7 @@ void FWObjectTreeScanner::scanAndAdd(FWObject *dst,FWObject *source)
         {
             int pid = FWObjectDatabase::getIntId(sid);
             FWObject *o2 = dstMap[pid];
-            if (o2==NULL)
+            if (o2==nullptr)
             {
                 FWObject *osrc = srcMap[ pid ];
                 addRecursively( osrc);
@@ -230,9 +228,9 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
 {
     int dobjId = FWObjectDatabase::DELETED_OBJECTS_ID;
 
-    if (dst==NULL)
+    if (dst==nullptr)
     {
-        /* dst == NULL on the first call to this function */
+        /* dst == nullptr on the first call to this function */
 
         dst = treeRoot;
 
@@ -257,13 +255,13 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
             for (FWObject::iterator i=dstdobj->begin(); i!=dstdobj->end(); i++)
             {
                 FWObject *sobj = srcMap[ (*i)->getId() ];
-                if(sobj!=NULL && sobj->getParent()->getId()!=dobjId)
+                if(sobj!=nullptr && sobj->getParent()->getId()!=dobjId)
                     deletedObjects.push_back(*i);
             }
             for (FWObject::iterator i=deletedObjects.begin(); i!=deletedObjects.end(); i++)
             {
                 dstroot->recursivelyRemoveObjFromTree( *i );
-                dstMap[ (*i)->getId() ] = NULL;
+                dstMap[ (*i)->getId() ] = nullptr;
             }
         }
     }
@@ -290,13 +288,13 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
             dobj= dstMap[reference_object_id_offset + r->getPointerId()];
         } else dobj= dstMap[ (*i)->getId() ];
 
-        if (dobj==NULL)
+        if (dobj==nullptr)
         {
             sobj = *i;
             FWObject *o1 = treeRoot->create( sobj->getTypeName());
 
             FWObject *pdst = dstMap[ src->getId() ];
-            assert(pdst!=NULL);
+            assert(pdst!=nullptr);
 
             // no validation is necessary - this copies existing tree
             pdst->add(o1, false);
@@ -346,7 +344,7 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
  */
 
 
-            if (Group::cast(dobj)!=NULL)
+            if (Group::cast(dobj)!=nullptr)
             {
                 // at one point I've got bunch of data files where
                 // DeletedObjects library contained references for
@@ -358,15 +356,15 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
                 else
                 {
 
-                    FWObject *firstChild=NULL;
+                    FWObject *firstChild=nullptr;
                     if (dobj->size()>0)         firstChild= dobj->front();
                     else
                     {
                         if ( (*i)->size()>0 )   firstChild= (*i)->front();
                     }
-                    if (firstChild==NULL || FWReference::cast(firstChild)!=NULL)
+                    if (firstChild==nullptr || FWReference::cast(firstChild)!=nullptr)
                     {
-                        if (crp!=NULL && crp->askUser( dobj, *i ))
+                        if (crp!=nullptr && crp->askUser( dobj, *i ))
                         {
 #ifdef DEBUG_MERGE
                             cerr << "--------------------------------" << endl;
@@ -381,7 +379,7 @@ void FWObjectTreeScanner::merge(FWObject *dst, FWObject *src)
             }
             else
             {
-                if (crp!=NULL && crp->askUser( dobj, *i ))
+                if (crp!=nullptr && crp->askUser( dobj, *i ))
                 {
 #ifdef DEBUG_MERGE
                     cerr << "--------------------------------" << endl;
@@ -413,7 +411,7 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( const list<FWObject*> &libs )
     }
 
     FWObjectTreeScanner scanner(ndb);
-    scanner.scanAndAdd(NULL, this);
+    scanner.scanAndAdd(nullptr, this);
 
     ndb->busy = false;
 
@@ -432,7 +430,7 @@ FWObjectDatabase* FWObjectDatabase::exportSubtree( FWObject *lib )
     *nlib = *lib;
 
     FWObjectTreeScanner scanner(ndb);
-    scanner.scanAndAdd(NULL, this);
+    scanner.scanAndAdd(nullptr, this);
 
     ndb->busy = false;
 
@@ -481,7 +479,7 @@ void FWObjectDatabase::merge( FWObjectDatabase *ndb,
     setIgnoreReadOnlyFlag(true);
 
     FWObjectTreeScanner scanner(this, crp);
-    scanner.merge(NULL, ndb);
+    scanner.merge(nullptr, ndb);
 
     setIgnoreReadOnlyFlag(false);
     busy = false;
@@ -543,7 +541,7 @@ FWObject* FWObjectDatabase::_recursively_copy_subtree(
     {
         int nzid = FWObjectDatabase::getIntId(source->getStr("network_zone"));
         // check if we have seen old_ptr_obj already.
-        if (nzid!= 0 && id_map.count(nzid) == 0 && findInIndex(nzid)==NULL)
+        if (nzid!= 0 && id_map.count(nzid) == 0 && findInIndex(nzid)==nullptr)
         {
             FWObject *netzone = source->getRoot()->findInIndex(nzid);
             if (netzone)
@@ -570,8 +568,8 @@ FWObject* FWObjectDatabase::_recursively_copy_subtree(
     for(list<FWObject*>::iterator m=source->begin(); m!=source->end(); ++m) 
     {
         FWObject *old_obj = *m;
-        if (RuleSet::cast(old_obj)!=NULL) continue;
-        if (FWReference::cast(old_obj)!=NULL) continue;
+        if (RuleSet::cast(old_obj)!=nullptr) continue;
+        if (FWReference::cast(old_obj)!=nullptr) continue;
         _recursively_copy_subtree(nobj, old_obj, id_map, dedup_attribute);
     }
 
@@ -585,7 +583,7 @@ FWObject* FWObjectDatabase::_recursively_copy_subtree(
             FWReference *old_ref_obj = FWReference::cast(old_obj);
             FWObject *old_ptr_obj = old_ref_obj->getPointer();
 
-            FWObject *n_ptr_obj = NULL;
+            FWObject *n_ptr_obj = nullptr;
 
             // check if we have seen old_ptr_obj already.
             if (id_map.count(old_ptr_obj->getId()) > 0)
@@ -598,7 +596,7 @@ FWObject* FWObjectDatabase::_recursively_copy_subtree(
             // search for old_ptr_obj in the index. If it is found, we do not
             // need to copy it and its ID is valid (perhaps standard object?)
             n_ptr_obj = findInIndex(old_ptr_obj->getId());
-            if (n_ptr_obj != NULL)
+            if (n_ptr_obj != nullptr)
             {
                 nobj->addRef(n_ptr_obj);
                 continue;
@@ -691,7 +689,7 @@ FWObject* FWObjectDatabase::reproduceRelativePath(FWObject *lib,
     {
         FWObject *obj = *p;
         nobj = target->findObjectByName(obj->getTypeName(), obj->getName());
-        if (nobj==NULL)
+        if (nobj==nullptr)
         {
             nobj = create(obj->getTypeName());
             nobj->shallowDuplicate(obj, false);
@@ -704,7 +702,7 @@ FWObject* FWObjectDatabase::reproduceRelativePath(FWObject *lib,
 }
 
 FWObject& FWObjectDatabase::duplicate(const FWObject *obj,
-                                      bool preserve_id) throw(FWException)
+                                      bool preserve_id)
 {
     setIgnoreReadOnlyFlag(true);
     FWObject &o = FWObject::duplicate(obj, preserve_id);

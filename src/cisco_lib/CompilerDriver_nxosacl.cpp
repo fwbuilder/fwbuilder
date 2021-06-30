@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -23,7 +23,6 @@
 
 */
 
-#include "../../config.h"
 
 #include <fstream>
 #include <iostream>
@@ -81,14 +80,14 @@ CompilerDriver* CompilerDriver_nxosacl::clone()
 
 void CompilerDriver_nxosacl::printProlog(QTextStream &file, const string &prolog_code)
 {
-    file << endl;
-    file << "#" << endl;
-    file << "# Prolog script" << endl;
-    file << "#" << endl;
-    file << prolog_code << endl;
-    file << "#" << endl;
-    file << "# End of prolog script" << endl;
-    file << "#" << endl;
+    file << '\n';
+    file << "#" << '\n';
+    file << "# Prolog script" << '\n';
+    file << "#" << '\n';
+    file << prolog_code << '\n';
+    file << "#" << '\n';
+    file << "# End of prolog script" << '\n';
+    file << "#" << '\n';
 }
 
 string CompilerDriver_nxosacl::safetyNetInstall(Firewall *fw)
@@ -109,7 +108,7 @@ string CompilerDriver_nxosacl::safetyNetInstall(Firewall *fw)
             QString err = QObject::tr("Missing address for management host or subnet "
                                       "for the temporary ACL.\nPlease enter it in the "
                                       "tab 'Script options' in 'Firewall Settings' dialog");
-            abort(fw, NULL, NULL, err.toStdString());
+            abort(fw, nullptr, nullptr, err.toStdString());
         }
 
         // if templ_acl_addr is ipv4 address, then we can not create this
@@ -167,7 +166,7 @@ string CompilerDriver_nxosacl::safetyNetInstall(Firewall *fw)
                     {
                         QString err = QObject::tr("Invalid netmask for management subnet: "
                                                   "'%1'").arg(netmask.c_str());
-                        abort(fw, NULL, NULL, err.toStdString());
+                        abort(fw, nullptr, nullptr, err.toStdString());
                     }
                 }
 
@@ -179,7 +178,7 @@ string CompilerDriver_nxosacl::safetyNetInstall(Firewall *fw)
                 {
                     QString err = QObject::tr("Invalid address for management subnet: "
                                               "'%1'").arg(addr.c_str());
-                    abort(fw, NULL, NULL, err.toStdString());
+                    abort(fw, nullptr, nullptr, err.toStdString());
                 }
             }
 
