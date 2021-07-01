@@ -378,6 +378,21 @@ string PolicyCompiler_ipt::PrintRule::_printModules(PolicyRule *rule)
 
     }
 
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+                QStringList comm = QString(rule->getComment().c_str()).split("\n", Qt::SkipEmptyParts);
+    #else
+                QStringList comm = QString(rule->getComment().c_str()).split("\n", QString::SkipEmptyParts);
+    #endif
+                if(!comm.isEmpty()) {
+                	ostr << "-m comment --comment " << '"';
+                	foreach(QString line, comm)
+                	{
+                		ostr << " " << line.toStdString();
+                	}
+                	ostr << '"';
+                	//res << "# " << endl;
+                }
+
     return ostr.str();
 }
 
