@@ -298,18 +298,20 @@ void ObjConflictResolutionDialog::setFlags()
 
 void ObjConflictResolutionDialog::accept()
 {
-  if (fwbdebug)
+  if (fwbdebug) {
     qDebug("ObjConflictResolutionDialog::accept(): isVisible=%d",
 	   isVisible());
+  }
 
     QDialog::accept();
 }
 
 void ObjConflictResolutionDialog::reject()
 {
-  if (fwbdebug)
+  if (fwbdebug) {
     qDebug("ObjConflictResolutionDialog::reject(): isVisible=%d",
 	   isVisible());
+  }
 
     QDialog::reject();
 }
