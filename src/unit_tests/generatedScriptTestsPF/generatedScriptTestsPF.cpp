@@ -320,8 +320,8 @@ void GeneratedScriptTest::FwCommentTest()
 
 // ************************************************************************
 //
-// $PFCTL                                        \
-//     -f                                        \
+// $PFCTL
+//     -f
 //    ${FWDIR}/pf1.conf || exit 1
 
 void GeneratedScriptTest::ActivationCommandsTest_1()
