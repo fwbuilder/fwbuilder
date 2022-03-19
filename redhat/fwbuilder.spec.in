@@ -1,22 +1,25 @@
+%define version @RPM_VERSION@
+%define release @RPM_RELEASE@
+
 Name:           fwbuilder
 Summary:        Firewall Builder
-Version:        5.1.0.3599
-Release:        5%{?dist}
+Version:        %{version}
+Release:        %{release}%{?dist}
 
 License:        GPLv2+
 Group:          Applications/System
-URL:            http://www.fwbuilder.org/
-Source:         http://downloads.sourceforge.net/fwbuilder/%{name}-%{version}.tar.gz
-Source1:        fwbuilder.desktop
-Patch0:         http://patch-tracker.debian.org/patch/series/dl/fwbuilder/5.1.0-3/ftbfs-gcc-4.7.diff
+URL:            https://github.com/fwbuilder/fwbuilder
+Source:         %{name}-%{version}.tar.gz
 Buildroot:      %{_tmppath}/%{name}-%{version}-root
 
-BuildRequires:  qt4-devel
+BuildRequires:  cmake
+BuildRequires:  qt5-qtbase-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  glib2-devel
-BuildRequires:  gawk
-BuildRequires:  autoconf automake libtool
+BuildRequires:  libxml2-devel
 BuildRequires:  libxslt-devel
+BuildRequires:  openssl-devel
+BuildRequires:  net-snmp-devel
 Obsoletes:      libfwbuilder < %{version}-%{release}
 Provides:       libfwbuilder%{?_isa} = %{version}-%{release}
 
@@ -33,33 +36,21 @@ and the same GUI for different firewall platforms.
 
 %prep
 %setup -q
-%patch0 -p1 -b .ftbfs-gcc-4.7
-
 
 %build
-export CXXFLAGS="$RPM_OPT_FLAGS -fno-var-tracking-assignments"
-./autogen.sh
-%configure \
-    --with-templatedir=%{_datadir}/fwbuilder \
-    --disable-dependency-tracking
-make %{?_smp_mflags} all
+export CXXFLAGS="$RPM_OPT_FLAGS -fno-lto"
+%cmake -DFWB_NO_DATAVERSION=1
+%cmake_build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install INSTALL_ROOT=$RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
+%cmake_install
+rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}*
 
 # Add an icon for the menu system
 for width in 16 24 32 48 72 128 256 512
 do
 install -Dpm 644 src/res/Icons/${width}x${width}/fwbuilder.png $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${width}x${width}/apps/fwbuilder.png
 done
-
-# Add menu entry
-desktop-file-install \
-  --dir $RPM_BUILD_ROOT/%{_datadir}/applications   \
-  --add-category X-Fedora                          \
-  %{SOURCE1}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,8 +73,12 @@ gtk-update-icon-cache -qf %{_datadir}/icons/hicolor >/dev/null 2>&1 || :
 %doc doc/COPYING
 %doc doc/Credits
 %doc doc/ChangeLog
+%doc doc/FWBuilder-Routing-LICENSE.txt
 %doc doc/PatchAcceptancePolicy.txt
+%doc doc/README.cluster
 %doc doc/README.floppyfw
+%doc doc/README.policy_import
+%doc doc/README.routing
 %doc doc/ReleaseNotes_*.html
 %{_mandir}/man1/fwbuilder.1*
 %{_mandir}/man1/fwbedit.1*
@@ -160,9 +155,12 @@ Policy compiler for Cisco routers/firewalls
 %files cisco
 %defattr(-,root,root)
 %{_bindir}/fwb_iosacl
+%{_bindir}/fwb_nxosacl
 %{_bindir}/fwb_pix
 %doc doc/README.iosacl
+%doc doc/README.nxosacl
 %doc doc/README.pix
+%doc doc/README.pix_routing
 %{_mandir}/man1/fwb_iosacl.1*
 %{_mandir}/man1/fwb_pix.1*
 
@@ -178,7 +176,25 @@ Policy compiler for Procurve devices
 %defattr(-,root,root)
 %{_bindir}/fwb_procurve_acl
 
+
+%package junos
+Summary:  Policy Compiler for Junos Access lists
+Group:    Applications/System
+Requires: %{name} = %{version}-%{release}
+
+%description junos
+Policy compiler for Junos Access lists
+
+%files junos
+%defattr(-,root,root)
+%{_bindir}/fwb_junosacl
+%doc doc/README.junos
+
+
 %changelog
+* Sat Mar 19 2022 Sean Sheedy <sean@sheedy.software> - 6.0.0-rc1
+- Adapt old Fedora spec file for version 6.0.0 on Fedora 34
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.0.3599-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
