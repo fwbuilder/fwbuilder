@@ -1,4 +1,4 @@
-This is directory supporting RPM builds on Red Hat releases.  It has
+This is a directory supporting RPM builds on Red Hat releases.  It has
 been tested on Fedora 34, but should be close for Fedora 35+ and
 (possibly) current versions of CentOS.
 
