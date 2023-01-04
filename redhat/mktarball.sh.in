@@ -1,0 +1,45 @@
+#!/bin/bash
+
+VERSION=@RPM_VERSION@
+
+USAGE='Usage: mktarball.sh [-b BRANCH] [-c]'
+
+BRANCH='master'
+
+while getopts 'b:ch' opt ; do
+  case $opt in
+    b) BRANCH=${OPTARG}
+       ;;
+    c) CURRENT=1
+       ;;
+    h) echo ${USAGE}
+       exit
+       ;;
+   \?) echo ${USAGE}
+       exit 1
+       ;;
+  esac
+done
+
+TARBALL=`pwd`/fwbuilder-${VERSION}.tar.gz
+cd ..
+
+if [ -z "${CURRENT}" ] ; then
+  git archive --format=tar.gz -o ${TARBALL} --prefix=fwbuilder-${VERSION}/ ${BRANCH}
+  exit
+fi
+
+TMPDIR=`mktemp -d`
+DESTDIR=${TMPDIR}/fwbuilder-${VERSION}
+
+# Make a copy of the source with the proper version number
+find . -depth -print0 | cpio --null -pdm ${TMPDIR}/fwbuilder-${VERSION}
+
+# Remove unneeded metadata files
+cd ${DESTDIR}
+rm -rf .git .cproject .project .settings
+
+cd ${TMPDIR}
+tar -czf ${TARBALL} *
+
+rm -rf ${TMPDIR}

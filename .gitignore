@@ -59,3 +59,7 @@ release/
 *.qbs.user
 build/
 CMakeLists.txt.user
+.cproject
+.project
+.settings
+*.swp

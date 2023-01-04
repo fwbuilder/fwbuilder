@@ -573,7 +573,6 @@ void interfacePropertiesTest::validateInterfaceProCurve()
 
     Interface* parent = Interface::cast(db->create(Interface::TYPENAME));
     Interface* iface = Interface::cast(db->create(Interface::TYPENAME));
-    Interface* subiface = Interface::cast(db->create(Interface::TYPENAME));
 
     fw.add(parent);
 
