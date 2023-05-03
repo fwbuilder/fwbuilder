@@ -115,6 +115,7 @@ void NATCompiler_ipt::PrintRule::initialize()
 string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 {
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+    FWOptions* options = ipt_comp->fw->getOptionsObject();
     ostringstream  res;
 
     if (!minus_n_tracker_initialized) initializeMinusNTracker();
@@ -128,7 +129,12 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
         else
             opt_wait = "";
 
-        string ipt_cmd = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    string ipt_cmd;// = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    if(options->getBool("use_iptables_translate")) {
+    	ipt_cmd = (ipt_comp->ipv6) ? "$IP6TABLES_TRANSLATE " : "$($IPTABLES_TRANSLATE ";
+    } else {
+    	ipt_cmd = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    }
 	res << ipt_cmd << opt_wait << "-t nat -N " << chain << endl;
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
@@ -138,7 +144,15 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
 string NATCompiler_ipt::PrintRule::_startRuleLine()
 {
     NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
-    string res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    FWOptions* options = ipt_comp->fw->getOptionsObject();
+
+    string res;// = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+
+    if(options->getBool("use_iptables_translate")) {
+        res = (ipt_comp->ipv6) ? "$IP6TABLES_TRANSLATE " : "$($IPTABLES_TRANSLATE ";
+    } else {
+        res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    }
 
     string opt_wait;
 
@@ -147,12 +161,24 @@ string NATCompiler_ipt::PrintRule::_startRuleLine()
     else
         opt_wait = "";
 
-    return res + opt_wait + string("-t nat -A ");
+    res += opt_wait + string("-t nat -A ");
+
+    return res;
 }
 
 string NATCompiler_ipt::PrintRule::_endRuleLine()
 {
-    return string("\n");
+	NATCompiler_ipt *ipt_comp = dynamic_cast<NATCompiler_ipt*>(compiler);
+	FWOptions* options = ipt_comp->fw->getOptionsObject();
+
+	string res;
+	if(options->getBool("use_iptables_translate")) {
+		res = ")\n";
+	} else {
+		res = "\n";
+	}
+
+	return res;
 }
 
 string NATCompiler_ipt::PrintRule::_printRuleLabel(NATRule *rule)

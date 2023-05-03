@@ -48,6 +48,8 @@ class OSData_ipt {
                    IP6TABLES,
                    IPTABLES_RESTORE,
                    IP6TABLES_RESTORE,
+				   IPTABLES_TRANSLATE,
+				   IP6TABLES_TRANSLATE,
                    IP,
                    IFCONFIG,
                    VCONFIG,

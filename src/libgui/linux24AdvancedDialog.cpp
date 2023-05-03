@@ -178,6 +178,12 @@ linux24AdvancedDialog::linux24AdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption( m_dialog->linux24_path_ip6tables_restore,
                          fwopt,
                          "linux24_path_ip6tables_restore");
+    data.registerOption( m_dialog->linux24_path_iptables_translate,
+                             fwopt,
+                             "linux24_path_iptables_translate");
+        data.registerOption( m_dialog->linux24_path_ip6tables_translate,
+                             fwopt,
+                             "linux24_path_ip6tables_translate");
 
     data.registerOption(m_dialog->conntrack_max,
                         fwopt,

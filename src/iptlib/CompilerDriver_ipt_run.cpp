@@ -708,18 +708,33 @@ QString CompilerDriver_ipt::run(const std::string &cluster_id,
 
 
         Configlet stop_action(fw, "linux24", "stop_action");
-        stop_action.collapseEmptyStrings(true);
-        stop_action.setVariable("have_ipv4", have_ipv4);
-        stop_action.setVariable("have_ipv6", have_ipv6);
+        if (options->getBool("use_iptables_translate")) {
+        	Configlet stop_action(fw, "linux24", "stop_action_nft");
 
-        if (XMLTools::version_compare(fw_version, "1.4.20") >= 0)
-            stop_action.setVariable("opt_wait", "-w");
-        else
-            stop_action.setVariable("opt_wait", "");
+			stop_action.collapseEmptyStrings(true);
+			stop_action.setVariable("have_ipv4", have_ipv4);
+			stop_action.setVariable("have_ipv6", have_ipv6);
 
-        script_skeleton.setVariable("stop_action", stop_action.expand());
+			if (XMLTools::version_compare(fw_version, "1.4.20") >= 0)
+				stop_action.setVariable("opt_wait", "-w");
+			else
+				stop_action.setVariable("opt_wait", "");
 
+			script_skeleton.setVariable("stop_action", stop_action.expand());
+        } else {
+        	Configlet stop_action(fw, "linux24", "stop_action");
 
+        	stop_action.collapseEmptyStrings(true);
+        	stop_action.setVariable("have_ipv4", have_ipv4);
+        	stop_action.setVariable("have_ipv6", have_ipv6);
+
+        	if (XMLTools::version_compare(fw_version, "1.4.20") >= 0)
+        		stop_action.setVariable("opt_wait", "-w");
+        	else
+        	    stop_action.setVariable("opt_wait", "");
+
+        	script_skeleton.setVariable("stop_action", stop_action.expand());
+        }
 
         Configlet status_action(fw, "linux24", "status_action");
         status_action.collapseEmptyStrings(true);
