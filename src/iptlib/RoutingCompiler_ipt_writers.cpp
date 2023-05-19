@@ -281,6 +281,11 @@ string RoutingCompiler_ipt::PrintRule::RoutingRuleToString(RoutingRule *rule)
     }
     command_line << _printRGtw(rule);
     command_line << _printRItf(rule);
+    {
+        FWObject *opt_dummy = rule->getFirstByType(RoutingRuleOptions::TYPENAME);
+        RoutingRuleOptions *opt = opt_dummy ? RoutingRuleOptions::cast(opt_dummy) : 0;
+        if(opt && opt->getBool("use_onlink_option")) command_line << " onlink ";
+    }
 
     // to make generated script more readable in single rule compile mode,
     // skip the part that rolls back in case of an error
