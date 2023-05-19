@@ -151,6 +151,7 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
         }
         res+= opt_wait + "-N " + chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
+        if(options->getBool("use_iptables_translate")) res+=" )";
         res += "\n";
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
@@ -191,7 +192,7 @@ string PolicyCompiler_ipt::PrintRule::_endRuleLine()
 
 	string res;
 	if(options->getBool("use_iptables_translate")) {
-	   	res = ")\n";
+	   	res = " | sed 's/\\\\//g')\n";
 	} else {
 	   	res = "\n";
 	}

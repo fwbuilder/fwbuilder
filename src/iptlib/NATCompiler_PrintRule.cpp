@@ -135,7 +135,9 @@ string NATCompiler_ipt::PrintRule::_createChain(const string &chain)
     } else {
     	ipt_cmd = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
     }
-	res << ipt_cmd << opt_wait << "-t nat -N " << chain << endl;
+	res << ipt_cmd << opt_wait << "-t nat -N " << chain;
+	if(options->getBool("use_iptables_translate")) res << " )";
+	res << endl;
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
     return res.str();
