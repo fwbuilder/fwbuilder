@@ -12,7 +12,11 @@ set(fwbedit_srcs
 
 add_executable(fwbedit ${fwbedit_srcs})
 
-target_link_libraries(fwbedit gui import fwbparser antlr common iptlib fwbpf fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z OpenSSL::Crypto pthread Qt5::Core Qt5::Widgets Qt5::PrintSupport)
+IF (UseQt6)
+    target_link_libraries(fwbedit gui import fwbparser antlr common iptlib fwbpf fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z OpenSSL::Crypto pthread Qt6::Core Qt6::Widgets Qt6::PrintSupport)
+ELSE()
+    target_link_libraries(fwbedit gui import fwbparser antlr common iptlib fwbpf fwbcisco compilerdriver fwcompiler fwbuilder xml2 m xslt z OpenSSL::Crypto pthread Qt5::Core Qt5::Widgets Qt5::PrintSupport)
+ENDIF()
 
 IF (WIN32)
   target_link_libraries(fwbedit lzma iconv)

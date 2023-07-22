@@ -1,7 +1,11 @@
 include( CTest )
 
 if(BUILD_TESTING AND (UNIX AND NOT APPLE))
-  find_package(Qt5Test REQUIRED)
+  IF (UseQt6)
+      find_package(Qt6 COMPONENTS Test REQUIRED)
+  ELSE()
+      find_package(Qt5Test REQUIRED)
+  ENDIF()
 
   add_subdirectory(main)
 

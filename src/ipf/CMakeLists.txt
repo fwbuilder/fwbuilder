@@ -3,7 +3,11 @@ set(ipf_srcs
 
 add_executable(fwb_ipf ${ipf_srcs})
 
-target_link_libraries(fwb_ipf common fwbpf compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z Qt5::Core Qt5::Widgets)
+IF (UseQt6)
+    target_link_libraries(fwb_ipf common fwbpf compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z Qt6::Core Qt6::Widgets)
+ELSE()
+    target_link_libraries(fwb_ipf common fwbpf compilerdriver fwcompiler fwbuilder xml2 pthread m xslt z Qt5::Core Qt5::Widgets)
+ENDIF()
 
 IF (WIN32)
   target_link_libraries(fwb_ipf lzma iconv ws2_32)

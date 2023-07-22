@@ -23,7 +23,11 @@ add_library(import STATIC ${import_srcs})
 target_include_directories(import PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-target_link_libraries(import compilerdriver antlr Qt5::Core Qt5::Widgets)
+IF (UseQt6)
+    target_link_libraries(import compilerdriver antlr Qt6::Core Qt6::Widgets)
+ELSE()
+    target_link_libraries(import compilerdriver antlr Qt5::Core Qt5::Widgets)
+ENDIF()
 
 target_compile_options(import PRIVATE ${CXX_DEFAULT_FLAGS})
 

@@ -29,9 +29,15 @@ include( CTest )
 
 ### Dependencies
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5PrintSupport REQUIRED)
+option(UseQt6 "Use Qt6" OFF)
+if (UseQt6)
+    find_package(Qt6 COMPONENTS Widgets Network PrintSupport REQUIRED)
+else()
+    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt5Network REQUIRED)
+    find_package(Qt5PrintSupport REQUIRED)
+endif()
+
 find_package(LibXml2 REQUIRED)
 find_package(LibXslt REQUIRED)
 

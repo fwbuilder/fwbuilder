@@ -566,9 +566,15 @@ set(libgui_resources
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-qt5_wrap_cpp(libgui_hdrs_moc ${libgui_hdrs})
-qt5_wrap_ui(libgui_ui_h ${libgui_ui})
-qt5_add_resources(libgui_resources_rcc ${libgui_resources})
+IF (UseQt6)
+    qt_wrap_cpp(libgui_hdrs_moc ${libgui_hdrs})
+    qt_wrap_ui(libgui_ui_h ${libgui_ui})
+    qt_add_resources(libgui_resources_rcc ${libgui_resources})
+ELSE()
+    qt5_wrap_cpp(libgui_hdrs_moc ${libgui_hdrs})
+    qt5_wrap_ui(libgui_ui_h ${libgui_ui})
+    qt5_add_resources(libgui_resources_rcc ${libgui_resources})
+ENDIF()
 
 add_library(gui STATIC ${libgui_srcs} ${libgui_hdrs_moc} ${libgui_ui_h} ${libgui_resources_rcc})
 
@@ -579,7 +585,11 @@ target_include_directories(gui PRIVATE
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>/src/libgui)
 
-target_link_libraries(gui fwbcisco fwbjuniper iptlib fwbpf import Qt5::Core Qt5::Widgets Qt5::Network Qt5::PrintSupport)
+IF (UseQt6)
+    target_link_libraries(gui fwbcisco fwbjuniper iptlib fwbpf import Qt6::Core Qt6::Widgets Qt6::Network Qt6::PrintSupport)
+ELSE()
+    target_link_libraries(gui fwbcisco fwbjuniper iptlib fwbpf import Qt5::Core Qt5::Widgets Qt5::Network Qt5::PrintSupport)
+ENDIF()
 
 target_compile_options(gui PRIVATE ${CXX_DEFAULT_FLAGS})
 

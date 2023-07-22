@@ -21,7 +21,11 @@ add_library(compilerdriver STATIC ${compiler_lib_srcs})
 target_include_directories(compilerdriver PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
-target_link_libraries(compilerdriver fwbuilder Qt5::Core)
+IF (UseQt6)
+    target_link_libraries(compilerdriver fwbuilder Qt6::Core)
+ELSE()
+    target_link_libraries(compilerdriver fwbuilder Qt5::Core)
+ENDIF()
 
 target_compile_options(compilerdriver PRIVATE ${CXX_DEFAULT_FLAGS})
 
