@@ -171,11 +171,11 @@ void RuleSetDialog::validate(bool *res)
 
     // Do not allow ':' in the rule set names because this character is
     // used as a separator in error and warning messages 
-    QString pattern("([a-zA-Z0-9_-+=@%^]+)");
+    QString pattern("([a-zA-Z0-9_\\-+=@%^]+)");
 
     // branch (anchor) names for PF may end with "/*"
     if (platform == "pf")
-        pattern = "([a-zA-Z0-9_-+=@%^]+)(/\\*)?";
+        pattern = "([a-zA-Z0-9_\\-+=@%^]+)(/\\*)?";
 
     QRegularExpression rx = QRegularExpression(QRegularExpression::anchoredPattern(pattern));
 
