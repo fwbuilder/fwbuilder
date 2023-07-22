@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -18,7 +18,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -108,7 +108,7 @@ private:
      * create the object. The 'parent' pointer, on the other hand, is
      * stored once the object is added to the tree.
      *
-     * dbroot is assigned by method FWObjectDatabase::create 
+     * dbroot is assigned by method FWObjectDatabase::create
      */
     FWObjectDatabase *dbroot;
     int id;
@@ -128,7 +128,7 @@ protected:
     std::string xml_name;
     bool busy;
     bool dirty;
-    
+
     std::map<std::string, std::string> data;
     std::map<std::string, void*> private_data;
 
@@ -173,7 +173,7 @@ protected:
 
     // special constructor used to create FWObjectDatabase objects
     FWObject(bool new_id);
-    
+
 public:
 
     DECLARE_FWOBJECT_SUBTYPE(FWObject);
@@ -198,8 +198,8 @@ public:
         bool operator==(const tree_iterator& i) const;
         bool operator!=(const tree_iterator& i) const;
     };
-    
- 
+
+
     tree_iterator tree_begin();
     tree_iterator tree_end();
 
@@ -214,7 +214,7 @@ public:
      * need to add as children.
      */
     virtual void init(FWObjectDatabase *root);
-    
+
     int  getId() const;
     void setId(int i);
     bool haveId() { return (id != -1); }
@@ -226,7 +226,7 @@ public:
      * checking if this object is read-only itself.
      */
     bool getRO() const { return ro; }
-    
+
     virtual void fromXML(xmlNodePtr xml_parent_node);
     virtual xmlNodePtr toXML(xmlNodePtr xml_parent_node);
     xmlNodePtr toXML(xmlNodePtr xml_parent_node, bool process_children);
@@ -236,7 +236,7 @@ public:
      *  represented by the class derived from FWObject if we want to. For
      *  example, used in all "Any"  objects so we did not have to create extra
      *  classes
-     * 
+     *
      */
     void setXMLName (const std::string &);
 
@@ -259,7 +259,7 @@ public:
      */
     virtual FWObject& duplicate(const FWObject *obj,
                                 bool preserve_id = true);
-    
+
     /**
      * This method works just like  duplicate, except it does not destroy
      * or change children of 'this'.
@@ -283,13 +283,13 @@ public:
      * ones are issued.
      */
     virtual FWObject* addCopyOf(const FWObject *obj, bool preserve_id = true);
-    
+
     /**
      * compares objects. Ignores ID and always looks at
      * attributes. Returns true if objects are equal.
      */
     virtual bool cmp(const FWObject *obj, bool recursive=false);
-    
+
     void Show();
     void Hide();
 
@@ -312,7 +312,7 @@ public:
 
     const std::string &getName() const;
     void setName(const std::string& n);
-    
+
     const std::string &getComment() const;
     void setComment(const std::string& c);
 
@@ -323,7 +323,7 @@ public:
     void* getPrivateData(const std::string &key) const;
     std::map<std::string, void*> &getAllPrivateData();
 
-    
+
     /**
      * convenience method: returns the name of the library this object belongs to.
      * In fwbuilder2 library is an element directly under FWObjectDatabase; all
@@ -372,7 +372,7 @@ public:
      * to o1 with o2 and vice versa.
      */
     virtual void swapObjects(FWObject *o1,FWObject *o2);
-      
+
     /**
      * Finds first instance of 'obj' in children of this
      * object and removes if. If 'obj' reference counter
@@ -390,7 +390,7 @@ public:
      * Adds reference object pointing to 'obj' as a child of 'this'
      */
     virtual void addRef(FWObject *obj);
-    
+
     /**
      * Removes reference to given object among
      * children of 'this'.
@@ -437,7 +437,7 @@ public:
     void clearChildren(bool recursive=true);
 
     void sortChildrenByName(bool follow_references=false);
-    
+
     /**
      * Walks the tree, looking for objects that are referenced by two parents
      * or those with this->parent == nullptr. Prints report to stderr and
@@ -454,7 +454,7 @@ public:
      * point to the old object tree and need to be fixed.
      */
     void fixTree();
-    
+
     int getChildrenCount() const;
 
     virtual void dump(bool recursive,bool brief,int offset=0) const;
@@ -467,7 +467,7 @@ public:
     bool isChildOf(FWObject *obj);
 
     bool hasChild(FWObject *obj);
-    
+
     /**
      * Returns object with given ID. If recursive is 'false'
      * search is restricted to direct children of given object
@@ -537,7 +537,7 @@ public:
      */
     void findDependencies(std::list<FWObject*> &deps);
 
-    
+
     virtual void setDirty(bool f);
     virtual bool isDirty();
 
@@ -581,7 +581,7 @@ class FWObjectTypedChildIterator
     public:
 
     FWObjectTypedChildIterator();
-    FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);   
+    FWObjectTypedChildIterator(const FWObjectTypedChildIterator &o);
     FWObjectTypedChildIterator(const FWObject *o, const std::string &_type_name);
     FWObjectTypedChildIterator& operator=(const FWObjectTypedChildIterator&) = default;
 
@@ -590,12 +590,12 @@ class FWObjectTypedChildIterator
     FWObject *operator*() const;
     FWObjectTypedChildIterator& operator++();
     FWObjectTypedChildIterator& operator--();
-    
+
     const FWObject::const_iterator &begin() { return _begin; }
     const FWObject::const_iterator &  end() { return _end  ; }
 
     protected:
-    
+
     std::string type_name;
     FWObject::const_iterator real_iterator;
     FWObject::const_iterator _begin;
@@ -603,35 +603,43 @@ class FWObjectTypedChildIterator
 
     void init(const FWObject *o, const std::string &_type_name);
 };
- 
+
 /**
  * Predicate class testing object pointers for name eqivalence.
  * name is obtained by calling getName() method.
  * This class could be used in STL Algoriths find_if, and others.
  */
-class FWObjectNameEQPredicate: public std::unary_function<FWObject*, bool>
+class FWObjectNameEQPredicate
+#if __cplusplus < 201103L
+    : public std::unary_function<FWObject*, bool>
+#endif
 {
     std::string n;
-    
+
     public:
-    
+
     FWObjectNameEQPredicate(const std::string &name):n(name) {}
-    
-    bool operator()(const FWObject *o) const 
+
+    bool operator()(const FWObject *o) const
     {
         return o->getName()==n;
     }
 };
 
-struct FWObjectNameCmpPredicate :
-    public std::binary_function<FWObject*, FWObject*, bool>
+struct FWObjectNameCmpPredicate
+#if __cplusplus < 201103L
+    : public std::binary_function<FWObject*, FWObject*, bool>
+#endif
 {
     bool follow_references;
     FWObjectNameCmpPredicate(bool follow_refs=false);
     bool operator()(FWObject *a,FWObject *b);
 };
 
-class findFWObjectIDPredicate : public std::unary_function<FWObject*, bool>
+class findFWObjectIDPredicate
+#if __cplusplus < 201103L
+    : public std::unary_function<FWObject*, bool>
+#endif
 {
     int _id;
     public:
@@ -645,15 +653,18 @@ class findFWObjectIDPredicate : public std::unary_function<FWObject*, bool>
  * name is obtained by calling getTypeName() method.
  * This class could be used in STL Algoriths find_if, and others.
  */
-class FWObjectTypeNameEQPredicate: public std::unary_function<FWObject*, bool>
+class FWObjectTypeNameEQPredicate
+#if __cplusplus < 201103L
+: public std::unary_function<FWObject*, bool>
+#endif
 {
     std::string n;
-    
+
     public:
-    
+
     FWObjectTypeNameEQPredicate(const std::string &name):n(name) {}
-    
-    bool operator()(const FWObject *o) const 
+
+    bool operator()(const FWObject *o) const
     {
         return o->getTypeName()==n;
     }

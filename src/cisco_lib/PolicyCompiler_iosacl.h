@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -17,7 +17,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -55,7 +55,7 @@ namespace fwcompiler {
         protected:
 
         std::string comment_symbol;
-        
+
         /**
          * dynamic interfaces can not be used in policy rules in IOS ACLs
          */
@@ -78,13 +78,13 @@ namespace fwcompiler {
          *************************************************************************
          */
 
-        
+
 	/**
          *   verifies combination of interface and direction and
          *   fills interface and direction. After this predicate it
          *   is guaranteed that both interface and direction have
          *   some value. In certain situations interface ID may be
-         *   set to "nil" though (e.g. global policy rules). 
+         *   set to "nil" though (e.g. global policy rules).
 	 */
 	DECLARE_POLICY_RULE_PROCESSOR( InterfaceAndDirection_v6 );
 
@@ -117,7 +117,7 @@ namespace fwcompiler {
          *************************************************************************
          *
          * end of module PolicyCompiler_iosacl_v6_acls.cpp
-         * 
+         *
          *************************************************************************
          */
 
@@ -196,7 +196,7 @@ namespace fwcompiler {
          */
         DECLARE_POLICY_RULE_PROCESSOR(splitTCPServiceWithFlags);
         friend class PolicyCompiler_iosacl::splitTCPServiceWithFlags;
-        
+
 	/**
 	 *  this processor prints single policy rule, assuming all
 	 *  groups have been expanded, so source, destination and
@@ -212,7 +212,7 @@ namespace fwcompiler {
             int                                 aclLineCounter;
 
             std::string _printPortRangeOp(int rs, int re);
-            
+
             std::string getTcpFlagName(const libfwbuilder::TCPService::TCPFlag f);
             std::string _printSrcService(libfwbuilder::Service *srv);
             std::string _printDstService(libfwbuilder::Service *srv);
@@ -244,7 +244,10 @@ namespace fwcompiler {
             PrintCompleteACLs(const std::string &n) : PrintRule(n) {}
             virtual bool processNext();
 
-            struct printRulesForACL : public std::unary_function<libfwbuilder::Rule*, void>
+            struct printRulesForACL
+#if __cplusplus < 201103L
+    : public std::unary_function<libfwbuilder::Rule*, void>
+#endif
             {
                 ciscoACL *acl;
                 std::stringstream *output;
@@ -286,7 +289,7 @@ namespace fwcompiler {
 	virtual void epilog();
 
         virtual std::string printClearCommands();
-        
+
         static std::string getAccessGroupCommandForAddressFamily(bool ipv6);
 
     };

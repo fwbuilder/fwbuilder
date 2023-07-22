@@ -307,7 +307,7 @@ instDialog::~instDialog()
 
 // ========================================================================
 
-/* 
+/*
  * main loop: use lists compile_fw_list and install_fw_list to iterate
  * all firewalls and do everything.
  */
@@ -637,9 +637,11 @@ int instDialog::findFilesToInspect(QStringList &files)
     }
     return files.size();
 }
- 
-struct CaseInsensitiveComparison :
-    public std::binary_function<libfwbuilder::FWObject*, libfwbuilder::FWObject*, bool>
+
+struct CaseInsensitiveComparison
+#if __cplusplus < 201103L
+    : public std::binary_function<libfwbuilder::FWObject*, libfwbuilder::FWObject*, bool>
+#endif
 {
     bool operator()(libfwbuilder::FWObject *a,libfwbuilder::FWObject *b)
     {
@@ -651,7 +653,7 @@ void instDialog::findFirewalls()
 {
     firewalls.clear();
     clusters.clear();
-    
+
     if (project)
     {
         project->m_panel->om->findAllFirewalls(firewalls);

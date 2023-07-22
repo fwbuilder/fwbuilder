@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -18,7 +18,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -125,7 +125,7 @@ void FWObject::fromXML(xmlNodePtr root)
         if (cur && !xmlIsBlankNode(cur))
         {
             FWObject *o = dbr->createFromXML(cur);
-            if (o!=nullptr) 
+            if (o!=nullptr)
             {
                 /* Add w/o validation. Trust XML to do that */
 		add(o, false);
@@ -164,7 +164,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
     if (id!=-1)
     {
         xmlNewProp(
-            me, 
+            me,
             XMLTools::ToXmlCast("id"),
             XMLTools::StrToXmlCast(s_id));
     }
@@ -174,7 +174,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
                    XMLTools::StrToXmlCast(setToString(keywords)));
     }
 
-    for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
+    for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i)
     {
         const string &name  = (*i).first;
         const string &value = (*i).second;
@@ -187,7 +187,7 @@ xmlNodePtr FWObject::toXML(xmlNodePtr parent, bool process_children)
 
     if (process_children)
     {
-        for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j) 
+        for(list<FWObject*>::const_iterator j=begin(); j!=end(); ++j)
             (*j)->toXML(me);
     }
 
@@ -239,7 +239,7 @@ FWObject::FWObject(const FWObject &c) : list<FWObject*>(c)
     storeCreationTime();
 }
 
-FWObject::~FWObject() 
+FWObject::~FWObject()
 {
     busy = true;  // ignore read-only
     if (size() > 0) destroyChildren();
@@ -315,7 +315,7 @@ FWObject* FWObject::findObjectByName(const string &type,
     if (getTypeName()==type && getName()==name) return this;
 
     list<FWObject*>::iterator j;
-    for(j=begin(); j!=end(); ++j)     
+    for(j=begin(); j!=end(); ++j)
     {
         FWObject *o=*j;
 
@@ -332,7 +332,7 @@ FWObject* FWObject::findObjectByAttribute(const std::string &attr,
     if (getStr(attr)==val) return this;
 
     list<FWObject*>::iterator j;
-    for(j=begin(); j!=end(); ++j)     
+    for(j=begin(); j!=end(); ++j)
     {
         FWObject *o=*j;
 
@@ -352,7 +352,7 @@ bool FWObject::cmp(const FWObject *obj, bool recursive)
     if (data.size() != obj->data.size())
         return false;
 
-    for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i) 
+    for(map<string, string>::const_iterator i=data.begin(); i!=data.end(); ++i)
     {
         const string &name  = (*i).first;
         const string &value = (*i).second;
@@ -411,7 +411,7 @@ FWObject& FWObject::duplicate(const FWObject *x, bool preserve_id)
 
     destroyChildren();   // does it erase index entries?
 
-    for(list<FWObject*>::const_iterator m=x->begin(); m!=x->end(); ++m) 
+    for(list<FWObject*>::const_iterator m=x->begin(); m!=x->end(); ++m)
     {
         FWObject *o = *m;
         addCopyOf( o, preserve_id);
@@ -493,11 +493,14 @@ FWObject& FWObject::shallowDuplicate(const FWObject *x, bool preserve_id)
     return *this;
 }
 
-class InheritsFWOptions: public std::unary_function<FWObject*, bool>
+class InheritsFWOptions
+#if __cplusplus < 201103L
+    : public std::unary_function<FWObject*, bool>
+#endif
 {
     public:
     InheritsFWOptions() {}
-    bool operator()(const FWObject *o) const 
+    bool operator()(const FWObject *o) const
     {
         return FWOptions::constcast(o)!=nullptr;
     }
@@ -518,12 +521,12 @@ FWObject& FWObject::duplicateForUndo(const FWObject *obj)
     return *this;
 }
 
-const string &FWObject::getName() const 
-{ 
+const string &FWObject::getName() const
+{
     return name;
 }
 
-void FWObject::setName(const string &n)   
+void FWObject::setName(const string &n)
 {
     if (name != n)
     {
@@ -593,7 +596,7 @@ string FWObject::getPath(bool relative, bool detailed) const
 }
 
 const string& FWObject::getComment() const
-{ 
+{
     return comment;
 }
 
@@ -607,7 +610,7 @@ void FWObject::setComment(const string &c)
 }
 
 int FWObject::getId() const
-{ 
+{
     return id;
 }
 
@@ -624,9 +627,9 @@ void FWObject::setId(int c)
     }
 }
 
-bool FWObject::exists(const string &name) const 
+bool FWObject::exists(const string &name) const
 {
-    return data.count(name)!=0; 
+    return data.count(name)!=0;
 }
 
 const string &FWObject::getStr(const string &name) const
@@ -642,7 +645,7 @@ void FWObject::remStr(const string &name)
 {
     checkReadOnly();
     map<string, string>::iterator m=data.find(name);
-    if(m != data.end()) 
+    if(m != data.end())
     {
         data.erase(m);
         setDirty(true);
@@ -706,7 +709,7 @@ void FWObject::setBool(const string &name, const string &val)
 {
     if(!name.empty())
 	setBool(name,
-		(val=="1" || cxx_strcasecmp(val.c_str(),"true")==0)); 
+		(val=="1" || cxx_strcasecmp(val.c_str(),"true")==0));
 }
 
 void FWObject::Show()
@@ -847,7 +850,7 @@ void FWObject::add(FWObject *obj, bool validate)
         assert(old_parent != this);
     }
 
-    if (!validate || validateChild(obj)) 
+    if (!validate || validateChild(obj))
     {
 	push_back(obj);
 	_adopt(obj);
@@ -879,7 +882,7 @@ void FWObject::addRef(FWObject *obj)
 {
     checkReadOnly();
 
-    if (validateChild(obj)) 
+    if (validateChild(obj))
     {
 	FWReference *oref = obj->createRef();
 	obj->ref();
@@ -933,9 +936,9 @@ void FWObject::swapObjects(FWObject *o1, FWObject *o2)
 {
     checkReadOnly();
 
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
-        if(*m==o1) 
+        if(*m==o1)
         {
             *m=o2;
         } else if(*m==o2)
@@ -988,14 +991,14 @@ void FWObject::removeRef(FWObject *obj)
     if (!obj) return;
 
     int  obj_id = obj->getId();
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
         FWObject *o = *m;
         FWReference *oref = FWReference::cast(o);
         if (oref && oref->getPointerId()==obj_id)
         {
             // do not delete object even if this reference was the last one (?)
-            obj->unref();  
+            obj->unref();
 
             FWObject::remove(o, false);  // do not remove
             delete o;
@@ -1007,7 +1010,7 @@ void FWObject::removeRef(FWObject *obj)
 bool FWObject::hasRef(FWObject *obj)
 {
     int  obj_id = obj->getId();
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
         FWObject *o = *m;
         FWReference *oref = FWReference::cast(o);
@@ -1024,7 +1027,7 @@ void FWObject::_removeAllRef(FWObject *rm)
 
     for (FWObject::iterator i=begin(); i!=end(); i++)
         (*i)->_removeAllRef(rm);
-    
+
     removeRef(rm);
 }
 
@@ -1036,13 +1039,13 @@ void FWObject::removeAllReferences(FWObject *rm)
 void FWObject::findAllReferences(const FWObject *obj, std::set<FWReference*> &res)
 {
     int obj_id = obj->getId();
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
         FWObject *o=*m;
         FWReference *oref = FWReference::cast(o);
         if(oref)
         {
-	    if(oref->getPointerId()==obj_id) 
+	    if(oref->getPointerId()==obj_id)
                 res.insert(oref);
 	} else
         {
@@ -1059,7 +1062,7 @@ set<FWReference*> FWObject::findAllReferences(const FWObject *obj)
 }
 
 bool FWObject::validateChild(FWObject*)
-{ 
+{
     return true;
 }
 
@@ -1124,7 +1127,7 @@ void FWObject::sortChildrenByName(bool follow_references)
 bool FWObject::verifyTree()
 {
     bool res = false;
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
         FWObject *o = *m;
         FWObject *o_parent = o->getParent();
@@ -1173,7 +1176,7 @@ bool FWObject::verifyTree()
 void FWObject::fixTree()
 {
     getRoot()->addToIndex(this);
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
         FWObject *o = *m;
         if (o->getRoot() != getRoot()) o->setRoot(getRoot());
@@ -1217,7 +1220,7 @@ void FWObject::clearChildren(bool recursive)
     int referenced_children = 0;
     int total_children = 0;
 
-    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m) 
+    for(list<FWObject*>::iterator m=begin(); m!=end(); ++m)
     {
         FWObject *o = *m;
 
@@ -1225,7 +1228,7 @@ void FWObject::clearChildren(bool recursive)
 
         if (recursive) o->clearChildren(recursive);
         o->unref();
-        if(o->ref_counter==0) 
+        if(o->ref_counter==0)
         {
             if (dbr) dbr->removeFromIndex( o->getId() );
             delete o;
@@ -1236,7 +1239,7 @@ void FWObject::clearChildren(bool recursive)
     setDirty(true);
 
 #ifdef FWB_DEBUG
-    cerr << "Deleted " << total_children - referenced_children 
+    cerr << "Deleted " << total_children - referenced_children
          << " child objects; still referenced " << referenced_children
          << " child objects" << endl;
 #endif
@@ -1281,9 +1284,9 @@ bool FWObject::hasChild(FWObject *obj)
 FWObject* FWObject::getById  (int id, bool recursive)
 {
     if(id==getId())  return this;
-    
+
     list<FWObject*>::iterator j;
-    for(j=begin(); j!=end(); ++j)     
+    for(j=begin(); j!=end(); ++j)
     {
         FWObject *o=*j;
         int oid = o->getId();
@@ -1303,13 +1306,13 @@ FWObject* FWObject::getFirstByType(const string &type_name) const
 list<FWObject*> FWObject::getByType(const string &type_name) const
 {
     list<FWObject*> res;
-    for(const_iterator i=begin(); i!=end(); ++i) 
+    for(const_iterator i=begin(); i!=end(); ++i)
     {
 	i=find_if( i, end(), FWObjectTypeNameEQPredicate(type_name));
 	if (i==end()) break;
 	res.push_back(*i);
-    } 
-    return res; 
+    }
+    return res;
 }
 
 list<FWObject*> FWObject::getByTypeDeep(const string &type_name) const
@@ -1427,23 +1430,23 @@ void FWObjectTypedChildIterator::init(
 }
 
 bool FWObjectTypedChildIterator::operator==(
-    const FWObject::const_iterator& __x) const 
-{ 
-    return real_iterator == __x; 
+    const FWObject::const_iterator& __x) const
+{
+    return real_iterator == __x;
 }
 
 bool FWObjectTypedChildIterator::operator!=(
-    const FWObject::const_iterator& __x) const 
-{ 
-    return real_iterator != __x; 
+    const FWObject::const_iterator& __x) const
+{
+    return real_iterator != __x;
 }
-    
-FWObject *FWObjectTypedChildIterator::operator*() const 
-{ 
+
+FWObject *FWObjectTypedChildIterator::operator*() const
+{
     return *real_iterator;
 }
 
-FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator++() 
+FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator++()
 {
     if(real_iterator==_end)
         return *this;
@@ -1455,11 +1458,11 @@ FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator++()
 }
 
 /*
- * if iterator points to the first element in the list, then operator--() 
+ * if iterator points to the first element in the list, then operator--()
  * should move it and make it point to end()
  */
-FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator--() 
-{ 
+FWObjectTypedChildIterator& FWObjectTypedChildIterator::operator--()
+{
     if(real_iterator==_end)
         return *this;
     do
@@ -1476,7 +1479,7 @@ FWObject::tree_iterator FWObject::tree_iterator::operator++(int )
     ++*this;
     return __tmp;
 }
- 
+
 //#define TI_DEBUG 1
 
 /* this is a prefix operator */
@@ -1596,7 +1599,7 @@ void FWObject::replaceReferenceInternal(int old_id, int new_id, int &counter)
         for (FWObject::iterator j1=begin(); j1!=end(); ++j1)
             (*j1)->replaceReferenceInternal(old_id, new_id, counter);
     } else
-    { 
+    {
         if (ref->getPointerId()==old_id)
         {
             ref->setPointerId(new_id);

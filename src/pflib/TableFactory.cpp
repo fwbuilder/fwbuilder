@@ -1,4 +1,4 @@
-/* 
+/*
 
                           Firewall Builder
 
@@ -15,7 +15,7 @@
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
- 
+
   To get a copy of the GNU General Public License, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
@@ -80,7 +80,10 @@ void TableFactory::detach()
     // dbroot->remove(persistent_tables, false);
 }
 
-struct joinIDs : public unary_function<string, void>
+struct joinIDs
+#if __cplusplus < 201103L
+    : public unary_function<string, void>
+#endif
 {
     string    out, sep;
     joinIDs(const string& _sep) { sep=_sep; };
@@ -106,8 +109,8 @@ void TableFactory::registerTable(const string& tblname, const string& tblid,
                                  FWObject* tbl)
 {
 // two different table objects should have different names
-// 
-    if (tables.count(tblid)!=0 && 
+//
+    if (tables.count(tblid)!=0 &&
         tblnames.count(tblname)!=0 &&
         tables[tblid]->getName()!=tbl->getName()
     )
@@ -321,7 +324,7 @@ string TableFactory::PrintTables()
                 if (path.empty()) {
                     compiler->abort("Error: Firewall's data directory not set for address table: " + atrt->getName());
                 }
-                
+
                 output << " file \"" << path << "\"";
             }
 

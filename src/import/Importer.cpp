@@ -68,7 +68,10 @@ using namespace libfwbuilder;
 using namespace std;
 
 // a functor to join list<string> into a string with separator sep
-class join : public std::unary_function<std::string, void>
+class join
+#if __cplusplus < 201103L
+    : public std::unary_function<std::string, void>
+#endif
 {
     std::string *result;
     std::string  separator;
@@ -325,7 +328,7 @@ void Importer::addInterfaceAddress(const std::string &label,
 void Importer::setInterfaceComment(const std::string &descr)
 {
     // current_interface can be nullptr if parser encountered command
-    // that looked like interface description but in reality was 
+    // that looked like interface description but in reality was
     // description of something else. For example this happens when
     // it finds command "description" under "controller" in Cisco router
     // configuration.
@@ -489,7 +492,7 @@ void Importer::newUnidirRuleSet(const string &ruleset_name,
 /*
  * Grammar must ensure the call to setDefaultAction() happens
  * after the call to newUnidirRuleSet()
- * 
+ *
  */
 void Importer::setDefaultAction(const std::string &iptables_action_name)
 {
@@ -603,7 +606,7 @@ void Importer::setSrcSelf()
 void Importer::setDstSelf()
 {
     dst_a = "self";
-}    
+}
 
 FWObject* Importer::makeAddressObj(const std::string addr, const std::string netm)
 {
@@ -612,7 +615,7 @@ FWObject* Importer::makeAddressObj(const std::string addr, const std::string net
         return getFirewallObject();
     }
 
-    if ( (addr=="" && netm=="") || 
+    if ( (addr=="" && netm=="") ||
          (addr==InetAddr::getAny().toString() &&
           netm==InetAddr::getAny().toString()))
         return nullptr;  // this is 'any'
@@ -620,7 +623,7 @@ FWObject* Importer::makeAddressObj(const std::string addr, const std::string net
     ObjectSignature sig(error_tracker);
     sig.type_name = Address::TYPENAME;
     sig.setAddress(addr.c_str());
-    if (netm=="") 
+    if (netm=="")
         sig.setNetmask(InetAddr::getAllOnes().toString().c_str(),
                        address_maker->getInvertedNetmasks());
     else
@@ -987,7 +990,7 @@ void Importer::rearrangeVlanInterfaces()
     {
         Interface *intf = Interface::cast(*it);
         FWOptions *ifopt = intf->getOptionsObject();
-        
+
         if (int_prop->looksLikeVlanInterface(intf->getName().c_str()) &&
             ifopt->getStr("type")=="8021q")
         {
