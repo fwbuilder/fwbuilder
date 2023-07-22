@@ -76,13 +76,13 @@ class UpgradePredicate: public XMLTools::UpgradePredicate
     public:
     virtual bool operator()(const string &msg) const 
     { 
-        msg.size();  // to make compiler happy about unused parameter
+        (void)msg.size();  // to make compiler happy about unused parameter
 	cout << "Data file has been created in the old version of Firewall Builder.\nLoad it in the GUI to convert it to the new version." << endl;
 	return false;
     }
 };
 
-    
+
 void usage(const char *name)
 {
     cout << "Firewall Builder:  policy compiler for Cisco PIX firewall (with support for FWSM)" << endl;
