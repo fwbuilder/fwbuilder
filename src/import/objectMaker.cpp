@@ -37,6 +37,7 @@
 // TODO: FWBTree needs to be refactored into an independent module
 #include "../libgui/FWBTree.h"
 
+#include <QObject>
 #include <QStringList>
 #include <QtDebug>
 

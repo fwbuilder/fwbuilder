@@ -49,6 +49,7 @@
 #include "fwbuilder/TagService.h"
 #include "fwbuilder/UDPService.h"
 
+#include <QObject>
 #include <QString>
 #include <QtDebug>
 
