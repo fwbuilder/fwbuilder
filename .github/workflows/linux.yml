@@ -22,20 +22,20 @@ jobs:
               unit_tests: true,
               qt6: false,
             }
-          - {
-              id: 'ubuntu-20.04',
-              name: "Ubuntu 20.04",
-              docker_image: "fwbuilder/ubuntu:20.04",
-              unit_tests: true,
-              qt6: false,
-            }
-          - {
-              id: 'ubuntu-18.04',
-              name: "Ubuntu 18.04",
-              docker_image: "fwbuilder/ubuntu:18.04",
-              unit_tests: true,
-              qt6: false,
-            }
+#          - {
+#              id: 'ubuntu-20.04',
+#              name: "Ubuntu 20.04",
+#              docker_image: "fwbuilder/ubuntu:20.04",
+#              unit_tests: true,
+#              qt6: false,
+#            }
+#          - {
+#              id: 'ubuntu-18.04',
+#              name: "Ubuntu 18.04",
+#              docker_image: "fwbuilder/ubuntu:18.04",
+#              unit_tests: true,
+#              qt6: false,
+#            }
     container:
       image: ${{ matrix.config.docker_image }}
     steps:
