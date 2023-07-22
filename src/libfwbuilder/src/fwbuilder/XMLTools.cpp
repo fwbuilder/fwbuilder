@@ -219,7 +219,6 @@ xmlParserInputPtr fwbExternalEntityLoader(const char *URL,
 
 void XMLTools::initXMLTools()
 {
-    xmlInitMemory();
     xmlInitParser();
     defaultLoader = xmlGetExternalEntityLoader();
     current_template_dir=cxx_strdup("");
