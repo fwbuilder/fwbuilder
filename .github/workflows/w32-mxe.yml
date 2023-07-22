@@ -13,11 +13,6 @@ jobs:
               name: "MXE Qt 5.15",
               docker_image: "fwbuilder/mxe:qt-5.15"
             }
-          - {
-              id: "mxe-qt-5.12",
-              name: "MXE Qt 5.12",
-              docker_image: "fwbuilder/mxe:qt-5.12"
-            }
     container:
       image: ${{ matrix.config.docker_image }}
     steps:

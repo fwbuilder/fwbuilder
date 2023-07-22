@@ -1,5 +1,6 @@
-FROM ubuntu:16.04
+FROM ubuntu:22.04
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     autoconf \
     automake \
@@ -13,8 +14,12 @@ RUN apt-get update && apt-get install -y \
     nsis \
     cmake \
     git \
-    qt5-default \
+    qt5-qmake \
+    qtbase5-dev \ 
+    qt6-base-dev \
     ccache
+
+RUN apt-get clean
 
 WORKDIR /
 CMD ["bash"]

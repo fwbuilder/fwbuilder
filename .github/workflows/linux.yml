@@ -9,22 +9,32 @@ jobs:
       matrix:
         config:
           - {
+              id: 'ubuntu-22.04-qt6',
+              name: "Ubuntu 22.04",
+              docker_image: "fwbuilder/ubuntu:22.04",
+              unit_tests: true,
+              qt6: true,
+            }
+          - {
+              id: 'ubuntu-22.04-qt5',
+              name: "Ubuntu 22.04",
+              docker_image: "fwbuilder/ubuntu:22.04",
+              unit_tests: true,
+              qt6: false,
+            }
+          - {
               id: 'ubuntu-20.04',
               name: "Ubuntu 20.04",
               docker_image: "fwbuilder/ubuntu:20.04",
-              unit_tests: true
+              unit_tests: true,
+              qt6: false,
             }
           - {
               id: 'ubuntu-18.04',
               name: "Ubuntu 18.04",
               docker_image: "fwbuilder/ubuntu:18.04",
-              unit_tests: true
-            }
-          - {
-              id: 'ubuntu-16.04',
-              name: "Ubuntu 16.04",
-              docker_image: "fwbuilder/ubuntu:16.04",
-              unit_tests: false
+              unit_tests: true,
+              qt6: false,
             }
     container:
       image: ${{ matrix.config.docker_image }}
@@ -38,7 +48,13 @@ jobs:
           key: ${{ matrix.config.id }}-ccache-${{ github.sha }}
           restore-keys: |
             ${{ matrix.config.id }}-ccache
-      - name: Configure
+      - name: Configure (Qt6)
+        if: ${{ matrix.config.qt6 == true }}
+        run: |
+          mkdir -p build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUseQt6=ON
+      - name: Configure (Qt5)
+        if: ${{ matrix.config.qt6 == false }}
         run: |
           mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Debug
