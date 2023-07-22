@@ -69,15 +69,6 @@ class findSecondInQStringPair {
     { return (str == _d.second); }
 };
 
-
-
-extern QAction* addPopupMenuItem(QObject *res,
-                            QMenu* menu, //it was a Q3PopupMenu object
-                            const QString &resourceIconPath,
-                            const QString itemName,
-                            const char* member,
-                            const QKeySequence &accel = 0);
-
 extern void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj,
                           bool rw=false);
 extern void fillLibraries(QListWidget *libs, libfwbuilder::FWObject *obj,

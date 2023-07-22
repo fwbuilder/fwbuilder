@@ -80,34 +80,6 @@
 using namespace std;
 using namespace libfwbuilder;
 
-
-QAction* addPopupMenuItem(QObject *res,
-                     QMenu* menu,
-                     const QString &resourceIconPath,
-                     const QString itemName,
-                     const char* member,
-                     const QKeySequence &accel)
-{
-    string icn;
-    QPixmap pm;
-    //int    itmID = -1;
-    QAction *act = nullptr;
-
-    icn = Resources::global_res->getResourceStr(static_cast<const char*>(resourceIconPath.toLatin1()));
-    if(icn!="")
-    {
-//        pm = QPixmap::fromMimeSource( icn.c_str() );
-        if ( ! QPixmapCache::find( icn.c_str(), &pm) )
-        {
-            pm.load( (":/"+icn).c_str() );//fromMimeSource( icn.c_str() );
-            QPixmapCache::insert( icn.c_str(), pm);
-        }
-        act = menu->addAction( pm, itemName , res , member, accel ); //insertItem
-    } else
-        act = menu->addAction( itemName , res , member, accel); //insertItem
-    return act;
-}
-
 void fillLibraries(QComboBox *libs, libfwbuilder::FWObject *obj, bool rw)
 {
     bool standardObj = false;
