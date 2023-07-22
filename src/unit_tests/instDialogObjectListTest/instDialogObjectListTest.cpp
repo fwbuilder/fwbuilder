@@ -331,7 +331,16 @@ void instDialogObjectListTest::openContextMenu(ObjectManipulator *om,
 void instDialogObjectListTest::test_compile_1()
 {
     QAction *compile = mw->findChild<QAction*>("compileAction");
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     compile->activate(QAction::Trigger);
+#else
+    // TODO: This is a workaround. The activate() call above doesn't trigger in Qt6
+    //       Because we're testing the compilation dialog, not QAction, we skip
+    //       the first step (QAction -> metacall -> mw->compile()) and call
+    //       mw->compile() directly. The compile button is tested manually and found working.
+    mw->compile();
+#endif
+
     QTest::qWait(100);
     instDialog *dlg = nullptr;
     foreach (QWidget *w, app->allWidgets())
