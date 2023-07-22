@@ -41,6 +41,7 @@
 #include <QtDebug>
 #include <QDir>
 #include <QFile>
+#include <QRegularExpression>
 
 
 using namespace std;
@@ -328,7 +329,7 @@ void GeneratedScriptTest::ActivationCommandsTest_1()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf1.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf1.conf") != -1);
     delete objdb;
 }
@@ -337,7 +338,7 @@ void GeneratedScriptTest::ActivationCommandsTest_2()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
@@ -346,7 +347,7 @@ void GeneratedScriptTest::ActivationCommandsTest_3()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "ipf2-1.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
@@ -355,7 +356,7 @@ void GeneratedScriptTest::ActivationCommandsTest_4()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf2-1.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/ipf2-1.conf") != -1);
     delete objdb;
 }
@@ -364,7 +365,7 @@ void GeneratedScriptTest::ActivationCommandsTest_6()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf3.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/fw/pf3.conf") != -1);
     delete objdb;
 }
@@ -379,7 +380,7 @@ void GeneratedScriptTest::ActivationCommandsTest_7()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf4.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf4.conf") != -1);
     delete objdb;
 }
@@ -388,7 +389,7 @@ void GeneratedScriptTest::ActivationCommandsTest_8()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf5.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf5.conf") != -1);
     delete objdb;
 }
@@ -397,7 +398,7 @@ void GeneratedScriptTest::ActivationCommandsTest_9()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "/tmp/pf6.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
     delete objdb;
 }
@@ -406,7 +407,7 @@ void GeneratedScriptTest::ActivationCommandsTest_10()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "tmp/pf7.fw")
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
     delete objdb;
 }
@@ -415,7 +416,7 @@ void GeneratedScriptTest::ActivationCommandsTest_11()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "tmp/pf8.fw", 1)
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
 
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf.conf") != -1);
 
@@ -426,7 +427,7 @@ void GeneratedScriptTest::ActivationCommandsTest_12()
 {
     objdb = new FWObjectDatabase();
     QString res = Configlet::findConfigletInFile("activation", "pf9.fw", 1)
-        .split(QRegExp("\\s+")).join(" ");
+        .split(QRegularExpression("\\s+")).join(" ");
     QVERIFY(res.indexOf("$PFCTL -f /etc/pf9.conf") != -1);
 
     delete objdb;

@@ -107,15 +107,15 @@ void ClusterDialog::updateTimeStamps()
     time_t t;
             
     t = obj->getInt("lastModified");
-    dt.setTime_t(t);
+    dt.setSecsSinceEpoch(t);
     m_dialog->last_modified->setText((t)? dt.toString():"-");
             
     t = obj->getInt("lastCompiled");
-    dt.setTime_t(t);
+    dt.setSecsSinceEpoch(t);
     m_dialog->last_compiled->setText((t)? dt.toString():"-");
             
     t = obj->getInt("lastInstalled");
-    dt.setTime_t(t);
+    dt.setSecsSinceEpoch(t);
     m_dialog->last_installed->setText((t)? dt.toString():"-");
 }
 
@@ -197,8 +197,7 @@ void ClusterDialog::validate(bool *res)
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Character \"/\" is not allowed in cluster object name"),
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
             blockSignals(false);
         }
         return;
@@ -229,8 +228,7 @@ void ClusterDialog::applyChanges()
         blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
-                                  tr("&Yes"), tr("&No"), QString(),
-                                  0, 1 )==0 );
+                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes );
         blockSignals(false);
     }
 

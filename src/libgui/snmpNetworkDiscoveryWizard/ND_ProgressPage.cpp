@@ -389,8 +389,8 @@ void ND_ProgressPage::saveLog()
         {
             if (fwbdebug)
             {
-                qDebug("Saving crawler log to file: %d chars",
-                       m_dialog->discoveryLog->toPlainText().length());
+                qDebug() << QString("Saving crawler log to file: %1 chars")
+                            .arg(m_dialog->discoveryLog->toPlainText().length());
                 qDebug("--------------------------------");
             }
             QTextStream strm(&f);

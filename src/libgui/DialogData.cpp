@@ -130,7 +130,7 @@ void DialogData::loadToWidget( DialogOption &dopt , bool override)
 
             if (fwbdebug)
             {
-                qDebug("loadToWidget -- QComboBox  dopt.mapping.count()=%d",dopt.mapping.count());
+                qDebug() << QString("loadToWidget -- QComboBox  dopt.mapping.count()=%1").arg(dopt.mapping.count());
                 qDebug("loadToWidget -- QComboBox  s=%s",s.toLatin1().constData());
             }
 

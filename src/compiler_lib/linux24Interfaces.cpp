@@ -31,7 +31,7 @@
 #include <iostream>
 
 #include <QObject>
-#include <QRegExp>
+#include <QRegularExpression>
 
 
 using namespace std;
@@ -40,15 +40,16 @@ using namespace libfwbuilder;
 
 bool linux24Interfaces::parseVlan(const QString &name, QString *base_name, int *vlan_id)
 {
-    QList<QRegExp> vlan_name_patterns;
-    vlan_name_patterns.append(QRegExp("([a-zA-Z0-9-]+\\d{1,})\\.(\\d{1,})"));
-    vlan_name_patterns.append(QRegExp("(vlan)(\\d{1,})"));
+    QList<QRegularExpression> vlan_name_patterns;
+    vlan_name_patterns.append(QRegularExpression("([a-zA-Z0-9-]+\\d{1,})\\.(\\d{1,})"));
+    vlan_name_patterns.append(QRegularExpression("(vlan)(\\d{1,})"));
+    QRegularExpressionMatch match;
     for (int idx=0; idx < vlan_name_patterns.size(); ++idx)
     {
-        if (vlan_name_patterns[idx].indexIn(name) != -1)
+        if (name.indexOf(vlan_name_patterns[idx], 0, &match) != -1)
         {
-            if (base_name!=nullptr) *base_name = vlan_name_patterns[idx].cap(1);
-            if (vlan_id!=nullptr) *vlan_id = vlan_name_patterns[idx].cap(2).toInt();
+            if (base_name!=nullptr) *base_name = match.captured(1);
+            if (vlan_id!=nullptr) *vlan_id = match.captured(2).toInt();
             return true;
         }
     }

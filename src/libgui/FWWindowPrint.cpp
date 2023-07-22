@@ -155,7 +155,7 @@ void FWWindow::filePrint()
         pdialog.setWindowTitle(tr("Print configuration of %1")
                                .arg(firewall_to_print->getName().c_str()));
 #ifndef Q_OS_MACX
-        pdialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
+        pdialog.setOption(QAbstractPrintDialog::PrintPageRange);
         pdialog.setMinMax(1,9999);
         pdialog.setPrintRange(QAbstractPrintDialog::AllPages);
 #endif
@@ -214,8 +214,7 @@ void FWWindow::filePrint()
                 QMessageBox::information(
                     this,"Firewall Builder",
                     tr("Printing aborted"),
-                    tr("&Continue"), QString(),QString(),
-                    0, 1 );
+                    QMessageBox::Ok);
             } else
                 showStatusBarMessage(tr("Printing completed"));
 

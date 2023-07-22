@@ -37,10 +37,9 @@
 #include "FirewallInstaller.h"
 #include "ProjectPanel.h"
 
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QStringList>
 #include <qprocess.h>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <fstream>
 #include <set>
@@ -59,7 +58,6 @@ class QListViewItem;
 class QCheckListItem;
 class QPushButton;
 class QProgressBar;
-class QStringList;
 class QTreeWidgetItem;
 class QTextCharFormat;
 //class QCheckTableItem;
@@ -111,8 +109,8 @@ class instDialog : public QDialog, public FakeWizard
     std::list<libfwbuilder::Firewall*>::size_type install_list_initial_size;
     
     std::map<int,QTreeWidgetItem*> opListMapping;
-    std::list<QRegExp> error_re;
-    std::list<QRegExp> warning_re;
+    std::list<QRegularExpression> error_re;
+    std::list<QRegularExpression> warning_re;
     std::map<libfwbuilder::Firewall*, fwcompiler::BaseCompiler::termination_status>
         compile_status;
     

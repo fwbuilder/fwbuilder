@@ -521,6 +521,5 @@ void InterfaceEditorWidget::setError(const QString &title,
 
 void InterfaceEditorWidget::showError()
 {
-    QMessageBox::warning(this, errorTitle, errorText, "&Continue",
-                         QString(), QString(), 0, 1);
+    QMessageBox::warning(this, errorTitle, errorText);
 }

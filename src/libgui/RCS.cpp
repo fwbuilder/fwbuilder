@@ -33,12 +33,12 @@
 //#include "FWWindow.h"
 
 #include <qdir.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
-#include <qtextcodec.h>
 #include <QtDebug>
+#include <QPushButton>
 
 #include <stdlib.h>
 
@@ -344,13 +344,15 @@ RCS::RCS(const QString &file)
  * not have env. var LANG so it always runs in english
  */
         QString rl = rlog();
-        QStringList split_log = rl.split(QRegExp("------|======"));
+        QStringList split_log = rl.split(QRegularExpression("------|======"));
 
         QString head_section = split_log[0];
 
-        QRegExp head_rx("head:\\s+([0-9\\.]+)\\s*\\n");
-        int pos = head_rx.indexIn( head_section );
-        if (pos>-1) head = head_rx.cap(1);
+        QRegularExpression head_rx("head:\\s+([0-9\\.]+)\\s*\\n");
+        QRegularExpressionMatch match;
+
+        qsizetype pos = head_section.indexOf(head_rx, 0, &match);
+        if (pos>-1) head = match.captured(1);
 
         QStringList::iterator i;
         for (i=split_log.begin(),++i; i!=split_log.end(); ++i)
@@ -358,56 +360,47 @@ RCS::RCS(const QString &file)
             QString section = *i;
             if (section.length()==0) continue;
 
-            int match = -1;
-
             Revision r(filename);
             r.rev = "";
             r.log = "";
 
-            QRegExp rev_rx("revision\\s+([0-9\\.]+)");
-            match = rev_rx.indexIn( section );
-            if (match>-1)
+            QRegularExpression rev_rx("revision\\s+([0-9\\.]+)");
+
+            if (section.indexOf(rev_rx, 0, &match) > -1)
             {
-                r.rev = rev_rx.cap(1);
+                r.rev = match.captured(1);
             }
 
-            QRegExp lock_rx("revision\\s+([0-9\\.]+)\\s+locked by:\\s+(\\S+);");
-            lock_rx.setMinimal(true);
-            match = lock_rx.indexIn( section );
-            if (match>-1)
+            QRegularExpression lock_rx("revision\\s+([0-9\\.]+)\\s+locked by:\\s+(\\S+);", QRegularExpression::InvertedGreedinessOption);
+            if (section.indexOf(lock_rx, 0, &match) > -1)
             {
-                r.locked_by = lock_rx.cap(2);
+                r.locked_by = match.captured(2);
                 locked      = true;
-                locked_by   = lock_rx.cap(2);
+                locked_by   = match.captured(2);
                 locked_rev  = r.rev;
             }
 
 // older implementation copied revision and "locked by" to r.log
 // we'll do the same here to maintain compatibility
-            QRegExp rev2_rx("(revision.+)\\n");
-            rev2_rx.setMinimal(true);
-            match = rev2_rx.indexIn( section );
-            if (match>-1)
+            QRegularExpression rev2_rx("(revision.+)\\n", QRegularExpression::InvertedGreedinessOption);
+            if (section.indexOf(rev2_rx, 0, &match) > -1)
             {
-                r.log += rev2_rx.cap(1) + "\n";
+                r.log += match.captured(1) + "\n";
             }
 
 
-            QRegExp date_rx("date:\\s+([^;]+);\\s+author:\\s+(\\S+);");
-            date_rx.setMinimal(true);
-            match = date_rx.indexIn( section );
-            if (match>-1)
+            QRegularExpression date_rx("date:\\s+([^;]+);\\s+author:\\s+(\\S+);", QRegularExpression::InvertedGreedinessOption);
+            if (section.indexOf(date_rx, 0, &match) > -1)
             {
-                r.date   = date_rx.cap(1);
-                r.author = date_rx.cap(2);
+                r.date   = match.captured(1);
+                r.author = match.captured(2);
             }
 
-            QRegExp log_rx("date:.*\\n(.*)$");
-            log_rx.setMinimal(true);
-            match = log_rx.indexIn( section );
-            if (match>-1)
-                r.log += log_rx.cap(1);
-
+            QRegularExpression log_rx("date:.*\\n(.*)$", QRegularExpression::InvertedGreedinessOption);
+            if (section.indexOf(log_rx, 0, &match) > -1)
+            {
+                r.log += match.captured(1);
+            }
             r.log.replace('\r',"");
 
 
@@ -524,7 +517,7 @@ void RCS::abandon()
     checked_out=false;
 
     QString err = tr("Error checking file out: %1").arg(stderrBuffer);
-    QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
+    QMessageBox::critical(app->activeWindow(), "Firewall Builder", err);
 
     throw(FWException(err.toLatin1().constData()));
 }
@@ -726,7 +719,7 @@ bool RCS::co(const QString &rev,bool force)
         if (fd<0)
         {
                     QString err = tr("Error creating temporary file ")+tname+QString(" :\n")+strerror(errno);
-                    QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
+                    QMessageBox::critical(app->activeWindow(), "Firewall Builder", err);
                     throw(FWException(err.toLatin1().constData()));
         }
 #ifdef _WIN32
@@ -739,7 +732,7 @@ bool RCS::co(const QString &rev,bool force)
             close(fd);
 #endif
                     QString err = tr("Error writing to temporary file ")+tname+QString(" :\n")+strerror(errno);
-                    QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
+                    QMessageBox::critical(app->activeWindow(), "Firewall Builder", err);
                     throw(FWException(err.toLatin1().constData()));
                 }
                 close(fd);
@@ -756,7 +749,7 @@ bool RCS::co(const QString &rev,bool force)
         selectedRev = head;
 
         QString err = tr("Error checking file out: %1").arg(stderrBuffer);
-        QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
+        QMessageBox::critical(app->activeWindow(), "Firewall Builder", err);
         throw(FWException(err.toLatin1().constData()));
 
     } else
@@ -773,31 +766,39 @@ bool RCS::co(const QString &rev,bool force)
                             app->activeWindow(),"Firewall Builder",
                             tr("File is opened and locked by %1.\nYou can only open it read-only.")
                             .arg(locked_by),
-                            "Open &read-only", "&Cancel", QString(),
-                            0, 1 ) )
+                            QMessageBox::Open | QMessageBox::Cancel))
                 {
-                case 0:  ro=true;   return false;
-                case 1:  throw(FWException("cancel opening file"));  break;
+                case QMessageBox::Open:  ro=true;   return false;
+                case QMessageBox::Cancel:  throw(FWException("cancel opening file"));  break;
+                default: throw(FWException("cancel opening file"));  break;
                 }
             }
 
             if (force) goto checkout;
 
-            switch ( QMessageBox::warning(app->activeWindow(), "Firewall Builder",
-                                          tr("Revision %1 of this file has been checked out and locked by you earlier.\n\
-The file may be opened in another copy of Firewall Builder or was left opened\n\
-after the program crashed.").arg(locked_rev),
-                                           tr("Open &read-only"), tr("&Open and continue editing"), tr("&Cancel"),
-                                          0, 2 ) )
-            {
-            case 0:  ro=true;  return false;
-            case 1:
-/* continue working with the file */
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Firewall Builder");
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.setText(tr("Revision %1 of this file has been checked out and locked by you earlier.\n\
+                              The file may be opened in another copy of Firewall Builder or was left opened\n\
+                              after the program crashed.").arg(locked_rev));
+            QPushButton *openRoButton = msgBox.addButton(tr("Open &read-only"), QMessageBox::AcceptRole);
+            QPushButton *openEditButton = msgBox.addButton(tr("&Open and continue editing"), QMessageBox::AcceptRole);
+            msgBox.addButton(QMessageBox::Cancel);
+
+            msgBox.exec();
+            QAbstractButton * const clickedButton = msgBox.clickedButton();
+
+            if (clickedButton == openRoButton) {
+                ro=true;  return false;
+            } else if (clickedButton == openEditButton) {
+                /* continue working with the file */
                 checked_out = true;
                 locked      = true;
                 selectedRev = locked_rev;
                 return true;
-            case 2:  throw(FWException("cancel opening file"));  break;
+            } else {
+                throw(FWException("cancel opening file"));
             }
         }
 
@@ -848,7 +849,7 @@ after the program crashed.").arg(locked_rev),
         selectedRev = head;
 
         QString err = tr("Error checking file out: %1").arg(stderrBuffer);
-        QMessageBox::critical(app->activeWindow(), "Firewall Builder", err, tr("&Continue") );
+        QMessageBox::critical(app->activeWindow(), "Firewall Builder", err);
 
         throw(FWException(err.toLatin1().constData()));
     }
@@ -867,8 +868,8 @@ bool RCS::ci( const QString &_lm,
     if (logmsg.isEmpty()) logmsg="_";  // otherwise ci adds "*** empty log message ***"
 
     if (fwbdebug)
-        qDebug("RCS::ci  log message (%d characters): '%s'",
-               logmsg.length(), logmsg.toLatin1().constData());
+        qDebug() << QString("RCS::ci  log message (%1 characters): '%2'")
+                    .arg(logmsg.length()).arg(logmsg.toLatin1().constData());
 
     QStringList arglist;
 

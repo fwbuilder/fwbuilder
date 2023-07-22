@@ -58,7 +58,7 @@
 
 #include <QString>
 #include <QStringList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtDebug>
 
 
@@ -358,9 +358,10 @@ void Importer::setInterfaceParametes(const std::string &phys_intf_or_label,
         // "nameif ethernet0 outside security0"
         Interface *intf = all_interfaces[phys_intf_or_label];
         intf->setLabel(label);
-        QRegExp pix6_sec_level("security(\\d+)");
-        if (pix6_sec_level.indexIn(sec_level.c_str()) > -1)
-            intf->setSecurityLevel(pix6_sec_level.cap(1).toInt());
+        QRegularExpression pix6_sec_level("security(\\d+)");
+        QRegularExpressionMatch match;
+        if (QString::fromStdString(sec_level).indexOf(pix6_sec_level, 0, &match) > -1)
+            intf->setSecurityLevel(match.captured(1).toInt());
     } else
     {
         // since first arg is not physical interface name, it must be a label

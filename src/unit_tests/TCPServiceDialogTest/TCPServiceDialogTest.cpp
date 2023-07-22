@@ -34,7 +34,6 @@
 #include <iostream>
 
 #include <QProcess>
-#include <QRegExp>
 #include <QDebug>
 
 #include <QToolButton>

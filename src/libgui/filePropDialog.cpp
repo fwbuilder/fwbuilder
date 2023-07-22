@@ -132,7 +132,7 @@ void filePropDialog::printRevHistory()
 
     QPrintDialog printDialog(printer, this);
 
-    printDialog.addEnabledOption(QAbstractPrintDialog::PrintPageRange);
+    printDialog.setOption(QAbstractPrintDialog::PrintPageRange);
     printDialog.setPrintRange(QAbstractPrintDialog::AllPages);
     printDialog.setMinMax(1,9999);
 

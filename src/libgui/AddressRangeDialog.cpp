@@ -128,8 +128,7 @@ void AddressRangeDialog::validate(bool *res)
             QMessageBox::critical(
                 this, "Firewall Builder",
                 QString::fromUtf8(ex.toString().c_str()),
-                tr("&Continue"), nullptr, nullptr,
-                0 );
+                QMessageBox::Ok);
             blockSignals(false);
         }
     }

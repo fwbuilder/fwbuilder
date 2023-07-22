@@ -321,7 +321,7 @@ void secuwallosAdvancedDialog::buttonOpenURLClicked()
     {
         QMessageBox::warning
             (this, "Firewall Builder",
-             message, "&Continue", QString(), QString(), 0, 1);
+             message);
     }
 }
 
@@ -416,8 +416,7 @@ bool secuwallosAdvancedDialog::validate()
         focus->setPalette(palette);
         // display errror message
         QMessageBox::warning(this, "Firewall Builder",
-                             tr("Input not valid: %1").arg(message), "&Continue",
-                             QString(), QString(), 0, 1);
+                             tr("Input not valid: %1").arg(message));
     }
     return valid;
 }

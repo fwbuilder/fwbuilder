@@ -62,7 +62,6 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qcursor.h>
-#include <qregexp.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>

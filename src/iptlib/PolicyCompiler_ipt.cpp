@@ -69,8 +69,6 @@
 #include <climits>
 
 #include <QString>
-#include <QRegExp>
-
 
 using namespace libfwbuilder;
 using namespace fwcompiler;

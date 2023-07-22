@@ -42,7 +42,9 @@
 
 #include <QCoreApplication>
 #include <QStringList>
-#include <QTextCodec>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <QTextCodec>
+#endif
 #include <QTime>
 #include <QElapsedTimer>
 
@@ -83,7 +85,9 @@ int main(int argc, char **argv)
     total_time_timer.start();
 
     // compilers always write file names into manifest in Utf8
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+#endif
 
     QStringList args = app.arguments();
 

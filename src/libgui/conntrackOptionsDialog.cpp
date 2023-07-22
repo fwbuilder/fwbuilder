@@ -124,9 +124,7 @@ bool conntrackOptionsDialog::validate()
         {
             QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Invalid IP address '%1'").arg(m_dialog->conntrack_address->text()),
-                tr("&Continue"), nullptr, nullptr,
-                0 );
+                tr("Invalid IP address '%1'").arg(m_dialog->conntrack_address->text()));
             return false;
         }
     }

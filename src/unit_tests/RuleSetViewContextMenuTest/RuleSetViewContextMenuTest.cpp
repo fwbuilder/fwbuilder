@@ -29,7 +29,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QDebug>
 #include <QMenuBar>
 #include <QInputDialog>
@@ -56,8 +56,8 @@ void RuleSetViewContextMenuTest::initTestCase()
     mw = new FWWindow();
     mw->show();
     mw->move(0,0);
-    if (app->desktop()->size().width() < 1024 || app->desktop()->size().height()<768)
-        mw->resize(app->desktop()->size());
+    if (mw->screen()->size().width() < 1024 || mw->screen()->size().height()<768)
+        mw->resize(mw->screen()->size());
     else
         mw->resize(1024, 768);
     mw->startupLoad();

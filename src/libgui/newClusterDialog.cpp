@@ -329,8 +329,7 @@ void newClusterDialog::nextClicked()
         {
             QMessageBox::critical(
             this, "Firewall Builder",
-            tr("You should select at least one firewall to create a cluster"),
-            "&Continue", QString(), QString(), 0, 1);
+            tr("You should select at least one firewall to create a cluster"));
             return;
         }
     }

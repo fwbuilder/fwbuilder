@@ -337,7 +337,7 @@ void ClusterGroupDialog::openClusterConfDialog()
         QMessageBox::critical(
             this, "Firewall Builder",
             tr("FWBuilder API error: %1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString(), QString(), 0, 1);
+            QMessageBox::Ok);
         return;
     }
 }

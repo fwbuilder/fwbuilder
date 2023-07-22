@@ -104,7 +104,11 @@ string OSConfigurator_bsd::printFunctions()
  * get addresses of dynamic interfaces
  */
         QString script_buffer;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         QTextStream ostr(&script_buffer, QIODevice::WriteOnly);
+#else
+        QTextStream ostr(&script_buffer, QIODeviceBase::WriteOnly);
+#endif
         FWObjectTypedChildIterator j=fw->findByType(Interface::TYPENAME);
         for ( ; j!=j.end(); ++j ) 
         {

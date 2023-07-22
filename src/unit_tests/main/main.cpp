@@ -68,10 +68,14 @@ void build_app(int argc, char** argv,
     new Resources(full_res_path);
 
     QString qt_resource_dir =
-        QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#else
+    QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+#endif
 
     QTranslator qt_translator(0);
-    qt_translator.load(QLatin1String("qt_") + QLocale::system().name(),
-                       qt_resource_dir);
+    Q_UNUSED(qt_translator.load(QLatin1String("qt_") + QLocale::system().name(),
+                       qt_resource_dir));
     (*app)->installTranslator (&qt_translator);
 }

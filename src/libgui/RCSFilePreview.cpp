@@ -33,7 +33,7 @@
 #include "fwbuilder/XMLTools.h"
 
 #include <QTreeWidget>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <qpushbutton.h>
 // #include <qtextbrowser.h>
 
@@ -173,13 +173,13 @@ bool RCSFilePreview::showFileRLog( const QString &filename )
         } else
         {
             // tree style
-            if ((*i).rev.indexOf(QRegExp("^[0-9]+\\.[0-9]+$"))!=-1)
+            if ((*i).rev.indexOf(QRegularExpression("^[0-9]+\\.[0-9]+$"))!=-1)
             {
                 itm = addRevision(*i, rootItm);
                 itemList.push_back(itm);
             }
 
-            if ((*i).rev.indexOf(QRegExp("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"))!=-1)
+            if ((*i).rev.indexOf(QRegularExpression("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"))!=-1)
             {
                 QString branch_root = (*i).rev.section(".",0,1);
                 for (ili=itemList.begin(); ili!=itemList.end(); ++ili)

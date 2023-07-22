@@ -54,7 +54,7 @@
 #include <qtextbrowser.h>
 #include <qmessagebox.h>
 #include <qtimer.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qpixmapcache.h>
@@ -279,8 +279,7 @@ void newHostDialog::getInterfacesViaSNMP()
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Missing SNMP community string."),
-            "&Continue", QString(), QString(), 0, 1 );
+            tr("Missing SNMP community string."));
         return ;
     }
 
@@ -301,8 +300,7 @@ void newHostDialog::getInterfacesViaSNMP()
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Address of %1 could not be obtained via DNS")
-            .arg(m_dialog->obj_name->text()),
-            "&Continue", QString(), QString(), 0, 1 );
+            .arg(m_dialog->obj_name->text()));
         getInterfacesBusy = false;
         return ;
     }
@@ -456,8 +454,8 @@ void newHostDialog::templateSelected(QListWidgetItem *itm)
         QString     lbl = intf->getLabel().c_str();
 
         if (lbl=="outside"                ||
-            nam.indexOf(QRegExp(".*0$"))!=-1 ||
-            nam.indexOf(QRegExp(".*0/0$"))!=-1 )
+            nam.indexOf(QRegularExpression(".*0$"))!=-1 ||
+            nam.indexOf(QRegularExpression(".*0/0$"))!=-1 )
         {
             haveOutside=true;
             m_dialog->intfOutsideLine->show();
@@ -465,8 +463,8 @@ void newHostDialog::templateSelected(QListWidgetItem *itm)
             fillInterfaceData(intf,m_dialog->intfOutsideText);
         }
         if (lbl=="inside"                 ||
-            nam.indexOf(QRegExp(".*1$"))!=-1 ||
-            nam.indexOf(QRegExp(".*0/1$"))!=-1 )
+            nam.indexOf(QRegularExpression(".*1$"))!=-1 ||
+            nam.indexOf(QRegularExpression(".*0/1$"))!=-1 )
         {
             haveInside=true;
             m_dialog->intfInsideLine->show();
@@ -525,8 +523,7 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString(), QString(), 0, 1 );
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm));
         return false;
     }
     try
@@ -539,8 +536,7 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
             {
                 QMessageBox::warning(
                     this,"Firewall Builder",
-                    tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString(), QString(), 0, 1 );
+                    tr("Illegal address '%1/%2'").arg(addr).arg(netm));
                 return false;
             }          
         }
@@ -554,8 +550,7 @@ bool newHostDialog::validateAddressAndMask(const QString &addr,
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Illegal address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString(), QString(), 0, 1 );
+            tr("Illegal address '%1/%2'").arg(addr).arg(netm));
         return false;
     }
     return true;

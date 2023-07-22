@@ -60,7 +60,6 @@
 #include <qgroupbox.h>
 #include <qcolor.h>
 #include <qtablewidget.h>
-#include <qtextcodec.h>
 #include <qfileinfo.h>
 #include <qtextstream.h>
 #include <qpixmapcache.h>
@@ -297,13 +296,13 @@ void instDialog::setFlags(QTreeWidgetItem* item)
         }
     }
 
-    dt.setTime_t(lm);
+    dt.setSecsSinceEpoch(lm);
     item->setText(LAST_MODIFIED_COLUMN, (lm)?dt.toString():QString("Never"));
 
-    dt.setTime_t(lc);
+    dt.setSecsSinceEpoch(lc);
     item->setText(LAST_COMPILED_COLUMN, (lc)?dt.toString():QString("Never"));
 
-    dt.setTime_t(li);
+    dt.setSecsSinceEpoch(li);
     item->setText(LAST_INSTALLED_COLUMN, (li)?dt.toString():QString("Never"));
 }
 
@@ -781,10 +780,10 @@ void instDialog::addToLog(const QString &buf)
     {
         QTextCharFormat format = normal_format;
 
-        list<QRegExp>::const_iterator it;
+        list<QRegularExpression>::const_iterator it;
         for (it=error_re.begin(); it!=error_re.end(); ++it)
         {
-            if ((*it).indexIn(line) != -1)
+            if (line.indexOf(*it) != -1)
             {
                 format = error_format;
                 break;
@@ -793,7 +792,7 @@ void instDialog::addToLog(const QString &buf)
 
         for (it=warning_re.begin(); it!=warning_re.end(); ++it)
         {
-            if ((*it).indexIn(line) != -1)
+            if (line.indexOf(*it) != -1)
             {
                 format = warning_format;
                 break;
@@ -1384,8 +1383,7 @@ bool instDialog::verifyManagementAddress()
                                       "must be marked as management interface.\n")
                 .arg(QString::fromUtf8(cnf.fwobj->getName().c_str()));
 
-            QMessageBox::critical(this, "Firewall Builder", err,
-                                  tr("&Continue") );
+            QMessageBox::critical(this, "Firewall Builder", err);
             addToLog(err);
             return false;
         }
@@ -1401,8 +1399,7 @@ bool instDialog::verifyManagementAddress()
                 "interface in the Editor panel")
                 .arg(QString::fromUtf8(cnf.fwobj->getName().c_str()));
 
-            QMessageBox::critical(this, "Firewall Builder", err,
-                                  tr("&Continue") );
+            QMessageBox::critical(this, "Firewall Builder", err);
             addToLog(err);
             return false;
         }
@@ -1414,8 +1411,7 @@ bool instDialog::verifyManagementAddress()
                 "Management interface does not have IP address, "
                 "can not communicate with the firewall.\n");
             
-            QMessageBox::critical(this, "Firewall Builder", err,
-                                  tr("&Continue") );
+            QMessageBox::critical(this, "Firewall Builder", err);
             addToLog(err);
             return false;
         }

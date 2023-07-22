@@ -138,6 +138,7 @@
 #include <QUndoStack>
 #include <QUrl>
 #include <qaction.h>
+#include <QActionGroup>
 #include <qapplication.h>
 #include <qapplication.h>
 #include <qcheckbox.h>
@@ -766,8 +767,8 @@ void FWWindow::fileClose()
         //updateGlobalToolbar();
     }
 
-    if (fwbdebug) qDebug("subWindowList().size()=%d",
-                         m_mainWindow->m_space->subWindowList().size());
+    if (fwbdebug) qDebug() << QString("subWindowList().size()=%1").arg(
+                                  m_mainWindow->m_space->subWindowList().size());
 }
 
 void FWWindow::fileExit()

@@ -33,6 +33,7 @@
 #include <qpixmap.h>
 #include <qmessagebox.h>
 #include <qlabel.h>
+#include <QStyle>
 
 #include <iostream>
 
@@ -55,7 +56,7 @@ longTextDialog::longTextDialog(QWidget *p,
 
     m_dialog->dlgText->setText(txt);
 
-    m_dialog->icn->setPixmap( QMessageBox::standardIcon(QMessageBox::Critical) );
+    m_dialog->icn->setPixmap( style()->standardPixmap(QStyle::SP_MessageBoxCritical) );
 
     m_dialog->dlgLongText->setText(ltxt);
 }

@@ -39,7 +39,6 @@
 #include <qcombobox.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qregexp.h>
 
 #include "FWWindow.h"
 

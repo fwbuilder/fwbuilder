@@ -69,6 +69,7 @@
 #include <QtDebug>
 #include <qpainter.h>
 #include <qpixmapcache.h>
+#include <QRegularExpression>
 
 #include <iostream>
 #include <algorithm>
@@ -535,7 +536,11 @@ void ObjectTreeView::dragMoveEvent(QDragMoveEvent *ev)
 
     list<FWObject*> objs;
     if (ev->source() != this || !FWObjectDrag::decode(ev, objs) ||
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         !isValidDropTarget(itemAt(ev->pos()), objs)) {
+#else
+        !isValidDropTarget(itemAt(ev->position().toPoint()), objs)) {
+#endif
         ev->setAccepted(false);
         return;
     }
@@ -551,7 +556,11 @@ void ObjectTreeView::dropEvent(QDropEvent *ev)
     if (ev->source() == nullptr) return;
 
     ObjectTreeViewItem *dest =
-        dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->pos()));
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+            dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->pos()));
+#else
+            dynamic_cast<ObjectTreeViewItem *>(itemAt(ev->position().toPoint()));
+#endif
     if (dest == nullptr) {
     notWanted:
         ev->setAccepted(false);
@@ -881,23 +890,24 @@ static bool filterMatchesPortRange(const QStringList &args,
     TCPUDPService *service = dynamic_cast<TCPUDPService*>(obj);
     if (!service) return false;
 
-    QRegExp rx("\\s*([><]?)\\s*(\\d*)(?:-(\\d*))?");
+    QRegularExpression rx = QRegularExpression(QRegularExpression::anchoredPattern("\\s*([><]?)\\s*(\\d*)(?:-(\\d*))?"));
+    QRegularExpressionMatch match;
 
     foreach (const QString &arg, args) {
 
-        if (!rx.exactMatch(arg)) continue;
+        if (!rx.match(arg).hasMatch()) continue;
 
-        int lowerBound = rx.cap(2).toInt(), upperBound = lowerBound;
+        int lowerBound = match.captured(2).toInt(), upperBound = lowerBound;
 
-        if (rx.pos(3) != -1) {
-            upperBound = rx.cap(3).toInt();
+        if (match.capturedStart(3) != -1) {
+            upperBound = match.captured(3).toInt();
         }
 
-        if (rx.pos(1) != -1) {
-            if (rx.pos(3) != -1) // [><] cannot be combined with range
+        if (match.capturedStart(1) != -1) {
+            if (match.capturedStart(3) != -1) // [><] cannot be combined with range
                 continue;
 
-            if (rx.cap(1) == ">") {
+            if (match.captured(1) == ">") {
                 upperBound = 65535;
                 ++lowerBound; // Adjust for using >= below
             } else {// "<"
@@ -936,22 +946,23 @@ static bool filterMatchesIpAddress(const QStringList &args,
     Address *addr = dynamic_cast<Address*>(obj);
     if (!addr) return false;
 
-    QRegExp rx("\\s*([.:0-9a-fA-F]+)(?:/([.:0-9a-fA-F]+))?");
+    QRegularExpression rx = QRegularExpression(QRegularExpression::anchoredPattern("\\s*([.:0-9a-fA-F]+)(?:/([.:0-9a-fA-F]+))?"));
+    QRegularExpressionMatch match;
 
     InetAddrMask searchAddrAndMask;
     foreach (const QString &arg, args) {
 
-        if (!rx.exactMatch(arg)) continue;
+        if (!rx.match(arg).hasMatch()) continue;
 
         try {
-            std::string netmask = rx.cap(2).isEmpty() ? "32" : rx.cap(2).toStdString();
-            InetAddr ipv4addr(rx.cap(1).toStdString());
+            std::string netmask = match.captured(2).isEmpty() ? "32" : match.captured(2).toStdString();
+            InetAddr ipv4addr(match.captured(1).toStdString());
             InetAddr ipv4mask(netmask);
             searchAddrAndMask = InetAddrMask(ipv4addr, ipv4mask);
         } catch (const FWException &) { // Could not create IPv4 object. Trying IPv6.
             try {
-                int netmask = rx.cap(2).isEmpty() ? 128 : rx.cap(2).toInt();
-                InetAddr ipv6addr(AF_INET6, rx.cap(1).toStdString());
+                int netmask = match.captured(2).isEmpty() ? 128 : match.captured(2).toInt();
+                InetAddr ipv6addr(AF_INET6, match.captured(1).toStdString());
                 InetAddr ipv6mask(AF_INET6, netmask);
                 searchAddrAndMask = InetAddrMask(ipv6addr, ipv6mask);
             } catch (const FWException &) { // Could not create IPv6 object.
@@ -993,16 +1004,14 @@ static bool filterMatchesIpAddress(const QStringList &args,
 static bool filterMatchesCommand(const QString &text,
                                  ObjectTreeViewItem *item)
 {
-    QRegExp rx("(?:(port)|(ip)):(.*)", Qt::CaseInsensitive);
-    if (!rx.exactMatch(text)) return false;
+    QRegularExpression rx = QRegularExpression(QRegularExpression::anchoredPattern("(?:(port)|(ip)):(.*)"), QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatch match;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-    QStringList args = rx.cap(3).split(",", Qt::SkipEmptyParts);
-#else
-    QStringList args = rx.cap(3).split(",", QString::SkipEmptyParts);
-#endif
+    if (!rx.match(text).hasMatch()) return false;
 
-    if (rx.pos(1) != -1)
+    QStringList args = match.captured(3).split(",", Qt::SkipEmptyParts);
+
+    if (match.capturedStart(1) != -1)
         return (filterMatchesPortRange(args, item->getFWObject()));
     else
         return (filterMatchesIpAddress(args, item->getFWObject()));

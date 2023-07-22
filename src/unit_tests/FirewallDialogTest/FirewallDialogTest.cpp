@@ -34,7 +34,6 @@
 #include <iostream>
 
 #include <QProcess>
-#include <QRegExp>
 #include <QDebug>
 
 #include <QToolButton>
@@ -223,7 +222,7 @@ void FirewallDialogTest::testDialog()
 
     firewall->setInt("lastModified", 123456789);
     t = 123456789;
-    dt.setTime_t(t);
+    dt.setSecsSinceEpoch(t);
     dialog->changed();
     QVERIFY(last_modified->text() == dt.toString());
 
@@ -234,7 +233,7 @@ void FirewallDialogTest::testDialog()
 
     firewall->setInt("lastCompiled", 123456789);
     t = 123456789;
-    dt.setTime_t(t);
+    dt.setSecsSinceEpoch(t);
     dialog->changed();
     QVERIFY(last_compiled->text() == dt.toString());
 
@@ -245,7 +244,7 @@ void FirewallDialogTest::testDialog()
 
     firewall->setInt("lastInstalled", 123456789);
     t = 123456789;
-    dt.setTime_t(t);
+    dt.setSecsSinceEpoch(t);
     dialog->changed();
     QVERIFY(last_installed->text() == dt.toString());
 }

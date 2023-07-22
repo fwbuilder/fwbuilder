@@ -144,8 +144,7 @@ void NetworkDialog::validate(bool *result)
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-                tr("&Continue"), 0, 0,
-                0 );
+                QMessageBox::Ok);
             blockSignals(false);
         }
         return;
@@ -173,8 +172,7 @@ void NetworkDialog::validate(bool *result)
                 QMessageBox::critical(
                     this, "Firewall Builder",
                     tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
-                    tr("&Continue"), 0, 0,
-                    0 );
+                    QMessageBox::Ok);
                 return;
             }
         }
@@ -195,8 +193,7 @@ void NetworkDialog::validate(bool *result)
                     QMessageBox::critical(
                         this, "Firewall Builder",
                         tr("Network object should not have netmask '0.0.0.0'"),
-                        tr("&Continue"), 0, 0,
-                        0 );
+                        QMessageBox::Ok);
                     blockSignals(false);
                 }
                 return;
@@ -213,8 +210,7 @@ void NetworkDialog::validate(bool *result)
                 QMessageBox::critical(
                     this, "Firewall Builder",
                     tr("Netmasks with zeroes in the middle are not supported"),
-                    tr("&Continue"), 0, 0,
-                    0 );
+                    QMessageBox::Ok);
                 blockSignals(false);
             }
             return;
@@ -230,8 +226,7 @@ void NetworkDialog::validate(bool *result)
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("Illegal netmask '%1'").arg( m_dialog->netmask->text() ),
-                tr("&Continue"), 0, 0,
-                0 );
+                QMessageBox::Ok);
             blockSignals(false);
         }
     }

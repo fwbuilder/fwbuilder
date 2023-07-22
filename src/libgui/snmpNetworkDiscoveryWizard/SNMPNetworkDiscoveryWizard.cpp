@@ -36,7 +36,7 @@
 #include "ND_SNMPParametersPage.h"
 #include "FWWindow.h"
 
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QtDebug>
 
 using namespace std;
@@ -61,7 +61,7 @@ SNMPNetworkDiscoveryWizard::SNMPNetworkDiscoveryWizard(QWidget *parent) : QWizar
     addPage(new ND_SelectLibraryPage(this));
     addPage(new ND_CreateObjectsPage(this));
 
-    QRect sg = QApplication::desktop()->screenGeometry(mw);
+    QRect sg = mw->screen()->availableGeometry();
     QSize screen_size = sg.size();
 
 #if defined(Q_OS_MACX)

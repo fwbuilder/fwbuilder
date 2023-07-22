@@ -92,13 +92,13 @@ void SSHIOS::stateMachine()
 
     case SCHEDULE_RELOAD_DIALOG:
         if ( cmpPrompt(stdoutBuffer,
-                       QRegExp("System config.* modified\\. Save?")) )
+                       QRegularExpression("System config.* modified\\. Save?")) )
         {
             stdoutBuffer="";
             proc->write( "no\n" );
             break;
         }
-        if ( cmpPrompt(stdoutBuffer,QRegExp("Proceed with reload?")) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression("Proceed with reload?")) )
         {
             stdoutBuffer="";
             proc->write( "y\n" );
@@ -108,7 +108,7 @@ void SSHIOS::stateMachine()
         break;
 
     case PUSHING_CONFIG:
-        if ( cmpPrompt(stdoutBuffer, QRegExp("Destination filename [.*]?")) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression("Destination filename [.*]?")) )
         {
             stdoutBuffer="";
             proc->write("\n"); // accept default file name

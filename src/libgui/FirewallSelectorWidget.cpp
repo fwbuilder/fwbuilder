@@ -133,8 +133,7 @@ bool FirewallSelectorWidget::isValid()
         QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("You should select at least one firewall to use "
-                   "with the cluster"),
-                "&Continue", QString(), QString(), 0, 1);
+                   "with the cluster"));
         return false;
     }
     for ( int i = 0; i < fws.count(); i++)
@@ -144,8 +143,7 @@ bool FirewallSelectorWidget::isValid()
         {
             QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Host operation systems of chosen firewalls are different"),
-                "&Continue", QString(), QString(), 0, 1);
+                tr("Host operation systems of chosen firewalls are different"));
             return false;
         }
         if (platform.isEmpty()) platform = fws.at(i).first->getStr("platform").c_str();
@@ -153,8 +151,7 @@ bool FirewallSelectorWidget::isValid()
         {
             QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Platforms of chosen firewalls are different"),
-                "&Continue", QString(), QString(), 0, 1);
+                tr("Platforms of chosen firewalls are different"));
             return false;
         }
 #ifdef COMPARE_MEMBER_VERSIONS_FOR_CLUSTER
@@ -221,8 +218,7 @@ bool FirewallSelectorWidget::isValid()
     {
         QMessageBox::critical(
                 this, "Firewall Builder",
-                tr("Cluster firewalls should have at least one common inteface"),
-                "&Continue", QString(), QString(), 0, 1);
+                tr("Cluster firewalls should have at least one common inteface"));
     }
     return ok;
 }

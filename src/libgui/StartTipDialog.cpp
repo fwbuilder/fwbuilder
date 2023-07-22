@@ -95,7 +95,7 @@ StartTipDialog::StartTipDialog(QWidget *parent): QDialog(parent)
     delete h;
     current_tip = tips.size() - 1;
 
-    if (fwbdebug) qDebug("Have %d tips", tips.size());
+    if (fwbdebug) qDebug() << QString("Have %1 tips").arg(tips.size());
 
     first_run = st->getBool("UI/FirstRun");
 }

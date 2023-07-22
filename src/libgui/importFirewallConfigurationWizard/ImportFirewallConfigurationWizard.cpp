@@ -43,8 +43,8 @@
 #include "fwbuilder/TCPService.h"
 #include "fwbuilder/ServiceGroup.h"
 
-#include <QDesktopWidget>
 #include <QtDebug>
+#include <QScreen>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -77,7 +77,7 @@ ImportFirewallConfigurationWizard::ImportFirewallConfigurationWizard(
     // always show cancel button
     setOption(QWizard::NoCancelButton, false);
 
-    QRect sg = QApplication::desktop()->screenGeometry(mw);
+    QRect sg = mw->screen()->availableGeometry();
     QSize screen_size = sg.size();
 
 #if defined(Q_OS_MACX)

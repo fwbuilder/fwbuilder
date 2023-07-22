@@ -29,7 +29,6 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QDesktopWidget>
 #include <QDebug>
 #include <QMenuBar>
 #include <QInputDialog>

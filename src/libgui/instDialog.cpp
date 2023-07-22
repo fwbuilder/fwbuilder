@@ -62,7 +62,9 @@
 #include <qgroupbox.h>
 #include <qcolor.h>
 #include <qtablewidget.h>
-#include <qtextcodec.h>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <qtextcodec.h>
+#endif
 #include <qfileinfo.h>
 #include <qtextstream.h>
 #include <QDateTime>
@@ -121,14 +123,14 @@ instDialog::instDialog(QWidget *p) : QDialog(p)
     err_re.push_back("(fwb_[^:]*: \\S*\\.cpp:\\d{1,}: .*: Assertion .* failed.)");
     foreach(string re, err_re)
     {
-        error_re.push_back(QRegExp(re.c_str(), Qt::CaseInsensitive));
+        error_re.push_back(QRegularExpression(re.c_str(), QRegularExpression::CaseInsensitiveOption));
     }
 
     list<string> warn_re;
     BaseCompiler::warningRegExp(&warn_re);
     foreach(string re, warn_re)
     {
-        warning_re.push_back(QRegExp(re.c_str()));
+        warning_re.push_back(QRegularExpression(re.c_str()));
     }
 
 
@@ -679,8 +681,7 @@ bool instDialog::checkSSHPathConfiguration(Firewall *fw)
         QMessageBox::critical(this, "Firewall Builder",
    tr("Policy installer uses Secure Shell to communicate with the firewall.\n"
       "Please configure directory path to the secure shell utility \n"
-      "installed on your machine using Preferences dialog"),
-                              tr("&Continue") );
+      "installed on your machine using Preferences dialog"));
 
         addToLog("Please configure directory path to the secure \n "
                  "shell utility installed on your machine using \n"
@@ -769,7 +770,9 @@ void instDialog::setUpProcessToInstall()
 bool instDialog::executeCommand(const QString &path, QStringList &args)
 {
     // set codecs so that command line parameters can be encoded
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+#endif
     enableStopButton();
     QElapsedTimer start_time;
     start_time.start();

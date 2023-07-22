@@ -32,7 +32,7 @@
 
 #include <qobject.h>
 #include <qtimer.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
@@ -129,7 +129,7 @@ bool SSHUnx::checkForErrors(QStringList *errptr)
 
     foreach (QString err, *errptr)
     {
-        if (stdoutBuffer.lastIndexOf(QRegExp(err), -1) != -1)
+        if (stdoutBuffer.lastIndexOf(QRegularExpression(err), -1) != -1)
         {
             if (fwbdebug)
                 qDebug("SSHUnx::stateMachine: MATCH. Error detected.");
@@ -242,9 +242,8 @@ void SSHUnx::stateMachine()
 
             stopHeartBeat();
 
-            int res =QMessageBox::warning( parent, tr("New RSA key"), msg,
-                                           tr("Yes"), tr("No"), 0,
-                                           0, -1 );
+            int res = QMessageBox::warning( parent, tr("New RSA key"), msg,
+                                           QMessageBox::Yes | QMessageBox::No);
 
             if (fwbdebug)
                 qDebug("User said: res=%d", res);

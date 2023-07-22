@@ -154,9 +154,7 @@ void IPv6Dialog::validate(bool *res)
         {
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
-                                  tr("Illegal IP address '%1'").arg(m_dialog->address->text()),
-                                  tr("&Continue"), 0, 0,
-                                  0 );
+                                  tr("Illegal IP address '%1'").arg(m_dialog->address->text()));
             blockSignals(false);
         }
     }
@@ -175,9 +173,7 @@ void IPv6Dialog::validate(bool *res)
             {
                 blockSignals(true);
                 QMessageBox::critical(this, "Firewall Builder",
-                                      tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()),
-                                      tr("&Continue"), 0, 0,
-                                      0 );
+                                      tr("Illegal netmask '%1'").arg(m_dialog->netmask->text()));
                 blockSignals(false);
             }
         }
@@ -278,15 +274,13 @@ void IPv6Dialog::DNSlookup()
             QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("DNS lookup failed for both names of the address object '%1' and the name of the host '%2'.")
-                .arg(m_dialog->obj_name->text()).arg(name),
-                "&Continue", QString(),QString(), 0, 1 );
+                .arg(m_dialog->obj_name->text()).arg(name));
             return;
         }
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("DNS lookup failed for name of the address object '%1'.")
-            .arg(name),
-            "&Continue", QString(),QString(), 0, 1 );
+            .arg(name));
         return;
     }
 }

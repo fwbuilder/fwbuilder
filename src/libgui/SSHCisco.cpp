@@ -32,7 +32,7 @@
 
 #include <qobject.h>
 #include <qtimer.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
@@ -191,8 +191,8 @@ void SSHCisco::stateMachine()
     {
     case NONE:
     {
-        if ( cmpPrompt(stdoutBuffer,QRegExp(pwd_prompt_1)) ||
-             cmpPrompt(stdoutBuffer,QRegExp(pwd_prompt_2)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(pwd_prompt_1)) ||
+             cmpPrompt(stdoutBuffer, QRegularExpression(pwd_prompt_2)) )
         {
             stdoutBuffer="";
             proc->write( (pwd + "\n").toLatin1() );
@@ -202,7 +202,7 @@ void SSHCisco::stateMachine()
 /* we may get to LOGGEDIN state directly from NONE, for example when
  * password is supplied on command line to plink.exe
  */
-        if (cmpPrompt(stdoutBuffer, QRegExp(normal_prompt)) )
+        if (cmpPrompt(stdoutBuffer, QRegularExpression(normal_prompt)) )
         {
             stdoutBuffer="";
             state=LOGGEDIN;
@@ -216,7 +216,7 @@ void SSHCisco::stateMachine()
 /* we may even get straight to the enable prompt, e.g. if
  * user account is configured with "privilege 15"
  */
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             state=WAITING_FOR_ENABLE;
             stateMachine();
@@ -242,9 +242,7 @@ void SSHCisco::stateMachine()
             stopHeartBeat();
 
             int res = QMessageBox::warning( parent, tr("New RSA key"), msg,
-                                            tr("Yes"), tr("No"), 0,
-                                            0, -1 );
-
+                                            QMessageBox::Yes | QMessageBox::No);
             if (fwbdebug)
                 qDebug("User said: res=%d", res);
 
@@ -268,7 +266,7 @@ void SSHCisco::stateMachine()
     break;
 
     case LOGGEDIN:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(epwd_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(epwd_prompt)) )
         {
             stdoutBuffer="";
             if (!epwd.isEmpty()) proc->write( (epwd + "\n").toLatin1() );
@@ -278,7 +276,7 @@ void SSHCisco::stateMachine()
         break;
 
     case WAITING_FOR_ENABLE:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(epwd_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(epwd_prompt)) )
         {
             stdoutBuffer="";
             if (!epwd.isEmpty()) proc->write( (epwd + "\n").toLatin1() );
@@ -286,7 +284,7 @@ void SSHCisco::stateMachine()
             state=WAITING_FOR_ENABLE;
             break;
         }
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             emit printStdout_sign( tr("In enable mode."));
             emit printStdout_sign( "\n");
@@ -302,7 +300,7 @@ void SSHCisco::stateMachine()
         }
     /* FALLTHRU */
     case ENABLE:
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             if (pre_config_commands.size()>0)
             {
@@ -341,26 +339,26 @@ void SSHCisco::stateMachine()
 
     case SCHEDULE_RELOAD_DIALOG:
         if ( cmpPrompt(stdoutBuffer,
-                       QRegExp("System config.* modified\\. Save?")) )
+                       QRegularExpression("System config.* modified\\. Save?")) )
         {
             stdoutBuffer="";
             proc->write( "n" );  // no \n needed
             break;
         }
-        if ( cmpPrompt(stdoutBuffer, QRegExp("Proceed with reload?")) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression("Proceed with reload?")) )
         {
             stdoutBuffer="";
             proc->write( "y" );  // no \n needed
             break;
         }
-        if ( cmpPrompt(stdoutBuffer, QRegExp("SHUTDOWN")) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression("SHUTDOWN")) )
         {
             stdoutBuffer="";
             proc->write( "\n" );
             state = ENABLE;
             break;
         }
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             // reload did not ask for confirmation
             stdoutBuffer="";
@@ -371,7 +369,7 @@ void SSHCisco::stateMachine()
         break;
 
     case EXECUTING_COMMAND:
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             //QCoreApplication::exit();
             state = COMMAND_DONE;
@@ -382,7 +380,7 @@ void SSHCisco::stateMachine()
         break;
 
     case WAITING_FOR_CONFIG_PROMPT:
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             /* install full policy */
             state = PUSHING_CONFIG; // and drop to PUSHING_CONFIG case
@@ -396,7 +394,7 @@ void SSHCisco::stateMachine()
         break;
 
     case PUSHING_CONFIG:
-        if ( cmpPrompt(stdoutBuffer, QRegExp(enable_prompt)))  // config_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)))  // config_prompt)) )
         {
             // see SF bug 2973136 , fwbuilder bug #1347
             // looks like if user hits Cancel to cancel install at just right
@@ -443,7 +441,7 @@ void SSHCisco::stateMachine()
         break;
 
     case EXIT_FROM_CONFIG:
-        if ( cmpPrompt(stdoutBuffer,QRegExp(enable_prompt)) )
+        if ( cmpPrompt(stdoutBuffer, QRegularExpression(enable_prompt)) )
         {
             /*
              * Execute post_config_commands

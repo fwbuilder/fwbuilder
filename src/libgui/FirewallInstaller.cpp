@@ -47,7 +47,6 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QString>
-#include <QTextCodec>
 #include <QTextStream>
 #include <QTimer>
 #include <QtDebug>
@@ -296,8 +295,7 @@ bool FirewallInstaller::readManifest(const QString &script,
     {
         QMessageBox::critical(
             inst_dlg, "Firewall Builder",
-            tr("Generated script file %1 not found.").arg(script),
-            tr("&Continue") );
+            tr("Generated script file %1 not found.").arg(script));
         return false;
     }
 }

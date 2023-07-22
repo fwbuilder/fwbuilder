@@ -238,9 +238,7 @@ void ND_CreateObjectsPage::initializePage()
 "and vlan interfaces to be the same. It is especially "
 "important to review and fix generated objects if you "
 "use MAC address spoofing."
-),
-                            tr("&Continue"), nullptr, nullptr,
-                            0 );
+));
 
 
                     }

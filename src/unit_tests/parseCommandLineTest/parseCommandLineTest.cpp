@@ -35,7 +35,6 @@
 #include <iostream>
 
 #include <QProcess>
-#include <QRegExp>
 #include <QtDebug>
 
 using namespace std;

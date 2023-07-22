@@ -59,7 +59,7 @@
 
 #include <QString>
 #include <QtDebug>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 
 
@@ -284,7 +284,7 @@ void OSConfigurator_linux24::addVirtualAddressForNAT(const Address *addr)
 string OSConfigurator_linux24::normalizeSetName(const string &txt)
 {
     QString table_name = txt.c_str();
-    table_name.replace(QRegExp("[ +*!#|]"), "_");
+    table_name.replace(QRegularExpression("[ +*!#|]"), "_");
     return table_name.toStdString();
 }
 
@@ -479,15 +479,12 @@ QString OSConfigurator_linux24::addressTableWrapper(FWObject *rule,
                                                     bool ipv6)
 {
     QString combined_command = command;
-    QRegExp address_table_re("\\$at_(\\S+)");
-    int pos = address_table_re.indexIn(command);
-    if (pos > -1)
+    QRegularExpression address_table_re("\\$at_(\\S+)");
+    QRegularExpressionMatch match;
+
+    if (command.indexOf(address_table_re, 0, &match) > -1)
     {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
         QStringList command_lines = QString(command).split("\n", Qt::SkipEmptyParts);
-#else
-        QStringList command_lines = QString(command).split("\n", QString::SkipEmptyParts);
-#endif
         if (command_lines.size() > 1)
         {
             command_lines.push_front("{");
@@ -500,7 +497,7 @@ QString OSConfigurator_linux24::addressTableWrapper(FWObject *rule,
         command_wrappers->collapseEmptyStrings(true);
         command_wrappers->setVariable("ipv6", ipv6);
 
-        QString at_var = address_table_re.cap(1);
+        QString at_var = match.captured(1);
         QString at_file = rule->getStr("address_table_file").c_str();
 
         command_wrappers->setVariable("address_table_file", at_file);
@@ -545,15 +542,16 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 
     command_wrappers->setVariable("address_table", false);
 
-    QRegExp intf_re("\\$i_([^ :]+)");
+    QRegularExpression intf_re("\\$i_([^ :]+)");
+    QRegularExpressionMatch match;
 
     QStringList iface_names;
     QStringList iface_vars;
-    int pos = -1;
-    while ((pos = intf_re.indexIn(combined_command, pos + 1)) > -1)
+    qsizetype pos = -1;
+    while ((pos = combined_command.indexOf(intf_re, pos + 1, &match)) > -1)
     {
-        QString name = intf_re.cap(1);
-        int match_len = intf_re.matchedLength();
+        QString name = match.captured(1);
+        int match_len = match.capturedLength();
         iface_names.push_back(name);
         iface_vars.push_back("$i_" + name);
         if (name.contains("*")) 
@@ -574,11 +572,7 @@ string OSConfigurator_linux24::printRunTimeWrappers(FWObject *rule,
 
     if (!no_wrapper)
     {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
         QStringList command_lines = QString(combined_command).split("\n", Qt::SkipEmptyParts);
-#else
-        QStringList command_lines = QString(combined_command).split("\n", QString::SkipEmptyParts);
-#endif
         if (command_lines.size() > 1)
         {
             command_lines.push_front("{");

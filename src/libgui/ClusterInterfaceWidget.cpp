@@ -231,8 +231,7 @@ bool ClusterInterfaceWidget::isValid()
         {
             QMessageBox::warning(this,"Firewall Builder",
                      tr("Some of the cluster interfaces do not have any "
-                        "member firewall interface selected"),
-                    "&Continue", QString(), QString(), 0, 1 );
+                        "member firewall interface selected"));
             return false;
         }
         if (roots.values().contains(items.first()))
@@ -241,8 +240,7 @@ bool ClusterInterfaceWidget::isValid()
             QMessageBox::warning(this,"Firewall Builder",
                      tr("Please select interface of the member firewall "
                         "rather than the firewall object to be used "
-                        "with cluster interface"),
-                    "&Continue", QString(), QString(), 0, 1 );
+                        "with cluster interface"));
             return false;
         }
         if (!interfaceSelectable(ifacelist.list->selectedItems().first()->data(0, Qt::UserRole).value<Interface*>()))
@@ -250,8 +248,7 @@ bool ClusterInterfaceWidget::isValid()
             // selected interface item can not be used in this cluster
             QMessageBox::warning(this,"Firewall Builder",
                      tr("%1 can not be used as cluster interface.")
-                        .arg(ifacelist.list->selectedItems().first()->text(0)),
-                    "&Continue", QString(), QString(), 0, 1 );
+                        .arg(ifacelist.list->selectedItems().first()->text(0)));
             return false;
         }
     }

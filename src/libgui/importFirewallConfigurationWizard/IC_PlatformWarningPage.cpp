@@ -33,7 +33,6 @@
 
 #include <QString>
 #include <QFile>
-#include <QRegExp>
 #include <QTextStream>
 #include <QDesktopServices>
 

@@ -50,8 +50,9 @@
 
 #include <errno.h>
 #include <iostream>
-
-#include <QTextCodec>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <QTextCodec>
+#endif
 #include <QTimer>
 #include <QMessageBox>
 #include <QFile>
@@ -103,7 +104,9 @@ bool instDialog::runCompiler(Firewall *fw)
     addToLog( args.join(" ") + "\n" );
 
     // compilers always write file names into manifest in Utf8
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+#endif
 
     // Launch compiler in the background
     QString path = args.at(0);
@@ -168,9 +171,7 @@ QStringList instDialog::prepareArgForCompiler(Firewall *fw)
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Firewall platform is not specified in this object.\n\
-Can't compile firewall policy."),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+Can't compile firewall policy."));
         return args; // still empty list
     }
 

@@ -52,6 +52,7 @@
 #include <qpushbutton.h>
 #include <QUndoStack>
 #include <QApplication>
+#include <QRegularExpression>
 
 using namespace std;
 using namespace libfwbuilder;
@@ -176,9 +177,9 @@ void RuleSetDialog::validate(bool *res)
     if (platform == "pf")
         pattern = "([a-zA-Z0-9_-+=@%^]+)(/\\*)?";
 
-    QRegExp rx(pattern);
+    QRegularExpression rx = QRegularExpression(QRegularExpression::anchoredPattern(pattern));
 
-    if (!rx.exactMatch(m_dialog->obj_name->text()))
+    if (!rx.match(m_dialog->obj_name->text()).hasMatch())
     {
         *res = false ;
         if (QApplication::focusWidget() != nullptr)
@@ -187,9 +188,7 @@ void RuleSetDialog::validate(bool *res)
             QMessageBox::critical(
                 this,
                 "Firewall Builder",
-                tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text() ),
-                tr("&Continue"), 0, 0,
-                0 );
+                tr("Rule set name '%1' is invalid. Only '[a-z][A-Z][0-9]_-+=@%^' characters are allowed.").arg( m_dialog->obj_name->text()));
             blockSignals(false);
         }
         return ;

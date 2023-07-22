@@ -43,9 +43,8 @@
 
 #include <QDir>
 #include <QMainWindow>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QUuid>
-#include <QRegExp>
 #include <QtDebug>
 #include <QCryptographicHash>
 #include <QTime>
@@ -325,7 +324,7 @@ void FWBSettings::init(bool force_first_time_run)
             if (app != nullptr)
             {
                 QMessageBox::critical( 0,"Firewall Builder", err,
-                                       "&Continue", 0, 0, 0 );
+                                       QMessageBox::Ok);
             } else
             {
                 qDebug() << err;
@@ -650,9 +649,8 @@ QPoint FWBSettings::getScreenPosition(const QString &wname)
     int  width = 150;  // won't get closer to the screen edge than this
     int height = 150;
 
-    QDesktopWidget *d = QApplication::desktop();
 // get geometry of the screen that contains mw
-    QRect sg = d->screenGeometry(mw);
+    QRect sg = mw->screen()->availableGeometry();
 
     if (x+width > sg.width())   x=sg.width()-width;
     if (y+height > sg.height()) y=sg.height()-height;
@@ -702,9 +700,9 @@ void FWBSettings::restoreGeometry(QWidget *w)
     int     width  = val.section(',',2,2).toInt();
     int     height = val.section(',',3,3).toInt();
 
-    QDesktopWidget *d = QApplication::desktop();
 // get geometry of the screen that contains mw
-    QRect sg = d->screenGeometry(mw);
+    QRect sg = mw->screen()->availableGeometry();
+
 
     if (width > sg.width() || height > sg.height())
     {
@@ -738,9 +736,8 @@ void FWBSettings::restoreGeometry(QWidget *w, const QRect &dg)
     int     width  = val.section(',',2,2).toInt();
     int     height = val.section(',',3,3).toInt();
 
-    QDesktopWidget *d = QApplication::desktop();
 // get geometry of the screen that contains mw
-    QRect sg = d->screenGeometry(mw);
+    QRect sg = mw->screen()->availableGeometry();
 
     if (width > sg.width() || height > sg.height())
     {

@@ -49,7 +49,6 @@
 #include <errno.h>
 #include <iostream>
 
-#include <QTextCodec>
 #include <QTimer>
 #include <QMessageBox>
 #include <QtDebug>

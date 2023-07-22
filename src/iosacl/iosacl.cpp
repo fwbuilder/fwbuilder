@@ -57,7 +57,9 @@
 
 #include <QCoreApplication>
 #include <QStringList>
-#include <QTextCodec>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <QTextCodec>
+#endif
 
 #include "../common/init.cpp"
 
@@ -91,9 +93,10 @@ int main(int argc, char **argv)
 {   
     QCoreApplication app(argc, argv, false);
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     // compilers always write file names into manifest in Utf8
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
-    
+#endif
     QStringList args = app.arguments();
 
     if (args.size()<=1)

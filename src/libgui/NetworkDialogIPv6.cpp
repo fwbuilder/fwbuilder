@@ -126,9 +126,7 @@ void NetworkDialogIPv6::validate(bool *res)
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
                                   tr("Illegal IPv6 address '%1'").arg(
-                                      m_dialog->address->text()),
-                                  tr("&Continue"), nullptr, nullptr,
-                                  0 );
+                                      m_dialog->address->text()));
             blockSignals(false);
         }
     }
@@ -148,9 +146,7 @@ void NetworkDialogIPv6::validate(bool *res)
             blockSignals(true);
             QMessageBox::critical(this, "Firewall Builder",
                                   tr("Illegal netmask '%1'").arg(
-                                      m_dialog->netmask->text() ),
-                                  tr("&Continue"), nullptr, nullptr,
-                                  0 );
+                                      m_dialog->netmask->text()));
             blockSignals(false);
         }
     }

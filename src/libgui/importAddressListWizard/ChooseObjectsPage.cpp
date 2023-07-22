@@ -72,8 +72,7 @@ void ChooseObjectsPage::initializePage()
     } catch (FWException &ex)
     {
         QMessageBox::critical( nullptr , "Firewall Builder",
-                               ex.toString().c_str(),
-                               QString(),QString());
+                               ex.toString().c_str());
     }
 }
 

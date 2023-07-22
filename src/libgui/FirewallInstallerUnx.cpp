@@ -50,8 +50,9 @@
 #include <errno.h>
 #include <iostream>
 #include <fcntl.h>
-
-#include <QTextCodec>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <QTextCodec>
+#endif
 #include <QTextStream>
 #include <QTimer>
 #include <QMessageBox>
@@ -104,7 +105,9 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
  * other files are located there as well.
  */
     // compilers always write file names into manifest in Utf8
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+#endif
 
     //key: local_file_name  val: remote_file_name
     QMap<QString,QString> all_files;
@@ -135,9 +138,7 @@ bool FirewallInstallerUnx::packInstallJobsList(Firewall* fw)
             inst_dlg, "Firewall Builder",
             tr("Incorrect manifest format in generated script. "
                "Line with \"*\" is missing, can not find any files "
-               "to copy to the firewall.\n%1").arg(cnf->script),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+               "to copy to the firewall.\n%1").arg(cnf->script));
         return false;
     }
 

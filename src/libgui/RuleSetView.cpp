@@ -213,12 +213,12 @@ void RuleSetView::initActions()
 
     // Move rule up
     moveRuleUpAction = createAction(tr("Move Rule Up"), SLOT( moveRuleUp()),
-                                    QKeySequence(Qt::CTRL + Qt::Key_PageUp));
+                                    QKeySequence(Qt::CTRL | Qt::Key_PageUp));
     addAction(moveRuleUpAction );
 
     // Move rule down
     moveRuleDownAction = createAction(tr("Move Rule Down"), SLOT( moveRuleDown()),
-                                      QKeySequence(Qt::CTRL + Qt::Key_PageDown));
+                                      QKeySequence(Qt::CTRL | Qt::Key_PageDown));
     addAction(moveRuleDownAction );
 
     // Remove rules from group
@@ -814,8 +814,7 @@ void RuleSetView::addColumnRelatedMenu(QMenu *menu, const QModelIndex &index,
                 } catch (FWException &ex)
                 {
                     QMessageBox::critical( nullptr , "Firewall Builder",
-                                           ex.toString().c_str(),
-                                           QString(),QString());
+                                           ex.toString().c_str());
                 }
                 negID->setEnabled(supports_neg &&  !re->isAny());
                 fndID->setEnabled(!re->isAny());
@@ -2195,8 +2194,11 @@ void RuleSetView::dropEvent(QDropEvent *ev)
 
     RuleSetModel* md = ((RuleSetModel*)model());
     if (!canChange(md)) return;
-
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QModelIndex index = indexAt (ev->pos());
+#else
+    QModelIndex index = indexAt (ev->position().toPoint());
+#endif
     if (!index.isValid()) return;
 
     list<FWObject*> dragol;
@@ -2225,8 +2227,11 @@ void RuleSetView::dropEvent(QDropEvent *ev)
             // one rule to another.
 
             clearSelection();
-
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
             if (ev->keyboardModifiers() & Qt::ControlModifier)
+#else
+            if (ev->modifiers() & Qt::ControlModifier)
+#endif
             {
                 insertObject(
                     index, dragobj,
@@ -2398,8 +2403,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
                     nullptr , "Firewall Builder",
                     QObject::tr(
                         "A single interface belonging to this firewall is "
-                        "expected in this field."),
-                    QString(),QString());
+                        "expected in this field."));
             }
             else if (RuleElementRGtw::cast(re))
             {
@@ -2408,8 +2412,7 @@ bool RuleSetView::validateForInsertion(RuleElement *re, FWObject *obj, bool quie
                     QObject::tr(
                         "A single ip adress is expected here. You may also "
                         "insert a host or a network adapter leading to a single "
-                        "ip adress."),
-                    QString(),QString());
+                        "ip adress."));
             }
         }
         return false;
@@ -2484,12 +2487,19 @@ void RuleSetView::dragMoveEvent( QDragMoveEvent *ev)
     {
         if (ev->mimeData()->hasFormat(FWObjectDrag::FWB_MIME_TYPE) && !md->getRuleSet()->isReadOnly())
         {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
             if (ev->keyboardModifiers() & Qt::ControlModifier)
+#else
+            if (ev->modifiers() & Qt::ControlModifier)
+#endif
                 ev->setDropAction(Qt::CopyAction);
             else
                 ev->setDropAction(Qt::MoveAction);
-
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
             QModelIndex index = indexAt (ev->pos());
+#else
+            QModelIndex index = indexAt (ev->position().toPoint());
+#endif
             ColDesc colDesc = index.data(Qt::UserRole).value<ColDesc>();
 
             if (index.column()<0 || ( colDesc.type != ColDesc::Object && colDesc.type != ColDesc::Time) )

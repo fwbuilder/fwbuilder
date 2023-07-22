@@ -40,7 +40,7 @@
 
 #include <QList>
 #include <QStringList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QPixmap>
 #include <QApplication>
 #include <QFileInfo>
@@ -212,9 +212,7 @@ bool isTreeReadWrite(QWidget *parent, FWObject *obj)
             parent, "Firewall Builder",
             QObject::tr("Impossible to apply changes because object is "
                         "located in read-only\npart of the tree or data "
-                        "file was opened read-only"),
-            QObject::tr("&Continue"), 0, 0,
-            0, 2 );
+                        "file was opened read-only"));
 
         return false;
     }
@@ -235,8 +233,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
             
             QMessageBox::warning(
                 parent, "Firewall Builder",
-                QObject::tr("Object name should not be blank"),
-                QObject::tr("&Continue"), nullptr, nullptr, 0, 2 );
+                QObject::tr("Object name should not be blank"));
                 
             parent->blockSignals(false);
         }
@@ -277,8 +274,7 @@ bool validateName(QWidget *parent, FWObject *obj, const QString &newname)
                     parent, "Firewall Builder",
                     QObject::tr("Object with name '%1' already exists, "
                                 "please choose different name.").
-                    arg(o1->getName().c_str()),
-                    QObject::tr("&Continue"), nullptr, nullptr, 0, 2 );
+                    arg(o1->getName().c_str()));
                 
                 parent->blockSignals(false);
             }
@@ -413,20 +409,20 @@ QString wordWrap(const QString& s, int maxchinline)
             {
                 if (linestart<lastwdpos)
                 {
-                    res.append(s.midRef(linestart,lastwdpos-linestart));
+                    res.append(QStringView(s).mid(linestart,lastwdpos-linestart));
                     linestart=lastwdpos;
                     pos=lastwdpos;
 
                 }else
                 {
-                    res.append(s.midRef(linestart,pos-linestart));
+                    res.append(QStringView(s).mid(linestart,pos-linestart));
                     linestart=pos;
                     lastwdpos=pos;
                 }
             }
             else
             {
-                res.append(s.midRef(linestart,pos-linestart));
+                res.append(QStringView(s).mid(linestart,pos-linestart));
                 while (++pos< s.length() && s.at(pos).isSpace()) ;
                 if (pos<s.length())
                 {
@@ -442,7 +438,7 @@ QString wordWrap(const QString& s, int maxchinline)
             chcount=0;
         }
     }
-    res.append(s.midRef(linestart,pos-linestart));
+    res.append(QStringView(s).mid(linestart,pos-linestart));
     return res;
 }
 
@@ -585,7 +581,7 @@ QString _parseTokens(QStringList &args, const QChar closing_quote='\0')
  */
 void parseCommandLine(const QString &cmd, QStringList &argv)
 {
-    int first_arg = cmd.indexOf(QRegExp(" *-"));
+    int first_arg = cmd.indexOf(QRegularExpression(" *-"));
     if (first_arg == -1)
     {
         // no arguments
@@ -595,7 +591,7 @@ void parseCommandLine(const QString &cmd, QStringList &argv)
     QString program = cmd.mid(0, first_arg).trimmed();
     if (!program.isEmpty()) argv.append(program);
 
-    QStringList args = cmd.mid(first_arg).split(QRegExp("\\s+"));
+    QStringList args = cmd.mid(first_arg).split(QRegularExpression("\\s+"));
 //                                                QString::SkipEmptyParts);
     // splits like this:
     // ["", "-arg1", "val1", "-arg2", "\"value", "2", "\""]

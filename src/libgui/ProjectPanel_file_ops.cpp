@@ -95,31 +95,31 @@ bool ProjectPanel::saveIfModified(bool include_discard_button)
         {
             switch (QMessageBox::information(this, "Firewall Builder",
                                              message,
-                                             tr("&Save"), tr("&Discard"), tr("&Cancel"),
-                                             0,      // Enter = button 0
-                                             2 ) )   // Escape == button 2
+                                             QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel))
             {
-            case 0:
+            case QMessageBox::Save:
                 save();
                 break;
-            case 1:  // discard
+            case QMessageBox::Discard:
                 db()->setDirty(false);
                 break;
-            case 2:  // cancel
+            case QMessageBox::Cancel:
+                return false;
+            default:
                 return false;
             }
         } else
         {
             switch (QMessageBox::information(this, "Firewall Builder",
                                              message,
-                                             tr("&Save"),tr("&Cancel"),
-                                             nullptr,      // Enter = button 0
-                                             1 ) )   // Escape == button 1
+                                             QMessageBox::Save | QMessageBox::Cancel))
             {
-            case 0:
+            case QMessageBox::Save:
                 save();
                 break;
-            case 1:  // cancel
+            case QMessageBox::Cancel:
+                return false;
+            default:
                 return false;
             }
         }
@@ -364,9 +364,8 @@ void ProjectPanel::fileDiscard()
          "copy of its head revision from RCS."
          "\n"
          "All changes will be lost if you do this.\n"),
-      tr("&Discard changes"),
-      tr("&Cancel"), QString(),
-      1 )==0 )
+                             QMessageBox::Discard | QMessageBox::Cancel,
+                             QMessageBox::Cancel) == QMessageBox::Discard )
     {
         /* need to close the file without asking and saving, then
          * reopen it again
@@ -414,8 +413,7 @@ void ProjectPanel::fileAddToRCS()
             QMessageBox::information(
                 this,"Firewall Builder",
                 tr("File %1 has been added to RCS.").arg(rcs->getFileName()),
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
         }
     }
     catch (FWException &ex)
@@ -423,8 +421,7 @@ void ProjectPanel::fileAddToRCS()
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error adding file to RCS:\n%1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
     }
 
     QCoreApplication::postEvent(mw, new updateSubWindowTitlesEvent());
@@ -500,8 +497,7 @@ void ProjectPanel::fileCompare()
             this,"Firewall Builder",
             tr("Error loading file %1:\n%2").
                  arg(fname1).arg(ex.toString().c_str()),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
         return;
     }
 
@@ -519,8 +515,7 @@ void ProjectPanel::fileCompare()
             this,"Firewall Builder",
             tr("Error loading file %1:\n%2").
                  arg(fname2).arg(ex.toString().c_str()),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
         return;
     }
 
@@ -574,8 +569,7 @@ void ProjectPanel::fileCompare()
                 QMessageBox::critical(
                     this,"Firewall Builder",
                     tr("Can not open report file for writing. File '%1'").arg(fn),
-                    tr("&Continue"), QString(),QString(),
-                    0, 1 );
+                    QMessageBox::Ok);
             }
 
         }
@@ -586,8 +580,7 @@ void ProjectPanel::fileCompare()
             this,"Firewall Builder",
             tr("Unexpected error comparing files %1 and %2:\n%3").
                  arg(fname1).arg(fname2).arg(ex.toString().c_str()),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
     }
 
 }
@@ -615,8 +608,7 @@ void ProjectPanel::fileExport()
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Please select a library you want to export."),
-                "&Continue", QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
 
             return;
         }
@@ -640,8 +632,8 @@ void ProjectPanel::fileExport()
              this,"Firewall Builder",
              tr("The file %1 already exists.\nDo you want to overwrite it ?")
              .arg(fname),
-             tr("&Yes"), tr("&No"), QString(),
-             0, 1 )==1 ) return;
+                QMessageBox::Yes | QMessageBox::No,
+                QMessageBox::No) == QMessageBox::No ) return;
 
     st->setOpenFileDir(path);
     exportLibraryTo(fname,selectedLibs,ed.m_dialog->exportRO->isChecked());
@@ -808,8 +800,7 @@ void ProjectPanel::exportLibraryTo(QString fname,list<FWObject*> &selectedLibs, 
             this,"Firewall Builder",
             QObject::tr("Error saving file %1: %2")
             .arg(fname).arg(err),
-            "&Continue", QString(), QString(),
-            0, 1 );
+            QMessageBox::Ok);
     }
 }
 
@@ -914,8 +905,7 @@ FWObject* ProjectPanel::loadLibrary(const string &libfpath)
             tr("The program encountered error trying to load file %1.\n"
                "The file has not been loaded. Error:\n%2").
                  arg(libfpath.c_str()).arg(error_txt),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
     }
     return last_new_lib;
 }
@@ -1005,8 +995,7 @@ void ProjectPanel::loadStandardObjects()
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error loading file:\n%1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
     }
 }
 
@@ -1197,8 +1186,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
                            "but file '%3' already exists.\n"
                            "Choose a different name for the new file.")
                         .arg(fn).arg(newFileName).arg(newFileName),
-                        tr("&Continue"), QString(),QString(),
-                        0, 1 );
+                        QMessageBox::Ok);
 
                     newFileName = chooseNewFileName(
                         fn, tr("Choose name and location for the new file"));
@@ -1213,8 +1201,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
                             this,"Firewall Builder",
                             tr("Load operation cancelled and data file reverted"
                                "to original version."),
-                            tr("&Continue"), QString(),QString(),
-                            0, 1 );
+                            QMessageBox::Ok);
 
                         loadStandardObjects();
                         return false;
@@ -1230,8 +1217,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
                 tr("Firewall Builder uses file extension '.fwb'. Your data"
                    "file '%1' \nhas been renamed '%2'")
                 .arg(fn).arg(newFileName),
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
             }
 
             fn = newFileName;
@@ -1273,8 +1259,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
                 this,"Firewall Builder",
                 tr("The program encountered error trying to load data file.\n"
                    "The file has not been loaded. Error:\n%1").arg(msg),
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
         } else
         {
             // this was not XML error, perhaps permissions or other
@@ -1292,8 +1277,7 @@ bool ProjectPanel::loadFromRCS(RCS *_rcs)
                 tr("The program encountered error trying to load data file.\n"
                    "The file has not been loaded. Error:\n%1").arg(
                        error_txt),
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
         }
         // load standard objects so the window does not remain empty
         loadStandardObjects();
@@ -1382,8 +1366,7 @@ bool ProjectPanel::checkin(bool unlock)
             this,"Firewall Builder",
             tr("Error checking in file %1:\n%2")
             .arg(rcs->getFileName()).arg(ex.toString().c_str()),
-            tr("&Continue"), QString(), QString(),
-            0, 1 );
+            QMessageBox::Ok);
     }
 /***********************************************************************/
     return true;
@@ -1507,8 +1490,7 @@ void ProjectPanel::save()
                 this,"Firewall Builder",
                 tr("Error saving file %1: %2")
                 .arg(rcs->getFileName()).arg(err),
-                tr("&Continue"), QString(), QString(),
-                0, 1 );
+                QMessageBox::Ok);
         }
     }
 }

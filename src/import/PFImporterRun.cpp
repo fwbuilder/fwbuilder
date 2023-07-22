@@ -28,7 +28,7 @@
 
 #include <QString>
 #include <QStringList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtDebug>
 
 #include <ios>
@@ -78,12 +78,13 @@ void PFImporter::run()
     }
 
     QString whole_input = whole_input_tmp.join("\n") + "\n";
-    QRegExp line_continuation("\\\\\\s*\n");
+    QRegularExpression line_continuation("\\\\\\s*\n");
     whole_input.replace(line_continuation, "");
 
-    QRegExp inline_comment("#.*$");
-    QRegExp macro_definition("^\\s*(\\S+)\\s*=\\s*(.*)$");
-    QRegExp list_of_items("^\\{\\s*((\\S+,?\\s*)+)\\s*\\}$");
+    QRegularExpression inline_comment("#.*$");
+    QRegularExpression macro_definition("^\\s*(\\S+)\\s*=\\s*(.*)$");
+    QRegularExpression list_of_items("^\\{\\s*((\\S+,?\\s*)+)\\s*\\}$");
+    QRegularExpressionMatch match;
 
     QMap<QString, QString> macros;
     QMap<QString, QString> macros_source_lines;
@@ -94,15 +95,15 @@ void PFImporter::run()
         work_str.replace(inline_comment, "");
         work_str = work_str.trimmed();
 
-        if (macro_definition.indexIn(work_str) != -1)
+        if (work_str.indexOf(macro_definition, 0, &match) != -1)
         {
-            QString macro_name = macro_definition.cap(1);
-            QString value = macro_definition.cap(2);
+            QString macro_name = match.captured(1);
+            QString value = match.captured(2);
             value.replace('\"', "");
             value = value.simplified();
 
             macros[macro_name] = value;
-            macros_source_lines[macro_name] = macro_definition.cap(0);
+            macros_source_lines[macro_name] = match.captured(0);
         }
     }
 
@@ -134,7 +135,7 @@ void PFImporter::run()
          * RegExp list_of_items assumes the string has been
          * stripped of any quotes and trimmed.
          */
-        if (list_of_items.indexIn(value) != -1)
+        if (value.indexOf(list_of_items, 0, &match) != -1)
         {
             qDebug() << "This macro defines a list";
 
@@ -146,13 +147,9 @@ void PFImporter::run()
              * because pf does not allow mixed address/service
              * lists anywhere.
              */
-            QString list_str = list_of_items.cap(1);
+            QString list_str = match.captured(1);
             list_str.replace(",", "");
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-            QStringList items = list_str.split(QRegExp("\\s"), Qt::SkipEmptyParts);
-#else
-            QStringList items = list_str.split(QRegExp("\\s"), QString::SkipEmptyParts);
-#endif
+            QStringList items = list_str.split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
             qDebug() << items;
 
             bool has_address = false;
@@ -261,7 +258,8 @@ void PFImporter::substituteMacros(const QMap<QString,QString> &macros,
                                   QString &buffer)
 {
     // make several passes: sometimes macros can use other macros
-    QRegExp any_macro_instance("\\$(\\w+)\\W");
+    QRegularExpression any_macro_instance("\\$(\\w+)\\W");
+    QRegularExpressionMatch match;
     QSet<QString> undefined_macros;
     for (;;)
     {
@@ -271,16 +269,16 @@ void PFImporter::substituteMacros(const QMap<QString,QString> &macros,
             it.next();
             QString macro_name = it.key();
             QString macro_value = it.value();
-            QRegExp macro_instance(QString("\\$%1(?=\\W)").arg(macro_name));
+            QRegularExpression macro_instance(QString("\\$%1(?=\\W)").arg(macro_name));
 
             buffer.replace(macro_instance, macro_value);
         }
 
         bool has_known_macros = false;
-        int idx = 0;
-        while ((idx = buffer.indexOf(any_macro_instance, idx)) != -1)
+        qsizetype idx = 0;
+        while ((idx = buffer.indexOf(any_macro_instance, idx, &match)) != -1)
         {
-            QString macro_name = any_macro_instance.cap(1);
+            QString macro_name = match.captured(1);
             if (macros.contains(macro_name)) has_known_macros = true;
             else undefined_macros.insert(macro_name);
             idx++;

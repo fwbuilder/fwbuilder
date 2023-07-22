@@ -31,7 +31,7 @@
 #include <qobject.h>
 #include <qtextstream.h>
 #include <qdatetime.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <QtDebug>
 
 #include "FWObjectPropertiesFactory.h"
@@ -89,7 +89,11 @@ using namespace libfwbuilder;
 QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
 {
     QString res;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextStream str(&res, QIODevice::WriteOnly);
+#else
+    QTextStream str(&res, QIODeviceBase::WriteOnly);
+#endif
     FWObject *parent_obj = obj->getParent();
 
     try
@@ -288,7 +292,11 @@ QString FWObjectPropertiesFactory::getObjectPropertiesBrief(FWObject *obj)
 QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
 {
     QString res;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextStream str(&res, QIODevice::WriteOnly);
+#else
+    QTextStream str(&res, QIODeviceBase::WriteOnly);
+#endif
     FWObject *parent_obj = obj->getParent();
 
     try
@@ -336,13 +344,13 @@ QString FWObjectPropertiesFactory::getObjectProperties(FWObject *obj)
             QDateTime dt;
             time_t t;
             
-            t = obj->getInt("lastModified");dt.setTime_t(t);
+            t = obj->getInt("lastModified");dt.setSecsSinceEpoch(t);
             QString t_modified  = (t)? dt.toString():"-";
             
-            t = obj->getInt("lastCompiled");dt.setTime_t(t);
+            t = obj->getInt("lastCompiled");dt.setSecsSinceEpoch(t);
             QString t_compiled  = (t)? dt.toString():"-";
             
-            t = obj->getInt("lastInstalled");dt.setTime_t(t);
+            t = obj->getInt("lastInstalled");dt.setSecsSinceEpoch(t);
             QString t_installed = (t)? dt.toString():"-";
             
             str <<  platform << "(" << readableVersion << ") / " << hostOS;
@@ -480,9 +488,9 @@ QString FWObjectPropertiesFactory::stripHTML(const QString &str)
     // note that str may contain multiple lines
     // separated by <br> and/or '\n'
 
-    QRegExp htmltag1 = QRegExp("<[^>]+>");
-    QRegExp htmltag2 = QRegExp("</[^>]+>");
-    QRegExp htmltd   = QRegExp("</td><td>");
+    QRegularExpression htmltag1 = QRegularExpression("<[^>]+>");
+    QRegularExpression htmltag2 = QRegularExpression("</[^>]+>");
+    QRegularExpression htmltd   = QRegularExpression("</td><td>");
 
     QString res = str;
     res = res.replace(htmltd,": ");
@@ -752,15 +760,15 @@ QString FWObjectPropertiesFactory::getObjectPropertiesDetailed(FWObject *obj,
             time_t lc=obj->getInt("lastCompiled");
             time_t li=obj->getInt("lastInstalled");
             
-            dt.setTime_t(lm);
+            dt.setSecsSinceEpoch(lm);
             QString t_modified  = (lm)? dt.toString():"-";
             if (lm>lc && lm>li) t_modified=QString("<b>")+t_modified+"</b>";
                     
-            dt.setTime_t(lc);
+            dt.setSecsSinceEpoch(lc);
             QString t_compiled  = (lc)? dt.toString():"-";
             if (lc>lm && lc>li) t_compiled=QString("<b>")+t_compiled+"</b>";
             
-            dt.setTime_t(li);
+            dt.setSecsSinceEpoch(li);
             QString t_installed = (li)? dt.toString():"-";
             if (li>lc && li>lm) t_installed=QString("<b>")+t_installed+"</b>";
             

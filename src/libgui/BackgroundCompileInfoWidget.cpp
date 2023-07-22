@@ -41,7 +41,7 @@ BackgroundCompileInfoWidget::BackgroundCompileInfoWidget(QWidget *parent, instDi
     m_progressBar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     QHBoxLayout *hboxlayout = new QHBoxLayout();
     hboxlayout->setSpacing(0);
-    hboxlayout->setMargin(0);
+    hboxlayout->setContentsMargins(0, 0, 0, 0);
     hboxlayout->addWidget(m_label);
     hboxlayout->addWidget(m_progressBar);
     setLayout(hboxlayout);

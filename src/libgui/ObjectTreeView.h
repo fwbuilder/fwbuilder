@@ -40,9 +40,7 @@
 #include <vector>
 #include <set>
 
-namespace libfwbuilder {
-    class FWObject;
-};
+#include <libfwbuilder/src/fwbuilder/FWObject.h>
 
 class ProjectPanel;
 class ObjectTreeViewItem;

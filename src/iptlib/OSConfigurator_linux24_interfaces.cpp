@@ -63,7 +63,7 @@
 
 #include <QString>
 #include <QStringList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtDebug>
 
 
@@ -654,10 +654,10 @@ bool OSConfigurator_linux24::validateInterfaces()
                         iface->getOptionsObject()->getStr("type") == "bonding")
                     {
                         QString subint_name = subinterface->getName().c_str();
-                        QRegExp vlan1("[a-zA-Z-]+\\d{1,}\\.\\d{1,}");
-                        QRegExp vlan2("vlan\\d{1,}");
-                        if (vlan1.indexIn(subint_name) != -1 ||
-                            vlan1.indexIn(subint_name) != -1)
+                        QRegularExpression vlan1("[a-zA-Z-]+\\d{1,}\\.\\d{1,}");
+                        QRegularExpression vlan2("vlan\\d{1,}");
+                        // Note: this checked for vlan1 twice. Must have been a typo.
+                        if (subint_name.indexOf(vlan1) != -1 || subint_name.indexOf(vlan2) != -1)
                         {
                             QString err(
                                 "Vlan subinterfaces as slaves of bonding interfaces "

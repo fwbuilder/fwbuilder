@@ -91,6 +91,7 @@
 #include <QUndoStack>
 #include <QMenu>
 #include <QAction>
+#include <QRegularExpression>
 
 #include <memory>
 #include <algorithm>
@@ -311,11 +312,13 @@ QString ObjectManipulator::makeNameUnique(FWObject* parent,
 
     if (obj_type == Interface::TYPENAME)
     {
-        QRegExp rx("([a-zA-Z-]+)(\\d{1,})");
-        if (rx.indexIn(obj_name) != -1)
+        QRegularExpression rx("([a-zA-Z-]+)(\\d{1,})");
+        QRegularExpressionMatch match;
+
+        if (obj_name.indexOf(rx, 0, &match) != -1)
         {
-            basename = rx.cap(1);
-            suffix = rx.cap(2).toInt();
+            basename = match.captured(1);
+            suffix = match.captured(2).toInt();
         }
     }
 
@@ -1203,7 +1206,7 @@ void ObjectManipulator::filterFirewallsFromSelection(vector<FWObject*> &so,
                 QMessageBox::warning(this, "Firewall Builder",
                         QObject::tr("No firewalls assigned to cluster '%1'").
                                      arg(cl->getName().c_str()),
-                        "&Continue", QString(), QString(), 0, 1 );
+                        QMessageBox::Ok);
                 continue;
             }
             fo.insert(cl);
@@ -1253,8 +1256,7 @@ FWObject* ObjectManipulator::prepareForInsertion(FWObject *target, FWObject *obj
         QMessageBox::critical(
             this,"Firewall Builder",
             err,
-            "&Continue", QString(), QString(),
-            0, 1 );
+            QMessageBox::Ok);
 
         return nullptr;
     }

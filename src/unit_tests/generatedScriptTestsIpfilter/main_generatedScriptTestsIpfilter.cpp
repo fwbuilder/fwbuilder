@@ -30,7 +30,9 @@
 #include "fwbuilder/Constants.h"
 
 #include <QApplication>
-#include <QTextCodec>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <QTextCodec>
+#endif
 
 #include "common/init.cpp"
 
@@ -43,7 +45,9 @@ int main(int argc, char **argv)
     QApplication app(argc, argv, false);
 
     // compilers always write file names into manifest in Utf8
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf8"));
+#endif
 
     init(argv);
 

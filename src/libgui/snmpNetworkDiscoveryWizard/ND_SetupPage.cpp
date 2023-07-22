@@ -32,6 +32,7 @@
 
 #include <QHostInfo>
 #include <QtDebug>
+#include <QRegularExpression>
 
 
 using namespace std;
@@ -98,12 +99,13 @@ bool ND_SetupPage::isSeedHostOK(const QString &hostName)
 {
     if (hostName.isEmpty()) return false;
 
-    QRegExp r = QRegExp("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$",
-                        Qt::CaseInsensitive); //non wildcard
+    QRegularExpression r = QRegularExpression(
+                QRegularExpression::anchoredPattern("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$"),
+                QRegularExpression::CaseInsensitiveOption); //non wildcard
 
     last_error = "";
 
-    if (r.exactMatch(hostName))
+    if (r.match(hostName).hasMatch())
     {
         try
         {
@@ -124,8 +126,10 @@ bool ND_SetupPage::isSeedHostOK(const QString &hostName)
 
 bool ND_SetupPage::looksLikeIpAddress(const QString &s)
 {
-    QRegExp r=QRegExp("^(\\d|\\.)+$",Qt::CaseInsensitive); //non wildcard
-    return r.exactMatch(s);
+    QRegularExpression r = QRegularExpression(
+                QRegularExpression::anchoredPattern("^(\\d|\\.)+$") ,
+                QRegularExpression::CaseInsensitiveOption); //non wildcard
+    return r.match(s).hasMatch();
 }
 
 void ND_SetupPage::displayStatusError(const QString &err)

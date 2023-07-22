@@ -130,8 +130,7 @@ void newFirewallDialog::changedAddressesInNewFirewall()
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("Can not find interface %1 in the interface editor data")
-                .arg(intf->getName().c_str()),
-                "&Continue", QString(), QString(), 0, 1 );
+                .arg(intf->getName().c_str()));
         } else
         {
             EditedInterfaceData new_data = new_configuration[intf];
@@ -153,8 +152,8 @@ void newFirewallDialog::changedAddressesInNewFirewall()
                  * If user created more addresses than there used to
                  * be, extra addresses are not added to rules.
                  */
-                QMap<libfwbuilder::Address*, AddressInfo >::iterator addrit;
-                for (addrit=new_data.addresses.begin(); addrit!=new_data.addresses.end(); ++addrit)
+                QMultiMap<libfwbuilder::Address*, AddressInfo >::iterator addrit;
+                for (addrit = new_data.addresses.begin(); addrit != new_data.addresses.end(); ++addrit)
                 {
                     Address *old_addr_obj = addrit.key();
                     InetAddrMask old_net;

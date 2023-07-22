@@ -34,6 +34,7 @@
 #include <QStringList>
 #include <QComboBox>
 #include <QtDebug>
+#include <QRegularExpression>
 
 #include "fwbuilder/Cluster.h"
 #include "fwbuilder/Firewall.h"
@@ -1143,13 +1144,14 @@ void guessInterfaceLabel(InterfaceData *idata)
     QString qs_name = idata->name.c_str();
     QString qs_label;
 
-    QRegExp pat1("Adaptive Security Appliance '(.*)' interface");
-    QRegExp pat2("Cisco PIX Security Appliance '(.*)' interface");
-    QRegExp pat3("PIX Firewall '(.*)' interface");
+    QRegularExpression pat1("Adaptive Security Appliance '(.*)' interface");
+    QRegularExpression pat2("Cisco PIX Security Appliance '(.*)' interface");
+    QRegularExpression pat3("PIX Firewall '(.*)' interface");
+    QRegularExpressionMatch match;
 
-    if (pat1.indexIn(qs_name) > -1) qs_label = pat1.cap(1);
-    if (pat2.indexIn(qs_name) > -1) qs_label = pat2.cap(1);
-    if (pat3.indexIn(qs_name) > -1) qs_label = pat3.cap(1);
+    if (qs_name.indexOf(pat1, 0, &match) > -1) qs_label = match.captured(1);
+    if (qs_name.indexOf(pat2, 0, &match) > -1) qs_label = match.captured(1);
+    if (qs_name.indexOf(pat3, 0, &match) > -1) qs_label = match.captured(1);
 
     idata->label = qs_label.toStdString();
 
@@ -1217,13 +1219,13 @@ void guessSecurityLevel(const string&, InterfaceData *idata)
 void guessOSAndPlatformFromSysDescr(
     const QString &sysDescr, QString &platform, QString &hostOS, QString &version)
 {
-    QList<QRegExp> pix_re;
-    pix_re << QRegExp("Cisco PIX Firewall Version ([0-9\\.]+)")
-           << QRegExp("Cisco PIX Security Appliance Version ([0-9\\.]+)")
-           << QRegExp("Cisco Adaptive Security Appliance Version ([0-9\\.]+)");
+    QList<QRegularExpression> pix_re;
+    pix_re << QRegularExpression("Cisco PIX Firewall Version ([0-9\\.]+)")
+           << QRegularExpression("Cisco PIX Security Appliance Version ([0-9\\.]+)")
+           << QRegularExpression("Cisco Adaptive Security Appliance Version ([0-9\\.]+)");
 
-    QList<QRegExp> ios_re;
-    ios_re << QRegExp("Cisco Internetwork Operating System Software .* Version ([0-9\\.]+)");
+    QList<QRegularExpression> ios_re;
+    ios_re << QRegularExpression("Cisco Internetwork Operating System Software .* Version ([0-9\\.]+)");
 
     platform = "";
     hostOS = "";
@@ -1235,25 +1237,26 @@ void guessOSAndPlatformFromSysDescr(
 
     list<QStringPair> allowed_versions;
     QString version_from_sysdescr;
+    QRegularExpressionMatch match;
 
-    foreach (QRegExp re, pix_re)
+    foreach (QRegularExpression re, pix_re)
     {
-        if (re.indexIn(sysDescr) > -1)
+        if (sysDescr.indexOf(re, 0, &match) > -1)
         {
             platform = "pix";
             hostOS = "pix_os";
-            version_from_sysdescr = re.cap(1);
+            version_from_sysdescr = match.captured(1);
         }
     }
 
 
-    foreach (QRegExp re, ios_re)
+    foreach (QRegularExpression re, ios_re)
     {
-        if (re.indexIn(sysDescr) > -1)
+        if (sysDescr.indexOf(re, 0, &match) > -1)
         {
             platform = "iosacl";
             hostOS = "ios";
-            version_from_sysdescr = re.cap(1);
+            version_from_sysdescr = match.captured(1);
         }
     }
 

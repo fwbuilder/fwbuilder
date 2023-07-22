@@ -47,6 +47,7 @@
 #include <qpushbutton.h>
 #include <qmap.h>
 #include <QtDebug>
+#include <QStyle>
 
 #include <iostream>
 #include <sstream>
@@ -64,7 +65,7 @@ ObjConflictResolutionDialog::ObjConflictResolutionDialog(QWidget *parent): QDial
 
     alwaysCurrent=false;
     alwaysNew    =false;
-    m_dialog->dlgIcon->setPixmap( QMessageBox::standardIcon( QMessageBox::Warning ) );
+    m_dialog->dlgIcon->setPixmap( this->style()->standardPixmap(QStyle::SP_MessageBoxWarning));
 
     defaultLeftButtonText = tr("Keep current object");
     defaultRightButtonText = tr("Replace with this object");

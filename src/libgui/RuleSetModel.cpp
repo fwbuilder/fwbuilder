@@ -33,7 +33,7 @@
 
 #include <QtDebug>
 #include <QHash>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QMessageBox>
 #include <QTime>
 #include <QElapsedTimer>
@@ -913,7 +913,7 @@ QString RuleSetModel::findUniqueNameForGroup(const QString &groupName)
 
     bool exactNameExists = false;
 
-    QRegExp rx("^(.*)-(\\d+)$");
+    QRegularExpression rx = QRegularExpression(QRegularExpression::anchoredPattern("^(.*)-(\\d+)$"));
 
     foreach (RuleNode *node, root->children)
     {
@@ -923,10 +923,11 @@ QString RuleSetModel::findUniqueNameForGroup(const QString &groupName)
 
         exactNameExists = exactNameExists || (name == groupName);
 
-        if (rx.exactMatch(name))
+        QRegularExpressionMatch match = rx.match(name);
+        if (match.hasMatch())
         {
-            QString nameSection = rx.capturedTexts().at(1);
-            QString countSection = rx.capturedTexts().at(2);
+            QString nameSection = match.capturedTexts().at(1);
+            QString countSection = match.capturedTexts().at(2);
 
             int curCnt = countSection.toInt();
 
@@ -1146,8 +1147,7 @@ bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
                 nullptr , "Firewall Builder",
                 QObject::tr(
                     "A single interface belonging to "
-                    "this firewall is expected in this field."),
-                QString(),QString());
+                    "this firewall is expected in this field."));
         }
         else if (RuleElementRGtw::cast(re))
         {
@@ -1157,8 +1157,7 @@ bool RuleSetModel::insertObject(QModelIndex &index, FWObject *obj)
                     "A single ip address is expected "
                     "here. You may also insert a host "
                     "or a network adapter leading to "
-                    "a single ip adress."),
-                QString(),QString());
+                    "a single ip adress."));
         }
         return false;
     }

@@ -71,7 +71,7 @@ void SimpleTextEditor::loadFromFile()
     if (QMessageBox::warning(this, tr("Firewall Builder"),
                              tr("Warning: loading from file discards "
                                 "current contents of the script."),
-                             "&Load", "&Cancel", QString(), 0, 1 ) != 0)
+                             QMessageBox::Open | QMessageBox::Cancel) != QMessageBox::Open)
     {
         return;
     }
@@ -88,7 +88,7 @@ void SimpleTextEditor::loadFromFile()
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Could not open file %1").arg(filename),
-            "&Continue", QString(), QString(), 0, 1 );
+            QMessageBox::Ok);
         return;
     }
 

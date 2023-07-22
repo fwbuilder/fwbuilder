@@ -137,8 +137,7 @@ void HostDialog::applyChanges()
         blockSignals(true);
         autorename_chidren = (QMessageBox::warning(
                                   this,"Firewall Builder", dialog_txt,
-                                  tr("&Yes"), tr("&No"), QString(),
-                                  0, 1 )==0 );
+                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes );
         blockSignals(false);
     }
 

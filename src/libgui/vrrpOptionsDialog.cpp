@@ -113,8 +113,7 @@ bool vrrpOptionsDialog::validate()
     if (!valid)
     {
         QMessageBox::warning(this, "Firewall Builder",
-                             tr("Input not valid: %1").arg(message), "&Continue",
-                             QString(), QString(), 0, 1);
+                             tr("Input not valid: %1").arg(message));
         focus->setFocus();
     }
     return valid;

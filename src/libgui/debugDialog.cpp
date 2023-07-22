@@ -34,7 +34,9 @@
 #include "FWWindow.h"
 
 #include <qtextbrowser.h>
-#include <qtextcodec.h>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <qtextcodec.h>
+#endif
 #include <qglobal.h>
 #include <qpixmapcache.h>
 #include <qlocale.h>

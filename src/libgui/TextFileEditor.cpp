@@ -63,7 +63,7 @@ bool TextFileEditor::load()
                 this, "Firewall Builder",
                 tr("The file %1 does not exist but it will be created "
                    "when you save your changes.").arg(file_name),
-                tr("&Open the file"), tr("&Cancel"), QString(), 0, 1 ) == 1)
+                QMessageBox::Open | QMessageBox::Cancel) == QMessageBox::Cancel)
             return false;
 
         return true;
@@ -76,9 +76,9 @@ bool TextFileEditor::load()
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("The file is read-only, you can't save the changes."),
-                tr("&View the file"), tr("&Cancel"), QString(), 0, 1 ))
+                QMessageBox::Open | QMessageBox::Cancel))
         {
-        case 0:  // open read-only
+        case QMessageBox::Open:  // open read-only
             m_dialog->editor->setReadOnly(true);
             m_dialog->ok_button->hide();
             m_dialog->cancel_button->setText(tr("Close"));
@@ -122,8 +122,7 @@ void TextFileEditor::save()
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Error saving data to file '%1': %2")
-                .arg(file_name).arg(owf.errorString()),
-                "&Continue", QString(), QString(), 0, 1 );
+                .arg(file_name).arg(owf.errorString()));
         return;
     }
     
@@ -143,15 +142,13 @@ void TextFileEditor::save()
             QMessageBox::critical(
                 this,"Firewall Builder",
                 tr("Can not rename file %1 to %2: %3")
-                .arg(tmp_file_name).arg(file_name).arg(wf.errorString()),
-                "&Continue", QString(), QString(), 0, 1 );
+                .arg(tmp_file_name).arg(file_name).arg(wf.errorString()));
 
     } else
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("Error saving data to a temporary file '%1': %2")
-            .arg(tmp_file_name).arg(wf.errorString()),
-            "&Continue", QString(), QString(), 0, 1 );
+            .arg(tmp_file_name).arg(wf.errorString()));
 }
 
 void TextFileEditor::closeEvent(QCloseEvent* ev)
@@ -162,20 +159,21 @@ void TextFileEditor::closeEvent(QCloseEvent* ev)
             QMessageBox::critical(
                 this, "Firewall Builder",
                 tr("Dialog contains modified data. Do you want to save it?"),
-                tr("&Save"), tr("&Discard"), tr("&Cancel"),
-                0,    // enter: button 0 
-                2 ))  // escape: button 2
+                QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel))
         {
-        case 0:
+        case QMessageBox::Save:
             save();
             QDialog::closeEvent(ev);
             break;
 
-        case 1:
+        case QMessageBox::Discard:
             QDialog::closeEvent(ev);
             break;
 
-        case 2:
+        case QMessageBox::Cancel:
+            ev->ignore();
+            return;
+        default:
             ev->ignore();
             return;
         }

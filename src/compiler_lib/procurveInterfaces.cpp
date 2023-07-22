@@ -27,7 +27,7 @@
 
 #include "fwbuilder/Interface.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QObject>
 
 using namespace std;
@@ -66,11 +66,12 @@ bool procurveInterfaces::parseVlan(
     }
 
     // Procurve SNMP reports vlan interface names without space
-    QRegExp vlan_name_pattern("(vlan|Vlan|VLAN) *(\\d{1,})");
-    if (vlan_name_pattern.indexIn(name) != -1)
+    QRegularExpression vlan_name_pattern("(vlan|Vlan|VLAN) *(\\d{1,})");
+    QRegularExpressionMatch match;
+    if (name.indexOf(vlan_name_pattern, 0, &match) != -1)
     {
-        if (base_name!=nullptr) *base_name = vlan_name_pattern.cap(1);
-        if (vlan_id!=nullptr) *vlan_id = vlan_name_pattern.cap(2).toInt();
+        if (base_name!=nullptr) *base_name = match.captured(1);
+        if (vlan_id!=nullptr) *vlan_id = match.captured(2).toInt();
         return true;
     }
     return false;

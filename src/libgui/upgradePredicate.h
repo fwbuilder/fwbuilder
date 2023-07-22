@@ -31,6 +31,7 @@
 
 #include "qmessagebox.h"
 #include "qobject.h"
+#include <QPushButton>
 
 class MessageBoxUpgradePredicate: public libfwbuilder::XMLTools::UpgradePredicate
 {
@@ -40,20 +41,24 @@ class MessageBoxUpgradePredicate: public libfwbuilder::XMLTools::UpgradePredicat
     
     virtual bool operator()(const std::string&) const 
     { 
-        return QMessageBox::information( parent , "Firewall Builder",
-                                         QObject::tr(
-"The data file you are trying to open has been \
-saved with an older version of Firewall Builder. \
-Opening it in this version will cause it to be \
-upgraded, which may prevent older versions of \
-the program from reading it. Backup copy of your \
-file in the old format will be made in the same \
-directory with extension '.bak'.\n\
-Are you sure you want to open it?"),
-                                         QObject::tr("&Upgrade"),
-                                         QObject::tr("&Do not load the file"),
-                                         QString(),
-                                         0, 1 )==0;
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Firewall Builder");
+        msgBox.setText(QObject::tr("The data file you are trying to open has been \
+                                  saved with an older version of Firewall Builder. \
+                                  Opening it in this version will cause it to be \
+                                  upgraded, which may prevent older versions of \
+                                  the program from reading it. Backup copy of your \
+                                  file in the old format will be made in the same \
+                                  directory with extension '.bak'.\n\
+                                  Are you sure you want to open it?"));
+        msgBox.setIcon(QMessageBox::Information);
+        QPushButton *upgradeButton = msgBox.addButton(QObject::tr("&Upgrade"), QMessageBox::ActionRole);
+        QPushButton *cancelButton = msgBox.addButton(QObject::tr("&Do not load the file"), QMessageBox::RejectRole);
+        msgBox.setEscapeButton(cancelButton);
+
+        msgBox.exec();
+
+        return msgBox.clickedButton() == upgradeButton;
     }
 };
 

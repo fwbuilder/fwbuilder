@@ -33,11 +33,13 @@
 
 #include <qobject.h>
 #include <qtimer.h>
-#include <qregexp.h>
+#include <QRegularExpression>
 #include <qmessagebox.h>
 #include <qapplication.h>
 #include <qeventloop.h>
-#include <qtextcodec.h>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <qtextcodec.h>
+#endif
 #include <qapplication.h>
 #include <qdatetime.h>
 #include <QtDebug>
@@ -545,9 +547,9 @@ void SSHSession::readFromStdout()
          * Matches ESC [ n ; m H (move cursor to position), ESC ? 25 l and ESC ? 25 h
          * (hide and show cursor) and a few others
          */
-        QRegExp suppress_ansi_codes(
+        QRegularExpression suppress_ansi_codes(
             "\x1B\\[((\\d*A)|(\\d*B)|(\\d*C)|(\\d*D)|(\\d*G)|(\\?\\d+l)|(\\d*J)|(2K)|(\\d*;\\d*[fHmr])|(\\?25h)|(\\?25l))");
-        QRegExp cursor_next_line("\x1B\\d*E");
+        QRegularExpression cursor_next_line("\x1B\\d*E");
 
         while (buf.indexOf(suppress_ansi_codes) != -1)
             buf.replace(suppress_ansi_codes, "");
@@ -562,11 +564,7 @@ void SSHSession::readFromStdout()
         QString lastLine = "";
 
         // split on LF
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
         QStringList bufLines = buf.split("\n", Qt::KeepEmptyParts);
-#else
-        QStringList bufLines = buf.split("\n", QString::KeepEmptyParts);
-#endif
 
         // if buf ends with a LF character, the last element in the list is
         // an empty string
@@ -733,11 +731,11 @@ bool SSHSession::cmpPrompt(const QString &str, const QString &prompt)
     return res;
 }
 
-bool SSHSession::cmpPrompt(const QString &str,const QRegExp &prompt)
+bool SSHSession::cmpPrompt(const QString &str,const QRegularExpression &prompt)
 {
 #if STATE_MACHINE_DEBUG
     if (fwbdebug)
-        qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s' (regexp)",
+        qDebug("SSHSession::cmpPrompt: str='%s' prompt='%s' (QRegularExpression)",
                str.toLatin1().constData(),prompt.pattern().toLatin1().constData());
 
 #endif

@@ -351,8 +351,7 @@ void InterfaceDialog::validate(bool *res)
             QMessageBox::critical(
                 this,"Firewall Builder",
                 err,
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
             blockSignals(false);
         }
         return;
@@ -385,8 +384,7 @@ void InterfaceDialog::validate(bool *res)
             QMessageBox::critical(
                 this,"Firewall Builder",
                 err,
-                tr("&Continue"), QString(),QString(),
-                0, 1 );
+                QMessageBox::Ok);
             blockSignals(false);
         }
     }
@@ -425,8 +423,7 @@ void InterfaceDialog::applyChanges()
         blockSignals(true);
         autorename_children = (QMessageBox::warning(
                                    this, "Firewall Builder", dialog_txt,
-                                   tr("&Yes"), tr("&No"), QString(),
-                                   0, 1 )==0 );
+                                   QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes );
         blockSignals(false);
     }
 
@@ -537,8 +534,7 @@ void InterfaceDialog::openIfaceDialog()
         QMessageBox::critical(
             this,"Firewall Builder",
             tr("FWBuilder API error: %1").arg(ex.toString().c_str()),
-            tr("&Continue"), QString(),QString(),
-            0, 1 );
+            QMessageBox::Ok);
         return;
     }
 }

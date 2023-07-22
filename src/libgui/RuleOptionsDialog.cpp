@@ -50,7 +50,6 @@
 #include <qstackedwidget.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-#include <qregexp.h>
 #include <qlabel.h>
 
 #include <QSpinBox>

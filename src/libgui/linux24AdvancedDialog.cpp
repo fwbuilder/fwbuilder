@@ -41,7 +41,6 @@
 #include <qradiobutton.h>
 #include <qlineedit.h>
 #include <qstackedwidget.h>
-#include <qregexp.h>
 #include <QUndoStack>
 
 #include "FWWindow.h"

@@ -25,7 +25,7 @@
 #include "HostsFile.h"
 
 #include <QFile>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtDebug>
 
 extern int fwbdebug;
@@ -42,8 +42,9 @@ void HostsFile::parse()
 
     data.clear();
 
-    QRegExp comment("^\\s*#");
-    QRegExp hosts_line("^\\s*(\\S+)\\s+(\\S*)");
+    QRegularExpression comment("^\\s*#");
+    QRegularExpression hosts_line("^\\s*(\\S+)\\s+(\\S*)");
+    QRegularExpressionMatch match;
 
     while ( ! file.atEnd())
     {
@@ -51,15 +52,15 @@ void HostsFile::parse()
 
         if (fwbdebug) qDebug() << "Line: " << line;
 
-        if (comment.indexIn(line) > -1) continue;
-        if (hosts_line.indexIn(line) > -1)
+        if (line.indexOf(comment) > -1) continue;
+        if (hosts_line.match(line).hasMatch())
         {
-            QString addr_s = hosts_line.cap(1);
-            QStringList names = hosts_line.cap(2).split(",");
+            QString addr_s = match.captured(1);
+            QStringList names = match.captured(2).split(",");
 
             if (fwbdebug)
-                qDebug() << "cap(1)=" << hosts_line.cap(1)
-                         << "cap(2)=" << hosts_line.cap(2);
+                qDebug() << "cap(1)=" << match.captured(1)
+                         << "cap(2)=" << match.captured(2);
 
             try
             {

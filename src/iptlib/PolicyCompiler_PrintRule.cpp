@@ -57,7 +57,6 @@
 #include "Configlet.h"
 
 #include <QStringList>
-#include <QRegExp>
 #include <QtDebug>
 
 #include <iostream>

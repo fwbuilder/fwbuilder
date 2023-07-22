@@ -28,7 +28,7 @@
 
 #include <QString>
 #include <QStringList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtDebug>
 
 #include <ios>
@@ -83,8 +83,9 @@ void IPTImporter::run()
     string normalized_input_buffer;
     normalized_input_buffer.reserve(input_size);
 
-    QRegExp old_negation_short("(-[^- ])\\s!");
-    QRegExp old_negation_long("(--[^- ]+)\\s!");
+    QRegularExpression old_negation_short("(-[^- ])\\s!");
+    QRegularExpression old_negation_long("(--[^- ]+)\\s!");
+    QRegularExpressionMatch match;
 
     input.seekg (0, ios::beg);
     char buf[8192];
@@ -103,25 +104,25 @@ void IPTImporter::run()
 
         // negation: "-s ! something" format is deprecated and is replaced with
         // "! -s something", but our parser understands only old format.
-        int pos = 0;
+        qsizetype pos = 0;
         while (true)
         {
             QString option;
-            int match_length = 0;
-            int old_pos = 0;
+            qsizetype match_length = 0;
+            qsizetype old_pos = 0;
 
-            old_pos = old_negation_short.indexIn(str, pos);
+            old_pos = str.indexOf(old_negation_short, pos, &match);
             if (old_pos != -1)
             {
-                option = old_negation_short.cap(1);
-                match_length = old_negation_short.matchedLength();
+                option = match.captured(1);
+                match_length = match.capturedLength();
             } else
             {
-                old_pos = old_negation_long.indexIn(str, pos);
+                old_pos = str.indexOf(old_negation_long, pos, &match);
                 if (old_pos != -1)
                 {
-                    option = old_negation_long.cap(1);
-                    match_length = old_negation_long.matchedLength();
+                    option = match.captured(1);
+                    match_length = match.capturedLength();
                 }
             }
 

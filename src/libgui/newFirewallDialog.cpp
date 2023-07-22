@@ -33,7 +33,6 @@
 #include "FWBTree.h"
 #include "events.h"
 #include "FWBApplication.h"
-#include "QDesktopWidget"
 #include "networkZoneManager.h"
 #include "ObjConflictResolutionDialog.h"
 
@@ -69,6 +68,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QtDebug>
+#include <QScreen>
 
 #include <algorithm>
 #include <iostream>
@@ -186,7 +186,7 @@ newFirewallDialog::newFirewallDialog(QWidget *parentw, FWObject *_p) :
     );
 
     this->resize(this->width(), this->minimumHeight());
-    int maxheight = (int)(app->desktop()->height()*0.9);
+    int maxheight = (int)(this->screen()->availableGeometry().height()*0.9);
     if (this->height() > maxheight)
         this->resize(this->width(), maxheight);
 
@@ -320,8 +320,7 @@ void newFirewallDialog::getIPAddressOfFirewallByName()
         QMessageBox::warning(
             this,"Firewall Builder",
             tr("Address of %1 could not be obtained via DNS")
-            .arg(m_dialog->obj_name->text()),
-            "&Continue", QString(), QString(), 0, 1 );
+            .arg(m_dialog->obj_name->text()));
     }
 
     getInterfacesBusy = false;
@@ -441,8 +440,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Missing SNMP community string."),
-            "&Continue", QString(), QString(), 0, 1 );
+            tr("Missing SNMP community string."));
         return ;
     }
 
@@ -468,8 +466,7 @@ void newFirewallDialog::getInterfacesViaSNMP()
             QMessageBox::warning(
                 this,"Firewall Builder",
                 tr("Address of %1 could not be obtained via DNS")
-                .arg(m_dialog->snmpIP->text()),
-                "&Continue", QString(), QString(), 0, 1 );
+                .arg(m_dialog->snmpIP->text()));
             getInterfacesBusy = false;
             return ;
         }
@@ -531,9 +528,7 @@ void newFirewallDialog::nextClicked()
         {
             QMessageBox::warning(
                     this,"Firewall Builder",
-                    tr("Please select template"),
-                    tr("&Continue"), QString(),QString(),
-                    0, 1 );
+                    tr("Please select template"));
             showPage(CHOOSE_FW_TEMPLATE);
             return;
         }
@@ -665,9 +660,7 @@ void newFirewallDialog::showPage(const int page)
                 QMessageBox::critical(
                     this,"Firewall Builder",
                     tr("Error loading template library:\n%1")
-                    .arg(ex.toString().c_str()),
-                    tr("&Continue"), QString(),QString(),
-                    0, 1 );
+                    .arg(ex.toString().c_str()));
             }
         }
 
@@ -805,8 +798,7 @@ void newFirewallDialog::getInterfaceDataFromInterfaceEditor(
         catch (FWException &ex)
         {
             QMessageBox::warning(
-                this,"Firewall Builder", ex.toString().c_str(),
-                "&Continue", QString(), QString(), 0, 1 );
+                this,"Firewall Builder", ex.toString().c_str());
             showPage( CONFIGURE_INTERFACES_MANUALLY );
             return;
         }
@@ -1027,8 +1019,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString(), QString(), 0, 1 );
+            tr("Invalid address '%1/%2'").arg(addr).arg(netm));
         return false;
     }
     try
@@ -1041,8 +1032,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
             {
                 QMessageBox::warning(
                     this,"Firewall Builder",
-                    tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-                    "&Continue", QString(), QString(), 0, 1 );
+                    tr("Invalid address '%1/%2'").arg(addr).arg(netm));
                 return false;
             }
         }
@@ -1056,8 +1046,7 @@ bool newFirewallDialog::validateAddressAndMask(const QString &addr,
     {
         QMessageBox::warning(
             this,"Firewall Builder",
-            tr("Invalid address '%1/%2'").arg(addr).arg(netm),
-            "&Continue", QString(), QString(), 0, 1 );
+            tr("Invalid address '%1/%2'").arg(addr).arg(netm));
         return false;
     }
     return true;
