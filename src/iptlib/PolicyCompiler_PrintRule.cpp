@@ -130,6 +130,7 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
 {
     string res;
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+    FWOptions* options = ipt_comp->fw->getOptionsObject();
 
     if (!minus_n_tracker_initialized) initializeMinusNTracker();
 
@@ -142,9 +143,14 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
         else
             opt_wait = "";
 
-	res = string((ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ") +
-            opt_wait + "-N " + chain;
+        if(options->getBool("use_iptables_translate")) {
+            res = (ipt_comp->ipv6) ? "$IP6TABLES_TRANSLATE " : "$($IPTABLES_TRANSLATE ";
+        } else {
+            res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+        }
+        res+= opt_wait + "-N " + chain;
         if (ipt_comp->my_table != "filter") res += " -t " + ipt_comp->my_table;
+        if(options->getBool("use_iptables_translate")) res+=" )";
         res += "\n";
 	(*(ipt_comp->minus_n_commands))[chain] = true;
     }
@@ -152,9 +158,17 @@ string PolicyCompiler_ipt::PrintRule::_createChain(const string &chain)
 }
 
 string PolicyCompiler_ipt::PrintRule::_startRuleLine()
-{            
+{
     PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
-    string res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    FWOptions* options = ipt_comp->fw->getOptionsObject();
+
+    string res;// = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    if(options->getBool("use_iptables_translate")) {
+    	res = (ipt_comp->ipv6) ? "$IP6TABLES_TRANSLATE " : "$($IPTABLES_TRANSLATE ";
+    } else {
+    	res = (ipt_comp->ipv6) ? "$IP6TABLES " : "$IPTABLES ";
+    }
+
     string opt_wait;
 
     if (XMLTools::version_compare(version, "1.4.20")>=0)
@@ -172,7 +186,17 @@ string PolicyCompiler_ipt::PrintRule::_startRuleLine()
 
 string PolicyCompiler_ipt::PrintRule::_endRuleLine()
 {            
-    return string("\n");
+	PolicyCompiler_ipt *ipt_comp = dynamic_cast<PolicyCompiler_ipt*>(compiler);
+	FWOptions* options = ipt_comp->fw->getOptionsObject();
+
+	string res;
+	if(options->getBool("use_iptables_translate")) {
+	   	res = " | sed 's/\\\\//g')\n";
+	} else {
+	   	res = "\n";
+	}
+
+    return res;
 }
 
 string PolicyCompiler_ipt::PrintRule::_printRuleLabel(PolicyRule *rule)
@@ -376,6 +400,21 @@ string PolicyCompiler_ipt::PrintRule::_printModules(PolicyRule *rule)
         if (arg>0) ostr << " --" << module_name << "-htable-gcinterval " << arg;
 
     }
+
+	#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    	QStringList comm = QString(rule->getComment().c_str()).split("\n", Qt::SkipEmptyParts);
+    #else
+    	QStringList comm = QString(rule->getComment().c_str()).split("\n", QString::SkipEmptyParts);
+    #endif
+	if(!comm.isEmpty()) {
+		ostr << "-m comment --comment " << '"';
+		foreach(QString line, comm)
+		{
+			ostr << " " << line.toStdString();
+		}
+		ostr << '"';
+		//res << "# " << endl;
+	}
 
     return ostr.str();
 }

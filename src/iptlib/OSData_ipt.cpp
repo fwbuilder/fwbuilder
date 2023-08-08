@@ -37,6 +37,8 @@ OSData_ipt::OSData_ipt(const std::string &ho)
     attribute_names[IP6TABLES] = "path_ip6tables";
     attribute_names[IPTABLES_RESTORE] = "path_iptables_restore";
     attribute_names[IP6TABLES_RESTORE] = "path_ip6tables_restore";
+    attribute_names[IPTABLES_TRANSLATE] = "path_iptables_translate";
+    attribute_names[IP6TABLES_TRANSLATE] = "path_ip6tables_translate";
     attribute_names[IP] = "path_ip";
     attribute_names[IFCONFIG] = "path_ifconfig";
     attribute_names[VCONFIG] = "path_vconfig";
@@ -51,6 +53,8 @@ OSData_ipt::OSData_ipt(const std::string &ho)
     variable_names[IP6TABLES] = "IP6TABLES";
     variable_names[IPTABLES_RESTORE] = "IPTABLES_RESTORE";
     variable_names[IP6TABLES_RESTORE] = "IP6TABLES_RESTORE";
+    variable_names[IPTABLES_TRANSLATE] = "IPTABLES_TRANSLATE";
+    variable_names[IP6TABLES_TRANSLATE] = "IP6TABLES_TRANSLATE";
     variable_names[IP] = "IP";
     variable_names[IFCONFIG] = "IFCONFIG";
     variable_names[VCONFIG] = "VCONFIG";
@@ -65,6 +69,8 @@ OSData_ipt::OSData_ipt(const std::string &ho)
     all_tools.push_back(IP6TABLES);
     all_tools.push_back(IPTABLES_RESTORE);
     all_tools.push_back(IP6TABLES_RESTORE);
+    all_tools.push_back(IPTABLES_TRANSLATE);
+    all_tools.push_back(IP6TABLES_TRANSLATE);
     all_tools.push_back(IP);
     all_tools.push_back(IFCONFIG);
     all_tools.push_back(VCONFIG);

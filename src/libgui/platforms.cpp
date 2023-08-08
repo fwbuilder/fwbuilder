@@ -400,7 +400,7 @@ bool isDefaultRoutingRuleOptions(FWOptions *opt)
 
     if (RoutingRuleOptions::isA(opt))
     {
-        res= ( ! opt->getBool("no_fail") );
+        res= ( ! opt->getBool("no_fail") && ! opt->getBool("use_onlink_option") );
     }
     return res;
 }

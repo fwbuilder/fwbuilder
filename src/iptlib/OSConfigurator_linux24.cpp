@@ -347,7 +347,7 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
     configlet.setVariable("need_ipset", using_ipset);
 
     configlet.setVariable("need_iptables_restore",
-                          options->getBool("use_iptables_restore"));
+                          options->getBool(" "));
 
     configlet.setVariable("need_ip6tables_restore",
                           have_ipv6 && options->getBool("use_iptables_restore"));
@@ -358,13 +358,29 @@ string OSConfigurator_linux24::printShellFunctions(bool have_ipv6)
      * Generate commands to reset all tables and chains and set
      * default policy
      */
-    Configlet reset_iptables(fw, "linux24", "reset_iptables");
-    if (XMLTools::version_compare(version, "1.4.20") >= 0)
+    if (options->getBool("use_iptables_translate")) {
+    	qDebug("%s", "iptables-translate!");
+    	Configlet reset_iptables(fw, "linux24", "reset_iptables_nft");
+    	if (XMLTools::version_compare(version, "1.4.20") >= 0)
+    		reset_iptables.setVariable("opt_wait", "-w");
+    	else
+    		reset_iptables.setVariable("opt_wait", "");
+    	output.push_back(reset_iptables.expand());
+    } else {
+    	Configlet reset_iptables(fw, "linux24", "reset_iptables");
+    	if (XMLTools::version_compare(version, "1.4.20") >= 0)
+    	        reset_iptables.setVariable("opt_wait", "-w");
+    	else
+    	    	reset_iptables.setVariable("opt_wait", "");
+    	output.push_back(reset_iptables.expand());
+    }
+
+/*    if (XMLTools::version_compare(version, "1.4.20") >= 0)
         reset_iptables.setVariable("opt_wait", "-w");
     else
         reset_iptables.setVariable("opt_wait", "");
 
-    output.push_back(reset_iptables.expand());
+    output.push_back(reset_iptables.expand());*/
 
     Configlet addr_conf(fw, "linux24", "update_addresses");
     output.push_back(addr_conf.expand());
@@ -441,9 +457,12 @@ string  OSConfigurator_linux24::printPathForAllTools(const string &os)
 {
     ostringstream res;
 
+    //qDebug("%s", os_data.getVariableName(OSData_ipt::tools(*i)))
+
     list<int>::const_iterator i;
     const list<int> &all_tools = os_data.getAllTools(); 
     for (i=all_tools.begin(); i!=all_tools.end(); ++i)
+    	//qDebug("%s", os_data.getVariableName(OSData_ipt::tools(*i)).c_str());
         res << os_data.getVariableName(OSData_ipt::tools(*i))
             << "=\""
             << getPathForATool(os, OSData_ipt::tools(*i))

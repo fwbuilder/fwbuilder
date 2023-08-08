@@ -162,6 +162,8 @@ iptAdvancedDialog::iptAdvancedDialog(QWidget *parent,FWObject *o)
     data.registerOption(m_dialog->loadModules, fwoptions, "load_modules");
     data.registerOption(m_dialog->iptablesRestoreActivation,
                         fwoptions, "use_iptables_restore");
+    data.registerOption(m_dialog->iptablesTranslateActivation,
+                            fwoptions, "use_iptables_translate");
     data.registerOption(m_dialog->ipt_fw_dir, fwoptions, "firewall_dir");
     data.registerOption(m_dialog->ipt_user, fwoptions, "admUser");
     data.registerOption(m_dialog->altAddress, fwoptions, "altAddress");
