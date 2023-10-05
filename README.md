@@ -23,10 +23,32 @@ Ubuntu
  make
  sudo make install
 ```
+
 Note: default destination is /usr/local. This is configurable:
 ```
  cmake ../fwbuilder -DCMAKE_INSTALL_PREFIX=/usr
 ```
+
+Fedora
+---------
+
+*Tested on Fedora 38*
+
+```
+ sudo dnf install openssl-devel qt5-qtbase-devel qt6-qtbase-devel automake git cmake libxml2-devel libxslt-devel 
+ git clone https://github.com/fwbuilder/fwbuilder.git
+ mkdir build
+ cd build
+ cmake ../fwbuilder
+ make
+ sudo make install
+```
+
+Note: default destination is /usr/local. This is configurable:
+```
+ cmake ../fwbuilder -DCMAKE_INSTALL_PREFIX=/usr
+```
+
 
 Create deb package
 ---------
