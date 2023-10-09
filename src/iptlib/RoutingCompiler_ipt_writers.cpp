@@ -328,9 +328,19 @@ string RoutingCompiler_ipt::PrintRule::_printRItf(RoutingRule *rule)
     RuleElementRItf *itfrel=rule->getRItf();
     ref=itfrel->front();
     Interface *itf=Interface::cast(FWReference::cast(ref)->getPointer());
-    
-    if(itf != nullptr) return "dev " + itf->getName() + " ";
-    else return "";
+
+    if (itf == nullptr)
+    {
+        return "";
+    }
+
+    Address* srcAddr(const_cast<Address*>(itf->getAddressObject()));
+    string   retVal;
+
+    retVal.append("dev " + itf->getName()      + " ");
+    retVal.append("src " + _printAddr(srcAddr) + " ");
+
+    return retVal;
 }
 
 string RoutingCompiler_ipt::PrintRule::_printRDst(RoutingRule *rule)
